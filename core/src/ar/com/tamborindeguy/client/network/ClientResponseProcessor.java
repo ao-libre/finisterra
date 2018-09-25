@@ -40,8 +40,4 @@ public class ClientResponseProcessor implements IResponseProcessor {
         MovementProcessorSystem.validateRequest(movementResponse.requestNumber, movementResponse.destination);
     }
 
-    @Override
-    public void processResponse(MapResponse mapResponse) {
-        MapHandler.add(mapResponse.getMapNumber(), mapResponse.getMap());
-    }
 }

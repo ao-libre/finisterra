@@ -1,6 +1,5 @@
 package ar.com.tamborindeguy.model;
 
-import ar.com.tamborindeguy.model.IEntity;
 import camera.Focused;
 import com.artemis.Component;
 import entity.*;

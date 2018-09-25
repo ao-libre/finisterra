@@ -4,16 +4,16 @@ import ar.com.tamborindeguy.model.Player;
 import ar.com.tamborindeguy.model.map.Map;
 import ar.com.tamborindeguy.model.map.Tile;
 import ar.com.tamborindeguy.model.map.WorldPosition;
-import ar.com.tamborindeguy.network.map.MapRequest;
-import ar.com.tamborindeguy.network.map.MapResponse;
+import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
+import ar.com.tamborindeguy.network.interfaces.IResponseProcessor;
+import ar.com.tamborindeguy.network.login.LoginFailed;
+import ar.com.tamborindeguy.network.login.LoginOK;
+import ar.com.tamborindeguy.network.login.LoginRequest;
 import ar.com.tamborindeguy.network.movement.MovementRequest;
 import ar.com.tamborindeguy.network.movement.MovementResponse;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
 import camera.Focused;
-import ar.com.tamborindeguy.network.login.LoginFailed;
-import ar.com.tamborindeguy.network.login.LoginOK;
-import ar.com.tamborindeguy.network.login.LoginRequest;
 import entity.*;
 import entity.character.CanWrite;
 import entity.character.info.Clan;
@@ -45,14 +45,14 @@ public class NetworkDictionary extends MarshalDictionary {
                 LoginRequest.class,
                 LoginFailed.class,
                 MovementRequest.class,
-                MapRequest.class,
 
                 // Responses
                 LoginOK.class,
                 MovementResponse.class,
-                MapResponse.class,
 
                 // Notifications
+                INotificationProcessor.class,
+                IResponseProcessor.class,
                 EntityUpdate.class,
                 RemoveEntity.class,
                 Player.class,

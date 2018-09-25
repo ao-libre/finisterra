@@ -34,8 +34,6 @@ public class LoginScreen extends ScreenAdapter {
         DescriptorsHandler.load();
         Gdx.app.log("Loading", "Loading animations...");
         AnimationsHandler.load();
-        Gdx.app.log("Loading", "Loading maps...");
-        MapHandler.load();
         Gdx.app.log("Loading", "Loading particles...");
         ParticlesHandler.load();
         Gdx.app.log("Loading", "Finish loading");

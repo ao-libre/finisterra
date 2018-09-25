@@ -10,8 +10,11 @@ import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import position.WorldPos;
+
+import java.util.Optional;
 
 import static com.artemis.E.E;
 
@@ -58,7 +61,6 @@ public class ClientNotificationProcessor implements INotificationProcessor {
             E(newEntity.getId()).pos2DY(worldPos.y);
             E(newEntity.getId()).character();
             E(newEntity.getId()).aOPhysics();
-            MapHandler.get(worldPos.map).getTile(worldPos.x, worldPos.y).setCharIndex(newEntity.getId());
         }
     }
 
@@ -69,8 +71,10 @@ public class ClientNotificationProcessor implements INotificationProcessor {
         for (Component component : entityUpdate.components) {
             edit.add(component);
         }
-        entityUpdate.components.stream().filter(WorldPos.class::isInstance).map(WorldPos.class::cast).forEach(worldPos -> {
-            MapHandler.get(worldPos.map).getTile(worldPos.x, worldPos.y).setCharIndex(entityId);
+        entityUpdate.components.stream().filter(WorldPos.class::isInstance).map(WorldPos.class::cast).findFirst().ifPresent(worldPos -> {
+            Gdx.app.postRunnable(() -> {
+                Optional.ofNullable(MapHandler.get(worldPos.map)).orElse(MapHandler.load(worldPos.map)).getTile(worldPos.x, worldPos.y).setCharIndex(entityId);
+            });
         });
     }
 }

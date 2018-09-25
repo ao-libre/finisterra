@@ -4,13 +4,11 @@ import ar.com.tamborindeguy.database.model.User;
 import ar.com.tamborindeguy.manager.MapManager;
 import ar.com.tamborindeguy.manager.WorldManager;
 import ar.com.tamborindeguy.model.map.Map;
-import ar.com.tamborindeguy.network.map.MapRequest;
 import ar.com.tamborindeguy.network.interfaces.IRequestProcessor;
 import ar.com.tamborindeguy.network.interfaces.IResponse;
 import ar.com.tamborindeguy.network.login.LoginFailed;
 import ar.com.tamborindeguy.network.login.LoginOK;
 import ar.com.tamborindeguy.network.login.LoginRequest;
-import ar.com.tamborindeguy.network.map.MapResponse;
 import ar.com.tamborindeguy.network.movement.MovementRequest;
 import ar.com.tamborindeguy.network.movement.MovementResponse;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
@@ -84,12 +82,5 @@ public class ServerRequestProcessor implements IRequestProcessor {
         NetworkComunicator.sendTo(connectionId, new MovementResponse(request.requestNumber, nextPos));
 
     }
-
-    @Override
-    public void processRequest(MapRequest mapRequest, int connectionId) {
-        Map map = MapManager.get(mapRequest.getMapNumber());
-        NetworkComunicator.sendTo(connectionId, new MapResponse(map, mapRequest.getMapNumber()));
-    }
-
 
 }
