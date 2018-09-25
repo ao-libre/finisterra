@@ -1,0 +1,895 @@
+{
+  size: 76,
+  keyTable: [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  valueTable: [
+    null,
+    {
+      class: weapons,
+      indexs: [
+        4719,
+        4721,
+        4718,
+        4720
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        4723,
+        4725,
+        4722,
+        4724
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        10269,
+        10271,
+        10268,
+        10270
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        10295,
+        10297,
+        10294,
+        10296
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        10321,
+        10323,
+        10320,
+        10322
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        10467,
+        10469,
+        10466,
+        10468
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        956,
+        958,
+        955,
+        957
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        983,
+        985,
+        982,
+        984
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        1010,
+        1012,
+        1009,
+        1011
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        1049,
+        1051,
+        1048,
+        1050
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        1312,
+        1314,
+        1311,
+        1313
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        13332,
+        13334,
+        13331,
+        13333
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        13358,
+        13360,
+        13357,
+        13359
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        13384,
+        13386,
+        13383,
+        13385
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        3608,
+        3610,
+        3607,
+        3609
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        3634,
+        3636,
+        3633,
+        3635
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        3660,
+        3662,
+        3659,
+        3661
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        19825,
+        19827,
+        19824,
+        19826
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        19747,
+        19749,
+        19746,
+        19748
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        19773,
+        19775,
+        19772,
+        19774
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        19799,
+        19801,
+        19798,
+        19800
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        19851,
+        19853,
+        19850,
+        19852
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        19877,
+        19879,
+        19876,
+        19878
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        19903,
+        19905,
+        19902,
+        19904
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        19929,
+        19931,
+        19928,
+        19930
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        19955,
+        19957,
+        19954,
+        19956
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        19981,
+        19983,
+        19980,
+        19982
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        20007,
+        20009,
+        20006,
+        20008
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        20033,
+        20035,
+        20032,
+        20034
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        20059,
+        20061,
+        20058,
+        20060
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        20230,
+        20232,
+        20229,
+        20231
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        20484,
+        20486,
+        20483,
+        20485
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        17882,
+        17884,
+        17881,
+        17883
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        17908,
+        17910,
+        17907,
+        17909
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        20533,
+        20535,
+        20532,
+        20534
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        21946,
+        21948,
+        21945,
+        21947
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22004,
+        22006,
+        22003,
+        22005
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22030,
+        22032,
+        22029,
+        22031
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22289,
+        22291,
+        22288,
+        22290
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22315,
+        22317,
+        22314,
+        22316
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22341,
+        22343,
+        22340,
+        22342
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22367,
+        22369,
+        22366,
+        22368
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22393,
+        22395,
+        22392,
+        22394
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22419,
+        22421,
+        22418,
+        22420
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22445,
+        22447,
+        22444,
+        22446
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22471,
+        22473,
+        22470,
+        22472
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22538,
+        22540,
+        22537,
+        22539
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22564,
+        22566,
+        22563,
+        22565
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22590,
+        22592,
+        22589,
+        22591
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22616,
+        22618,
+        22615,
+        22617
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22642,
+        22644,
+        22641,
+        22643
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22668,
+        22670,
+        22667,
+        22669
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22694,
+        22696,
+        22693,
+        22695
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22720,
+        22722,
+        22719,
+        22721
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22747,
+        22749,
+        22746,
+        22748
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22773,
+        22775,
+        22772,
+        22774
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        22799,
+        22801,
+        22798,
+        22800
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23201,
+        23203,
+        23200,
+        23202
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23232,
+        23234,
+        23231,
+        23233
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23258,
+        23260,
+        23257,
+        23259
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23284,
+        23286,
+        23283,
+        23285
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23310,
+        23312,
+        23309,
+        23311
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23336,
+        23338,
+        23335,
+        23337
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23362,
+        23364,
+        23361,
+        23363
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23388,
+        23390,
+        23387,
+        23389
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23414,
+        23416,
+        23413,
+        23415
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23440,
+        23442,
+        23439,
+        23441
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23466,
+        23468,
+        23465,
+        23467
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23492,
+        23494,
+        23491,
+        23493
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23518,
+        23520,
+        23517,
+        23519
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23544,
+        23546,
+        23543,
+        23545
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23570,
+        23572,
+        23569,
+        23571
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23596,
+        23598,
+        23595,
+        23597
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23622,
+        23624,
+        23621,
+        23623
+      ]
+    },
+    {
+      class: weapons,
+      indexs: [
+        23648,
+        23650,
+        23647,
+        23649
+      ]
+    },
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  capacity: 128,
+  hashShift: 56,
+  mask: 127,
+  threshold: 102
+}

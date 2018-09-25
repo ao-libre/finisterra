@@ -1,0 +1,5 @@
+rootProject.name = 'ao-java'
+include 'desktop', 'core', 'components'
+include 'server'
+include 'shared'
+

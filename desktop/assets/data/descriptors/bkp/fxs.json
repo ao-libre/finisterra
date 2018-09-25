@@ -1,0 +1,400 @@
+{
+  size: 35,
+  keyTable: [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  valueTable: [
+    null,
+    {
+      class: fxs,
+      indexs: [
+        115
+      ],
+      offsetX: 0,
+      offsetY: 32
+    },
+    {
+      class: fxs,
+      indexs: [
+        119
+      ],
+      offsetX: 0,
+      offsetY: -15
+    },
+    {
+      class: fxs,
+      indexs: [
+        123
+      ],
+      offsetX: 0,
+      offsetY: -15
+    },
+    {
+      class: fxs,
+      indexs: [
+        134
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        145
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        156
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        172
+      ],
+      offsetX: 0,
+      offsetY: 30
+    },
+    {
+      class: fxs,
+      indexs: [
+        183
+      ],
+      offsetX: 0,
+      offsetY: 32
+    },
+    {
+      class: fxs,
+      indexs: [
+        194
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        205
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        221
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        237
+      ],
+      offsetX: 0,
+      offsetY: 32
+    },
+    {
+      class: fxs,
+      indexs: [
+        259
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        265
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        275
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        286
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        420
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        93
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        297
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        421
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        308
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        1885
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        1894
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        2316
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        4797
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        5954
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        6580
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        9568
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        5941
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        5942
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        5943
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        18191
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        18401
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        18413
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    {
+      class: fxs,
+      indexs: [
+        20503
+      ],
+      offsetX: 0,
+      offsetY: 0
+    },
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ]
+}
