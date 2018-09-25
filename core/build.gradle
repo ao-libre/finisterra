@@ -1,40 +1,4 @@
 apply plugin: "java"
 
 sourceCompatibility = 1.8
-//[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-//
 sourceSets.main.java.srcDirs = [ "src/" ]
-//
-//apply plugin: "artemis-fluid"
-//
-//ext {
-//    fluidOutputDir = file("$buildDir/generated-sources/fluid/")
-//}
-//
-//// Replace existing line.
-//sourceSets.main.java.srcDirs = ["src/",fluidOutputDir]
-//
-//fluid {
-//    generatedSourcesDirectory = fluidOutputDir
-//    classpath = sourceSets.main.compileClasspath
-//
-//    // optional parameters. Uncomment to activate.
-//    // preferences.prefixComponentGetter = "_" // prefix for E::[get]pos()
-//    // preferences.prefixComponentCreate = "" // prefix for E::[]pos()
-//    // preferences.prefixComponentHas = "has" // prefix for E::[has]Pos()
-//    // preferences.prefixComponentRemove = "remove" // prefix for E::[remove]Pos()
-//    // preferences.generateTagMethods = true // add tag convenience methods.
-//    // preferences.generateGroupMethods = true // add group convenience methods.
-//    // preferences.generateBooleanComponentAccessors = true // Generate boolean accessors for flag components?
-//    // preferences.swallowGettersWithParameters = false // global setting. overridden by @Fluid annotation.
-//}
-//compileJava.dependsOn fluid
-//
-//// Help intellIJ pick up the generated classes.
-//idea.module {
-//    excludeDirs -= file("$buildDir")
-//    excludeDirs -= file("$buildDir/src")
-//    excludeDirs += file("$buildDir/dependency-cache")
-//    excludeDirs += file("$buildDir/libs")
-//    excludeDirs += file("$buildDir/tmp")
-//}

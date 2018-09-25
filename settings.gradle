@@ -1,5 +1,3 @@
 rootProject.name = 'ao-java'
-include 'desktop', 'core', 'components'
-include 'server'
-include 'shared'
+include 'desktop', 'core', 'components', 'shared', 'server'
 

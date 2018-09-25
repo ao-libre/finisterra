@@ -27,7 +27,7 @@ public class KryonetServerMarshalStrategy extends KryonetMarshalStrategy {
         try {
             System.out.print("Starting server... ");
             ((Server)endpoint).bind(TCP_PORT, UDP_PORT);
-            System.out.println("up and running");
+            System.out.println("Server UP and listening");
             state = MarshalState.STARTED;
         } catch (IOException e) {
             e.printStackTrace();

@@ -8,15 +8,15 @@ public class ServerLauncher {
 
     public static void main(String[] args) {
         initWorld();
+        System.out.println("Server started!");
     }
 
     private static void initWorld() {
-        worldServer = new WorldServer();
-        System.out.println("Initializing systems");
-        worldServer.initSystems();
-        System.out.println("Creating world");
         Log.set(Log.LEVEL_DEBUG);
+        worldServer = new WorldServer();
+        worldServer.initSystems();
         worldServer.createWorld();
         worldServer.start();
+
     }
 }

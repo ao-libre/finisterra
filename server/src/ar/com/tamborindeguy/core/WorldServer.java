@@ -28,6 +28,7 @@ public class WorldServer {
     }
 
     public void initSystems() {
+        System.out.println("Initializing systems...");
         MapManager.initialize();
         KryonetServerMarshalStrategy server = new KryonetServerMarshalStrategy();
         networkComunicator = new NetworkComunicator(server);
@@ -41,6 +42,7 @@ public class WorldServer {
 
 
     public void createWorld() {
+        System.out.println("Creating world...");
         world = new World(builder.build());
         // testing
         Entity player2 = getWorld().createEntity();
