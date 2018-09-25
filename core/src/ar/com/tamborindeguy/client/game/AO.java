@@ -4,10 +4,8 @@ import ar.com.tamborindeguy.client.network.KryonetClientMarshalStrategy;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.screens.LoginScreen;
 import ar.com.tamborindeguy.client.systems.network.ClientSystem;
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 

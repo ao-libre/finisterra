@@ -8,7 +8,6 @@ import entity.character.info.Description;
 import entity.character.info.Name;
 import entity.character.states.*;
 import entity.character.status.*;
-import interfaces.IUpdatable;
 
 public interface IUpdateProcessor {
 

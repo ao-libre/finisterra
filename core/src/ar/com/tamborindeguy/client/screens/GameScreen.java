@@ -9,7 +9,6 @@ import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
 import ar.com.tamborindeguy.client.systems.interactions.DialogSystem;
 import ar.com.tamborindeguy.client.systems.interactions.MeditateSystem;
 import ar.com.tamborindeguy.client.systems.map.TiledMapSystem;
-import ar.com.tamborindeguy.client.systems.network.ClientSystem;
 import ar.com.tamborindeguy.client.systems.physics.MovementProcessorSystem;
 import ar.com.tamborindeguy.client.systems.physics.MovementSystem;
 import ar.com.tamborindeguy.client.systems.physics.PlayerInputSystem;

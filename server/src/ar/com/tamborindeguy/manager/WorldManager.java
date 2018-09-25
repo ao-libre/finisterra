@@ -5,11 +5,11 @@ import ar.com.tamborindeguy.database.model.User;
 import ar.com.tamborindeguy.network.NetworkComunicator;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
+import ar.com.tamborindeguy.utils.WorldUtils;
 import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.esotericsoftware.minlog.Log;
-import ar.com.tamborindeguy.utils.WorldUtils;
 import entity.Heading;
 
 import java.util.List;

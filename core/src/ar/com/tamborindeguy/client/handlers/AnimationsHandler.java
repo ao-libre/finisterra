@@ -1,8 +1,8 @@
 package ar.com.tamborindeguy.client.handlers;
 
+import ar.com.tamborindeguy.model.Graphic;
 import ar.com.tamborindeguy.model.descriptors.IDescriptor;
 import ar.com.tamborindeguy.model.textures.BundledAnimation;
-import ar.com.tamborindeguy.model.Graphic;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

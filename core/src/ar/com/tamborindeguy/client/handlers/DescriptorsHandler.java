@@ -1,13 +1,13 @@
 package ar.com.tamborindeguy.client.handlers;
 
+import ar.com.tamborindeguy.model.Graphic;
+import ar.com.tamborindeguy.model.Objects;
 import ar.com.tamborindeguy.model.descriptors.*;
 import ar.com.tamborindeguy.model.readers.AODescriptorsReader;
 import ar.com.tamborindeguy.model.readers.DescriptorsReader;
 import ar.com.tamborindeguy.model.readers.GenericReader;
 import ar.com.tamborindeguy.model.serializers.BodyDescriptorSerializer;
 import ar.com.tamborindeguy.model.serializers.GraphicsSerializer;
-import ar.com.tamborindeguy.model.Graphic;
-import ar.com.tamborindeguy.model.Objects;
 import ar.com.tamborindeguy.objects.types.Obj;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

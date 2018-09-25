@@ -1,9 +1,9 @@
 package ar.com.tamborindeguy.model.readers;
 
 import ar.com.tamborindeguy.client.game.AO;
+import ar.com.tamborindeguy.model.Objects;
 import ar.com.tamborindeguy.model.loaders.MapLoader;
 import ar.com.tamborindeguy.model.loaders.ObjectLoader;
-import ar.com.tamborindeguy.model.Objects;
 import ar.com.tamborindeguy.model.map.Map;
 
 public class AODescriptorsReader implements DescriptorsReader {

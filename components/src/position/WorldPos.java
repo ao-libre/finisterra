@@ -1,7 +1,7 @@
 package position;
 
-import entity.Heading;
 import com.artemis.Component;
+import entity.Heading;
 
 import java.util.Objects;
 

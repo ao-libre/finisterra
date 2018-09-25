@@ -3,7 +3,6 @@ package ar.com.tamborindeguy.client.screens;
 import ar.com.tamborindeguy.client.game.AO;
 import ar.com.tamborindeguy.client.handlers.AnimationsHandler;
 import ar.com.tamborindeguy.client.handlers.DescriptorsHandler;
-import ar.com.tamborindeguy.client.handlers.MapHandler;
 import ar.com.tamborindeguy.client.handlers.ParticlesHandler;
 import ar.com.tamborindeguy.client.utils.Skins;
 import ar.com.tamborindeguy.network.login.LoginRequest;
@@ -11,7 +10,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class LoginScreen extends ScreenAdapter {

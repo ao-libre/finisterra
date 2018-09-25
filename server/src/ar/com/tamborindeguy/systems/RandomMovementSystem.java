@@ -1,10 +1,8 @@
 package ar.com.tamborindeguy.systems;
 
+import com.artemis.Aspect;
 import com.artemis.systems.IteratingSystem;
 import movement.RandomMovement;
-import com.artemis.Aspect;
-import com.artemis.Entity;
-import com.artemis.systems.EntityProcessingSystem;
 import physics.AOPhysics;
 
 import java.util.*;

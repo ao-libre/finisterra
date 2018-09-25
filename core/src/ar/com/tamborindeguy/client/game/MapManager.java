@@ -1,9 +1,9 @@
 package ar.com.tamborindeguy.client.game;
 
 import ar.com.tamborindeguy.client.handlers.AnimationsHandler;
-import ar.com.tamborindeguy.model.textures.BundledAnimation;
 import ar.com.tamborindeguy.model.map.Map;
 import ar.com.tamborindeguy.model.map.Tile;
+import ar.com.tamborindeguy.model.textures.BundledAnimation;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,21 +23,10 @@ public class MapManager {
 
     private static java.util.Map<Map, Texture> bufferedLayers = new HashMap<>();
 
-    /**
-     * Renders map's first layer to it's internal FrameBuffer Object
-     *
-     * @return void
-     */
     public static void renderLayerToBuffer(Map map) {
         renderLayerToBuffer(map, 0);
     }
 
-    /**
-     * Renders a map layer to it's internal FrameBuffer Object
-     *
-     * @param layer
-     * @return void
-     */
     public static void renderLayerToBuffer(Map map, int layer) {
 
         int width = (int) (MAX_MAP_SIZE_WIDTH * Tile.TILE_PIXEL_WIDTH);
@@ -65,43 +54,18 @@ public class MapManager {
         bufferedLayers.put(map, fbo.getColorBufferTexture());
     }
 
-    /**
-     * Renders a Map Layer to a specific SpriteBatch
-     *
-     * @param batch
-     * @return void
-     */
     public static void renderLayer(Map map, SpriteBatch batch) {
         renderLayer(map, batch, 0, 0, MIN_MAP_SIZE_WIDTH, MAX_MAP_SIZE_WIDTH, MIN_MAP_SIZE_HEIGHT, MAX_MAP_SIZE_HEIGHT);
     }
 
-    /**
-     * Renders a Map Layer to a specific SpriteBatch
-     * @param batch
-     * @param layer
-     */
     public static void renderLayer(Map map, SpriteBatch batch, int layer) {
         renderLayer(map, batch, 0.0f, layer, MIN_MAP_SIZE_WIDTH, MAX_MAP_SIZE_WIDTH, MIN_MAP_SIZE_HEIGHT, MAX_MAP_SIZE_HEIGHT);
     }
 
-    /**
-     * Renders a Map Layer to a specific SpriteBatch
-     * @param batch
-     * @param layer
-     */
     public static void renderLayer(Map map, SpriteBatch batch, float delta, int layer) {
         renderLayer(map, batch, delta, layer, MIN_MAP_SIZE_WIDTH, MAX_MAP_SIZE_WIDTH, MIN_MAP_SIZE_HEIGHT, MAX_MAP_SIZE_HEIGHT);
     }
 
-    /**
-     * Renders a Map Layer to a specific SpriteBatch
-     * @param batch
-     * @param layer
-     * @param minX
-     * @param maxX
-     * @param minY
-     * @param maxY
-     */
     public static void renderLayer(Map map, SpriteBatch batch, float delta, int layer, int minX, int maxX, int minY, int maxY) {
         Color color = batch.getColor();
         if (layer >= 2) {
@@ -111,8 +75,9 @@ public class MapManager {
             for (int x = minX; x <= maxX; x++) {
                 int graphic = map.getTile(x, y).getGraphic(layer);
                 if (graphic == 0) {
-                    return;
+                    continue;
                 }
+
                 BundledAnimation animation = AnimationsHandler.getGraphicAnimation(graphic);
                 TextureRegion tileRegion = animation.isAnimated() ? animation.getAnimatedGraphic(true) : animation.getGraphic();
 
@@ -132,18 +97,6 @@ public class MapManager {
         }
     }
 
-    private static void loadAnimations(Map map) {
-        for (int x = 1; x < Map.MAX_MAP_SIZE_WIDTH; x++) {
-            for (int y = 1; y < Map.MAX_MAP_SIZE_HEIGHT; y++) {
-                for (int grhIndex : map.getTile(x, y).getGraphic()) {
-                    if (grhIndex != 0) {
-                        AnimationsHandler.saveBundledAnimation(grhIndex);
-                    }
-                }
-            }
-        }
-    }
-
     public static boolean isLoaded(Map map) {
         return bufferedLayers.containsKey(map);
     }
@@ -153,7 +106,6 @@ public class MapManager {
     }
 
     public static void initialize(Map map) {
-        loadAnimations(map);
         renderLayerToBuffer(map);
     }
 }

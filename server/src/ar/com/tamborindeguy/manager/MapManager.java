@@ -1,13 +1,11 @@
 package ar.com.tamborindeguy.manager;
 
 import ar.com.tamborindeguy.model.map.Tile;
+import ar.com.tamborindeguy.utils.WorldUtils;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
-import ar.com.tamborindeguy.utils.WorldUtils;
 import position.WorldPos;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
