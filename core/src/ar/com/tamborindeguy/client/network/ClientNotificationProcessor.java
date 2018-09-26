@@ -1,6 +1,5 @@
 package ar.com.tamborindeguy.client.network;
 
-import ar.com.tamborindeguy.client.handlers.MapHandler;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.network.interfaces.INotification;
 import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
@@ -9,22 +8,12 @@ import ar.com.tamborindeguy.network.notifications.RemoveEntity;
 import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.EntityEdit;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import position.WorldPos;
-
-import java.util.Optional;
 
 import static com.artemis.E.E;
 
 public class ClientNotificationProcessor implements INotificationProcessor {
-
-    private Game ao;
-
-    public ClientNotificationProcessor(Game ao) {
-        this.ao = ao;
-    }
 
     @Override
     public void defaultProcess(INotification notification) {
@@ -45,8 +34,8 @@ public class ClientNotificationProcessor implements INotificationProcessor {
 
     @Override
     public void processNotification(RemoveEntity removeEntity) {
-        Log.debug("Unregistering entity: " + removeEntity.playerId);
-        GameScreen.unregisterEntity(removeEntity.playerId);
+        Log.debug("Unregistering entity: " + removeEntity.entityId);
+        GameScreen.unregisterEntity(removeEntity.entityId);
     }
 
     private void addComponentsToEntity(Entity newEntity, EntityUpdate entityUpdate) {
@@ -71,10 +60,5 @@ public class ClientNotificationProcessor implements INotificationProcessor {
         for (Component component : entityUpdate.components) {
             edit.add(component);
         }
-        entityUpdate.components.stream().filter(WorldPos.class::isInstance).map(WorldPos.class::cast).findFirst().ifPresent(worldPos -> {
-            Gdx.app.postRunnable(() -> {
-                Optional.ofNullable(MapHandler.get(worldPos.map)).orElse(MapHandler.load(worldPos.map)).getTile(worldPos.x, worldPos.y).setCharIndex(entityId);
-            });
-        });
     }
 }

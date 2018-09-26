@@ -1,19 +1,3 @@
-/*******************************************************************************
- * Copyright (C) 2014  Rodrigo Troncoso
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as
- *     published by the Free Software Foundation, either version 3 of the
- *     License, or (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- *
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *******************************************************************************/
 package ar.com.tamborindeguy.client.screens;
 
 import ar.com.tamborindeguy.client.game.AO;
@@ -27,7 +11,7 @@ public abstract class WorldScreen extends ScreenAdapter {
     public static final int GAME_RUNNING = 0;
     public static final int GAME_PAUSED = 1;
 
-    protected AO game;
+    public static AO game;
     public static World world;
     protected FPSLogger logger;
     protected final WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
@@ -37,13 +21,17 @@ public abstract class WorldScreen extends ScreenAdapter {
 	public WorldScreen(AO game) {
 		this.game = game;
         this.logger = new FPSLogger();
+	}
+
+	public void init() {
+        this.initScene();
         this.initSystems(builder);
         this.world = new World(builder.build());
-	}
+    }
 
     @Override
     public void show() {
-        this.initScene();
+
         this.postWorldInit();
         this.state = GAME_RUNNING;
     }

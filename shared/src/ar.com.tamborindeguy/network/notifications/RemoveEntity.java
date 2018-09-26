@@ -5,14 +5,14 @@ import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
 
 public class RemoveEntity implements INotification {
 
-    public int playerId;
+    public int entityId;
 
     public RemoveEntity() {
     }
 
     public RemoveEntity(int entityId) {
 
-        this.playerId = entityId;
+        this.entityId = entityId;
     }
 
     @Override

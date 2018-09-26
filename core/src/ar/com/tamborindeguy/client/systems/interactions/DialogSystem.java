@@ -1,10 +1,14 @@
 package ar.com.tamborindeguy.client.systems.interactions;
 
+import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.utils.Skins;
+import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import camera.Focused;
 import com.artemis.Aspect;
+import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -14,6 +18,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import entity.Dialog;
 import entity.character.CanWrite;
 import entity.character.Character;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static com.artemis.E.E;
 
@@ -63,5 +70,8 @@ public class DialogSystem extends IteratingSystem {
         entity.dialogText(text);
         entity.dialogAlpha(Dialog.DEFAULT_ALPHA);
         entity.dialogTime(Dialog.DEFAULT_TIME);
+        ArrayList<Component> components = new ArrayList<>();
+        components.add(entity.getDialog());
+        GameScreen.getClient().sendToAll(new EntityUpdate(entity.networkId(), components));
     }
 }

@@ -7,20 +7,18 @@ import ar.com.tamborindeguy.network.interfaces.IResponseProcessor;
 import ar.com.tamborindeguy.network.login.LoginFailed;
 import ar.com.tamborindeguy.network.login.LoginOK;
 import ar.com.tamborindeguy.network.movement.MovementResponse;
+import com.badlogic.gdx.Gdx;
 
 import static com.artemis.E.E;
 
 public class ClientResponseProcessor implements IResponseProcessor {
 
-    private AO ao;
-
-    public ClientResponseProcessor(AO ao) {
-        this.ao = ao;
-    }
-
     @Override
     public void processResponse(LoginOK response) {
-//        ClientSystem.notificationProcessor.processNotification(new EntityUpdate(response.entityId, response.player.getComponents()));
+        Gdx.app.postRunnable(() -> {
+            GameScreen.game.showGameScreen();
+            GameScreen.client.loginFinished();
+        });
         int localEntity = GameScreen.getNetworkedEntity(response.entityId);
         GameScreen.setPlayer(localEntity);
         E(localEntity).focused();

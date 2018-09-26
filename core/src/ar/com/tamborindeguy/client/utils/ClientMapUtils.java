@@ -8,7 +8,7 @@ import ar.com.tamborindeguy.model.map.WorldPosition;
 import com.artemis.E;
 import position.WorldPos;
 
-public class MapUtils {
+public class ClientMapUtils {
 
     public static boolean changeMap(E player, WorldPos pos) {
         Map map = MapHandler.get(pos.map);

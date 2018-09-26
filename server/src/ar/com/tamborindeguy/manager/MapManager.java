@@ -36,7 +36,8 @@ public class MapManager {
             if (it.map != actualPos.map) {
                 getPlayersInMap(it.map).remove(player);
             }
-            nearEntities.get(player).forEach(nearEntity -> {
+            Set<Integer> near = new HashSet<>(nearEntities.get(player));
+            near.forEach(nearEntity -> {
                 removeNearEntity(player, nearEntity);
             });
         });
@@ -83,8 +84,10 @@ public class MapManager {
     }
 
     private static void unlinkEntities(int player1, int player2) {
-        nearEntities.computeIfAbsent(player1, id -> new HashSet<>()).remove(player2);
-        // always notify that this entity is not longer on radar
+        if (nearEntities.containsKey(player1)) {
+            nearEntities.get(player1).remove(player2);
+        }
+        // always notify that this entity is not longer in range
         WorldManager.sendEntityRemove(player1, player2);
     }
 

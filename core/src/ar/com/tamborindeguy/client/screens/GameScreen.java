@@ -9,6 +9,7 @@ import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
 import ar.com.tamborindeguy.client.systems.interactions.DialogSystem;
 import ar.com.tamborindeguy.client.systems.interactions.MeditateSystem;
 import ar.com.tamborindeguy.client.systems.map.TiledMapSystem;
+import ar.com.tamborindeguy.client.systems.network.ClientSystem;
 import ar.com.tamborindeguy.client.systems.physics.MovementProcessorSystem;
 import ar.com.tamborindeguy.client.systems.physics.MovementSystem;
 import ar.com.tamborindeguy.client.systems.physics.PlayerInputSystem;
@@ -25,9 +26,12 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static com.artemis.E.E;
 
@@ -39,20 +43,15 @@ public class GameScreen extends WorldScreen {
     private Table dialog;
     private Table inventory;
 
-    public static KryonetClientMarshalStrategy client;
+    public static ClientSystem client;
     public static int player;
-    public static GameScreen instance;
 
     public static Map<Integer, Integer> networkedEntities = new HashMap<>();
 
-    public GameScreen(AO game) {
+    public GameScreen(AO game, ClientSystem client) {
         super(game);
-        client = game.getClient();
-        instance = this;
-	}
-
-	public static GameScreen getInstance() {
-        return instance;
+        this.client = client;
+        init();
     }
 
     public static int getPlayer() {
@@ -66,6 +65,7 @@ public class GameScreen extends WorldScreen {
 
     @Override
     protected void postWorldInit() {
+        Gdx.input.setInputProcessor(stage);
         Entity cameraEntity = world.createEntity();
         E(cameraEntity)
                 .aOCamera(true)
@@ -78,7 +78,7 @@ public class GameScreen extends WorldScreen {
         // WORLD SYSTEMS
         builder
                 .with(new SuperMapper())
-                .with(game.getClientSystem())
+                .with(client)
                 // Player movement
                 .with(new PlayerInputSystem())
                 .with(new MovementProcessorSystem())
@@ -106,16 +106,14 @@ public class GameScreen extends WorldScreen {
                 .with(new DialogSystem(dialog))
                 .with(new TagManager())
                 .with(new UuidEntityManager());
-	}
+    }
+
 
     @Override
-	protected void initScene() {
+    protected void initScene() {
         stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
-
         Container<Table> dialogContainer = createDialogContainer();
         stage.addActor(dialogContainer);
-
         Container<Table> inventory = createInventory();
     }
 
@@ -152,28 +150,28 @@ public class GameScreen extends WorldScreen {
         return world;
     }
 
-    public static KryonetClientMarshalStrategy getClient() {
-        return client;
+    public static MarshalStrategy getClient() {
+        return client.getMarshal();
     }
 
     @Override
-	protected void update(float deltaTime) {
+    protected void update(float deltaTime) {
         this.logger.log();
 
-		world.setDelta(MathUtils.clamp(deltaTime, 0, 1 / 16f));
+        world.setDelta(MathUtils.clamp(deltaTime, 0, 1 / 16f));
         this.world.process();
-		
-		switch (this.state) {
-			case GAME_RUNNING: {
-				updateRunning(deltaTime);
-				break;
-			}
-			case GAME_PAUSED: {
-				updatePaused();
-				break;
-			}
-		}
-	}
+
+        switch (this.state) {
+            case GAME_RUNNING: {
+                updateRunning(deltaTime);
+                break;
+            }
+            case GAME_PAUSED: {
+                updatePaused();
+                break;
+            }
+        }
+    }
 
     @Override
     protected void drawUI() {
@@ -187,6 +185,10 @@ public class GameScreen extends WorldScreen {
 
     public static int getNetworkedEntity(int networkId) {
         return networkedEntities.get(networkId);
+    }
+
+    public static Set<Integer> getEntities() {
+        return new HashSet<>(networkedEntities.values());
     }
 
     public static void registerEntity(int networkId, int entityId) {
@@ -205,23 +207,23 @@ public class GameScreen extends WorldScreen {
     }
 
     @Override
-	protected void updateRunning(float deltaTime) {
+    protected void updateRunning(float deltaTime) {
         //
-	}
+    }
 
     @Override
-	protected void updatePaused() {
+    protected void updatePaused() {
         //
-	}
+    }
 
     @Override
-	protected void pauseSystems() {
+    protected void pauseSystems() {
         //
-	}
+    }
 
     @Override
-	protected void resumeSystems() {
+    protected void resumeSystems() {
         //
-	}
+    }
 
 }

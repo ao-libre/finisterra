@@ -1,22 +1,25 @@
 package ar.com.tamborindeguy.client.systems.physics;
 
+import ar.com.tamborindeguy.client.handlers.MapHandler;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.systems.interactions.MeditateSystem;
-import ar.com.tamborindeguy.client.utils.MapUtils;
+import ar.com.tamborindeguy.client.utils.ClientMapUtils;
 import ar.com.tamborindeguy.model.map.Tile;
 import ar.com.tamborindeguy.network.movement.MovementRequest;
+import ar.com.tamborindeguy.util.MapUtils;
 import ar.com.tamborindeguy.util.Util;
 import camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
+import com.esotericsoftware.minlog.Log;
 import entity.Heading;
 import physics.AOPhysics;
 import position.Pos2D;
 import position.WorldPos;
 
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.artemis.E.E;
@@ -42,12 +45,19 @@ public class MovementProcessorSystem extends IteratingSystem {
             movementIntention.ifPresent(movement -> {
                 player.headingCurrent(getHeading(movement));
                 WorldPos expectedPos = Util.getNextPos(pos, movement);
-                boolean valid = MapUtils.isValid(expectedPos) && !player.hasImmobile();
+                Set<Integer> nearEntities = GameScreen.getEntities();
+                nearEntities.remove(entity);
+                nearEntities.forEach(near -> Log.debug("Validating entity: " + near + " is not occuping the position"));
+                boolean blocked = MapUtils.isBlocked(MapHandler.get(expectedPos.map), expectedPos);
+                boolean occupied = MapUtils.hasEntity(nearEntities, expectedPos);
+                boolean valid = !(blocked ||
+                        occupied ||
+                        player.hasImmobile());
                 MovementRequest request = new MovementRequest(++requestNumber, movement, valid);
                 requests.put(requestNumber, request);
                 GameScreen.getClient().sendToAll(request);
                 if (valid) { // Prediction
-                    MapUtils.updateTile(Tile.EMPTY_INDEX, pos);
+                    ClientMapUtils.updateTile(Tile.EMPTY_INDEX, pos);
                     player.destinationWorldPos(expectedPos);
                     player.destinationDir(movement);
                     stopMeditating(player);
@@ -68,10 +78,10 @@ public class MovementProcessorSystem extends IteratingSystem {
     public static WorldPos getPosition(WorldPos worldPos) {
         WorldPos correctPos = new WorldPos(worldPos.x, worldPos.y, worldPos.map);
         requests.values().stream().filter(it -> it.valid).forEach(request -> {
-                WorldPos nextPos = Util.getNextPos(correctPos, request.movement);
-                correctPos.x = nextPos.x;
-                correctPos.y = nextPos.y;
-                correctPos.map = nextPos.map;
+            WorldPos nextPos = Util.getNextPos(correctPos, request.movement);
+            correctPos.x = nextPos.x;
+            correctPos.y = nextPos.y;
+            correctPos.map = nextPos.map;
         });
         return correctPos;
     }
@@ -81,10 +91,10 @@ public class MovementProcessorSystem extends IteratingSystem {
         E(GameScreen.getPlayer()).worldPosMap(destination.map);
         E(GameScreen.getPlayer()).worldPosY(destination.y);
         E(GameScreen.getPlayer()).worldPosX(destination.x);
-        if (MapUtils.changeMap(E(GameScreen.getPlayer()), destination)) {
+        if (ClientMapUtils.changeMap(E(GameScreen.getPlayer()), destination)) {
             return;
         }
-        MapUtils.updateTile(GameScreen.getPlayer(), destination);
+        ClientMapUtils.updateTile(GameScreen.getPlayer(), destination);
     }
 
 

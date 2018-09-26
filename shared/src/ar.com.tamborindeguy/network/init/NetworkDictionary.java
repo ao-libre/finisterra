@@ -13,6 +13,7 @@ import ar.com.tamborindeguy.network.movement.MovementRequest;
 import ar.com.tamborindeguy.network.movement.MovementResponse;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
+import ar.com.tamborindeguy.util.MapUtils;
 import camera.Focused;
 import entity.*;
 import entity.character.CanWrite;
@@ -51,8 +52,9 @@ public class NetworkDictionary extends MarshalDictionary {
                 MovementResponse.class,
 
                 // Notifications
-                INotificationProcessor.class,
-                IResponseProcessor.class,
+                MapUtils.class, //why?
+                INotificationProcessor.class, //why?
+                IResponseProcessor.class, //why?
                 EntityUpdate.class,
                 RemoveEntity.class,
                 Player.class,

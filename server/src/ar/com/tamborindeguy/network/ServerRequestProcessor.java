@@ -11,6 +11,7 @@ import ar.com.tamborindeguy.network.login.LoginRequest;
 import ar.com.tamborindeguy.network.movement.MovementRequest;
 import ar.com.tamborindeguy.network.movement.MovementResponse;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
+import ar.com.tamborindeguy.util.MapUtils;
 import ar.com.tamborindeguy.utils.WorldUtils;
 import com.artemis.Component;
 import com.artemis.E;
@@ -60,7 +61,9 @@ public class ServerRequestProcessor implements IRequestProcessor {
         WorldPos worldPos = player.getWorldPos();
         WorldPos oldPos = new WorldPos(worldPos);
         WorldPos nextPos = WorldUtils.getNextPos(worldPos, request.movement);
-        if (player.hasImmobile() || !(MapManager.isValidPos(nextPos))) {
+        boolean blocked = MapUtils.isBlocked(MapManager.get(nextPos.map), nextPos);
+        boolean occupied = MapUtils.hasEntity(MapManager.getNearEntities(playerId), nextPos);
+        if (player.hasImmobile() || blocked || occupied) {
             nextPos = worldPos;
         }
 

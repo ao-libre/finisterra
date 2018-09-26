@@ -26,5 +26,6 @@ repositories {
 }
 
 dependencies {
+    compile project(":shared")
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }

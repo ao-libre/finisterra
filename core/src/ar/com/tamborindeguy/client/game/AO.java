@@ -1,9 +1,7 @@
 package ar.com.tamborindeguy.client.game;
 
-import ar.com.tamborindeguy.client.network.KryonetClientMarshalStrategy;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.screens.LoginScreen;
-import ar.com.tamborindeguy.client.systems.network.ClientSystem;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -27,17 +25,12 @@ public class AO extends Game {
     public static final boolean GAME_VSYNC_ENABLED = true;
 
     protected SpriteBatch spriteBatch;
-    private KryonetClientMarshalStrategy client;
-    private ClientSystem clientSystem;
     private GameScreen gameScreen;
 
     @Override
     public void create() {
         this.spriteBatch = new SpriteBatch();
         setScreen(new LoginScreen(this));
-        client = new KryonetClientMarshalStrategy("localhost", 7666);
-        clientSystem = new ClientSystem(this);
-        gameScreen = new GameScreen(this);
     }
 
     @Override
@@ -48,7 +41,7 @@ public class AO extends Game {
         super.render();
     }
 
-    public void gameScene() {
+    public void showGameScreen() {
         setScreen(gameScreen);
     }
 
@@ -56,11 +49,7 @@ public class AO extends Game {
         return spriteBatch;
     }
 
-    public KryonetClientMarshalStrategy getClient() {
-        return client;
-    }
-
-    public ClientSystem getClientSystem() {
-        return clientSystem;
+    public void setGameScreen(GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
     }
 }
