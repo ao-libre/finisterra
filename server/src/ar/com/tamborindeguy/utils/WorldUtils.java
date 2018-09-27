@@ -1,6 +1,7 @@
 package ar.com.tamborindeguy.utils;
 
 import ar.com.tamborindeguy.core.WorldServer;
+import ar.com.tamborindeguy.interfaces.Constants;
 import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.utils.Bag;
@@ -24,6 +25,13 @@ public class WorldUtils {
         return new WorldPos(
                 (movement == AOPhysics.Movement.RIGHT ? 1 : movement == AOPhysics.Movement.LEFT ? -1 : 0) + pos.x,
                 (movement == AOPhysics.Movement.UP ? -1 : movement == AOPhysics.Movement.DOWN ? 1 : 0) + pos.y,
+                pos.map);
+    }
+
+    public static WorldPos getFacingPos(WorldPos pos, Heading heading) {
+        return new WorldPos(
+                (heading.current == Constants.Heading.EAST.toInt() ? 1 : heading.current == Constants.Heading.WEST.toInt() ? -1 : 0) + pos.x,
+                (heading.current == Constants.Heading.NORTH.toInt() ? -1 : heading.current == Constants.Heading.SOUTH.toInt() ? 1 : 0) + pos.y,
                 pos.map);
     }
 

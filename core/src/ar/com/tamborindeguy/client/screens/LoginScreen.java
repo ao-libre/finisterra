@@ -7,7 +7,6 @@ import ar.com.tamborindeguy.client.handlers.ParticlesHandler;
 import ar.com.tamborindeguy.client.network.KryonetClientMarshalStrategy;
 import ar.com.tamborindeguy.client.systems.network.ClientSystem;
 import ar.com.tamborindeguy.client.utils.Skins;
-import ar.com.tamborindeguy.network.login.LoginRequest;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -17,11 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
-
-import static net.mostlyoriginal.api.network.marshal.common.MarshalState.STARTED;
-import static net.mostlyoriginal.api.network.marshal.common.MarshalState.STARTING;
 
 public class LoginScreen extends ScreenAdapter {
 

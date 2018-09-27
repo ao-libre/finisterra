@@ -1,8 +1,8 @@
 package ar.com.tamborindeguy.client.network;
 
-import ar.com.tamborindeguy.client.game.AO;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.systems.physics.MovementProcessorSystem;
+import ar.com.tamborindeguy.network.combat.AttackResponse;
 import ar.com.tamborindeguy.network.interfaces.IResponseProcessor;
 import ar.com.tamborindeguy.network.login.LoginFailed;
 import ar.com.tamborindeguy.network.login.LoginOK;
@@ -32,6 +32,11 @@ public class ClientResponseProcessor implements IResponseProcessor {
     @Override
     public void processResponse(MovementResponse movementResponse) {
         MovementProcessorSystem.validateRequest(movementResponse.requestNumber, movementResponse.destination);
+    }
+
+    @Override
+    public void processResponse(AttackResponse attackResponse) {
+        // TODO show feedback on console?
     }
 
 }

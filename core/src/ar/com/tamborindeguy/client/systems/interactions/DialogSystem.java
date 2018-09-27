@@ -8,7 +8,6 @@ import com.artemis.Aspect;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -20,7 +19,6 @@ import entity.character.CanWrite;
 import entity.character.Character;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static com.artemis.E.E;
 

@@ -1,9 +1,13 @@
 package ar.com.tamborindeguy.network.init;
 
+import ar.com.tamborindeguy.interfaces.Constants;
+import ar.com.tamborindeguy.model.AttackType;
 import ar.com.tamborindeguy.model.Player;
 import ar.com.tamborindeguy.model.map.Map;
 import ar.com.tamborindeguy.model.map.Tile;
 import ar.com.tamborindeguy.model.map.WorldPosition;
+import ar.com.tamborindeguy.network.combat.AttackRequest;
+import ar.com.tamborindeguy.network.combat.AttackResponse;
 import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
 import ar.com.tamborindeguy.network.interfaces.IResponseProcessor;
 import ar.com.tamborindeguy.network.login.LoginFailed;
@@ -29,7 +33,7 @@ import movement.RandomMovement;
 import net.mostlyoriginal.api.network.marshal.common.MarshalDictionary;
 import network.Network;
 import physics.AOPhysics;
-import physics.PhysicAttack;
+import physics.Attack;
 import position.Pos2D;
 import position.WorldPos;
 
@@ -46,10 +50,12 @@ public class NetworkDictionary extends MarshalDictionary {
                 LoginRequest.class,
                 LoginFailed.class,
                 MovementRequest.class,
+                AttackRequest.class,
 
                 // Responses
                 LoginOK.class,
                 MovementResponse.class,
+                AttackResponse.class,
 
                 // Notifications
                 MapUtils.class, //why?
@@ -67,11 +73,14 @@ public class NetworkDictionary extends MarshalDictionary {
                 ArrayList.class,
                 ConcurrentLinkedDeque.class,
 
+                // Components
                 Optional.class,
                 Pos2D.class,
-                // Components
                 AOPhysics.class,
                 AOPhysics.Movement.class,
+                CombatMessage.class,
+                AttackType.class,
+                Constants.Heading.class,
                 Name.class,
                 WorldPos.class,
                 Focused.class,
@@ -106,7 +115,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Moving.class,
                 RandomMovement.class,
                 Network.class,
-                PhysicAttack.class
+                Attack.class
         );
     }
 

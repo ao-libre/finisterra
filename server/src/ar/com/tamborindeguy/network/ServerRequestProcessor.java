@@ -1,8 +1,10 @@
 package ar.com.tamborindeguy.network;
 
 import ar.com.tamborindeguy.database.model.User;
+import ar.com.tamborindeguy.manager.CombatManager;
 import ar.com.tamborindeguy.manager.MapManager;
 import ar.com.tamborindeguy.manager.WorldManager;
+import ar.com.tamborindeguy.network.combat.AttackRequest;
 import ar.com.tamborindeguy.network.interfaces.IRequestProcessor;
 import ar.com.tamborindeguy.network.interfaces.IResponse;
 import ar.com.tamborindeguy.network.login.LoginFailed;
@@ -16,6 +18,8 @@ import ar.com.tamborindeguy.utils.WorldUtils;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.Entity;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
+import entity.Heading;
 import position.WorldPos;
 
 import java.util.ArrayList;
@@ -83,6 +87,31 @@ public class ServerRequestProcessor implements IRequestProcessor {
         // notify user
         NetworkComunicator.sendTo(connectionId, new MovementResponse(request.requestNumber, nextPos));
 
+    }
+
+    @Override
+    public void processRequest(AttackRequest attackRequest, int connectionId) {
+        int playerId = NetworkComunicator.getPlayerByConnection(connectionId);
+        E player = E(playerId);
+
+        WorldPos worldPos = player.getWorldPos();
+        Heading heading = player.getHeading();
+        WorldPos facingPos = WorldUtils.getFacingPos(worldPos, heading);
+
+        Optional<Integer> victim = MapManager.getNearEntities(playerId)
+                .stream()
+                .filter(near -> E(near).hasWorldPos() && E(near).getWorldPos().equals(facingPos))
+                .findFirst();
+        if (victim.isPresent()) {
+            Optional<Integer> damage = CombatManager.attack(playerId, victim.get());
+            if (damage.isPresent()) {
+                CombatManager.notify(victim.get(), Integer.toString(damage.get()));
+            } else {
+                CombatManager.notify(playerId, CombatManager.MISS);
+            }
+        } else {
+            CombatManager.notify(playerId, CombatManager.MISS);
+        }
     }
 
 }

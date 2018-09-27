@@ -1,7 +1,6 @@
 package ar.com.tamborindeguy.client.screens;
 
 import ar.com.tamborindeguy.client.game.AO;
-import ar.com.tamborindeguy.client.network.KryonetClientMarshalStrategy;
 import ar.com.tamborindeguy.client.systems.anim.MovementAnimationSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraFocusSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraMovementSystem;
@@ -12,6 +11,7 @@ import ar.com.tamborindeguy.client.systems.map.TiledMapSystem;
 import ar.com.tamborindeguy.client.systems.network.ClientSystem;
 import ar.com.tamborindeguy.client.systems.physics.MovementProcessorSystem;
 import ar.com.tamborindeguy.client.systems.physics.MovementSystem;
+import ar.com.tamborindeguy.client.systems.physics.PhysicsAttackSystem;
 import ar.com.tamborindeguy.client.systems.physics.PlayerInputSystem;
 import ar.com.tamborindeguy.client.systems.render.ui.CoordinatesRenderingSystem;
 import ar.com.tamborindeguy.client.systems.render.world.*;
@@ -75,7 +75,6 @@ public class GameScreen extends WorldScreen {
 
     @Override
     protected void initSystems(WorldConfigurationBuilder builder) {
-        // WORLD SYSTEMS
         builder
                 .with(new SuperMapper())
                 .with(client)
@@ -88,6 +87,10 @@ public class GameScreen extends WorldScreen {
                 .with(new CameraSystem(AO.GAME_SCREEN_ZOOM))
                 .with(new CameraFocusSystem())
                 .with(new CameraMovementSystem())
+                // Logic systems
+                .with(new PhysicsAttackSystem())
+                .with(new MeditateSystem())
+                .with(new DialogSystem(dialog))
                 // Rendering
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new TiledMapSystem())
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 4, new MapLowerLayerRenderingSystem(this.game.getSpriteBatch()))
@@ -101,13 +104,12 @@ public class GameScreen extends WorldScreen {
                 .with(FONTS_PRIORITY, new DialogRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new CoordinatesRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new CharacterStatesRenderingSystem(game.getSpriteBatch()))
-                // Logic systems
-                .with(new MeditateSystem())
-                .with(new DialogSystem(dialog))
+                .with(FONTS_PRIORITY, new CombatRenderingSystem(game.getSpriteBatch()))
+                // Other
                 .with(new TagManager())
                 .with(new UuidEntityManager());
+        // WORLD SYSTEMS
     }
-
 
     @Override
     protected void initScene() {

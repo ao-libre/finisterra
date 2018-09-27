@@ -17,6 +17,7 @@ public class Fonts {
     public static final BitmapFont CRIMINAL_NAME_FONT;
     public static final BitmapFont DIALOG_FONT;
     public static final BitmapFont WRITING_FONT;
+    public static final BitmapFont COMBAT_FONT;
     public static final BitmapFont CLAN_FONT;
 
     public static final GlyphLayout layout = new GlyphLayout();
@@ -34,6 +35,7 @@ public class Fonts {
         CLAN_FONT = generate(rgb(149, 165, 166), 9, Color.BLACK, 0, 1, 0);
         DIALOG_FONT = generate(Color.WHITE, 10, Color.BLACK, 0, 1, 0);
         WRITING_FONT = generate(Color.BLACK, 6, Color.WHITE, 1, 0, -2);
+        COMBAT_FONT = generate(Color.RED, 10, Color.BLACK, 0, 1, 0);
     }
 
     private static Color rgb(int r, int g, int b) {

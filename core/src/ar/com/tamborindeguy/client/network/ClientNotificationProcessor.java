@@ -6,6 +6,7 @@ import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
 import com.artemis.Component;
+import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.esotericsoftware.minlog.Log;
@@ -44,12 +45,13 @@ public class ClientNotificationProcessor implements INotificationProcessor {
             Log.info("Adding component: " + component);
             edit.add(component);
         }
-        if (E(newEntity.getId()).hasWorldPos()) {
-            WorldPos worldPos = E(newEntity.getId()).getWorldPos();
-            E(newEntity.getId()).pos2DX(worldPos.x);
-            E(newEntity.getId()).pos2DY(worldPos.y);
-            E(newEntity.getId()).character();
-            E(newEntity.getId()).aOPhysics();
+        E entity = E(newEntity.getId());
+        if (entity.hasWorldPos()) {
+            WorldPos worldPos = entity.getWorldPos();
+            entity.pos2DX(worldPos.x);
+            entity.pos2DY(worldPos.y);
+            entity.character();
+            entity.aOPhysics();
         }
     }
 
@@ -58,6 +60,7 @@ public class ClientNotificationProcessor implements INotificationProcessor {
         Entity entity = GameScreen.getWorld().getEntity(entityId);
         EntityEdit edit = entity.edit();
         for (Component component : entityUpdate.components) {
+            // this should replace if already exists
             edit.add(component);
         }
     }

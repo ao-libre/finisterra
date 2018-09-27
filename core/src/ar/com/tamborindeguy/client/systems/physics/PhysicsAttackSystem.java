@@ -3,7 +3,7 @@ package ar.com.tamborindeguy.client.systems.physics;
 import com.artemis.Aspect;
 import com.artemis.systems.IteratingSystem;
 import entity.Heading;
-import physics.PhysicAttack;
+import physics.Attack;
 import position.WorldPos;
 
 import static com.artemis.E.E;
@@ -11,19 +11,15 @@ import static com.artemis.E.E;
 public class PhysicsAttackSystem extends IteratingSystem {
 
     public PhysicsAttackSystem() {
-        super(Aspect.all(WorldPos.class, PhysicAttack.class, Heading.class));
+        super(Aspect.all(Attack.class));
     }
 
     @Override
     protected void process(int entityId) {
-        WorldPos worldPos = E(entityId).getWorldPos();
-        WorldPos attackedPos = worldPos.getNextPos(E(entityId).getHeading());
-        if (isAttackable(attackedPos)) {
-            // do attack
+        Attack attack = E(entityId).getAttack();
+        attack.interval -= world.getDelta();
+        if (attack.interval <= 0) {
+            E(entityId).removeAttack();
         }
-    }
-
-    private boolean isAttackable(WorldPos attackedPos) {
-        return true;
     }
 }

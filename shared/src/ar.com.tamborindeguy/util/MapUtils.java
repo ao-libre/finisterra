@@ -2,12 +2,8 @@ package ar.com.tamborindeguy.util;
 
 import ar.com.tamborindeguy.model.map.Map;
 import ar.com.tamborindeguy.model.map.Tile;
-import com.artemis.Entity;
-import com.artemis.World;
-import com.artemis.utils.IntBag;
 import position.WorldPos;
 
-import java.util.List;
 import java.util.Set;
 
 import static com.artemis.E.E;
