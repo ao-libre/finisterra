@@ -32,7 +32,7 @@ public class PlayerInputSystem extends IteratingSystem {
         move(aoPhysics, AOPhysics.Movement.RIGHT, !isWriting && Gdx.input.isKeyPressed(Input.Keys.RIGHT));
 
         if (!player.hasAttack() || player.getAttack().interval - world.getDelta() <= 0) {
-            if (Gdx.input.isKeyPressed(Keys.ATTACK_1) || Gdx.input.isKeyPressed(Keys.ATTACK_2)) {
+            if (Gdx.input.isKeyJustPressed(Keys.ATTACK_1) || Gdx.input.isKeyJustPressed(Keys.ATTACK_2)) {
                 // TODO user want to attack
                 GameScreen.getClient().sendToAll(new AttackRequest(AttackType.PHYSICAL));
                 player.attackInterval();

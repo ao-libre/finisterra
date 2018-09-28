@@ -47,6 +47,12 @@ public class MovementSystem extends IteratingSystem {
         }
         if (player.hasDestination()) {
             if (movePlayer(player)) {
+                if (entity != GameScreen.getPlayer()) {
+                    WorldPos dest = player.getDestination().worldPos;
+                    player.getWorldPos().x = dest.x;
+                    player.getWorldPos().y = dest.y;
+                    player.getWorldPos().map = dest.map;
+                }
                 player.removeDestination();
                 player.removeMoving();
             }

@@ -24,8 +24,6 @@ public class Fonts {
     public static final GlyphLayout dialogLayout = new GlyphLayout();
     public static final String FONT_NAME = "Commodore Rounded v1.2.ttf";
 
-
-
     static {
         WHITE_FONT = generate(Color.WHITE, 9, Color.BLACK, 1, 0, 0);
         GM_NAME_FONT = generate(rgb(46, 204, 113), 10, Color.BLACK, 0, 1, 0);
@@ -35,7 +33,7 @@ public class Fonts {
         CLAN_FONT = generate(rgb(149, 165, 166), 9, Color.BLACK, 0, 1, 0);
         DIALOG_FONT = generate(Color.WHITE, 10, Color.BLACK, 0, 1, 0);
         WRITING_FONT = generate(Color.BLACK, 6, Color.WHITE, 1, 0, -2);
-        COMBAT_FONT = generate(Color.RED, 10, Color.BLACK, 0, 1, 0);
+        COMBAT_FONT = generate(Color.RED, 10, Color.BLACK, 1, 0, 0);
     }
 
     private static Color rgb(int r, int g, int b) {

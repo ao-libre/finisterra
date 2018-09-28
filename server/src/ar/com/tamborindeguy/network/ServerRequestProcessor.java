@@ -81,7 +81,7 @@ public class ServerRequestProcessor implements IRequestProcessor {
 
         // notify near users
         List<Component> components = new ArrayList<>();
-        components.addAll(Arrays.asList(player.getHeading(), player.getWorldPos(), player.getDestination()));
+        components.addAll(Arrays.asList(player.getHeading(), player.getDestination()));
         WorldManager.notifyUpdateToNearEntities(playerId, components);
 
         // notify user
@@ -105,7 +105,7 @@ public class ServerRequestProcessor implements IRequestProcessor {
         if (victim.isPresent()) {
             Optional<Integer> damage = CombatManager.attack(playerId, victim.get());
             if (damage.isPresent()) {
-                CombatManager.notify(victim.get(), Integer.toString(damage.get()));
+                CombatManager.notify(victim.get(), "-" + Integer.toString(damage.get()));
             } else {
                 CombatManager.notify(playerId, CombatManager.MISS);
             }
