@@ -46,8 +46,6 @@ public class GameScreen extends WorldScreen {
     public static ClientSystem client;
     public static int player;
 
-    public static Map<Integer, Integer> networkedEntities = new HashMap<>();
-
     public GameScreen(AO game, ClientSystem client) {
         super(game);
         this.client = client;
@@ -60,7 +58,6 @@ public class GameScreen extends WorldScreen {
 
     public static void setPlayer(int player) {
         GameScreen.player = player;
-        E(player).character();
     }
 
     @Override
@@ -75,8 +72,7 @@ public class GameScreen extends WorldScreen {
 
     @Override
     protected void initSystems(WorldConfigurationBuilder builder) {
-        builder
-                .with(new SuperMapper())
+        builder.with(new SuperMapper())
                 .with(client)
                 // Player movement
                 .with(new PlayerInputSystem())
@@ -107,8 +103,7 @@ public class GameScreen extends WorldScreen {
                 .with(FONTS_PRIORITY, new CombatRenderingSystem(game.getSpriteBatch()))
                 // Other
                 .with(new TagManager())
-                .with(new UuidEntityManager());
-        // WORLD SYSTEMS
+                .with(new UuidEntityManager()); // why?
     }
 
     @Override
@@ -117,6 +112,7 @@ public class GameScreen extends WorldScreen {
         Container<Table> dialogContainer = createDialogContainer();
         stage.addActor(dialogContainer);
         Container<Table> inventory = createInventory();
+        stage.addActor(inventory);
     }
 
     private Container<Table> createInventory() {
@@ -179,28 +175,6 @@ public class GameScreen extends WorldScreen {
     protected void drawUI() {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-    }
-
-    public static boolean entityExsists(int networkId) {
-        return networkedEntities.containsKey(networkId);
-    }
-
-    public static int getNetworkedEntity(int networkId) {
-        return networkedEntities.get(networkId);
-    }
-
-    public static Set<Integer> getEntities() {
-        return new HashSet<>(networkedEntities.values());
-    }
-
-    public static void registerEntity(int networkId, int entityId) {
-        networkedEntities.put(networkId, entityId);
-    }
-
-    public static void unregisterEntity(int networkId) {
-        int entityId = networkedEntities.get(networkId);
-        world.delete(entityId);
-        networkedEntities.remove(networkId);
     }
 
     @Override

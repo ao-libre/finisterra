@@ -4,6 +4,9 @@ import com.artemis.Component;
 
 import java.io.Serializable;
 
+/*
+ * Client level component, should not be present on server
+ */
 public class Pos2D extends Component implements Serializable {
 
     public float x;

@@ -3,6 +3,7 @@ package ar.com.tamborindeguy.client.handlers;
 import ar.com.tamborindeguy.model.Graphic;
 import ar.com.tamborindeguy.model.descriptors.*;
 import ar.com.tamborindeguy.model.readers.GenericReader;
+import ar.com.tamborindeguy.model.serializers.BodyDescriptorSerializer;
 import ar.com.tamborindeguy.model.serializers.GraphicsSerializer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -15,9 +16,18 @@ import java.util.Map;
 
 public class DescriptorHandler {
 
+    public static final String GAME_DESCRIPTORS_FOLDER = "data/descriptors/";
+    public static final String JSON_EXTENSION = ".json";
+    public static final String GRAPHICS = "graphics";
+    public static final String BODIES = "bodies";
+    public static final String WEAPONS = "weapons";
+    public static final String SHIELDS = "shields";
+    public static final String HEADS = "heads";
+    public static final String HELMETS = "helmets";
+    public static final String FXS = "fxs";
+
     private static Map<Integer, Graphic> graphics;
-    private static List<BodyDescriptor> bodies;
-    //    private static Map<Integer, BodyDescriptor> bodies;
+    private static Map<Integer, BodyDescriptor> bodies;
     private static List<HeadDescriptor> heads;
     private static List<HelmetDescriptor> helmets;
     private static List<WeaponDescriptor> weapons;
@@ -26,54 +36,38 @@ public class DescriptorHandler {
 
 
     public static void load() {
-        graphics = new GenericReader<Graphic>().read("graficos", Graphic.class, new GraphicsSerializer(), Graphic::getGrhIndex);
-//        bodies = new GenericReader<BodyDescriptor>().read("cuerpos", BodyDescriptor.class, new BodyDescriptorSerializer(), Descriptor::getId);
-        bodies = load("bodies2");
-        weapons = load("weapons2");
-        shields = load("shields2");
-        heads = load("heads2");
-        helmets = load("helmets2");
-        fxs = load("fxs2");
+        graphics = new GenericReader<Graphic>().read(GRAPHICS, Graphic.class, new GraphicsSerializer(), Graphic::getGrhIndex);
+        bodies = new GenericReader<BodyDescriptor>().read(BODIES, BodyDescriptor.class, new BodyDescriptorSerializer(), Descriptor::getId);
+        weapons = load(WEAPONS);
+        shields = load(SHIELDS);
+        heads = load(HEADS);
+        helmets = load(HELMETS);
+        fxs = load(FXS);
     }
 
     public static List load(String fileName) {
         Json json = getJson();
-        FileHandle file = Gdx.files.internal("data/descriptors/" + fileName + ".json");
-        return (List) json.fromJson(ArrayList.class, file);
-    }
-
-    public static Map loadMap(String fileName) {
-        Json json = getJson();
-        FileHandle file = Gdx.files.internal("data/descriptors/" + fileName + ".json");
-        return (java.util.HashMap) json.fromJson(HashMap.class, file);
+        FileHandle file = Gdx.files.internal(GAME_DESCRIPTORS_FOLDER + fileName + JSON_EXTENSION);
+        return json.fromJson(ArrayList.class, file);
     }
 
     private static Json getJson() {
         Json json = new Json();
-        json.addClassTag("graphics", Graphic.class);
-        json.addClassTag("bodies", BodyDescriptor.class);
-        json.addClassTag("heads", HeadDescriptor.class);
-        json.addClassTag("helmets", HelmetDescriptor.class);
-        json.addClassTag("weapons", WeaponDescriptor.class);
-        json.addClassTag("shields", ShieldDescriptor.class);
-        json.addClassTag("fxs", FXDescriptor.class);
+        json.addClassTag(GRAPHICS, Graphic.class);
+        json.addClassTag(BODIES, BodyDescriptor.class);
+        json.addClassTag(HEADS, HeadDescriptor.class);
+        json.addClassTag(HELMETS, HelmetDescriptor.class);
+        json.addClassTag(WEAPONS, WeaponDescriptor.class);
+        json.addClassTag(SHIELDS, ShieldDescriptor.class);
+        json.addClassTag(FXS, FXDescriptor.class);
         return json;
     }
-
-    public static ArrayList read(String fileName, Class type, Json.Serializer serializer) {
-        FileHandle file = Gdx.files.internal("data/indices/" + fileName + ".json");
-        Json json = new Json();
-        json.setSerializer(type, serializer);
-
-        return json.fromJson(ArrayList.class, type, file);
-    }
-
 
     public static Map<Integer, Graphic> getGraphics() {
         return graphics;
     }
 
-    public static List<BodyDescriptor> getBodies() {
+    public static Map<Integer, BodyDescriptor> getBodies() {
         return bodies;
     }
 

@@ -1,6 +1,7 @@
 package ar.com.tamborindeguy.client.systems.physics;
 
 import ar.com.tamborindeguy.client.handlers.MapHandler;
+import ar.com.tamborindeguy.client.managers.WorldManager;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.systems.interactions.MeditateSystem;
 import ar.com.tamborindeguy.client.utils.ClientMapUtils;
@@ -46,7 +47,7 @@ public class MovementProcessorSystem extends IteratingSystem {
             movementIntention.ifPresent(movement -> {
                 player.headingCurrent(getHeading(movement));
                 WorldPos expectedPos = Util.getNextPos(pos, movement);
-                Set<Integer> nearEntities = GameScreen.getEntities();
+                Set<Integer> nearEntities = WorldManager.getEntities();
                 nearEntities.remove(entity);
                 nearEntities.forEach(near -> Log.debug("Validating entity: " + near + " is not occuping the position"));
                 boolean blocked = MapUtils.isBlocked(MapHandler.get(expectedPos.map), expectedPos);

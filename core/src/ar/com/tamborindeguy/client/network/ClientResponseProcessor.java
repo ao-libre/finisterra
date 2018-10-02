@@ -1,5 +1,6 @@
 package ar.com.tamborindeguy.client.network;
 
+import ar.com.tamborindeguy.client.managers.WorldManager;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.systems.physics.MovementProcessorSystem;
 import ar.com.tamborindeguy.network.combat.AttackResponse;
@@ -19,8 +20,9 @@ public class ClientResponseProcessor implements IResponseProcessor {
             GameScreen.game.showGameScreen();
             GameScreen.client.loginFinished();
         });
-        int localEntity = GameScreen.getNetworkedEntity(response.entityId);
+        int localEntity = WorldManager.getNetworkedEntity(response.entityId);
         GameScreen.setPlayer(localEntity);
+        // focus player
         E(localEntity).focused();
     }
 

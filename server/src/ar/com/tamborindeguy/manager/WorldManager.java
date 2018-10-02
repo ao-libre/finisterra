@@ -46,6 +46,7 @@ public class WorldManager {
                 .thirstMax(100)
                 .thirstMin(100)
                 .criminal()
+                .character()
                 .nameText("guidota")
                 .clanName("GS Zone")
                 .canWrite()

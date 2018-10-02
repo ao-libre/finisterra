@@ -75,6 +75,7 @@ public class WorldServer {
                 .nameText("guidota2")
                 .clanName("Clarineta")
                 .canWrite()
+                .character()
                 .networkId(player2.getId())
                 .aOPhysics();
         MapManager.addPlayer(player2.getId());
