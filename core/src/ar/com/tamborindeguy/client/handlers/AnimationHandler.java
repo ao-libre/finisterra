@@ -7,7 +7,7 @@ import ar.com.tamborindeguy.model.textures.BundledAnimation;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class AnimationsHandler {
+public class AnimationHandler {
     private static Map<Integer, List<BundledAnimation>> bodyAnimations;
     private static Map<Integer, List<BundledAnimation>> headAnimations;
     private static Map<Integer, List<BundledAnimation>> helmetAnimations;
@@ -18,12 +18,12 @@ public class AnimationsHandler {
     private static Map<Integer, BundledAnimation> animations = new ConcurrentHashMap<>();
 
     public static void load() {
-        bodyAnimations = loadDescriptors(DescriptorsHandler.getBodies());
-        headAnimations = loadDescriptors(DescriptorsHandler.getHeads());
-        helmetAnimations = loadDescriptors(DescriptorsHandler.getHelmets());
-        weaponAnimations = loadDescriptors(DescriptorsHandler.getWeapons());
-        shieldAnimations = loadDescriptors(DescriptorsHandler.getShields());
-        fxAnimations = loadDescriptors(DescriptorsHandler.getFxs());
+        bodyAnimations = loadDescriptors(DescriptorHandler.getBodies());
+        headAnimations = loadDescriptors(DescriptorHandler.getHeads());
+        helmetAnimations = loadDescriptors(DescriptorHandler.getHelmets());
+        weaponAnimations = loadDescriptors(DescriptorHandler.getWeapons());
+        shieldAnimations = loadDescriptors(DescriptorHandler.getShields());
+        fxAnimations = loadDescriptors(DescriptorHandler.getFxs());
     }
 
     private static Map<Integer, List<BundledAnimation>> loadDescriptors(List<?> descriptors) {
@@ -47,9 +47,9 @@ public class AnimationsHandler {
         List<BundledAnimation> animations = new ArrayList<>();
         int[] indexs = descriptor.getIndexs();
         for (int i = 0; i < indexs.length; i++) {
-            Graphic grh = DescriptorsHandler.getGraphic(indexs[i]);
+            Graphic grh = DescriptorHandler.getGraphic(indexs[i]);
             if (grh != null) {
-                animations.add(new BundledAnimation(DescriptorsHandler.getGraphic(indexs[i])));
+                animations.add(new BundledAnimation(DescriptorHandler.getGraphic(indexs[i])));
             }
         }
         return animations;
@@ -84,7 +84,7 @@ public class AnimationsHandler {
     }
 
     public static BundledAnimation saveBundledAnimation(int grhIndex) {
-        BundledAnimation bundledAnimation = new BundledAnimation(DescriptorsHandler.getGraphic(grhIndex));
+        BundledAnimation bundledAnimation = new BundledAnimation(DescriptorHandler.getGraphic(grhIndex));
         animations.put(grhIndex, bundledAnimation);
         return bundledAnimation;
     }

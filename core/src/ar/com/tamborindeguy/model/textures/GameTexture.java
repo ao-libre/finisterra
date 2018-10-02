@@ -1,6 +1,6 @@
 package ar.com.tamborindeguy.model.textures;
 
-import ar.com.tamborindeguy.client.handlers.DescriptorsHandler;
+import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
 import ar.com.tamborindeguy.client.handlers.SurfaceHandler;
 import ar.com.tamborindeguy.model.Graphic;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,7 +10,7 @@ public class GameTexture {
 	private TextureRegion textureRegion;
 
 	public GameTexture(int grhIndex) {
-		this(DescriptorsHandler.getGraphic(grhIndex));
+		this(DescriptorHandler.getGraphic(grhIndex));
 	}
 	
 	public GameTexture(Graphic graphic) {

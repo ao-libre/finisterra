@@ -1,8 +1,9 @@
 package ar.com.tamborindeguy.client.screens;
 
 import ar.com.tamborindeguy.client.game.AO;
-import ar.com.tamborindeguy.client.handlers.AnimationsHandler;
-import ar.com.tamborindeguy.client.handlers.DescriptorsHandler;
+import ar.com.tamborindeguy.client.handlers.AnimationHandler;
+import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
+import ar.com.tamborindeguy.client.handlers.ObjectHandler;
 import ar.com.tamborindeguy.client.handlers.ParticlesHandler;
 import ar.com.tamborindeguy.client.network.KryonetClientMarshalStrategy;
 import ar.com.tamborindeguy.client.systems.network.ClientSystem;
@@ -35,9 +36,11 @@ public class LoginScreen extends ScreenAdapter {
         createUI();
         // Load resources
         Gdx.app.log("Loading", "Loading descriptors...");
-        DescriptorsHandler.load();
+        DescriptorHandler.load();
         Gdx.app.log("Loading", "Loading animations...");
-        AnimationsHandler.load();
+        AnimationHandler.load();
+        Gdx.app.log("Loading", "Loading objects...");
+        ObjectHandler.load();
         Gdx.app.log("Loading", "Loading particles...");
         ParticlesHandler.load();
         Gdx.app.log("Loading", "Finish loading");

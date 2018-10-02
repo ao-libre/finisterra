@@ -53,7 +53,7 @@ public class TiledMapSystem extends IteratingSystem {
 
 //        new Thread(() -> {
 //            List<Integer> lindants = map.getLindants();
-//            lindants.forEach(mapNumber -> MapHandler.get(mapNumber));
+//            lindants.forEach(mapNumber -> MapHandler.getObject(mapNumber));
 //        });
     }
 

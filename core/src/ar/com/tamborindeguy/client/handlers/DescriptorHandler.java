@@ -1,14 +1,9 @@
 package ar.com.tamborindeguy.client.handlers;
 
 import ar.com.tamborindeguy.model.Graphic;
-import ar.com.tamborindeguy.model.Objects;
 import ar.com.tamborindeguy.model.descriptors.*;
-import ar.com.tamborindeguy.model.readers.AODescriptorsReader;
-import ar.com.tamborindeguy.model.readers.DescriptorsReader;
 import ar.com.tamborindeguy.model.readers.GenericReader;
-import ar.com.tamborindeguy.model.serializers.BodyDescriptorSerializer;
 import ar.com.tamborindeguy.model.serializers.GraphicsSerializer;
-import ar.com.tamborindeguy.objects.types.Obj;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
@@ -18,28 +13,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DescriptorsHandler {
+public class DescriptorHandler {
 
     private static Map<Integer, Graphic> graphics;
-    //    private static List<BodyDescriptor> bodies;
-    private static Map<Integer, BodyDescriptor> bodies;
+    private static List<BodyDescriptor> bodies;
+    //    private static Map<Integer, BodyDescriptor> bodies;
     private static List<HeadDescriptor> heads;
     private static List<HelmetDescriptor> helmets;
     private static List<WeaponDescriptor> weapons;
     private static List<ShieldDescriptor> shields;
     private static List<FXDescriptor> fxs;
-    private static Objects objects;
-    private static DescriptorsReader reader = new AODescriptorsReader();
+
 
     public static void load() {
         graphics = new GenericReader<Graphic>().read("graficos", Graphic.class, new GraphicsSerializer(), Graphic::getGrhIndex);
-        bodies = new GenericReader<BodyDescriptor>().read("cuerpos", BodyDescriptor.class, new BodyDescriptorSerializer(), Descriptor::getId);
+//        bodies = new GenericReader<BodyDescriptor>().read("cuerpos", BodyDescriptor.class, new BodyDescriptorSerializer(), Descriptor::getId);
+        bodies = load("bodies2");
         weapons = load("weapons2");
         shields = load("shields2");
         heads = load("heads2");
         helmets = load("helmets2");
         fxs = load("fxs2");
-        objects = reader.loadObjects("obj");
     }
 
     public static List load(String fileName) {
@@ -79,7 +73,7 @@ public class DescriptorsHandler {
         return graphics;
     }
 
-    public static Map<Integer, BodyDescriptor> getBodies() {
+    public static List<BodyDescriptor> getBodies() {
         return bodies;
     }
 
@@ -104,35 +98,31 @@ public class DescriptorsHandler {
     }
 
     public static BodyDescriptor getBody(int index) {
-        return DescriptorsHandler.getBodies().get(index);
+        return bodies.get(index);
     }
 
     public static HeadDescriptor getHead(int index) {
-        return DescriptorsHandler.getHeads().get(index);
+        return heads.get(index);
     }
 
     public static HelmetDescriptor getHelmet(int index) {
-        return DescriptorsHandler.getHelmets().get(index);
+        return helmets.get(index);
     }
 
     public static FXDescriptor getFX(int index) {
-        return DescriptorsHandler.getFxs().get(index);
+        return fxs.get(index);
     }
 
     public static ShieldDescriptor getShield(int index) {
-        return DescriptorsHandler.getShields().get(index);
+        return shields.get(index);
     }
 
     public static WeaponDescriptor getWeapon(int index) {
-        return DescriptorsHandler.getWeapons().get(index);
+        return weapons.get(index);
     }
 
     public static Graphic getGraphic(int index) {
-        return DescriptorsHandler.getGraphics().get(index);
-    }
-
-    public static Obj getObject(int index) {
-        return objects.getObject(index).get();
+        return graphics.get(index);
     }
 
 }

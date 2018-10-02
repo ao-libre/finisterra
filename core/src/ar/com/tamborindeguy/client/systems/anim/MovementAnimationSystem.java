@@ -1,6 +1,6 @@
 package ar.com.tamborindeguy.client.systems.anim;
 
-import ar.com.tamborindeguy.client.handlers.AnimationsHandler;
+import ar.com.tamborindeguy.client.handlers.AnimationHandler;
 import ar.com.tamborindeguy.model.textures.BundledAnimation;
 import com.artemis.Aspect;
 import com.artemis.E;
@@ -29,21 +29,21 @@ public class MovementAnimationSystem extends IteratingSystem {
         final Heading heading = entity.getHeading();
         if (entity.hasBody()) {
             final Body body = entity.getBody();
-            BundledAnimation animation = AnimationsHandler.getBodyAnimation(body.index, heading.current);
+            BundledAnimation animation = AnimationHandler.getBodyAnimation(body.index, heading.current);
             if(animation != null) {
                 animation.setAnimationTime(animation.getAnimationTime() + world.getDelta());
             }
         }
         if (entity.hasWeapon()) {
             final Weapon weapon = entity.getWeapon();
-            BundledAnimation animation = AnimationsHandler.getWeaponAnimation(weapon.index, heading.current);
+            BundledAnimation animation = AnimationHandler.getWeaponAnimation(weapon.index, heading.current);
             if(animation != null) {
                 animation.setAnimationTime(animation.getAnimationTime() + world.getDelta());
             }
         }
         if (entity.hasShield()) {
             final Shield weapon = entity.getShield();
-            BundledAnimation animation = AnimationsHandler.getShieldAnimation(weapon.index, heading.current);
+            BundledAnimation animation = AnimationHandler.getShieldAnimation(weapon.index, heading.current);
             if(animation != null) {
                 animation.setAnimationTime(animation.getAnimationTime() + world.getDelta());
             }

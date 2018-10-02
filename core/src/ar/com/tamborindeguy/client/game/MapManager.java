@@ -1,6 +1,6 @@
 package ar.com.tamborindeguy.client.game;
 
-import ar.com.tamborindeguy.client.handlers.AnimationsHandler;
+import ar.com.tamborindeguy.client.handlers.AnimationHandler;
 import ar.com.tamborindeguy.model.map.Map;
 import ar.com.tamborindeguy.model.map.Tile;
 import ar.com.tamborindeguy.model.textures.BundledAnimation;
@@ -78,7 +78,7 @@ public class MapManager {
                     continue;
                 }
 
-                BundledAnimation animation = AnimationsHandler.getGraphicAnimation(graphic);
+                BundledAnimation animation = AnimationHandler.getGraphicAnimation(graphic);
                 TextureRegion tileRegion = animation.isAnimated() ? animation.getAnimatedGraphic(true) : animation.getGraphic();
 
                 if (animation != null && animation.isAnimated()) {

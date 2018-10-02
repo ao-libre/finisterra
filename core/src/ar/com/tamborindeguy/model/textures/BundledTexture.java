@@ -23,7 +23,7 @@
  */
 package ar.com.tamborindeguy.model.textures;
 
-import ar.com.tamborindeguy.client.handlers.DescriptorsHandler;
+import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
 import ar.com.tamborindeguy.model.Graphic;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -48,7 +48,7 @@ public class BundledTexture {
             this.frames = new GameTexture[numFrames];
             TextureRegion tmpFrames[] = new TextureRegion[numFrames];
             for(int i = 0; i < numFrames; i++) {
-                this.frames[i] = new GameTexture(DescriptorsHandler.getGraphics().get(graphic.getFrame(i)));
+                this.frames[i] = new GameTexture(DescriptorHandler.getGraphics().get(graphic.getFrame(i)));
                 tmpFrames[i] = this.frames[i].getGraphic();
             }
             this.animation = new Animation<TextureRegion>(graphic.getSpeed() / 1000, tmpFrames);
@@ -57,7 +57,7 @@ public class BundledTexture {
     }
 
 	public BundledTexture (int grhIndex, boolean animated) {
-		this(DescriptorsHandler.getGraphic(grhIndex), animated);
+		this(DescriptorHandler.getGraphic(grhIndex), animated);
 	}
 
     public BundledTexture (int grhIndex) {
