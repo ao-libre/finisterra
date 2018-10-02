@@ -6,7 +6,7 @@ group 'ar.com.tamborindeguy'
 version '1.0'
 
 sourceCompatibility = 1.8
-sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.main.java.srcDirs = ["src/"]
 
 apply plugin: 'application'
 mainClassName = "ar.com.tamborindeguy.core.ServerLauncher"
@@ -14,7 +14,7 @@ mainClassName = "ar.com.tamborindeguy.core.ServerLauncher"
 task dist(type: Jar) {
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.output.resourcesDir)
-    from {configurations.compile.collect {zipTree(it)}}
+    from { configurations.compile.collect { zipTree(it) } }
 
     manifest {
         attributes 'Main-Class': mainClassName

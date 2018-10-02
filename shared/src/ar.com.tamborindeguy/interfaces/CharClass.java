@@ -17,7 +17,7 @@ public enum CharClass {
         switch (classString.toLowerCase()) {
             case "mago":
                 return MAGICIAN;
-            case "paladin" :
+            case "paladin":
                 return PALADIN;
             case "clerigo":
                 return CLERIC;

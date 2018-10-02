@@ -26,6 +26,7 @@ public class ObjectLoader extends Loader<Objects>{
     public Objects load(DataInputStream file) throws IOException {
         Map<Type, Set<Obj>> objects = new HashMap<>();
         Map<Integer, Obj> objectsById = new HashMap<>();
+        Map<Obj, Integer> idByObject = new HashMap<>();
         Ini iniFile = new Ini();
         Config c = new Config();
         c.setLowerCaseSection(true);
@@ -46,7 +47,8 @@ public class ObjectLoader extends Loader<Objects>{
             ObjectFactory.fillObject(object, section);
             objects.computeIfAbsent(Type.values()[type-1], (e) -> new HashSet<>()).add(object);
             objectsById.put(i, object);
+            idByObject.put(object, i);
         }
-        return new Objects(objects, objectsById);
+        return new Objects(objects, objectsById, idByObject);
     }
 }

@@ -8,7 +8,7 @@ version '1.0'
 sourceCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.main.java.srcDirs = ["src/"]
 
 apply plugin: "artemis-fluid"
 
@@ -17,7 +17,7 @@ ext {
 }
 
 // Replace existing line.
-sourceSets.main.java.srcDirs = ["src/",fluidOutputDir]
+sourceSets.main.java.srcDirs = ["src/", fluidOutputDir]
 
 fluid {
     generatedSourcesDirectory = fluidOutputDir

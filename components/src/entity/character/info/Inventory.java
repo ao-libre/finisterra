@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class Inventory extends Component {
-    ArrayList<Item> items = new ArrayList<>();
+    public ArrayList<Item> items = new ArrayList<>();
 
     public Inventory(){}
 
@@ -17,7 +17,6 @@ public class Inventory extends Component {
     public void add(int objId, int count) {
         items.add(new Item(objId, count));
     }
-
 
     public void remove(int objId) {
         remove(objId, 1);
@@ -32,6 +31,10 @@ public class Inventory extends Component {
                 it.count -= count;
             }
         });
+    }
+
+    public ArrayList<Item> userItems() {
+        return items;
     }
 
     public static class Item {

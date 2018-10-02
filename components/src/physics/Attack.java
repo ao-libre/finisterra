@@ -10,5 +10,6 @@ public class Attack extends Component implements Serializable {
 
     public float interval = DEFAULT_INTERVAL;
 
-    public Attack(){}
+    public Attack() {
+    }
 }

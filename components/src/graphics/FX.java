@@ -10,7 +10,8 @@ public class FX extends Component {
 
     public Deque<ParticleEffect> effects = new ConcurrentLinkedDeque<>();
 
-    public FX() {}
+    public FX() {
+    }
 
     public void add(ParticleEffect effect) {
         effects.add(effect);

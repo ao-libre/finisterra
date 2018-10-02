@@ -46,7 +46,7 @@ public class WorldPos extends Component {
             case HEADING_EAST:
                 return new WorldPos(x + 1, y, map);
             case HEADING_WEST:
-                return new WorldPos(x -1, y, map);
+                return new WorldPos(x - 1, y, map);
         }
         return new WorldPos();
     }

@@ -1,11 +1,13 @@
 package ar.com.tamborindeguy.client.screens;
 
 import ar.com.tamborindeguy.client.game.AO;
+import ar.com.tamborindeguy.client.handlers.ObjectHandler;
 import ar.com.tamborindeguy.client.systems.anim.MovementAnimationSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraFocusSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraMovementSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
 import ar.com.tamborindeguy.client.systems.interactions.DialogSystem;
+import ar.com.tamborindeguy.client.systems.interactions.InventorySystem;
 import ar.com.tamborindeguy.client.systems.interactions.MeditateSystem;
 import ar.com.tamborindeguy.client.systems.map.TiledMapSystem;
 import ar.com.tamborindeguy.client.systems.network.ClientSystem;
@@ -15,23 +17,23 @@ import ar.com.tamborindeguy.client.systems.physics.PhysicsAttackSystem;
 import ar.com.tamborindeguy.client.systems.physics.PlayerInputSystem;
 import ar.com.tamborindeguy.client.systems.render.ui.CoordinatesRenderingSystem;
 import ar.com.tamborindeguy.client.systems.render.world.*;
-import com.artemis.Entity;
-import com.artemis.SuperMapper;
-import com.artemis.World;
-import com.artemis.WorldConfigurationBuilder;
+import ar.com.tamborindeguy.client.utils.Skins;
+import ar.com.tamborindeguy.objects.types.Obj;
+import ar.com.tamborindeguy.objects.types.Type;
+import com.artemis.*;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import entity.character.info.Inventory;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.artemis.E.E;
 
@@ -41,7 +43,7 @@ public class GameScreen extends WorldScreen {
 
     private Stage stage;
     private Table dialog;
-    private Table inventory;
+    private Window inventory;
 
     public static ClientSystem client;
     public static int player;
@@ -58,6 +60,13 @@ public class GameScreen extends WorldScreen {
 
     public static void setPlayer(int player) {
         GameScreen.player = player;
+        E(player).inventory();
+        Optional<Set<Obj>> helmets = ObjectHandler.getTypeObjects(Type.HELMET);
+        helmets.ifPresent(allHelmets -> {
+            allHelmets.forEach(helmet -> {
+                E(player).getInventory().add(ObjectHandler.getObjectId(helmet).get());
+            });
+        });
     }
 
     @Override
@@ -87,6 +96,7 @@ public class GameScreen extends WorldScreen {
                 .with(new PhysicsAttackSystem())
                 .with(new MeditateSystem())
                 .with(new DialogSystem(dialog))
+                .with(new InventorySystem(inventory))
                 // Rendering
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new TiledMapSystem())
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 4, new MapLowerLayerRenderingSystem(this.game.getSpriteBatch()))
@@ -125,7 +135,8 @@ public class GameScreen extends WorldScreen {
         // square for now
         dialogContainer.setHeight(containerW);
         dialogContainer.setPosition((screenW - containerW), screenH * 0.5f - (containerW / 2));
-        inventory = new Table();
+        inventory = new Window("Inventory", Skins.COMODORE_SKIN);
+        inventory.setFillParent(true);
         dialogContainer.setActor(inventory);
         return dialogContainer;
     }

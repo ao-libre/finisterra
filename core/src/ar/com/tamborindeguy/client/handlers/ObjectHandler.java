@@ -5,11 +5,13 @@ import ar.com.tamborindeguy.model.readers.AODescriptorsReader;
 import ar.com.tamborindeguy.model.readers.DescriptorsReader;
 import ar.com.tamborindeguy.model.textures.GameTexture;
 import ar.com.tamborindeguy.objects.types.Obj;
+import ar.com.tamborindeguy.objects.types.Type;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class ObjectHandler {
 
@@ -27,6 +29,13 @@ public class ObjectHandler {
 
     public static TextureRegion getGraphic(Obj obj) {
         return textures.computeIfAbsent(obj, presentObj -> new GameTexture(presentObj.getGrhIndex())).getGraphic();
+    }
 
+    public static Optional<Set<Obj>> getTypeObjects(Type type) {
+        return objects.getTypeObjects(type);
+    }
+
+    public static Optional<Integer> getObjectId(Obj obj) {
+        return objects.getObjectId(obj);
     }
 }
