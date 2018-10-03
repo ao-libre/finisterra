@@ -27,12 +27,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
  */
 public class CameraSystem extends BaseSystem {
 
+    public final float zoom;
     public OrthographicCamera camera;
     public OrthographicCamera guiCamera;
-    public final float zoom;
 
-    public CameraSystem(float zoom, float width, float height )
-    {
+    public CameraSystem(float zoom, float width, float height) {
         this.zoom = zoom;
         float zoomFactorInverter = 1f / zoom;
         setupViewport(width * zoomFactorInverter,

@@ -39,6 +39,6 @@ public class ClientMapUtils {
     public static boolean isValid(WorldPos expectedPos) {
         Map map = MapHandler.get(expectedPos.map);
         Tile tile = map.getTile(expectedPos.x, expectedPos.y);
-        return tile!= null && !tile.isBlocked() && tile.getCharIndex() == Tile.EMPTY_INDEX;
+        return tile != null && !tile.isBlocked() && tile.getCharIndex() == Tile.EMPTY_INDEX;
     }
 }

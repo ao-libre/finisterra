@@ -36,8 +36,8 @@ public class ClientSystem extends MarshalSystem {
     }
 
     public void login(AO game, String user, String password) {
-        new Thread(()-> {
-            while(isLoggingIn()) {
+        new Thread(() -> {
+            while (isLoggingIn()) {
                 getMarshal().update();
                 // wait connection ok
                 if (!requestSent) {

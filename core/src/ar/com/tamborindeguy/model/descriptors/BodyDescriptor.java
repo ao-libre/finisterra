@@ -5,7 +5,9 @@ public class BodyDescriptor extends Descriptor {
     public int headOffsetX;
     public int headOffsetY;
 
-    public BodyDescriptor() {}
+    public BodyDescriptor() {
+    }
+
     public BodyDescriptor(int[] grhIndex, int headOffsetX, int headOffsetY) {
         super(grhIndex);
         this.headOffsetX = headOffsetX;

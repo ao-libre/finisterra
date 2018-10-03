@@ -22,6 +22,10 @@ public class MeditateSystem extends IteratingSystem {
         super(Aspect.all(Focused.class).exclude(Writing.class, Moving.class));
     }
 
+    public static void stopMeditating(E entity) {
+        entity.removeFX();
+    }
+
     @Override
     protected void process(int entityId) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
@@ -37,10 +41,6 @@ public class MeditateSystem extends IteratingSystem {
                 E(entityId).meditating();
             }
         }
-    }
-
-    public static void stopMeditating(E entity) {
-        entity.removeFX();
     }
 
 }

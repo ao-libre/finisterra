@@ -29,12 +29,34 @@ import static com.artemis.E.E;
 @Wire
 public class MovementProcessorSystem extends IteratingSystem {
 
-    private static int requestNumber;
     public static java.util.Map<Integer, MovementRequest> requests = new ConcurrentHashMap<>();
+    private static int requestNumber;
 
     public MovementProcessorSystem() {
         super(Aspect.all(Focused.class, AOPhysics.class,
                 WorldPos.class, Pos2D.class));
+    }
+
+    public static WorldPos getPosition(WorldPos worldPos) {
+        WorldPos correctPos = new WorldPos(worldPos.x, worldPos.y, worldPos.map);
+        requests.values().stream().filter(it -> it.valid).forEach(request -> {
+            WorldPos nextPos = Util.getNextPos(correctPos, request.movement);
+            correctPos.x = nextPos.x;
+            correctPos.y = nextPos.y;
+            correctPos.map = nextPos.map;
+        });
+        return correctPos;
+    }
+
+    public static void validateRequest(int requestNumber, WorldPos destination) {
+        requests.remove(requestNumber);
+        E(GameScreen.getPlayer()).worldPosMap(destination.map);
+        E(GameScreen.getPlayer()).worldPosY(destination.y);
+        E(GameScreen.getPlayer()).worldPosX(destination.x);
+        if (ClientMapUtils.changeMap(E(GameScreen.getPlayer()), destination)) {
+            return;
+        }
+        ClientMapUtils.updateTile(GameScreen.getPlayer(), destination);
     }
 
     @Override
@@ -75,28 +97,6 @@ public class MovementProcessorSystem extends IteratingSystem {
     private void stopMeditating(E player) {
         player.removeMeditating();
         MeditateSystem.stopMeditating(player);
-    }
-
-    public static WorldPos getPosition(WorldPos worldPos) {
-        WorldPos correctPos = new WorldPos(worldPos.x, worldPos.y, worldPos.map);
-        requests.values().stream().filter(it -> it.valid).forEach(request -> {
-            WorldPos nextPos = Util.getNextPos(correctPos, request.movement);
-            correctPos.x = nextPos.x;
-            correctPos.y = nextPos.y;
-            correctPos.map = nextPos.map;
-        });
-        return correctPos;
-    }
-
-    public static void validateRequest(int requestNumber, WorldPos destination) {
-        requests.remove(requestNumber);
-        E(GameScreen.getPlayer()).worldPosMap(destination.map);
-        E(GameScreen.getPlayer()).worldPosY(destination.y);
-        E(GameScreen.getPlayer()).worldPosX(destination.x);
-        if (ClientMapUtils.changeMap(E(GameScreen.getPlayer()), destination)) {
-            return;
-        }
-        ClientMapUtils.updateTile(GameScreen.getPlayer(), destination);
     }
 
 

@@ -3,11 +3,10 @@ package ar.com.tamborindeguy.model.descriptors;
 public class Descriptor implements IDescriptor {
 
     public int id;
+    protected int[] indexs;
 
     public Descriptor() {
     }
-
-    protected int[] indexs;
 
     public Descriptor(int[] grhIndex) {
         this.indexs = grhIndex;

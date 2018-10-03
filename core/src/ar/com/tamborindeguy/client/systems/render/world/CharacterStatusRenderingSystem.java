@@ -20,16 +20,14 @@ import static com.artemis.E.E;
 @Wire
 public class CharacterStatusRenderingSystem extends IteratingSystem {
 
-    private CameraSystem cameraSystem;
-    private static final int BAR_WIDTH = 400;
     public static final int BAR_HEIGHT = 8;
     public static final int BORDER = 2;
-
     public static final float ALPHA = 0.7f;
-
-    public static float OFFSET_X = (Gdx.graphics.getWidth() + BAR_WIDTH) / 2;
     public static final int OFFSET_Y = 5;
+    private static final int BAR_WIDTH = 400;
+    public static float OFFSET_X = (Gdx.graphics.getWidth() + BAR_WIDTH) / 2;
     private final SpriteBatch batch;
+    private CameraSystem cameraSystem;
 
     public CharacterStatusRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(Character.class, Focused.class));
@@ -57,7 +55,7 @@ public class CharacterStatusRenderingSystem extends IteratingSystem {
     private void drawMana(E player) {
         int maxMana = player.getMana().max;
         int minMana = player.getMana().min;
-        drawBar(maxMana, minMana, (int) OFFSET_X, OFFSET_Y + BAR_HEIGHT + 1, Colors.MANA.cpy(), BAR_HEIGHT  );
+        drawBar(maxMana, minMana, (int) OFFSET_X, OFFSET_Y + BAR_HEIGHT + 1, Colors.MANA.cpy(), BAR_HEIGHT);
         drawText(maxMana, minMana, (int) OFFSET_X, OFFSET_Y + BAR_HEIGHT + 1);
     }
 
@@ -76,14 +74,14 @@ public class CharacterStatusRenderingSystem extends IteratingSystem {
 
         //color
         batch.setColor(barColor.r, barColor.g, barColor.b, ALPHA);
-        batch.draw(TextureUtils.white, offsetX + BORDER/2, offsetY + BORDER/2,( (float) value / max) * BAR_WIDTH, barHeight-BORDER);
+        batch.draw(TextureUtils.white, offsetX + BORDER / 2, offsetY + BORDER / 2, ((float) value / max) * BAR_WIDTH, barHeight - BORDER);
 
     }
 
     private void drawText(int max, int value, int offsetX, int offsetY) {
         //text
         batch.setColor(Color.WHITE.cpy());
-        layout.setText(WHITE_FONT,value + "/" + max);
+        layout.setText(WHITE_FONT, value + "/" + max);
         final float fontX = offsetX + (BAR_WIDTH + BORDER - layout.width) / 2;
         final float fontY = offsetY + (BAR_HEIGHT + layout.height) / 2;
         WHITE_FONT.draw(batch, layout, fontX, fontY);

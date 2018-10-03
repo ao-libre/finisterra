@@ -27,75 +27,76 @@ import com.badlogic.gdx.utils.Array;
  */
 public class BundledAnimation {
 
-	private Array<GameTexture> frames = new Array<GameTexture>();
-	private Animation<TextureRegion> animation;
-	private float animationTime;
-	private boolean animated = false;
+    private Array<GameTexture> frames = new Array<GameTexture>();
+    private Animation<TextureRegion> animation;
+    private float animationTime;
+    private boolean animated = false;
 
-	
-	public BundledAnimation(Graphic graphic) {
-		
-		int numFrames = graphic.getFrames().length;
-		Array<TextureRegion> tmpRegions = new Array<TextureRegion>();
-		this.setAnimationTime(0.0f);
-		
-		if(numFrames > 0) {
-			
-			for(int frame : graphic.getFrames()) {
-				this.frames.add(new GameTexture(DescriptorHandler.getGraphic(frame)));
-				tmpRegions.add(this.frames.peek().getGraphic());
-			}
-			
-			// TODO : Manual array conversion por error en toArray de gdxArray
-			TextureRegion[] textures = new TextureRegion[tmpRegions.size];
-			int index = 0;
-			for(TextureRegion tmpTex : tmpRegions) {
-				textures[index] = tmpTex;
-				index++;
-			}
-			
-			this.setAnimation(new Animation<TextureRegion>(graphic.getSpeed() / 3340.0f, textures));
-			this.animated = true;
-			
-		} else {
-			this.frames.add(new GameTexture(graphic));
-		}
-	}
 
-	/**
-	 * @return the frames
-	 */
-	public Array<GameTexture> getFrames() {
-		return frames;
-	}
+    public BundledAnimation(Graphic graphic) {
 
-	/**
-	 * @param frames the frames to set
-	 */
-	public void setFrames(Array<GameTexture> frames) {
-		this.frames = frames;
-	}
+        int numFrames = graphic.getFrames().length;
+        Array<TextureRegion> tmpRegions = new Array<TextureRegion>();
+        this.setAnimationTime(0.0f);
 
-	/**
-	 * @return the animation
-	 */
-	public Animation getAnimation() {
-		return animation;
-	}
+        if (numFrames > 0) {
 
-	/**
-	 * @param animation the animation to set
-	 */
-	public void setAnimation(Animation animation) {
-		this.animation = animation;
-	}
-	
-	/**
-	 * @return TextureRegion
-	 */
-	public TextureRegion getGraphic(boolean loop) {
-		return this.isAnimated() ? this.getAnimatedGraphic(loop) : this.getGraphic(0);
-	}
+            for (int frame : graphic.getFrames()) {
+                this.frames.add(new GameTexture(DescriptorHandler.getGraphic(frame)));
+                tmpRegions.add(this.frames.peek().getGraphic());
+            }
+
+            // TODO : Manual array conversion por error en toArray de gdxArray
+            TextureRegion[] textures = new TextureRegion[tmpRegions.size];
+            int index = 0;
+            for (TextureRegion tmpTex : tmpRegions) {
+                textures[index] = tmpTex;
+                index++;
+            }
+
+            this.setAnimation(new Animation<TextureRegion>(graphic.getSpeed() / 3340.0f, textures));
+            this.animated = true;
+
+        } else {
+            this.frames.add(new GameTexture(graphic));
+        }
+    }
+
+    /**
+     * @return the frames
+     */
+    public Array<GameTexture> getFrames() {
+        return frames;
+    }
+
+    /**
+     * @param frames the frames to set
+     */
+    public void setFrames(Array<GameTexture> frames) {
+        this.frames = frames;
+    }
+
+    /**
+     * @return the animation
+     */
+    public Animation getAnimation() {
+        return animation;
+    }
+
+    /**
+     * @param animation the animation to set
+     */
+    public void setAnimation(Animation animation) {
+        this.animation = animation;
+    }
+
+    /**
+     * @return TextureRegion
+     */
+    public TextureRegion getGraphic(boolean loop) {
+        return this.isAnimated() ? this.getAnimatedGraphic(loop) : this.getGraphic(0);
+    }
+
     /**
      * @return TextureRegion
      */
@@ -103,42 +104,42 @@ public class BundledAnimation {
         return this.getGraphic(true);
     }
 
-	/**
-	 * @param index
-	 * @return TextureRegion
-	 */
-	public TextureRegion getGraphic(int index) {
-		return this.frames.get(index).getGraphic();
-	}
-	
-	/**
-	 * @param loop 
-	 * @return TextureRegion
-	 */
-	public TextureRegion getAnimatedGraphic(boolean loop) {
-		return this.animation.getKeyFrame(this.getAnimationTime(), loop);
-	}
-	
-	/**
-	 * @return boolean
-	 */
-	public boolean isAnimated() {
-		return this.animated;
-	}
+    /**
+     * @param index
+     * @return TextureRegion
+     */
+    public TextureRegion getGraphic(int index) {
+        return this.frames.get(index).getGraphic();
+    }
 
-	/**
-	 * @return the animationTime
-	 */
-	public float getAnimationTime() {
-		return animationTime;
-	}
+    /**
+     * @param loop
+     * @return TextureRegion
+     */
+    public TextureRegion getAnimatedGraphic(boolean loop) {
+        return this.animation.getKeyFrame(this.getAnimationTime(), loop);
+    }
 
-	/**
-	 * @param animationTime the animationTime to set
-	 */
-	public void setAnimationTime(float animationTime) {
-		this.animationTime = animationTime;
-	}
+    /**
+     * @return boolean
+     */
+    public boolean isAnimated() {
+        return this.animated;
+    }
+
+    /**
+     * @return the animationTime
+     */
+    public float getAnimationTime() {
+        return animationTime;
+    }
+
+    /**
+     * @param animationTime the animationTime to set
+     */
+    public void setAnimationTime(float animationTime) {
+        this.animationTime = animationTime;
+    }
 
 
 }

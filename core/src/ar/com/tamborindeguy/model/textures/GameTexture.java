@@ -7,28 +7,36 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class GameTexture {
 
-	private TextureRegion textureRegion;
+    private TextureRegion textureRegion;
 
-	public GameTexture(int grhIndex) {
-		this(DescriptorHandler.getGraphic(grhIndex));
-	}
-	
-	public GameTexture(Graphic graphic) {
-		this.textureRegion = new TextureRegion(SurfaceHandler.get(String.valueOf(graphic.getFileNum())),
-				graphic.getX(), graphic.getY(), graphic.getWidth(), graphic.getHeight());
-		this.textureRegion.flip(false, true);
-	}
+    public GameTexture(int grhIndex) {
+        this(grhIndex, true);
+    }
 
-	public void dispose() {
-		this.textureRegion.getTexture().dispose();
-	}
+    public GameTexture(int grhIndex, boolean flipY) {
+        this(DescriptorHandler.getGraphic(grhIndex), flipY);
+    }
 
-	public TextureRegion getGraphic() {
-		return textureRegion;
-	}
+    public GameTexture(Graphic graphic) {
+        this(graphic, true);
+    }
 
-	public void setGraphic(TextureRegion textureRegion) {
-		this.textureRegion = textureRegion;
-	}
+    public GameTexture(Graphic graphic, boolean flipY) {
+        this.textureRegion = new TextureRegion(SurfaceHandler.get(String.valueOf(graphic.getFileNum())),
+                graphic.getX(), graphic.getY(), graphic.getWidth(), graphic.getHeight());
+        this.textureRegion.flip(false, flipY);
+    }
+
+    public void dispose() {
+        this.textureRegion.getTexture().dispose();
+    }
+
+    public TextureRegion getGraphic() {
+        return textureRegion;
+    }
+
+    public void setGraphic(TextureRegion textureRegion) {
+        this.textureRegion = textureRegion;
+    }
 
 }

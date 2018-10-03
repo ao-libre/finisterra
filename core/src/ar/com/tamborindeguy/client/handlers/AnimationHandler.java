@@ -28,7 +28,7 @@ public class AnimationHandler {
 
     private static Map<Integer, List<BundledAnimation>> loadDescriptors(List<?> descriptors) {
         Map<Integer, List<BundledAnimation>> result = new HashMap<>();
-        int[] idx = { 1 };
+        int[] idx = {1};
         descriptors.forEach(descriptor -> {
             result.put(idx[0]++, createAnimations((IDescriptor) descriptor));
         });

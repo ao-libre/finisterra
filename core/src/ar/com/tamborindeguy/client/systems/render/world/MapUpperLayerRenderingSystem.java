@@ -12,9 +12,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 @Wire
 public class MapUpperLayerRenderingSystem extends BaseSystem {
 
+    public SpriteBatch batch;
     private TiledMapSystem mapSystem;
     private CameraSystem cameraSystem;
-    public SpriteBatch batch;
 
     public MapUpperLayerRenderingSystem(SpriteBatch spriteBatch) {
         this.batch = spriteBatch;
@@ -43,10 +43,10 @@ public class MapUpperLayerRenderingSystem extends BaseSystem {
         maxAreaY = screenMaxY + Map.TILE_BUFFER_SIZE;
 
         // Make sure it is between map bounds
-        if(minAreaX < Map.MIN_MAP_SIZE_WIDTH) minAreaX = Map.MIN_MAP_SIZE_WIDTH;
-        if(maxAreaX > Map.MAX_MAP_SIZE_WIDTH) maxAreaX = Map.MAX_MAP_SIZE_WIDTH;
-        if(minAreaY < Map.MIN_MAP_SIZE_HEIGHT) minAreaY = Map.MIN_MAP_SIZE_HEIGHT;
-        if(maxAreaY > Map.MAX_MAP_SIZE_HEIGHT) maxAreaY = Map.MAX_MAP_SIZE_HEIGHT;
+        if (minAreaX < Map.MIN_MAP_SIZE_WIDTH) minAreaX = Map.MIN_MAP_SIZE_WIDTH;
+        if (maxAreaX > Map.MAX_MAP_SIZE_WIDTH) maxAreaX = Map.MAX_MAP_SIZE_WIDTH;
+        if (minAreaY < Map.MIN_MAP_SIZE_HEIGHT) minAreaY = Map.MIN_MAP_SIZE_HEIGHT;
+        if (maxAreaY > Map.MAX_MAP_SIZE_HEIGHT) maxAreaY = Map.MAX_MAP_SIZE_HEIGHT;
 
         // LAYER 3 - ANIMATED (POSSIBLY?)
         MapManager.renderLayer(map, this.batch, world.getDelta(), 2, minAreaX, maxAreaX, minAreaY, maxAreaY);

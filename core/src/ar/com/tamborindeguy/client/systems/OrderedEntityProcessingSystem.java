@@ -13,9 +13,9 @@ import java.util.List;
 
 /**
  * Tracks a subset of entities, but does not implement any sorting or iteration.
- *
+ * <p>
  * Like {@link BaseEntitySystem}, but uses Entity references instead of int.
- *
+ * <p>
  * This system exists as a convenience for users migrating from other Artemis
  * clones or older versions of odb. We recommend using the int systems over
  * the Entity variants.
@@ -24,25 +24,27 @@ import java.util.List;
  * @author Adrian Papari
  */
 public abstract class OrderedEntityProcessingSystem extends BaseEntitySystem
-		implements EntitySubscription.SubscriptionListener {
+        implements EntitySubscription.SubscriptionListener {
 
-	private boolean shouldSyncEntities;
-	private ArrayList<Entity> entities = new ArrayList<Entity>();
+    private boolean shouldSyncEntities;
+    private ArrayList<Entity> entities = new ArrayList<Entity>();
 
-	public OrderedEntityProcessingSystem(Aspect.Builder aspect) {
-		super(aspect);
-	}
+    public OrderedEntityProcessingSystem(Aspect.Builder aspect) {
+        super(aspect);
+    }
 
-	@Override
-	public final void inserted(IntBag entities) { shouldSyncEntities = true; }
+    @Override
+    public final void inserted(IntBag entities) {
+        shouldSyncEntities = true;
+    }
 
-	@Override
-	public final void removed(IntBag entities) {
-		shouldSyncEntities = true;
-	}
+    @Override
+    public final void removed(IntBag entities) {
+        shouldSyncEntities = true;
+    }
 
-	private List<Entity> getEntities() {
-		if (shouldSyncEntities) {
+    private List<Entity> getEntities() {
+        if (shouldSyncEntities) {
             IntBag intBag = subscription.getEntities();
             int[] ids = intBag.getData();
             entities.clear();
@@ -52,16 +54,16 @@ public abstract class OrderedEntityProcessingSystem extends BaseEntitySystem
             shouldSyncEntities = false;
         }
         entities.sort(getComparator());
-		return entities;
-	}
+        return entities;
+    }
 
-	@Override
-	protected final void processSystem() {
-		getEntities().forEach(e -> process(e));
-	}
+    @Override
+    protected final void processSystem() {
+        getEntities().forEach(e -> process(e));
+    }
 
     protected abstract void process(Entity e);
 
-	protected abstract Comparator<? super Entity> getComparator();
+    protected abstract Comparator<? super Entity> getComparator();
 
 }

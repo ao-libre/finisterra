@@ -1,6 +1,5 @@
 package ar.com.tamborindeguy.model.readers;
 
-import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;

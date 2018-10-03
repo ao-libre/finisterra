@@ -14,8 +14,7 @@ import static com.artemis.E.E;
  * @author rt
  */
 @Wire
-public class CameraMovementSystem extends IteratingSystem
-{
+public class CameraMovementSystem extends IteratingSystem {
 
     private CameraSystem cameraSystem;
 

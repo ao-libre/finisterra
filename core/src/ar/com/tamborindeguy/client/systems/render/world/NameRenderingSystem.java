@@ -49,8 +49,8 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
     private float drawName(E player, Pos2D screenPos) {
         BitmapFont font =
                 player.hasGM() ? GM_NAME_FONT :
-                player.getLevel().level < 13 ? NEWBIE_NAME_FONT :
-                player.hasCriminal() ? CRIMINAL_NAME_FONT : CITIZEN_NAME_FONT;
+                        player.getLevel().level < 13 ? NEWBIE_NAME_FONT :
+                                player.hasCriminal() ? CRIMINAL_NAME_FONT : CITIZEN_NAME_FONT;
         layout.setText(font, player.getName().text);
         final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH + layout.width) / 2 - 4;
         final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y - (layout.height) / 2;

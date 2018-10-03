@@ -32,6 +32,15 @@ public class DialogSystem extends IteratingSystem {
         this.table = table;
     }
 
+    public static void talk(E entity, String text) {
+        entity.dialogText(text);
+        entity.dialogAlpha(Dialog.DEFAULT_ALPHA);
+        entity.dialogTime(Dialog.DEFAULT_TIME);
+        ArrayList<Component> components = new ArrayList<>();
+        components.add(entity.getDialog());
+        GameScreen.getClient().sendToAll(new EntityUpdate(entity.networkId(), components));
+    }
+
     @Override
     protected void process(int player) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
@@ -40,7 +49,7 @@ public class DialogSystem extends IteratingSystem {
             textf = new TextField("", Skins.COMODORE_SKIN, "transparent") {
                 @Override
                 protected InputListener createInputListener() {
-                    return new TextField.TextFieldClickListener(){
+                    return new TextField.TextFieldClickListener() {
                         @Override
                         public boolean keyUp(InputEvent event, int keycode) {
                             if (keycode == Input.Keys.ENTER && !firstOpened[0]) {
@@ -62,14 +71,5 @@ public class DialogSystem extends IteratingSystem {
             table.add(textf).fillX();
             table.getStage().setKeyboardFocus(textf);
         }
-    }
-
-    public static void talk(E entity, String text) {
-        entity.dialogText(text);
-        entity.dialogAlpha(Dialog.DEFAULT_ALPHA);
-        entity.dialogTime(Dialog.DEFAULT_TIME);
-        ArrayList<Component> components = new ArrayList<>();
-        components.add(entity.getDialog());
-        GameScreen.getClient().sendToAll(new EntityUpdate(entity.networkId(), components));
     }
 }

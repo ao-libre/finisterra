@@ -20,33 +20,33 @@ import ar.com.tamborindeguy.client.systems.render.world.*;
 import ar.com.tamborindeguy.client.utils.Skins;
 import ar.com.tamborindeguy.objects.types.Obj;
 import ar.com.tamborindeguy.objects.types.Type;
-import com.artemis.*;
+import com.artemis.Entity;
+import com.artemis.SuperMapper;
+import com.artemis.World;
+import com.artemis.WorldConfigurationBuilder;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import entity.character.info.Inventory;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 
-import java.util.*;
+import java.util.Optional;
+import java.util.Set;
 
 import static com.artemis.E.E;
 
 public class GameScreen extends WorldScreen {
 
     public static final int FONTS_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL + 3;
-
+    public static ClientSystem client;
+    public static int player;
     private Stage stage;
     private Table dialog;
     private Window inventory;
-
-    public static ClientSystem client;
-    public static int player;
 
     public GameScreen(AO game, ClientSystem client) {
         super(game);
@@ -67,6 +67,14 @@ public class GameScreen extends WorldScreen {
                 E(player).getInventory().add(ObjectHandler.getObjectId(helmet).get());
             });
         });
+    }
+
+    public static World getWorld() {
+        return world;
+    }
+
+    public static MarshalStrategy getClient() {
+        return client.getMarshal();
     }
 
     @Override
@@ -130,12 +138,12 @@ public class GameScreen extends WorldScreen {
 
         float screenW = Gdx.graphics.getWidth();
         float screenH = Gdx.graphics.getHeight();
-        float containerW = screenW * 0.2f;
+        float containerW = 6 * 32;
         dialogContainer.setWidth(containerW);
         // square for now
         dialogContainer.setHeight(containerW);
         dialogContainer.setPosition((screenW - containerW), screenH * 0.5f - (containerW / 2));
-        inventory = new Window("Inventory", Skins.COMODORE_SKIN);
+        inventory = new Window("Inventory", Skins.COMODORE_SKIN, "dialog");
         inventory.setFillParent(true);
         dialogContainer.setActor(inventory);
         return dialogContainer;
@@ -153,14 +161,6 @@ public class GameScreen extends WorldScreen {
         dialog = new Table();
         dialogContainer.setActor(dialog);
         return dialogContainer;
-    }
-
-    public static World getWorld() {
-        return world;
-    }
-
-    public static MarshalStrategy getClient() {
-        return client.getMarshal();
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class ObjectLoader extends Loader<Objects>{
+public class ObjectLoader extends Loader<Objects> {
 
     public static final String OBJ = "obj";
     public static final String GRH_INDEX = "GrhIndex";
@@ -35,17 +35,18 @@ public class ObjectLoader extends Loader<Objects>{
         iniFile.load(file);
         int numObjs = Integer.parseInt(iniFile.get("init", "NumOBJs"));
 
-        for (int i = 1; i <= numObjs; i++){
+        for (int i = 1; i <= numObjs; i++) {
             Profile.Section section = iniFile.get(OBJ + String.valueOf(i));
             if (section == null) {
                 continue;
             }
-            Integer type = section.get(OBJTYPE, int.class);;
+            Integer type = section.get(OBJTYPE, int.class);
+            ;
             Integer grhIndex = section.get(GRH_INDEX, int.class);
             String name = section.get(NAME);
             Obj object = ObjectFactory.createObject(type, name, grhIndex);
             ObjectFactory.fillObject(object, section);
-            objects.computeIfAbsent(Type.values()[type-1], (e) -> new HashSet<>()).add(object);
+            objects.computeIfAbsent(Type.values()[type - 1], (e) -> new HashSet<>()).add(object);
             objectsById.put(i, object);
             idByObject.put(object, i);
         }

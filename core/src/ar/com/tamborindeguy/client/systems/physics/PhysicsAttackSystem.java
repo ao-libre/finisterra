@@ -2,9 +2,7 @@ package ar.com.tamborindeguy.client.systems.physics;
 
 import com.artemis.Aspect;
 import com.artemis.systems.IteratingSystem;
-import entity.Heading;
 import physics.Attack;
-import position.WorldPos;
 
 import static com.artemis.E.E;
 

@@ -33,8 +33,8 @@ public class MapLoader extends Loader<Map> {
         Map map = new Map();
 
         // Read map info (rows first, then columns)
-        for(int y = Map.MIN_MAP_SIZE_WIDTH; y <= Map.MAX_MAP_SIZE_WIDTH; y++) {
-            for(int x = Map.MIN_MAP_SIZE_HEIGHT; x <= Map.MAX_MAP_SIZE_HEIGHT; x++) {
+        for (int y = Map.MIN_MAP_SIZE_WIDTH; y <= Map.MAX_MAP_SIZE_WIDTH; y++) {
+            for (int x = Map.MIN_MAP_SIZE_HEIGHT; x <= Map.MAX_MAP_SIZE_HEIGHT; x++) {
                 int charIndex = 0, objIndex = 0, npcIndex = 0, trigger = 0, graphic[] = new int[4];
                 WorldPosition tileExit = new WorldPosition(0, 0, 0);
                 boolean blocked = false;
@@ -45,25 +45,25 @@ public class MapLoader extends Loader<Map> {
 
                 graphic[0] = Util.leShort(file.readShort());
 
-                if((byFlags & 2) == 2) {
+                if ((byFlags & 2) == 2) {
                     graphic[1] = Util.leShort(file.readShort());
                 } else {
                     graphic[1] = 0;
                 }
 
-                if((byFlags & 4) == 4) {
+                if ((byFlags & 4) == 4) {
                     graphic[2] = Util.leShort(file.readShort());
                 } else {
                     graphic[2] = 0;
                 }
 
-                if((byFlags & 8) == 8) {
+                if ((byFlags & 8) == 8) {
                     graphic[3] = Util.leShort(file.readShort());
                 } else {
                     graphic[3] = 0;
                 }
 
-                if((byFlags & 16) == 16) {
+                if ((byFlags & 16) == 16) {
                     trigger = Util.leShort(file.readShort());
                 }
 

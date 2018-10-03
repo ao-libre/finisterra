@@ -11,15 +11,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import entity.CombatMessage;
-import entity.Dialog;
 import position.Pos2D;
 
 import java.util.Comparator;
 
 import static ar.com.tamborindeguy.client.systems.render.world.DialogRenderingSystem.ALPHA_TIME;
-import static ar.com.tamborindeguy.client.utils.Fonts.COMBAT_FONT;
-import static ar.com.tamborindeguy.client.utils.Fonts.DIALOG_FONT;
-import static ar.com.tamborindeguy.client.utils.Fonts.dialogLayout;
+import static ar.com.tamborindeguy.client.utils.Fonts.*;
 import static com.artemis.E.E;
 
 public class CombatRenderingSystem extends OrderedEntityProcessingSystem {

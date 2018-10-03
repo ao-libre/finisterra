@@ -30,21 +30,21 @@ public class MovementAnimationSystem extends IteratingSystem {
         if (entity.hasBody()) {
             final Body body = entity.getBody();
             BundledAnimation animation = AnimationHandler.getBodyAnimation(body.index, heading.current);
-            if(animation != null) {
+            if (animation != null) {
                 animation.setAnimationTime(animation.getAnimationTime() + world.getDelta());
             }
         }
         if (entity.hasWeapon()) {
             final Weapon weapon = entity.getWeapon();
             BundledAnimation animation = AnimationHandler.getWeaponAnimation(weapon.index, heading.current);
-            if(animation != null) {
+            if (animation != null) {
                 animation.setAnimationTime(animation.getAnimationTime() + world.getDelta());
             }
         }
         if (entity.hasShield()) {
             final Shield weapon = entity.getShield();
             BundledAnimation animation = AnimationHandler.getShieldAnimation(weapon.index, heading.current);
-            if(animation != null) {
+            if (animation != null) {
                 animation.setAnimationTime(animation.getAnimationTime() + world.getDelta());
             }
         }

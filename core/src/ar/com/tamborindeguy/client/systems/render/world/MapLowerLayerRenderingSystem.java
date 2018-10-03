@@ -12,9 +12,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 @Wire
 public class MapLowerLayerRenderingSystem extends BaseSystem {
 
+    public SpriteBatch batch;
     private TiledMapSystem mapSystem;
     private CameraSystem cameraSystem;
-    public SpriteBatch batch;
 
     public MapLowerLayerRenderingSystem(SpriteBatch spriteBatch) {
         this.batch = spriteBatch;
@@ -37,10 +37,10 @@ public class MapLowerLayerRenderingSystem extends BaseSystem {
         screenMinY = cameraPosY - halfWindowTileHeight - 2;
         screenMaxY = cameraPosY + halfWindowTileHeight + 2;
 
-        if(screenMinX < Map.MIN_MAP_SIZE_WIDTH) screenMinX = Map.MIN_MAP_SIZE_WIDTH;
-        if(screenMaxX > Map.MAX_MAP_SIZE_WIDTH) screenMaxX = Map.MAX_MAP_SIZE_WIDTH;
-        if(screenMinY < Map.MIN_MAP_SIZE_HEIGHT) screenMinY = Map.MIN_MAP_SIZE_HEIGHT;
-        if(screenMaxY > Map.MAX_MAP_SIZE_HEIGHT) screenMaxY = Map.MAX_MAP_SIZE_HEIGHT;
+        if (screenMinX < Map.MIN_MAP_SIZE_WIDTH) screenMinX = Map.MIN_MAP_SIZE_WIDTH;
+        if (screenMaxX > Map.MAX_MAP_SIZE_WIDTH) screenMaxX = Map.MAX_MAP_SIZE_WIDTH;
+        if (screenMinY < Map.MIN_MAP_SIZE_HEIGHT) screenMinY = Map.MIN_MAP_SIZE_HEIGHT;
+        if (screenMaxY > Map.MAX_MAP_SIZE_HEIGHT) screenMaxY = Map.MAX_MAP_SIZE_HEIGHT;
 
         // LAYER 1 - ANIMATED
         MapManager.renderLayer(map, this.batch, world.getDelta(), 0, screenMinX, screenMaxX, screenMinY, screenMaxY);

@@ -22,7 +22,7 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
     @Override
     protected void connectEndpoint() {
         try {
-            ((Client)endpoint).connect(CONNECTION_TIMEOUT, host, port,port+1);
+            ((Client) endpoint).connect(CONNECTION_TIMEOUT, host, port, port + 1);
             Log.debug("Connection OK");
             state = MarshalState.STARTED;
         } catch (IOException e) {
@@ -31,13 +31,15 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
         }
     }
 
-    /** Establish connection / prepare to listen. */
+    /**
+     * Establish connection / prepare to listen.
+     */
     @Override
     public void start() {
         state = MarshalState.STARTING;
         registerDictionary();
         endpoint.addListener(listener); // can be safely called more than once.
-        Log.info("add listener to " + this.getClass().getSimpleName() + " " +  listener);
+        Log.info("add listener to " + this.getClass().getSimpleName() + " " + listener);
         endpoint.start();
         new Thread(() -> connectEndpoint()).start();
     }
@@ -50,6 +52,6 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
     @Override
     public void sendToAll(Object o) {
         Log.info("Send object " + o);
-        ((Client)endpoint).sendTCP(o);
+        ((Client) endpoint).sendTCP(o);
     }
 }

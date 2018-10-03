@@ -21,10 +21,10 @@ import static com.artemis.E.E;
 @Wire
 public class CoordinatesRenderingSystem extends OrderedEntityProcessingSystem {
 
+    public static final float ALPHA = 0.5f;
     private static final int BORDER = 6;
     private SpriteBatch batch;
     private CameraSystem cameraSystem;
-    public static final float ALPHA = 0.5f;
 
     public CoordinatesRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(Focused.class, WorldPos.class));

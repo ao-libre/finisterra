@@ -28,7 +28,7 @@ public class ObjectHandler {
     }
 
     public static TextureRegion getGraphic(Obj obj) {
-        return textures.computeIfAbsent(obj, presentObj -> new GameTexture(presentObj.getGrhIndex())).getGraphic();
+        return textures.computeIfAbsent(obj, presentObj -> new GameTexture(presentObj.getGrhIndex(), false)).getGraphic();
     }
 
     public static Optional<Set<Obj>> getTypeObjects(Type type) {

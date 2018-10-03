@@ -62,6 +62,7 @@ public class TiledMapSystem extends IteratingSystem {
         int playerMap = E(entityId).getWorldPos().map;
         if (playerMap != mapNumber) {
             changeMap(playerMap);
-        };
+        }
+        ;
     }
 }

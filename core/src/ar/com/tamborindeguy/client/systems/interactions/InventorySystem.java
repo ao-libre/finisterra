@@ -10,7 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import entity.character.info.Inventory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import static com.artemis.E.E;
 
@@ -29,6 +32,8 @@ public class InventorySystem extends IteratingSystem {
         Inventory userInventory = E(entityId).getInventory();
         ArrayList<Inventory.Item> userItems = userInventory.userItems();
         // add new items
+//        inventory.clear();
+        final int[] i = new int[]{0};
         userItems
                 .stream()
                 .filter(item -> !items.containsKey(item))
@@ -38,8 +43,13 @@ public class InventorySystem extends IteratingSystem {
                         Image image = new Image(ObjectHandler.getGraphic(obj));
                         items.put(item, image);
                         inventory.add(image);
+                        if (i[0] % 5 == 0) {
+                            inventory.row();
+                        }
+                        i[0]++;
                     });
                 });
+
         // remove not present
         items
                 .keySet()
