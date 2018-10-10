@@ -104,7 +104,7 @@ public class GameScreen extends WorldScreen {
                 .with(new PhysicsAttackSystem())
                 .with(new MeditateSystem())
                 .with(new DialogSystem(dialog))
-                .with(new InventorySystem(inventory))
+//                .with(new InventorySystem(inventory))
                 // Rendering
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new TiledMapSystem())
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 4, new MapLowerLayerRenderingSystem(this.game.getSpriteBatch()))
@@ -114,11 +114,11 @@ public class GameScreen extends WorldScreen {
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new MapUpperLayerRenderingSystem(this.game.getSpriteBatch()))
                 .with(new StateRenderingSystem(game.getSpriteBatch()))
                 .with(new CharacterStatusRenderingSystem(game.getSpriteBatch()))
+                .with(new CombatRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new NameRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new DialogRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new CoordinatesRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new CharacterStatesRenderingSystem(game.getSpriteBatch()))
-                .with(FONTS_PRIORITY, new CombatRenderingSystem(game.getSpriteBatch()))
                 // Other
                 .with(new TagManager())
                 .with(new UuidEntityManager()); // why?
@@ -130,7 +130,7 @@ public class GameScreen extends WorldScreen {
         Container<Table> dialogContainer = createDialogContainer();
         stage.addActor(dialogContainer);
         Container<Table> inventory = createInventory();
-        stage.addActor(inventory);
+//        stage.addActor(inventory);
     }
 
     private Container<Table> createInventory() {

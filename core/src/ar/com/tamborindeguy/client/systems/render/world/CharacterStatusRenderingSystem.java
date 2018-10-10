@@ -20,7 +20,7 @@ import static com.artemis.E.E;
 @Wire
 public class CharacterStatusRenderingSystem extends IteratingSystem {
 
-    public static final int BAR_HEIGHT = 8;
+    public static final int BAR_HEIGHT = 10;
     public static final int BORDER = 2;
     public static final float ALPHA = 0.7f;
     public static final int OFFSET_Y = 5;

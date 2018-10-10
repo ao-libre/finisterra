@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
+import static ar.com.tamborindeguy.client.utils.Colors.GM;
+
 public class Fonts {
 
     public static final BitmapFont WHITE_FONT;
@@ -22,26 +24,29 @@ public class Fonts {
 
     public static final GlyphLayout layout = new GlyphLayout();
     public static final GlyphLayout dialogLayout = new GlyphLayout();
-    public static final String FONT_NAME = "Commodore Rounded v1.2.ttf";
+    private static final String COMMODORE_FONT = "Commodore Rounded v1.2.ttf";
+    private static final String FIRA_FONT = "FuraMono-Bold Powerline.otf";
+
 
     static {
-        WHITE_FONT = generate(Color.WHITE, 9, Color.BLACK, 1, 0, 0);
-        GM_NAME_FONT = generate(rgb(46, 204, 113), 10, Color.BLACK, 0, 1, 0);
-        NEWBIE_NAME_FONT = generate(rgb(155, 89, 182), 10, Color.BLACK, 0, 1, 0);
-        CITIZEN_NAME_FONT = generate(rgb(52, 152, 219), 10, Color.BLACK, 0, 1, 0);
-        CRIMINAL_NAME_FONT = generate(rgb(231, 76, 60), 10, Color.BLACK, 0, 1, 0);
-        CLAN_FONT = generate(rgb(149, 165, 166), 9, Color.BLACK, 0, 1, 0);
+        WHITE_FONT = generate(Color.WHITE, 10, Color.BLACK, 1, 0, 0);
+        GM_NAME_FONT = generate(Colors.GM, 10, Color.BLACK, 0, 1, 0);
+        NEWBIE_NAME_FONT = generate(Colors.NEWBIE, 10, Color.BLACK, 0, 1, 0);
+        CITIZEN_NAME_FONT = generate(Colors.CITIZEN, 10, Color.BLACK, 0, 1, 0);
+        CRIMINAL_NAME_FONT = generate(Colors.CRIMINAL, 10, Color.BLACK, 0, 1, 0);
+        CLAN_FONT = generate(Colors.GREY, 9, Color.BLACK, 0, 1, 0);
         DIALOG_FONT = generate(Color.WHITE, 10, Color.BLACK, 0, 1, 0);
         WRITING_FONT = generate(Color.BLACK, 6, Color.WHITE, 1, 0, -2);
-        COMBAT_FONT = generate(Color.RED, 10, Color.BLACK, 1, 0, 0);
+        COMBAT_FONT = generate(Colors.COMBAT, 9, Color.BLACK, 0, 1, -1);
     }
 
-    private static Color rgb(int r, int g, int b) {
-        return new Color((float) r / 255, (float) g / 255, (float) b / 255, 1);
+
+    private static BitmapFont generate(Color color, int size, Color borderColor, int borderWidth, int shadowOffset, int spaceX) {
+        return generate(color, size, borderColor, borderWidth, shadowOffset, spaceX, COMMODORE_FONT);
     }
 
-    public static BitmapFont generate(Color color, int size, Color borderColor, int borderWidth, int shadowOffset, int spaceX) {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(AO.GAME_FONTS_PATH + FONT_NAME));
+    private static BitmapFont generate(Color color, int size, Color borderColor, int borderWidth, int shadowOffset, int spaceX, String font) {
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(AO.GAME_FONTS_PATH + font));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = size;
         parameter.color = color;
@@ -50,9 +55,9 @@ public class Fonts {
         parameter.shadowOffsetX = shadowOffset;
         parameter.shadowOffsetY = shadowOffset;
         parameter.spaceX = spaceX;
-        BitmapFont font = generator.generateFont(parameter); // WHITE_FONT size 12 pixels
-        font.setUseIntegerPositions(false);
+        BitmapFont generatedFont = generator.generateFont(parameter); // WHITE_FONT size 12 pixels
+        generatedFont.setUseIntegerPositions(false);
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
-        return font;
+        return generatedFont;
     }
 }

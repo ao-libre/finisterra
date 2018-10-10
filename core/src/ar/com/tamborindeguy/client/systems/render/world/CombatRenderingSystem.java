@@ -36,11 +36,17 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
         Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
         Pos2D screenPos = new Pos2D(cameraPos.x - playerPos.x, cameraPos.y - playerPos.y);
         CombatMessage combatMessage = player.getCombatMessage();
+
+        combatMessage.offset -= world.getDelta() * 10f;
+        if (combatMessage.offset < 0) {
+            combatMessage.offset = 0;
+        }
+
         combatMessage.time -= world.getDelta();
         if (combatMessage.time > 0) {
-            Color copy = DIALOG_FONT.getColor().cpy();
-            if (combatMessage.time < ALPHA_TIME) {
-                combatMessage.alpha = combatMessage.time / ALPHA_TIME;
+            Color copy = COMBAT_FONT.getColor().cpy();
+            if (combatMessage.time < CombatMessage.DEFAULT_ALPHA) {
+                combatMessage.alpha = combatMessage.time / CombatMessage.DEFAULT_ALPHA;
                 COMBAT_FONT.getColor().a = combatMessage.alpha;
             }
             cameraSystem.guiCamera.update();
@@ -49,9 +55,9 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
 
             dialogLayout.setText(COMBAT_FONT, combatMessage.text);
             float width = dialogLayout.width;
-            dialogLayout.setText(COMBAT_FONT, combatMessage.text, DIALOG_FONT.getColor(), width, Align.center, true);
-            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (width / 2) - (Tile.TILE_PIXEL_WIDTH / 2) - 4;
-            final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y + 60 + dialogLayout.height;
+            dialogLayout.setText(COMBAT_FONT, combatMessage.text, COMBAT_FONT.getColor(), width, Align.center, true);
+            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH / 2) - 4;
+            final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y - combatMessage.offset + 40 + dialogLayout.height; //40 should be the Y offset of the entity
             COMBAT_FONT.draw(batch, dialogLayout, fontX, fontY);
 
             batch.end();
