@@ -83,6 +83,11 @@ com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 		titleFont: commodore-64,
 		titleFontColor: { a: 1, b: 1, g: 1, r: 1 },
 		stageBackground: blue
+	},
+	black: {
+		background: transparentDialog,
+		titleFont: commodore-64,
+		titleFontColor: { a: 1, b: 1, g: 1, r: 1 },
 	}
 },
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {

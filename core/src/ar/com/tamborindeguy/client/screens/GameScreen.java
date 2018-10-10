@@ -17,6 +17,7 @@ import ar.com.tamborindeguy.client.systems.physics.PhysicsAttackSystem;
 import ar.com.tamborindeguy.client.systems.physics.PlayerInputSystem;
 import ar.com.tamborindeguy.client.systems.render.ui.CoordinatesRenderingSystem;
 import ar.com.tamborindeguy.client.systems.render.world.*;
+import ar.com.tamborindeguy.client.ui.Inventory;
 import ar.com.tamborindeguy.client.utils.Skins;
 import ar.com.tamborindeguy.objects.types.Obj;
 import ar.com.tamborindeguy.objects.types.Type;
@@ -28,6 +29,7 @@ import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -46,7 +48,7 @@ public class GameScreen extends WorldScreen {
     public static int player;
     private Stage stage;
     private Table dialog;
-    private Window inventory;
+    private static Inventory inventory;
 
     public GameScreen(AO game, ClientSystem client) {
         super(game);
@@ -67,6 +69,7 @@ public class GameScreen extends WorldScreen {
                 E(player).getInventory().add(ObjectHandler.getObjectId(helmet).get());
             });
         });
+        inventory.fillUserInventory(player);
     }
 
     public static World getWorld() {
@@ -129,8 +132,7 @@ public class GameScreen extends WorldScreen {
         stage = new Stage();
         Container<Table> dialogContainer = createDialogContainer();
         stage.addActor(dialogContainer);
-        Container<Table> inventory = createInventory();
-//        stage.addActor(inventory);
+        stage.addActor(createInventory());
     }
 
     private Container<Table> createInventory() {
@@ -138,12 +140,12 @@ public class GameScreen extends WorldScreen {
 
         float screenW = Gdx.graphics.getWidth();
         float screenH = Gdx.graphics.getHeight();
-        float containerW = 6 * 32;
+        float containerW = Inventory.COLUMNS * 32 * AO.GAME_SCREEN_ZOOM + 30; // 30 for padding
         dialogContainer.setWidth(containerW);
         // square for now
         dialogContainer.setHeight(containerW);
         dialogContainer.setPosition((screenW - containerW), screenH * 0.5f - (containerW / 2));
-        inventory = new Window("Inventory", Skins.COMODORE_SKIN, "dialog");
+        inventory = new Inventory();
         inventory.setFillParent(true);
         dialogContainer.setActor(inventory);
         return dialogContainer;

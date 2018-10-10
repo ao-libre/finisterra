@@ -40,7 +40,6 @@ public class Fonts {
         COMBAT_FONT = generate(Colors.COMBAT, 9, Color.BLACK, 0, 1, -1);
     }
 
-
     private static BitmapFont generate(Color color, int size, Color borderColor, int borderWidth, int shadowOffset, int spaceX) {
         return generate(color, size, borderColor, borderWidth, shadowOffset, spaceX, COMMODORE_FONT);
     }
