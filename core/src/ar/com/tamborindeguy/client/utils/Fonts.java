@@ -27,9 +27,8 @@ public class Fonts {
     private static final String COMMODORE_FONT = "Commodore Rounded v1.2.ttf";
     private static final String FIRA_FONT = "FuraMono-Bold Powerline.otf";
 
-
     static {
-        WHITE_FONT = generate(Color.WHITE, 10, Color.BLACK, 1, 0, 0);
+        WHITE_FONT = generate(Color.WHITE, 10, Color.BLACK, 0, 0, 0);
         GM_NAME_FONT = generate(Colors.GM, 10, Color.BLACK, 0, 1, 0);
         NEWBIE_NAME_FONT = generate(Colors.NEWBIE, 10, Color.BLACK, 0, 1, 0);
         CITIZEN_NAME_FONT = generate(Colors.CITIZEN, 10, Color.BLACK, 0, 1, 0);
@@ -54,7 +53,7 @@ public class Fonts {
         parameter.shadowOffsetX = shadowOffset;
         parameter.shadowOffsetY = shadowOffset;
         parameter.spaceX = spaceX;
-        BitmapFont generatedFont = generator.generateFont(parameter); // WHITE_FONT size 12 pixels
+        BitmapFont generatedFont = generator.generateFont(parameter);
         generatedFont.setUseIntegerPositions(false);
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
         return generatedFont;

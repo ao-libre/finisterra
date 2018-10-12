@@ -1,5 +1,8 @@
 package ar.com.tamborindeguy.objects.types;
 
+import ar.com.tamborindeguy.objects.factory.ObjectFactory;
+import org.ini4j.Profile;
+
 public class MagicObj extends ObjWithClasses {
     private int minHit, maxHit;
     private int minDef, maxDef;
@@ -43,5 +46,11 @@ public class MagicObj extends ObjWithClasses {
     @Override
     public Type getType() {
         return Type.RING;
+    }
+
+    @Override
+    public void fillObject(Profile.Section section) {
+        super.fillObject(section);
+        ObjectFactory.fill(this, section);
     }
 }

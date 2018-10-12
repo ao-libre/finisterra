@@ -1,5 +1,8 @@
 package ar.com.tamborindeguy.objects.types;
 
+import ar.com.tamborindeguy.objects.factory.ObjectFactory;
+import org.ini4j.Profile;
+
 public class WeaponObj extends ObjWithClasses {
 
     private int animationId;
@@ -45,5 +48,11 @@ public class WeaponObj extends ObjWithClasses {
     @Override
     public Type getType() {
         return Type.WEAPON;
+    }
+
+    @Override
+    public void fillObject(Profile.Section section) {
+        super.fillObject(section);
+        ObjectFactory.fill(this, section);
     }
 }

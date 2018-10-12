@@ -18,6 +18,7 @@ import ar.com.tamborindeguy.client.systems.physics.PlayerInputSystem;
 import ar.com.tamborindeguy.client.systems.render.ui.CoordinatesRenderingSystem;
 import ar.com.tamborindeguy.client.systems.render.world.*;
 import ar.com.tamborindeguy.client.ui.Inventory;
+import ar.com.tamborindeguy.client.ui.Slot;
 import ar.com.tamborindeguy.client.utils.Skins;
 import ar.com.tamborindeguy.objects.types.Obj;
 import ar.com.tamborindeguy.objects.types.Type;
@@ -107,7 +108,7 @@ public class GameScreen extends WorldScreen {
                 .with(new PhysicsAttackSystem())
                 .with(new MeditateSystem())
                 .with(new DialogSystem(dialog))
-//                .with(new InventorySystem(inventory))
+                .with(new InventorySystem(inventory))
                 // Rendering
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new TiledMapSystem())
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 4, new MapLowerLayerRenderingSystem(this.game.getSpriteBatch()))
@@ -140,13 +141,12 @@ public class GameScreen extends WorldScreen {
 
         float screenW = Gdx.graphics.getWidth();
         float screenH = Gdx.graphics.getHeight();
-        float containerW = Inventory.COLUMNS * 32 * AO.GAME_SCREEN_ZOOM + 30; // 30 for padding
+        float containerW = Inventory.COLUMNS * Slot.SIZE * Inventory.ZOOM;
         dialogContainer.setWidth(containerW);
-        // square for now
-        dialogContainer.setHeight(containerW);
-        dialogContainer.setPosition((screenW - containerW), screenH * 0.5f - (containerW / 2));
+        dialogContainer.setHeight(containerW + 20);
+        dialogContainer.padTop(20);
+        dialogContainer.setPosition((screenW - dialogContainer.getWidth()) - 10, (screenH - dialogContainer.getHeight() - 20) / 2);
         inventory = new Inventory();
-        inventory.setFillParent(true);
         dialogContainer.setActor(inventory);
         return dialogContainer;
     }

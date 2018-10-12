@@ -44,4 +44,24 @@ public class ArmorObj extends ObjWithClasses {
         super.fillObject(section);
         ObjectFactory.fill(this, section);
     }
+
+    public int getBodyNumber() {
+        return bodyNumber;
+    }
+
+    public int getMinDef() {
+        return minDef;
+    }
+
+    public int getMaxDef() {
+        return maxDef;
+    }
+
+    public boolean isWomen() {
+        return women;
+    }
+
+    public boolean isDwarf() {
+        return dwarf;
+    }
 }

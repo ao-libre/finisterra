@@ -1,6 +1,7 @@
 package ar.com.tamborindeguy.objects.types;
 
 import ar.com.tamborindeguy.interfaces.CharClass;
+import ar.com.tamborindeguy.objects.factory.ObjectFactory;
 import org.ini4j.Profile;
 
 import java.util.Set;
@@ -35,7 +36,6 @@ public abstract class ObjWithClasses extends Obj {
                 } catch (NumberFormatException e) {
                     // ignore
                 }
-
             }
         }
     }

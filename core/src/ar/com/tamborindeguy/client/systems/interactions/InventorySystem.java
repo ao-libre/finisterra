@@ -1,9 +1,14 @@
 package ar.com.tamborindeguy.client.systems.interactions;
 
 import ar.com.tamborindeguy.client.handlers.ObjectHandler;
+import ar.com.tamborindeguy.client.screens.GameScreen;
+import ar.com.tamborindeguy.objects.types.ArmorObj;
+import ar.com.tamborindeguy.objects.types.HelmetObj;
 import ar.com.tamborindeguy.objects.types.Obj;
+import ar.com.tamborindeguy.objects.types.WeaponObj;
 import camera.Focused;
 import com.artemis.Aspect;
+import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -19,46 +24,30 @@ import static com.artemis.E.E;
 
 public class InventorySystem extends IteratingSystem {
 
-    private Window inventory;
-    private Map<Inventory.Item, Actor> items = new HashMap<>();
-
     public InventorySystem(Window inventory) {
         super(Aspect.all(Focused.class, Inventory.class));
-        this.inventory = inventory;
     }
 
     @Override
     protected void process(int entityId) {
-        Inventory userInventory = E(entityId).getInventory();
-        ArrayList<Inventory.Item> userItems = userInventory.userItems();
-        // add new items
-//        inventory.clear();
-        final int[] i = new int[]{0};
-        userItems
-                .stream()
-                .filter(item -> !items.containsKey(item))
-                .forEach(item -> {
-                    Optional<Obj> object = ObjectHandler.getObject(item.objId);
-                    object.ifPresent(obj -> {
-                        Image image = new Image(ObjectHandler.getGraphic(obj));
-                        items.put(item, image);
-                        inventory.add(image);
-                        if (i[0] % 5 == 0) {
-                            inventory.row();
-                        }
-                        i[0]++;
-                    });
-                });
+    }
 
-        // remove not present
-        items
-                .keySet()
-                .stream()
-                .filter(item -> !userItems.contains(item))
-                .forEach(item -> {
-                    Actor actor = items.get(item);
-                    items.remove(item);
-                    inventory.removeActor(actor);
-                });
+    // notify server instead of doing here
+    public static void equip(int objId, boolean equipped) {
+        Optional<Obj> object = ObjectHandler.getObject(objId);
+        object.ifPresent(obj -> {
+            int playerId = GameScreen.getPlayer();
+            E entity = E(playerId);
+            if (obj instanceof WeaponObj) {
+                entity.weaponIndex(((WeaponObj) obj).getAnimationId());
+            } else if (obj instanceof ArmorObj) {
+                entity.bodyIndex(((ArmorObj) obj).getBodyNumber());
+            } else if (obj instanceof HelmetObj) {
+                int animationId = ((HelmetObj) obj).getAnimationId();
+                if (animationId != 0) {
+                    entity.helmetIndex(animationId);
+                }
+            }
+        });
     }
 }
