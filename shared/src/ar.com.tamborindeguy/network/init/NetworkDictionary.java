@@ -36,6 +36,7 @@ import net.mostlyoriginal.api.network.marshal.common.MarshalDictionary;
 import network.Network;
 import physics.AOPhysics;
 import physics.Attack;
+import physics.AttackAnimation;
 import position.Pos2D;
 import position.WorldPos;
 
@@ -121,7 +122,8 @@ public class NetworkDictionary extends MarshalDictionary {
                 Moving.class,
                 RandomMovement.class,
                 Network.class,
-                Attack.class
+                Attack.class,
+                AttackAnimation.class
         );
     }
 

@@ -1,12 +1,10 @@
 package ar.com.tamborindeguy.client.ui;
 
 import ar.com.tamborindeguy.client.managers.AOInputProcessor;
-import ar.com.tamborindeguy.client.utils.Skins;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 public class GUI {
 

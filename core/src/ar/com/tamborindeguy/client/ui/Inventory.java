@@ -3,6 +3,7 @@ package ar.com.tamborindeguy.client.ui;
 import ar.com.tamborindeguy.client.handlers.ObjectHandler;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.utils.Skins;
+import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
 import ar.com.tamborindeguy.network.inventory.ItemActionRequest;
 import ar.com.tamborindeguy.objects.types.Obj;
 import com.badlogic.gdx.Gdx;
@@ -32,7 +33,7 @@ public class Inventory extends Window {
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
 
-    public Inventory() {
+    Inventory() {
         super("Inventory", Skins.COMODORE_SKIN, "black");
         setMovable(true);
         padTop(15 * ZOOM);
@@ -98,15 +99,21 @@ public class Inventory extends Window {
                     Item[] userItems = E(GameScreen.getPlayer()).getInventory().items;
                     // notify server
                     getSlot(x, y).ifPresent(target -> {
+                        InventoryUpdate update = new InventoryUpdate(E(GameScreen.getPlayer()).getNetwork().id);
                         int targetIndex = slots.indexOf(target);
+                        int originIndex = slots.indexOf(dragging.get());
+                        Item originItem = userItems[originIndex];
                         if (userItems[targetIndex] != null) {
-                            swap(userItems, slots.indexOf(dragging.get()), targetIndex);
+                            update.add(targetIndex, originItem);
+                            update.add(originIndex, userItems[targetIndex]);
+                            swap(userItems, originIndex, targetIndex);
                         } else {
-                            userItems[targetIndex] = userItems[slots.indexOf(dragging.get())];
+                            update.add(targetIndex, originItem);
+                            userItems[targetIndex] = originItem;
                         }
+                        GameScreen.getClient().sendToAll(update);
                         updateUserInventory();
                     });
-
                 }
                 dragging = Optional.empty();
             }

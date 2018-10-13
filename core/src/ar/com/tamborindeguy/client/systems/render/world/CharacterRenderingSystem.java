@@ -45,7 +45,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         Pos2D screenPos = Util.toScreen(currentPos);
         final Heading heading = player.getHeading();
 
-        new CharacterDrawer(player, heading, screenPos)
+        CharacterDrawer.createDrawer(batch, player, heading, screenPos)
                 .drawBody()
                 .drawHead()
                 .drawHelmet()
@@ -59,7 +59,8 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         return Comparator.comparingInt(entity -> E(entity).getWorldPos().y);
     }
 
-    private class CharacterDrawer {
+    private static class CharacterDrawer {
+        private SpriteBatch batch;
         private E player;
         private Heading heading;
         private Pos2D screenPos;
@@ -68,7 +69,8 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         private float bodyPixelOffsetY;
         private int headOffsetY;
 
-        public CharacterDrawer(E player, Heading heading, Pos2D screenPos) {
+        private CharacterDrawer(SpriteBatch batch, E player, Heading heading, Pos2D screenPos) {
+            this.batch = batch;
             this.player = player;
             this.heading = heading;
             this.screenPos = screenPos;
@@ -76,7 +78,11 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             bodyPixelOffsetY = screenPos.x;
         }
 
-        public CharacterDrawer drawBody() {
+        public static CharacterDrawer createDrawer(SpriteBatch batch, E player, Heading heading, Pos2D screenPos) {
+            return new CharacterDrawer(batch, player, heading, screenPos);
+        }
+
+        CharacterDrawer drawBody() {
             if (player.hasBody()) {
                 final Body body = player.getBody();
                 BodyDescriptor bodyDescriptor = DescriptorHandler.getBodies().get(body.index);
@@ -88,7 +94,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             return this;
         }
 
-        public CharacterDrawer drawHead() {
+        CharacterDrawer drawHead() {
             if (player.hasHead()) {
                 final Head head = player.getHead();
                 BundledAnimation animation = AnimationHandler.getHeadAnimation(head.index, heading.current);
@@ -100,7 +106,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             return this;
         }
 
-        public CharacterDrawer drawHelmet() {
+        CharacterDrawer drawHelmet() {
             if (player.hasHelmet()) {
                 Helmet helmet = player.getHelmet();
                 HelmetDescriptor helmetDescriptor = DescriptorHandler.getHelmet(helmet.index);
@@ -113,24 +119,24 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             return this;
         }
 
-        public CharacterDrawer drawWeapon() {
+        CharacterDrawer drawWeapon() {
             if (player.hasWeapon()) {
                 Weapon weapon = player.getWeapon();
                 BundledAnimation animation = AnimationHandler.getWeaponAnimation(weapon.index, heading.current);
                 if (animation != null) {
-                    TextureRegion weaponRegion = player.isMoving() || player.hasAttack() ? animation.getGraphic() : animation.getGraphic(0);
+                    TextureRegion weaponRegion = player.isMoving() || player.hasAttackAnimation() ? animation.getGraphic() : animation.getGraphic(0);
                     drawTexture(weaponRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, 0);
                 }
             }
             return this;
         }
 
-        public CharacterDrawer drawShield() {
+        CharacterDrawer drawShield() {
             if (player.hasShield()) {
                 Shield shield = player.getShield();
                 BundledAnimation animation = AnimationHandler.getShieldAnimation(shield.index, heading.current);
                 if (animation != null) {
-                    TextureRegion shieldRegion = player.isMoving() ? animation.getGraphic() : player.hasAttack() ? animation.getGraphic(false) : animation.getGraphic(0);
+                    TextureRegion shieldRegion = player.isMoving() || player.hasAttackAnimation() ? animation.getGraphic() : animation.getGraphic(0);
                     drawTexture(shieldRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, 0);
                 }
             }
