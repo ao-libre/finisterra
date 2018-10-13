@@ -6,8 +6,8 @@ import ar.com.tamborindeguy.objects.types.Type;
 
 public class FlowerObj extends Obj {
 
-    public FlowerObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public FlowerObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

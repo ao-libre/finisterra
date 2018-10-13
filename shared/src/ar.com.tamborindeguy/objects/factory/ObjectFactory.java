@@ -27,81 +27,81 @@ public class ObjectFactory {
     public static final String CLAVE = "CLAVE";
     public static final String LINGOTEINDEX = "Lingoteindex";
 
-    public static Obj createObject(int kind, String name, int grhIndex) {
-        return createObject(Type.values()[kind-1], name, grhIndex);
+    public static Obj createObject(int id, int kind, String name, int grhIndex) {
+        return createObject(id, Type.values()[kind-1], name, grhIndex);
     }
-    private static Obj createObject(Type kind, String name, int grhIndex) {
+    private static Obj createObject(int id, Type kind, String name, int grhIndex) {
         switch (kind) {
             case ANVIL:
-                return new AnvilObj(name, grhIndex);
+                return new AnvilObj(id, name, grhIndex);
             case GEM:
-                return new GemObj(name, grhIndex);
+                return new GemObj(id, name, grhIndex);
             case AURA:
             case BOAT:
-                return new BoatObj(name, grhIndex) ;
+                return new BoatObj(id, name, grhIndex) ;
             case BOOK:
-                return new BookObj(name, grhIndex);
+                return new BookObj(id, name, grhIndex);
             case DOOR:
-                return new DoorObj(name, grhIndex);
+                return new DoorObj(id, name, grhIndex);
             case FOOD:
-                return new Food(name, grhIndex);
+                return new Food(id, name, grhIndex);
             case GOLD:
-                return new GoldObj(name, grhIndex);
+                return new GoldObj(id, name, grhIndex);
             case KEYS:
-                return new KeyObj(name, grhIndex);
+                return new KeyObj(id, name, grhIndex);
             case RING:
-                return new MagicObj(name, grhIndex);
+                return new MagicObj(id, name, grhIndex);
             case TREE:
-                return new TreeObj(name, grhIndex);
+                return new TreeObj(id, name, grhIndex);
             case WOOD:
-                return new WoodObj(name, grhIndex);
+                return new WoodObj(id, name, grhIndex);
             case ARMOR:
-                return new ArmorObj(name, grhIndex);
+                return new ArmorObj(id, name, grhIndex);
             case ARROW:
-                return new ArrowObj(name, grhIndex);
+                return new ArrowObj(id, name, grhIndex);
             case DRINK:
-                return new DrinkObj(name, grhIndex);
+                return new DrinkObj(id, name, grhIndex);
             case FORGE:
-                return new ForgeObj(name, grhIndex);
+                return new ForgeObj(id, name, grhIndex);
             case FORUM:
-                return new ForumObj(name, grhIndex);
+                return new ForumObj(id, name, grhIndex);
             case JEWEL:
-                return new JewelObj(name, grhIndex);
+                return new JewelObj(id, name, grhIndex);
             case METAL:
-                return new MineralObj(name, grhIndex);
+                return new MineralObj(id, name, grhIndex);
             case SPELL:
-                return new SpellObj(name, grhIndex);
+                return new SpellObj(id, name, grhIndex);
             case STAIN:
-                return new StainObj(name, grhIndex);
+                return new StainObj(id, name, grhIndex);
             case BOTTLE:
-                return new DrinkObj(name, grhIndex);
+                return new DrinkObj(id, name, grhIndex);
             case FLOWER:
-                return new FlowerObj(name, grhIndex);
+                return new FlowerObj(id, name, grhIndex);
             case HELMET:
-                return new HelmetObj(name, grhIndex);
+                return new HelmetObj(id, name, grhIndex);
             case POSTER:
-                return new PosterObj(name, grhIndex);
+                return new PosterObj(id, name, grhIndex);
             case POTION:
-                return new PotionObj(name, grhIndex);
+                return new PotionObj(id, name, grhIndex);
             case SHIELD:
-                return new ShieldObj(name, grhIndex);
+                return new ShieldObj(id, name, grhIndex);
             case WEAPON:
-                return new WeaponObj(name, grhIndex);
+                return new WeaponObj(id, name, grhIndex);
             case BONFIRE:
-                return new BonfireObj(name, grhIndex);
+                return new BonfireObj(id, name, grhIndex);
             case DEPOSIT:
-                return new DepositObj(name, grhIndex);
+                return new DepositObj(id, name, grhIndex);
             case MUSICAL:
-                return new MusicalObj(name, grhIndex);
+                return new MusicalObj(id, name, grhIndex);
             case TELEPORT:
-                return new TeleportObj(name, grhIndex);
+                return new TeleportObj(id, name, grhIndex);
             case CONTAINER:
-                return new ContainerObj(name, grhIndex);
+                return new ContainerObj(id, name, grhIndex);
             case FURNITURE:
-                return new FurnitureObj(name, grhIndex);
+                return new FurnitureObj(id, name, grhIndex);
             case EMPTY_BOTTLE:
                 default:
-                    return new Obj(name, grhIndex) {
+                    return new Obj(id, name, grhIndex) {
                         @Override
                         public Type getType() {
                             return null;

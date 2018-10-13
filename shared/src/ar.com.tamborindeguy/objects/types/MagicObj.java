@@ -39,8 +39,8 @@ public class MagicObj extends ObjWithClasses {
         this.minHit = minHit;
     }
 
-    public MagicObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public MagicObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

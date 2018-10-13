@@ -112,7 +112,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 Weapon weapon = player.getWeapon();
                 BundledAnimation animation = AnimationHandler.getWeaponAnimation(weapon.index, heading.current);
                 if (animation != null) {
-                    TextureRegion weaponRegion = player.isMoving() ? animation.getGraphic() : animation.getGraphic(0);
+                    TextureRegion weaponRegion = player.isMoving() || player.hasAttack() ? animation.getGraphic() : animation.getGraphic(0);
                     drawTexture(weaponRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, 0);
                 }
             }
@@ -124,7 +124,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 Shield shield = player.getShield();
                 BundledAnimation animation = AnimationHandler.getShieldAnimation(shield.index, heading.current);
                 if (animation != null) {
-                    TextureRegion shieldRegion = player.isMoving() ? animation.getGraphic() : animation.getGraphic(0);
+                    TextureRegion shieldRegion = player.isMoving() ? animation.getGraphic() : player.hasAttack() ? animation.getGraphic(false) : animation.getGraphic(0);
                     drawTexture(shieldRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, 0);
                 }
             }

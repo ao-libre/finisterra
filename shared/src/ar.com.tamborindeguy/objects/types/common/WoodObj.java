@@ -5,8 +5,8 @@ import ar.com.tamborindeguy.objects.types.Type;
 
 public class WoodObj extends Obj {
 
-    public WoodObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public WoodObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

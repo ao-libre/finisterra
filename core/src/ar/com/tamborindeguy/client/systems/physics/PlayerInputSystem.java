@@ -33,7 +33,6 @@ public class PlayerInputSystem extends IteratingSystem {
 
         if (!player.hasAttack() || player.getAttack().interval - world.getDelta() <= 0) {
             if (Gdx.input.isKeyJustPressed(Keys.ATTACK_1) || Gdx.input.isKeyJustPressed(Keys.ATTACK_2)) {
-                // TODO user want to attack
                 GameScreen.getClient().sendToAll(new AttackRequest(AttackType.PHYSICAL));
                 player.attackInterval();
             }

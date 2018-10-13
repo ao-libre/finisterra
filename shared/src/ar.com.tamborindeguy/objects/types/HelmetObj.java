@@ -40,8 +40,8 @@ public class HelmetObj extends ObjWithClasses {
     private int animationId;
     private int minDef, maxDef;
 
-    public HelmetObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public HelmetObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

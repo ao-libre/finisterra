@@ -41,8 +41,8 @@ public class ShieldObj extends ObjWithClasses {
         this.bodyNumber = bodyNumber;
     }
 
-    public ShieldObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public ShieldObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

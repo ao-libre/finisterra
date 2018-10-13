@@ -5,8 +5,8 @@ import ar.com.tamborindeguy.objects.types.Obj;
 import ar.com.tamborindeguy.objects.types.Type;
 
 public class ForgeObj extends Obj {
-    public ForgeObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public ForgeObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

@@ -7,8 +7,8 @@ public class MusicalObj extends Obj {
 
     private Set<Integer> soundIndexs = new HashSet<>();
 
-    public MusicalObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public MusicalObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

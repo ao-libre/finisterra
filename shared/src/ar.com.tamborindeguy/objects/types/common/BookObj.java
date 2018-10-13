@@ -5,8 +5,8 @@ import ar.com.tamborindeguy.objects.types.Obj;
 import ar.com.tamborindeguy.objects.types.Type;
 
 public class BookObj extends Obj {
-    public BookObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public BookObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

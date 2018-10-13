@@ -5,6 +5,7 @@ import org.ini4j.Profile;
 
 public abstract class Obj implements IFillObject {
 
+    private int id;
     private final String name;
     private final int grhIndex;
     private boolean collectable;
@@ -13,7 +14,8 @@ public abstract class Obj implements IFillObject {
     private boolean newbie;
     private boolean notDrop;
 
-    protected Obj(String name, int grhIndex) {
+    protected Obj(int id, String name, int grhIndex) {
+        this.id = id;
         this.name = name;
         this.grhIndex = grhIndex;
     }
@@ -71,6 +73,10 @@ public abstract class Obj implements IFillObject {
     @Override
     public void fillObject(Profile.Section section) {
         ObjectFactory.fillCommon(this, section);
+    }
+
+    public int getId() {
+        return id;
     }
 }
 

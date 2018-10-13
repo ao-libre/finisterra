@@ -3,8 +3,8 @@ package ar.com.tamborindeguy.objects.types;
 public class MineralObj extends Obj {
     private int ingotIndex;
 
-    public MineralObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public MineralObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

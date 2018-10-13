@@ -6,10 +6,8 @@ import ar.com.tamborindeguy.objects.types.Type;
 
 public class ForumObj extends Obj {
 
-    private String id;
-
-    public ForumObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public ForumObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override
