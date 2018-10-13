@@ -1,7 +1,9 @@
 package ar.com.tamborindeguy.client.systems.render.world;
 
+import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
 import ar.com.tamborindeguy.client.systems.OrderedEntityProcessingSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
+import ar.com.tamborindeguy.model.descriptors.BodyDescriptor;
 import ar.com.tamborindeguy.model.map.Tile;
 import ar.com.tamborindeguy.util.Util;
 import com.artemis.Aspect;
@@ -10,6 +12,7 @@ import com.artemis.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
+import entity.Body;
 import entity.CombatMessage;
 import position.Pos2D;
 
@@ -25,7 +28,7 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
     private CameraSystem cameraSystem;
 
     public CombatRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(CombatMessage.class, Pos2D.class));
+        super(Aspect.all(CombatMessage.class, Body.class, Pos2D.class));
         this.batch = batch;
     }
 
@@ -55,9 +58,10 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
 
             dialogLayout.setText(COMBAT_FONT, combatMessage.text);
             float width = dialogLayout.width;
-            dialogLayout.setText(COMBAT_FONT, combatMessage.text, COMBAT_FONT.getColor(), width, Align.center, true);
-            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH / 2) - 4;
-            final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y - combatMessage.offset + 40 + dialogLayout.height; //40 should be the Y offset of the entity
+            dialogLayout.setText(COMBAT_FONT, combatMessage.text, COMBAT_FONT.getColor(), width, Align.left, true);
+            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - Tile.TILE_PIXEL_WIDTH;
+            int bodyOffset = 40 - DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
+            final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y - combatMessage.offset + bodyOffset + dialogLayout.height; //40 should be the Y offset of the entity
             COMBAT_FONT.draw(batch, dialogLayout, fontX, fontY);
 
             batch.end();

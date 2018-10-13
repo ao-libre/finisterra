@@ -1,12 +1,12 @@
 package ar.com.tamborindeguy.model.readers;
 
-import ar.com.tamborindeguy.model.Objects;
 import ar.com.tamborindeguy.model.map.Map;
+import ar.com.tamborindeguy.objects.types.Obj;
 
 public interface DescriptorsReader {
 
     Map loadMap(String map);
 
-    Objects loadObjects(String objects);
+    java.util.Map<Integer, Obj> loadObjects(String objects);
 
 }

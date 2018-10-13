@@ -109,7 +109,6 @@ public class MapManager {
             ar.com.tamborindeguy.model.map.Map map = getJson().fromJson(ar.com.tamborindeguy.model.map.Map.class, mapStream);
             maps.put(i, map);
         }
-        Log.info("Finish loading maps");
     }
 
     private static Json getJson() {

@@ -5,6 +5,7 @@ import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
 import ar.com.tamborindeguy.client.systems.OrderedEntityProcessingSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
 import ar.com.tamborindeguy.model.descriptors.BodyDescriptor;
+import ar.com.tamborindeguy.model.descriptors.HelmetDescriptor;
 import ar.com.tamborindeguy.model.textures.BundledAnimation;
 import ar.com.tamborindeguy.util.Util;
 import com.artemis.Aspect;
@@ -20,7 +21,6 @@ import position.Pos2D;
 import java.util.Comparator;
 
 import static com.artemis.E.E;
-
 
 @Wire
 public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
@@ -83,7 +83,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 headOffsetY = bodyDescriptor.getHeadOffsetY();
                 BundledAnimation animation = AnimationHandler.getBodyAnimation(body.index, heading.current);
                 TextureRegion bodyRegion = player.isMoving() ? animation.getGraphic() : animation.getGraphic(0);
-                drawTexture(bodyRegion, bodyPixelOffsetX, bodyPixelOffsetY = screenPos.y - (bodyRegion.getRegionHeight() - 32.0f) - 32.0f, 0, 0);
+                drawTexture(bodyRegion, bodyPixelOffsetX, bodyPixelOffsetY = screenPos.y - (bodyRegion.getRegionHeight() - 32.0f) - 32.0f, 0, 0); // why - 32 - 32 ?
             }
             return this;
         }
@@ -94,7 +94,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 BundledAnimation animation = AnimationHandler.getHeadAnimation(head.index, heading.current);
                 if (animation != null) {
                     TextureRegion headRegion = animation.getGraphic();
-                    drawTexture(headRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, headOffsetY - 4);
+                    drawTexture(headRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, headOffsetY - 4); // why 4?
                 }
             }
             return this;
@@ -103,6 +103,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         public CharacterDrawer drawHelmet() {
             if (player.hasHelmet()) {
                 Helmet helmet = player.getHelmet();
+                HelmetDescriptor helmetDescriptor = DescriptorHandler.getHelmet(helmet.index);
                 BundledAnimation animation = AnimationHandler.getHelmetsAnimation(helmet.index, heading.current);
                 if (animation != null) {
                     TextureRegion helmetRegion = animation.getGraphic();

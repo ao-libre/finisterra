@@ -29,7 +29,7 @@ public class SurfaceHandler implements Constants {
 
     public static void loadTexture(String fileName) {
         Texture texture = new Texture(graphicsPath + fileName + AO.GAME_GRAPHICS_EXTENSION);
-        texture.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+        texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         texture.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
         SurfaceHandler.add(fileName, texture);
     }

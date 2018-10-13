@@ -20,6 +20,7 @@ import ar.com.tamborindeguy.interfaces.Constants;
 import ar.com.tamborindeguy.model.map.Map;
 import ar.com.tamborindeguy.model.map.Tile;
 import ar.com.tamborindeguy.model.map.WorldPosition;
+import ar.com.tamborindeguy.model.readers.Loader;
 import ar.com.tamborindeguy.util.Util;
 
 import java.io.DataInputStream;

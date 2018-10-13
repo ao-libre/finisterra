@@ -4,6 +4,7 @@ import ar.com.tamborindeguy.client.managers.WorldManager;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.network.interfaces.INotification;
 import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
+import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
 import com.artemis.Component;
@@ -11,6 +12,7 @@ import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.esotericsoftware.minlog.Log;
+import entity.character.info.Inventory;
 import position.WorldPos;
 
 import static com.artemis.E.E;
@@ -38,6 +40,16 @@ public class ClientNotificationProcessor implements INotificationProcessor {
     public void processNotification(RemoveEntity removeEntity) {
         Log.debug("Unregistering entity: " + removeEntity.entityId);
         WorldManager.unregisterEntity(removeEntity.entityId);
+    }
+
+    @Override
+    public void processNotification(InventoryUpdate inventoryUpdate) {
+        E player = E(GameScreen.getPlayer());
+        Inventory inventory = player.getInventory();
+        inventoryUpdate.getUpdates().forEach((position, item) -> {
+            inventory.set(position, item);
+        });
+        GameScreen.inventory.updateUserInventory();
     }
 
     private void addComponentsToEntity(Entity newEntity, EntityUpdate entityUpdate) {

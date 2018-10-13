@@ -1,9 +1,11 @@
 package ar.com.tamborindeguy.client.game;
 
+import ar.com.tamborindeguy.client.managers.AOInputProcessor;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.screens.LoginScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 

@@ -1,5 +1,6 @@
 package ar.com.tamborindeguy.client.systems.render.world;
 
+import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
 import ar.com.tamborindeguy.client.systems.OrderedEntityProcessingSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
 import ar.com.tamborindeguy.model.map.Tile;
@@ -11,6 +12,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
+import entity.Body;
 import entity.Dialog;
 import position.Pos2D;
 
@@ -28,7 +30,7 @@ public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
     private CameraSystem cameraSystem;
 
     public DialogRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(Dialog.class, Pos2D.class));
+        super(Aspect.all(Dialog.class, Body.class, Pos2D.class));
         this.batch = batch;
     }
 
@@ -54,7 +56,8 @@ public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
             float width = Math.min(dialogLayout.width, MAX_LENGTH);
             dialogLayout.setText(DIALOG_FONT, dialog.text, DIALOG_FONT.getColor(), width, Align.center, true);
             final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (width / 2) - (Tile.TILE_PIXEL_WIDTH / 2) - 4;
-            final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y + 60 + dialogLayout.height;
+            int offsetY = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
+            final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y + 55 - offsetY + dialogLayout.height;
             DIALOG_FONT.draw(batch, dialogLayout, fontX, fontY);
 
             batch.end();
