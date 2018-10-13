@@ -1,8 +1,10 @@
 package ar.com.tamborindeguy.client.systems.render.world;
 
 import ar.com.tamborindeguy.client.handlers.AnimationHandler;
+import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
 import ar.com.tamborindeguy.client.systems.OrderedEntityProcessingSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
+import ar.com.tamborindeguy.model.descriptors.BodyDescriptor;
 import ar.com.tamborindeguy.model.textures.BundledAnimation;
 import ar.com.tamborindeguy.util.Util;
 import com.artemis.Aspect;
@@ -64,6 +66,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
 
         private float bodyPixelOffsetX;
         private float bodyPixelOffsetY;
+        private int headOffsetY;
 
         public CharacterDrawer(E player, Heading heading, Pos2D screenPos) {
             this.player = player;
@@ -76,6 +79,8 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         public CharacterDrawer drawBody() {
             if (player.hasBody()) {
                 final Body body = player.getBody();
+                BodyDescriptor bodyDescriptor = DescriptorHandler.getBodies().get(body.index);
+                headOffsetY = bodyDescriptor.getHeadOffsetY();
                 BundledAnimation animation = AnimationHandler.getBodyAnimation(body.index, heading.current);
                 TextureRegion bodyRegion = player.isMoving() ? animation.getGraphic() : animation.getGraphic(0);
                 drawTexture(bodyRegion, bodyPixelOffsetX, bodyPixelOffsetY = screenPos.y - (bodyRegion.getRegionHeight() - 32.0f) - 32.0f, 0, 0);
@@ -89,7 +94,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 BundledAnimation animation = AnimationHandler.getHeadAnimation(head.index, heading.current);
                 if (animation != null) {
                     TextureRegion headRegion = animation.getGraphic();
-                    drawTexture(headRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, -8.0f);
+                    drawTexture(headRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, headOffsetY - 4);
                 }
             }
             return this;
@@ -101,7 +106,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 BundledAnimation animation = AnimationHandler.getHelmetsAnimation(helmet.index, heading.current);
                 if (animation != null) {
                     TextureRegion helmetRegion = animation.getGraphic();
-                    drawTexture(helmetRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, -8.0f);
+                    drawTexture(helmetRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, headOffsetY - 4);
                 }
             }
             return this;
