@@ -5,6 +5,8 @@ import ar.com.tamborindeguy.database.model.User;
 import ar.com.tamborindeguy.network.NetworkComunicator;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
+import ar.com.tamborindeguy.objects.types.Obj;
+import ar.com.tamborindeguy.objects.types.Type;
 import ar.com.tamborindeguy.utils.WorldUtils;
 import com.artemis.Component;
 import com.artemis.Entity;
@@ -13,6 +15,7 @@ import com.esotericsoftware.minlog.Log;
 import entity.Heading;
 
 import java.util.List;
+import java.util.Set;
 
 import static com.artemis.E.E;
 
@@ -52,7 +55,22 @@ public class WorldManager {
                 .canWrite()
                 .networkId(player.getId())
                 .aOPhysics();
+        E(player).inventory();
+        addItem(player.getId(), Type.HELMET);
+        addItem(player.getId(), Type.ARMOR);
+        addItem(player.getId(), Type.WEAPON);
+        addItem(player.getId(), Type.SHIELD);
+        addItem(player.getId(), Type.RING);
+        ObjectManager.getTypeObjects(Type.POTION).forEach(potion -> {
+            E(player).getInventory().add(potion.getId());
+        });
         return player;
+    }
+
+
+    private static void addItem(int player, Type type) {
+        Set<Obj> objs = ObjectManager.getTypeObjects(type);
+        E(player).getInventory().add(objs.iterator().next().getId());
     }
 
     public static void registerEntity(int connectionId, int id) {

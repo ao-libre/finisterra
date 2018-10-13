@@ -4,36 +4,47 @@ import com.artemis.Component;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class Inventory extends Component {
-    public ArrayList<Item> items = new ArrayList<>(20);
+    public Item[] items = new Item[20];
 
-    public Inventory(){}
+    public Inventory() {
+    }
+
+    public void set(int i, Item item) {
+        items[i] =  item;
+    }
 
     public void add(int objId) {
-        add(objId, 1);
+        add(objId,1);
     }
 
     public void add(int objId, int count) {
-        items.add(new Item(objId, count));
+        for (int i = 0; i < 20; i++) {
+            if (items[i] == null) {
+                items[i] = new Item(objId, count);
+                return;
+            } else if (items[i].objId == objId) {
+                items[i].count += count;
+                return;
+            }
+        }
+        // TODO notify no space
     }
 
-    public void remove(int objId) {
-        remove(objId, 1);
+    public void remove(int position) {
+        items[position] = null;
     }
 
     public void remove(int objId, int count) {
-        Optional<Item> item = items.stream().filter(it -> it.objId == objId).findFirst();
+        Optional<Item> item = Stream.of(items).filter(it -> it.objId == objId).findFirst();
         item.ifPresent(it -> {
-            if (it.count <= count) {
-                items.remove(it);
-            } else {
-                it.count -= count;
-            }
+            it.count -= count;
         });
     }
 
-    public ArrayList<Item> userItems() {
+    public Item[] userItems() {
         return items;
     }
 
@@ -42,6 +53,7 @@ public class Inventory extends Component {
         public int objId;
         public boolean equipped;
 
+        public Item(){}
         public Item(int objId, int count) {
             this.objId = objId;
             this.count = count;

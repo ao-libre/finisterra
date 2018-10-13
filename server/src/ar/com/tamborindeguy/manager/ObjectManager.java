@@ -1,25 +1,22 @@
-package ar.com.tamborindeguy.client.handlers;
+package ar.com.tamborindeguy.manager;
 
-import ar.com.tamborindeguy.model.readers.AODescriptorsReader;
+import ar.com.tamborindeguy.database.ServerDescriptorReader;
 import ar.com.tamborindeguy.model.readers.DescriptorsReader;
-import ar.com.tamborindeguy.model.textures.GameTexture;
 import ar.com.tamborindeguy.objects.types.Obj;
 import ar.com.tamborindeguy.objects.types.Type;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.esotericsoftware.minlog.Log;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ObjectHandler {
-
-    private static DescriptorsReader reader = new AODescriptorsReader();
+public class ObjectManager {
+    private static DescriptorsReader reader = new ServerDescriptorReader();
     private static Map<Integer, Obj> objects;
-    private static Map<Obj, GameTexture> textures = new HashMap<>();
 
     public static void load() {
+        Log.info("Loading objects...");
         objects = reader.loadObjects("obj");
     }
 
@@ -27,12 +24,7 @@ public class ObjectHandler {
         return Optional.of(objects.get(id));
     }
 
-    public static TextureRegion getGraphic(Obj obj) {
-        return textures.computeIfAbsent(obj, presentObj -> new GameTexture(presentObj.getGrhIndex(), false)).getGraphic();
-    }
-
     public static Set<Obj> getTypeObjects(Type type) {
         return objects.values().stream().filter(obj -> obj.getType().equals(type)).collect(Collectors.toSet());
     }
-
 }

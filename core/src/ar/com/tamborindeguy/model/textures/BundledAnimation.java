@@ -54,7 +54,7 @@ public class BundledAnimation {
                 index++;
             }
 
-            this.setAnimation(new Animation<TextureRegion>(graphic.getSpeed() / 3340.0f, textures));
+            this.setAnimation(new Animation<>(graphic.getSpeed() / 3340.0f, textures));
             this.animated = true;
 
         } else {

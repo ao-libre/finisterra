@@ -18,12 +18,12 @@
  */
 package ar.com.tamborindeguy.model.readers;
 
-import ar.com.tamborindeguy.model.loaders.Loader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class Reader<T> {
 
@@ -38,6 +38,16 @@ public class Reader<T> {
             return loadedFile;
         } catch (IOException e) {
             Gdx.app.log(this.getClass().getSimpleName(), "Failed to load [Reader] Asset " + path);
+            return null;
+        }
+    }
+
+    public T read(InputStream is, Loader<T> loader) {
+        try {
+            T loadedFile = loader.load(new DataInputStream(is));
+            return loadedFile;
+        } catch (IOException e) {
+            Gdx.app.log(this.getClass().getSimpleName(), "Failed to load object input stream " + is.toString());
             return null;
         }
     }

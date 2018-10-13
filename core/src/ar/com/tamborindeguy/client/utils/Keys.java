@@ -9,10 +9,13 @@ public class Keys {
     public static int MEDITATE = Input.Keys.M;
     public static int USE = Input.Keys.U;
     public static int HIDE = Input.Keys.O;
+    public static final int INVENTORY = Input.Keys.I;
+
 
     public static int MOVE_LEFT = Input.Keys.LEFT;
     public static int MOVE_RIGHT = Input.Keys.RIGHT;
     public static int MOVE_UP = Input.Keys.UP;
     public static int MOVE_DOWN = Input.Keys.DOWN;
+
 
 }

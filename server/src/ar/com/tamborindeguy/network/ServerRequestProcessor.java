@@ -7,6 +7,7 @@ import ar.com.tamborindeguy.manager.WorldManager;
 import ar.com.tamborindeguy.network.combat.AttackRequest;
 import ar.com.tamborindeguy.network.interfaces.IRequestProcessor;
 import ar.com.tamborindeguy.network.interfaces.IResponse;
+import ar.com.tamborindeguy.network.inventory.ItemAction;
 import ar.com.tamborindeguy.network.login.LoginFailed;
 import ar.com.tamborindeguy.network.login.LoginOK;
 import ar.com.tamborindeguy.network.login.LoginRequest;
@@ -18,7 +19,6 @@ import ar.com.tamborindeguy.utils.WorldUtils;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.Entity;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import entity.Heading;
 import position.WorldPos;
 
@@ -112,6 +112,11 @@ public class ServerRequestProcessor implements IRequestProcessor {
         } else {
             CombatManager.notify(playerId, CombatManager.MISS);
         }
+    }
+
+    @Override
+    public void processRequest(ItemAction itemAction, int connectionId) {
+        itemAction.getObjectId();
     }
 
 }

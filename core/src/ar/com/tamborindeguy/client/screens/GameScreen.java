@@ -2,6 +2,7 @@ package ar.com.tamborindeguy.client.screens;
 
 import ar.com.tamborindeguy.client.game.AO;
 import ar.com.tamborindeguy.client.handlers.ObjectHandler;
+import ar.com.tamborindeguy.client.managers.AOInputProcessor;
 import ar.com.tamborindeguy.client.systems.anim.MovementAnimationSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraFocusSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraMovementSystem;
@@ -28,6 +29,7 @@ import com.artemis.WorldConfigurationBuilder;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -47,7 +49,7 @@ public class GameScreen extends WorldScreen {
     public static int player;
     private Stage stage;
     private Table dialog;
-    private static Inventory inventory;
+    public static Inventory inventory;
 
     public GameScreen(AO game, ClientSystem client) {
         super(game);
@@ -61,26 +63,7 @@ public class GameScreen extends WorldScreen {
 
     public static void setPlayer(int player) {
         GameScreen.player = player;
-        // random inventory
-        E(player).inventory();
-        addItem(player, Type.HELMET);
-        addItem(player, Type.ARMOR);
-        addItem(player, Type.WEAPON);
-        addItem(player, Type.SHIELD);
-        addItem(player, Type.RING);
-        ObjectHandler.getTypeObjects(Type.POTION).ifPresent(potions -> {
-            potions.stream().mapToInt(Obj::getId).forEach(id -> {
-                E(player).getInventory().add(id);
-            });
-        });
-        inventory.updateUserInventory(player);
-    }
-
-    private static void addItem(int player, Type type) {
-        Optional<Set<Obj>> objs = ObjectHandler.getTypeObjects(type);
-        objs.ifPresent(candidates -> {
-            E(player).getInventory().add(candidates.iterator().next().getId());
-        });
+        inventory.updateUserInventory();
     }
 
     public static World getWorld() {
@@ -140,7 +123,7 @@ public class GameScreen extends WorldScreen {
 
     @Override
     protected void initScene() {
-        stage = new Stage();
+        stage = new AOInputProcessor();
         Container<Table> dialogContainer = createDialogContainer();
         stage.addActor(dialogContainer);
         stage.addActor(createInventory());
@@ -153,8 +136,7 @@ public class GameScreen extends WorldScreen {
         float screenH = Gdx.graphics.getHeight();
         float containerW = Inventory.COLUMNS * Slot.SIZE * Inventory.ZOOM;
         dialogContainer.setWidth(containerW);
-        dialogContainer.setHeight(containerW + 20);
-        dialogContainer.padTop(20);
+        dialogContainer.setHeight(Inventory.ROWS * Slot.SIZE * Inventory.ZOOM);
         dialogContainer.setPosition((screenW - dialogContainer.getWidth()) - 10, (screenH - dialogContainer.getHeight() - 20) / 2);
         inventory = new Inventory();
         dialogContainer.setActor(inventory);
