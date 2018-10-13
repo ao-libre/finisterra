@@ -3,8 +3,8 @@ package ar.com.tamborindeguy.objects.types;
 public class Food extends Obj {
     private int min;
 
-    public Food(String name, int grhIndex) {
-        super(name, grhIndex);
+    public Food(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

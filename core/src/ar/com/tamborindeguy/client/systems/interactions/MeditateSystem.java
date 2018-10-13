@@ -1,6 +1,7 @@
 package ar.com.tamborindeguy.client.systems.interactions;
 
 import ar.com.tamborindeguy.client.handlers.ParticlesHandler;
+import ar.com.tamborindeguy.client.utils.Keys;
 import camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
@@ -28,7 +29,7 @@ public class MeditateSystem extends IteratingSystem {
 
     @Override
     protected void process(int entityId) {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+        if (Gdx.input.isKeyJustPressed(Keys.MEDITATE)) {
             boolean meditating = E(entityId).hasMeditating();
             if (meditating) {
                 stopMeditating(E(entityId));

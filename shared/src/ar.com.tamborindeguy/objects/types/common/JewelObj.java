@@ -5,8 +5,8 @@ import ar.com.tamborindeguy.objects.types.Obj;
 import ar.com.tamborindeguy.objects.types.Type;
 
 public class JewelObj extends Obj {
-    public JewelObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public JewelObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

@@ -6,8 +6,8 @@ import ar.com.tamborindeguy.objects.types.Type;
 
 public class ContainerObj extends Obj {
 
-    public ContainerObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public ContainerObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

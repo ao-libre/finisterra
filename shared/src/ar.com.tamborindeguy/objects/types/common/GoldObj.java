@@ -5,8 +5,8 @@ import ar.com.tamborindeguy.objects.types.Obj;
 import ar.com.tamborindeguy.objects.types.Type;
 
 public class GoldObj extends Obj {
-    public GoldObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public GoldObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

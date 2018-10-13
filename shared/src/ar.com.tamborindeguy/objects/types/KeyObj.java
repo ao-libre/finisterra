@@ -4,8 +4,8 @@ public class KeyObj extends Obj {
 
     private int key;
 
-    public KeyObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public KeyObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

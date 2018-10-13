@@ -10,8 +10,8 @@ public abstract class ObjWithClasses extends Obj {
 
     private Set<CharClass> allowedClasses;
 
-    public ObjWithClasses(String name, int grhIndex) {
-        super(name, grhIndex);
+    public ObjWithClasses(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     public void addClass(CharClass charClass){

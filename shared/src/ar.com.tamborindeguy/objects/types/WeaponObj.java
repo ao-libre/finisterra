@@ -41,8 +41,8 @@ public class WeaponObj extends ObjWithClasses {
         this.maxHit = maxHit;
     }
 
-    public WeaponObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public WeaponObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

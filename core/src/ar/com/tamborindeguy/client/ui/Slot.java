@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.Optional;
 
+import static entity.character.info.Inventory.*;
+
 public class Slot extends Actor {
 
     public static final int SIZE = 34;
@@ -18,56 +20,53 @@ public class Slot extends Actor {
     private static Texture background = new Texture(Gdx.files.local("data/ui/images/slot-background.png"));
     private static Texture equip = new Texture(Gdx.files.local("data/ui/images/slot-equipped.png"));
 
-    private int objId = -1;
-    private int count;
+    private Optional<Item> item = Optional.empty();
 
     private boolean selected;
     private boolean equipped;
 
-    public Slot() {
-        this(-1, 0);
-    }
+    public Slot() {}
 
-    public Slot(int objId) {
-        this(objId, 1);
-    }
-
-    public Slot(int objId, int count) {
-        this.objId = objId;
-        this.count = count;
+    public Slot(Item item) {
+        this.item = Optional.of(item);
     }
 
     public int getObjId() {
-        return objId;
-    }
-
-    public void setObjId(int objId) {
-        this.objId = objId;
+        return item.isPresent() ? item.get().objId : -1;
     }
 
     public int getCount() {
-        return count;
+        return item.isPresent() ? item.get().count : 0;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setItem(Item item){
+        this.item = Optional.ofNullable(item);
+    }
+
+    public Optional<Item> getItem() {
+        return item;
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         drawTexture(batch, background);
-        Optional<Obj> object = ObjectHandler.getObject(objId);
-        object.ifPresent(obj -> {
-            TextureRegion graphic = ObjectHandler.getGraphic(obj);
-            drawScaled(batch, graphic, 1, 1);
-//            batch.draw(graphic, getX() + 1, getY() + 1);
-        });
+        if (item.isPresent()) {
+            drawItem(batch);
+            if (item.get().equipped) {
+                drawTexture(batch, equip);
+            }
+        }
         if (selected) {
             drawTexture(batch, selection);
         }
-        if (equipped) {
-            drawTexture(batch, equip);
-        }
+    }
+
+    private void drawItem(Batch batch) {
+        Optional<Obj> object = ObjectHandler.getObject(getObjId());
+        object.ifPresent(obj -> {
+            TextureRegion graphic = ObjectHandler.getGraphic(obj);
+            drawScaled(batch, graphic, 1, 1);
+        });
     }
 
     private void drawTexture(Batch batch, Texture texture) {
@@ -82,11 +81,4 @@ public class Slot extends Actor {
         this.selected = selected;
     }
 
-    public void toggleEquipped() {
-        this.equipped = !equipped;
-    }
-
-    public boolean isEquipped() {
-        return equipped;
-    }
 }

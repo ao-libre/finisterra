@@ -6,8 +6,8 @@ public class PotionObj extends Obj {
     private int min,max;
     private int effecTime;
 
-    public PotionObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public PotionObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     public Kind getKind() {

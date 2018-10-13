@@ -5,8 +5,8 @@ import ar.com.tamborindeguy.objects.types.Obj;
 import ar.com.tamborindeguy.objects.types.Type;
 
 public class FurnitureObj extends Obj {
-    public FurnitureObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public FurnitureObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

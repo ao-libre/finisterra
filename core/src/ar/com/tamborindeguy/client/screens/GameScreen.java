@@ -19,7 +19,6 @@ import ar.com.tamborindeguy.client.systems.render.ui.CoordinatesRenderingSystem;
 import ar.com.tamborindeguy.client.systems.render.world.*;
 import ar.com.tamborindeguy.client.ui.Inventory;
 import ar.com.tamborindeguy.client.ui.Slot;
-import ar.com.tamborindeguy.client.utils.Skins;
 import ar.com.tamborindeguy.objects.types.Obj;
 import ar.com.tamborindeguy.objects.types.Type;
 import com.artemis.Entity;
@@ -30,15 +29,14 @@ import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.artemis.E.E;
 
@@ -63,14 +61,26 @@ public class GameScreen extends WorldScreen {
 
     public static void setPlayer(int player) {
         GameScreen.player = player;
+        // random inventory
         E(player).inventory();
-        Optional<Set<Obj>> helmets = ObjectHandler.getTypeObjects(Type.HELMET);
-        helmets.ifPresent(allHelmets -> {
-            allHelmets.forEach(helmet -> {
-                E(player).getInventory().add(ObjectHandler.getObjectId(helmet).get());
+        addItem(player, Type.HELMET);
+        addItem(player, Type.ARMOR);
+        addItem(player, Type.WEAPON);
+        addItem(player, Type.SHIELD);
+        addItem(player, Type.RING);
+        ObjectHandler.getTypeObjects(Type.POTION).ifPresent(potions -> {
+            potions.stream().mapToInt(Obj::getId).forEach(id -> {
+                E(player).getInventory().add(id);
             });
         });
-        inventory.fillUserInventory(player);
+        inventory.updateUserInventory(player);
+    }
+
+    private static void addItem(int player, Type type) {
+        Optional<Set<Obj>> objs = ObjectHandler.getTypeObjects(type);
+        objs.ifPresent(candidates -> {
+            E(player).getInventory().add(candidates.iterator().next().getId());
+        });
     }
 
     public static World getWorld() {

@@ -7,8 +7,8 @@ public class ArrowObj extends ObjWithClasses {
 
     private int minHit, maxHit;
 
-    public ArrowObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public ArrowObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     public int getMinHit() {

@@ -5,8 +5,8 @@ import ar.com.tamborindeguy.objects.types.Obj;
 import ar.com.tamborindeguy.objects.types.Type;
 
 public class StainObj extends Obj {
-    public StainObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public StainObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

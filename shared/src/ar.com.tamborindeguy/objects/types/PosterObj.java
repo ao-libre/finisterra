@@ -5,8 +5,8 @@ public class PosterObj extends Obj {
     private String text;
     private int big;
 
-    public PosterObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public PosterObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

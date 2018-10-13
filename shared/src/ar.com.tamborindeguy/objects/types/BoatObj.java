@@ -1,8 +1,8 @@
 package ar.com.tamborindeguy.objects.types;
 
 public class BoatObj extends Obj{
-    public BoatObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public BoatObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     public int getBodyIndex() {

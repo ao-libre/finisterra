@@ -5,8 +5,8 @@ import ar.com.tamborindeguy.objects.types.Type;
 
 public class TreeObj extends Obj {
 
-    public TreeObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public TreeObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

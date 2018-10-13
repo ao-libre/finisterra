@@ -10,8 +10,8 @@ public class ArmorObj extends ObjWithClasses {
     private boolean women;
     private boolean dwarf;
 
-    public ArmorObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public ArmorObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

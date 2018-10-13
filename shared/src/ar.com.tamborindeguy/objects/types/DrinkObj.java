@@ -4,8 +4,8 @@ public class DrinkObj extends Obj {
 
     private int min;
 
-    public DrinkObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public DrinkObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

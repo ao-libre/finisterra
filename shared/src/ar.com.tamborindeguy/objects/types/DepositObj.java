@@ -3,8 +3,8 @@ package ar.com.tamborindeguy.objects.types;
 public class DepositObj extends Obj {
     private int mineralIndex;
 
-    public DepositObj(String name, int grhIndex) {
-        super(name, grhIndex);
+    public DepositObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
     }
 
     @Override

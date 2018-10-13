@@ -44,7 +44,7 @@ public class ObjectLoader extends Loader<Objects> {
             ;
             Integer grhIndex = section.get(GRH_INDEX, int.class);
             String name = section.get(NAME);
-            Obj object = ObjectFactory.createObject(type, name, grhIndex);
+            Obj object = ObjectFactory.createObject(i, type, name, grhIndex);
             ObjectFactory.fillObject(object, section);
             objects.computeIfAbsent(Type.values()[type - 1], (e) -> new HashSet<>()).add(object);
             objectsById.put(i, object);
