@@ -6,6 +6,10 @@ import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
 import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
+import com.artemis.E;
+import entity.character.info.Inventory;
+
+import static com.artemis.E.E;
 
 public class ServerNotificationProcessor implements INotificationProcessor {
     @Override
@@ -24,6 +28,8 @@ public class ServerNotificationProcessor implements INotificationProcessor {
 
     @Override
     public void processNotification(InventoryUpdate inventoryUpdate) {
-        defaultProcess(inventoryUpdate);
+        E player = E(inventoryUpdate.getId());
+        Inventory inventory = player.getInventory();
+        inventoryUpdate.getUpdates().forEach(inventory::set);
     }
 }

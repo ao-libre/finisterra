@@ -8,6 +8,14 @@ import java.util.HashMap;
 
 public class InventoryUpdate implements INotification {
 
+    private int id;
+
+    public InventoryUpdate() {}
+
+    public InventoryUpdate(int id) {
+        this.id = id;
+    }
+
     private HashMap<Integer, Inventory.Item> updates = new HashMap<>();
 
     public void add(int i, Inventory.Item item) {
@@ -28,4 +36,7 @@ public class InventoryUpdate implements INotification {
         return updates;
     }
 
+    public int getId() {
+        return id;
+    }
 }

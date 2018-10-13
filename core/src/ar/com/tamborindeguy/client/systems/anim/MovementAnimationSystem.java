@@ -51,7 +51,6 @@ public class MovementAnimationSystem extends IteratingSystem {
             }
         }
 
-
     }
 
 }
