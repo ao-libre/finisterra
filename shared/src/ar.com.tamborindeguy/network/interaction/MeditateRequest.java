@@ -1,20 +1,11 @@
-package ar.com.tamborindeguy.network.inventory;
+package ar.com.tamborindeguy.network.interaction;
 
 import ar.com.tamborindeguy.network.interfaces.IRequest;
 import ar.com.tamborindeguy.network.interfaces.IRequestProcessor;
 
-public class ItemAction implements IRequest {
+public class MeditateRequest implements IRequest {
 
-    private int objectId;
-
-    public ItemAction(int objectId) {
-        this.objectId = objectId;
-    }
-
-    public int getObjectId() {
-        return objectId;
-    }
-
+    public MeditateRequest() {}
     @Override
     public void accept(IRequestProcessor processor, int connectionId) {
         processor.processRequest(this, connectionId);

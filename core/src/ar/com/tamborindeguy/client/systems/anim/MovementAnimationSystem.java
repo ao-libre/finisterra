@@ -13,6 +13,7 @@ import entity.Weapon;
 import entity.character.Character;
 import movement.Moving;
 import physics.Attack;
+import physics.AttackAnimation;
 
 import static com.artemis.E.E;
 
@@ -21,7 +22,7 @@ public class MovementAnimationSystem extends IteratingSystem {
 
     public MovementAnimationSystem() {
         super(Aspect.all(Character.class, Heading.class).one(
-                Moving.class, Attack.class));
+                Moving.class, AttackAnimation.class));
     }
 
     @Override

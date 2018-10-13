@@ -2,6 +2,7 @@ package ar.com.tamborindeguy.client.network;
 
 import ar.com.tamborindeguy.client.managers.WorldManager;
 import ar.com.tamborindeguy.client.screens.GameScreen;
+import ar.com.tamborindeguy.client.ui.GUI;
 import ar.com.tamborindeguy.network.interfaces.INotification;
 import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
 import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
@@ -49,7 +50,7 @@ public class ClientNotificationProcessor implements INotificationProcessor {
         inventoryUpdate.getUpdates().forEach((position, item) -> {
             inventory.set(position, item);
         });
-        GameScreen.inventory.updateUserInventory();
+        GUI.getInventory().updateUserInventory();
     }
 
     private void addComponentsToEntity(Entity newEntity, EntityUpdate entityUpdate) {
@@ -73,6 +74,9 @@ public class ClientNotificationProcessor implements INotificationProcessor {
         for (Component component : entityUpdate.components) {
             // this should replace if already exists
             edit.add(component);
+        }
+        for (Class remove : entityUpdate.toRemove) {
+            edit.remove(remove);
         }
     }
 }

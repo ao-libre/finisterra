@@ -14,8 +14,7 @@ public class ServerNotificationProcessor implements INotificationProcessor {
 
     @Override
     public void processNotification(EntityUpdate entityUpdate) {
-        int entityId = entityUpdate.entityId;
-        WorldManager.notifyUpdateToNearEntities(entityId, entityUpdate.components);
+        WorldManager.notifyUpdateToNearEntities(entityUpdate);
     }
 
     @Override

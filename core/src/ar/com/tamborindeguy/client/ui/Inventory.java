@@ -2,8 +2,8 @@ package ar.com.tamborindeguy.client.ui;
 
 import ar.com.tamborindeguy.client.handlers.ObjectHandler;
 import ar.com.tamborindeguy.client.screens.GameScreen;
-import ar.com.tamborindeguy.client.systems.interactions.InventorySystem;
 import ar.com.tamborindeguy.client.utils.Skins;
+import ar.com.tamborindeguy.network.inventory.ItemActionRequest;
 import ar.com.tamborindeguy.objects.types.Obj;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -22,10 +22,10 @@ import static com.artemis.E.E;
 
 public class Inventory extends Window {
 
-    public static final int COLUMNS = 5;
-    public static final int ROWS = 4;
+    static final int COLUMNS = 5;
+    static final int ROWS = 4;
+    static final float ZOOM = 1.35f;
     private static final int SIZE = COLUMNS * ROWS;
-    public static final float ZOOM = 1.35f;
 
     private ArrayList<Slot> slots;
     private Optional<Slot> selected = Optional.empty();
@@ -54,12 +54,7 @@ public class Inventory extends Window {
                     slot.setSelected(true);
                     slot.getItem().ifPresent(item -> {
                         if (getTapCount() >= 2) {
-                        item.action();
-                            // TODO move to server
-                            if (item.equipped) {
-                                unequip(slots);
-                            }
-                            InventorySystem.equip(item.objId, item.equipped);
+                            GameScreen.getClient().sendToAll(new ItemActionRequest(slots.indexOf(slot)));
                         }
                     });
                 });
@@ -120,25 +115,6 @@ public class Inventory extends Window {
                 T t = a[i];
                 a[i] = a[j];
                 a[j] = t;
-            }
-
-            private void unequip(ArrayList<Slot> slots) {
-                slots.stream().filter(slot -> !slot.equals(selected.get())).forEach(slot -> slot.getItem().ifPresent(item -> {
-                    Item equippedItem = selected.get().getItem().get();
-                    if (sameKind(equippedItem, item)) {
-                        item.equipped = false;
-                        InventorySystem.equip(item.objId, false);
-                    }
-                }));
-            }
-
-            private boolean sameKind(Item equippedItem, Item item) {
-                Optional<Obj> object = ObjectHandler.getObject(equippedItem.objId);
-                Optional<Obj> object1 = ObjectHandler.getObject(item.objId);
-                if (object.isPresent() && object1.isPresent()) {
-                    return object.get().getType().equals(object1.get().getType());
-                }
-                return false;
             }
         });
     }

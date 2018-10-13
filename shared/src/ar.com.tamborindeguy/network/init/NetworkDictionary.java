@@ -2,15 +2,14 @@ package ar.com.tamborindeguy.network.init;
 
 import ar.com.tamborindeguy.interfaces.Constants;
 import ar.com.tamborindeguy.model.AttackType;
-import ar.com.tamborindeguy.model.Player;
-import ar.com.tamborindeguy.model.map.Map;
-import ar.com.tamborindeguy.model.map.Tile;
-import ar.com.tamborindeguy.model.map.WorldPosition;
 import ar.com.tamborindeguy.network.combat.AttackRequest;
 import ar.com.tamborindeguy.network.combat.AttackResponse;
+import ar.com.tamborindeguy.network.interaction.MeditateRequest;
+import ar.com.tamborindeguy.network.interaction.TalkRequest;
 import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
 import ar.com.tamborindeguy.network.interfaces.IResponseProcessor;
 import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
+import ar.com.tamborindeguy.network.inventory.ItemActionRequest;
 import ar.com.tamborindeguy.network.login.LoginFailed;
 import ar.com.tamborindeguy.network.login.LoginOK;
 import ar.com.tamborindeguy.network.login.LoginRequest;
@@ -20,6 +19,7 @@ import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
 import ar.com.tamborindeguy.util.MapUtils;
 import camera.Focused;
+import com.artemis.Component;
 import entity.*;
 import entity.character.CanWrite;
 import entity.character.info.Clan;
@@ -39,7 +39,6 @@ import physics.Attack;
 import position.Pos2D;
 import position.WorldPos;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -54,6 +53,9 @@ public class NetworkDictionary extends MarshalDictionary {
                 LoginFailed.class,
                 MovementRequest.class,
                 AttackRequest.class,
+                MeditateRequest.class,
+                TalkRequest.class,
+                ItemActionRequest.class,
 
                 // Responses
                 LoginOK.class,
@@ -61,25 +63,21 @@ public class NetworkDictionary extends MarshalDictionary {
                 AttackResponse.class,
 
                 // Notifications
-                MapUtils.class, //why?
-                INotificationProcessor.class, //why?
-                IResponseProcessor.class, //why?
                 EntityUpdate.class,
                 RemoveEntity.class,
-                Player.class,
-                Map.class,
-                Tile.class,
-                int[].class,
-                Tile[].class,
-                Tile[][].class,
-                WorldPosition.class,
-                ArrayList.class,
+                Component.class,
+                Component[].class,
+                Class.class,
+                Class[].class,
                 ConcurrentLinkedDeque.class,
                 InventoryUpdate.class,
                 Inventory.class,
                 Inventory.Item.class,
                 Inventory.Item[].class,
                 HashMap.class,
+                IResponseProcessor.class,
+                INotificationProcessor.class,
+                MapUtils.class,
 
                 // Components
                 Optional.class,

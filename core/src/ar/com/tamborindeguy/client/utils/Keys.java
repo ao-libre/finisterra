@@ -4,12 +4,13 @@ import com.badlogic.gdx.Input;
 
 public class Keys {
 
-    public static int ATTACK_1 = Input.Keys.CONTROL_LEFT;
-    public static int ATTACK_2 = Input.Keys.CONTROL_RIGHT;
-    public static int MEDITATE = Input.Keys.M;
-    public static int USE = Input.Keys.U;
-    public static int HIDE = Input.Keys.O;
+    public static final int ATTACK_1 = Input.Keys.CONTROL_LEFT;
+    public static final int ATTACK_2 = Input.Keys.CONTROL_RIGHT;
+    public static final int MEDITATE = Input.Keys.M;
+    public static final int USE = Input.Keys.U;
+    public static final int HIDE = Input.Keys.O;
     public static final int INVENTORY = Input.Keys.I;
+    public static final int TALK = Input.Keys.ENTER;
 
 
     public static int MOVE_LEFT = Input.Keys.LEFT;

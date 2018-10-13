@@ -2,6 +2,7 @@ package ar.com.tamborindeguy.client.systems.interactions;
 
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.utils.Skins;
+import ar.com.tamborindeguy.network.interaction.TalkRequest;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import camera.Focused;
 import com.artemis.Aspect;
@@ -19,6 +20,7 @@ import entity.character.CanWrite;
 import entity.character.Character;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.artemis.E.E;
 
@@ -32,13 +34,8 @@ public class DialogSystem extends IteratingSystem {
         this.table = table;
     }
 
-    public static void talk(E entity, String text) {
-        entity.dialogText(text);
-        entity.dialogAlpha(Dialog.DEFAULT_ALPHA);
-        entity.dialogTime(Dialog.DEFAULT_TIME);
-        ArrayList<Component> components = new ArrayList<>();
-        components.add(entity.getDialog());
-        GameScreen.getClient().sendToAll(new EntityUpdate(entity.networkId(), components));
+    public static void talk(String text) {
+        GameScreen.getClient().sendToAll(new TalkRequest(text));
     }
 
     @Override
@@ -54,7 +51,7 @@ public class DialogSystem extends IteratingSystem {
                         public boolean keyUp(InputEvent event, int keycode) {
                             if (keycode == Input.Keys.ENTER && !firstOpened[0]) {
                                 // remove textfield
-                                talk(E(player), textf.getText());
+                                talk(textf.getText());
                                 E(player).canWrite();
                                 E(player).removeWriting();
                                 table.removeActor(textf, true);
