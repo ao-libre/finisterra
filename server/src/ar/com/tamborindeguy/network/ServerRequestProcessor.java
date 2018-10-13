@@ -1,13 +1,19 @@
 package ar.com.tamborindeguy.network;
 
+import ar.com.tamborindeguy.core.WorldServer;
 import ar.com.tamborindeguy.database.model.User;
+import ar.com.tamborindeguy.interfaces.Constants;
 import ar.com.tamborindeguy.manager.CombatManager;
+import ar.com.tamborindeguy.manager.ItemManager;
 import ar.com.tamborindeguy.manager.MapManager;
 import ar.com.tamborindeguy.manager.WorldManager;
 import ar.com.tamborindeguy.network.combat.AttackRequest;
+import ar.com.tamborindeguy.network.interaction.MeditateRequest;
+import ar.com.tamborindeguy.network.interaction.TalkRequest;
 import ar.com.tamborindeguy.network.interfaces.IRequestProcessor;
 import ar.com.tamborindeguy.network.interfaces.IResponse;
-import ar.com.tamborindeguy.network.inventory.ItemAction;
+import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
+import ar.com.tamborindeguy.network.inventory.ItemActionRequest;
 import ar.com.tamborindeguy.network.login.LoginFailed;
 import ar.com.tamborindeguy.network.login.LoginOK;
 import ar.com.tamborindeguy.network.login.LoginRequest;
@@ -20,12 +26,14 @@ import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.Entity;
 import entity.Heading;
+import entity.character.info.Inventory;
+import entity.character.states.Meditating;
+import graphics.FX;
+import physics.Attack;
+import physics.AttackAnimation;
 import position.WorldPos;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.artemis.E.E;
 
@@ -41,7 +49,7 @@ public class ServerRequestProcessor implements IRequestProcessor {
         } else {
             final Entity entity = WorldManager.createEntity(user, connectionId);
             int map = E(entity).getWorldPos().map;
-            NetworkComunicator.sendTo(connectionId, new EntityUpdate(entity.getId(), WorldUtils.getComponents(entity)));
+            NetworkComunicator.sendTo(connectionId, new EntityUpdate(entity.getId(), WorldUtils.getComponents(entity.getId()), new Class[0]));
             NetworkComunicator.sendTo(connectionId, new LoginOK(entity.getId()));
             WorldManager.registerEntity(connectionId, entity.getId());
 //        } else {
@@ -80,13 +88,10 @@ public class ServerRequestProcessor implements IRequestProcessor {
         MapManager.movePlayer(playerId, Optional.of(oldPos));
 
         // notify near users
-        List<Component> components = new ArrayList<>();
-        components.addAll(Arrays.asList(player.getHeading(), player.getDestination()));
-        WorldManager.notifyUpdateToNearEntities(playerId, components);
+        WorldManager.notifyUpdateToNearEntities(new EntityUpdate(playerId, new Component[] {player.getHeading(), player.getDestination()}, new Class[0]));
 
         // notify user
         NetworkComunicator.sendTo(connectionId, new MovementResponse(request.requestNumber, nextPos));
-
     }
 
     @Override
@@ -112,11 +117,45 @@ public class ServerRequestProcessor implements IRequestProcessor {
         } else {
             CombatManager.notify(playerId, CombatManager.MISS);
         }
+        WorldManager.notifyUpdate(new EntityUpdate(playerId, new Component[]{new AttackAnimation()}, new Class[0]));
     }
 
     @Override
-    public void processRequest(ItemAction itemAction, int connectionId) {
-        itemAction.getObjectId();
+    public void processRequest(ItemActionRequest itemAction, int connectionId) {
+        int playerId = NetworkComunicator.getPlayerByConnection(connectionId);
+        E player = E(playerId);
+        Inventory.Item[] userItems = player.getInventory().items;
+        int itemIndex = itemAction.getSlot();
+        if (itemIndex < userItems.length) {
+            // if equipable
+            Inventory.Item item = userItems[itemIndex];
+            // modify user equipment
+            ItemManager.equip(playerId, itemIndex, item);
+        }
+    }
+
+    @Override
+    public void processRequest(MeditateRequest meditateRequest, int connectionId) {
+        int playerId = NetworkComunicator.getPlayerByConnection(connectionId);
+        E player = E(playerId);
+        boolean meditating = player.isMeditating();
+        if (meditating) {
+            player.removeFX();
+            player.removeMeditating();
+            WorldManager.notifyUpdate(new EntityUpdate(player.networkId(), new Component[0], new Class[]{FX.class, Meditating.class}));
+        } else {
+            player.fXAddParticleEffect(Constants.MEDITATE_NW_FX);
+            player.meditating();
+            WorldManager.notifyUpdate(new EntityUpdate(player.networkId(), new Component[] {player.getMeditating(), player.getFX()}, new Class[0]));
+        }
+    }
+
+    @Override
+    public void processRequest(TalkRequest talkRequest, int connectionId) {
+        int playerId = NetworkComunicator.getPlayerByConnection(connectionId);
+        E player = E(playerId);
+        player.dialogText(talkRequest.getMessage());
+        WorldManager.notifyUpdate(new EntityUpdate(player.networkId(), new Component[]{player.getDialog()}, new Class[0]));
     }
 
 }

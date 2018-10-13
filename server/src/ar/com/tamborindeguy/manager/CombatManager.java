@@ -1,12 +1,11 @@
 package ar.com.tamborindeguy.manager;
 
+import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import com.artemis.Component;
+import com.artemis.E;
 import entity.CombatMessage;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.artemis.E.E;
 
@@ -29,15 +28,16 @@ public class CombatManager {
     }
 
     public static void notify(int victim, String attack) {
-        List<Component> components = new ArrayList<>();
-        components.add(new CombatMessage(attack));
-        WorldManager.sendEntityUpdate(victim, victim, components);
-        WorldManager.notifyUpdateToNearEntities(victim, components);
+        E entity = E(victim);
+        entity.combatMessage();
+        entity.getCombatMessage().text = attack;
+        EntityUpdate update = new EntityUpdate(victim, new Component[] {entity.getCombatMessage()}, new Class[0]);
+        WorldManager.sendEntityUpdate(victim, update);
+        WorldManager.notifyUpdateToNearEntities(update);
     }
 
     public static void update(int victim) {
-        List<Component> components = new ArrayList<>();
-        components.add(E(victim).getHealth());
-        WorldManager.sendEntityUpdate(victim, victim, components);
+        EntityUpdate update = new EntityUpdate(victim, new Component[] {E(victim).getHealth()}, new Class[0]);
+        WorldManager.sendEntityUpdate(victim, update);
     }
 }

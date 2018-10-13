@@ -8,16 +8,27 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class FX extends Component {
 
-    public Deque<ParticleEffect> effects = new ConcurrentLinkedDeque<>();
+    public Deque<Integer> fxs = new ConcurrentLinkedDeque<>();
+    public Deque<Integer> particles = new ConcurrentLinkedDeque<>();
 
     public FX() {
     }
 
-    public void add(ParticleEffect effect) {
-        effects.add(effect);
+    public void addFx(Integer fx) {
+        fxs.add(fx);
     }
 
-    public void remove(ParticleEffect effect) {
-        effects.remove(effect);
+    public void addParticleEffect(Integer particleEffect) {
+        particles.add(particleEffect);
     }
+
+    public void remove(Integer particleEffect) {
+        particles.remove(particleEffect);
+    }
+
+    public void remove(int fx) {
+        fxs.remove(fx);
+    }
+
+
 }

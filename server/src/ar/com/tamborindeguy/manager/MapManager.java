@@ -1,6 +1,7 @@
 package ar.com.tamborindeguy.manager;
 
 import ar.com.tamborindeguy.model.map.Tile;
+import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import ar.com.tamborindeguy.utils.WorldUtils;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
@@ -94,10 +95,9 @@ public class MapManager {
     private static void linkEntities(int player1, int player2) {
         Set<Integer> near = nearEntities.computeIfAbsent(player1, (i) -> new HashSet<>());
         if (!near.contains(player2)) {
-            Log.debug("linking entities " + player1 + " and " + player2 + "?");
             near.add(player2);
-            WorldManager.sendEntityUpdate(player1, player2, WorldUtils.getComponents(player2));
-            Log.debug("OK");
+            EntityUpdate update = new EntityUpdate(player2, WorldUtils.getComponents(player2), new Class[0]);
+            WorldManager.sendEntityUpdate(player1, update);
         }
     }
 

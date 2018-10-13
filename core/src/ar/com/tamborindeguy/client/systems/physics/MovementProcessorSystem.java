@@ -3,9 +3,9 @@ package ar.com.tamborindeguy.client.systems.physics;
 import ar.com.tamborindeguy.client.handlers.MapHandler;
 import ar.com.tamborindeguy.client.managers.WorldManager;
 import ar.com.tamborindeguy.client.screens.GameScreen;
-import ar.com.tamborindeguy.client.systems.interactions.MeditateSystem;
 import ar.com.tamborindeguy.client.utils.ClientMapUtils;
 import ar.com.tamborindeguy.model.map.Tile;
+import ar.com.tamborindeguy.network.interaction.MeditateRequest;
 import ar.com.tamborindeguy.network.movement.MovementRequest;
 import ar.com.tamborindeguy.util.MapUtils;
 import ar.com.tamborindeguy.util.Util;
@@ -84,7 +84,9 @@ public class MovementProcessorSystem extends IteratingSystem {
                     ClientMapUtils.updateTile(Tile.EMPTY_INDEX, pos);
                     player.destinationWorldPos(expectedPos);
                     player.destinationDir(movement);
-                    stopMeditating(player);
+                    if (player.isMeditating()) {
+                        GameScreen.getClient().sendToAll(new MeditateRequest());
+                    }
                 }
             });
         }
@@ -93,11 +95,5 @@ public class MovementProcessorSystem extends IteratingSystem {
     private int getHeading(AOPhysics.Movement movement) {
         return movement == AOPhysics.Movement.UP ? Heading.HEADING_NORTH : movement == AOPhysics.Movement.DOWN ? Heading.HEADING_SOUTH : movement == AOPhysics.Movement.LEFT ? Heading.HEADING_WEST : Heading.HEADING_EAST;
     }
-
-    private void stopMeditating(E player) {
-        player.removeMeditating();
-        MeditateSystem.stopMeditating(player);
-    }
-
 
 }

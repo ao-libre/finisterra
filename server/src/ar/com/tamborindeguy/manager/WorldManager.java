@@ -8,13 +8,12 @@ import ar.com.tamborindeguy.network.notifications.RemoveEntity;
 import ar.com.tamborindeguy.objects.types.Obj;
 import ar.com.tamborindeguy.objects.types.Type;
 import ar.com.tamborindeguy.utils.WorldUtils;
-import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.esotericsoftware.minlog.Log;
 import entity.Heading;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Set;
 
 import static com.artemis.E.E;
@@ -76,8 +75,6 @@ public class WorldManager {
     public static void registerEntity(int connectionId, int id) {
         NetworkComunicator.registerUserConnection(id, connectionId);
         MapManager.addPlayer(id);
-//        notifyUpdateToNearEntities(id, WorldUtils.getComponents(id));
-//        sendCompleteNearEntities(id);
     }
 
     public static void unregisterEntity(int playerToDisconnect) {
@@ -90,25 +87,25 @@ public class WorldManager {
         }
     }
 
-    public static void sendEntityUpdate(int user, int playerId, List<Component> components) {
+    public static void sendEntityUpdate(int user, EntityUpdate update) {
         if (NetworkComunicator.playerHasConnection(user)) {
-            NetworkComunicator.sendTo(NetworkComunicator.getConnectionByPlayer(user), new EntityUpdate(playerId, components));
-            components.forEach(component -> {
-                Log.debug("Sent " + playerId + " " + component + " to " + user);
-            });
+            NetworkComunicator.sendTo(NetworkComunicator.getConnectionByPlayer(user), update);
         }
     }
 
-    public static void notifyUpdateToNearEntities(int entityId, List<Component> components) {
-        MapManager.getNearEntities(entityId).forEach(nearPlayer -> {
-            sendEntityUpdate(nearPlayer, entityId, components);
+    public static void notifyUpdateToNearEntities(EntityUpdate update) {
+        MapManager.getNearEntities(update.entityId).forEach(nearPlayer -> {
+            sendEntityUpdate(nearPlayer, update);
         });
     }
 
+    public static void notifyUpdate(EntityUpdate update) {
+        sendEntityUpdate(update.entityId, update);
+        notifyUpdateToNearEntities(update);
+    }
+
     public static void sendCompleteNearEntities(int entityId) {
-        MapManager.getNearEntities(entityId).forEach(nearPlayer -> {
-            sendEntityUpdate(entityId, nearPlayer, WorldUtils.getComponents(nearPlayer));
-        });
+        MapManager.getNearEntities(entityId).forEach(nearPlayer -> sendEntityUpdate(entityId, new EntityUpdate(nearPlayer, WorldUtils.getComponents(nearPlayer), new Class[0])));
     }
 
     private static World getWorld() {

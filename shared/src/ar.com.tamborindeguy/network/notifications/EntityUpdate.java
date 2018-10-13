@@ -9,14 +9,16 @@ import java.util.List;
 public class EntityUpdate implements INotification {
 
     public int entityId;
-    public List<Component> components;
+    public Component[] components;
+    public Class[] toRemove;
 
     public EntityUpdate() {
     }
 
-    public EntityUpdate(int entityId, List<Component> components) {
+    public EntityUpdate(int entityId, Component[] components, Class[] toRemove) {
         this.entityId = entityId;
         this.components = components;
+        this.toRemove = toRemove;
     }
 
     @Override
