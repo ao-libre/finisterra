@@ -3,6 +3,8 @@ package ar.com.tamborindeguy.client.ui;
 import ar.com.tamborindeguy.client.handlers.ObjectHandler;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.utils.Skins;
+import ar.com.tamborindeguy.client.utils.WorldUtils;
+import ar.com.tamborindeguy.network.interaction.DropItem;
 import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
 import ar.com.tamborindeguy.network.inventory.ItemActionRequest;
 import ar.com.tamborindeguy.objects.types.Obj;
@@ -98,7 +100,9 @@ public class Inventory extends Window {
                 if (dragging.isPresent()) {
                     Item[] userItems = E(GameScreen.getPlayer()).getInventory().items;
                     // notify server
-                    getSlot(x, y).ifPresent(target -> {
+                    Optional<Slot> slot = getSlot(x, y);
+                    if (slot.isPresent()) {
+                        Slot target = slot.get();
                         InventoryUpdate update = new InventoryUpdate(E(GameScreen.getPlayer()).getNetwork().id);
                         int targetIndex = slots.indexOf(target);
                         int originIndex = slots.indexOf(dragging.get());
@@ -113,7 +117,9 @@ public class Inventory extends Window {
                         }
                         GameScreen.getClient().sendToAll(update);
                         updateUserInventory();
-                    });
+                    } else {
+                        WorldUtils.mouseToWorldPos().ifPresent(worldPos -> GameScreen.getClient().sendToAll(new DropItem(E(GameScreen.getPlayer()).networkId(), draggingIndex(), worldPos)));
+                    }
                 }
                 dragging = Optional.empty();
             }
@@ -146,9 +152,23 @@ public class Inventory extends Window {
             Optional<Obj> object = ObjectHandler.getObject(item.objId);
             object.ifPresent(obj -> {
                 TextureRegion graphic = ObjectHandler.getGraphic(obj);
-                batch.draw(graphic, Gdx.input.getX() - (Slot.SIZE / 2), Gdx.graphics.getHeight() - Gdx.input.getY() - (Slot.SIZE / 2), getOriginX(), getOriginY(), graphic.getRegionWidth(), graphic.getRegionHeight(), Inventory.ZOOM, Inventory.ZOOM, 0);
+                batch.draw(graphic, Gdx.input.getX() - (graphic.getRegionWidth() / 2), Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2), getOriginX(), getOriginY(), graphic.getRegionWidth(), graphic.getRegionHeight(), Inventory.ZOOM, Inventory.ZOOM, 0);
             });
         }));
+    }
+
+    public Optional<Slot> getSelected() {
+        return selected;
+    }
+
+    // selected shouldn't be empty
+    public int selectedIndex() {
+        return slots.indexOf(selected.get());
+    }
+
+    // selected shouldn't be empty
+    public int draggingIndex() {
+        return slots.indexOf(dragging.get());
     }
 
     private boolean mouseOnInventory() {

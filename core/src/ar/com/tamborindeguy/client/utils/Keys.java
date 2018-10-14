@@ -11,6 +11,7 @@ public class Keys {
     public static final int HIDE = Input.Keys.O;
     public static final int INVENTORY = Input.Keys.I;
     public static final int TALK = Input.Keys.ENTER;
+    public static final int DROP = Input.Keys.T;
 
 
     public static int MOVE_LEFT = Input.Keys.LEFT;

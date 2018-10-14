@@ -81,8 +81,8 @@ public class Util {
     }
 
     public static WorldPos toWorld(Pos2D pos) {
-        return new WorldPos((int) (pos.x / Tile.TILE_PIXEL_WIDTH),
-                (int) (pos.y / Tile.TILE_PIXEL_HEIGHT));
+        return new WorldPos(Math.round(pos.x / Tile.TILE_PIXEL_WIDTH),
+                Math.round(pos.y / Tile.TILE_PIXEL_HEIGHT));
     }
 
     public static WorldPos getNextPos(WorldPos pos, AOPhysics.Movement movement) {

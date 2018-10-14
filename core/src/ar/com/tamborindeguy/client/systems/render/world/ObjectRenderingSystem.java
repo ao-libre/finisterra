@@ -2,6 +2,7 @@ package ar.com.tamborindeguy.client.systems.render.world;
 
 import ar.com.tamborindeguy.client.handlers.ObjectHandler;
 import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
+import ar.com.tamborindeguy.model.map.Tile;
 import ar.com.tamborindeguy.objects.types.Obj;
 import ar.com.tamborindeguy.util.Util;
 import com.artemis.Aspect;
@@ -36,7 +37,7 @@ public class ObjectRenderingSystem extends IteratingSystem {
             batch.begin();
             WorldPos objectPos = E(objectId).getWorldPos();
             Pos2D screenPos = Util.toScreen(objectPos);
-            batch.draw(ObjectHandler.getGraphic(obj), screenPos.x, screenPos.y);
+            batch.draw(ObjectHandler.getIngameGraphic(obj), screenPos.x - Tile.TILE_PIXEL_WIDTH, screenPos.y - Tile.TILE_PIXEL_HEIGHT);
             batch.end();
         });
     }

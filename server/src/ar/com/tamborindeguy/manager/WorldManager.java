@@ -72,6 +72,10 @@ public class WorldManager {
         E(player).getInventory().add(objs.iterator().next().getId());
     }
 
+    public static void registerItem(int id){
+        MapManager.addItem(id);
+    }
+
     public static void registerEntity(int connectionId, int id) {
         NetworkComunicator.registerUserConnection(id, connectionId);
         MapManager.addPlayer(id);
@@ -105,7 +109,7 @@ public class WorldManager {
     }
 
     public static void sendCompleteNearEntities(int entityId) {
-        MapManager.getNearEntities(entityId).forEach(nearPlayer -> sendEntityUpdate(entityId, new EntityUpdate(nearPlayer, WorldUtils.getComponents(nearPlayer), new Class[0])));
+        MapManager.getNearEntities(entityId).forEach(nearEntity -> sendEntityUpdate(entityId, new EntityUpdate(nearEntity, WorldUtils.getComponents(nearEntity), new Class[0])));
     }
 
     private static World getWorld() {

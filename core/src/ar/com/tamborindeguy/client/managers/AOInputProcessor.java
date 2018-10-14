@@ -1,13 +1,11 @@
 package ar.com.tamborindeguy.client.managers;
 
-import ar.com.tamborindeguy.client.handlers.ParticlesHandler;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.ui.GUI;
 import ar.com.tamborindeguy.client.utils.Keys;
+import ar.com.tamborindeguy.network.interaction.DropItem;
 import ar.com.tamborindeguy.network.interaction.MeditateRequest;
 import ar.com.tamborindeguy.network.interaction.TalkRequest;
-import ar.com.tamborindeguy.network.notifications.EntityUpdate;
-import com.artemis.Component;
 import com.artemis.E;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -26,6 +24,12 @@ public class AOInputProcessor extends Stage {
                 case Keys.MEDITATE:
                     toggleMeditate();
                     break;
+                case Keys.DROP:
+                    dropItem();
+                    break;
+            }
+        } else {
+            switch (keycode) {
                 case Keys.TALK:
                     toggleDialogText();
                     break;
@@ -34,12 +38,21 @@ public class AOInputProcessor extends Stage {
         return super.keyUp(keycode);
     }
 
+    // drop selected item (count 1 for the time being)
+    private void dropItem() {
+        GUI.getInventory().getSelected().ifPresent(selected -> {
+            int player = GameScreen.getPlayer();
+            GameScreen.getClient().sendToAll(new DropItem(E(player).networkId(), GUI.getInventory().selectedIndex(), E(player).getWorldPos()));
+        });
+    }
+
     private void toggleDialogText() {
         if (GUI.getDialog().isVisible()) {
             String message = GUI.getDialog().getMessage();
             GameScreen.getClient().sendToAll(new TalkRequest(message));
         }
         GUI.getDialog().toggle();
+        E(GameScreen.getPlayer()).writing(GUI.getDialog().isVisible());
     }
 
     private void toggleMeditate() {

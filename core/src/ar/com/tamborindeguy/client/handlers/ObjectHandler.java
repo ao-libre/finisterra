@@ -18,6 +18,7 @@ public class ObjectHandler {
     private static DescriptorsReader reader = new AODescriptorsReader();
     private static Map<Integer, Obj> objects;
     private static Map<Obj, GameTexture> textures = new HashMap<>();
+    private static Map<Obj, GameTexture> flipped = new HashMap<>();
 
     public static void load() {
         objects = reader.loadObjects("obj");
@@ -29,6 +30,10 @@ public class ObjectHandler {
 
     public static TextureRegion getGraphic(Obj obj) {
         return textures.computeIfAbsent(obj, presentObj -> new GameTexture(presentObj.getGrhIndex(), false)).getGraphic();
+    }
+
+    public static TextureRegion getIngameGraphic(Obj obj) {
+        return flipped.computeIfAbsent(obj, presentObj -> new GameTexture(presentObj.getGrhIndex(), true)).getGraphic();
     }
 
     public static Set<Obj> getTypeObjects(Type type) {

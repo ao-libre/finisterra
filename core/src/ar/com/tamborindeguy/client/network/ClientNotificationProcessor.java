@@ -3,6 +3,7 @@ package ar.com.tamborindeguy.client.network;
 import ar.com.tamborindeguy.client.managers.WorldManager;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.ui.GUI;
+import ar.com.tamborindeguy.network.interaction.DropItem;
 import ar.com.tamborindeguy.network.interfaces.INotification;
 import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
 import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
@@ -51,6 +52,11 @@ public class ClientNotificationProcessor implements INotificationProcessor {
             inventory.set(position, item);
         });
         GUI.getInventory().updateUserInventory();
+    }
+
+    @Override
+    public void processNotification(DropItem dropItem) {
+        defaultProcess(dropItem);
     }
 
     private void addComponentsToEntity(Entity newEntity, EntityUpdate entityUpdate) {
