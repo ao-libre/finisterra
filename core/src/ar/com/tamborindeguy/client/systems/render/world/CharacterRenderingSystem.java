@@ -111,7 +111,6 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         CharacterDrawer drawHelmet() {
             if (player.hasHelmet()) {
                 Helmet helmet = player.getHelmet();
-                HelmetDescriptor helmetDescriptor = DescriptorHandler.getHelmet(helmet.index);
                 BundledAnimation animation = AnimationHandler.getHelmetsAnimation(helmet.index, heading.current);
                 if (animation != null) {
                     TextureRegion helmetRegion = animation.getGraphic();
@@ -127,7 +126,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 BundledAnimation animation = AnimationHandler.getWeaponAnimation(weapon.index, heading.current);
                 if (animation != null) {
                     TextureRegion weaponRegion = player.isMoving() || player.hasAttackAnimation() ? animation.getGraphic() : animation.getGraphic(0);
-                    drawTexture(weaponRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, 0);
+                    drawTexture(weaponRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, headOffsetY);
                 }
             }
             return this;
@@ -139,7 +138,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 BundledAnimation animation = AnimationHandler.getShieldAnimation(shield.index, heading.current);
                 if (animation != null) {
                     TextureRegion shieldRegion = player.isMoving() || player.hasAttackAnimation() ? animation.getGraphic() : animation.getGraphic(0);
-                    drawTexture(shieldRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, 0);
+                    drawTexture(shieldRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, headOffsetY);
                 }
             }
             return this;
