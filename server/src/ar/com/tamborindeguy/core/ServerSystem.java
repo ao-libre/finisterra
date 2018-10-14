@@ -41,6 +41,6 @@ public class ServerSystem extends MarshalSystem {
         int playerToDisconnect = NetworkComunicator.getPlayerByConnection(connectionId);
         NetworkComunicator.unregisterUserConnection(playerToDisconnect, connectionId);
         WorldManager.unregisterEntity(playerToDisconnect);
-        MapManager.removePlayer(playerToDisconnect);
+        MapManager.removeEntity(playerToDisconnect);
     }
 }

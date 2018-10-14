@@ -3,9 +3,13 @@ package ar.com.tamborindeguy.client.managers;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.ui.GUI;
 import ar.com.tamborindeguy.client.utils.Keys;
+import ar.com.tamborindeguy.model.AttackType;
+import ar.com.tamborindeguy.network.combat.AttackRequest;
 import ar.com.tamborindeguy.network.interaction.DropItem;
 import ar.com.tamborindeguy.network.interaction.MeditateRequest;
+import ar.com.tamborindeguy.network.interaction.TakeItemRequest;
 import ar.com.tamborindeguy.network.interaction.TalkRequest;
+import ar.com.tamborindeguy.network.inventory.ItemActionRequest;
 import com.artemis.E;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -16,7 +20,7 @@ public class AOInputProcessor extends Stage {
     @Override
     public boolean keyUp(int keycode) {
         E player = E(GameScreen.getPlayer());
-        if (!(player.isWriting() || player.isMoving())) {
+        if (!(player.isWriting())) {
             switch (keycode) {
                 case Keys.INVENTORY:
                     toggleInventory();
@@ -27,15 +31,46 @@ public class AOInputProcessor extends Stage {
                 case Keys.DROP:
                     dropItem();
                     break;
-            }
-        } else {
-            switch (keycode) {
-                case Keys.TALK:
-                    toggleDialogText();
+                case Keys.TAKE:
+                    takeItem();
                     break;
+                case Keys.EQUIP:
+                    equip();
+                    break;
+                case Keys.ATTACK_1:
+                    attack();
+                    break;
+                case Keys.ATTACK_2:
+                    attack();
+                    break;
+
             }
         }
+        switch (keycode) {
+            case Keys.TALK:
+                toggleDialogText();
+                break;
+        }
+
         return super.keyUp(keycode);
+    }
+
+    private void attack() {
+        E player = E(GameScreen.getPlayer());
+        if (!player.hasAttack() || player.getAttack().interval - GameScreen.getWorld().getDelta() <= 0) {
+            GameScreen.getClient().sendToAll(new AttackRequest(AttackType.PHYSICAL));
+            player.attackInterval();
+        }
+    }
+
+    private void equip() {
+        GUI.getInventory().getSelected().ifPresent(slot -> {
+            GameScreen.getClient().sendToAll(new ItemActionRequest(GUI.getInventory().selectedIndex()));
+        });
+    }
+
+    private void takeItem() {
+        GameScreen.getClient().sendToAll(new TakeItemRequest());
     }
 
     // drop selected item (count 1 for the time being)

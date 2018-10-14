@@ -1,6 +1,5 @@
 package ar.com.tamborindeguy.network;
 
-import ar.com.tamborindeguy.core.WorldServer;
 import ar.com.tamborindeguy.database.model.User;
 import ar.com.tamborindeguy.interfaces.Constants;
 import ar.com.tamborindeguy.manager.CombatManager;
@@ -9,6 +8,7 @@ import ar.com.tamborindeguy.manager.MapManager;
 import ar.com.tamborindeguy.manager.WorldManager;
 import ar.com.tamborindeguy.network.combat.AttackRequest;
 import ar.com.tamborindeguy.network.interaction.MeditateRequest;
+import ar.com.tamborindeguy.network.interaction.TakeItemRequest;
 import ar.com.tamborindeguy.network.interaction.TalkRequest;
 import ar.com.tamborindeguy.network.interfaces.IRequestProcessor;
 import ar.com.tamborindeguy.network.interfaces.IResponse;
@@ -26,14 +26,14 @@ import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.Entity;
 import entity.Heading;
+import entity.Object;
 import entity.character.info.Inventory;
 import entity.character.states.Meditating;
 import graphics.FX;
-import physics.Attack;
 import physics.AttackAnimation;
 import position.WorldPos;
 
-import java.util.*;
+import java.util.Optional;
 
 import static com.artemis.E.E;
 
@@ -129,8 +129,13 @@ public class ServerRequestProcessor implements IRequestProcessor {
         if (itemIndex < userItems.length) {
             // if equipable
             Inventory.Item item = userItems[itemIndex];
-            // modify user equipment
-            ItemManager.equip(playerId, itemIndex, item);
+            if (ItemManager.isEquippable(item)) {
+                // modify user equipment
+                item.equipped = !item.equipped;
+                ItemManager.equip(playerId, itemIndex, item);
+            } else if (ItemManager.isUsable(item)) {
+                ItemManager.use(playerId, itemIndex, item);
+            }
         }
     }
 
@@ -156,6 +161,30 @@ public class ServerRequestProcessor implements IRequestProcessor {
         E player = E(playerId);
         player.dialogText(talkRequest.getMessage());
         WorldManager.notifyUpdate(new EntityUpdate(player.networkId(), new Component[]{player.getDialog()}, new Class[0]));
+    }
+
+    @Override
+    public void processRequest(TakeItemRequest takeItemRequest, int connectionId) {
+        int playerId = NetworkComunicator.getPlayerByConnection(connectionId);
+        E player = E(playerId);
+        WorldPos playerPos = player.getWorldPos();
+        MapManager.getNearEntities(playerId)
+                .stream()
+                .filter(entityId -> {
+                    WorldPos entityPos = E(entityId).getWorldPos();
+                    return E(entityId).hasObject() && entityPos.x == playerPos.x && entityPos.y == playerPos.y;
+                }).findFirst()
+        .ifPresent(objectEntityId -> {
+            Object object = E(objectEntityId).getObject();
+            int index = player.getInventory().add(object.index, object.count);
+            if (index >= 0) {
+                InventoryUpdate update = new InventoryUpdate();
+                update.add(index, player.getInventory().items[index]);
+                NetworkComunicator.sendTo(playerId, update);
+                WorldManager.unregisterEntity(objectEntityId);
+                MapManager.removeEntity(objectEntityId);
+            }
+        });
     }
 
 }

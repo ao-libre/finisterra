@@ -45,16 +45,16 @@ public class MapManager {
         addPlayer(player);
     }
 
-    public static void removePlayer(int playerToDisconnect) {
-        int map = E(playerToDisconnect).getWorldPos().map;
+    public static void removeEntity(int entity) {
+        int map = E(entity).getWorldPos().map;
         // remove from near entities
-        nearEntities.computeIfPresent(playerToDisconnect, (player, removeFrom) -> {
+        nearEntities.computeIfPresent(entity, (player, removeFrom) -> {
             removeFrom.forEach(nearEntity -> {
-                unlinkEntities(nearEntity, playerToDisconnect);
+                unlinkEntities(nearEntity, entity);
             });
             return null;
         });
-        entitiesByMap.get(map).remove(playerToDisconnect);
+        entitiesByMap.get(map).remove(entity);
     }
 
     public static void addPlayer(int player) {

@@ -30,13 +30,6 @@ public class PlayerInputSystem extends IteratingSystem {
         move(aoPhysics, AOPhysics.Movement.DOWN, !isWriting && Gdx.input.isKeyPressed(Input.Keys.DOWN));
         move(aoPhysics, AOPhysics.Movement.LEFT, !isWriting && Gdx.input.isKeyPressed(Input.Keys.LEFT));
         move(aoPhysics, AOPhysics.Movement.RIGHT, !isWriting && Gdx.input.isKeyPressed(Input.Keys.RIGHT));
-
-        if (!player.hasAttack() || player.getAttack().interval - world.getDelta() <= 0) {
-            if (Gdx.input.isKeyJustPressed(Keys.ATTACK_1) || Gdx.input.isKeyJustPressed(Keys.ATTACK_2)) {
-                GameScreen.getClient().sendToAll(new AttackRequest(AttackType.PHYSICAL));
-                player.attackInterval();
-            }
-        }
     }
 
     public void move(AOPhysics aoPhysics, AOPhysics.Movement movement, boolean moving) {

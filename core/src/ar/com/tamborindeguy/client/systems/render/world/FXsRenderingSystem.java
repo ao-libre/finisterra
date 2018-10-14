@@ -49,7 +49,7 @@ public class FXsRenderingSystem extends IteratingSystem {
 
         fx.particles.forEach(effect -> {
             ParticleEffect particleEffect = particles.computeIfAbsent(entityId, id -> new HashMap<>()).computeIfAbsent(effect, eff -> ParticlesHandler.getParticle(eff));
-            particleEffect.setPosition(screenPos.x - Tile.TILE_PIXEL_WIDTH / 2 - 4, screenPos.y - 2);
+            particleEffect.setPosition(screenPos.x - Tile.TILE_PIXEL_WIDTH / 2, screenPos.y - 2);
             particleEffect.draw(batch, world.getDelta());
             if (particleEffect.isComplete()) {
                 toRemove.add(effect);

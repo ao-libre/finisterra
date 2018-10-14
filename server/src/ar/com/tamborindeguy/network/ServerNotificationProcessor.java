@@ -1,6 +1,9 @@
 package ar.com.tamborindeguy.network;
 
 import ar.com.tamborindeguy.core.WorldServer;
+import ar.com.tamborindeguy.manager.ItemConsumers;
+import ar.com.tamborindeguy.manager.ItemManager;
+import ar.com.tamborindeguy.manager.ObjectManager;
 import ar.com.tamborindeguy.manager.WorldManager;
 import ar.com.tamborindeguy.network.interaction.DropItem;
 import ar.com.tamborindeguy.network.interfaces.INotification;
@@ -43,6 +46,10 @@ public class ServerNotificationProcessor implements INotificationProcessor {
         InventoryUpdate update = new InventoryUpdate();
         Inventory inventory = entity.getInventory();
         Inventory.Item item = inventory.items[slot];
+        if (item.equipped) {
+            ItemConsumers.getEquipConsumer(false).accept(dropItem.getPlayerId(), ObjectManager.getObject(item.objId).get());
+            item.equipped = false;
+        }
         item.count -= dropItem.getCount();
         if (item.count <= 0) {
             inventory.remove(slot);

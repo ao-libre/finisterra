@@ -48,6 +48,7 @@ public class Inventory extends Window {
                 row();
             }
         }
+
         addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -113,7 +114,9 @@ public class Inventory extends Window {
                             swap(userItems, originIndex, targetIndex);
                         } else {
                             update.add(targetIndex, originItem);
+                            update.remove(originIndex);
                             userItems[targetIndex] = originItem;
+                            userItems[originIndex] = null;
                         }
                         GameScreen.getClient().sendToAll(update);
                         updateUserInventory();
@@ -152,7 +155,7 @@ public class Inventory extends Window {
             Optional<Obj> object = ObjectHandler.getObject(item.objId);
             object.ifPresent(obj -> {
                 TextureRegion graphic = ObjectHandler.getGraphic(obj);
-                batch.draw(graphic, Gdx.input.getX() - (graphic.getRegionWidth() / 2), Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2), getOriginX(), getOriginY(), graphic.getRegionWidth(), graphic.getRegionHeight(), Inventory.ZOOM, Inventory.ZOOM, 0);
+                batch.draw(graphic, Gdx.input.getX() - (graphic.getRegionWidth() / 2) - 4, Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2), getOriginX(), getOriginY(), graphic.getRegionWidth(), graphic.getRegionHeight(), Inventory.ZOOM, Inventory.ZOOM, 0);
             });
         }));
     }

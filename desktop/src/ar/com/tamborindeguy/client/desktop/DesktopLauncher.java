@@ -30,9 +30,8 @@ public class DesktopLauncher {
         cfg.height = AO.GAME_SCREEN_HEIGHT;
         cfg.fullscreen = AO.GAME_FULL_SCREEN;
         cfg.vSyncEnabled = AO.GAME_VSYNC_ENABLED;
-        cfg.foregroundFPS = 0;
+        cfg.foregroundFPS = 70;
         cfg.resizable = false;
-        Log.set(Log.LEVEL_DEBUG);
         new LwjglApplication(new AO(), cfg);
 	}
 }

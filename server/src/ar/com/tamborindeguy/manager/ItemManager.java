@@ -3,8 +3,10 @@ package ar.com.tamborindeguy.manager;
 import ar.com.tamborindeguy.network.NetworkComunicator;
 import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
 import ar.com.tamborindeguy.objects.types.Obj;
+import ar.com.tamborindeguy.objects.types.ObjWithClasses;
 import ar.com.tamborindeguy.objects.types.Type;
 import com.artemis.E;
+import entity.Object;
 import entity.character.info.Inventory;
 
 import java.util.Optional;
@@ -13,6 +15,19 @@ import static com.artemis.E.E;
 
 public class ItemManager {
 
+    public static boolean isEquippable(Inventory.Item item) {
+        Optional<Obj> object = ObjectManager.getObject(item.objId);
+        if (object.isPresent()) {
+            Obj obj = object.get();
+            return obj instanceof ObjWithClasses;
+        }
+        return false;
+    }
+
+    public static void use(int player, int index, Inventory.Item item) {
+
+    }
+
     public static void equip(int player, int index, Inventory.Item item) {
         InventoryUpdate update = new InventoryUpdate();
         modifyUserEquip(player, item, index, update);
@@ -20,12 +35,10 @@ public class ItemManager {
     }
 
     private static void modifyUserEquip(int player, Inventory.Item item, int index, InventoryUpdate update) {
-
         Optional<Obj> object = ObjectManager.getObject(item.objId);
         object.ifPresent(obj -> {
             E entity = E(player);
             update.add(index, item);
-            item.equipped = !item.equipped;
             if (item.equipped) {
                 discardItems(entity, obj.getType(), update);
             }
@@ -53,4 +66,7 @@ public class ItemManager {
         }
     }
 
+    public static boolean isUsable(Inventory.Item item) {
+        return false;
+    }
 }

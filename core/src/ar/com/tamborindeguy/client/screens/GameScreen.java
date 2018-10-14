@@ -77,12 +77,12 @@ public class GameScreen extends WorldScreen {
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new CharacterRenderingSystem(game.getSpriteBatch()))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new FXsRenderingSystem(game.getSpriteBatch()))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new MapUpperLayerRenderingSystem(game.getSpriteBatch()))
+                .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(game.getSpriteBatch()))
                 .with(new StateRenderingSystem(game.getSpriteBatch()))
                 .with(new CharacterStatusRenderingSystem(game.getSpriteBatch()))
                 .with(new CombatRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new NameRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new DialogRenderingSystem(game.getSpriteBatch()))
-                .with(FONTS_PRIORITY, new CoordinatesRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new CharacterStatesRenderingSystem(game.getSpriteBatch()))
                 // Other
                 .with(new TagManager())

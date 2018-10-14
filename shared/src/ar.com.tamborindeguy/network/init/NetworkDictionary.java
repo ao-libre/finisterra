@@ -6,6 +6,7 @@ import ar.com.tamborindeguy.network.combat.AttackRequest;
 import ar.com.tamborindeguy.network.combat.AttackResponse;
 import ar.com.tamborindeguy.network.interaction.DropItem;
 import ar.com.tamborindeguy.network.interaction.MeditateRequest;
+import ar.com.tamborindeguy.network.interaction.TakeItemRequest;
 import ar.com.tamborindeguy.network.interaction.TalkRequest;
 import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
 import ar.com.tamborindeguy.network.interfaces.IResponseProcessor;
@@ -59,6 +60,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 MeditateRequest.class,
                 TalkRequest.class,
                 ItemActionRequest.class,
+                TakeItemRequest.class,
 
                 // Responses
                 LoginOK.class,

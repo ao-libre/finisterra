@@ -52,8 +52,8 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
                         player.getLevel().level < 13 ? NEWBIE_NAME_FONT :
                                 player.hasCriminal() ? CRIMINAL_NAME_FONT : CITIZEN_NAME_FONT;
         layout.setText(font, player.getName().text);
-        final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH + layout.width) / 2 - 4;
-        final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y - (layout.height) / 2;
+        final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH + layout.width) / 2;
+        final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y;
         font.draw(batch, layout, fontX, fontY);
         return fontY;
     }
@@ -61,7 +61,7 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
     private void drawClanName(E player, Pos2D screenPos, float nameY) {
         if (player.hasClan() && !player.getClan().name.isEmpty()) {
             layout.setText(CLAN_FONT, "<" + player.getClan().name + ">");
-            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH + layout.width) / 2 - 4;
+            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH + layout.width) / 2;
             final float fontY = nameY - layout.height - 5;
             CLAN_FONT.draw(batch, layout, fontX, fontY);
         }
