@@ -2,7 +2,6 @@ package ar.com.tamborindeguy.network;
 
 import ar.com.tamborindeguy.core.WorldServer;
 import ar.com.tamborindeguy.manager.ItemConsumers;
-import ar.com.tamborindeguy.manager.ItemManager;
 import ar.com.tamborindeguy.manager.ObjectManager;
 import ar.com.tamborindeguy.manager.WorldManager;
 import ar.com.tamborindeguy.network.interaction.DropItem;
