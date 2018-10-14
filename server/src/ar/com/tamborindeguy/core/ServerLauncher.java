@@ -12,7 +12,6 @@ public class ServerLauncher {
     }
 
     private static void initWorld() {
-        Log.set(Log.LEVEL_DEBUG);
         worldServer = new WorldServer();
         worldServer.initSystems();
         worldServer.createWorld();

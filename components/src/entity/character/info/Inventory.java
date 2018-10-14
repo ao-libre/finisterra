@@ -2,12 +2,12 @@ package entity.character.info;
 
 import com.artemis.Component;
 
-import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public class Inventory extends Component {
     public Item[] items = new Item[20];
+    public Item[] shortcuts = new Item[4];
 
     public Inventory() {
     }
@@ -20,17 +20,17 @@ public class Inventory extends Component {
         add(objId,1);
     }
 
-    public void add(int objId, int count) {
+    public int add(int objId, int count) {
         for (int i = 0; i < 20; i++) {
             if (items[i] == null) {
                 items[i] = new Item(objId, count);
-                return;
+                return i;
             } else if (items[i].objId == objId) {
                 items[i].count += count;
-                return;
+                return i;
             }
         }
-        // TODO notify no space
+        return -1;
     }
 
     public void remove(int position) {
@@ -42,6 +42,10 @@ public class Inventory extends Component {
         item.ifPresent(it -> {
             it.count -= count;
         });
+    }
+
+    public void addShortcut(int shorcut, int realSlot) {
+        shortcuts[shorcut] = items[realSlot];
     }
 
     public Item[] userItems() {
@@ -59,8 +63,5 @@ public class Inventory extends Component {
             this.count = count;
         }
 
-        public void action() {
-            equipped = !equipped;
-        }
     }
 }

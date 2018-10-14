@@ -11,7 +11,6 @@ public class RemoveEntity implements INotification {
     }
 
     public RemoveEntity(int entityId) {
-
         this.entityId = entityId;
     }
 

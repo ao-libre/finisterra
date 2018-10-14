@@ -40,7 +40,7 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
         Pos2D screenPos = new Pos2D(cameraPos.x - playerPos.x, cameraPos.y - playerPos.y);
         CombatMessage combatMessage = player.getCombatMessage();
 
-        combatMessage.offset -= world.getDelta() * 10f;
+        combatMessage.offset -= world.getDelta() * combatMessage.time * 15.0f;
         if (combatMessage.offset < 0) {
             combatMessage.offset = 0;
         }
@@ -58,9 +58,9 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
 
             dialogLayout.setText(COMBAT_FONT, combatMessage.text);
             float width = dialogLayout.width;
-            dialogLayout.setText(COMBAT_FONT, combatMessage.text, COMBAT_FONT.getColor(), width, Align.left, true);
-            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - Tile.TILE_PIXEL_WIDTH;
-            int bodyOffset = 40 - DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
+            dialogLayout.setText(COMBAT_FONT, combatMessage.text, COMBAT_FONT.getColor(), width, Align.center, true);
+            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH + dialogLayout.width) / 2;
+            int bodyOffset = 20 - DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
             final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y - combatMessage.offset + bodyOffset + dialogLayout.height; //40 should be the Y offset of the entity
             COMBAT_FONT.draw(batch, dialogLayout, fontX, fontY);
 

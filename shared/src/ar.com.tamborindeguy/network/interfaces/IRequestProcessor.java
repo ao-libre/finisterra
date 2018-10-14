@@ -2,6 +2,7 @@ package ar.com.tamborindeguy.network.interfaces;
 
 import ar.com.tamborindeguy.network.combat.AttackRequest;
 import ar.com.tamborindeguy.network.interaction.MeditateRequest;
+import ar.com.tamborindeguy.network.interaction.TakeItemRequest;
 import ar.com.tamborindeguy.network.interaction.TalkRequest;
 import ar.com.tamborindeguy.network.inventory.ItemActionRequest;
 import ar.com.tamborindeguy.network.login.LoginRequest;
@@ -15,4 +16,5 @@ public interface IRequestProcessor {
     void processRequest(ItemActionRequest itemAction, int connectionId);
     void processRequest(MeditateRequest meditateRequest, int connectionId);
     void processRequest(TalkRequest talkRequest, int connectionId);
+    void processRequest(TakeItemRequest takeItemRequest, int connectionId);
 }

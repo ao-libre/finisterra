@@ -1,5 +1,6 @@
 package ar.com.tamborindeguy.client.ui;
 
+import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.utils.Skins;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
@@ -23,6 +24,9 @@ public class DialogText extends Table {
         setVisible(!isVisible());
         if (isVisible()) {
             getStage().setKeyboardFocus(textf);
+        } else {
+            textf.setText("");
         }
     }
+
 }

@@ -38,9 +38,7 @@ public class CoordinatesRenderingSystem extends OrderedEntityProcessingSystem {
         cameraSystem.guiCamera.update();
         batch.setProjectionMatrix(cameraSystem.guiCamera.combined);
         batch.begin();
-
         drawCoordinates(10, 10, worldPos);
-
         batch.end();
     }
 

@@ -22,7 +22,7 @@ public class CameraFocusSystem extends IteratingSystem {
     protected void process(int player) {
         Entity camera = world.getSystem(TagManager.class).getEntity("camera");
         Pos2D cameraPos = camera.getComponent(Pos2D.class);
-        Pos2D pos = Util.toScreen(E(player).getPos2D()); // TODO Cambiar por pos2d
+        Pos2D pos = Util.toScreen(E(player).getPos2D());
         cameraPos.x = pos.x;
         cameraPos.y = pos.y;
     }

@@ -85,9 +85,9 @@ public class WorldManager {
         getWorld().delete(playerToDisconnect);
     }
 
-    public static void sendEntityRemove(int user, int playerId) {
+    public static void sendEntityRemove(int user, int entity) {
         if (NetworkComunicator.playerHasConnection(user)) {
-            NetworkComunicator.sendTo(NetworkComunicator.getConnectionByPlayer(user), new RemoveEntity(playerId));
+            NetworkComunicator.sendTo(NetworkComunicator.getConnectionByPlayer(user), new RemoveEntity(entity));
         }
     }
 
