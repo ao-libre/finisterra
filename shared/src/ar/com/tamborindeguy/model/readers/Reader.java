@@ -47,7 +47,7 @@ public class Reader<T> {
             T loadedFile = loader.load(new DataInputStream(is));
             return loadedFile;
         } catch (IOException e) {
-            Gdx.app.log(this.getClass().getSimpleName(), "Failed to load object input stream " + is.toString());
+            Gdx.app.log(this.getClass().getSimpleName(), "Failed to load object input stream " + is.toString(), e);
             return null;
         }
     }
