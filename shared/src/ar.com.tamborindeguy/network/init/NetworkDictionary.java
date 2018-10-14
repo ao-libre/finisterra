@@ -4,6 +4,7 @@ import ar.com.tamborindeguy.interfaces.Constants;
 import ar.com.tamborindeguy.model.AttackType;
 import ar.com.tamborindeguy.network.combat.AttackRequest;
 import ar.com.tamborindeguy.network.combat.AttackResponse;
+import ar.com.tamborindeguy.network.interaction.DropItem;
 import ar.com.tamborindeguy.network.interaction.MeditateRequest;
 import ar.com.tamborindeguy.network.interaction.TalkRequest;
 import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
@@ -21,6 +22,7 @@ import ar.com.tamborindeguy.util.MapUtils;
 import camera.Focused;
 import com.artemis.Component;
 import entity.*;
+import entity.Object;
 import entity.character.CanWrite;
 import entity.character.info.Clan;
 import entity.character.info.Description;
@@ -66,21 +68,24 @@ public class NetworkDictionary extends MarshalDictionary {
                 // Notifications
                 EntityUpdate.class,
                 RemoveEntity.class,
+                InventoryUpdate.class,
+                IResponseProcessor.class,
+                INotificationProcessor.class,
+                DropItem.class,
+
+                // Other
+                HashMap.class,
+                MapUtils.class,
+                ConcurrentLinkedDeque.class,
                 Component.class,
                 Component[].class,
                 Class.class,
                 Class[].class,
-                ConcurrentLinkedDeque.class,
-                InventoryUpdate.class,
+
+                // Components
                 Inventory.class,
                 Inventory.Item.class,
                 Inventory.Item[].class,
-                HashMap.class,
-                IResponseProcessor.class,
-                INotificationProcessor.class,
-                MapUtils.class,
-
-                // Components
                 Optional.class,
                 Pos2D.class,
                 AOPhysics.class,
@@ -98,6 +103,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Navigating.class,
                 Resting.class,
                 Writing.class,
+                Object.class,
                 Criminal.class,
                 Elv.class,
                 Exp.class,

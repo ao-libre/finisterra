@@ -75,7 +75,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             this.heading = heading;
             this.screenPos = screenPos;
             bodyPixelOffsetX = screenPos.x - 32.0f;
-            bodyPixelOffsetY = screenPos.x;
+            bodyPixelOffsetY = screenPos.y;
         }
 
         public static CharacterDrawer createDrawer(SpriteBatch batch, E player, Heading heading, Pos2D screenPos) {
@@ -89,7 +89,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 headOffsetY = bodyDescriptor.getHeadOffsetY();
                 BundledAnimation animation = AnimationHandler.getBodyAnimation(body.index, heading.current);
                 TextureRegion bodyRegion = player.isMoving() ? animation.getGraphic() : animation.getGraphic(0);
-                drawTexture(bodyRegion, bodyPixelOffsetX, bodyPixelOffsetY = screenPos.y - (bodyRegion.getRegionHeight() - 32.0f) - 32.0f, 0, 0); // why - 32 - 32 ?
+                drawTexture(bodyRegion, bodyPixelOffsetX = bodyPixelOffsetX + ((32.0f - bodyRegion.getRegionWidth()) / 2), bodyPixelOffsetY = screenPos.y - (bodyRegion.getRegionHeight() - 32.0f) - 32.0f, 0, 0); // why - 32 - 32 ?
             }
             return this;
         }

@@ -14,7 +14,7 @@ import static entity.character.info.Inventory.*;
 
 public class Slot extends Actor {
 
-    public static final int SIZE = 34;
+    static final int SIZE = 34;
 
     private static Texture selection = new Texture(Gdx.files.local("data/ui/images/slot-selection.png"));
     private static Texture background = new Texture(Gdx.files.local("data/ui/images/slot-background.png"));
@@ -25,13 +25,13 @@ public class Slot extends Actor {
     private boolean selected;
     private boolean equipped;
 
-    public Slot() {}
+    Slot() {}
 
     public Slot(Item item) {
         this.item = Optional.of(item);
     }
 
-    public int getObjId() {
+    private int getObjId() {
         return item.isPresent() ? item.get().objId : -1;
     }
 
@@ -39,11 +39,11 @@ public class Slot extends Actor {
         return item.isPresent() ? item.get().count : 0;
     }
 
-    public void setItem(Item item){
+    void setItem(Item item){
         this.item = Optional.ofNullable(item);
     }
 
-    public Optional<Item> getItem() {
+    Optional<Item> getItem() {
         return item;
     }
 
@@ -77,7 +77,7 @@ public class Slot extends Actor {
         batch.draw(texture, getX() + offsetX, getY() + offsetY, getOriginX(), getOriginY(), texture.getRegionWidth(), texture.getRegionHeight(), Inventory.ZOOM,  Inventory.ZOOM, 0) ;
     }
 
-    public void setSelected(boolean selected) {
+    void setSelected(boolean selected) {
         this.selected = selected;
     }
 

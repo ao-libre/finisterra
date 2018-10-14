@@ -16,7 +16,7 @@ import static com.artemis.E.E;
 public class MapManager {
 
     private static Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
-    private static Map<Integer, Set<Integer>> playersByMap = new ConcurrentHashMap<>();
+    private static Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
 
     private static HashMap<Integer, ar.com.tamborindeguy.model.map.Map> maps = new HashMap<>();
 
@@ -24,8 +24,8 @@ public class MapManager {
         return nearEntities.getOrDefault(entityId, Collections.emptySet());
     }
 
-    public static Set<Integer> getPlayersInMap(int map) {
-        return playersByMap.get(map);
+    public static Set<Integer> getEntitiesInMap(int map) {
+        return entitiesByMap.get(map);
     }
 
     public static void movePlayer(int player, Optional<WorldPos> previusPos) {
@@ -35,7 +35,7 @@ public class MapManager {
                 return;
             }
             if (it.map != actualPos.map) {
-                getPlayersInMap(it.map).remove(player);
+                getEntitiesInMap(it.map).remove(player);
             }
             Set<Integer> near = new HashSet<>(nearEntities.get(player));
             near.forEach(nearEntity -> {
@@ -54,25 +54,36 @@ public class MapManager {
             });
             return null;
         });
-        playersByMap.get(map).remove(playerToDisconnect);
+        entitiesByMap.get(map).remove(playerToDisconnect);
     }
 
-    public static void addPlayer(int player1) {
-        int map = E(player1).getWorldPos().map;
-        Set<Integer> players = playersByMap.computeIfAbsent(map, (it) -> new HashSet<>());
-        players.add(player1);
-        players.stream()
-                .filter(player -> player != player1)
-                .forEach(player2 -> {
-                    addNearEntities(player1, player2);
+    public static void addPlayer(int player) {
+        int map = E(player).getWorldPos().map;
+        Set<Integer> entities = entitiesByMap.computeIfAbsent(map, (it) -> new HashSet<>());
+        entities.add(player);
+        entities.stream()
+                .filter(entity -> entity != player)
+                .forEach(entity -> {
+                    addNearEntities(player, entity);
                 });
     }
 
-    private static void addNearEntities(int player1, int player2) {
-        int distance = WorldUtils.distance(E(player2).getWorldPos(), E(player1).getWorldPos());
+    public static void addItem(int item) {
+        int map = E(item).getWorldPos().map;
+        Set<Integer> entities = entitiesByMap.computeIfAbsent(map, (it) -> new HashSet<>());
+        entities.add(item);
+        entities.stream()
+                .filter(entity -> entity != item)
+                .forEach(entity -> {
+                    addNearEntities(item, entity);
+                });
+    }
+
+    private static void addNearEntities(int entity1, int entity2) {
+        int distance = WorldUtils.distance(E(entity2).getWorldPos(), E(entity1).getWorldPos());
         if (distance >= 0 && distance <= 15) {
-            linkEntities(player1, player2);
-            linkEntities(player2, player1);
+            linkEntities(entity1, entity2);
+            linkEntities(entity2, entity1);
         }
     }
 
@@ -84,20 +95,20 @@ public class MapManager {
         }
     }
 
-    private static void unlinkEntities(int player1, int player2) {
-        if (nearEntities.containsKey(player1)) {
-            nearEntities.get(player1).remove(player2);
+    private static void unlinkEntities(int entity1, int entity2) {
+        if (nearEntities.containsKey(entity1)) {
+            nearEntities.get(entity1).remove(entity2);
         }
         // always notify that this entity is not longer in range
-        WorldManager.sendEntityRemove(player1, player2);
+        WorldManager.sendEntityRemove(entity1, entity2);
     }
 
-    private static void linkEntities(int player1, int player2) {
-        Set<Integer> near = nearEntities.computeIfAbsent(player1, (i) -> new HashSet<>());
-        if (!near.contains(player2)) {
-            near.add(player2);
-            EntityUpdate update = new EntityUpdate(player2, WorldUtils.getComponents(player2), new Class[0]);
-            WorldManager.sendEntityUpdate(player1, update);
+    private static void linkEntities(int entity1, int entity2) {
+        Set<Integer> near = nearEntities.computeIfAbsent(entity1, (i) -> new HashSet<>());
+        if (!near.contains(entity2)) {
+            near.add(entity2);
+            EntityUpdate update = new EntityUpdate(entity2, WorldUtils.getComponents(entity2), new Class[0]);
+            WorldManager.sendEntityUpdate(entity1, update);
         }
     }
 
@@ -124,7 +135,7 @@ public class MapManager {
 
     public static boolean isValidPos(WorldPos worldPos) {
         ar.com.tamborindeguy.model.map.Map map = maps.get(worldPos.map);
-        Set<Integer> playersInMap = MapManager.getPlayersInMap(worldPos.map);
+        Set<Integer> playersInMap = MapManager.getEntitiesInMap(worldPos.map);
         if (playersInMap.stream().anyMatch(player -> (E(player).getWorldPos().x == worldPos.x) && (E(player).getWorldPos().y == worldPos.y))) {
             return false;
         };
