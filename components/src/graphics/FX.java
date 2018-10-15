@@ -1,10 +1,12 @@
 package graphics;
 
 import com.artemis.Component;
+import com.artemis.annotations.DelayedComponentRemoval;
 
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+@DelayedComponentRemoval
 public class FX extends Component {
 
     public Deque<Integer> fxs = new ConcurrentLinkedDeque<>();

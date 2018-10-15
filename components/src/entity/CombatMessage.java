@@ -1,9 +1,11 @@
 package entity;
 
 import com.artemis.Component;
+import com.artemis.annotations.DelayedComponentRemoval;
 
 import java.io.Serializable;
 
+@DelayedComponentRemoval
 public class CombatMessage extends Component implements Serializable {
 
     public static float DEFAULT_TIME = 2;
