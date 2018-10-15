@@ -25,6 +25,7 @@ import ar.com.tamborindeguy.utils.WorldUtils;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.Entity;
+import com.esotericsoftware.minlog.Log;
 import entity.Heading;
 import entity.Object;
 import entity.character.info.Inventory;
@@ -176,18 +177,22 @@ public class ServerRequestProcessor implements IRequestProcessor {
                 .filter(entityId -> {
                     WorldPos entityPos = E(entityId).getWorldPos();
                     return E(entityId).hasObject() && entityPos.x == playerPos.x && entityPos.y == playerPos.y;
-                }).findFirst()
-        .ifPresent(objectEntityId -> {
-            Object object = E(objectEntityId).getObject();
-            int index = player.getInventory().add(object.index, object.count);
-            if (index >= 0) {
-                InventoryUpdate update = new InventoryUpdate();
-                update.add(index, player.getInventory().items[index]);
-                NetworkComunicator.sendTo(playerId, update);
-                WorldManager.unregisterEntity(objectEntityId);
-                MapManager.removeEntity(objectEntityId);
-            }
-        });
+                })
+                .findFirst()
+                .ifPresent(objectEntityId -> {
+                    Object object = E(objectEntityId).getObject();
+                    int index = player.getInventory().add(object.index, object.count);
+                    if (index >= 0) {
+                        Log.info("Adding item to index: " + index);
+                        InventoryUpdate update = new InventoryUpdate();
+                        update.add(index, player.getInventory().items[index]);
+                        NetworkComunicator.sendTo(playerId, update);
+                        WorldManager.unregisterEntity(objectEntityId);
+                        MapManager.removeEntity(objectEntityId);
+                    } else {
+                        Log.info("Could not put item in inventory (FULL?)");
+                    }
+                });
     }
 
 }
