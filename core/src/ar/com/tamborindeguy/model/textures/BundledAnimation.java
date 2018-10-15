@@ -22,9 +22,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 
-/**
- * @author Rodrigo
- */
 public class BundledAnimation {
 
     private Array<GameTexture> frames = new Array<GameTexture>();
@@ -36,7 +33,7 @@ public class BundledAnimation {
     public BundledAnimation(Graphic graphic) {
 
         int numFrames = graphic.getFrames().length;
-        Array<TextureRegion> tmpRegions = new Array<TextureRegion>();
+        Array<TextureRegion> tmpRegions = new Array<>();
         this.setAnimationTime(0.0f);
 
         if (numFrames > 0) {
@@ -54,9 +51,8 @@ public class BundledAnimation {
                 index++;
             }
 
-            this.setAnimation(new Animation<>(graphic.getSpeed() / 3340.0f, textures));
+            this.setAnimation(new Animation<>(graphic.getSpeed() / (1000.0f * 3.334f), textures));
             this.animated = true;
-
         } else {
             this.frames.add(new GameTexture(graphic));
         }
@@ -140,6 +136,5 @@ public class BundledAnimation {
     public void setAnimationTime(float animationTime) {
         this.animationTime = animationTime;
     }
-
 
 }

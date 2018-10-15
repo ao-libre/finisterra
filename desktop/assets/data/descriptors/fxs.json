@@ -166,7 +166,7 @@
       308
     ],
     offsetX: 0,
-    offsetY: 0
+    offsetY: 5
   },
   {
     class: fxs,
@@ -198,7 +198,7 @@
       4797
     ],
     offsetX: 0,
-    offsetY: 0
+    offsetY: 15
   },
   {
     class: fxs,
