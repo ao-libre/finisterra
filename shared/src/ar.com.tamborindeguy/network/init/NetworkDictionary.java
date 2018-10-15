@@ -15,6 +15,7 @@ import ar.com.tamborindeguy.network.inventory.ItemActionRequest;
 import ar.com.tamborindeguy.network.login.LoginFailed;
 import ar.com.tamborindeguy.network.login.LoginOK;
 import ar.com.tamborindeguy.network.login.LoginRequest;
+import ar.com.tamborindeguy.network.movement.MovementNotification;
 import ar.com.tamborindeguy.network.movement.MovementRequest;
 import ar.com.tamborindeguy.network.movement.MovementResponse;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
@@ -70,6 +71,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 // Notifications
                 EntityUpdate.class,
                 RemoveEntity.class,
+                MovementNotification.class,
                 InventoryUpdate.class,
                 IResponseProcessor.class,
                 INotificationProcessor.class,

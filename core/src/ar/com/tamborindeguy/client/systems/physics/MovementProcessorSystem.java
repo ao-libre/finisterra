@@ -16,6 +16,7 @@ import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.esotericsoftware.minlog.Log;
 import entity.Heading;
+import movement.Destination;
 import physics.AOPhysics;
 import position.Pos2D;
 import position.WorldPos;
@@ -65,7 +66,7 @@ public class MovementProcessorSystem extends IteratingSystem {
         final WorldPos pos = player.getWorldPos();
         final AOPhysics phys = player.getAOPhysics();
         Optional<AOPhysics.Movement> movementIntention = phys.getMovementIntention();
-        if (!player.hasDestination()) {
+        if (!player.movementHasMovements()) {
             if (movementIntention.isPresent()) {
                 AOPhysics.Movement movement = movementIntention.get();
                 player.headingCurrent(getHeading(movement));
@@ -83,8 +84,8 @@ public class MovementProcessorSystem extends IteratingSystem {
                 GameScreen.getClient().sendToAll(request);
                 if (valid) { // Prediction
                     ClientMapUtils.updateTile(Tile.EMPTY_INDEX, pos);
-                    player.destinationWorldPos(expectedPos);
-                    player.destinationDir(movement);
+                    Destination destination = new Destination(expectedPos, movement);
+                    player.movementAdd(destination);
                     if (player.isMeditating()) {
                         GameScreen.getClient().sendToAll(new MeditateRequest());
                     }

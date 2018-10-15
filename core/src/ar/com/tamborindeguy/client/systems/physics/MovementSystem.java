@@ -1,19 +1,3 @@
-/*******************************************************************************
- * Copyright (C) 2014  Rodrigo Troncoso
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as
- *     published by the Free Software Foundation, either version 3 of the
- *     License, or (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- *
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *******************************************************************************/
 package ar.com.tamborindeguy.client.systems.physics;
 
 import ar.com.tamborindeguy.client.screens.GameScreen;
@@ -35,37 +19,34 @@ import static com.artemis.E.E;
 public class MovementSystem extends IteratingSystem {
 
     public MovementSystem() {
-        super(Aspect.all(Destination.class,
-                WorldPos.class, Pos2D.class));
+        super(Aspect.all(WorldPos.class, Pos2D.class, AOPhysics.class));
     }
 
     @Override
     protected void process(int entity) {
         E player = E(entity);
-        player.moving();
         WorldPos pos = player.getWorldPos();
         if (entity == GameScreen.getPlayer()) {
             pos = MovementProcessorSystem.getPosition(pos);
         }
-        if (player.hasDestination()) {
+        if (player.movementHasMovements()) {
             if (movePlayer(player)) {
                 if (entity != GameScreen.getPlayer()) {
-                    WorldPos dest = player.getDestination().worldPos;
+                    WorldPos dest = player.movementCurrent().worldPos;
                     player.getWorldPos().x = dest.x;
                     player.getWorldPos().y = dest.y;
                     player.getWorldPos().map = dest.map;
                 }
-                player.removeDestination();
-                final AOPhysics phys = player.getAOPhysics();
-                Optional<AOPhysics.Movement> movementIntention = phys.getMovementIntention();
-                player.moving(movementIntention.isPresent());
+                player.movementCompleteCurrent();
             }
         }
-
+        final AOPhysics phys = player.getAOPhysics();
+        Optional<AOPhysics.Movement> movementIntention = phys.getMovementIntention();
+        player.moving(player.movementHasMovements() || movementIntention.isPresent());
     }
 
     private boolean movePlayer(E player) {
-        Destination destination = player.getDestination();
+        Destination destination = player.movementCurrent();
         Pos2D pos2D = player.getPos2D();
         float delta = world.getDelta() * AOPhysics.WALKING_VELOCITY / Tile.TILE_PIXEL_HEIGHT;
         switch (destination.dir) {

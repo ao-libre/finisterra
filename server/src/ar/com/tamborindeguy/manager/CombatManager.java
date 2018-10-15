@@ -3,7 +3,6 @@ package ar.com.tamborindeguy.manager;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import com.artemis.Component;
 import com.artemis.E;
-import entity.CombatMessage;
 
 import java.util.*;
 
@@ -33,7 +32,7 @@ public class CombatManager {
         entity.getCombatMessage().text = attack;
         EntityUpdate update = new EntityUpdate(victim, new Component[] {entity.getCombatMessage()}, new Class[0]);
         WorldManager.sendEntityUpdate(victim, update);
-        WorldManager.notifyUpdateToNearEntities(update);
+        WorldManager.notifyToNearEntities(victim, update);
     }
 
     public static void update(int victim) {
