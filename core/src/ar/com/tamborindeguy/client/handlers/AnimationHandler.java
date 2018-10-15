@@ -1,29 +1,33 @@
 package ar.com.tamborindeguy.client.handlers;
 
 import ar.com.tamborindeguy.model.Graphic;
-import ar.com.tamborindeguy.model.descriptors.IDescriptor;
+import ar.com.tamborindeguy.model.descriptors.*;
 import ar.com.tamborindeguy.model.textures.BundledAnimation;
+import entity.*;
+import graphics.FX;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class AnimationHandler {
-    private static Map<Integer, List<BundledAnimation>> bodyAnimations;
-    private static Map<Integer, List<BundledAnimation>> headAnimations;
-    private static Map<Integer, List<BundledAnimation>> helmetAnimations;
-    private static Map<Integer, List<BundledAnimation>> weaponAnimations;
-    private static Map<Integer, List<BundledAnimation>> shieldAnimations;
-    private static Map<Integer, List<BundledAnimation>> fxAnimations;
+
+    // TODO check
+    private static Map<Body, List<BundledAnimation>> bodyAnimations = new WeakHashMap<>();
+    private static Map<Head, List<BundledAnimation>> headAnimations = new WeakHashMap<>();
+    private static Map<Helmet, List<BundledAnimation>> helmetAnimations = new WeakHashMap<>();
+    private static Map<Weapon, List<BundledAnimation>> weaponAnimations = new WeakHashMap<>();
+    private static Map<Shield, List<BundledAnimation>> shieldAnimations = new WeakHashMap<>();
+    private static Map<FX, List<BundledAnimation>> fxAnimations = new WeakHashMap<>();
 
     private static Map<Integer, BundledAnimation> animations = new ConcurrentHashMap<>();
 
     public static void load() {
-        bodyAnimations = loadDescriptors(DescriptorHandler.getBodies());
-        headAnimations = loadDescriptors(DescriptorHandler.getHeads());
-        helmetAnimations = loadDescriptors(DescriptorHandler.getHelmets());
-        weaponAnimations = loadDescriptors(DescriptorHandler.getWeapons());
-        shieldAnimations = loadDescriptors(DescriptorHandler.getShields());
-        fxAnimations = loadDescriptors(DescriptorHandler.getFxs());
+//        bodyAnimations = loadDescriptors(DescriptorHandler.getBodies());
+//        headAnimations = loadDescriptors(DescriptorHandler.getHeads());
+//        helmetAnimations = loadDescriptors(DescriptorHandler.getHelmets());
+//        weaponAnimations = loadDescriptors(DescriptorHandler.getWeapons());
+//        shieldAnimations = loadDescriptors(DescriptorHandler.getShields());
+//        fxAnimations = loadDescriptors(DescriptorHandler.getFxs());
     }
 
     private static Map<Integer, List<BundledAnimation>> loadDescriptors(List<?> descriptors) {
@@ -55,28 +59,67 @@ public class AnimationHandler {
         return animations;
     }
 
-    public static BundledAnimation getHeadAnimation(int index, int current) {
-        return headAnimations.get(index).get(current);
+    public static BundledAnimation getHeadAnimation(Head head, int current) {
+        return headAnimations.computeIfAbsent(head, h -> {
+            HeadDescriptor descriptor = DescriptorHandler.getHead(h.index - 1);
+            return createAnimations(descriptor);
+        }).get(current);
     }
 
-    public static BundledAnimation getBodyAnimation(int index, int current) {
-        return bodyAnimations.get(index).get(current);
+    public static BundledAnimation getBodyAnimation(Body body, int current) {
+        return bodyAnimations.computeIfAbsent(body, b -> {
+            BodyDescriptor descriptor = DescriptorHandler.getBody(b.index);
+            return createAnimations(descriptor);
+        }).get(current);
     }
 
-    public static BundledAnimation getWeaponAnimation(int index, int current) {
-        return weaponAnimations.get(index).get(current);
+    public static BundledAnimation getWeaponAnimation(Weapon weapon, int current) {
+        return weaponAnimations.computeIfAbsent(weapon, w -> {
+            WeaponDescriptor descriptor = DescriptorHandler.getWeapon(w.index - 1);
+            return createAnimations(descriptor);
+        }).get(current);
     }
 
-    public static BundledAnimation getHelmetsAnimation(int index, int current) {
-        return helmetAnimations.get(index).get(current);
+    public static BundledAnimation getHelmetsAnimation(Helmet helmet, int current) {
+        return helmetAnimations.computeIfAbsent(helmet, h -> {
+            HelmetDescriptor descriptor = DescriptorHandler.getHelmet(h.index - 1);
+            return createAnimations(descriptor);
+        }).get(current);
     }
 
-    public static BundledAnimation getShieldAnimation(int index, int current) {
-        return shieldAnimations.get(index).get(current);
+    public static BundledAnimation getShieldAnimation(Shield shield, int current) {
+        return shieldAnimations.computeIfAbsent(shield, s -> {
+            ShieldDescriptor descriptor = DescriptorHandler.getShield(s.index - 1);
+            return createAnimations(descriptor);
+        }).get(current);
     }
 
     public static BundledAnimation getFXAnimation(int index, int current) {
         return fxAnimations.get(index).get(current);
+    }
+
+    public static Map<Body, List<BundledAnimation>> getBodyAnimations() {
+        return bodyAnimations;
+    }
+
+    public static Map<FX, List<BundledAnimation>> getFxAnimations() {
+        return fxAnimations;
+    }
+
+    public static Map<Head, List<BundledAnimation>> getHeadAnimations() {
+        return headAnimations;
+    }
+
+    public static Map<Helmet, List<BundledAnimation>> getHelmetAnimations() {
+        return helmetAnimations;
+    }
+
+    public static Map<Shield, List<BundledAnimation>> getShieldAnimations() {
+        return shieldAnimations;
+    }
+
+    public static Map<Weapon, List<BundledAnimation>> getWeaponAnimations() {
+        return weaponAnimations;
     }
 
     public static BundledAnimation getGraphicAnimation(int grhIndex) {
