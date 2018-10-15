@@ -45,6 +45,9 @@ public class ServerNotificationProcessor implements INotificationProcessor {
         InventoryUpdate update = new InventoryUpdate();
         Inventory inventory = entity.getInventory();
         Inventory.Item item = inventory.items[slot];
+        if (item == null) {
+            return;
+        }
         if (item.equipped) {
             ItemConsumers.getEquipConsumer(false).accept(dropItem.getPlayerId(), ObjectManager.getObject(item.objId).get());
             item.equipped = false;

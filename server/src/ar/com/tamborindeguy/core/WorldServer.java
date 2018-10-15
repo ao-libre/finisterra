@@ -65,7 +65,7 @@ public class WorldServer {
                 .worldPosMap(1)
                 .elvElv(1000)
                 .levelLevel(45)
-                .headingCurrent(Heading.HEADING_NORTH)
+                .headingCurrent(Heading.HEADING_SOUTH)
                 .headIndex(4)
                 .bodyIndex(100)
                 .weaponIndex(8)

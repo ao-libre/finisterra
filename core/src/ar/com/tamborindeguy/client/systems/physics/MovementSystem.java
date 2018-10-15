@@ -27,6 +27,8 @@ import physics.AOPhysics;
 import position.Pos2D;
 import position.WorldPos;
 
+import java.util.Optional;
+
 import static com.artemis.E.E;
 
 @Wire
@@ -54,7 +56,9 @@ public class MovementSystem extends IteratingSystem {
                     player.getWorldPos().map = dest.map;
                 }
                 player.removeDestination();
-                player.removeMoving();
+                final AOPhysics phys = player.getAOPhysics();
+                Optional<AOPhysics.Movement> movementIntention = phys.getMovementIntention();
+                player.moving(movementIntention.isPresent());
             }
         }
 

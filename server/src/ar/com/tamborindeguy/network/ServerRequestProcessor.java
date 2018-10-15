@@ -186,7 +186,7 @@ public class ServerRequestProcessor implements IRequestProcessor {
                         Log.info("Adding item to index: " + index);
                         InventoryUpdate update = new InventoryUpdate();
                         update.add(index, player.getInventory().items[index]);
-                        NetworkComunicator.sendTo(playerId, update);
+                        NetworkComunicator.sendTo(connectionId, update);
                         WorldManager.unregisterEntity(objectEntityId);
                         MapManager.removeEntity(objectEntityId);
                     } else {
