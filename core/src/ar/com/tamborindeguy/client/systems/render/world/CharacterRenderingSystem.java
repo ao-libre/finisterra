@@ -47,12 +47,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         Pos2D screenPos = Util.toScreen(currentPos);
         final Heading heading = player.getHeading();
 
-        CharacterDrawer.createDrawer(batch, player, heading, screenPos)
-                .drawBody()
-                .drawHead()
-                .drawHelmet()
-                .drawShield()
-                .drawWeapon();
+        CharacterDrawer.createDrawer(batch, player, heading, screenPos).draw();
 
         batch.end();
     }
@@ -78,6 +73,52 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             this.screenPos = screenPos;
             bodyPixelOffsetX = screenPos.x - 32.0f;
             bodyPixelOffsetY = screenPos.y;
+            calculateOffsets();
+        }
+
+        public void draw() {
+            int current = player.getHeading().current;
+            switch (current) {
+                case Heading.HEADING_NORTH:
+                    drawWeapon();
+                    drawShield();
+                    drawBody();
+                    drawHead();
+                    drawHelmet();
+                    break;
+                case Heading.HEADING_SOUTH:
+                    drawBody();
+                    drawHead();
+                    drawHelmet();
+                    drawWeapon();
+                    drawShield();
+                    break;
+                case Heading.HEADING_EAST:
+                    drawShield();
+                    drawBody();
+                    drawHead();
+                    drawHelmet();
+                    drawWeapon();
+                    break;
+                case Heading.HEADING_WEST:
+                    drawWeapon();
+                    drawBody();
+                    drawHead();
+                    drawHelmet();
+                    drawShield();
+                    break;
+
+            }
+        }
+
+        private void calculateOffsets() {
+            final Body body = player.getBody();
+            BodyDescriptor bodyDescriptor = DescriptorHandler.getBodies().get(body.index);
+            headOffsetY = bodyDescriptor.getHeadOffsetY();
+            BundledAnimation animation = AnimationHandler.getBodyAnimation(body.index, heading.current);
+            TextureRegion bodyRegion = player.isMoving() ? animation.getGraphic() : animation.getGraphic(0);
+            bodyPixelOffsetX = bodyPixelOffsetX + ((32.0f - bodyRegion.getRegionWidth()) / 2);
+            bodyPixelOffsetY = screenPos.y - (bodyRegion.getRegionHeight() - 32.0f) - 32.0f;
         }
 
         public static CharacterDrawer createDrawer(SpriteBatch batch, E player, Heading heading, Pos2D screenPos) {
@@ -91,7 +132,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 headOffsetY = bodyDescriptor.getHeadOffsetY();
                 BundledAnimation animation = AnimationHandler.getBodyAnimation(body.index, heading.current);
                 TextureRegion bodyRegion = player.isMoving() ? animation.getGraphic() : animation.getGraphic(0);
-                drawTexture(bodyRegion, bodyPixelOffsetX = bodyPixelOffsetX + ((32.0f - bodyRegion.getRegionWidth()) / 2), bodyPixelOffsetY = screenPos.y - (bodyRegion.getRegionHeight() - 32.0f) - 32.0f, 0, 0); // why - 32 - 32 ?
+                drawTexture(bodyRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, 0); // why - 32 - 32 ?
             }
             return this;
         }
