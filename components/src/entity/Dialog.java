@@ -9,7 +9,7 @@ public class Dialog extends Component {
 
     public String text;
     public float time = DEFAULT_TIME;
-    public float alpha = 1;
+    public float alpha = DEFAULT_ALPHA;
 
     public Dialog() {
     }
