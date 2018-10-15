@@ -1,7 +1,9 @@
 package entity;
 
 import com.artemis.Component;
+import com.artemis.annotations.DelayedComponentRemoval;
 
+@DelayedComponentRemoval
 public class Dialog extends Component {
 
     public static float DEFAULT_TIME = 7;
