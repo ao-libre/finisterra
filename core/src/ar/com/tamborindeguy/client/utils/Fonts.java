@@ -29,12 +29,12 @@ public class Fonts {
 
     static {
         WHITE_FONT = generate(Color.WHITE, 10, Color.BLACK, 0, 0, 0);
-        GM_NAME_FONT = generate(Colors.GM, 10, Color.BLACK, 0, 1, 0);
-        NEWBIE_NAME_FONT = generate(Colors.NEWBIE, 10, Color.BLACK, 0, 1, 0);
-        CITIZEN_NAME_FONT = generate(Colors.CITIZEN, 10, Color.BLACK, 0, 1, 0);
-        CRIMINAL_NAME_FONT = generate(Colors.CRIMINAL, 10, Color.BLACK, 0, 1, 0);
-        CLAN_FONT = generate(Colors.GREY, 9, Color.BLACK, 0, 1, 0);
-        DIALOG_FONT = generate(Color.WHITE, 10, Color.BLACK, 0, 1, 0);
+        GM_NAME_FONT = generate(Colors.GM, 10, Color.BLACK, 0, 1, -1);
+        NEWBIE_NAME_FONT = generate(Colors.NEWBIE, 10, Color.BLACK, 0, 1, -1);
+        CITIZEN_NAME_FONT = generate(Colors.CITIZEN, 10, Color.BLACK, 0, 1, -1);
+        CRIMINAL_NAME_FONT = generate(Colors.CRIMINAL, 10, Color.BLACK, 0, 1, -1);
+        CLAN_FONT = generate(Colors.GREY, 9, Color.BLACK, 0, 1, -1);
+        DIALOG_FONT = generate(Color.WHITE, 10, Color.BLACK, 0, 1, -1);
         WRITING_FONT = generate(Color.BLACK, 6, Color.WHITE, 1, 0, -2);
         COMBAT_FONT = generate(Colors.COMBAT, 9, Color.BLACK, 0, 1, -1);
     }

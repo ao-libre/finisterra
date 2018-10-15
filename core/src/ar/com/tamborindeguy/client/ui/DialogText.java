@@ -7,25 +7,28 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 public class DialogText extends Table {
 
-    private final TextField textf;
+    private TextField textf;
 
     DialogText() {
-        textf = new TextField("", Skins.COMODORE_SKIN, "transparent");
         row().colspan(1).expandX().fillX();
-        add(textf).fillX();
+        textf = new TextField("", Skins.COMODORE_SKIN, "transparent");
         setVisible(false);
     }
 
     public String getMessage() {
-        return textf.getText();
+        return textf != null ? textf.getText() : "";
     }
 
     public void toggle() {
         setVisible(!isVisible());
         if (isVisible()) {
+            add(textf).fillX();
+            row().colspan(1).expandX().fillX();
             getStage().setKeyboardFocus(textf);
         } else {
+            getStage().unfocus(textf);
             textf.setText("");
+            removeActor(textf);
         }
     }
 

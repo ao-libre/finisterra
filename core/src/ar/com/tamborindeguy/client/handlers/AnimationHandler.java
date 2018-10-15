@@ -49,7 +49,7 @@ public class AnimationHandler {
         for (int i = 0; i < indexs.length; i++) {
             Graphic grh = DescriptorHandler.getGraphic(indexs[i]);
             if (grh != null) {
-                animations.add(new BundledAnimation(DescriptorHandler.getGraphic(indexs[i])));
+                animations.add(new BundledAnimation(grh));
             }
         }
         return animations;

@@ -1,5 +1,6 @@
 package ar.com.tamborindeguy.client.managers;
 
+import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.ui.GUI;
 import ar.com.tamborindeguy.client.utils.Keys;
@@ -11,16 +12,22 @@ import ar.com.tamborindeguy.network.interaction.TakeItemRequest;
 import ar.com.tamborindeguy.network.interaction.TalkRequest;
 import ar.com.tamborindeguy.network.inventory.ItemActionRequest;
 import com.artemis.E;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.esotericsoftware.minlog.Log;
+
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
 
 public class AOInputProcessor extends Stage {
 
+    private static final Random r = new Random();
+
     @Override
     public boolean keyUp(int keycode) {
-        E player = E(GameScreen.getPlayer());
-        if (!(player.isWriting())) {
+        if (!GUI.getDialog().isVisible()) {
             switch (keycode) {
                 case Keys.INVENTORY:
                     toggleInventory();
@@ -43,7 +50,10 @@ public class AOInputProcessor extends Stage {
                 case Keys.ATTACK_2:
                     attack();
                     break;
-
+                case Input.Keys.O:
+                    int randomFx = r.nextInt(DescriptorHandler.getFxs().size());
+                    E(GameScreen.getPlayer()).fXAddFx(randomFx);
+                    break;
             }
         }
         switch (keycode) {

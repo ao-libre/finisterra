@@ -129,6 +129,9 @@ public class ServerRequestProcessor implements IRequestProcessor {
         if (itemIndex < userItems.length) {
             // if equipable
             Inventory.Item item = userItems[itemIndex];
+            if (item == null) {
+                return;
+            }
             if (ItemManager.isEquippable(item)) {
                 // modify user equipment
                 item.equipped = !item.equipped;
