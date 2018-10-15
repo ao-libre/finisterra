@@ -3,6 +3,7 @@ package ar.com.tamborindeguy.client.systems.render.world;
 import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
 import ar.com.tamborindeguy.client.handlers.ParticlesHandler;
 import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
+import ar.com.tamborindeguy.model.descriptors.BodyDescriptor;
 import ar.com.tamborindeguy.model.descriptors.FXDescriptor;
 import ar.com.tamborindeguy.model.map.Tile;
 import ar.com.tamborindeguy.model.textures.BundledAnimation;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.esotericsoftware.minlog.Log;
+import entity.Body;
 import graphics.FX;
 import position.Pos2D;
 import position.WorldPos;
@@ -98,15 +100,26 @@ public class FXsRenderingSystem extends IteratingSystem {
         fx.fxs.forEach(fxId -> {
             FXDescriptor fxDescriptor = DescriptorHandler.getFX(fxId);
             Map<Integer, BundledAnimation> anims = fxs.computeIfAbsent(entityId, id -> new HashMap<>());
+            int bodyOffset = getBodyOffset(entityId);
             BundledAnimation anim = anims.computeIfAbsent(fxId, fxGraphic -> new BundledAnimation(DescriptorHandler.getGraphic(fxDescriptor.getIndexs()[0])));
             TextureRegion graphic = anim.getGraphic(false);
-            batch.draw(graphic, screenPos.x - (Tile.TILE_PIXEL_WIDTH + graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX(), screenPos.y - graphic.getRegionHeight() + fxDescriptor.getOffsetY());
+            batch.draw(graphic, screenPos.x - (Tile.TILE_PIXEL_WIDTH + graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX(), screenPos.y - graphic.getRegionHeight() + fxDescriptor.getOffsetY() + bodyOffset);
             anim.setAnimationTime(anim.getAnimationTime() + getWorld().getDelta() * (anim.getFrames().size * 0.33f));
             if (anim.getAnimation().isAnimationFinished(anim.getAnimationTime())) {
                 removeFXs.add(fxId);
                 anims.remove(fxId);
             }
         });
+    }
+
+    private int getBodyOffset(int entityId) {
+        int headOffsetY = 0;
+        if (E(entityId).hasBody()) {
+            final Body body = E(entityId).getBody();
+            BodyDescriptor bodyDescriptor = DescriptorHandler.getBodies().get(body.index);
+            headOffsetY = bodyDescriptor.getHeadOffsetY();
+        }
+        return headOffsetY;
     }
 
 }

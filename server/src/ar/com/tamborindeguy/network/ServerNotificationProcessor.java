@@ -8,6 +8,7 @@ import ar.com.tamborindeguy.network.interaction.DropItem;
 import ar.com.tamborindeguy.network.interfaces.INotification;
 import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
 import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
+import ar.com.tamborindeguy.network.movement.MovementNotification;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
 import com.artemis.E;
@@ -22,7 +23,7 @@ public class ServerNotificationProcessor implements INotificationProcessor {
 
     @Override
     public void processNotification(EntityUpdate entityUpdate) {
-        WorldManager.notifyUpdateToNearEntities(entityUpdate);
+        WorldManager.notifyToNearEntities(entityUpdate.entityId, entityUpdate);
     }
 
     @Override
@@ -67,5 +68,10 @@ public class ServerNotificationProcessor implements INotificationProcessor {
         E(object).objectIndex(item.objId);
         E(object).objectCount(dropItem.getCount());
         WorldManager.registerItem(object);
+    }
+
+    @Override
+    public void processNotification(MovementNotification movementNotification) {
+        defaultProcess(movementNotification);
     }
 }

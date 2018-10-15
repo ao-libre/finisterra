@@ -17,6 +17,7 @@ import ar.com.tamborindeguy.network.inventory.ItemActionRequest;
 import ar.com.tamborindeguy.network.login.LoginFailed;
 import ar.com.tamborindeguy.network.login.LoginOK;
 import ar.com.tamborindeguy.network.login.LoginRequest;
+import ar.com.tamborindeguy.network.movement.MovementNotification;
 import ar.com.tamborindeguy.network.movement.MovementRequest;
 import ar.com.tamborindeguy.network.movement.MovementResponse;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
@@ -31,6 +32,7 @@ import entity.Object;
 import entity.character.info.Inventory;
 import entity.character.states.Meditating;
 import graphics.FX;
+import movement.Destination;
 import physics.AttackAnimation;
 import position.WorldPos;
 
@@ -83,13 +85,12 @@ public class ServerRequestProcessor implements IRequestProcessor {
         player.worldPosMap(nextPos.map);
         player.worldPosX(nextPos.x);
         player.worldPosY(nextPos.y);
-        player.destinationDir(request.movement);
-        player.destinationWorldPos(player.getWorldPos());
 
         MapManager.movePlayer(playerId, Optional.of(oldPos));
 
         // notify near users
-        WorldManager.notifyUpdateToNearEntities(new EntityUpdate(playerId, new Component[] {player.getHeading(), player.getDestination()}, new Class[0]));
+        WorldManager.notifyToNearEntities(playerId, new EntityUpdate(playerId, new Component[] {player.getHeading()}, new Class[0])); // is necessary?
+        WorldManager.notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement)));
 
         // notify user
         NetworkComunicator.sendTo(connectionId, new MovementResponse(request.requestNumber, nextPos));
@@ -118,7 +119,7 @@ public class ServerRequestProcessor implements IRequestProcessor {
         } else {
             CombatManager.notify(playerId, CombatManager.MISS);
         }
-        WorldManager.notifyUpdate(new EntityUpdate(playerId, new Component[]{new AttackAnimation()}, new Class[0]));
+        WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new AttackAnimation()}, new Class[0]));
     }
 
     @Override
@@ -151,11 +152,11 @@ public class ServerRequestProcessor implements IRequestProcessor {
         if (meditating) {
             player.removeFX();
             player.removeMeditating();
-            WorldManager.notifyUpdate(new EntityUpdate(player.networkId(), new Component[0], new Class[]{FX.class, Meditating.class}));
+            WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[0], new Class[]{FX.class, Meditating.class}));
         } else {
             player.fXAddParticleEffect(Constants.MEDITATE_NW_FX);
             player.meditating();
-            WorldManager.notifyUpdate(new EntityUpdate(player.networkId(), new Component[] {player.getMeditating(), player.getFX()}, new Class[0]));
+            WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[] {player.getMeditating(), player.getFX()}, new Class[0]));
         }
     }
 
@@ -164,7 +165,7 @@ public class ServerRequestProcessor implements IRequestProcessor {
         int playerId = NetworkComunicator.getPlayerByConnection(connectionId);
         E player = E(playerId);
         player.dialogText(talkRequest.getMessage());
-        WorldManager.notifyUpdate(new EntityUpdate(player.networkId(), new Component[]{player.getDialog()}, new Class[0]));
+        WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{player.getDialog()}, new Class[0]));
     }
 
     @Override

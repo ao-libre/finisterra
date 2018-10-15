@@ -10,10 +10,8 @@ import ar.com.tamborindeguy.objects.types.Type;
 import ar.com.tamborindeguy.utils.WorldUtils;
 import com.artemis.Entity;
 import com.artemis.World;
-import com.esotericsoftware.minlog.Log;
 import entity.Heading;
 
-import java.util.Collections;
 import java.util.Set;
 
 import static com.artemis.E.E;
@@ -91,21 +89,21 @@ public class WorldManager {
         }
     }
 
-    public static void sendEntityUpdate(int user, EntityUpdate update) {
+    public static void sendEntityUpdate(int user, Object update) {
         if (NetworkComunicator.playerHasConnection(user)) {
             NetworkComunicator.sendTo(NetworkComunicator.getConnectionByPlayer(user), update);
         }
     }
 
-    public static void notifyUpdateToNearEntities(EntityUpdate update) {
-        MapManager.getNearEntities(update.entityId).forEach(nearPlayer -> {
+    public static void notifyToNearEntities(int entityId, Object update) {
+        MapManager.getNearEntities(entityId).forEach(nearPlayer -> {
             sendEntityUpdate(nearPlayer, update);
         });
     }
 
-    public static void notifyUpdate(EntityUpdate update) {
-        sendEntityUpdate(update.entityId, update);
-        notifyUpdateToNearEntities(update);
+    public static void notifyUpdate(int entityId, Object update) {
+        sendEntityUpdate(entityId, update);
+        notifyToNearEntities(entityId, update);
     }
 
     public static void sendCompleteNearEntities(int entityId) {
