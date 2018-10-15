@@ -39,7 +39,6 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
         state = MarshalState.STARTING;
         registerDictionary();
         endpoint.addListener(listener); // can be safely called more than once.
-        Log.info("add listener to " + this.getClass().getSimpleName() + " " + listener);
         endpoint.start();
         new Thread(() -> connectEndpoint()).start();
     }
@@ -51,7 +50,6 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
 
     @Override
     public void sendToAll(Object o) {
-        Log.info("Send object " + o);
         ((Client) endpoint).sendTCP(o);
     }
 }

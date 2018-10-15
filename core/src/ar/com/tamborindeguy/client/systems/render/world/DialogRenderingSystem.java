@@ -26,6 +26,9 @@ public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
 
     public static final int ALPHA_TIME = 2;
     public static final int MAX_LENGTH = 120;
+    public static final int DISTANCE_TO_TOP = 5;
+    public static final float TIME = 0.3f;
+    public static final float VELOCITY = DISTANCE_TO_TOP / TIME;
     private SpriteBatch batch;
     private CameraSystem cameraSystem;
 
@@ -56,8 +59,9 @@ public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
             float width = Math.min(dialogLayout.width, MAX_LENGTH);
             dialogLayout.setText(DIALOG_FONT, dialog.text, DIALOG_FONT.getColor(), width, Align.center, true);
             final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (width + Tile.TILE_PIXEL_WIDTH) / 2;
-            int offsetY = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
-            final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y + 55 - offsetY + dialogLayout.height;
+            float  up = Dialog.DEFAULT_TIME - dialog.time <= TIME ? (Dialog.DEFAULT_TIME - dialog.time) * VELOCITY : DISTANCE_TO_TOP;
+            float offsetY = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY() - up;
+            final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y + 50 - offsetY + dialogLayout.height;
             DIALOG_FONT.draw(batch, dialogLayout, fontX, fontY);
 
             batch.end();
