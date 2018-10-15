@@ -4,9 +4,7 @@ import ar.com.tamborindeguy.client.handlers.AnimationHandler;
 import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
 import ar.com.tamborindeguy.client.systems.OrderedEntityProcessingSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
-import ar.com.tamborindeguy.interfaces.Constants;
 import ar.com.tamborindeguy.model.descriptors.BodyDescriptor;
-import ar.com.tamborindeguy.model.descriptors.HelmetDescriptor;
 import ar.com.tamborindeguy.model.textures.BundledAnimation;
 import ar.com.tamborindeguy.util.Util;
 import com.artemis.Aspect;
@@ -31,7 +29,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
     private CameraSystem cameraSystem;
 
     public CharacterRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(Character.class, Pos2D.class, Heading.class));
+        super(Aspect.all(Character.class, Pos2D.class, Body.class, Heading.class));
         this.batch = batch;
     }
 
@@ -62,9 +60,13 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         private Heading heading;
         private Pos2D screenPos;
 
+        private int headOffsetY;
+
+        // body
         private float bodyPixelOffsetX;
         private float bodyPixelOffsetY;
-        private int headOffsetY;
+        private TextureRegion bodyRegion;
+        private BundledAnimation bodyAnimation;
 
         private CharacterDrawer(SpriteBatch batch, E player, Heading heading, Pos2D screenPos) {
             this.batch = batch;
@@ -115,53 +117,51 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             final Body body = player.getBody();
             BodyDescriptor bodyDescriptor = DescriptorHandler.getBodies().get(body.index);
             headOffsetY = bodyDescriptor.getHeadOffsetY();
-            BundledAnimation animation = AnimationHandler.getBodyAnimation(body.index, heading.current);
-            TextureRegion bodyRegion = player.isMoving() ? animation.getGraphic() : animation.getGraphic(0);
+            bodyAnimation = AnimationHandler.getBodyAnimation(body.index, heading.current);
+            bodyRegion = player.isMoving() ? bodyAnimation.getGraphic() : bodyAnimation.getGraphic(0);
             bodyPixelOffsetX = bodyPixelOffsetX + ((32.0f - bodyRegion.getRegionWidth()) / 2);
             bodyPixelOffsetY = screenPos.y - (bodyRegion.getRegionHeight() - 32.0f) - 32.0f;
         }
 
-        public static CharacterDrawer createDrawer(SpriteBatch batch, E player, Heading heading, Pos2D screenPos) {
+        static CharacterDrawer createDrawer(SpriteBatch batch, E player, Heading heading, Pos2D screenPos) {
             return new CharacterDrawer(batch, player, heading, screenPos);
         }
 
-        CharacterDrawer drawBody() {
-            if (player.hasBody()) {
-                final Body body = player.getBody();
-                BodyDescriptor bodyDescriptor = DescriptorHandler.getBodies().get(body.index);
-                headOffsetY = bodyDescriptor.getHeadOffsetY();
-                BundledAnimation animation = AnimationHandler.getBodyAnimation(body.index, heading.current);
-                TextureRegion bodyRegion = player.isMoving() ? animation.getGraphic() : animation.getGraphic(0);
-                drawTexture(bodyRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, 0); // why - 32 - 32 ?
-            }
-            return this;
+
+        void drawBody() {
+            drawTexture(bodyRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, -(!player.isMoving() && player.hasAttackAnimation() ? getExtraPixel() : 0)); // why - 32 - 32 ?
         }
 
-        CharacterDrawer drawHead() {
+        void drawHead() {
             if (player.hasHead()) {
                 final Head head = player.getHead();
                 BundledAnimation animation = AnimationHandler.getHeadAnimation(head.index, heading.current);
                 if (animation != null) {
                     TextureRegion headRegion = animation.getGraphic();
-                    drawTexture(headRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, headOffsetY - 4);
+                    int offsetY = headOffsetY - 4 - getExtraPixel();
+                    drawTexture(headRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, offsetY);
                 }
             }
-            return this;
         }
 
-        CharacterDrawer drawHelmet() {
+        private int getExtraPixel() {
+            int currentFrameIndex = bodyAnimation.getCurrentFrameIndex();
+            return currentFrameIndex == 2 || currentFrameIndex == 3 ? 1 : 0;
+        }
+
+        void drawHelmet() {
             if (player.hasHelmet()) {
                 Helmet helmet = player.getHelmet();
                 BundledAnimation animation = AnimationHandler.getHelmetsAnimation(helmet.index, heading.current);
                 if (animation != null) {
                     TextureRegion helmetRegion = animation.getGraphic();
-                    drawTexture(helmetRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, headOffsetY - 4);
+                    int offsetY = headOffsetY - 4 - getExtraPixel();
+                    drawTexture(helmetRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, offsetY);
                 }
             }
-            return this;
         }
 
-        CharacterDrawer drawWeapon() {
+        void drawWeapon() {
             if (player.hasWeapon()) {
                 Weapon weapon = player.getWeapon();
                 BundledAnimation animation = AnimationHandler.getWeaponAnimation(weapon.index, heading.current);
@@ -170,10 +170,9 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                     drawTexture(weaponRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, headOffsetY);
                 }
             }
-            return this;
         }
 
-        CharacterDrawer drawShield() {
+        void drawShield() {
             if (player.hasShield()) {
                 Shield shield = player.getShield();
                 BundledAnimation animation = AnimationHandler.getShieldAnimation(shield.index, heading.current);
@@ -182,7 +181,6 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                     drawTexture(shieldRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, headOffsetY);
                 }
             }
-            return this;
         }
 
         private void drawTexture(TextureRegion region, float x, float y, float offsetX, float offsetY) {
@@ -190,7 +188,6 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 batch.draw(region, x + offsetX, y + offsetY);
             }
         }
-
     }
 }
 

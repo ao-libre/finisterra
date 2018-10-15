@@ -50,6 +50,11 @@ public class ClientNotificationProcessor implements INotificationProcessor {
         Inventory inventory = player.getInventory();
         inventoryUpdate.getUpdates().forEach((position, item) -> {
             inventory.set(position, item);
+            if (item == null) {
+                Log.info("Item removed from position: " + position);
+            } else {
+                Log.info("Item: " + item.objId + " added to position: " + position);
+            }
         });
         GUI.getInventory().updateUserInventory();
     }

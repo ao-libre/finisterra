@@ -137,4 +137,8 @@ public class BundledAnimation {
         this.animationTime = animationTime;
     }
 
+    public int getCurrentFrameIndex() {
+        return animation.getKeyFrameIndex(animationTime % (animation.getFrameDuration() * frames.size));
+    }
+
 }

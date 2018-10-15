@@ -62,11 +62,12 @@ public class MovementProcessorSystem extends IteratingSystem {
     @Override
     protected void process(int entity) {
         E player = E(entity);
-        final AOPhysics phys = player.getAOPhysics();
         final WorldPos pos = player.getWorldPos();
+        final AOPhysics phys = player.getAOPhysics();
         Optional<AOPhysics.Movement> movementIntention = phys.getMovementIntention();
         if (!player.hasDestination()) {
-            movementIntention.ifPresent(movement -> {
+            if (movementIntention.isPresent()) {
+                AOPhysics.Movement movement = movementIntention.get();
                 player.headingCurrent(getHeading(movement));
                 WorldPos expectedPos = Util.getNextPos(pos, movement);
                 Set<Integer> nearEntities = WorldManager.getEntities();
@@ -88,7 +89,7 @@ public class MovementProcessorSystem extends IteratingSystem {
                         GameScreen.getClient().sendToAll(new MeditateRequest());
                     }
                 }
-            });
+            }
         }
     }
 
