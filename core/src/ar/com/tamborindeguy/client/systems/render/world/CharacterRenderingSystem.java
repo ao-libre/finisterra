@@ -117,7 +117,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             final Body body = player.getBody();
             BodyDescriptor bodyDescriptor = DescriptorHandler.getBodies().get(body.index);
             headOffsetY = bodyDescriptor.getHeadOffsetY();
-            bodyAnimation = AnimationHandler.getBodyAnimation(body.index, heading.current);
+            bodyAnimation = AnimationHandler.getBodyAnimation(body, heading.current);
             bodyRegion = player.isMoving() ? bodyAnimation.getGraphic() : bodyAnimation.getGraphic(0);
             bodyPixelOffsetX = bodyPixelOffsetX + ((32.0f - bodyRegion.getRegionWidth()) / 2);
             bodyPixelOffsetY = screenPos.y - (bodyRegion.getRegionHeight() - 32.0f) - 32.0f;
@@ -135,7 +135,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         void drawHead() {
             if (player.hasHead()) {
                 final Head head = player.getHead();
-                BundledAnimation animation = AnimationHandler.getHeadAnimation(head.index, heading.current);
+                BundledAnimation animation = AnimationHandler.getHeadAnimation(head, heading.current);
                 if (animation != null) {
                     TextureRegion headRegion = animation.getGraphic();
                     int offsetY = headOffsetY - 4 - getExtraPixel();
@@ -152,7 +152,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         void drawHelmet() {
             if (player.hasHelmet()) {
                 Helmet helmet = player.getHelmet();
-                BundledAnimation animation = AnimationHandler.getHelmetsAnimation(helmet.index, heading.current);
+                BundledAnimation animation = AnimationHandler.getHelmetsAnimation(helmet, heading.current);
                 if (animation != null) {
                     TextureRegion helmetRegion = animation.getGraphic();
                     int offsetY = headOffsetY - 4 - getExtraPixel();
@@ -164,7 +164,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         void drawWeapon() {
             if (player.hasWeapon()) {
                 Weapon weapon = player.getWeapon();
-                BundledAnimation animation = AnimationHandler.getWeaponAnimation(weapon.index, heading.current);
+                BundledAnimation animation = AnimationHandler.getWeaponAnimation(weapon, heading.current);
                 if (animation != null) {
                     TextureRegion weaponRegion = player.isMoving() || player.hasAttackAnimation() ? animation.getGraphic() : animation.getGraphic(0);
                     drawTexture(weaponRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, headOffsetY);
@@ -175,7 +175,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         void drawShield() {
             if (player.hasShield()) {
                 Shield shield = player.getShield();
-                BundledAnimation animation = AnimationHandler.getShieldAnimation(shield.index, heading.current);
+                BundledAnimation animation = AnimationHandler.getShieldAnimation(shield, heading.current);
                 if (animation != null) {
                     TextureRegion shieldRegion = player.isMoving() || player.hasAttackAnimation() ? animation.getGraphic() : animation.getGraphic(0);
                     drawTexture(shieldRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, headOffsetY);
