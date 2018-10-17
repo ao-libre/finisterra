@@ -117,7 +117,7 @@ public class FXsRenderingSystem extends IteratingSystem {
         if (E(entityId).hasBody()) {
             final Body body = E(entityId).getBody();
             BodyDescriptor bodyDescriptor = DescriptorHandler.getBodies().get(body.index);
-            headOffsetY = bodyDescriptor.getHeadOffsetY();
+            headOffsetY = Math.max(0, bodyDescriptor.getHeadOffsetY());
         }
         return headOffsetY;
     }

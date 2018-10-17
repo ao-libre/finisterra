@@ -38,9 +38,9 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
         Pos2D playerPos = Util.toScreen(player.getPos2D());
         Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
         Pos2D screenPos = new Pos2D(cameraPos.x - playerPos.x, cameraPos.y - playerPos.y);
-        CombatMessage combatMessage = player.getCombatMessage();
 
-        combatMessage.offset -= world.getDelta() * combatMessage.time * 15.0f;
+        CombatMessage combatMessage = player.getCombatMessage();
+        combatMessage.offset -= getWorld().getDelta() * combatMessage.time * 15.0f;
         if (combatMessage.offset < 0) {
             combatMessage.offset = 0;
         }

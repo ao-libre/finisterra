@@ -14,6 +14,7 @@ import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.EntityEdit;
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
 import position.WorldPos;
@@ -54,7 +55,8 @@ public class ClientNotificationProcessor implements INotificationProcessor {
             if (item == null) {
                 Log.info("Item removed from position: " + position);
             } else {
-                Log.info("Item: " + item.objId + " added to position: " + position);
+                Log.info("Item: " + item.objId + " updated in position: " + position);
+                Log.info("Item equipped: " + item.equipped);
             }
         });
         GUI.getInventory().updateUserInventory();
@@ -94,7 +96,8 @@ public class ClientNotificationProcessor implements INotificationProcessor {
             edit.add(component);
         }
         for (Class remove : entityUpdate.toRemove) {
-            edit.remove(remove);
+            // avoid NPEs beacouse of multithreading
+            Gdx.app.postRunnable(() -> edit.remove(remove));
         }
     }
 }

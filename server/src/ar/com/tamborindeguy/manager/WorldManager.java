@@ -12,6 +12,7 @@ import com.artemis.Entity;
 import com.artemis.World;
 import entity.Heading;
 
+import java.util.Iterator;
 import java.util.Set;
 
 import static com.artemis.E.E;
@@ -57,17 +58,18 @@ public class WorldManager {
         addItem(player.getId(), Type.ARMOR);
         addItem(player.getId(), Type.WEAPON);
         addItem(player.getId(), Type.SHIELD);
-        addItem(player.getId(), Type.RING);
-        ObjectManager.getTypeObjects(Type.POTION).forEach(potion -> {
-            E(player).getInventory().add(potion.getId());
-        });
         return player;
     }
 
 
     private static void addItem(int player, Type type) {
         Set<Obj> objs = ObjectManager.getTypeObjects(type);
-        E(player).getInventory().add(objs.iterator().next().getId());
+        Iterator<Obj> iterator = objs.iterator();
+        E(player).getInventory().add(iterator.next().getId());
+        E(player).getInventory().add(iterator.next().getId());
+        E(player).getInventory().add(iterator.next().getId());
+        E(player).getInventory().add(iterator.next().getId());
+        E(player).getInventory().add(iterator.next().getId());
     }
 
     public static void registerItem(int id){
@@ -83,13 +85,13 @@ public class WorldManager {
         getWorld().delete(playerToDisconnect);
     }
 
-    public static void sendEntityRemove(int user, int entity) {
+    static void sendEntityRemove(int user, int entity) {
         if (NetworkComunicator.playerHasConnection(user)) {
             NetworkComunicator.sendTo(NetworkComunicator.getConnectionByPlayer(user), new RemoveEntity(entity));
         }
     }
 
-    public static void sendEntityUpdate(int user, Object update) {
+    static void sendEntityUpdate(int user, Object update) {
         if (NetworkComunicator.playerHasConnection(user)) {
             NetworkComunicator.sendTo(NetworkComunicator.getConnectionByPlayer(user), update);
         }
