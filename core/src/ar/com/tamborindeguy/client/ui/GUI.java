@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 public class GUI {
 
     private static Inventory inventory;
+    private static SpellView spellView;
     private static DialogText dialog;
     private Stage stage;
 

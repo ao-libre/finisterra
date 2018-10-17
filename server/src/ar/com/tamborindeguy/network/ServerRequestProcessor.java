@@ -136,7 +136,6 @@ public class ServerRequestProcessor implements IRequestProcessor {
             }
             if (ItemManager.isEquippable(item)) {
                 // modify user equipment
-                item.equipped = !item.equipped;
                 ItemManager.equip(playerId, itemIndex, item);
             } else if (ItemManager.isUsable(item)) {
                 ItemManager.use(playerId, itemIndex, item);

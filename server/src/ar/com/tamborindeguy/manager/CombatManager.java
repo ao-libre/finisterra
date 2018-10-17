@@ -28,8 +28,7 @@ public class CombatManager {
 
     public static void notify(int victim, String attack) {
         E entity = E(victim);
-        entity.combatMessage();
-        entity.getCombatMessage().text = attack;
+        entity.combatMessageText(attack);
         EntityUpdate update = new EntityUpdate(victim, new Component[] {entity.getCombatMessage()}, new Class[0]);
         WorldManager.sendEntityUpdate(victim, update);
         WorldManager.notifyToNearEntities(victim, update);
