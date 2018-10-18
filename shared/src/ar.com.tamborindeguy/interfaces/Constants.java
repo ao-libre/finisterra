@@ -39,7 +39,7 @@ public interface Constants {
     // Meditation FXs
     int MEDITATE_NW_FX = 1;
 
-    public enum Heading {
+    enum Heading {
         NORTH(0), EAST(1), SOUTH(2), WEST(3);
 
         final int mHeading;

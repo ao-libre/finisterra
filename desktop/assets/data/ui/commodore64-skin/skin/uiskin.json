@@ -23,6 +23,10 @@ com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
       name: white,
       color: {a: 0.5 }
     },
+	transparent: {
+	  name: white,
+	  color: {a: 0}
+	},
     transparentCursor: {
       name: grey,
       color: transparentWhite
@@ -88,6 +92,11 @@ com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 		background: transparentDialog,
 		titleFont: commodore-64,
 		titleFontColor: { a: 1, b: 1, g: 1, r: 1 },
+	},
+	no-background: {
+		background: transparent,
+		titleFont: commodore-64,
+		titleFontColor: { a: 1, b: 1, g: 1, r: 1 }
 	}
 },
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
@@ -120,7 +129,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 },
 com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 	default: {
-		background: blue,
+		background: transparentDialog,
 		hScroll: scroll-bar,
 		hScrollKnob: scroll-bar-horizontal-knob,
 		vScroll: scroll-bar,
@@ -159,6 +168,13 @@ com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 		fontColorUnselected: { a: 1, b: 0.90588236, g: 0.25882354, r: 0.25882354 },
 		selection: light-blue,
 		background: white
+	},
+	black: {
+		font: commodore-64,
+		fontColorSelected: { a: 1, b: 0.90588236, g: 0.25882354, r: 0.25882354 },
+		fontColorUnselected: { a: 1, b: 0.90588236, g: 0.25882354, r: 0.25882354 },
+		selection: light-blue,
+		background: transparentDialog
 	}
 },
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {

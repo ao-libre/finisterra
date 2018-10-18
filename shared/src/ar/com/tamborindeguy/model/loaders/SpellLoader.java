@@ -16,7 +16,7 @@ import java.util.function.BiConsumer;
 
 public class SpellLoader extends Loader<Map<Integer, Spell>> {
 
-    private static final String HECHIZO = "HECHIZO";
+    private static final String HECHIZO = "hechizo";
 
     public static final Set<SpellSetter<?>> setters;
 
@@ -115,7 +115,11 @@ public class SpellLoader extends Loader<Map<Integer, Spell>> {
         }
 
         public void accept(Spell spell, Profile.Section section) {
-            setter.accept(spell, (T) section.get(field));
+            T u = (T) section.get(field);
+            if (u == null) {
+                return;
+            }
+            setter.accept(spell, u);
         }
     }
 }
