@@ -18,14 +18,14 @@ public abstract class WorldScreen extends ScreenAdapter {
     protected int state;
 
     public WorldScreen(AO game) {
-        this.game = game;
+        WorldScreen.game = game;
         this.logger = new FPSLogger();
     }
 
     public void init() {
         this.initScene();
         this.initSystems(builder);
-        this.world = new World(builder.build());
+        world = new World(builder.build());
     }
 
     @Override
@@ -85,7 +85,7 @@ public abstract class WorldScreen extends ScreenAdapter {
     }
 
     public void setGame(AO game) {
-        this.game = game;
+        WorldScreen.game = game;
     }
 
     public int getState() {

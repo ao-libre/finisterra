@@ -12,6 +12,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -34,6 +35,7 @@ public class Inventory extends Window {
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
+    private boolean over;
 
     Inventory() {
         super("Inventory", Skins.COMODORE_SKIN, "black");
@@ -132,6 +134,18 @@ public class Inventory extends Window {
                 a[i] = a[j];
                 a[j] = t;
             }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                super.enter(event, x, y, pointer, fromActor);
+                over = isOver();
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                super.exit(event, x, y, pointer, toActor);
+                over = isOver();
+            }
         });
     }
 
@@ -145,11 +159,7 @@ public class Inventory extends Window {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        float alpha = parentAlpha;
-        if (!mouseOnInventory()) {
-            alpha = 0.5f;
-        }
-        super.draw(batch, alpha);
+        super.draw(batch, over ? parentAlpha : 0.5f);
         dragging.ifPresent(slot -> slot.getItem().ifPresent(item -> {
             Gdx.input.getY();
             Optional<Obj> object = ObjectHandler.getObject(item.objId);
@@ -174,9 +184,4 @@ public class Inventory extends Window {
         return slots.indexOf(dragging.get());
     }
 
-    private boolean mouseOnInventory() {
-        boolean xIN = Gdx.input.getX() > getX() && Gdx.input.getX() < getX() + getWidth();
-        boolean yIN = Gdx.input.getY() > getY() && Gdx.input.getY() < getY() + getHeight() + getPadTop();
-        return yIN && xIN;
-    }
 }

@@ -2020,7 +2020,7 @@ StaffAffected=0
 NeedStaff=0
 Resis=0
 
-[HECHIZO35]	'flecha para NPCs
+[HECHIZO35]
 Nombre=Flecha
 Desc=Flecha
 PalabrasMagicas=

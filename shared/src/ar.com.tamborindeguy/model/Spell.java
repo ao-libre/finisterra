@@ -135,415 +135,420 @@ public class Spell {
         return type;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setType(String type) {
+        this.type = Integer.parseInt(type);
     }
 
     public int getWav() {
         return wav;
     }
 
-    public void setWav(int wav) {
-        this.wav = wav;
+    public void setWav(String wav) {
+        this.wav = Integer.parseInt(wav);
     }
 
     public int getFxGrh() {
         return fxGrh;
     }
 
-    public void setFxGrh(int fxGrh) {
-        this.fxGrh = fxGrh;
+    public void setFxGrh(String fxGrh) {
+        this.fxGrh = Integer.parseInt(fxGrh);
     }
 
     public int getLoops() {
         return loops;
     }
 
-    public void setLoops(int loops) {
-        this.loops = loops;
+    public void setLoops(String loops) {
+        this.loops = Integer.parseInt(loops);
     }
 
     public int getMinSkill() {
         return minSkill;
     }
 
-    public void setMinSkill(int minSkill) {
-        this.minSkill = minSkill;
+    public void setMinSkill(String minSkill) {
+        this.minSkill = Integer.parseInt(minSkill);
     }
 
     public int getRequiredMana() {
         return requiredMana;
     }
 
-    public void setRequiredMana(int requiredMana) {
-        this.requiredMana = requiredMana;
+    public void setRequiredMana(String requiredMana) {
+        this.requiredMana = Integer.parseInt(requiredMana);
     }
 
     public int getRequiredStamina() {
         return requiredStamina;
     }
 
-    public void setRequiredStamina(int requiredStamina) {
-        this.requiredStamina = requiredStamina;
+    public void setRequiredStamina(String requiredStamina) {
+        this.requiredStamina = Integer.parseInt(requiredStamina);
     }
 
     public int getTarget() {
         return target;
     }
 
-    public void setTarget(int target) {
-        this.target = target;
+    public void setTarget(String target) {
+        this.target = Integer.parseInt(target);
     }
 
     public boolean isSumHP() {
         return sumHP;
     }
 
-    public void setSumHP(boolean sumHP) {
-        this.sumHP = sumHP;
+    public void setSumHP(String sumHP) {
+        this.sumHP = sumHP.equals("1");
     }
 
     public int getMinHP() {
         return minHP;
     }
 
-    public void setMinHP(int minHP) {
-        this.minHP = minHP;
+    public void setMinHP(String minHP) {
+        this.minHP = Integer.parseInt(minHP);
     }
 
     public int getMaxHP() {
         return maxHP;
     }
 
-    public void setMaxHP(int maxHP) {
-        this.maxHP = maxHP;
+    public void setMaxHP(String maxHP) {
+        this.maxHP = Integer.parseInt(maxHP);
     }
 
     public boolean isSumMana() {
         return sumMana;
     }
 
-    public void setSumMana(boolean sumMana) {
-        this.sumMana = sumMana;
+    public void setSumMana(String sumMana) {
+        this.sumMana = sumMana.equals("1");
     }
 
     public int getMaxMana() {
         return maxMana;
     }
 
-    public void setMaxMana(int maxMana) {
-        this.maxMana = maxMana;
+    public void setMaxMana(String maxMana) {
+        this.maxMana = Integer.parseInt(maxMana);
     }
 
     public int getMinMana() {
         return minMana;
     }
 
-    public void setMinMana(int minMana) {
-        this.minMana = minMana;
+    public void setMinMana(String minMana) {
+        this.minMana = Integer.parseInt(minMana);
     }
 
     public boolean isSumStamina() {
         return sumStamina;
     }
 
-    public void setSumStamina(boolean sumStamina) {
-        this.sumStamina = sumStamina;
+    public void setSumStamina(String sumStamina) {
+        this.sumStamina = sumStamina.equals("1");
     }
 
     public int getMinSta() {
         return minSta;
     }
 
-    public void setMinSta(int minSta) {
-        this.minSta = minSta;
+    public void setMinSta(String minSta) {
+        this.minSta = Integer.parseInt(minSta);
     }
 
     public int getMaxSta() {
         return maxSta;
     }
 
-    public void setMaxSta(int maxSta) {
-        this.maxSta = maxSta;
+    public void setMaxSta(String maxSta) {
+        this.maxSta = Integer.parseInt(maxSta);
     }
 
     public boolean isSumHangry() {
         return sumHangry;
     }
 
-    public void setSumHangry(boolean sumHangry) {
-        this.sumHangry = sumHangry;
+    public void setSumHangry(String sumHangry) {
+        this.sumHangry = sumHangry.equals("1");
     }
 
     public int getMinHangry() {
         return minHangry;
     }
 
-    public void setMinHangry(int minHangry) {
-        this.minHangry = minHangry;
+    public void setMinHangry(String minHangry) {
+        this.minHangry = Integer.parseInt(minHangry);
     }
 
     public int getMaxHangry() {
         return maxHangry;
     }
 
-    public void setMaxHangry(int maxHangry) {
-        this.maxHangry = maxHangry;
+    public void setMaxHangry(String maxHangry) {
+        this.maxHangry = Integer.parseInt(maxHangry);
     }
 
     public boolean isSumThirsty() {
         return sumThirsty;
     }
 
-    public void setSumThirsty(boolean sumThirsty) {
-        this.sumThirsty = sumThirsty;
+    public void setSumThirsty(String sumThirsty) {
+        this.sumThirsty = sumThirsty.equals("1");
     }
 
     public int getMinThirsty() {
         return minThirsty;
     }
 
-    public void setMinThirsty(int minThirsty) {
-        this.minThirsty = minThirsty;
+    public void setMinThirsty(String minThirsty) {
+        this.minThirsty = Integer.parseInt(minThirsty);
     }
 
     public int getMaxThirsty() {
         return maxThirsty;
     }
 
-    public void setMaxThirsty(int maxThirsty) {
-        this.maxThirsty = maxThirsty;
+    public void setMaxThirsty(String maxThirsty) {
+        this.maxThirsty = Integer.parseInt(maxThirsty);
     }
 
     public boolean isSumAgility() {
         return sumAgility;
     }
 
-    public void setSumAgility(boolean sumAgility) {
-        this.sumAgility = sumAgility;
+    public void setSumAgility(String sumAgility) {
+        this.sumAgility = sumAgility.equals("1");
     }
 
     public int getMinAgility() {
         return minAgility;
     }
 
-    public void setMinAgility(int minAgility) {
-        this.minAgility = minAgility;
+    public void setMinAgility(String minAgility) {
+        this.minAgility = Integer.parseInt(minAgility);
     }
 
     public int getMaxAgility() {
         return maxAgility;
     }
 
-    public void setMaxAgility(int maxAgility) {
-        this.maxAgility = maxAgility;
+    public void setMaxAgility(String maxAgility) {
+        this.maxAgility = Integer.parseInt(maxAgility);
     }
 
     public boolean isSumStrength() {
         return sumStrength;
     }
 
-    public void setSumStrength(boolean sumStrength) {
-        this.sumStrength = sumStrength;
+    public void setSumStrength(String sumStrength) {
+        this.sumStrength = sumStrength.equals("1");
     }
 
     public int getMinStrength() {
         return minStrength;
     }
 
-    public void setMinStrength(int minStrength) {
-        this.minStrength = minStrength;
+    public void setMinStrength(String minStrength) {
+        this.minStrength = Integer.parseInt(minStrength);
     }
 
     public int getMaxStrength() {
         return maxStrength;
     }
 
-    public void setMaxStrength(int maxStrength) {
-        this.maxStrength = maxStrength;
+    public void setMaxStrength(String maxStrength) {
+        this.maxStrength = Integer.parseInt(maxStrength);
     }
 
     public boolean isSumCA() {
         return sumCA;
     }
 
-    public void setSumCA(boolean sumCA) {
-        this.sumCA = sumCA;
+    public void setSumCA(String sumCA) {
+        this.sumCA = sumCA.equals("1");
     }
 
     public int getMinCA() {
         return minCA;
     }
 
-    public void setMinCA(int minCA) {
-        this.minCA = minCA;
+    public void setMinCA(String minCA) {
+        this.minCA = Integer.parseInt(minCA);
     }
 
     public int getMaxCA() {
         return maxCA;
     }
 
-    public void setMaxCA(int maxCA) {
-        this.maxCA = maxCA;
+    public void setMaxCA(String maxCA) {
+        this.maxCA = Integer.parseInt(maxCA);
     }
 
     public boolean isInvisibility() {
         return invisibility;
     }
 
-    public void setInvisibility(boolean invisibility) {
-        this.invisibility = invisibility;
+    public void setInvisibility(String invisibility) {
+        this.invisibility = invisibility.equals("1");
     }
 
     public boolean isParalyze() {
         return paralyze;
     }
 
-    public void setParalyze(boolean paralyze) {
-        this.paralyze = paralyze;
+    public void setParalyze(String paralyze) {
+        this.paralyze = paralyze.equals("1");
     }
 
     public boolean isImmobilize() {
         return immobilize;
     }
 
-    public void setImmobilize(boolean immobilize) {
-        this.immobilize = immobilize;
+    public void setImmobilize(String immobilize) {
+        this.immobilize = immobilize.equals("1");
     }
 
     public boolean isRemoveParalysis() {
         return removeParalysis;
     }
 
-    public void setRemoveParalysis(boolean removeParalysis) {
-        this.removeParalysis = removeParalysis;
+    public void setRemoveParalysis(String removeParalysis) {
+        this.removeParalysis = removeParalysis.equals("1");
     }
 
     public boolean isRemoveStupid() {
         return removeStupid;
     }
 
-    public void setRemoveStupid(boolean removeStupid) {
-        this.removeStupid = removeStupid;
+    public void setRemoveStupid(String removeStupid) {
+        this.removeStupid = removeStupid.equals("1");
     }
 
     public boolean isRemoveParcialInvisibility() {
         return removeParcialInvisibility;
     }
 
-    public void setRemoveParcialInvisibility(boolean removeParcialInvisibility) {
-        this.removeParcialInvisibility = removeParcialInvisibility;
+    public void setRemoveParcialInvisibility(String removeParcialInvisibility) {
+        this.removeParcialInvisibility = removeParcialInvisibility.equals("1");
     }
 
     public boolean isHealPoison() {
         return healPoison;
     }
 
-    public void setHealPoison(boolean healPoison) {
-        this.healPoison = healPoison;
+    public void setHealPoison(String healPoison) {
+        this.healPoison = healPoison.equals("1");
     }
 
     public boolean isPoison() {
         return poison;
     }
 
-    public void setPoison(boolean poison) {
-        this.poison = poison;
+    public void setPoison(String poison) {
+        this.poison = poison.equals("1");
     }
 
     public boolean isRevive() {
         return revive;
     }
 
-    public void setRevive(boolean revive) {
-        this.revive = revive;
+    public void setRevive(String revive) {
+        this.revive = revive.equals("1");
     }
 
     public boolean isBlindness() {
         return blindness;
     }
 
-    public void setBlindness(boolean blindness) {
-        this.blindness = blindness;
+    public void setBlindness(String blindness) {
+        this.blindness = blindness.equals("1");
     }
 
     public boolean isStupid() {
         return stupid;
     }
 
-    public void setStupid(boolean stupid) {
-        this.stupid = stupid;
+    public void setStupid(String stupid) {
+        this.stupid = stupid.equals("1");
     }
 
     public boolean isInvokes() {
         return invokes;
     }
 
-    public void setInvokes(boolean invokes) {
-        this.invokes = invokes;
+    public void setInvokes(String invokes) {
+        this.invokes = invokes.equals("1");
     }
 
     public int getNumNpc() {
         return numNpc;
     }
 
-    public void setNumNpc(int numNpc) {
-        this.numNpc = numNpc;
+    public void setNumNpc(String numNpc) {
+        this.numNpc = Integer.parseInt(numNpc);
     }
 
     public int getCount() {
         return count;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setCount(String count) {
+        this.count = Integer.parseInt(count);
     }
 
     public boolean isMimetize() {
         return mimetize;
     }
 
-    public void setMimetize(boolean mimetize) {
-        this.mimetize = mimetize;
+    public void setMimetize(String mimetize) {
+        this.mimetize = mimetize.equals("1");
     }
 
     public boolean isMaterialize() {
         return materialize;
     }
 
-    public void setMaterialize(boolean materialize) {
-        this.materialize = materialize;
+    public void setMaterialize(String materialize) {
+        this.materialize = materialize.equals("1");
     }
 
     public int getItemIndex() {
         return itemIndex;
     }
 
-    public void setItemIndex(int itemIndex) {
-        this.itemIndex = itemIndex;
+    public void setItemIndex(String itemIndex) {
+        this.itemIndex = Integer.parseInt(itemIndex);
     }
 
     public boolean isStaffAffected() {
         return staffAffected;
     }
 
-    public void setStaffAffected(boolean staffAffected) {
-        this.staffAffected = staffAffected;
+    public void setStaffAffected(String staffAffected) {
+        this.staffAffected = staffAffected.equals("1");
     }
 
     public boolean isNeedStaff() {
         return needStaff;
     }
 
-    public void setNeedStaff(boolean needStaff) {
-        this.needStaff = needStaff;
+    public void setNeedStaff(String needStaff) {
+        this.needStaff = needStaff.equals("1");
     }
 
     public boolean isResis() {
         return resis;
     }
 
-    public void setResis(boolean resis) {
-        this.resis = resis;
+    public void setResis(String resis) {
+        this.resis = resis.equals("1");
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

@@ -116,11 +116,11 @@ public class ObjectFactory {
 
 
     public static void fillCommon(Obj obj, Profile.Section section) {
-        boolean collectable = section.get("Agarrable", int.class) == 1 ? true : false;
+        boolean collectable = section.get("Agarrable", int.class) == 1;
         int value = section.get("Valor", int.class);
-        boolean crucial = section.get("Crucial", int.class) == 1 ? true : false;
-        boolean newbie = section.get("Newbie", int.class) == 1 ? true : false;
-        boolean notDrop = section.get("NoSeCae", int.class) == 1 ? true : false;
+        boolean crucial = section.get("Crucial", int.class) == 1;
+        boolean newbie = section.get("Newbie", int.class) == 1;
+        boolean notDrop = section.get("NoSeCae", int.class) == 1;
 
         obj.setCollectable(collectable);
         obj.setValue(value);
@@ -131,10 +131,10 @@ public class ObjectFactory {
 
     public static void fill(ArmorObj obj, Profile.Section section) {
         obj.setBodyNumber(section.get(NUM_ROPAJE, int.class));
-        obj.setDwarf(section.get(RAZA_ENANA, int.class) == 1 ? true : false);
+        obj.setDwarf(section.get(RAZA_ENANA, int.class) == 1);
         obj.setMaxDef(section.get(MAX_DEF, int.class));
         obj.setMinDef(section.get(MIN_DEF, int.class));
-        obj.setWomen(section.get(MUJER, int.class) == 1 ? true : false);
+        obj.setWomen(section.get(MUJER, int.class) == 1);
     }
 
     public static void fill(ArrowObj obj, Profile.Section section) {

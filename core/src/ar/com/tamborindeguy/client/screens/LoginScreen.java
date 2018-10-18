@@ -65,7 +65,6 @@ public class LoginScreen extends ScreenAdapter {
                 loginButton.setDisabled(false);
             }
 
-            ;
         });
 
         login.setFillParent(true);

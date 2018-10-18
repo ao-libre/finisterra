@@ -2,6 +2,7 @@ package ar.com.tamborindeguy.client.ui;
 
 import ar.com.tamborindeguy.client.managers.AOInputProcessor;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -20,7 +21,20 @@ public class GUI {
     public void initialize() {
         stage.addActor(createDialogContainer());
         stage.addActor(createInventory());
+        stage.addActor(createSpells());
         Gdx.input.setInputProcessor(stage);
+    }
+
+    private Container<Table> createSpells() {
+        Container<Table> dialogContainer = new Container<>();
+        float screenW = Gdx.graphics.getWidth();
+        dialogContainer.setWidth(Inventory.COLUMNS * Slot.SIZE * Inventory.ZOOM);
+        dialogContainer.setHeight(Inventory.COLUMNS * Slot.SIZE * Inventory.ZOOM);
+        dialogContainer.setPosition((screenW - dialogContainer.getWidth()) - 10, 0);
+        spellView = new SpellView();
+        spellView.setFillParent(true);
+        dialogContainer.setActor(spellView);
+        return dialogContainer;
     }
 
     private Container<Table> createInventory() {

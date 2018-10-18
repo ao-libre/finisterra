@@ -63,6 +63,5 @@ public class TiledMapSystem extends IteratingSystem {
         if (playerMap != mapNumber) {
             changeMap(playerMap);
         }
-        ;
     }
 }

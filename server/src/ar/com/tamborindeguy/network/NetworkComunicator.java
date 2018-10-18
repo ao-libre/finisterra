@@ -15,8 +15,8 @@ public class NetworkComunicator {
     private static NetworkComunicator instance;
 
     public NetworkComunicator(KryonetServerMarshalStrategy server) {
-        this.server = server;
-        this.instance = this;
+        NetworkComunicator.server = server;
+        instance = this;
     }
 
     public void stop() {

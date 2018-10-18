@@ -138,7 +138,7 @@ public class MapManager {
         Set<Integer> playersInMap = MapManager.getEntitiesInMap(worldPos.map);
         if (playersInMap.stream().anyMatch(player -> (E(player).getWorldPos().x == worldPos.x) && (E(player).getWorldPos().y == worldPos.y))) {
             return false;
-        };
+        }
 //        return MapUtils.isValidPos(map, worldPos);
         // TODO
         return true;
