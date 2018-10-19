@@ -33,7 +33,9 @@ public class SpellView extends Window {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
-                E(GameScreen.getPlayer()).fXAddFx(spells.getSelected().getFxGrh() - 1);
+                if (spells.getSelected().getFxGrh() > 0) {
+                    E(GameScreen.getPlayer()).fXAddFx(spells.getSelected().getFxGrh() - 1);
+                }
             }
         });
         add(lanzar).align(Align.left);
