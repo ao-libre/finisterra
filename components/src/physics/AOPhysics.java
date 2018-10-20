@@ -18,7 +18,7 @@ public class AOPhysics extends Component implements Serializable {
     }
 
     public Optional<Movement> getMovementIntention() {
-        return Optional.ofNullable(intentions.isEmpty() ? null : intentions.getFirst());
+        return Optional.ofNullable(intentions.isEmpty() ? null : intentions.getLast());
     }
 
     public void addIntention(Movement movement) {
