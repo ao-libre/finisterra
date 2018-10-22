@@ -54,7 +54,7 @@ public class FXsRenderingSystem extends IteratingSystem {
     @Override
     protected void process(int entityId) {
         E entity = E(entityId);
-        Pos2D screenPos = Util.toScreen(entity.getPos2D());
+        Pos2D screenPos = Util.toScreen(entity.worldPosPos2D());
         final FX fx = entity.getFX();
         List<Integer> removeParticles = new ArrayList<>();
         List<Integer> removeFXs = new ArrayList<>();

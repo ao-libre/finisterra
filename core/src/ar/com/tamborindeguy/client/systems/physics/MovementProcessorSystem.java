@@ -38,7 +38,7 @@ public class MovementProcessorSystem extends IteratingSystem {
                 WorldPos.class, Pos2D.class));
     }
 
-    public static WorldPos getPosition(WorldPos worldPos) {
+    public static WorldPos getDelta(WorldPos worldPos) {
         WorldPos correctPos = new WorldPos(worldPos.x, worldPos.y, worldPos.map);
         requests.values().stream().filter(it -> it.valid).forEach(request -> {
             WorldPos nextPos = Util.getNextPos(correctPos, request.movement);
@@ -50,14 +50,31 @@ public class MovementProcessorSystem extends IteratingSystem {
     }
 
     public static void validateRequest(int requestNumber, WorldPos destination) {
+        WorldPos predicted = requests.get(requestNumber).predicted;
         requests.remove(requestNumber);
-        E(GameScreen.getPlayer()).worldPosMap(destination.map);
-        E(GameScreen.getPlayer()).worldPosY(destination.y);
-        E(GameScreen.getPlayer()).worldPosX(destination.x);
-        if (ClientMapUtils.changeMap(E(GameScreen.getPlayer()), destination)) {
-            return;
+        if (!predicted.equals(destination)) {
+            E player = E(GameScreen.getPlayer());
+            player.getMovement().destinations.clear();
+            WorldPos worldPos = player.getWorldPos();
+            worldPos.offsetY = 0;
+            worldPos.offsetX = 0;
+            if (!worldPos.equals(destination)) {
+                player.getMovement().add(new Destination(destination, getDir(worldPos, destination)));
+            }
         }
-        ClientMapUtils.updateTile(GameScreen.getPlayer(), destination);
+    }
+
+    private static AOPhysics.Movement getDir(WorldPos worldPos, WorldPos destination) {
+        if (worldPos.x < destination.x) {
+            return AOPhysics.Movement.RIGHT;
+        } else if (worldPos.x >  destination.x) {
+            return AOPhysics.Movement.LEFT;
+        } else if (worldPos.y < destination.y) {
+            return AOPhysics.Movement.DOWN;
+        } else if (worldPos.y > destination.y) {
+            return AOPhysics.Movement.UP;
+        }
+        return AOPhysics.Movement.DOWN;
     }
 
     @Override
@@ -79,7 +96,7 @@ public class MovementProcessorSystem extends IteratingSystem {
                 boolean valid = !(blocked ||
                         occupied ||
                         player.hasImmobile());
-                MovementRequest request = new MovementRequest(++requestNumber, movement, valid);
+                MovementRequest request = new MovementRequest(++requestNumber, valid ? expectedPos : pos, movement, valid);
                 requests.put(requestNumber, request);
                 GameScreen.getClient().sendToAll(request);
                 if (valid) { // Prediction

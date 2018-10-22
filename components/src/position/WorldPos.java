@@ -12,6 +12,8 @@ public class WorldPos extends Component {
     public int map;
     public int x;
     public int y;
+    public float offsetX;
+    public float offsetY;
 
     public WorldPos() {
         this.x = 0;
@@ -51,6 +53,10 @@ public class WorldPos extends Component {
         return new WorldPos();
     }
 
+    public Pos2D getPos2D() {
+        return new Pos2D(x + offsetX, y + offsetY);
+    }
+
     @Override
     public String toString() {
         return "(map: " + map + " x: " + x + " y: " + y + ")";
@@ -68,7 +74,6 @@ public class WorldPos extends Component {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(map, x, y);
     }
 }

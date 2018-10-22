@@ -37,10 +37,12 @@ public class MapManager {
             if (it.map != actualPos.map) {
                 getEntitiesInMap(it.map).remove(player);
             }
-            Set<Integer> near = new HashSet<>(nearEntities.get(player));
-            near.forEach(nearEntity -> {
-                removeNearEntity(player, nearEntity);
-            });
+            if (nearEntities.containsKey(player)) {
+                Set<Integer> near = new HashSet<>(nearEntities.get(player));
+                near.forEach(nearEntity -> {
+                    removeNearEntity(player, nearEntity);
+                });
+            }
         });
         addPlayer(player);
     }
@@ -105,8 +107,7 @@ public class MapManager {
 
     private static void linkEntities(int entity1, int entity2) {
         Set<Integer> near = nearEntities.computeIfAbsent(entity1, (i) -> new HashSet<>());
-        if (!near.contains(entity2)) {
-            near.add(entity2);
+        if (near.add(entity2)) {
             EntityUpdate update = new EntityUpdate(entity2, WorldUtils.getComponents(entity2), new Class[0]);
             WorldManager.sendEntityUpdate(entity1, update);
         }

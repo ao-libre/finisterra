@@ -11,11 +11,13 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entity.*;
 import entity.character.Character;
 import position.Pos2D;
+import position.WorldPos;
 
 import java.util.Comparator;
 
@@ -29,7 +31,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
     private CameraSystem cameraSystem;
 
     public CharacterRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(Character.class, Pos2D.class, Body.class, Heading.class));
+        super(Aspect.all(Character.class, WorldPos.class, Body.class, Heading.class));
         this.batch = batch;
     }
 
@@ -37,14 +39,12 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
     protected void process(Entity e) {
         cameraSystem.camera.update();
         batch.setProjectionMatrix(cameraSystem.camera.combined);
-        batch.enableBlending();
         batch.begin();
 
         E player = E(e);
-        Pos2D currentPos = player.getPos2D();
+        Pos2D currentPos = player.worldPosPos2D();
         Pos2D screenPos = Util.toScreen(currentPos);
         final Heading heading = player.getHeading();
-
         CharacterDrawer.createDrawer(batch, player, heading, screenPos).draw();
 
         batch.end();

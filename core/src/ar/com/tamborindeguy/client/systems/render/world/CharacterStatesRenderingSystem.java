@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import entity.character.Character;
 import position.Pos2D;
+import position.WorldPos;
 
 import static ar.com.tamborindeguy.client.utils.Fonts.WRITING_FONT;
 import static ar.com.tamborindeguy.client.utils.Fonts.dialogLayout;
@@ -24,7 +25,7 @@ public class CharacterStatesRenderingSystem extends IteratingSystem {
     private CameraSystem cameraSystem;
 
     public CharacterStatesRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(Character.class, Pos2D.class));
+        super(Aspect.all(Character.class, WorldPos.class));
         this.batch = batch;
     }
 
@@ -32,7 +33,7 @@ public class CharacterStatesRenderingSystem extends IteratingSystem {
     protected void process(int entity) {
         if (isInAnyState(entity)) {
             E player = E(entity);
-            Pos2D playerPos = Util.toScreen(player.getPos2D());
+            Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
             Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
             Pos2D screenPos = new Pos2D(cameraPos.x - playerPos.x, cameraPos.y - playerPos.y);
 

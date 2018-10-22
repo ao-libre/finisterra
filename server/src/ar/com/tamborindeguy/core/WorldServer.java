@@ -57,8 +57,6 @@ public class WorldServer {
         // testing
         Entity player2 = getWorld().createEntity();
         E(player2)
-                .pos2DX(50)
-                .pos2DY(50)
                 .expExp(10000)
                 .worldPosX(52)
                 .worldPosY(55)
@@ -87,6 +85,7 @@ public class WorldServer {
                 .canWrite()
                 .character()
                 .networkId(player2.getId())
+                .randomMovement()
                 .aOPhysics();
         MapManager.addPlayer(player2.getId());
     }
