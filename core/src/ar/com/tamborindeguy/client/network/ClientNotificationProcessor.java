@@ -97,7 +97,10 @@ public class ClientNotificationProcessor implements INotificationProcessor {
         }
         for (Class remove : entityUpdate.toRemove) {
             // avoid NPEs beacouse of multithreading
-            Gdx.app.postRunnable(() -> edit.remove(remove));
+            Gdx.app.postRunnable(() -> {
+                Log.info("Removing component: " + remove.getSimpleName());
+                edit.remove(remove);
+            });
         }
     }
 }

@@ -91,8 +91,11 @@ public class ServerRequestProcessor implements IRequestProcessor {
         MapManager.movePlayer(playerId, Optional.of(oldPos));
 
         // notify near users
-        WorldManager.notifyToNearEntities(playerId, new EntityUpdate(playerId, new Component[] {player.getHeading()}, new Class[0])); // is necessary?
-        WorldManager.notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement)));
+        if (!nextPos.equals(oldPos)) {
+            WorldManager.notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement)));
+        } else {
+            WorldManager.notifyToNearEntities(playerId, new EntityUpdate(playerId, new Component[]{player.getHeading()}, new Class[0])); // is necessary?
+        }
 
         // notify user
         NetworkComunicator.sendTo(connectionId, new MovementResponse(request.requestNumber, nextPos));
