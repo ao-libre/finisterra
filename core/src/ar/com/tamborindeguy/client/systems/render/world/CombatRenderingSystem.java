@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Align;
 import entity.Body;
 import entity.CombatMessage;
 import position.Pos2D;
+import position.WorldPos;
 
 import java.util.Comparator;
 
@@ -28,14 +29,14 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
     private CameraSystem cameraSystem;
 
     public CombatRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(CombatMessage.class, Body.class, Pos2D.class));
+        super(Aspect.all(CombatMessage.class, Body.class, WorldPos.class));
         this.batch = batch;
     }
 
     @Override
     protected void process(Entity e) {
         E player = E(e);
-        Pos2D playerPos = Util.toScreen(player.getPos2D());
+        Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
         Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
         Pos2D screenPos = new Pos2D(cameraPos.x - playerPos.x, cameraPos.y - playerPos.y);
 

@@ -78,13 +78,15 @@ public class ServerRequestProcessor implements IRequestProcessor {
         WorldPos nextPos = WorldUtils.getNextPos(worldPos, request.movement);
         boolean blocked = MapUtils.isBlocked(MapManager.get(nextPos.map), nextPos);
         boolean occupied = MapUtils.hasEntity(MapManager.getNearEntities(playerId), nextPos);
-        if (player.hasImmobile() || blocked || occupied) {
-            nextPos = worldPos;
+        if (!(player.hasImmobile() || blocked || occupied)) {
+            Log.info("Player: " + playerId + ". Moved from: " + oldPos + " to: " + nextPos);
+            player.worldPosMap(nextPos.map);
+            player.worldPosX(nextPos.x);
+            player.worldPosY(nextPos.y);
+        } else {
+            Log.info("Player: " + playerId + ". Wants to move to: " + nextPos + ", but stay at: " + oldPos);
+            nextPos = oldPos;
         }
-
-        player.worldPosMap(nextPos.map);
-        player.worldPosX(nextPos.x);
-        player.worldPosY(nextPos.y);
 
         MapManager.movePlayer(playerId, Optional.of(oldPos));
 

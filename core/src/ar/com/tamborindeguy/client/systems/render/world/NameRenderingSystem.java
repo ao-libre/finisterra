@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entity.character.Character;
 import entity.character.info.Name;
 import position.Pos2D;
+import position.WorldPos;
 
 import java.util.Comparator;
 
@@ -26,14 +27,14 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
     private CameraSystem cameraSystem;
 
     public NameRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(Character.class, Pos2D.class, Name.class));
+        super(Aspect.all(Character.class, WorldPos.class, Name.class));
         this.batch = batch;
     }
 
     @Override
     protected void process(Entity e) {
         E player = E(e);
-        Pos2D playerPos = Util.toScreen(player.getPos2D());
+        Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
         Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
         Pos2D screenPos = new Pos2D(cameraPos.x - playerPos.x, cameraPos.y - playerPos.y);
         cameraSystem.guiCamera.update();

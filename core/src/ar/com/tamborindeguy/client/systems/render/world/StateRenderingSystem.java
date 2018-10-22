@@ -11,6 +11,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entity.character.states.Immobile;
 import position.Pos2D;
+import position.WorldPos;
 
 import java.util.Comparator;
 
@@ -25,7 +26,7 @@ public class StateRenderingSystem extends OrderedEntityProcessingSystem {
     private CameraSystem cameraSystem;
 
     public StateRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(Pos2D.class).one(Immobile.class));
+        super(Aspect.all(WorldPos.class).one(Immobile.class));
         this.batch = batch;
     }
 
@@ -35,7 +36,7 @@ public class StateRenderingSystem extends OrderedEntityProcessingSystem {
         batch.begin();
 
         // search position
-        Pos2D playerPos = Util.toScreen(E(entityId).getPos2D());
+        Pos2D playerPos = Util.toScreen(E(entityId).worldPosPos2D());
         Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
         Pos2D screenPos = new Pos2D(cameraPos.x - playerPos.x, cameraPos.y - playerPos.y);
         // draw [P] in cyan color

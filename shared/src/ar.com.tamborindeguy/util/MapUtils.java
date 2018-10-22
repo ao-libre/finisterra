@@ -16,11 +16,12 @@ public class MapUtils {
     }
 
     public static boolean hasEntity(Set<Integer> entities, WorldPos pos) {
-        return entities.stream().filter(entity -> {
+        return entities.stream().anyMatch(entity -> {
             boolean isObject = E(entity).hasObject();
             boolean samePos = E(entity).hasWorldPos() && pos.equals(E(entity).getWorldPos());
-            return !isObject && samePos;
-        }).findAny().isPresent();
+            boolean hasSameDestination = E(entity).hasMovement() && E(entity).getMovement().destinations.stream().anyMatch(destination -> destination.equals(pos));
+            return !isObject && (samePos || hasSameDestination);
+        });
     }
 
 }
