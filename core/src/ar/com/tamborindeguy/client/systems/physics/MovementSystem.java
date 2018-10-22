@@ -1,5 +1,6 @@
 package ar.com.tamborindeguy.client.systems.physics;
 
+import ar.com.tamborindeguy.client.utils.WorldUtils;
 import ar.com.tamborindeguy.model.map.Tile;
 import com.artemis.Aspect;
 import com.artemis.E;
@@ -8,7 +9,6 @@ import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
 import movement.Destination;
 import physics.AOPhysics;
-import position.Pos2D;
 import position.WorldPos;
 
 import java.util.Optional;
@@ -48,6 +48,7 @@ public class MovementSystem extends IteratingSystem {
         switch (destination.dir) {
             default:
             case DOWN:
+
                 player.getWorldPos().offsetY += delta;
                 break;
             case LEFT:
@@ -60,7 +61,7 @@ public class MovementSystem extends IteratingSystem {
                 player.getWorldPos().offsetY -= delta;
                 break;
         }
-
+        player.headingCurrent(WorldUtils.getHeading(destination.dir));
         adjustPossiblePos(player);
         return player.getWorldPos().offsetX % 1 == 0 && player.getWorldPos().offsetY % 1 == 0;
     }

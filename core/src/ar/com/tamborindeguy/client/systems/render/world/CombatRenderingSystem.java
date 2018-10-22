@@ -12,6 +12,7 @@ import com.artemis.Entity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
+import com.esotericsoftware.minlog.Log;
 import entity.Body;
 import entity.CombatMessage;
 import position.Pos2D;
@@ -41,6 +42,7 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
         Pos2D screenPos = new Pos2D(cameraPos.x - playerPos.x, cameraPos.y - playerPos.y);
 
         CombatMessage combatMessage = player.getCombatMessage();
+        Log.info("Combate message: " + combatMessage);
         combatMessage.offset -= getWorld().getDelta() * combatMessage.time * 15.0f;
         if (combatMessage.offset < 0) {
             combatMessage.offset = 0;
