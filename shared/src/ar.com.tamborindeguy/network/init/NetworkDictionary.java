@@ -2,8 +2,10 @@ package ar.com.tamborindeguy.network.init;
 
 import ar.com.tamborindeguy.interfaces.Constants;
 import ar.com.tamborindeguy.model.AttackType;
+import ar.com.tamborindeguy.model.Spell;
 import ar.com.tamborindeguy.network.combat.AttackRequest;
 import ar.com.tamborindeguy.network.combat.AttackResponse;
+import ar.com.tamborindeguy.network.combat.SpellCastRequest;
 import ar.com.tamborindeguy.network.interaction.DropItem;
 import ar.com.tamborindeguy.network.interaction.MeditateRequest;
 import ar.com.tamborindeguy.network.interaction.TakeItemRequest;
@@ -62,6 +64,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 TalkRequest.class,
                 ItemActionRequest.class,
                 TakeItemRequest.class,
+                SpellCastRequest.class,
 
                 // Responses
                 LoginOK.class,
@@ -85,6 +88,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Component[].class,
                 Class.class,
                 Class[].class,
+                Spell.class,
 
                 // Components
                 Inventory.class,

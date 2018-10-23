@@ -1,11 +1,19 @@
 package ar.com.tamborindeguy.client.ui;
 
 import ar.com.tamborindeguy.client.managers.AOInputProcessor;
+import ar.com.tamborindeguy.client.screens.GameScreen;
+import ar.com.tamborindeguy.client.utils.WorldUtils;
+import ar.com.tamborindeguy.network.combat.SpellCastRequest;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
+import java.util.Optional;
 
 public class GUI {
 
@@ -69,6 +77,10 @@ public class GUI {
 
     public static DialogText getDialog() {
         return dialog;
+    }
+
+    public static SpellView getSpellView() {
+        return spellView;
     }
 
     public void draw() {

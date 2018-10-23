@@ -6,15 +6,15 @@ import ar.com.tamborindeguy.manager.CombatManager;
 import ar.com.tamborindeguy.manager.ItemManager;
 import ar.com.tamborindeguy.manager.MapManager;
 import ar.com.tamborindeguy.manager.WorldManager;
+import ar.com.tamborindeguy.model.Spell;
 import ar.com.tamborindeguy.network.combat.AttackRequest;
+import ar.com.tamborindeguy.network.combat.SpellCastRequest;
 import ar.com.tamborindeguy.network.interaction.MeditateRequest;
 import ar.com.tamborindeguy.network.interaction.TakeItemRequest;
 import ar.com.tamborindeguy.network.interaction.TalkRequest;
 import ar.com.tamborindeguy.network.interfaces.IRequestProcessor;
-import ar.com.tamborindeguy.network.interfaces.IResponse;
 import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
 import ar.com.tamborindeguy.network.inventory.ItemActionRequest;
-import ar.com.tamborindeguy.network.login.LoginFailed;
 import ar.com.tamborindeguy.network.login.LoginOK;
 import ar.com.tamborindeguy.network.login.LoginRequest;
 import ar.com.tamborindeguy.network.movement.MovementNotification;
@@ -31,12 +31,16 @@ import entity.Heading;
 import entity.Object;
 import entity.character.info.Inventory;
 import entity.character.states.Meditating;
+import entity.character.status.Mana;
+import entity.character.status.Stamina;
 import graphics.FX;
 import movement.Destination;
 import physics.AttackAnimation;
 import position.WorldPos;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.artemis.E.E;
 
@@ -44,21 +48,12 @@ public class ServerRequestProcessor implements IRequestProcessor {
 
     @Override
     public void processRequest(LoginRequest request, int connectionId) {
-        IResponse response;
+        // TODO
         User user = WorldManager.getUser(request.username);
-        if (user == null) {
-            response = new LoginFailed("User doesn't exists");
-//        } else if (user.getPassword().equals(request.password)) {
-        } else {
-            final Entity entity = WorldManager.createEntity(user, connectionId);
-            int map = E(entity).getWorldPos().map;
-            NetworkComunicator.sendTo(connectionId, new EntityUpdate(entity.getId(), WorldUtils.getComponents(entity.getId()), new Class[0]));
-            NetworkComunicator.sendTo(connectionId, new LoginOK(entity.getId()));
-            WorldManager.registerEntity(connectionId, entity.getId());
-//        } else {
-//            response = new LoginFailed("Wrong password");
-        }
-//        NetworkComunicator.sendTo(connectionId, response);
+        final Entity entity = WorldManager.createEntity(user, connectionId);
+        NetworkComunicator.sendTo(connectionId, new EntityUpdate(entity.getId(), WorldUtils.getComponents(entity.getId()), new Class[0]));
+        NetworkComunicator.sendTo(connectionId, new LoginOK(entity.getId()));
+        WorldManager.registerEntity(connectionId, entity.getId());
     }
 
     @Override
@@ -160,7 +155,7 @@ public class ServerRequestProcessor implements IRequestProcessor {
         } else {
             player.fXAddParticleEffect(Constants.MEDITATE_NW_FX);
             player.meditating();
-            WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[] {player.getMeditating(), player.getFX()}, new Class[0]));
+            WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{player.getMeditating(), player.getFX()}, new Class[0]));
         }
     }
 
@@ -198,6 +193,46 @@ public class ServerRequestProcessor implements IRequestProcessor {
                         Log.info("Could not put item in inventory (FULL?)");
                     }
                 });
+    }
+
+    @Override
+    public void processRequest(SpellCastRequest spellCastRequest, int connectionId) {
+        int playerId = NetworkComunicator.getPlayerByConnection(connectionId);
+        E player = E(playerId);
+        Spell spell = spellCastRequest.getSpell();
+        WorldPos worldPos = spellCastRequest.getWorldPos();
+
+        Set<Integer> entities = new HashSet<>(MapManager.getNearEntities(playerId));
+        entities.add(playerId);
+        entities
+                .stream()
+                .filter(entity -> E(entity).getWorldPos().equals(worldPos))
+                .findFirst()
+                .ifPresent(target -> {
+                    int requiredMana = spell.getRequiredMana();
+                    int requiredStamina = spell.getRequiredStamina();
+                    Mana mana = player.getMana();
+                    Stamina stamina = player.getStamina();
+                    if (mana.min < requiredMana && stamina.min > requiredStamina) {
+                        mana.min -= requiredMana;
+                        stamina.min -= requiredStamina;
+                        // update mana
+                        NetworkComunicator.sendTo(connectionId, new EntityUpdate(playerId, new Component[] {mana, stamina}, new Class[0]));
+
+                        // add FX
+                        int fxGrh = spell.getFxGrh();
+                        if (fxGrh > 0) {
+                            FX fx = new FX();
+                            fx.addFx(fxGrh);
+                            // TODO change to fx add specific class
+                            WorldManager.notifyUpdate(target, new EntityUpdate(target, new Component[]{fx}, new Class[0]));
+                        }
+
+                        // TODO do magic
+
+                    }
+                });
+
     }
 
 }
