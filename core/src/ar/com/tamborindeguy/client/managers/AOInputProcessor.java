@@ -4,26 +4,44 @@ import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.ui.GUI;
 import ar.com.tamborindeguy.client.utils.Keys;
+import ar.com.tamborindeguy.client.utils.WorldUtils;
 import ar.com.tamborindeguy.model.AttackType;
 import ar.com.tamborindeguy.network.combat.AttackRequest;
+import ar.com.tamborindeguy.network.combat.SpellCastRequest;
 import ar.com.tamborindeguy.network.interaction.DropItem;
 import ar.com.tamborindeguy.network.interaction.MeditateRequest;
 import ar.com.tamborindeguy.network.interaction.TakeItemRequest;
 import ar.com.tamborindeguy.network.interaction.TalkRequest;
 import ar.com.tamborindeguy.network.inventory.ItemActionRequest;
 import com.artemis.E;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.esotericsoftware.minlog.Log;
 
+import java.util.Optional;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
 
 public class AOInputProcessor extends Stage {
 
     private static final Random r = new Random();
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        GUI.getSpellView().toCast.ifPresent(spell -> {
+            WorldUtils.mouseToWorldPos().ifPresent(worldPos -> {
+//                        if (E(GameScreen.getPlayer()).getAttack().interval) {
+//
+//                        }
+                GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos));
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+            });
+            GUI.getSpellView().toCast = Optional.empty();
+        });
+        return super.touchUp(screenX, screenY, pointer, button);
+    }
 
     @Override
     public boolean keyUp(int keycode) {
