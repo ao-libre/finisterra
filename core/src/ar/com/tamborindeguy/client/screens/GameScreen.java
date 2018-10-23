@@ -1,6 +1,7 @@
 package ar.com.tamborindeguy.client.screens;
 
 import ar.com.tamborindeguy.client.game.AO;
+import ar.com.tamborindeguy.client.systems.anim.IdleAnimationSystem;
 import ar.com.tamborindeguy.client.systems.anim.MovementAnimationSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraFocusSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraMovementSystem;
@@ -63,6 +64,7 @@ public class GameScreen extends WorldScreen {
                 .with(new PlayerInputSystem())
                 .with(new MovementProcessorSystem())
                 .with(new MovementAnimationSystem())
+                .with(new IdleAnimationSystem())
                 .with(new MovementSystem())
                 // Camera
                 .with(new CameraSystem(AO.GAME_SCREEN_ZOOM))

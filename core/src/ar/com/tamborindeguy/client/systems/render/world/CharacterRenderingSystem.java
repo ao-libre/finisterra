@@ -11,9 +11,9 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
 import entity.*;
 import entity.character.Character;
 import position.Pos2D;
@@ -60,14 +60,14 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         private Heading heading;
         private Pos2D screenPos;
 
-        private int headOffsetY;
+        private float headOffsetY;
 
         // body
         private float bodyPixelOffsetX;
         private float bodyPixelOffsetY;
         private TextureRegion bodyRegion;
         private BundledAnimation bodyAnimation;
-        private int extraPixel;
+        private float idle;
 
         private CharacterDrawer(SpriteBatch batch, E player, Heading heading, Pos2D screenPos) {
             this.batch = batch;
@@ -110,7 +110,6 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                     drawHelmet();
                     drawShield();
                     break;
-
             }
         }
 
@@ -118,8 +117,9 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             final Body body = player.getBody();
             BodyDescriptor bodyDescriptor = DescriptorHandler.getBodies().get(body.index);
             bodyAnimation = AnimationHandler.getBodyAnimation(body, heading.current);
-            headOffsetY = bodyDescriptor.getHeadOffsetY() - getExtraPixel();
+            headOffsetY = bodyDescriptor.getHeadOffsetY() - getMovementOffsetY();
             bodyRegion = player.isMoving() ? bodyAnimation.getGraphic() : bodyAnimation.getGraphic(0);
+            idle = !player.isMoving() ? bodyAnimation.getIdleTime() : 0;
             bodyPixelOffsetX = bodyPixelOffsetX + ((32.0f - bodyRegion.getRegionWidth()) / 2);
             bodyPixelOffsetY = screenPos.y - (bodyRegion.getRegionHeight() - 32.0f) - 32.0f;
         }
@@ -128,9 +128,9 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             return new CharacterDrawer(batch, player, heading, screenPos);
         }
 
-
         void drawBody() {
-            drawTexture(bodyRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, -(!player.isMoving() && player.hasAttackAnimation() ? getExtraPixel() : 0)); // why - 32 - 32 ?
+            float offsetY = -(!player.isMoving() && player.hasAttackAnimation() ? getMovementOffsetY() : 0);
+            batch.draw(bodyRegion, bodyPixelOffsetX + idle / 4, (bodyPixelOffsetY + offsetY) + idle * 1.2f, bodyRegion.getRegionWidth() - idle / 2, bodyRegion.getRegionHeight() - idle * 1.2f);
         }
 
         void drawHead() {
@@ -139,15 +139,16 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 BundledAnimation animation = AnimationHandler.getHeadAnimation(head, heading.current);
                 if (animation != null) {
                     TextureRegion headRegion = animation.getGraphic();
-                    int offsetY = headOffsetY - 4 - extraPixel;
-                    drawTexture(headRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, offsetY);
+                    float offsetY = headOffsetY - 4;
+                    drawTexture(headRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, offsetY + (idle));
                 }
             }
         }
 
-        private int getExtraPixel() {
-            int currentFrameIndex = bodyAnimation.getCurrentFrameIndex();
-            return currentFrameIndex == 2 || currentFrameIndex == 3 ? 1 : 0;
+        private float getMovementOffsetY() {
+            float animationTime = bodyAnimation.getAnimationTime();
+            float interpolationTime = bodyAnimation.getAnimation().getAnimationDuration() / 2;
+            return Interpolation.circle.apply(Math.min(1f, animationTime < interpolationTime ? animationTime / interpolationTime : interpolationTime / animationTime));
         }
 
         void drawHelmet() {
@@ -156,8 +157,8 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 BundledAnimation animation = AnimationHandler.getHelmetsAnimation(helmet, heading.current);
                 if (animation != null) {
                     TextureRegion helmetRegion = animation.getGraphic();
-                    int offsetY = headOffsetY - 4;
-                    drawTexture(helmetRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, offsetY);
+                    float offsetY = headOffsetY - 4;
+                    drawTexture(helmetRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, offsetY + (idle));
                 }
             }
         }
@@ -168,7 +169,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 BundledAnimation animation = AnimationHandler.getWeaponAnimation(weapon, heading.current);
                 if (animation != null) {
                     TextureRegion weaponRegion = player.isMoving() || player.hasAttackAnimation() ? animation.getGraphic() : animation.getGraphic(0);
-                    drawTexture(weaponRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, Math.max(0, headOffsetY));
+                    drawTexture(weaponRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, Math.max(0, headOffsetY) + idle);
                 }
             }
         }
@@ -179,14 +180,14 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 BundledAnimation animation = AnimationHandler.getShieldAnimation(shield, heading.current);
                 if (animation != null) {
                     TextureRegion shieldRegion = player.isMoving() || player.hasAttackAnimation() ? animation.getGraphic() : animation.getGraphic(0);
-                    drawTexture(shieldRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, Math.max(0, headOffsetY));
+                    drawTexture(shieldRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, Math.max(0, headOffsetY) + idle);
                 }
             }
         }
 
         private void drawTexture(TextureRegion region, float x, float y, float offsetX, float offsetY) {
             if (region != null) {
-                batch.draw(region, x + offsetX, y + offsetY);
+                batch.draw(region, x + offsetX, (y + offsetY));
             }
         }
     }

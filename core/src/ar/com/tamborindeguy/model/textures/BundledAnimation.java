@@ -20,12 +20,16 @@ import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
 import ar.com.tamborindeguy.model.Graphic;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.Array;
 
 public class BundledAnimation {
 
     private Array<GameTexture> frames = new Array<GameTexture>();
     private Animation<TextureRegion> animation;
+    private float idleTime;
+    private float idleBounce;
+    private boolean bounce;
     private float animationTime;
     private boolean animated = false;
 
@@ -34,7 +38,7 @@ public class BundledAnimation {
 
         int numFrames = graphic.getFrames().length;
         Array<TextureRegion> tmpRegions = new Array<>();
-        this.setAnimationTime(0.0f);
+        this.animationTime = 0.0f;
 
         if (numFrames > 0) {
 
@@ -134,7 +138,23 @@ public class BundledAnimation {
      * @param animationTime the animationTime to set
      */
     public void setAnimationTime(float animationTime) {
-        this.animationTime = animationTime;
+        this.animationTime = animationTime % animation.getAnimationDuration();
+    }
+
+    public float getIdleTime() {
+        return idleTime;
+    }
+
+    public void addDeltaIdleTime(float delta) {
+        if (bounce) {
+            idleBounce += delta;
+            idleTime = Interpolation.circle.apply(idleBounce);
+            bounce = idleBounce < 0.8f;
+        } else {
+            idleBounce -= delta;
+            idleTime = Interpolation.circle.apply(idleBounce);
+            bounce = idleBounce < 0f;
+        }
     }
 
     public int getCurrentFrameIndex() {
