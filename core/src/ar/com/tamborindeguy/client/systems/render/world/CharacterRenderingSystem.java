@@ -129,7 +129,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         }
 
         void drawBody() {
-            float offsetY = -(!player.isMoving() && player.hasAttackAnimation() ? getMovementOffsetY() : 0);
+            float offsetY = -getMovementOffsetY();
             batch.draw(bodyRegion, bodyPixelOffsetX + idle / 4, (bodyPixelOffsetY + offsetY) + idle * 1.2f, bodyRegion.getRegionWidth() - idle / 2, bodyRegion.getRegionHeight() - idle * 1.2f);
         }
 
@@ -140,7 +140,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 if (animation != null) {
                     TextureRegion headRegion = animation.getGraphic();
                     float offsetY = headOffsetY - 4;
-                    drawTexture(headRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, offsetY + (idle));
+                    drawTexture(headRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, offsetY + (idle / 2));
                 }
             }
         }
@@ -158,7 +158,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 if (animation != null) {
                     TextureRegion helmetRegion = animation.getGraphic();
                     float offsetY = headOffsetY - 4;
-                    drawTexture(helmetRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, offsetY + (idle));
+                    drawTexture(helmetRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, offsetY + (idle / 2));
                 }
             }
         }
