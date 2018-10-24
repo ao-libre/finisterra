@@ -105,7 +105,7 @@ public class FXsRenderingSystem extends IteratingSystem {
             TextureRegion graphic = anim.getGraphic(false);
             batch.draw(graphic, screenPos.x - (Tile.TILE_PIXEL_WIDTH + graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX(), screenPos.y - graphic.getRegionHeight() + fxDescriptor.getOffsetY() + bodyOffset);
             anim.setAnimationTime(anim.getAnimationTime() + getWorld().getDelta() * (anim.getFrames().size * 0.33f));
-            if (anim.getAnimation().isAnimationFinished(anim.getAnimationTime())) {
+            if (anim.isAnimationFinished()) {
                 removeFXs.add(fxId);
                 anims.remove(fxId);
             }
