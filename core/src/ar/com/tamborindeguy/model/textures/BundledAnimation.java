@@ -32,6 +32,7 @@ public class BundledAnimation {
     private boolean bounce;
     private float animationTime;
     private boolean animated = false;
+    private int times;
 
 
     public BundledAnimation(Graphic graphic) {
@@ -138,6 +139,11 @@ public class BundledAnimation {
      * @param animationTime the animationTime to set
      */
     public void setAnimationTime(float animationTime) {
+        if (animationTime > animation.getAnimationDuration()) {
+            times++;
+        } else if (animationTime == 0) {
+            times = 0;
+        }
         this.animationTime = animationTime % animation.getAnimationDuration();
     }
 
@@ -155,6 +161,10 @@ public class BundledAnimation {
             idleTime = Interpolation.circle.apply(idleBounce);
             bounce = idleBounce < 0f;
         }
+    }
+
+    public boolean isAnimationFinished() {
+        return times > 0;
     }
 
     public int getCurrentFrameIndex() {
