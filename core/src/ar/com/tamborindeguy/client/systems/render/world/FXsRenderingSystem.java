@@ -16,16 +16,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.esotericsoftware.minlog.Log;
 import entity.Body;
 import graphics.FX;
 import position.Pos2D;
 import position.WorldPos;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.artemis.E.E;
 
@@ -85,6 +81,9 @@ public class FXsRenderingSystem extends IteratingSystem {
     }
 
     private void drawParticles(int entityId, Pos2D screenPos, FX fx, List<Integer> removeParticles) {
+        if (fx == null || fx.particles == null) {
+            return;
+        }
         fx.particles.forEach(effect -> {
             ParticleEffect particleEffect = particles.computeIfAbsent(entityId, id -> new HashMap<>()).computeIfAbsent(effect, eff -> ParticlesHandler.getParticle(eff));
             particleEffect.setPosition(screenPos.x - Tile.TILE_PIXEL_WIDTH / 2, screenPos.y - 2);
@@ -97,9 +96,12 @@ public class FXsRenderingSystem extends IteratingSystem {
     }
 
     private void drawFXs(int entityId, Pos2D screenPos, FX fx, List<Integer> removeFXs) {
+        if (fx == null || fx.fxs == null) {
+            return;
+        }
         fx.fxs.forEach(fxId -> {
             FXDescriptor fxDescriptor = DescriptorHandler.getFX(fxId);
-            Map<Integer, BundledAnimation> anims = fxs.computeIfAbsent(entityId, id -> new HashMap<>());
+            Map<Integer, BundledAnimation> anims = this.fxs.computeIfAbsent(entityId, id -> new HashMap<>());
             int bodyOffset = getBodyOffset(entityId);
             BundledAnimation anim = anims.computeIfAbsent(fxId, fxGraphic -> new BundledAnimation(DescriptorHandler.getGraphic(fxDescriptor.getIndexs()[0])));
             TextureRegion graphic = anim.getGraphic(false);

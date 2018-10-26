@@ -126,6 +126,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 entity.character.Character.class,
                 Body.class,
                 Dialog.class,
+                Dialog.Kind.class,
                 Head.class,
                 Heading.class,
                 Helmet.class,

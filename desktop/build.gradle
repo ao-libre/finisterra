@@ -1,24 +1,17 @@
 apply plugin: "java"
+apply plugin: 'application'
 
 sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = ["src/"]
 
-project.ext.mainClassName = "ar.com.tamborindeguy.client.desktop.DesktopLauncher"
-project.ext.assetsDir = new File("assets/")
-
-task run(dependsOn: classes, type: JavaExec) {
-    main = project.mainClassName
-    classpath = sourceSets.main.runtimeClasspath
-    standardInput = System.in
-    workingDir = project.assetsDir
-    ignoreExitValue = true
-}
+mainClassName = "ar.com.tamborindeguy.client.desktop.DesktopLauncher"
+tasks.run.workingDir = new File("assets/")
 
 task dist(type: Jar) {
     from files(sourceSets.main.output.classesDir)
     from files(sourceSets.main.output.resourcesDir)
     from { configurations.compile.collect { zipTree(it) } }
-    from files(project.assetsDir)
+    from files(new File("assets/"))
 
     manifest {
         attributes 'Main-Class': project.mainClassName

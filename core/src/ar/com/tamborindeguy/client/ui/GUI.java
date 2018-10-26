@@ -6,6 +6,7 @@ import ar.com.tamborindeguy.client.utils.WorldUtils;
 import ar.com.tamborindeguy.network.combat.SpellCastRequest;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -31,14 +32,18 @@ public class GUI {
         stage.addActor(createInventory());
         stage.addActor(createSpells());
         Gdx.input.setInputProcessor(stage);
+        Pixmap pm = new Pixmap(Gdx.files.internal("data/ui/images/cursor-arrow.png"));
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 10, 4));
+        pm.dispose();
     }
 
     private Container<Table> createSpells() {
         Container<Table> dialogContainer = new Container<>();
         float screenW = Gdx.graphics.getWidth();
+        float screenH = Gdx.graphics.getHeight();
         dialogContainer.setWidth(Inventory.COLUMNS * Slot.SIZE * Inventory.ZOOM);
         dialogContainer.setHeight(Inventory.COLUMNS * Slot.SIZE * Inventory.ZOOM);
-        dialogContainer.setPosition((screenW - dialogContainer.getWidth()) - 10, 0);
+        dialogContainer.setPosition((screenW - dialogContainer.getWidth()) - 10, (screenH / 2) + 20);
         spellView = new SpellView();
         spellView.setFillParent(true);
         dialogContainer.setActor(spellView);
@@ -52,7 +57,7 @@ public class GUI {
         float containerW = Inventory.COLUMNS * Slot.SIZE * Inventory.ZOOM;
         dialogContainer.setWidth(containerW);
         dialogContainer.setHeight(Inventory.ROWS * Slot.SIZE * Inventory.ZOOM);
-        dialogContainer.setPosition((screenW - dialogContainer.getWidth()) - 10, (screenH - dialogContainer.getHeight() - 20) / 2);
+        dialogContainer.setPosition((screenW - dialogContainer.getWidth()) - 10, (screenH / 2) - dialogContainer.getHeight());
         inventory = new Inventory();
         dialogContainer.setActor(inventory);
         return dialogContainer;

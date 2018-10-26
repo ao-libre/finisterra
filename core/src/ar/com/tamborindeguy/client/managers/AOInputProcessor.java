@@ -16,8 +16,9 @@ import ar.com.tamborindeguy.network.inventory.ItemActionRequest;
 import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.esotericsoftware.minlog.Log;
 
 import java.util.Optional;
 import java.util.Random;
@@ -30,13 +31,16 @@ public class AOInputProcessor extends Stage {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        GUI.getSpellView().toCast.ifPresent(spell -> {
-            WorldUtils.mouseToWorldPos().ifPresent(worldPos -> {
+        WorldUtils.mouseToWorldPos().ifPresent(worldPos -> {
+            Log.info("Clicking on worldpos: " + worldPos);
+            GUI.getSpellView().toCast.ifPresent(spell -> {
 //                        if (E(GameScreen.getPlayer()).getAttack().interval) {
 //
 //                        }
                 GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos));
-                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+                Pixmap pm = new Pixmap(Gdx.files.internal("data/ui/images/cursor-arrow.png"));
+                Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 10, 4));
+                pm.dispose();
             });
             GUI.getSpellView().toCast = Optional.empty();
         });
@@ -49,6 +53,9 @@ public class AOInputProcessor extends Stage {
             switch (keycode) {
                 case Keys.INVENTORY:
                     toggleInventory();
+                    break;
+                case Keys.SPELLS:
+                    toggleSpells();
                     break;
                 case Keys.MEDITATE:
                     toggleMeditate();
@@ -124,6 +131,10 @@ public class AOInputProcessor extends Stage {
 
     private void toggleInventory() {
         GUI.getInventory().setVisible(!GUI.getInventory().isVisible());
+    }
+
+    private void toggleSpells() {
+        GUI.getSpellView().setVisible(!GUI.getSpellView().isVisible());
     }
 
 }

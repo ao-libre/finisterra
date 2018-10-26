@@ -27,6 +27,7 @@ import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.esotericsoftware.minlog.Log;
+import entity.Dialog;
 import entity.Heading;
 import entity.Object;
 import entity.character.info.Inventory;
@@ -38,9 +39,7 @@ import movement.Destination;
 import physics.AttackAnimation;
 import position.WorldPos;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.artemis.E.E;
 
@@ -162,9 +161,7 @@ public class ServerRequestProcessor implements IRequestProcessor {
     @Override
     public void processRequest(TalkRequest talkRequest, int connectionId) {
         int playerId = NetworkComunicator.getPlayerByConnection(connectionId);
-        E player = E(playerId);
-        player.dialogText(talkRequest.getMessage());
-        WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{player.getDialog()}, new Class[0]));
+        WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new Dialog(talkRequest.getMessage())}, new Class[0]));
     }
 
     @Override
@@ -201,7 +198,7 @@ public class ServerRequestProcessor implements IRequestProcessor {
         E player = E(playerId);
         Spell spell = spellCastRequest.getSpell();
         WorldPos worldPos = spellCastRequest.getWorldPos();
-
+        Log.info("Processing spell cast pos: " + spellCastRequest.getWorldPos());
         Set<Integer> entities = new HashSet<>(MapManager.getNearEntities(playerId));
         entities.add(playerId);
         entities
@@ -209,27 +206,31 @@ public class ServerRequestProcessor implements IRequestProcessor {
                 .filter(entity -> E(entity).getWorldPos().equals(worldPos))
                 .findFirst()
                 .ifPresent(target -> {
+                    Log.info("Spell has a target: " + target);
                     int requiredMana = spell.getRequiredMana();
-                    int requiredStamina = spell.getRequiredStamina();
+//                    int requiredStamina = spell.getRequiredStamina();
                     Mana mana = player.getMana();
-                    Stamina stamina = player.getStamina();
-                    if (mana.min < requiredMana && stamina.min > requiredStamina) {
+//                    Stamina stamina = player.getStamina();
+                    if (mana.min > requiredMana) {
+                        Log.info("Suficiente mana y stamina");
                         mana.min -= requiredMana;
-                        stamina.min -= requiredStamina;
+//                        stamina.min -= requiredStamina;
                         // update mana
-                        NetworkComunicator.sendTo(connectionId, new EntityUpdate(playerId, new Component[] {mana, stamina}, new Class[0]));
+                        NetworkComunicator.sendTo(connectionId, new EntityUpdate(playerId, new Component[] {mana}, new Class[0]));
 
                         // add FX
+                        List<Component> componentList = new ArrayList<>();
                         int fxGrh = spell.getFxGrh();
+                        Log.info("FXGrh: " + fxGrh);
                         if (fxGrh > 0) {
                             FX fx = new FX();
-                            fx.addFx(fxGrh);
+                            fx.addFx(fxGrh - 1);
                             // TODO change to fx add specific class
-                            WorldManager.notifyUpdate(target, new EntityUpdate(target, new Component[]{fx}, new Class[0]));
+                            componentList.add(fx);
+                            WorldManager.notifyUpdate(target, new EntityUpdate(target, componentList.toArray(new Component[componentList.size()]), new Class[0]));
                         }
-
+                        WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS)}, new Class[0]));
                         // TODO do magic
-
                     }
                 });
 
