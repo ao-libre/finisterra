@@ -8,9 +8,11 @@ import ar.com.tamborindeguy.model.Spell;
 import ar.com.tamborindeguy.network.combat.SpellCastRequest;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
@@ -34,7 +36,9 @@ public class SpellView extends Window {
         pane = new ScrollPane(spells, Skins.COMODORE_SKIN);
         pane.setTransform(true);
         pane.setSmoothScrolling(false);
-        add(pane).fillX().height(80).row();
+        pane.setFlickScroll(false);
+        pane.setScrollingDisabled(true, false);
+        add(pane).fillX().fillY().row();
         Label lanzar = new Label("Lanzar", Skins.COMODORE_SKIN);
         lanzar.addListener(new ClickListener() {
 
@@ -42,7 +46,11 @@ public class SpellView extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
                 toCast = Optional.ofNullable(spells.getSelected());
-                toCast.ifPresent(spell -> Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Crosshair));
+                toCast.ifPresent(spell -> {
+                    Pixmap pm = new Pixmap(Gdx.files.internal("data/ui/images/cursor-crosshair.png"));
+                    Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, pm.getWidth() / 2, pm.getHeight() / 2));
+                    pm.dispose();
+                });
             }
 
         });

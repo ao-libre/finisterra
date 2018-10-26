@@ -16,7 +16,9 @@ public class FX extends Component {
     }
 
     public void addFx(Integer fx) {
-        fxs.add(fx);
+        if (fx > 0) {
+            fxs.add(fx);
+        }
     }
 
     public void removeFx(int fx) {

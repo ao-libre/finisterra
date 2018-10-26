@@ -21,6 +21,8 @@ import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.MathUtils;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 
@@ -28,7 +30,7 @@ import static com.artemis.E.E;
 
 public class GameScreen extends WorldScreen {
 
-    private static final int FONTS_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL + 3;
+    private static final int FONTS_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL - 1;
     public static ClientSystem client;
     public static int player;
     private static GUI gui;
@@ -80,9 +82,9 @@ public class GameScreen extends WorldScreen {
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new FXsRenderingSystem(game.getSpriteBatch()))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new MapUpperLayerRenderingSystem(game.getSpriteBatch()))
                 .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(game.getSpriteBatch()))
-                .with(new StateRenderingSystem(game.getSpriteBatch()))
-                .with(new CharacterStatusRenderingSystem(game.getSpriteBatch()))
-                .with(new CombatRenderingSystem(game.getSpriteBatch()))
+                .with(FONTS_PRIORITY, new StateRenderingSystem(game.getSpriteBatch()))
+                .with(FONTS_PRIORITY, new CharacterStatusRenderingSystem(game.getSpriteBatch()))
+                .with(FONTS_PRIORITY, new CombatRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new NameRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new DialogRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new CharacterStatesRenderingSystem(game.getSpriteBatch()))

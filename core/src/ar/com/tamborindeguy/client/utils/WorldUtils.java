@@ -22,8 +22,7 @@ public class WorldUtils {
         int map = worldPos.map;
 
         // Mouse coordinates in world
-        Vector3 screenPos = camera.camera.unproject(new Vector3(Gdx.input.getX() + 16, Gdx.input.getY(), 0));
-        // works?
+        Vector3 screenPos = camera.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
         WorldPos value = Util.toWorld(new Pos2D(screenPos.x, screenPos.y));
         value.map = map;
         return Optional.of(value);
