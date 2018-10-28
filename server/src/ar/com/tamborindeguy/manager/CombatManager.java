@@ -1,11 +1,11 @@
 package ar.com.tamborindeguy.manager;
 
+import ar.com.tamborindeguy.model.Spell;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import com.artemis.Component;
-import com.artemis.E;
 import entity.CombatMessage;
 
-import java.util.*;
+import java.util.Optional;
 
 import static com.artemis.E.E;
 
@@ -27,8 +27,8 @@ public class CombatManager {
         return Optional.of(80);
     }
 
-    public static void notify(int victim, String attack) {
-        EntityUpdate update = new EntityUpdate(victim, new Component[] {new CombatMessage(attack)}, new Class[0]);
+    public static void notify(int victim, CombatMessage combatMessage) {
+        EntityUpdate update = new EntityUpdate(victim, new Component[] {combatMessage}, new Class[0]);
         WorldManager.sendEntityUpdate(victim, update);
         WorldManager.notifyToNearEntities(victim, update);
     }
@@ -36,5 +36,12 @@ public class CombatManager {
     public static void update(int victim) {
         EntityUpdate update = new EntityUpdate(victim, new Component[] {E(victim).getHealth()}, new Class[0]);
         WorldManager.sendEntityUpdate(victim, update);
+    }
+
+    public static int calculateHP(int target, Spell spell) {
+        if (spell.getSumHP() == 1) {
+            return 80;
+        }
+        return - 80;
     }
 }

@@ -9,6 +9,7 @@ import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
 import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
 import ar.com.tamborindeguy.network.movement.MovementNotification;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
+import ar.com.tamborindeguy.network.notifications.FXNotification;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
 import com.artemis.Component;
 import com.artemis.E;
@@ -71,6 +72,12 @@ public class ClientNotificationProcessor implements INotificationProcessor {
     public void processNotification(MovementNotification movementNotification) {
         int playerId = WorldManager.getNetworkedEntity(movementNotification.getPlayerId());
         E(playerId).movementAdd(movementNotification.getDestination());
+    }
+
+    @Override
+    public void processNotification(FXNotification fxNotification) {
+        int target = WorldManager.getNetworkedEntity(fxNotification.getTarget());
+        E(target).fXAddFx(fxNotification.getFxGrh());
     }
 
     private void addComponentsToEntity(Entity newEntity, EntityUpdate entityUpdate) {

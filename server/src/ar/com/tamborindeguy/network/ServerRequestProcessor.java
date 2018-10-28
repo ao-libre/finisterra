@@ -2,10 +2,7 @@ package ar.com.tamborindeguy.network;
 
 import ar.com.tamborindeguy.database.model.User;
 import ar.com.tamborindeguy.interfaces.Constants;
-import ar.com.tamborindeguy.manager.CombatManager;
-import ar.com.tamborindeguy.manager.ItemManager;
-import ar.com.tamborindeguy.manager.MapManager;
-import ar.com.tamborindeguy.manager.WorldManager;
+import ar.com.tamborindeguy.manager.*;
 import ar.com.tamborindeguy.model.Spell;
 import ar.com.tamborindeguy.network.combat.AttackRequest;
 import ar.com.tamborindeguy.network.combat.SpellCastRequest;
@@ -27,19 +24,20 @@ import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.esotericsoftware.minlog.Log;
+import entity.CombatMessage;
 import entity.Dialog;
 import entity.Heading;
 import entity.Object;
 import entity.character.info.Inventory;
 import entity.character.states.Meditating;
-import entity.character.status.Mana;
-import entity.character.status.Stamina;
 import graphics.FX;
 import movement.Destination;
 import physics.AttackAnimation;
 import position.WorldPos;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static com.artemis.E.E;
 
@@ -111,12 +109,12 @@ public class ServerRequestProcessor implements IRequestProcessor {
         if (victim.isPresent()) {
             Optional<Integer> damage = CombatManager.attack(playerId, victim.get());
             if (damage.isPresent()) {
-                CombatManager.notify(victim.get(), "-" + Integer.toString(damage.get()));
+                CombatManager.notify(victim.get(), new CombatMessage("-" + Integer.toString(damage.get())));
             } else {
-                CombatManager.notify(playerId, CombatManager.MISS);
+                CombatManager.notify(playerId, new CombatMessage(CombatManager.MISS));
             }
         } else {
-            CombatManager.notify(playerId, CombatManager.MISS);
+            CombatManager.notify(playerId, new CombatMessage(CombatManager.MISS));
         }
         WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new AttackAnimation()}, new Class[0]));
     }
@@ -201,39 +199,16 @@ public class ServerRequestProcessor implements IRequestProcessor {
         Log.info("Processing spell cast pos: " + spellCastRequest.getWorldPos());
         Set<Integer> entities = new HashSet<>(MapManager.getNearEntities(playerId));
         entities.add(playerId);
-        entities
+        Optional<Integer> target = entities
                 .stream()
                 .filter(entity -> E(entity).getWorldPos().equals(worldPos))
-                .findFirst()
-                .ifPresent(target -> {
-                    Log.info("Spell has a target: " + target);
-                    int requiredMana = spell.getRequiredMana();
-//                    int requiredStamina = spell.getRequiredStamina();
-                    Mana mana = player.getMana();
-//                    Stamina stamina = player.getStamina();
-                    if (mana.min > requiredMana) {
-                        Log.info("Suficiente mana y stamina");
-                        mana.min -= requiredMana;
-//                        stamina.min -= requiredStamina;
-                        // update mana
-                        NetworkComunicator.sendTo(connectionId, new EntityUpdate(playerId, new Component[] {mana}, new Class[0]));
-
-                        // add FX
-                        List<Component> componentList = new ArrayList<>();
-                        int fxGrh = spell.getFxGrh();
-                        Log.info("FXGrh: " + fxGrh);
-                        if (fxGrh > 0) {
-                            FX fx = new FX();
-                            fx.addFx(fxGrh - 1);
-                            // TODO change to fx add specific class
-                            componentList.add(fx);
-                            WorldManager.notifyUpdate(target, new EntityUpdate(target, componentList.toArray(new Component[componentList.size()]), new Class[0]));
-                        }
-                        WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS)}, new Class[0]));
-                        // TODO do magic
-                    }
-                });
-
+                .findFirst();
+        if (target.isPresent()) {
+            SpellManager.castSpell(playerId, target.get(), spell);
+        } else {
+            CombatManager.notify(playerId, new CombatMessage(CombatManager.MISS, CombatMessage.Kind.MAGIC));
+        }
+        // TODO zone spell
     }
 
 }

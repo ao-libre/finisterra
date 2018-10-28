@@ -10,6 +10,7 @@ import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
 import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
 import ar.com.tamborindeguy.network.movement.MovementNotification;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
+import ar.com.tamborindeguy.network.notifications.FXNotification;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
 import com.artemis.E;
 import entity.character.info.Inventory;
@@ -73,5 +74,10 @@ public class ServerNotificationProcessor implements INotificationProcessor {
     @Override
     public void processNotification(MovementNotification movementNotification) {
         defaultProcess(movementNotification);
+    }
+
+    @Override
+    public void processNotification(FXNotification fxNotification) {
+        defaultProcess(fxNotification);
     }
 }

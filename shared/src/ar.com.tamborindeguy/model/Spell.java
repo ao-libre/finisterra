@@ -17,7 +17,7 @@ public class Spell {
     int target;
 
     // HP
-    boolean sumHP;
+    int sumHP;
     int minHP;
     int maxHP;
 
@@ -195,12 +195,12 @@ public class Spell {
         this.target = Integer.parseInt(target);
     }
 
-    public boolean isSumHP() {
+    public int getSumHP() {
         return sumHP;
     }
 
     public void setSumHP(String sumHP) {
-        this.sumHP = sumHP.equals("1");
+        this.sumHP = Integer.parseInt(sumHP);
     }
 
     public int getMinHP() {

@@ -21,6 +21,7 @@ import ar.com.tamborindeguy.network.movement.MovementNotification;
 import ar.com.tamborindeguy.network.movement.MovementRequest;
 import ar.com.tamborindeguy.network.movement.MovementResponse;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
+import ar.com.tamborindeguy.network.notifications.FXNotification;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
 import ar.com.tamborindeguy.util.MapUtils;
 import camera.Focused;
@@ -79,6 +80,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 IResponseProcessor.class,
                 INotificationProcessor.class,
                 DropItem.class,
+                FXNotification.class,
 
                 // Other
                 HashMap.class,
@@ -99,6 +101,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 AOPhysics.class,
                 AOPhysics.Movement.class,
                 CombatMessage.class,
+                CombatMessage.Kind.class,
                 AttackType.class,
                 Constants.Heading.class,
                 Name.class,
