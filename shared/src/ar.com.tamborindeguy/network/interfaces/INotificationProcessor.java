@@ -4,6 +4,7 @@ import ar.com.tamborindeguy.network.interaction.DropItem;
 import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
 import ar.com.tamborindeguy.network.movement.MovementNotification;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
+import ar.com.tamborindeguy.network.notifications.FXNotification;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
 
 public interface INotificationProcessor {
@@ -19,4 +20,6 @@ public interface INotificationProcessor {
     void processNotification(DropItem dropItem);
 
     void processNotification(MovementNotification movementNotification);
+
+    void processNotification(FXNotification fxNotification);
 }

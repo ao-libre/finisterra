@@ -10,6 +10,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import com.esotericsoftware.minlog.Log;
@@ -54,25 +55,27 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
 
         combatMessage.time -= world.getDelta();
         if (combatMessage.time > 0) {
-            Color copy = COMBAT_FONT.getColor().cpy();
+
+            BitmapFont font = combatMessage.kind == CombatMessage.Kind.PHYSICAL ? COMBAT_FONT : MAGIC_COMBAT_FONT;
+            Color copy = font.getColor().cpy();
             if (combatMessage.time < CombatMessage.DEFAULT_ALPHA) {
                 combatMessage.alpha = combatMessage.time / CombatMessage.DEFAULT_ALPHA;
-                COMBAT_FONT.getColor().a = combatMessage.alpha;
+                font.getColor().a = combatMessage.alpha;
             }
             cameraSystem.guiCamera.update();
             batch.setProjectionMatrix(cameraSystem.guiCamera.combined);
             batch.begin();
 
-            dialogLayout.setText(COMBAT_FONT, combatMessage.text);
+            dialogLayout.setText(font, combatMessage.text);
             float width = dialogLayout.width;
-            dialogLayout.setText(COMBAT_FONT, combatMessage.text, COMBAT_FONT.getColor(), width, Align.center, true);
+            dialogLayout.setText(font, combatMessage.text, font.getColor(), width, Align.center, true);
             final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH + dialogLayout.width) / 2;
             int bodyOffset = 20 - DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
             final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y - combatMessage.offset + bodyOffset + dialogLayout.height; //40 should be the Y offset of the entity
-            COMBAT_FONT.draw(batch, dialogLayout, fontX, fontY);
+            font.draw(batch, dialogLayout, fontX, fontY);
 
             batch.end();
-            COMBAT_FONT.setColor(copy);
+            font.setColor(copy);
         } else {
             player.removeCombatMessage();
         }
