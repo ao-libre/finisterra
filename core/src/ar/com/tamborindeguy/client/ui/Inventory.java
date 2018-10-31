@@ -184,4 +184,7 @@ public class Inventory extends Window {
         return slots.indexOf(dragging.get());
     }
 
+    public boolean isOver() {
+        return over;
+    }
 }

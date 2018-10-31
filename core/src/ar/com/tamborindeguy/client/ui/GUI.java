@@ -1,26 +1,22 @@
 package ar.com.tamborindeguy.client.ui;
 
 import ar.com.tamborindeguy.client.managers.AOInputProcessor;
-import ar.com.tamborindeguy.client.screens.GameScreen;
-import ar.com.tamborindeguy.client.utils.WorldUtils;
-import ar.com.tamborindeguy.network.combat.SpellCastRequest;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.utils.Align;
 
-import java.util.Optional;
 
 public class GUI {
 
     private static Inventory inventory;
     private static SpellView spellView;
     private static DialogText dialog;
+    private static AOConsole console;
     private Stage stage;
 
     public GUI() {
@@ -31,10 +27,23 @@ public class GUI {
         stage.addActor(createDialogContainer());
         stage.addActor(createInventory());
         stage.addActor(createSpells());
+        stage.addActor(createConsole());
         Gdx.input.setInputProcessor(stage);
         Pixmap pm = new Pixmap(Gdx.files.internal("data/ui/images/cursor-arrow.png"));
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 10, 4));
         pm.dispose();
+    }
+
+    private Actor createConsole() {
+//        Container<Actor> consoleContainer = new Container<>();
+//        float screenW = Gdx.graphics.getWidth();
+//        float screenH = Gdx.graphics.getHeight();
+//        consoleContainer.setWidth(screenW / 2);
+//        consoleContainer.setHeight(screenH / 10);
+        console = new AOConsole();
+        console.setPosition(0, 0);
+//        consoleContainer.setActor(console);
+        return console;
     }
 
     private Container<Table> createSpells() {
@@ -82,6 +91,10 @@ public class GUI {
 
     public static DialogText getDialog() {
         return dialog;
+    }
+
+    public static AOConsole getConsole() {
+        return console;
     }
 
     public static SpellView getSpellView() {

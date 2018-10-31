@@ -6,6 +6,7 @@ import ar.com.tamborindeguy.client.ui.GUI;
 import ar.com.tamborindeguy.client.utils.Keys;
 import ar.com.tamborindeguy.client.utils.WorldUtils;
 import ar.com.tamborindeguy.model.AttackType;
+import ar.com.tamborindeguy.model.Spell;
 import ar.com.tamborindeguy.network.combat.AttackRequest;
 import ar.com.tamborindeguy.network.combat.SpellCastRequest;
 import ar.com.tamborindeguy.network.interaction.DropItem;
@@ -31,20 +32,42 @@ public class AOInputProcessor extends Stage {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        boolean result = super.touchUp(screenX, screenY, pointer, button);
+        if (GUI.getSpellView().isOver() || GUI.getInventory().isOver()) {
+            return result;
+        }
         WorldUtils.mouseToWorldPos().ifPresent(worldPos -> {
             Log.info("Clicking on worldpos: " + worldPos);
-            GUI.getSpellView().toCast.ifPresent(spell -> {
-//                        if (E(GameScreen.getPlayer()).getAttack().interval) {
-//
-//                        }
-                GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos));
+            final Optional<Spell> toCast = GUI.getSpellView().toCast;
+            if (toCast.isPresent()) {
+                Spell spell = toCast.get();
+                E player = E(GameScreen.getPlayer());
+                if (!player.hasAttack() || player.getAttack().interval - GameScreen.getWorld().getDelta() < 0) {
+                    GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos));
+                    player.attackInterval();
+                } else {
+                    // TODO can't attack because interval
+                }
                 Pixmap pm = new Pixmap(Gdx.files.internal("data/ui/images/cursor-arrow.png"));
                 Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 10, 4));
                 pm.dispose();
-            });
-            GUI.getSpellView().toCast = Optional.empty();
+                GUI.getSpellView().toCast = Optional.empty();
+            } else {
+                Optional<String> name = WorldManager.getEntities()
+                        .stream()
+                        .filter(entity -> E(entity).hasWorldPos() && E(entity).getWorldPos().equals(worldPos))
+                        .filter(entity -> E(entity).hasName())
+                        .map(entity -> E(entity).getName().text)
+                        .findFirst();
+                if (name.isPresent()) {
+                    GUI.getConsole().addMessage("Ves a " + name.get());
+                } else {
+                    GUI.getConsole().addMessage("No ves nada interesante");
+                }
+
+            }
         });
-        return super.touchUp(screenX, screenY, pointer, button);
+        return result;
     }
 
     @Override
@@ -77,6 +100,7 @@ public class AOInputProcessor extends Stage {
                     break;
                 case Input.Keys.O:
                     int randomFx = r.nextInt(DescriptorHandler.getFxs().size());
+                    Log.info("FX: " + randomFx);
                     E(GameScreen.getPlayer()).fXAddFx(randomFx);
                     break;
             }

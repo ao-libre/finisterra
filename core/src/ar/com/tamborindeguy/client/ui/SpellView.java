@@ -70,6 +70,10 @@ public class SpellView extends Window {
         });
     }
 
+    public boolean isOver() {
+        return over;
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, over ? parentAlpha : 0.5f);

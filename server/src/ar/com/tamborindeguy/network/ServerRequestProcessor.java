@@ -2,6 +2,7 @@ package ar.com.tamborindeguy.network;
 
 import ar.com.tamborindeguy.database.model.User;
 import ar.com.tamborindeguy.interfaces.Constants;
+import ar.com.tamborindeguy.interfaces.FXs;
 import ar.com.tamborindeguy.manager.*;
 import ar.com.tamborindeguy.model.Spell;
 import ar.com.tamborindeguy.network.combat.AttackRequest;
@@ -18,6 +19,7 @@ import ar.com.tamborindeguy.network.movement.MovementNotification;
 import ar.com.tamborindeguy.network.movement.MovementRequest;
 import ar.com.tamborindeguy.network.movement.MovementResponse;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
+import ar.com.tamborindeguy.network.notifications.FXNotification;
 import ar.com.tamborindeguy.util.MapUtils;
 import ar.com.tamborindeguy.utils.WorldUtils;
 import com.artemis.Component;
@@ -42,6 +44,8 @@ import java.util.Set;
 import static com.artemis.E.E;
 
 public class ServerRequestProcessor implements IRequestProcessor {
+
+
 
     @Override
     public void processRequest(LoginRequest request, int connectionId) {
@@ -110,6 +114,8 @@ public class ServerRequestProcessor implements IRequestProcessor {
             Optional<Integer> damage = CombatManager.attack(playerId, victim.get());
             if (damage.isPresent()) {
                 CombatManager.notify(victim.get(), new CombatMessage("-" + Integer.toString(damage.get())));
+                // TODO fix fxgrh
+                WorldManager.notifyUpdate(victim.get(), new FXNotification(victim.get(), FXs.FX_BLOOD));
             } else {
                 CombatManager.notify(playerId, new CombatMessage(CombatManager.MISS));
             }
@@ -205,6 +211,8 @@ public class ServerRequestProcessor implements IRequestProcessor {
                 .findFirst();
         if (target.isPresent()) {
             SpellManager.castSpell(playerId, target.get(), spell);
+            AttackAnimation attackAnimation = new AttackAnimation();
+            WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{attackAnimation}, new Class[0]));
         } else {
             CombatManager.notify(playerId, new CombatMessage(CombatManager.MISS, CombatMessage.Kind.MAGIC));
         }

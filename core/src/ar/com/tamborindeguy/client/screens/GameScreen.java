@@ -85,7 +85,7 @@ public class GameScreen extends WorldScreen {
                 .with(FONTS_PRIORITY, new StateRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new CharacterStatusRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new CombatRenderingSystem(game.getSpriteBatch()))
-                .with(FONTS_PRIORITY, new NameRenderingSystem(game.getSpriteBatch()))
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new NameRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new DialogRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new CharacterStatesRenderingSystem(game.getSpriteBatch()))
                 // Other
