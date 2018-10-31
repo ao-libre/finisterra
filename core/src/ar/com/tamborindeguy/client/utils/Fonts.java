@@ -8,11 +8,10 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
-import static ar.com.tamborindeguy.client.utils.Colors.GM;
-
 public class Fonts {
 
     public static final BitmapFont WHITE_FONT;
+    public static final BitmapFont CONSOLE_FONT;
     public static final BitmapFont GM_NAME_FONT;
     public static final BitmapFont NEWBIE_NAME_FONT;
     public static final BitmapFont CITIZEN_NAME_FONT;
@@ -31,6 +30,7 @@ public class Fonts {
 
     static {
         WHITE_FONT = generate(Color.WHITE, 10, Color.BLACK, 0, 0, 0);
+        CONSOLE_FONT = generate(Color.WHITE, 14, Color.BLACK, 0, 0, 0);
         GM_NAME_FONT = generate(Colors.GM, 10, Color.BLACK, 0, 1, -1);
         NEWBIE_NAME_FONT = generate(Colors.NEWBIE, 10, Color.BLACK, 0, 1, -1);
         CITIZEN_NAME_FONT = generate(Colors.CITIZEN, 10, Color.BLACK, 0, 1, -1);

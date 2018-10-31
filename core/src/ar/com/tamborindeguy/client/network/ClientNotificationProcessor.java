@@ -18,7 +18,6 @@ import com.artemis.EntityEdit;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
-import position.WorldPos;
 
 import static com.artemis.E.E;
 
@@ -86,28 +85,22 @@ public class ClientNotificationProcessor implements INotificationProcessor {
             Log.info("Adding component: " + component);
             edit.add(component);
         }
-        E entity = E(newEntity.getId());
-        if (entity.hasWorldPos()) {
-            WorldPos worldPos = entity.getWorldPos();
-            entity.pos2DX(worldPos.x);
-            entity.pos2DY(worldPos.y);
-        }
     }
 
     private void updateEntity(EntityUpdate entityUpdate) {
         int entityId = WorldManager.getNetworkedEntity(entityUpdate.entityId);
         Entity entity = WorldManager.getWorld().getEntity(entityId);
-        EntityEdit edit = entity.edit();
-        for (Component component : entityUpdate.components) {
-            // this should replace if already exists
-            edit.add(component);
-        }
-        for (Class remove : entityUpdate.toRemove) {
-            // avoid NPEs beacouse of multithreading
-            Gdx.app.postRunnable(() -> {
+        Gdx.app.postRunnable(() -> {
+            EntityEdit edit = entity.edit();
+            for (Component component : entityUpdate.components) {
+                // this should replace if already exists
+                edit.add(component);
+                Log.info("Adding component: " + component.toString());
+            }
+            for (Class remove : entityUpdate.toRemove) {
                 Log.info("Removing component: " + remove.getSimpleName());
                 edit.remove(remove);
-            });
-        }
+            }
+        });
     }
 }
