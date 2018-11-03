@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.esotericsoftware.minlog.Log;
 import entity.Body;
 import graphics.FX;
 import position.Pos2D;
@@ -86,7 +87,9 @@ public class FXsRenderingSystem extends IteratingSystem {
         }
         fx.particles.forEach(effect -> {
             ParticleEffect particleEffect = particles.computeIfAbsent(entityId, id -> new HashMap<>()).computeIfAbsent(effect, eff -> ParticlesHandler.getParticle(eff));
-            particleEffect.setPosition(screenPos.x - Tile.TILE_PIXEL_WIDTH / 2, screenPos.y - 2);
+            final float particleX = screenPos.x - (Tile.TILE_PIXEL_WIDTH / 2);
+            final float particleY = screenPos.y - 4;
+            particleEffect.setPosition(particleX, particleY);
             particleEffect.draw(batch, world.getDelta());
             if (particleEffect.isComplete()) {
                 particleEffect.dispose();
