@@ -12,8 +12,10 @@ public class ParticlesHandler {
     public static void load() {
         ParticleEffect effect = new ParticleEffect();
         effect.load(Gdx.files.internal(AO.GAME_FXS_PATH + "meditate1.party"), Gdx.files.internal(""));
-
         particles.put(1, new ParticleEffectPool(effect, 1, 100));
+        ParticleEffect aura = new ParticleEffect();
+        aura.load(Gdx.files.internal(AO.GAME_FXS_PATH + "aura1.party"), Gdx.files.internal(AO.GAME_PARTICLES_PATH));
+        particles.put(2, new ParticleEffectPool(aura, 1, 100));
     }
 
     public static ParticleEffect getParticle(int index) {

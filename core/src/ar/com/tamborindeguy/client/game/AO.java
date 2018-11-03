@@ -13,6 +13,7 @@ public class AO extends Game {
 
     public static final String GAME_GRAPHICS_PATH = "data/graficos/";
     public static final String GAME_FXS_PATH = "data/fxs/";
+    public static final String GAME_PARTICLES_PATH = "data/particles/";
     public static final String GAME_FONTS_PATH = "data/fonts/";
     public static final String GAME_MAPS_PATH = "data/mapas/";
     public static final String GAME_INIT_PATH = "data/init/";

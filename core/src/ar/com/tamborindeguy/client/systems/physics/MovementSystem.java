@@ -48,7 +48,6 @@ public class MovementSystem extends IteratingSystem {
         switch (destination.dir) {
             default:
             case DOWN:
-
                 player.getWorldPos().offsetY += delta;
                 break;
             case LEFT:
