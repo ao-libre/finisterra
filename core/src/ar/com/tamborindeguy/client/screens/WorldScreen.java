@@ -23,8 +23,8 @@ public abstract class WorldScreen extends ScreenAdapter {
     }
 
     public void init() {
-        this.initScene();
         this.initSystems(builder);
+        this.initScene();
         world = new World(builder.build());
     }
 

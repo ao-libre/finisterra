@@ -1,13 +1,13 @@
 package ar.com.tamborindeguy.client.ui;
 
 import ar.com.tamborindeguy.client.managers.AOInputProcessor;
+import ar.com.tamborindeguy.client.ui.user.UserInformation;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.utils.Align;
 
 
@@ -15,6 +15,7 @@ public class GUI {
 
     private static Inventory inventory;
     private static SpellView spellView;
+    private static UserInformation userTable;
     private static DialogText dialog;
     private static AOConsole console;
     private Stage stage;
@@ -28,6 +29,7 @@ public class GUI {
         stage.addActor(createInventory());
         stage.addActor(createSpells());
         stage.addActor(createConsole());
+        stage.addActor(createUserStatus());
         Gdx.input.setInputProcessor(stage);
         Pixmap pm = new Pixmap(Gdx.files.internal("data/ui/images/cursor-arrow.png"));
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 10, 4));
@@ -35,23 +37,32 @@ public class GUI {
     }
 
     private Actor createConsole() {
-//        Container<Actor> consoleContainer = new Container<>();
-//        float screenW = Gdx.graphics.getWidth();
-//        float screenH = Gdx.graphics.getHeight();
-//        consoleContainer.setWidth(screenW / 2);
-//        consoleContainer.setHeight(screenH / 10);
+        float screenH = Gdx.graphics.getHeight();
         console = new AOConsole();
-        console.setPosition(0, 0);
-//        consoleContainer.setActor(console);
+        console.setPosition(0, screenH - console.getHeight());
         return console;
+    }
+
+    private Container<Table> createUserStatus() {
+        Container<Table> userContainer = new Container<>();
+        float width = Gdx.graphics.getWidth() * 30 / 100f;
+        userContainer.setWidth(width);
+        userContainer.setHeight(64);
+        float scaleXY = width / (64 + 200);
+        userTable = new UserInformation();
+        userContainer.setActor(userTable);
+        userContainer.setTransform(true);
+        userContainer.setScale(scaleXY);
+        userContainer.setPosition(1, 1, Align.left | Align.bottom);
+        return userContainer;
     }
 
     private Container<Table> createSpells() {
         Container<Table> dialogContainer = new Container<>();
         float screenW = Gdx.graphics.getWidth();
         float screenH = Gdx.graphics.getHeight();
-        dialogContainer.setWidth(Inventory.COLUMNS * Slot.SIZE * Inventory.ZOOM);
-        dialogContainer.setHeight(Inventory.COLUMNS * Slot.SIZE * Inventory.ZOOM);
+        dialogContainer.setWidth(Inventory.COLUMNS * Slot.SIZE);
+        dialogContainer.setHeight(Inventory.COLUMNS * Slot.SIZE);
         dialogContainer.setPosition((screenW - dialogContainer.getWidth()) - 10, (screenH / 2) + 20);
         spellView = new SpellView();
         spellView.setFillParent(true);
@@ -60,16 +71,15 @@ public class GUI {
     }
 
     private Container<Table> createInventory() {
-        Container<Table> dialogContainer = new Container<>();
-        float screenW = Gdx.graphics.getWidth();
-        float screenH = Gdx.graphics.getHeight();
-        float containerW = Inventory.COLUMNS * Slot.SIZE * Inventory.ZOOM;
-        dialogContainer.setWidth(containerW);
-        dialogContainer.setHeight(Inventory.ROWS * Slot.SIZE * Inventory.ZOOM);
-        dialogContainer.setPosition((screenW - dialogContainer.getWidth()) - 10, (screenH / 2) - dialogContainer.getHeight());
+        Container<Table> inventoryContainer = new Container<>();
+        float width = Gdx.graphics.getWidth() * 20 / 100f;
+        inventoryContainer.setWidth(width);
         inventory = new Inventory();
-        dialogContainer.setActor(inventory);
-        return dialogContainer;
+        inventoryContainer.setPosition((Gdx.graphics.getWidth() * 98f / 100f) - width, 1, Align.bottom);
+        inventoryContainer.setActor(inventory);
+        inventoryContainer.setTransform(true);
+        inventoryContainer.setScale(width / inventory.getWidth());
+        return inventoryContainer;
     }
 
     private Container<Table> createDialogContainer() {

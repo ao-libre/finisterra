@@ -17,7 +17,7 @@ public class Slot extends Actor {
     static final int SIZE = 34;
 
     private static Texture selection = new Texture(Gdx.files.local("data/ui/images/slot-selection.png"));
-    private static Texture background = new Texture(Gdx.files.local("data/ui/images/slot-background.png"));
+    private static Texture background = new Texture(Gdx.files.local("data/ui/images/table-background.png"));
     private static Texture equip = new Texture(Gdx.files.local("data/ui/images/slot-equipped.png"));
 
     private Optional<Item> item = Optional.empty();
@@ -25,7 +25,8 @@ public class Slot extends Actor {
     private boolean selected;
     private boolean equipped;
 
-    Slot() {}
+    Slot() {
+    }
 
     public Slot(Item item) {
         this.item = Optional.of(item);
@@ -39,7 +40,7 @@ public class Slot extends Actor {
         return item.isPresent() ? item.get().count : 0;
     }
 
-    void setItem(Item item){
+    void setItem(Item item) {
         this.item = Optional.ofNullable(item);
     }
 
@@ -49,15 +50,15 @@ public class Slot extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        drawTexture(batch, background);
+        batch.draw(background, getX(), getY(), 34, 34);
         if (item.isPresent()) {
             drawItem(batch);
             if (item.get().equipped) {
-                drawTexture(batch, equip);
+                batch.draw(equip, getX(), getY());
             }
         }
         if (selected) {
-            drawTexture(batch, selection);
+            batch.draw(selection, getX(), getY());
         }
     }
 
@@ -65,16 +66,8 @@ public class Slot extends Actor {
         Optional<Obj> object = ObjectHandler.getObject(getObjId());
         object.ifPresent(obj -> {
             TextureRegion graphic = ObjectHandler.getGraphic(obj);
-            drawScaled(batch, graphic, 1, 1);
+            batch.draw(graphic, getX() + 1, getY() + 1);
         });
-    }
-
-    private void drawTexture(Batch batch, Texture texture) {
-        batch.draw(texture, getX(), getY(), getOriginX(), getOriginY(), getWidth(), getHeight(), 1, 1, getRotation(), 0, 0, texture.getWidth(), texture.getHeight(), false, false);
-    }
-
-    private void drawScaled(Batch batch, TextureRegion texture, float offsetX, float offsetY) {
-        batch.draw(texture, getX() + offsetX, getY() + offsetY, getOriginX(), getOriginY(), texture.getRegionWidth(), texture.getRegionHeight(), Inventory.ZOOM,  Inventory.ZOOM, 0) ;
     }
 
     void setSelected(boolean selected) {

@@ -30,7 +30,6 @@ public class SpellView extends Window {
 
     public SpellView() {
         super("Spells", Skins.COMODORE_SKIN, "black");
-        padTop(15 * Inventory.ZOOM);
         spells = new List<>(Skins.COMODORE_SKIN, "black");
         spells.setItems(SpellHandler.getSpells());
         pane = new ScrollPane(spells, Skins.COMODORE_SKIN);
