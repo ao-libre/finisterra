@@ -32,7 +32,7 @@ public class GameScreen extends WorldScreen {
 
     private static final int FONTS_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL - 1;
     public static ClientSystem client;
-    public static int player;
+    public static int player = -1;
     private static GUI gui;
 
     public GameScreen(AO game, ClientSystem client) {
@@ -79,12 +79,12 @@ public class GameScreen extends WorldScreen {
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new TiledMapSystem())
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 4, new MapLowerLayerRenderingSystem(game.getSpriteBatch()))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ObjectRenderingSystem(game.getSpriteBatch()))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new FXsRenderingSystem(game.getSpriteBatch()))
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ParticleRenderingSystem(game.getSpriteBatch()))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new CharacterRenderingSystem(game.getSpriteBatch()))
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new FXsRenderingSystem(game.getSpriteBatch()))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new MapUpperLayerRenderingSystem(game.getSpriteBatch()))
                 .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new StateRenderingSystem(game.getSpriteBatch()))
-                .with(FONTS_PRIORITY, new CharacterStatusRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new CombatRenderingSystem(game.getSpriteBatch()))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new NameRenderingSystem(game.getSpriteBatch()))
                 .with(FONTS_PRIORITY, new DialogRenderingSystem(game.getSpriteBatch()))

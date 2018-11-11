@@ -1,0 +1,48 @@
+
+ao-skin.png
+size: 256,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+blank
+  rotate: false
+  xy: 1, 1
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+slot
+  rotate: false
+  xy: 1, 106
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+slot-100
+  rotate: false
+  xy: 1, 4
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+slot-background
+  rotate: false
+  xy: 131, 200
+  size: 34, 34
+  orig: 34, 34
+  offset: 0, 0
+  index: -1
+slot-equipped
+  rotate: false
+  xy: 131, 164
+  size: 34, 34
+  orig: 34, 34
+  offset: 0, 0
+  index: -1
+slot-selection
+  rotate: false
+  xy: 167, 200
+  size: 34, 34
+  orig: 34, 34
+  offset: 0, 0
+  index: -1

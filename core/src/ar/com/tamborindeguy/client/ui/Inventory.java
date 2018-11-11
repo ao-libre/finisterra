@@ -26,9 +26,8 @@ import static com.artemis.E.E;
 
 public class Inventory extends Window {
 
-    static final int COLUMNS = 5;
-    static final int ROWS = 4;
-    static final float ZOOM = 1.35f;
+    static final int COLUMNS = 6;
+    private static final int ROWS = 1;
     private static final int SIZE = COLUMNS * ROWS;
 
     private ArrayList<Slot> slots;
@@ -38,17 +37,13 @@ public class Inventory extends Window {
     private boolean over;
 
     Inventory() {
-        super("Inventory", Skins.COMODORE_SKIN, "black");
-        setMovable(true);
-        padTop(15 * ZOOM);
+        super("", Skins.COMODORE_SKIN, "black");
+        setMovable(false);
         slots = new ArrayList<>();
         for (int i = 0; i < SIZE; i++) {
             Slot newSlot = new Slot();
             slots.add(newSlot);
-            add(slots.get(i)).width(Slot.SIZE * ZOOM).height(Slot.SIZE * ZOOM);
-            if (i + 1 >= COLUMNS && (i + 1) % COLUMNS == 0) {
-                row();
-            }
+            add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE);
         }
 
         addListener(new ClickListener() {
@@ -159,13 +154,13 @@ public class Inventory extends Window {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, over ? parentAlpha : 0.5f);
+        super.draw(batch, parentAlpha);
         dragging.ifPresent(slot -> slot.getItem().ifPresent(item -> {
-            Gdx.input.getY();
             Optional<Obj> object = ObjectHandler.getObject(item.objId);
             object.ifPresent(obj -> {
+                // TODO
                 TextureRegion graphic = ObjectHandler.getGraphic(obj);
-                batch.draw(graphic, Gdx.input.getX() - (graphic.getRegionWidth() / 2) - 4, Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2), getOriginX(), getOriginY(), graphic.getRegionWidth(), graphic.getRegionHeight(), Inventory.ZOOM, Inventory.ZOOM, 0);
+                batch.draw(graphic, Gdx.input.getX() - (graphic.getRegionWidth() / 2) - 4, Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2));
             });
         }));
     }

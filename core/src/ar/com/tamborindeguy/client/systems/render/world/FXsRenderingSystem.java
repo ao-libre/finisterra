@@ -33,7 +33,6 @@ public class FXsRenderingSystem extends IteratingSystem {
 
     private CameraSystem cameraSystem;
 
-    private Map<Integer, Map<Integer, ParticleEffect>> particles = new HashMap<>();
     private Map<Integer, Map<Integer, BundledAnimation>> fxs = new HashMap<>();
 
     public FXsRenderingSystem(SpriteBatch batch) {
@@ -44,7 +43,6 @@ public class FXsRenderingSystem extends IteratingSystem {
     @Override
     protected void removed(int entityId) {
         super.removed(entityId);
-        particles.remove(entityId);
         fxs.remove(entityId);
     }
 
@@ -53,7 +51,9 @@ public class FXsRenderingSystem extends IteratingSystem {
         E entity = E(entityId);
         Pos2D screenPos = Util.toScreen(entity.worldPosPos2D());
         final FX fx = entity.getFX();
-        List<Integer> removeParticles = new ArrayList<>();
+        if (fx.fxs.isEmpty()) {
+            return;
+        }
         List<Integer> removeFXs = new ArrayList<>();
         cameraSystem.camera.update();
         batch.setProjectionMatrix(cameraSystem.camera.combined);
@@ -64,38 +64,13 @@ public class FXsRenderingSystem extends IteratingSystem {
         batch.begin();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
         drawFXs(entityId, screenPos, fx, removeFXs);
-        drawParticles(entityId, screenPos, fx, removeParticles);
         batch.end();
         batch.setBlendFunction(srcFunc, dstFunc);
 
-        removeParticles.forEach(remove -> fx.removeParticle(remove));
         removeFXs.forEach(remove -> fx.removeFx(remove));
-        if (fx.particles.isEmpty()) {
-            particles.remove(entityId);
-        }
         if (fx.fxs.isEmpty()) {
             fxs.remove(entityId);
         }
-        if (fx.particles.isEmpty() && fx.fxs.isEmpty()) {
-            entity.removeFX();
-        }
-    }
-
-    private void drawParticles(int entityId, Pos2D screenPos, FX fx, List<Integer> removeParticles) {
-        if (fx == null || fx.particles == null) {
-            return;
-        }
-        fx.particles.forEach(effect -> {
-            ParticleEffect particleEffect = particles.computeIfAbsent(entityId, id -> new HashMap<>()).computeIfAbsent(effect, eff -> ParticlesHandler.getParticle(eff));
-            final float particleX = screenPos.x - (Tile.TILE_PIXEL_WIDTH / 2);
-            final float particleY = screenPos.y - 4;
-            particleEffect.setPosition(particleX, particleY);
-            particleEffect.draw(batch, world.getDelta());
-            if (particleEffect.isComplete()) {
-                particleEffect.dispose();
-                removeParticles.add(effect);
-            }
-        });
     }
 
     private void drawFXs(int entityId, Pos2D screenPos, FX fx, List<Integer> removeFXs) {
