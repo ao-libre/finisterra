@@ -6,7 +6,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class Inventory extends Component {
-    public Item[] items = new Item[20];
+    private final static int SIZE = 6;
+    public Item[] items = new Item[SIZE];
     public Item[] shortcuts = new Item[4];
 
     public Inventory() {

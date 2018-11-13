@@ -44,7 +44,6 @@ public class Bar extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         Color originalColor = batch.getColor();
-        batch.setColor(Color.WHITE);
 
         float barX = getX() + SPACE_WIDTH + ICON_SIZE + INTER_SPACE;
         float barY = getY() + (float) BAR_HEIGHT / 2;
@@ -63,12 +62,19 @@ public class Bar extends Actor {
                 min = E(player).getStamina().min;
                 max = E(player).getStamina().max;
         }
-        background.draw(batch, barX, barY, BAR_WIDTH, BAR_HEIGHT);
-        kind.getIcon().draw(batch, getX() + SPACE_WIDTH, getY(), ICON_SIZE, ICON_SIZE);
-        batch.setColor(kind.getColor());
-        bar.draw(batch, barX, barY, (float) min / max * BAR_WIDTH, BAR_HEIGHT);
+
+        drawBar(batch, barX, barY, min, max);
         drawText(batch, min, max, barX, barY);
         batch.setColor(originalColor);
+    }
+
+    private void drawBar(Batch batch, float barX, float barY, float min, int max) {
+        batch.setColor(Color.BLACK);
+        background.draw(batch, barX, barY, BAR_WIDTH, BAR_HEIGHT);
+        batch.setColor(Color.WHITE);
+        kind.getIcon().draw(batch, getX() + SPACE_WIDTH, getY(), ICON_SIZE, ICON_SIZE);
+        batch.setColor(kind.getColor());
+        bar.draw(batch, barX, barY, min / max * BAR_WIDTH, BAR_HEIGHT);
     }
 
     private void drawText(Batch batch, int min, int max, float barX, float barY) {
