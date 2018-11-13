@@ -58,6 +58,8 @@ public class WorldManager {
         addItem(player.getId(), Type.ARMOR);
         addItem(player.getId(), Type.WEAPON);
         addItem(player.getId(), Type.SHIELD);
+        addItem(player.getId(), Type.POTION);
+        addItem(player.getId(), Type.POTION);
         return player;
     }
 
@@ -65,10 +67,6 @@ public class WorldManager {
     private static void addItem(int player, Type type) {
         Set<Obj> objs = ObjectManager.getTypeObjects(type);
         Iterator<Obj> iterator = objs.iterator();
-        E(player).getInventory().add(iterator.next().getId());
-        E(player).getInventory().add(iterator.next().getId());
-        E(player).getInventory().add(iterator.next().getId());
-        E(player).getInventory().add(iterator.next().getId());
         E(player).getInventory().add(iterator.next().getId());
     }
 

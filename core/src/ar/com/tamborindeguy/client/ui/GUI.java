@@ -37,9 +37,12 @@ public class GUI {
     }
 
     private Actor createConsole() {
+        Container<Actor> consoleContainer = new Container<>();
         float screenH = Gdx.graphics.getHeight();
         console = new AOConsole();
-        console.setPosition(0, screenH - console.getHeight());
+        console.setY(screenH - 16*AOConsole.MAX_MESSAGES);
+        consoleContainer.setActor(console);
+        consoleContainer.setPosition(0, screenH - console.getHeight(), Align.top | Align.left);
         return console;
     }
 
