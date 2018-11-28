@@ -56,13 +56,19 @@ public class MapUpperLayerRenderingSystem extends BaseSystem {
     }
 
     @Override
-    protected void processSystem() {
+    protected void begin() {
         cameraSystem.camera.update();
         batch.setProjectionMatrix(this.cameraSystem.camera.combined);
         batch.begin();
-        renderWorld();
-        batch.end();
     }
 
+    @Override
+    protected void processSystem() {
+        renderWorld();
+    }
 
+    @Override
+    protected void end() {
+        batch.end();
+    }
 }

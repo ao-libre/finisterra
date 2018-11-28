@@ -10,7 +10,7 @@ public enum CharClass {
     DRUID,
     PIRATE,
     THIEF,
-    BANDIT,
+    ROGUE,
     ARCHER;
 
     public static CharClass getClass(String classString) {
@@ -34,7 +34,7 @@ public enum CharClass {
             case "ladron":
                 return THIEF;
             case "bandido":
-                return BANDIT;
+                return ROGUE;
             case "cazador":
                 return ARCHER;
         }

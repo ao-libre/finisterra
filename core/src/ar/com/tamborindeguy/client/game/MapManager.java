@@ -1,6 +1,8 @@
 package ar.com.tamborindeguy.client.game;
 
 import ar.com.tamborindeguy.client.handlers.AnimationHandler;
+import ar.com.tamborindeguy.client.screens.GameScreen;
+import ar.com.tamborindeguy.client.utils.WorldUtils;
 import ar.com.tamborindeguy.model.map.Map;
 import ar.com.tamborindeguy.model.map.Tile;
 import ar.com.tamborindeguy.model.textures.BundledAnimation;
@@ -9,8 +11,12 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import position.WorldPos;
 
 import java.util.HashMap;
+import java.util.Optional;
+
+import static com.artemis.E.E;
 
 public class MapManager {
 
@@ -90,7 +96,6 @@ public class MapManager {
                     final float mapPosY = (y * Tile.TILE_PIXEL_HEIGHT);
                     final float tileOffsetX = mapPosX - (tileRegion.getRegionWidth() * 0.5f) - (16.0f);
                     final float tileOffsetY = mapPosY - tileRegion.getRegionHeight();
-
                     batch.draw(tileRegion, tileOffsetX, tileOffsetY);
                 }
             }

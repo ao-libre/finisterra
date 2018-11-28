@@ -3,7 +3,6 @@ package ar.com.tamborindeguy.client.managers;
 import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.ui.GUI;
-import ar.com.tamborindeguy.client.utils.Keys;
 import ar.com.tamborindeguy.client.utils.WorldUtils;
 import ar.com.tamborindeguy.model.AttackType;
 import ar.com.tamborindeguy.model.Spell;
@@ -24,6 +23,7 @@ import com.esotericsoftware.minlog.Log;
 import java.util.Optional;
 import java.util.Random;
 
+import static ar.com.tamborindeguy.client.utils.AlternativeKeys.*;
 import static com.artemis.E.E;
 
 public class AOInputProcessor extends Stage {
@@ -74,28 +74,28 @@ public class AOInputProcessor extends Stage {
     public boolean keyUp(int keycode) {
         if (!GUI.getDialog().isVisible()) {
             switch (keycode) {
-                case Keys.INVENTORY:
+                case INVENTORY:
                     toggleInventory();
                     break;
-                case Keys.SPELLS:
+                case SPELLS:
                     toggleSpells();
                     break;
-                case Keys.MEDITATE:
+                case MEDITATE:
                     toggleMeditate();
                     break;
-                case Keys.DROP:
+                case DROP:
                     dropItem();
                     break;
-                case Keys.TAKE:
+                case TAKE:
                     takeItem();
                     break;
-                case Keys.EQUIP:
+                case EQUIP:
                     equip();
                     break;
-                case Keys.ATTACK_1:
+                case ATTACK_1:
                     attack();
                     break;
-                case Keys.ATTACK_2:
+                case ATTACK_2:
                     attack();
                     break;
                 case Input.Keys.O:
@@ -106,7 +106,7 @@ public class AOInputProcessor extends Stage {
             }
         }
         switch (keycode) {
-            case Keys.TALK:
+            case TALK:
                 toggleDialogText();
                 break;
         }

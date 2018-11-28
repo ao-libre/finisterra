@@ -1,13 +1,21 @@
 package ar.com.tamborindeguy.client.systems.render.world;
 
 import ar.com.tamborindeguy.client.game.MapManager;
+import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
 import ar.com.tamborindeguy.client.systems.map.TiledMapSystem;
+import ar.com.tamborindeguy.client.utils.WorldUtils;
 import ar.com.tamborindeguy.model.map.Map;
 import ar.com.tamborindeguy.model.map.Tile;
 import com.artemis.BaseSystem;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import position.WorldPos;
+
+import java.util.Optional;
+
+import static com.artemis.E.E;
 
 @Wire
 public class MapLowerLayerRenderingSystem extends BaseSystem {
@@ -18,6 +26,13 @@ public class MapLowerLayerRenderingSystem extends BaseSystem {
 
     public MapLowerLayerRenderingSystem(SpriteBatch spriteBatch) {
         this.batch = spriteBatch;
+    }
+
+    @Override
+    protected void begin() {
+        this.cameraSystem.camera.update();
+        this.batch.setProjectionMatrix(this.cameraSystem.camera.combined);
+        this.batch.begin();
     }
 
     private void renderWorld() {
@@ -47,19 +62,15 @@ public class MapLowerLayerRenderingSystem extends BaseSystem {
 
         // LAYER 2 - STATIC - FRAMEBUFFERED
         this.batch.draw(MapManager.getBufferedLayer(map), 0, 0);
-
     }
 
     @Override
     protected void processSystem() {
-        this.cameraSystem.camera.update();
-        this.batch.setProjectionMatrix(this.cameraSystem.camera.combined);
-        this.batch.begin();
-
         this.renderWorld();
-
-        this.batch.end();
     }
 
-
+    @Override
+    protected void end() {
+        this.batch.end();
+    }
 }

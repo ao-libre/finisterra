@@ -36,10 +36,19 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
     }
 
     @Override
-    protected void process(Entity e) {
+    protected void begin() {
         cameraSystem.camera.update();
         batch.setProjectionMatrix(cameraSystem.camera.combined);
         batch.begin();
+    }
+
+    @Override
+    protected void end() {
+        batch.end();
+    }
+
+    @Override
+    protected void process(Entity e) {
 
         E player = E(e);
         Pos2D currentPos = player.worldPosPos2D();
@@ -47,7 +56,6 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         final Heading heading = player.getHeading();
         CharacterDrawer.createDrawer(batch, player, heading, screenPos).draw();
 
-        batch.end();
     }
 
     protected Comparator<? super Entity> getComparator() {
