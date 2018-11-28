@@ -3,6 +3,9 @@ package ar.com.tamborindeguy.client.systems.render.world;
 import ar.com.tamborindeguy.client.handlers.ObjectHandler;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
+import ar.com.tamborindeguy.client.ui.GUI;
+import ar.com.tamborindeguy.client.ui.Slot;
+import ar.com.tamborindeguy.client.utils.Colors;
 import ar.com.tamborindeguy.client.utils.WorldUtils;
 import ar.com.tamborindeguy.model.map.Tile;
 import ar.com.tamborindeguy.objects.types.Obj;
@@ -34,6 +37,7 @@ public class ObjectRenderingSystem extends IteratingSystem {
 
     @Override
     protected void begin() {
+        cameraSystem.camera.update();
         batch.setProjectionMatrix(cameraSystem.camera.combined);
         batch.begin();
     }
@@ -42,21 +46,10 @@ public class ObjectRenderingSystem extends IteratingSystem {
     protected void process(int objectId) {
         Optional<Obj> object = ObjectHandler.getObject(E(objectId).getObject().index);
         object.ifPresent(obj -> {
-            cameraSystem.camera.update();
             WorldPos objectPos = E(objectId).getWorldPos();
             Pos2D screenPos = Util.toScreen(objectPos);
             batch.draw(ObjectHandler.getIngameGraphic(obj), screenPos.x - Tile.TILE_PIXEL_WIDTH, screenPos.y - Tile.TILE_PIXEL_HEIGHT);
-
         });
-        Optional<WorldPos> worldPos = WorldUtils.mouseToWorldPos();
-        if (worldPos.isPresent()) {
-            batch.setColor(Color.DARK_GRAY);
-            Pos2D mousePos = Util.toScreen(worldPos.get());
-            TextureRegion textureRegion = new TextureRegion();
-            textureRegion.setRegionHeight((int) Tile.TILE_PIXEL_HEIGHT);
-            textureRegion.setRegionWidth((int) Tile.TILE_PIXEL_WIDTH);
-            batch.draw(textureRegion, mousePos.x, mousePos.y);
-        }
     }
 
     @Override

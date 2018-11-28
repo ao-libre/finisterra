@@ -32,19 +32,26 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
     }
 
     @Override
+    protected void begin() {
+        cameraSystem.guiCamera.update();
+        batch.setProjectionMatrix(cameraSystem.guiCamera.combined);
+        batch.begin();
+    }
+
+    @Override
+    protected void end() {
+        batch.end();
+    }
+
+    @Override
     protected void process(Entity e) {
         E player = E(e);
         Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
         Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
         Pos2D screenPos = new Pos2D(cameraPos.x - playerPos.x, cameraPos.y - playerPos.y);
-        cameraSystem.guiCamera.update();
-        batch.setProjectionMatrix(cameraSystem.guiCamera.combined);
-        batch.begin();
 
         float nameY = drawName(player, screenPos);
         drawClanName(player, screenPos, nameY);
-
-        batch.end();
     }
 
     private float drawName(E player, Pos2D screenPos) {

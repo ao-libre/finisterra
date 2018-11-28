@@ -42,6 +42,18 @@ public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
     }
 
     @Override
+    protected void begin() {
+        cameraSystem.guiCamera.update();
+        batch.setProjectionMatrix(cameraSystem.guiCamera.combined);
+        batch.begin();
+    }
+
+    @Override
+    protected void end() {
+        batch.end();
+    }
+
+    @Override
     protected void process(Entity e) {
         E player = E.E(e);
         Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
@@ -56,9 +68,6 @@ public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
                 dialog.alpha = dialog.time / ALPHA_TIME;
                 font.getColor().a = dialog.alpha;
             }
-            cameraSystem.guiCamera.update();
-            batch.setProjectionMatrix(cameraSystem.guiCamera.combined);
-            batch.begin();
 
             dialogLayout.setText(font, dialog.text);
             float width = Math.min(dialogLayout.width, MAX_LENGTH);
@@ -68,8 +77,6 @@ public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
             float offsetY = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY() - up;
             final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y + 50 - offsetY + dialogLayout.height;
             font.draw(batch, dialogLayout, fontX, fontY);
-
-            batch.end();
             font.setColor(copy);
         } else {
             player.removeDialog();
