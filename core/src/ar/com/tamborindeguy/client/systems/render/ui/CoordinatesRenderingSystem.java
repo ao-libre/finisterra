@@ -32,14 +32,22 @@ public class CoordinatesRenderingSystem extends OrderedEntityProcessingSystem {
     }
 
     @Override
-    protected void process(Entity e) {
-        E player = E(e);
-        WorldPos worldPos = player.getWorldPos();
+    protected void begin() {
         cameraSystem.guiCamera.update();
         batch.setProjectionMatrix(cameraSystem.guiCamera.combined);
         batch.begin();
-        drawCoordinates(10, 10, worldPos);
+    }
+
+    @Override
+    protected void end() {
         batch.end();
+    }
+
+    @Override
+    protected void process(Entity e) {
+        E player = E(e);
+        WorldPos worldPos = player.getWorldPos();
+        drawCoordinates(10, 10, worldPos);
     }
 
     private void drawCoordinates(int offsetX, int offsetY, WorldPos worldPos) {

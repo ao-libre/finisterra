@@ -30,11 +30,20 @@ public class StateRenderingSystem extends OrderedEntityProcessingSystem {
         this.batch = batch;
     }
 
-    private void drawMessage(int entityId) {
+    @Override
+    protected void begin() {
         cameraSystem.guiCamera.update();
         batch.setProjectionMatrix(cameraSystem.guiCamera.combined);
         batch.begin();
 
+    }
+
+    @Override
+    protected void end() {
+        batch.end();
+    }
+
+    private void drawMessage(int entityId) {
         // search position
         Pos2D playerPos = Util.toScreen(E(entityId).worldPosPos2D());
         Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
@@ -44,7 +53,6 @@ public class StateRenderingSystem extends OrderedEntityProcessingSystem {
         final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH) / 2;
         final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y - (layout.height) / 2 + 15;
         GM_NAME_FONT.draw(batch, layout, fontX, fontY);
-        batch.end();
     }
 
     @Override

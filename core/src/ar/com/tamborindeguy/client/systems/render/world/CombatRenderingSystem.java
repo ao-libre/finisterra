@@ -36,6 +36,18 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
     }
 
     @Override
+    protected void begin() {
+        cameraSystem.guiCamera.update();
+        batch.setProjectionMatrix(cameraSystem.guiCamera.combined);
+        batch.begin();
+    }
+
+    @Override
+    protected void end() {
+        batch.end();
+    }
+
+    @Override
     protected void process(Entity e) {
         E player = E(e);
         Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
@@ -62,9 +74,6 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
                 combatMessage.alpha = combatMessage.time / CombatMessage.DEFAULT_ALPHA;
                 font.getColor().a = combatMessage.alpha;
             }
-            cameraSystem.guiCamera.update();
-            batch.setProjectionMatrix(cameraSystem.guiCamera.combined);
-            batch.begin();
 
             dialogLayout.setText(font, combatMessage.text);
             float width = dialogLayout.width;
@@ -73,8 +82,6 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
             int bodyOffset = 20 - DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
             final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y - combatMessage.offset + bodyOffset + dialogLayout.height; //40 should be the Y offset of the entity
             font.draw(batch, dialogLayout, fontX, fontY);
-
-            batch.end();
             font.setColor(copy);
         } else {
             player.removeCombatMessage();
