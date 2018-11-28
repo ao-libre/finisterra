@@ -63,7 +63,6 @@ public class WorldManager {
         return player;
     }
 
-
     private static void addItem(int player, Type type) {
         Set<Obj> objs = ObjectManager.getTypeObjects(type);
         Iterator<Obj> iterator = objs.iterator();

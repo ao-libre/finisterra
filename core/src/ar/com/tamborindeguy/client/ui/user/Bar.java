@@ -69,7 +69,7 @@ public class Bar extends Actor {
     }
 
     private void drawBar(Batch batch, float barX, float barY, float min, int max) {
-        batch.setColor(Color.BLACK);
+        batch.setColor(Color.DARK_GRAY);
         background.draw(batch, barX, barY, BAR_WIDTH, BAR_HEIGHT);
         batch.setColor(Color.WHITE);
         kind.getIcon().draw(batch, getX() + SPACE_WIDTH, getY(), ICON_SIZE, ICON_SIZE);

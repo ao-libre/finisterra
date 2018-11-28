@@ -34,10 +34,30 @@ public class FXsRenderingSystem extends IteratingSystem {
     private CameraSystem cameraSystem;
 
     private Map<Integer, Map<Integer, BundledAnimation>> fxs = new HashMap<>();
+    private int srcFunc;
+    private int dstFunc;
 
     public FXsRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(FX.class, WorldPos.class));
         this.batch = batch;
+    }
+
+    @Override
+    protected void begin() {
+        cameraSystem.camera.update();
+        batch.setProjectionMatrix(cameraSystem.camera.combined);
+        // remember SpriteBatch's current functions
+        srcFunc = batch.getBlendSrcFunc();
+        dstFunc = batch.getBlendDstFunc();
+        batch.enableBlending();
+        batch.begin();
+        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
+    }
+
+    @Override
+    protected void end() {
+        batch.end();
+        batch.setBlendFunction(srcFunc, dstFunc);
     }
 
     @Override
@@ -55,18 +75,7 @@ public class FXsRenderingSystem extends IteratingSystem {
             return;
         }
         List<Integer> removeFXs = new ArrayList<>();
-        cameraSystem.camera.update();
-        batch.setProjectionMatrix(cameraSystem.camera.combined);
-        // remember SpriteBatch's current functions
-        int srcFunc = batch.getBlendSrcFunc();
-        int dstFunc = batch.getBlendDstFunc();
-        batch.enableBlending();
-        batch.begin();
-        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
         drawFXs(entityId, screenPos, fx, removeFXs);
-        batch.end();
-        batch.setBlendFunction(srcFunc, dstFunc);
-
         removeFXs.forEach(remove -> fx.removeFx(remove));
         if (fx.fxs.isEmpty()) {
             fxs.remove(entityId);

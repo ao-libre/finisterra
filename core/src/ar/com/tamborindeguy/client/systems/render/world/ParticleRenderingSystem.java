@@ -36,10 +36,24 @@ public class ParticleRenderingSystem extends IteratingSystem {
     private CameraSystem cameraSystem;
 
     private Map<Integer, Map<Integer, ParticleEffect>> particles = new HashMap<>();
+    private int srcFunc;
+    private int dstFunc;
 
     public ParticleRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(FX.class, WorldPos.class));
         this.batch = batch;
+    }
+
+    @Override
+    protected void begin() {
+        cameraSystem.camera.update();
+        batch.setProjectionMatrix(cameraSystem.camera.combined);
+        // remember SpriteBatch's current functions
+        srcFunc = batch.getBlendSrcFunc();
+        dstFunc = batch.getBlendDstFunc();
+        batch.enableBlending();
+        batch.begin();
+        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
     }
 
     @Override
@@ -57,17 +71,8 @@ public class ParticleRenderingSystem extends IteratingSystem {
             return;
         }
         List<Integer> removeParticles = new ArrayList<>();
-        cameraSystem.camera.update();
-        batch.setProjectionMatrix(cameraSystem.camera.combined);
-        // remember SpriteBatch's current functions
-        int srcFunc = batch.getBlendSrcFunc();
-        int dstFunc = batch.getBlendDstFunc();
-        batch.enableBlending();
-        batch.begin();
-        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
+
         drawParticles(entityId, screenPos, fx, removeParticles);
-        batch.end();
-        batch.setBlendFunction(srcFunc, dstFunc);
 
         removeParticles.forEach(remove -> fx.removeParticle(remove));
         if (fx.particles.isEmpty()) {
@@ -92,4 +97,9 @@ public class ParticleRenderingSystem extends IteratingSystem {
         });
     }
 
+    @Override
+    protected void end() {
+        batch.setBlendFunction(srcFunc, dstFunc);
+        batch.end();
+    }
 }
