@@ -27,7 +27,7 @@ import position.WorldPos;
 import static com.artemis.E.E;
 
 /**
- * TiledMapSystem Class
+ * TiledMapSystem HeroClass
  *
  * @author rt
  * @package com.mob.client.api.systems.map

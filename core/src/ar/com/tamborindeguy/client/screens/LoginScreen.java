@@ -59,9 +59,9 @@ public class LoginScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 String user = username.getText();
-                String pass = password.getText();
                 loginButton.setDisabled(true);
-                connectThenLogin(user, pass);
+                // TODO let user select race
+                connectThenLogin(user, 0);
                 loginButton.setDisabled(false);
             }
 
@@ -83,11 +83,11 @@ public class LoginScreen extends ScreenAdapter {
         stage.setKeyboardFocus(username);
     }
 
-    private void connectThenLogin(String user, String pass) {
+    private void connectThenLogin(String user, int classId) {
         // establish connection
         MarshalStrategy client = new KryonetClientMarshalStrategy("localhost", 7666);
         ClientSystem clientSystem = new ClientSystem(client);
-        clientSystem.login(game, user, pass);
+        clientSystem.login(game, user, classId);
     }
 
     @Override

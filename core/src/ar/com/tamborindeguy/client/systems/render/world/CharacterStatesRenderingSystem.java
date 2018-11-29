@@ -67,7 +67,7 @@ public class CharacterStatesRenderingSystem extends IteratingSystem {
         if (GUI.getSpellView().toCast.isPresent()) {
             Optional<WorldPos> worldPos = WorldUtils.mouseToWorldPos();
             if (worldPos.isPresent()) {
-                batch.setColor(Colors.TRANSPARENT_GREY);
+                batch.setColor(Colors.TRANSPARENT_RED);
                 Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
                 Pos2D mousePos = Util.toScreen(worldPos.get());
                 Pos2D screenPos = new Pos2D(cameraPos.x - mousePos.x, cameraPos.y - mousePos.y);

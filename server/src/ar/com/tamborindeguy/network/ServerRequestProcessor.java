@@ -49,9 +49,8 @@ public class ServerRequestProcessor implements IRequestProcessor {
 
     @Override
     public void processRequest(LoginRequest request, int connectionId) {
-        // TODO
-        User user = WorldManager.getUser(request.username);
-        final Entity entity = WorldManager.createEntity(user, connectionId);
+        // TODO this creates a new character
+        final Entity entity = WorldManager.createEntity(request.username, request.classId, connectionId);
         NetworkComunicator.sendTo(connectionId, new EntityUpdate(entity.getId(), WorldUtils.getComponents(entity.getId()), new Class[0]));
         NetworkComunicator.sendTo(connectionId, new LoginOK(entity.getId()));
         WorldManager.registerEntity(connectionId, entity.getId());

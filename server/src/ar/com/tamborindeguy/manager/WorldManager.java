@@ -2,14 +2,20 @@ package ar.com.tamborindeguy.manager;
 
 import ar.com.tamborindeguy.core.WorldServer;
 import ar.com.tamborindeguy.database.model.User;
+import ar.com.tamborindeguy.database.model.attributes.Attributes;
+import ar.com.tamborindeguy.database.model.constants.Constants;
+import ar.com.tamborindeguy.database.model.modifiers.Modifiers;
+import ar.com.tamborindeguy.interfaces.CharClass;
 import ar.com.tamborindeguy.network.NetworkComunicator;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
 import ar.com.tamborindeguy.objects.types.Obj;
 import ar.com.tamborindeguy.objects.types.Type;
 import ar.com.tamborindeguy.utils.WorldUtils;
+import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.World;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import entity.Heading;
 
 import java.util.Iterator;
@@ -19,48 +25,73 @@ import static com.artemis.E.E;
 
 public class WorldManager {
 
-    public static Entity createEntity(User user, int connectionId) {
+    public static Entity createEntity(String name, int classId, int connectionId) {
         Entity player = getWorld().createEntity();
-        E(player)
-                .pos2DX(50)
-                .pos2DY(50)
-                .expExp(10000)
-                .worldPosX(50)
-                .worldPosY(50)
-                .worldPosMap(1)
-                .elvElv(1000)
-                .levelLevel(45)
-                .headingCurrent(Heading.HEADING_NORTH)
-                .headIndex(4)
-                .bodyIndex(100)
-                .weaponIndex(8)
-                .shieldIndex(3)
-                .helmetIndex(6)
-                .healthMin(120)
-                .healthMax(120)
-                .hungryMin(100)
-                .hungryMax(100)
-                .manaMax(9999)
-                .manaMin(9999)
-                .staminaMin(9999)
-                .staminaMax(9999)
-                .thirstMax(100)
-                .thirstMin(100)
-                .criminal()
-                .character()
-                .nameText("guidota")
-                .clanName("GS Zone")
-                .canWrite()
-                .networkId(player.getId())
-                .aOPhysics();
-        E(player).inventory();
+
+        E entity = E(player);
+        // set position
+        setEntityPosition(entity);
+        // set head and body
+        setHeadAndBody(name, entity);
+        // set inventory
+        setInventory(player, entity);
+        // set class
+        setClassAndAttributes(classId, entity);
+
+        return player;
+    }
+
+    private static void setClassAndAttributes(int classId, E entity) {
+        entity.heroClassClassId(classId);
+        CharClass heroClass = CharClass.values()[classId];
+        // calculate HP
+        calculateHP(heroClass, entity);
+        // calculate MANA
+        calculateMana(entity, heroClass);
+    }
+
+    private static void calculateMana(E entity, CharClass heroClass) {
+        float intelligenceAttr = Attributes.INTELLIGENCE.of(heroClass);
+        float manaMod = Modifiers.MANA.of(heroClass);
+        Float manaBase = Constants.getMana(heroClass);
+        int maxMana = (int) (intelligenceAttr * manaMod * manaBase);
+        entity.manaMax(maxMana);
+        entity.manaMin(maxMana);
+    }
+
+    private static void calculateHP(CharClass heroClass, E entity) {
+        float heroStrength = Attributes.STRENGTH.of(heroClass);
+        float heroHealthMod = Modifiers.HEALTH.of(heroClass);
+        Float hpBase = Constants.getHp(heroClass);
+        int maxHP = (int) (heroStrength * heroHealthMod * hpBase);
+        entity.healthMax(maxHP);
+        entity.healthMin(maxHP);
+    }
+
+    private static void setInventory(Entity player, E entity) {
+        entity.inventory();
         addItem(player.getId(), Type.HELMET);
         addItem(player.getId(), Type.ARMOR);
         addItem(player.getId(), Type.WEAPON);
         addItem(player.getId(), Type.SHIELD);
         addItem(player.getId(), Type.POTION);
         addItem(player.getId(), Type.POTION);
-        return player;
+    }
+
+    private static void setHeadAndBody(String name, E entity) {
+        entity
+                .headingCurrent(Heading.HEADING_NORTH)
+                .headIndex(4)
+                .bodyIndex(100)
+                .character()
+                .nameText(name);
+    }
+
+    private static void setEntityPosition(E entity) {
+        entity
+                .worldPosX(50)
+                .worldPosY(50)
+                .worldPosMap(1);
     }
 
     private static void addItem(int player, Type type) {

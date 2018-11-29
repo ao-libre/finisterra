@@ -4,16 +4,13 @@ import com.artemis.Component;
 
 import java.io.Serializable;
 
-public class Class extends Component implements Serializable {
-    private int classId;
+public class HeroClass extends Component implements Serializable {
+    public int classId;
 
-    public Class() {}
+    public HeroClass() {}
 
-    public Class(int id) {
+    public HeroClass(int id) {
         classId = id;
     }
 
-    public int getClassId() {
-        return classId;
-    }
 }

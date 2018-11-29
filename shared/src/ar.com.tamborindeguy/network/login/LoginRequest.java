@@ -6,15 +6,16 @@ import ar.com.tamborindeguy.network.interfaces.IRequestProcessor;
 public class LoginRequest implements IRequest {
 
     public static final String INVALID_CREDENTIALS = "Invalid credentials";
+    // TODO dont use user and password. Instead, name and class.
     public String username;
-    public String password;
+    public int classId;
 
     public LoginRequest() {
     }
 
-    public LoginRequest(String username, String password) {
+    public LoginRequest(String username, int classId) {
         this.username = username;
-        this.password = password;
+        this.classId = classId;
     }
 
     @Override
