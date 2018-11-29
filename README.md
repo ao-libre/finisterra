@@ -1,4 +1,4 @@
-# ao-java
+# ao-java [![Build Status](https://travis-ci.org/guidotamb/ao-java.svg?branch=master)](https://travis-ci.org/guidotamb/ao-java)
 Rewriting Argentum Online in Java, using Artemis, Kryonet and libGDX.
 
 ## ECS (entity-component-system)
