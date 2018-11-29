@@ -16,7 +16,6 @@ public class Balance {
     private final static Map<CharClass, Float> healthModifier;
     private final static Map<CharClass, Float> shieldModifier;
 
-
     static {
         attributeModifiers = attributes();
         evasionModifiers = evasion();

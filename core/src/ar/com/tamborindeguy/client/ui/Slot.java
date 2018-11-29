@@ -17,7 +17,7 @@ public class Slot extends Actor {
     static final int SIZE = 34;
 
     public static Texture selection = new Texture(Gdx.files.local("data/ui/images/slot-selection.png"));
-    private static Texture background = new Texture(Gdx.files.local("data/ui/images/table-background.png"));
+    public static Texture background = new Texture(Gdx.files.local("data/ui/images/table-background.png"));
     private static Texture equip = new Texture(Gdx.files.local("data/ui/images/slot-equipped.png"));
 
     private Optional<Item> item = Optional.empty();

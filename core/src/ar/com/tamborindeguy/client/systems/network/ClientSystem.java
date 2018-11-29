@@ -35,7 +35,7 @@ public class ClientSystem extends MarshalSystem {
         }
     }
 
-    public void login(AO game, String user, String password) {
+    public void login(AO game, String user, int classId) {
         new Thread(() -> {
             while (isLoggingIn()) {
                 getMarshal().update();
@@ -44,7 +44,7 @@ public class ClientSystem extends MarshalSystem {
                     switch (getMarshal().getState()) {
                         case STARTED:
                             requestSent = true;
-                            sendLogin(game, user, password);
+                            sendLogin(game, user, classId);
                             break;
                         case FAILED_TO_START:
                             // show ui message that failed
@@ -55,11 +55,11 @@ public class ClientSystem extends MarshalSystem {
         }).start();
     }
 
-    private void sendLogin(AO game, String user, String password) {
+    private void sendLogin(AO game, String user, int classId) {
         Gdx.app.postRunnable(() -> {
             GameScreen gameScreen = new GameScreen(game, this);
             game.setGameScreen(gameScreen);
-            getMarshal().sendToAll(new LoginRequest(user, password));
+            getMarshal().sendToAll(new LoginRequest(user, classId));
         });
     }
 
