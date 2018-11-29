@@ -1,31 +1,32 @@
 package ar.com.tamborindeguy.manager;
 
 import ar.com.tamborindeguy.core.WorldServer;
-import ar.com.tamborindeguy.database.model.User;
 import ar.com.tamborindeguy.database.model.attributes.Attributes;
 import ar.com.tamborindeguy.database.model.constants.Constants;
 import ar.com.tamborindeguy.database.model.modifiers.Modifiers;
 import ar.com.tamborindeguy.interfaces.CharClass;
+import ar.com.tamborindeguy.interfaces.Hero;
+import ar.com.tamborindeguy.interfaces.Race;
 import ar.com.tamborindeguy.network.NetworkComunicator;
-import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
+import ar.com.tamborindeguy.objects.types.ArmorObj;
 import ar.com.tamborindeguy.objects.types.Obj;
+import ar.com.tamborindeguy.objects.types.ObjWithClasses;
 import ar.com.tamborindeguy.objects.types.Type;
-import ar.com.tamborindeguy.utils.WorldUtils;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.World;
-import com.sun.org.apache.xpath.internal.operations.Mod;
+import com.esotericsoftware.minlog.Log;
 import entity.Heading;
 
-import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
 
 public class WorldManager {
 
-    public static Entity createEntity(String name, int classId, int connectionId) {
+    public static Entity createEntity(String name, int heroId) {
         Entity player = getWorld().createEntity();
 
         E entity = E(player);
@@ -33,21 +34,72 @@ public class WorldManager {
         setEntityPosition(entity);
         // set head and body
         setHeadAndBody(name, entity);
+        // set class
+        setClassAndAttributes(heroId, entity);
         // set inventory
         setInventory(player, entity);
-        // set class
-        setClassAndAttributes(classId, entity);
 
         return player;
     }
 
-    private static void setClassAndAttributes(int classId, E entity) {
-        entity.heroClassClassId(classId);
-        CharClass heroClass = CharClass.values()[classId];
+    private static void setClassAndAttributes(int heroId, E entity) {
+        Hero hero = Hero.values()[heroId];
+        entity.charHeroHeroId(heroId);
+        CharClass charClass = CharClass.values()[hero.getClassId()];
         // calculate HP
-        calculateHP(heroClass, entity);
+        calculateHP(charClass, entity);
         // calculate MANA
-        calculateMana(entity, heroClass);
+        calculateMana(entity, charClass);
+        // set stamina
+        entity.staminaMax(100);
+        entity.staminaMin(100);
+        // set body and head
+        Race race = Race.values()[hero.getRaceId()];
+        setNakedBody(entity, race);
+        setHead(entity, race);
+    }
+
+    private static void setHead(E entity, Race race) {
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        int headIndex = 0;
+        switch (race) {
+            case HUMAN:
+                headIndex = random.nextInt(1, 51 + 1);
+                break;
+            case DROW:
+                headIndex = random.nextInt(201, 221 + 1);
+                break;
+            case ELF:
+                headIndex = random.nextInt(101, 122 + 1);
+                break;
+            case GNOME:
+                headIndex = random.nextInt(401, 416 + 1);
+                break;
+            case DWARF:
+                headIndex = random.nextInt(301, 319 + 1);
+        }
+        entity.headIndex(headIndex);
+    }
+
+    public static void setNakedBody(E entity, Race race) {
+        int bodyIndex = 1;
+        switch (race) {
+            case GNOME:
+                bodyIndex = 222;
+                break;
+            case DWARF:
+                bodyIndex = 53;
+                break;
+            case ELF:
+                bodyIndex = 210;
+                break;
+            case DROW:
+                bodyIndex = 32;
+                break;
+            case HUMAN:
+                bodyIndex = 21;
+        }
+        entity.bodyIndex(bodyIndex);
     }
 
     private static void calculateMana(E entity, CharClass heroClass) {
@@ -71,6 +123,7 @@ public class WorldManager {
     private static void setInventory(Entity player, E entity) {
         entity.inventory();
         addItem(player.getId(), Type.HELMET);
+
         addItem(player.getId(), Type.ARMOR);
         addItem(player.getId(), Type.WEAPON);
         addItem(player.getId(), Type.SHIELD);
@@ -81,8 +134,6 @@ public class WorldManager {
     private static void setHeadAndBody(String name, E entity) {
         entity
                 .headingCurrent(Heading.HEADING_NORTH)
-                .headIndex(4)
-                .bodyIndex(100)
                 .character()
                 .nameText(name);
     }
@@ -96,11 +147,33 @@ public class WorldManager {
 
     private static void addItem(int player, Type type) {
         Set<Obj> objs = ObjectManager.getTypeObjects(type);
-        Iterator<Obj> iterator = objs.iterator();
-        E(player).getInventory().add(iterator.next().getId());
+        objs.stream()
+                .filter(obj -> {
+                    if (obj instanceof ObjWithClasses) {
+                        int heroId = E(player).getCharHero().heroId;
+                        Hero hero = Hero.values()[heroId];
+                        CharClass clazz = CharClass.values()[hero.getClassId()];
+                        Set<CharClass> forbiddenClasses = ((ObjWithClasses) obj).getForbiddenClasses();
+                        boolean supported = forbiddenClasses.size() == 0 || !forbiddenClasses.contains(clazz);
+                        Log.info("Class supported: " + supported);
+                        if (supported && obj instanceof ArmorObj) {
+                            Race race = Race.values()[hero.getRaceId()];
+                            if (race.equals(Race.GNOME) || race.equals(Race.DWARF)) {
+                                supported = ((ArmorObj) obj).isDwarf();
+                                Log.info("Race supported: " + supported);
+                            } else if (((ArmorObj) obj).isWomen()) {
+                                supported = false; // TODO
+                            }
+                        }
+                        return supported;
+                    }
+                    return true;
+                })
+                .findFirst()
+                .ifPresent(obj -> E(player).getInventory().add(obj.getId()));
     }
 
-    public static void registerItem(int id){
+    public static void registerItem(int id) {
         MapManager.addItem(id);
     }
 
@@ -136,17 +209,7 @@ public class WorldManager {
         notifyToNearEntities(entityId, update);
     }
 
-    public static void sendCompleteNearEntities(int entityId) {
-        MapManager.getNearEntities(entityId).forEach(nearEntity -> sendEntityUpdate(entityId, new EntityUpdate(nearEntity, WorldUtils.getComponents(nearEntity), new Class[0])));
-    }
-
     private static World getWorld() {
         return WorldServer.getWorld();
     }
-
-    public static User getUser(String username) {
-        User user = new User();
-        return user;
-    }
-
 }

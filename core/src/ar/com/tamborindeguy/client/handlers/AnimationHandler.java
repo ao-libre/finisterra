@@ -75,21 +75,21 @@ public class AnimationHandler {
 
     public static BundledAnimation getWeaponAnimation(Weapon weapon, int current) {
         return weaponAnimations.computeIfAbsent(weapon, w -> {
-            WeaponDescriptor descriptor = DescriptorHandler.getWeapon(w.index - 1);
+            WeaponDescriptor descriptor = DescriptorHandler.getWeapon(Math.max(w.index - 1, 0));
             return createAnimations(descriptor);
         }).get(current);
     }
 
     public static BundledAnimation getHelmetsAnimation(Helmet helmet, int current) {
         return helmetAnimations.computeIfAbsent(helmet, h -> {
-            HelmetDescriptor descriptor = DescriptorHandler.getHelmet(h.index - 1);
+            HelmetDescriptor descriptor = DescriptorHandler.getHelmet(Math.max(h.index - 1, 0));
             return createAnimations(descriptor);
         }).get(current);
     }
 
     public static BundledAnimation getShieldAnimation(Shield shield, int current) {
         return shieldAnimations.computeIfAbsent(shield, s -> {
-            ShieldDescriptor descriptor = DescriptorHandler.getShield(s.index - 1);
+            ShieldDescriptor descriptor = DescriptorHandler.getShield(Math.max(s.index - 1, 0));
             return createAnimations(descriptor);
         }).get(current);
     }

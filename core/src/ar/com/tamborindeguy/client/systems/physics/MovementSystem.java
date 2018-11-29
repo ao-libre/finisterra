@@ -19,7 +19,7 @@ import static com.artemis.E.E;
 public class MovementSystem extends IteratingSystem {
 
     public MovementSystem() {
-        super(Aspect.all(WorldPos.class, WorldPos.class, AOPhysics.class));
+        super(Aspect.all(WorldPos.class, AOPhysics.class));
     }
 
     @Override

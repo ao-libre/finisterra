@@ -16,6 +16,7 @@
  *******************************************************************************/
 package ar.com.tamborindeguy.client.systems.camera;
 
+import ar.com.tamborindeguy.client.game.AO;
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -27,15 +28,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
  */
 public class CameraSystem extends BaseSystem {
 
-    public final float zoom;
+    private final float zoom;
     public OrthographicCamera camera;
     public OrthographicCamera guiCamera;
 
     public CameraSystem(float zoom, float width, float height) {
         this.zoom = zoom;
         float zoomFactorInverter = 1f / zoom;
-        setupViewport(width * zoomFactorInverter,
-                height * zoomFactorInverter);
+        setupViewport(AO.GAME_SCREEN_WIDTH * zoomFactorInverter,
+                AO.GAME_SCREEN_HEIGHT * zoomFactorInverter);
     }
 
     /**

@@ -1,6 +1,8 @@
 package ar.com.tamborindeguy.network.init;
 
+import ar.com.tamborindeguy.interfaces.CharClass;
 import ar.com.tamborindeguy.interfaces.Constants;
+import ar.com.tamborindeguy.interfaces.Hero;
 import ar.com.tamborindeguy.model.AttackType;
 import ar.com.tamborindeguy.model.Spell;
 import ar.com.tamborindeguy.network.combat.AttackRequest;
@@ -29,10 +31,7 @@ import com.artemis.Component;
 import entity.*;
 import entity.Object;
 import entity.character.CanWrite;
-import entity.character.info.Clan;
-import entity.character.info.Description;
-import entity.character.info.Inventory;
-import entity.character.info.Name;
+import entity.character.info.*;
 import entity.character.states.*;
 import entity.character.status.*;
 import graphics.FX;
@@ -91,6 +90,9 @@ public class NetworkDictionary extends MarshalDictionary {
                 Class.class,
                 Class[].class,
                 Spell.class,
+                CharClass.class,
+                CharHero.class,
+                Hero.class,
 
                 // Components
                 Inventory.class,

@@ -28,7 +28,7 @@ public class PlayerInputSystem extends IteratingSystem {
         move(aoPhysics, AOPhysics.Movement.RIGHT, !isWriting && Gdx.input.isKeyPressed(MOVE_RIGHT));
     }
 
-    public void move(AOPhysics aoPhysics, AOPhysics.Movement movement, boolean moving) {
+    private void move(AOPhysics aoPhysics, AOPhysics.Movement movement, boolean moving) {
         if (moving) {
             if (!aoPhysics.intentions.contains(movement)) {
                 aoPhysics.addIntention(movement);

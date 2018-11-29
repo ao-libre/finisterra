@@ -8,14 +8,14 @@ public class LoginRequest implements IRequest {
     public static final String INVALID_CREDENTIALS = "Invalid credentials";
     // TODO dont use user and password. Instead, name and class.
     public String username;
-    public int classId;
+    public int heroId;
 
     public LoginRequest() {
     }
 
-    public LoginRequest(String username, int classId) {
+    public LoginRequest(String username, int heroId) {
         this.username = username;
-        this.classId = classId;
+        this.heroId = heroId;
     }
 
     @Override
