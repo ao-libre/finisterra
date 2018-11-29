@@ -4,6 +4,7 @@ import ar.com.tamborindeguy.client.game.AO;
 import ar.com.tamborindeguy.client.network.ClientNotificationProcessor;
 import ar.com.tamborindeguy.client.network.ClientResponseProcessor;
 import ar.com.tamborindeguy.client.screens.GameScreen;
+import ar.com.tamborindeguy.interfaces.Hero;
 import ar.com.tamborindeguy.network.init.NetworkDictionary;
 import ar.com.tamborindeguy.network.interfaces.INotification;
 import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
@@ -14,6 +15,8 @@ import com.badlogic.gdx.Gdx;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ClientSystem extends MarshalSystem {
 
@@ -59,7 +62,7 @@ public class ClientSystem extends MarshalSystem {
         Gdx.app.postRunnable(() -> {
             GameScreen gameScreen = new GameScreen(game, this);
             game.setGameScreen(gameScreen);
-            getMarshal().sendToAll(new LoginRequest(user, classId));
+            getMarshal().sendToAll(new LoginRequest(user, ThreadLocalRandom.current().nextInt(0, Hero.values().length)));
         });
     }
 

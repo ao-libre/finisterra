@@ -15,14 +15,9 @@ import ar.com.tamborindeguy.client.systems.physics.PlayerInputSystem;
 import ar.com.tamborindeguy.client.systems.render.ui.CoordinatesRenderingSystem;
 import ar.com.tamborindeguy.client.systems.render.world.*;
 import ar.com.tamborindeguy.client.ui.GUI;
-import com.artemis.Entity;
-import com.artemis.SuperMapper;
-import com.artemis.World;
-import com.artemis.WorldConfigurationBuilder;
+import com.artemis.*;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.MathUtils;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 
@@ -47,8 +42,13 @@ public class GameScreen extends WorldScreen {
 
     public static void setPlayer(int player) {
         GameScreen.player = player;
+        E entity = E(player);
+        entity
+                .aOPhysics() //
+                .focused() //
+                .canWrite() //
+                .fXAddParticleEffect(2);
         GUI.getInventory().updateUserInventory();
-        E(player).fXAddParticleEffect(2);
     }
 
     public static World getWorld() {
@@ -102,7 +102,6 @@ public class GameScreen extends WorldScreen {
 
     @Override
     protected void postWorldInit() {
-
         Entity cameraEntity = world.createEntity();
         E(cameraEntity)
                 .aOCamera(true)

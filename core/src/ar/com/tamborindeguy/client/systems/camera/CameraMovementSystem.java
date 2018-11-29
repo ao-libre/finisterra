@@ -9,7 +9,7 @@ import position.Pos2D;
 import static com.artemis.E.E;
 
 /**
- * CameraMovementSystem HeroClass
+ * CameraMovementSystem CharHero
  *
  * @author rt
  */

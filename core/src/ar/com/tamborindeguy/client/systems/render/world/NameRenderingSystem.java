@@ -2,6 +2,7 @@ package ar.com.tamborindeguy.client.systems.render.world;
 
 import ar.com.tamborindeguy.client.systems.OrderedEntityProcessingSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
+import ar.com.tamborindeguy.interfaces.Hero;
 import ar.com.tamborindeguy.model.map.Tile;
 import ar.com.tamborindeguy.util.Util;
 import com.artemis.Aspect;
@@ -57,7 +58,7 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
     private float drawName(E player, Pos2D screenPos) {
         BitmapFont font =
                 player.hasGM() ? GM_NAME_FONT :
-                        player.getLevel().level < 13 ? NEWBIE_NAME_FONT :
+                        player.hasLevel() && player.getLevel().level < 13 ? NEWBIE_NAME_FONT :
                                 player.hasCriminal() ? CRIMINAL_NAME_FONT : CITIZEN_NAME_FONT;
         layout.setText(font, player.getName().text);
         final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH + layout.width) / 2;
@@ -67,12 +68,14 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
     }
 
     private void drawClanName(E player, Pos2D screenPos, float nameY) {
+        String clanOrHero = Hero.values()[player.getCharHero().heroId].name();
         if (player.hasClan() && !player.getClan().name.isEmpty()) {
-            layout.setText(CLAN_FONT, "<" + player.getClan().name + ">");
-            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH + layout.width) / 2;
-            final float fontY = nameY - layout.height - 5;
-            CLAN_FONT.draw(batch, layout, fontX, fontY);
+            clanOrHero = player.getClan().name;
         }
+        layout.setText(CLAN_FONT, "<" + clanOrHero + ">");
+        final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH + layout.width) / 2;
+        final float fontY = nameY - layout.height - 5;
+        CLAN_FONT.draw(batch, layout, fontX, fontY);
     }
 
     @Override

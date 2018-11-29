@@ -1,5 +1,7 @@
 package ar.com.tamborindeguy.manager;
 
+import ar.com.tamborindeguy.interfaces.Hero;
+import ar.com.tamborindeguy.interfaces.Race;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import ar.com.tamborindeguy.objects.types.*;
 import com.artemis.Component;
@@ -28,7 +30,8 @@ public class ItemConsumers {
                 entity.removeWeapon();
                 WorldManager.notifyUpdate(player, new EntityUpdate(player, new Component[0], new Class[] {Weapon.class}));
             } else if (obj instanceof ArmorObj) {
-                entity.bodyIndex(((ArmorObj) obj).getBodyNumber()); // TODO change to raza body
+                Hero hero = Hero.values()[entity.getCharHero().heroId];
+                WorldManager.setNakedBody(entity, Race.values()[hero.getRaceId()]);
                 WorldManager.notifyUpdate(player, new EntityUpdate(player, new Component[]{entity.getBody()}, new Class[0]));
             } else if (obj instanceof HelmetObj) {
                 entity.removeHelmet();

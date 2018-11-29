@@ -1,9 +1,11 @@
 package ar.com.tamborindeguy.core;
 
 import ar.com.tamborindeguy.database.IDatabase;
+import ar.com.tamborindeguy.interfaces.Hero;
 import ar.com.tamborindeguy.manager.MapManager;
 import ar.com.tamborindeguy.manager.ObjectManager;
 import ar.com.tamborindeguy.manager.SpellManager;
+import ar.com.tamborindeguy.manager.WorldManager;
 import ar.com.tamborindeguy.network.NetworkComunicator;
 import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
 import ar.com.tamborindeguy.objects.types.Obj;
@@ -55,38 +57,7 @@ public class WorldServer {
         System.out.println("Creating world...");
         world = new World(builder.build());
         // testing
-        Entity player2 = getWorld().createEntity();
-        E(player2)
-                .expExp(10000)
-                .worldPosX(52)
-                .worldPosY(55)
-                .worldPosMap(1)
-                .elvElv(1000)
-                .levelLevel(45)
-                .headingCurrent(Heading.HEADING_SOUTH)
-                .headIndex(4)
-                .bodyIndex(100)
-                .weaponIndex(8)
-                .shieldIndex(3)
-                .helmetIndex(6)
-                .healthMin(9999)
-                .healthMax(9999)
-                .hungryMin(100)
-                .hungryMax(100)
-                .manaMax(9999)
-                .manaMin(9999)
-                .staminaMin(9999)
-                .staminaMax(9999)
-                .thirstMax(100)
-                .thirstMin(100)
-                .criminal()
-                .nameText("guidota2")
-                .clanName("Clarineta")
-                .canWrite()
-                .character()
-                .networkId(player2.getId())
-                .randomMovement()
-                .aOPhysics();
+        Entity player2 = WorldManager.createEntity("guidota2", Hero.WARRIOR.ordinal());
         MapManager.addPlayer(player2.getId());
     }
 

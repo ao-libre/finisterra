@@ -1,6 +1,5 @@
 package ar.com.tamborindeguy.network;
 
-import ar.com.tamborindeguy.database.model.User;
 import ar.com.tamborindeguy.interfaces.Constants;
 import ar.com.tamborindeguy.interfaces.FXs;
 import ar.com.tamborindeguy.manager.*;
@@ -50,7 +49,7 @@ public class ServerRequestProcessor implements IRequestProcessor {
     @Override
     public void processRequest(LoginRequest request, int connectionId) {
         // TODO this creates a new character
-        final Entity entity = WorldManager.createEntity(request.username, request.classId, connectionId);
+        final Entity entity = WorldManager.createEntity(request.username, request.heroId);
         NetworkComunicator.sendTo(connectionId, new EntityUpdate(entity.getId(), WorldUtils.getComponents(entity.getId()), new Class[0]));
         NetworkComunicator.sendTo(connectionId, new LoginOK(entity.getId()));
         WorldManager.registerEntity(connectionId, entity.getId());

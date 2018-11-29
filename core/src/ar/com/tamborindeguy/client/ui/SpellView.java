@@ -38,8 +38,8 @@ public class SpellView extends Window {
         pane.setFlickScroll(false);
         pane.setScrollingDisabled(true, false);
         add(pane).fillX().fillY().row();
-        Label lanzar = new Label("Lanzar", Skins.COMODORE_SKIN);
-        lanzar.addListener(new ClickListener() {
+        Label cast = new Label("Lanzar", Skins.COMODORE_SKIN);
+        cast.addListener(new ClickListener() {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -53,7 +53,7 @@ public class SpellView extends Window {
             }
 
         });
-        add(lanzar).align(Align.left);
+        add(cast).align(Align.left);
         addListener(new ClickListener() {
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -75,6 +75,12 @@ public class SpellView extends Window {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, over ? parentAlpha : 0.5f);
+        if (GameScreen.getPlayer() >=0) {
+            if (E(GameScreen.getPlayer()).manaMax() <= 0) {
+                setVisible(false);
+                return;
+            }
+        }
+        super.draw(batch, over ? parentAlpha : parentAlpha * 0.5f);
     }
 }
