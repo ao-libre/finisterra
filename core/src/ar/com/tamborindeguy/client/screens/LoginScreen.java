@@ -61,7 +61,6 @@ public class LoginScreen extends ScreenAdapter {
                 int heroID = heroSelect.getSelected().ordinal();
 
                 loginButton.setDisabled(true);
-                // TODO let user select race
                 connectThenLogin(user, heroID);
                 loginButton.setDisabled(false);
             }
