@@ -62,7 +62,7 @@ public class ClientSystem extends MarshalSystem {
         Gdx.app.postRunnable(() -> {
             GameScreen gameScreen = new GameScreen(game, this);
             game.setGameScreen(gameScreen);
-            getMarshal().sendToAll(new LoginRequest(user, ThreadLocalRandom.current().nextInt(0, Hero.values().length)));
+            getMarshal().sendToAll(new LoginRequest(user, classId));
         });
     }
 
