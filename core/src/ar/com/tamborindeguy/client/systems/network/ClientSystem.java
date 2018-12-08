@@ -22,7 +22,6 @@ public class ClientSystem extends MarshalSystem {
     public static INotificationProcessor notificationProcessor = new ClientNotificationProcessor();
 
     public boolean login = true;
-    public boolean requestSent = false;
 
     public ClientSystem() {
         super(new NetworkDictionary(), new KryonetClientMarshalStrategy());
@@ -42,36 +41,19 @@ public class ClientSystem extends MarshalSystem {
     public void login(String user, int classId) {
         // TODO: Why thread? Could use a timeout but theoretically already connected & started.
         // TODO: Is explicit getMarshal().update() necessary?
-        new Thread(() -> {
-            while (isLoggingIn()) {
-                getMarshal().update();
-                // wait connection ok
-                if (!requestSent) {
-                    switch (getMarshal().getState()) {
-                        case STARTED:
-                            requestSent = true;
-                            sendLogin(user, classId);
-                            break;
-                        case FAILED_TO_START:
-                            // show ui message that failed
-                            return;
-                    }
+        if (getMarshal().getState() == MarshalState.STARTED) {
+            new Thread(() -> {
+                sendLogin(user, classId);
+                while (isLoggingIn()) {
+                    getMarshal().update();
+                    // wait connection ok
                 }
-            }
-        }).start();
+            }).start();
+        }
     }
 
-<<<<<<< HEAD
-    private void sendLogin(AO game, String user, int classId) {
-        Gdx.app.postRunnable(() -> {
-            GameScreen gameScreen = new GameScreen(game, this);
-            game.setGameScreen(gameScreen);
-            getMarshal().sendToAll(new LoginRequest(user, classId));
-        });
-=======
     private void sendLogin(String user, int classId) {
         getMarshal().sendToAll(new LoginRequest(user, classId));
->>>>>>> Beginning refactor. Functional.
     }
 
     private boolean isLoggingIn() {
@@ -100,6 +82,7 @@ public class ClientSystem extends MarshalSystem {
     @Override
     public void stop() {
         super.stop();
+        login = true;
         Gdx.app.log("ClientSystem", "Network client stopped.");
     }
 
