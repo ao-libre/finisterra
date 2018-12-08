@@ -1,7 +1,10 @@
 package ar.com.tamborindeguy.client.managers;
 
+import ar.com.tamborindeguy.client.game.AOGame;
 import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
 import ar.com.tamborindeguy.client.screens.GameScreen;
+import ar.com.tamborindeguy.client.screens.LoginScreen;
+import ar.com.tamborindeguy.client.systems.network.ClientSystem;
 import ar.com.tamborindeguy.client.ui.GUI;
 import ar.com.tamborindeguy.client.utils.WorldUtils;
 import ar.com.tamborindeguy.model.AttackType;
@@ -103,6 +106,12 @@ public class AOInputProcessor extends Stage {
                     Log.info("FX: " + randomFx);
                     E(GameScreen.getPlayer()).fXAddFx(randomFx);
                     break;
+                case Input.Keys.ESCAPE:
+                    // Disconnect & go back to LoginScreen
+                    AOGame game = (AOGame) Gdx.app.getApplicationListener();
+                    ClientSystem clientSystem = game.getClientSystem();
+                    clientSystem.stop();
+                    game.setScreen(new LoginScreen());
             }
         }
         switch (keycode) {
