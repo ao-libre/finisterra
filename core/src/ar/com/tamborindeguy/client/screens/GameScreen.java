@@ -1,6 +1,6 @@
 package ar.com.tamborindeguy.client.screens;
 
-import ar.com.tamborindeguy.client.game.AO;
+import ar.com.tamborindeguy.client.game.AOGame;
 import ar.com.tamborindeguy.client.systems.anim.IdleAnimationSystem;
 import ar.com.tamborindeguy.client.systems.anim.MovementAnimationSystem;
 import ar.com.tamborindeguy.client.systems.camera.CameraFocusSystem;
@@ -18,23 +18,93 @@ import ar.com.tamborindeguy.client.ui.GUI;
 import com.artemis.*;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.MathUtils;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 
 import static com.artemis.E.E;
 
-public class GameScreen extends WorldScreen {
+public class GameScreen extends ScreenAdapter {
 
-    private static final int FONTS_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL - 1;
-    public static ClientSystem client;
+    public static World world;
+    protected FPSLogger logger;
+    protected GameState state;
+    //
     public static int player = -1;
     private static GUI gui;
 
-    public GameScreen(AO game, ClientSystem client) {
-        super(game);
-        GameScreen.client = client;
-        init();
+    public GameScreen(World world) {
+        this.world = world;
+        this.logger = new FPSLogger();
+        gui = new GUI();
     }
+
+    protected void postWorldInit() {
+        Entity cameraEntity = world.createEntity();
+        E(cameraEntity)
+                .aOCamera(true)
+                .pos2D();
+        world.getSystem(TagManager.class).register("camera", cameraEntity);
+    }
+
+    protected void update(float deltaTime) {
+        this.logger.log();
+
+        world.setDelta(MathUtils.clamp(deltaTime, 0, 1 / 16f));
+        world.process();
+
+        switch (state) {
+            case RUNNING: {
+                updateRunning(deltaTime);
+                break;
+            }
+            case PAUSED: {
+                updatePaused();
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void show() {
+        this.postWorldInit();
+        gui.initialize(); // TODO: gui.init() perhaps should on constructor but it has methods that shall execute on screen.show()
+        this.state = GameState.RUNNING;
+    }
+
+    @Override
+    public void render(float delta) {
+        this.update(delta);
+        this.drawUI();
+    }
+
+    @Override
+    public void pause() {
+        if (this.state == GameState.RUNNING) {
+            this.state = GameState.PAUSED;
+            this.pauseSystems();
+        }
+    }
+
+    @Override
+    public void resume() {
+        if (this.state == GameState.PAUSED) {
+            this.state = GameState.RUNNING;
+            this.resumeSystems();
+        }
+    }
+
+    protected void drawUI() {
+        gui.draw();
+    }
+
+    @Override
+    public void dispose() {
+        gui.dispose();
+    }
+
 
     public static int getPlayer() {
         return player;
@@ -51,111 +121,40 @@ public class GameScreen extends WorldScreen {
         GUI.getInventory().updateUserInventory();
     }
 
-    public static World getWorld() {
-        return world;
-    }
-
     public static MarshalStrategy getClient() {
-        return client.getMarshal();
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        return game.getClientSystem().getMarshal();
     }
 
-    @Override
-    protected void initSystems(WorldConfigurationBuilder builder) {
-        builder.with(new SuperMapper())
-                .with(client)
-                // Player movement
-                .with(new PlayerInputSystem())
-                .with(new MovementProcessorSystem())
-                .with(new MovementAnimationSystem())
-                .with(new IdleAnimationSystem())
-                .with(new MovementSystem())
-                // Camera
-                .with(new CameraSystem(AO.GAME_SCREEN_ZOOM))
-                .with(new CameraFocusSystem())
-                .with(new CameraMovementSystem())
-                // Logic systems
-                .with(new PhysicsAttackSystem())
-                // Rendering
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new TiledMapSystem())
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 4, new MapLowerLayerRenderingSystem(game.getSpriteBatch()))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ObjectRenderingSystem(game.getSpriteBatch()))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ParticleRenderingSystem(game.getSpriteBatch()))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new CharacterRenderingSystem(game.getSpriteBatch()))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new FXsRenderingSystem(game.getSpriteBatch()))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new MapUpperLayerRenderingSystem(game.getSpriteBatch()))
-                .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(game.getSpriteBatch()))
-                .with(FONTS_PRIORITY, new StateRenderingSystem(game.getSpriteBatch()))
-                .with(FONTS_PRIORITY, new CombatRenderingSystem(game.getSpriteBatch()))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new NameRenderingSystem(game.getSpriteBatch()))
-                .with(FONTS_PRIORITY, new DialogRenderingSystem(game.getSpriteBatch()))
-                .with(FONTS_PRIORITY, new CharacterStatesRenderingSystem(game.getSpriteBatch()))
-                // Other
-                .with(new TagManager())
-                .with(new UuidEntityManager()); // why?
-    }
-
-    @Override
-    protected void initScene() {
-        gui = new GUI();
-        gui.initialize();
-    }
-
-    @Override
-    protected void postWorldInit() {
-        Entity cameraEntity = world.createEntity();
-        E(cameraEntity)
-                .aOCamera(true)
-                .pos2D();
-        world.getSystem(TagManager.class).register("camera", cameraEntity);
-    }
-
-    @Override
-    protected void update(float deltaTime) {
-        this.logger.log();
-
-        world.setDelta(MathUtils.clamp(deltaTime, 0, 1 / 16f));
-        world.process();
-
-        switch (this.state) {
-            case GAME_RUNNING: {
-                updateRunning(deltaTime);
-                break;
-            }
-            case GAME_PAUSED: {
-                updatePaused();
-                break;
-            }
-        }
-    }
-
-    @Override
-    protected void drawUI() {
-        gui.draw();
-    }
-
-    @Override
-    public void dispose() {
-        gui.dispose();
-    }
-
-    @Override
     protected void updateRunning(float deltaTime) {
         //
     }
 
-    @Override
     protected void updatePaused() {
         //
     }
 
-    @Override
     protected void pauseSystems() {
         //
     }
 
-    @Override
     protected void resumeSystems() {
         //
     }
 
+    public void setGame(AOGame game) {
+        WorldScreen.game = game;
+    }
+
+    public GameState getState() {
+        return state;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
+    }
+
+    public static World getWorld() {
+        return world;
+    }
 }

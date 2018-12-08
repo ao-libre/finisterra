@@ -1,7 +1,6 @@
 package ar.com.tamborindeguy.client.screens;
 
-import ar.com.tamborindeguy.client.game.AO;
-import ar.com.tamborindeguy.client.handlers.*;
+import ar.com.tamborindeguy.client.game.AOGame;
 import ar.com.tamborindeguy.client.network.KryonetClientMarshalStrategy;
 import ar.com.tamborindeguy.client.systems.network.ClientSystem;
 import ar.com.tamborindeguy.client.utils.Skins;
@@ -12,35 +11,22 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 
 public class LoginScreen extends ScreenAdapter {
 
     private Stage stage;
-    private AO game;
     private TextButton loginButton;
 
-    public LoginScreen(AO game) {
-        this.game = game;
+    public LoginScreen() {
         stage = new Stage();
+        createUI();
     }
 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        createUI();
-        // Load resources
-        Gdx.app.log("Loading", "Loading descriptors...");
-        DescriptorHandler.load();
-        Gdx.app.log("Loading", "Loading animations...");
-        AnimationHandler.load();
-        Gdx.app.log("Loading", "Loading objects...");
-        ObjectHandler.load();
-        Gdx.app.log("Loading", "Loading spells...");
-        SpellHandler.load();
-        Gdx.app.log("Loading", "Loading particles...");
-        ParticlesHandler.load();
-        Gdx.app.log("Loading", "Finish loading");
     }
 
     private void createUI() {
@@ -85,9 +71,24 @@ public class LoginScreen extends ScreenAdapter {
 
     private void connectThenLogin(String user, int classId) {
         // establish connection
-        MarshalStrategy client = new KryonetClientMarshalStrategy("localhost", 7666);
-        ClientSystem clientSystem = new ClientSystem(client);
-        clientSystem.login(game, user, classId);
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        ClientSystem clientSystem = game.getClientSystem();
+        if(clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
+            if(clientSystem.getState() != MarshalState.STOPPED)
+                clientSystem.stop();
+            if(clientSystem.getState() == MarshalState.STOPPED) {
+                clientSystem.start();
+                if(clientSystem.getState() == MarshalState.STARTED) {
+                    clientSystem.login(user, classId);
+                }
+                else if(clientSystem.getState() == MarshalState.FAILED_TO_START) {
+                    Dialog dialog = new Dialog("Network error", Skins.COMODORE_SKIN);
+                    dialog.text("Failed to connect! :(");
+                    dialog.button("OK");
+                    dialog.show(stage);
+                }
+            }
+        }
     }
 
     @Override
