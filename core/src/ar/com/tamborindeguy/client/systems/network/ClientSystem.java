@@ -1,10 +1,10 @@
 package ar.com.tamborindeguy.client.systems.network;
 
-import ar.com.tamborindeguy.client.game.AO;
+import ar.com.tamborindeguy.client.game.AOGame;
 import ar.com.tamborindeguy.client.network.ClientNotificationProcessor;
 import ar.com.tamborindeguy.client.network.ClientResponseProcessor;
+import ar.com.tamborindeguy.client.network.KryonetClientMarshalStrategy;
 import ar.com.tamborindeguy.client.screens.GameScreen;
-import ar.com.tamborindeguy.interfaces.Hero;
 import ar.com.tamborindeguy.network.init.NetworkDictionary;
 import ar.com.tamborindeguy.network.interfaces.INotification;
 import ar.com.tamborindeguy.network.interfaces.INotificationProcessor;
@@ -16,19 +16,19 @@ import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 public class ClientSystem extends MarshalSystem {
 
     public static IResponseProcessor responseProcessor = new ClientResponseProcessor();
     public static INotificationProcessor notificationProcessor = new ClientNotificationProcessor();
 
     public boolean login = true;
-    public boolean requestSent = false;
+
+    public ClientSystem() {
+        super(new NetworkDictionary(), new KryonetClientMarshalStrategy());
+    }
 
     public ClientSystem(MarshalStrategy client) {
         super(new NetworkDictionary(), client);
-        start();
     }
 
     @Override
@@ -38,32 +38,22 @@ public class ClientSystem extends MarshalSystem {
         }
     }
 
-    public void login(AO game, String user, int classId) {
-        new Thread(() -> {
-            while (isLoggingIn()) {
-                getMarshal().update();
-                // wait connection ok
-                if (!requestSent) {
-                    switch (getMarshal().getState()) {
-                        case STARTED:
-                            requestSent = true;
-                            sendLogin(game, user, classId);
-                            break;
-                        case FAILED_TO_START:
-                            // show ui message that failed
-                            return;
-                    }
+    public void login(String user, int classId) {
+        // TODO: Why thread? Could use a timeout but theoretically already connected & started.
+        // TODO: Is explicit getMarshal().update() necessary?
+        if (getMarshal().getState() == MarshalState.STARTED) {
+            new Thread(() -> {
+                sendLogin(user, classId);
+                while (isLoggingIn()) {
+                    getMarshal().update();
+                    // wait connection ok
                 }
-            }
-        }).start();
+            }).start();
+        }
     }
 
-    private void sendLogin(AO game, String user, int classId) {
-        Gdx.app.postRunnable(() -> {
-            GameScreen gameScreen = new GameScreen(game, this);
-            game.setGameScreen(gameScreen);
-            getMarshal().sendToAll(new LoginRequest(user, classId));
-        });
+    private void sendLogin(String user, int classId) {
+        getMarshal().sendToAll(new LoginRequest(user, classId));
     }
 
     private boolean isLoggingIn() {
@@ -87,5 +77,16 @@ public class ClientSystem extends MarshalSystem {
         } else if (object instanceof INotification) {
             ((INotification) object).accept(notificationProcessor);
         }
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        login = true;
+        Gdx.app.log("ClientSystem", "Network client stopped.");
+    }
+
+    public KryonetClientMarshalStrategy getKryonetClient() {
+        return (KryonetClientMarshalStrategy) getMarshal();
     }
 }

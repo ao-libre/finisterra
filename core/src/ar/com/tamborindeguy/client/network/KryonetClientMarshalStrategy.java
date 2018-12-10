@@ -10,8 +10,14 @@ import java.io.IOException;
 public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
 
     protected static final int CONNECTION_TIMEOUT = 1000;
-    private final String host;
-    private final int port;
+    private String host;
+    private int port;
+
+    public KryonetClientMarshalStrategy() {
+        this.host = "localhost";
+        this.port = 7666;
+        endpoint = new Client();
+    }
 
     public KryonetClientMarshalStrategy(String host, int port) {
         this.host = host;
@@ -19,14 +25,24 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
         endpoint = new Client();
     }
 
+    public void setHost(String host) {
+        if (state == MarshalState.STOPPED)
+            this.host = host;
+    }
+
+    public void setPort(int port) {
+        if (state == MarshalState.STOPPED)
+            this.port = port;
+    }
+
     @Override
     protected void connectEndpoint() {
         try {
             ((Client) endpoint).connect(CONNECTION_TIMEOUT, host, port, port + 1);
-            Log.debug("Connection OK");
+            Log.info("Connected to " + host + ":" + port);
             state = MarshalState.STARTED;
         } catch (IOException e) {
-            Log.info("Failed to connect");
+            Log.info("Failed to connect!");
             state = MarshalState.FAILED_TO_START;
         }
     }
@@ -40,12 +56,15 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
         registerDictionary();
         endpoint.addListener(listener); // can be safely called more than once.
         endpoint.start();
-        new Thread(() -> connectEndpoint()).start();
+        connectEndpoint(); // Let it block! Let it block! Let it block! ♫
+//      new Thread(() -> connectEndpoint()).start();
     }
 
     @Override
-    public MarshalState getState() {
-        return state;
+    public void stop() {
+        super.stop();
+        if(state == MarshalState.STOPPED)
+            Log.debug("Disconnected!");
     }
 
     @Override

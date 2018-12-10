@@ -1,6 +1,6 @@
 package ar.com.tamborindeguy.client.screens;
 
-import ar.com.tamborindeguy.client.game.AO;
+import ar.com.tamborindeguy.client.game.AOGame;
 import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.ScreenAdapter;
@@ -11,13 +11,13 @@ public abstract class WorldScreen extends ScreenAdapter {
     public static final int GAME_RUNNING = 0;
     public static final int GAME_PAUSED = 1;
 
-    public static AO game;
+    public static AOGame game;
     public static World world;
     protected final WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
     protected FPSLogger logger;
     protected int state;
 
-    public WorldScreen(AO game) {
+    public WorldScreen(AOGame game) {
         WorldScreen.game = game;
         this.logger = new FPSLogger();
     }
@@ -61,6 +61,7 @@ public abstract class WorldScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
+        world.dispose();
         super.dispose();
     }
 
@@ -80,11 +81,11 @@ public abstract class WorldScreen extends ScreenAdapter {
 
     abstract protected void drawUI();
 
-    public AO getGame() {
+    public AOGame getGame() {
         return game;
     }
 
-    public void setGame(AO game) {
+    public void setGame(AOGame game) {
         WorldScreen.game = game;
     }
 
