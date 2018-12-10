@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static com.artemis.E.E;
+
 public class WorldManager {
 
     public static Map<Integer, Integer> networkedEntities = new HashMap<>();
@@ -25,6 +27,7 @@ public class WorldManager {
     }
 
     public static void registerEntity(int networkId, int entityId) {
+        E(entityId).networkId(networkId);
         networkedEntities.put(networkId, entityId);
     }
 

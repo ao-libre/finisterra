@@ -1,8 +1,11 @@
 package ar.com.tamborindeguy.objects.types;
 
+import ar.com.tamborindeguy.objects.factory.ObjectFactory;
+import org.ini4j.Profile;
+
 public class PotionObj extends Obj {
 
-    private Kind kind;
+    private PotionKind kind;
     private int min,max;
     private int effecTime;
 
@@ -10,15 +13,15 @@ public class PotionObj extends Obj {
         super(id, name, grhIndex);
     }
 
-    public Kind getKind() {
+    public PotionKind getKind() {
         return kind;
     }
 
     public void setKind(int kind) {
-        if (kind > Kind.values().length) {
+        if (kind > PotionKind.values().length) {
             return;
         }
-        this.kind = Kind.values()[kind - 1];
+        this.kind = PotionKind.values()[kind - 1];
     }
 
     public int getMin() {
@@ -49,18 +52,12 @@ public class PotionObj extends Obj {
     public Type getType() {
         return Type.POTION;
     }
+
+    @Override
+    public void fillObject(Profile.Section section) {
+        super.fillObject(section);
+        ObjectFactory.fill(this, section);
+    }
 }
 
 
-// 1 Modifica la Agilidad
-// 2 Modifica la Fuerza
-// 3 Repone HP
-// 4 Repone Mana
-// 5 Cura Envenenamiento
-enum Kind {
-    AGILITY,
-    STRENGTH,
-    HP,
-    MANA,
-    POISON
-}

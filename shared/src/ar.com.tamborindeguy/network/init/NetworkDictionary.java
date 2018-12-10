@@ -25,6 +25,7 @@ import ar.com.tamborindeguy.network.movement.MovementResponse;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
 import ar.com.tamborindeguy.network.notifications.FXNotification;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
+import ar.com.tamborindeguy.objects.types.PotionKind;
 import ar.com.tamborindeguy.util.MapUtils;
 import camera.Focused;
 import com.artemis.Component;
@@ -117,6 +118,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Resting.class,
                 Writing.class,
                 Object.class,
+                PotionKind.class,
                 Criminal.class,
                 Elv.class,
                 Exp.class,

@@ -9,10 +9,7 @@ import ar.com.tamborindeguy.interfaces.Hero;
 import ar.com.tamborindeguy.interfaces.Race;
 import ar.com.tamborindeguy.network.NetworkComunicator;
 import ar.com.tamborindeguy.network.notifications.RemoveEntity;
-import ar.com.tamborindeguy.objects.types.ArmorObj;
-import ar.com.tamborindeguy.objects.types.Obj;
-import ar.com.tamborindeguy.objects.types.ObjWithClasses;
-import ar.com.tamborindeguy.objects.types.Type;
+import ar.com.tamborindeguy.objects.types.*;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.World;
@@ -127,8 +124,8 @@ public class WorldManager {
         addItem(player.getId(), Type.ARMOR);
         addItem(player.getId(), Type.WEAPON);
         addItem(player.getId(), Type.SHIELD);
-        addItem(player.getId(), Type.POTION);
-        addItem(player.getId(), Type.POTION);
+        addPotion(player.getId(), PotionKind.HP);
+        addPotion(player.getId(), PotionKind.MANA);
     }
 
     private static void setHeadAndBody(String name, E entity) {
@@ -145,6 +142,18 @@ public class WorldManager {
                 .worldPosMap(1);
     }
 
+    private static void addPotion(int player, PotionKind kind) {
+        Set<Obj> objs = ObjectManager.getTypeObjects(Type.POTION);
+        objs.stream() //
+                .map(PotionObj.class::cast) //
+                .filter(potion -> {
+                    PotionKind potionKind = potion.getKind();
+                    return potionKind != null && potionKind.equals(kind);
+                }) //
+                .findFirst() //
+                .ifPresent(obj -> E(player).getInventory().add(obj.getId()));
+    }
+
     private static void addItem(int player, Type type) {
         Set<Obj> objs = ObjectManager.getTypeObjects(type);
         objs.stream()
@@ -155,17 +164,18 @@ public class WorldManager {
                         CharClass clazz = CharClass.values()[hero.getClassId()];
                         Set<CharClass> forbiddenClasses = ((ObjWithClasses) obj).getForbiddenClasses();
                         boolean supported = forbiddenClasses.size() == 0 || !forbiddenClasses.contains(clazz);
-                        Log.info("Class supported: " + supported);
                         if (supported && obj instanceof ArmorObj) {
                             Race race = Race.values()[hero.getRaceId()];
                             if (race.equals(Race.GNOME) || race.equals(Race.DWARF)) {
                                 supported = ((ArmorObj) obj).isDwarf();
-                                Log.info("Race supported: " + supported);
                             } else if (((ArmorObj) obj).isWomen()) {
                                 supported = false; // TODO
                             }
                         }
                         return supported;
+                    } else if (obj.getType().equals(Type.POTION)) {
+                        PotionObj potion = (PotionObj) obj;
+                        return potion.getKind().equals(PotionKind.HP) || potion.getKind().equals(PotionKind.MANA);
                     }
                     return true;
                 })
@@ -192,7 +202,7 @@ public class WorldManager {
         }
     }
 
-    static void sendEntityUpdate(int user, Object update) {
+    public static void sendEntityUpdate(int user, Object update) {
         if (NetworkComunicator.playerHasConnection(user)) {
             NetworkComunicator.sendTo(NetworkComunicator.getConnectionByPlayer(user), update);
         }

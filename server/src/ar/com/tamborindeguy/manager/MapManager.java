@@ -15,6 +15,7 @@ import static com.artemis.E.E;
 
 public class MapManager {
 
+    public static final int MAP_COUNT = 1; // TODO set to 1 to load faster
     private static Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
     private static Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
 
@@ -115,7 +116,7 @@ public class MapManager {
 
     public static void initialize() {
         Log.info("Loading maps...");
-        for (int i = 1; i <= 290; i++) {
+        for (int i = 1; i <= MAP_COUNT; i++) {
             //                FileInputStream mapStream = new FileInputStream("resources/maps/" + "Mapa" + i + ".json");
             InputStream mapStream = MapManager.class.getClassLoader().getResourceAsStream("maps/" + "Mapa" + i + ".json");
             ar.com.tamborindeguy.model.map.Map map = getJson().fromJson(ar.com.tamborindeguy.model.map.Map.class, mapStream);
