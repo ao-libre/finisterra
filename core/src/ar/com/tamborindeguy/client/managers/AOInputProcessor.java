@@ -4,7 +4,6 @@ import ar.com.tamborindeguy.client.game.AOGame;
 import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
 import ar.com.tamborindeguy.client.screens.GameScreen;
 import ar.com.tamborindeguy.client.screens.LoginScreen;
-import ar.com.tamborindeguy.client.systems.network.ClientSystem;
 import ar.com.tamborindeguy.client.ui.GUI;
 import ar.com.tamborindeguy.client.utils.WorldUtils;
 import ar.com.tamborindeguy.model.AttackType;
@@ -40,7 +39,6 @@ public class AOInputProcessor extends Stage {
             return result;
         }
         WorldUtils.mouseToWorldPos().ifPresent(worldPos -> {
-            Log.info("Clicking on worldpos: " + worldPos);
             final Optional<Spell> toCast = GUI.getSpellView().toCast;
             if (toCast.isPresent()) {
                 Spell spell = toCast.get();
@@ -95,13 +93,16 @@ public class AOInputProcessor extends Stage {
                 case EQUIP:
                     equip();
                     break;
+                case USE:
+                    use();
+                    break;
                 case ATTACK_1:
                     attack();
                     break;
                 case ATTACK_2:
                     attack();
                     break;
-                case Input.Keys.O:
+                case Input.Keys.O: // testing fxs
                     int randomFx = r.nextInt(DescriptorHandler.getFxs().size());
                     Log.info("FX: " + randomFx);
                     E(GameScreen.getPlayer()).fXAddFx(randomFx);
@@ -109,8 +110,7 @@ public class AOInputProcessor extends Stage {
                 case Input.Keys.ESCAPE:
                     // Disconnect & go back to LoginScreen
                     AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                    ClientSystem clientSystem = game.getClientSystem();
-                    clientSystem.stop();
+                    game.getClientSystem().stop();
                     game.setScreen(new LoginScreen());
             }
         }
@@ -121,6 +121,12 @@ public class AOInputProcessor extends Stage {
         }
 
         return super.keyUp(keycode);
+    }
+
+    private void use() {
+        GUI.getInventory().getSelected().ifPresent(slot -> {
+            GameScreen.getClient().sendToAll(new ItemActionRequest(GUI.getInventory().selectedIndex()));
+        });
     }
 
     private void attack() {
@@ -145,7 +151,7 @@ public class AOInputProcessor extends Stage {
     private void dropItem() {
         GUI.getInventory().getSelected().ifPresent(selected -> {
             int player = GameScreen.getPlayer();
-            GameScreen.getClient().sendToAll(new DropItem(E(player).networkId(), GUI.getInventory().selectedIndex(), E(player).getWorldPos()));
+            GameScreen.getClient().sendToAll(new DropItem(E(player).getNetwork().id, GUI.getInventory().selectedIndex(), E(player).getWorldPos()));
         });
     }
 
