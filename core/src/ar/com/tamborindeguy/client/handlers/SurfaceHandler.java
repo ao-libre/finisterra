@@ -1,6 +1,6 @@
 package ar.com.tamborindeguy.client.handlers;
 
-import ar.com.tamborindeguy.client.game.AO;
+import ar.com.tamborindeguy.client.game.AOGame;
 import ar.com.tamborindeguy.interfaces.Constants;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -13,13 +13,13 @@ import java.util.HashMap;
 public class SurfaceHandler implements Constants {
 
     private static HashMap<String, Texture> surfaces = new HashMap<String, Texture>();
-    private static String graphicsPath = AO.GAME_GRAPHICS_PATH;
+    private static String graphicsPath = AOGame.GAME_GRAPHICS_PATH;
 
     public static void loadAllTextures() {
         FileHandle file = Gdx.app.getFiles().internal(graphicsPath);
         if (file.isDirectory()) {
             for (FileHandle tmp : file.list()) {
-                if (tmp.extension() == AO.GAME_GRAPHICS_EXTENSION) {
+                if (tmp.extension() == AOGame.GAME_GRAPHICS_EXTENSION) {
                     Gdx.app.debug(SurfaceHandler.class.getSimpleName(), "Cargando " + tmp.name());
                     SurfaceHandler.loadTexture(tmp.nameWithoutExtension());
                 }
@@ -28,7 +28,7 @@ public class SurfaceHandler implements Constants {
     }
 
     public static void loadTexture(String fileName) {
-        Texture texture = new Texture(graphicsPath + fileName + AO.GAME_GRAPHICS_EXTENSION);
+        Texture texture = new Texture(graphicsPath + fileName + AOGame.GAME_GRAPHICS_EXTENSION);
         texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         texture.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
         SurfaceHandler.add(fileName, texture);
