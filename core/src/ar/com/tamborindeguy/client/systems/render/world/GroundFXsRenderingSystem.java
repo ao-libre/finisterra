@@ -1,7 +1,7 @@
 package ar.com.tamborindeguy.client.systems.render.world;
 
 import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
-import ar.com.tamborindeguy.client.handlers.ParticlesHandler;
+import ar.com.tamborindeguy.client.managers.WorldManager;
 import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
 import ar.com.tamborindeguy.model.descriptors.BodyDescriptor;
 import ar.com.tamborindeguy.model.descriptors.FXDescriptor;
@@ -13,22 +13,25 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.esotericsoftware.minlog.Log;
 import entity.Body;
 import entity.Ground;
+import entity.character.Character;
 import graphics.FX;
 import position.Pos2D;
 import position.WorldPos;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.artemis.E.E;
-
+// TODO deduplicate code (see FXsRenderingSystem)
 @Wire
-public class FXsRenderingSystem extends IteratingSystem {
+public class GroundFXsRenderingSystem extends IteratingSystem {
 
     private SpriteBatch batch;
 
@@ -38,17 +41,17 @@ public class FXsRenderingSystem extends IteratingSystem {
     private int srcFunc;
     private int dstFunc;
 
-    public FXsRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(FX.class, WorldPos.class).exclude(Ground.class));
+    public GroundFXsRenderingSystem(SpriteBatch batch) {
+        super(Aspect.all(FX.class, WorldPos.class, Ground.class).exclude(Character.class));
         this.batch = batch;
     }
 
     @Override
     protected void begin() {
         cameraSystem.camera.update();
-        batch.setProjectionMatrix(cameraSystem.camera.combined);
-        dstFunc = batch.getBlendDstFunc();
         srcFunc = batch.getBlendSrcFunc();
+        dstFunc = batch.getBlendDstFunc();
+        batch.setProjectionMatrix(cameraSystem.camera.combined);
         batch.enableBlending();
         batch.begin();
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
@@ -79,6 +82,8 @@ public class FXsRenderingSystem extends IteratingSystem {
         removeFXs.forEach(remove -> fx.removeFx(remove));
         if (fx.fxs.isEmpty()) {
             fxs.remove(entityId);
+
+
         }
     }
 
@@ -89,26 +94,21 @@ public class FXsRenderingSystem extends IteratingSystem {
         fx.fxs.forEach(fxId -> {
             FXDescriptor fxDescriptor = DescriptorHandler.getFX(fxId);
             Map<Integer, BundledAnimation> anims = this.fxs.computeIfAbsent(entityId, id -> new HashMap<>());
-            int bodyOffset = getBodyOffset(entityId);
             BundledAnimation anim = anims.computeIfAbsent(fxId, fxGraphic -> new BundledAnimation(DescriptorHandler.getGraphic(fxDescriptor.getIndexs()[0])));
             TextureRegion graphic = anim.getGraphic(false);
-            batch.draw(graphic, screenPos.x - (Tile.TILE_PIXEL_WIDTH + graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX(), screenPos.y - graphic.getRegionHeight() + fxDescriptor.getOffsetY() + bodyOffset);
+            batch.draw(graphic, screenPos.x - (Tile.TILE_PIXEL_WIDTH + graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX(), screenPos.y - graphic.getRegionHeight() + fxDescriptor.getOffsetY());
             anim.setAnimationTime(anim.getAnimationTime() + getWorld().getDelta() * (anim.getFrames().size * 0.33f));
+            float animationTime = anim.getAnimationTime();
+            float animationDuration = anim.getAnimation().getAnimationDuration();
+            Log.info(E(entityId).networkId() + "- Time: " + animationTime  + " .Duration: " + animationDuration);
             if (anim.isAnimationFinished()) {
                 removeFXs.add(fxId);
                 anims.remove(fxId);
+                Log.info("Removing entity: " + E(entityId).networkId());
+                WorldManager.unregisterEntity(E(entityId).networkId());
             }
         });
     }
 
-    private int getBodyOffset(int entityId) {
-        int headOffsetY = 0;
-        if (E(entityId).hasBody()) {
-            final Body body = E(entityId).getBody();
-            BodyDescriptor bodyDescriptor = DescriptorHandler.getBodies().get(body.index);
-            headOffsetY = Math.max(0, bodyDescriptor.getHeadOffsetY());
-        }
-        return headOffsetY;
-    }
 
 }

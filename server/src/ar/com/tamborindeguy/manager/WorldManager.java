@@ -219,7 +219,7 @@ public class WorldManager {
         notifyToNearEntities(entityId, update);
     }
 
-    private static World getWorld() {
+    public static World getWorld() {
         return WorldServer.getWorld();
     }
 }

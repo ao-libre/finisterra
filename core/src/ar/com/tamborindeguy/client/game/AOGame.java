@@ -47,8 +47,8 @@ public class AOGame extends Game {
     public static final String GAME_SHADERS_LIGHT = "light.png";
 
     // TODO: This is for use in LwjglApplicationConfiguration and is platform-specific. Move to DesktopLauncher.
-    public static final int GAME_SCREEN_WIDTH = 640;
-    public static final int GAME_SCREEN_HEIGHT = 480;
+    public static final int GAME_SCREEN_WIDTH = 1024;
+    public static final int GAME_SCREEN_HEIGHT = 768;
     public static final float GAME_SCREEN_ZOOM = 1.8f;
     public static final boolean GAME_FULL_SCREEN = false;
     public static final boolean GAME_VSYNC_ENABLED = true;
@@ -71,7 +71,7 @@ public class AOGame extends Game {
         // Initialize network stuff
         clientSystem = new ClientSystem();
         // TODO: Move this to login screen, read from text field, etc.
-        clientSystem.getKryonetClient().setHost("localhost");
+        clientSystem.getKryonetClient().setHost("ec2-18-219-97-32.us-east-2.compute.amazonaws.com");
         clientSystem.getKryonetClient().setPort(7666);
         //
         //
@@ -108,6 +108,7 @@ public class AOGame extends Game {
                 // Rendering
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new TiledMapSystem())
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 4, new MapLowerLayerRenderingSystem(spriteBatch))
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new GroundFXsRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ObjectRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ParticleRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new CharacterRenderingSystem(spriteBatch))

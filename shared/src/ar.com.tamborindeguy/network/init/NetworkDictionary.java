@@ -118,6 +118,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Resting.class,
                 Writing.class,
                 Object.class,
+                Ground.class,
                 PotionKind.class,
                 Criminal.class,
                 Elv.class,

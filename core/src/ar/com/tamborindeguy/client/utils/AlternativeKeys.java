@@ -16,7 +16,6 @@ public class AlternativeKeys {
     public static final int TAKE = Input.Keys.L;
     public static final int EQUIP = Input.Keys.E;
 
-
     public static int MOVE_LEFT = Input.Keys.A;
     public static int MOVE_RIGHT = Input.Keys.D;
     public static int MOVE_UP = Input.Keys.W;
