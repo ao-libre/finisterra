@@ -139,12 +139,12 @@ public class BundledAnimation {
      * @param animationTime the animationTime to set
      */
     public void setAnimationTime(float animationTime) {
-        if (animationTime > animation.getAnimationDuration()) {
+        if (animationTime >= animation.getAnimationDuration()) {
             times++;
         } else if (animationTime == 0) {
             times = 0;
         }
-        this.animationTime = animationTime % animation.getAnimationDuration();
+        this.animationTime = animationTime > animation.getAnimationDuration() ? 0 : animationTime;
     }
 
     public float getIdleTime() {
