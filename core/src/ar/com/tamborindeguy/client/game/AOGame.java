@@ -70,6 +70,9 @@ public class AOGame extends Game {
             Gdx.app.debug("AOGame", "Handler loaded!");
         // Initialize network stuff
         clientSystem = new ClientSystem();
+        // TODO: Move this to login screen, read from text field, etc.
+        clientSystem.getKryonetClient().setHost("ec2-18-219-97-32.us-east-2.compute.amazonaws.com");
+        clientSystem.getKryonetClient().setPort(7666);
         //
         //
         this.spriteBatch = new SpriteBatch();
