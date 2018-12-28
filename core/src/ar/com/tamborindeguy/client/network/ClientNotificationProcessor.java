@@ -70,6 +70,7 @@ public class ClientNotificationProcessor implements INotificationProcessor {
     @Override
     public void processNotification(MovementNotification movementNotification) {
         int playerId = WorldManager.getNetworkedEntity(movementNotification.getPlayerId());
+        E(playerId).aOPhysics();
         E(playerId).movementAdd(movementNotification.getDestination());
     }
 
