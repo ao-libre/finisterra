@@ -210,6 +210,7 @@ public class WorldManager {
 
     public static void notifyToNearEntities(int entityId, Object update) {
         MapManager.getNearEntities(entityId).forEach(nearPlayer -> {
+            Log.info("Notifying near player " + nearPlayer + ". Update: " + update);
             sendEntityUpdate(nearPlayer, update);
         });
     }
