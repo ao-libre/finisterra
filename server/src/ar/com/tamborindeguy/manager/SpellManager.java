@@ -14,7 +14,6 @@ import entity.Dialog;
 import entity.character.states.Immobile;
 import entity.character.status.Health;
 import entity.character.status.Mana;
-import graphics.FX;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +56,7 @@ public class SpellManager {
             E targetEntity = E(target);
             if (spell.getSumHP() > 0) {
                 Health health = targetEntity.getHealth();
-                int damage = CombatManager.calculateHP(target, spell);
+                int damage = CombatManager.calculateMagicDamage(target, spell);
                 health.min += damage;
                 CombatManager.notify(target, new CombatMessage(String.valueOf(damage)));
                 CombatManager.update(target);

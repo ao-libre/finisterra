@@ -97,10 +97,14 @@ public class MovementProcessorSystem extends IteratingSystem {
                         occupied ||
                         player.hasImmobile());
                 MovementRequest request = new MovementRequest(++requestNumber, valid ? expectedPos : pos, movement, valid);
+                if (requests.containsValue(request)) {
+                    // ignore multiple requests with same direction & prediction
+                    return;
+                }
                 requests.put(requestNumber, request);
                 GameScreen.getClient().sendToAll(request);
                 if (valid) { // Prediction
-                    ClientMapUtils.updateTile(Tile.EMPTY_INDEX, pos);
+                    ClientMapUtils.updateTile(Tile.EMPTY_INDEX, pos); // not used. TODO clean?
                     Destination destination = new Destination(expectedPos, movement);
                     player.movementAdd(destination);
                     if (player.isMeditating()) {

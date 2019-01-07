@@ -58,6 +58,7 @@ public class WorldServer {
         world = new World(builder.build());
         // testing
         Entity player2 = WorldManager.createEntity("guidota2", Hero.WARRIOR.ordinal());
+        E(player2).randomMovement();
         MapManager.addPlayer(player2.getId());
     }
 

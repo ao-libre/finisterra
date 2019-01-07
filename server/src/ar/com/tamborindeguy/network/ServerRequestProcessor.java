@@ -24,10 +24,9 @@ import ar.com.tamborindeguy.utils.WorldUtils;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.Entity;
+import com.artemis.World;
 import com.esotericsoftware.minlog.Log;
-import entity.CombatMessage;
-import entity.Dialog;
-import entity.Heading;
+import entity.*;
 import entity.Object;
 import entity.character.info.Inventory;
 import entity.character.states.Meditating;
@@ -36,15 +35,11 @@ import movement.Destination;
 import physics.AttackAnimation;
 import position.WorldPos;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.artemis.E.E;
 
 public class ServerRequestProcessor implements IRequestProcessor {
-
-
 
     @Override
     public void processRequest(LoginRequest request, int connectionId) {
@@ -212,9 +207,31 @@ public class ServerRequestProcessor implements IRequestProcessor {
             AttackAnimation attackAnimation = new AttackAnimation();
             WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{attackAnimation}, new Class[0]));
         } else {
-            CombatManager.notify(playerId, new CombatMessage(CombatManager.MISS, CombatMessage.Kind.MAGIC));
+            List<WorldPos> area = getArea(worldPos, 3);
+            int fxGrh = spell.getFxGrh();
+            if (fxGrh > 0) {
+                area.forEach(pos -> {
+                    World world = WorldManager.getWorld();
+                    int entity = world.create();
+                    // TODO notify all near users instead of playerid
+                    WorldManager.notifyUpdate(playerId, new EntityUpdate(entity, new Component[]{pos, new Ground()}, new Class[0]));
+                    WorldManager.notifyUpdate(playerId, new FXNotification(entity, fxGrh - 1));
+                    world.delete(entity);
+                });
+            }
         }
-        // TODO zone spell
+
+    }
+
+    private List<WorldPos> getArea(WorldPos worldPos, int range /*impar*/) {
+        List<WorldPos> positions = new ArrayList<>();
+        int i = range / 2;
+        for (int x = worldPos.x - i; x <= worldPos.x + i ; x++) {
+            for (int y = worldPos.y - i; y <= worldPos.y + i ; y++) {
+                positions.add(new WorldPos(x, y, worldPos.map));
+            }
+        }
+        return positions;
     }
 
 }

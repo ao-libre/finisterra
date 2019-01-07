@@ -210,6 +210,7 @@ public class WorldManager {
 
     public static void notifyToNearEntities(int entityId, Object update) {
         MapManager.getNearEntities(entityId).forEach(nearPlayer -> {
+            Log.info("Notifying near player " + nearPlayer + ". Update: " + update);
             sendEntityUpdate(nearPlayer, update);
         });
     }
@@ -219,7 +220,7 @@ public class WorldManager {
         notifyToNearEntities(entityId, update);
     }
 
-    private static World getWorld() {
+    public static World getWorld() {
         return WorldServer.getWorld();
     }
 }

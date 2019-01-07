@@ -5,6 +5,8 @@ import ar.com.tamborindeguy.network.interfaces.IRequestProcessor;
 import physics.AOPhysics;
 import position.WorldPos;
 
+import java.util.Objects;
+
 public class MovementRequest implements IRequest {
 
     public boolean valid;
@@ -24,5 +26,19 @@ public class MovementRequest implements IRequest {
     @Override
     public void accept(IRequestProcessor processor, int connectionId) {
         processor.processRequest(this, connectionId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MovementRequest that = (MovementRequest) o;
+        return Objects.equals(predicted, that.predicted) &&
+                movement == that.movement;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(predicted, movement);
     }
 }

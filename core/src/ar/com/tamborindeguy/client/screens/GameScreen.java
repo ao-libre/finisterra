@@ -1,23 +1,9 @@
 package ar.com.tamborindeguy.client.screens;
 
 import ar.com.tamborindeguy.client.game.AOGame;
-import ar.com.tamborindeguy.client.systems.anim.IdleAnimationSystem;
-import ar.com.tamborindeguy.client.systems.anim.MovementAnimationSystem;
-import ar.com.tamborindeguy.client.systems.camera.CameraFocusSystem;
-import ar.com.tamborindeguy.client.systems.camera.CameraMovementSystem;
-import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
-import ar.com.tamborindeguy.client.systems.map.TiledMapSystem;
-import ar.com.tamborindeguy.client.systems.network.ClientSystem;
-import ar.com.tamborindeguy.client.systems.physics.MovementProcessorSystem;
-import ar.com.tamborindeguy.client.systems.physics.MovementSystem;
-import ar.com.tamborindeguy.client.systems.physics.PhysicsAttackSystem;
-import ar.com.tamborindeguy.client.systems.physics.PlayerInputSystem;
-import ar.com.tamborindeguy.client.systems.render.ui.CoordinatesRenderingSystem;
-import ar.com.tamborindeguy.client.systems.render.world.*;
 import ar.com.tamborindeguy.client.ui.GUI;
 import com.artemis.*;
 import com.artemis.managers.TagManager;
-import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.FPSLogger;
