@@ -26,6 +26,8 @@ public class MovementSystem extends IteratingSystem {
     protected void process(int entity) {
         E player = E(entity);
         if (player.movementHasMovements()) {
+            player.moving(true);
+
             if (movePlayer(player)) {
                 WorldPos worldPos = player.getWorldPos();
                 WorldPos dest = player.movementCurrent().worldPos;
@@ -36,10 +38,9 @@ public class MovementSystem extends IteratingSystem {
                 worldPos.offsetY = 0;
                 player.movementCompleteCurrent();
             }
+        } else {
+            player.moving(false);
         }
-        final AOPhysics phys = player.getAOPhysics();
-        Optional<AOPhysics.Movement> movementIntention = phys.getMovementIntention();
-        player.moving(player.movementHasMovements() || movementIntention.isPresent());
     }
 
     private boolean movePlayer(E player) {
