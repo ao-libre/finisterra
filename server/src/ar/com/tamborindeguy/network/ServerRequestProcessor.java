@@ -103,7 +103,7 @@ public class ServerRequestProcessor implements IRequestProcessor {
                 .stream()
                 .filter(near -> E(near).hasWorldPos() && E(near).getWorldPos().equals(facingPos))
                 .findFirst();
-        if (victim.isPresent()) {
+        if (victim.isPresent() && E(victim.get()).hasCharHero()) {
             Optional<Integer> damage = CombatManager.attack(playerId, victim.get());
             if (damage.isPresent()) {
                 CombatManager.notify(victim.get(), new CombatMessage("-" + Integer.toString(damage.get())));
