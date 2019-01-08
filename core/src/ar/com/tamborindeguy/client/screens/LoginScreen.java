@@ -17,6 +17,8 @@ import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 
 public class LoginScreen extends ScreenAdapter {
 
+    public static final String SERVER_IP = "ec2-18-231-116-111.sa-east-1.compute.amazonaws.com";
+    public static final String SERVER_PORT = "7666";
     private Stage stage;
     private TextButton loginButton;
 
@@ -43,10 +45,10 @@ public class LoginScreen extends ScreenAdapter {
         Table connectionTable = new Table((Skins.COMODORE_SKIN));
 
         Label ipLabel =  new Label("IP: ",Skins.COMODORE_SKIN);
-        TextField ipText =  new TextField("ec2-18-219-97-32.us-east-2.compute.amazonaws.com", Skins.COMODORE_SKIN);
+        TextField ipText =  new TextField(SERVER_IP, Skins.COMODORE_SKIN);
 
         Label portLabel = new Label("Port: ", Skins.COMODORE_SKIN);
-        TextField portText =  new TextField("7666", Skins.COMODORE_SKIN);
+        TextField portText =  new TextField(SERVER_PORT, Skins.COMODORE_SKIN);
         portText.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
 
         loginButton = new TextButton("Connect", Skins.COMODORE_SKIN);
