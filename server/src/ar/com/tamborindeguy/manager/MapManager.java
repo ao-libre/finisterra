@@ -22,7 +22,7 @@ public class MapManager {
     private static HashMap<Integer, ar.com.tamborindeguy.model.map.Map> maps = new HashMap<>();
 
     public static Set<Integer> getNearEntities(int entityId) {
-        return nearEntities.getOrDefault(entityId, Collections.emptySet());
+        return nearEntities.getOrDefault(entityId, ConcurrentHashMap.newKeySet());
     }
 
     public static Set<Integer> getEntitiesInMap(int map) {
