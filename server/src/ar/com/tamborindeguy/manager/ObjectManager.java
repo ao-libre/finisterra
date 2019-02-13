@@ -11,6 +11,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Load and contains all the objects
+ */
 public class ObjectManager {
     private static DescriptorsReader reader = new ServerDescriptorReader();
     private static Map<Integer, Obj> objects;

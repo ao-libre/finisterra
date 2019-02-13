@@ -184,12 +184,12 @@ public class WorldManager {
     }
 
     public static void registerItem(int id) {
-        MapManager.addItem(id);
+        MapManager.updateEntity(id);
     }
 
     public static void registerEntity(int connectionId, int id) {
         NetworkComunicator.registerUserConnection(id, connectionId);
-        MapManager.addPlayer(id);
+        MapManager.updateEntity(id);
     }
 
     public static void unregisterEntity(int playerToDisconnect) {

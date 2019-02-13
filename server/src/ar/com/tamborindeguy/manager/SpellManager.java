@@ -22,6 +22,9 @@ import java.util.Optional;
 
 import static com.artemis.E.E;
 
+/**
+ * Spell Logic
+ */
 public class SpellManager {
     private static DescriptorsReader reader = new ServerDescriptorReader();
     private static Map<Integer, Spell> spells;

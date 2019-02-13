@@ -1,14 +1,14 @@
 package ar.com.tamborindeguy.manager;
 
-import ar.com.tamborindeguy.network.NetworkComunicator;
 import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
 import ar.com.tamborindeguy.network.notifications.EntityUpdate;
-import ar.com.tamborindeguy.objects.types.*;
+import ar.com.tamborindeguy.objects.types.Obj;
+import ar.com.tamborindeguy.objects.types.ObjWithClasses;
+import ar.com.tamborindeguy.objects.types.PotionObj;
+import ar.com.tamborindeguy.objects.types.Type;
 import com.artemis.Component;
 import com.artemis.E;
-import com.artemis.Entity;
 import com.esotericsoftware.minlog.Log;
-import entity.Object;
 import entity.character.info.Inventory;
 import entity.character.status.Health;
 import entity.character.status.Mana;
@@ -18,8 +18,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import static ar.com.tamborindeguy.manager.ItemConsumers.TAKE_OFF;
+import static ar.com.tamborindeguy.manager.ItemConsumers.WEAR;
 import static com.artemis.E.E;
 
+/**
+ * It keeps logic regarding items, how to use, to know if they are 'usable' or 'equipable'
+ */
 public class ItemManager {
 
     public static boolean isEquippable(Inventory.Item item) {
@@ -27,6 +32,14 @@ public class ItemManager {
         if (object.isPresent()) {
             Obj obj = object.get();
             return obj instanceof ObjWithClasses;
+        }
+        return false;
+    }
+
+    public static boolean isUsable(Inventory.Item item) {
+        Optional<Obj> object = ObjectManager.getObject(item.objId);
+        if (object.isPresent()) {
+            return object.get().getType().equals(Type.POTION);
         }
         return false;
     }
@@ -86,7 +99,7 @@ public class ItemManager {
     }
 
     private static void equipItem(int player, Obj item, boolean equipped) {
-        ItemConsumers.getEquipConsumer(equipped).accept(player, item);
+        (equipped ? WEAR : TAKE_OFF).accept(player, item);
     }
 
     private static void discardItems(E entity, int index, Type type, InventoryUpdate update) {
@@ -102,13 +115,5 @@ public class ItemManager {
                 });
             }
         }
-    }
-
-    public static boolean isUsable(Inventory.Item item) {
-        Optional<Obj> object = ObjectManager.getObject(item.objId);
-        if (object.isPresent()) {
-            return object.get().getType().equals(Type.POTION);
-        }
-        return false;
     }
 }

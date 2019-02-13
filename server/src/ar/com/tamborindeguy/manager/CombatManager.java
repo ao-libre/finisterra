@@ -20,10 +20,22 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
 
+/**
+ *
+ */
+/*
+ * All logic related to Combat: calculation of damage, evasion, magic, etc.
+ */
 public class CombatManager {
 
     public static final String MISS = "MISS";
 
+    /**
+     * Update the attacked entity in case it was damaged
+     * @param attacker attacker entity id
+     * @param attacked victim entity id
+     * @return possible damage
+     */
     public static Optional<Integer> attack(int attacker, int attacked) {
         Optional<Integer> damage = hit(attacker, attacked);
         if (damage.isPresent()) {
@@ -33,6 +45,11 @@ public class CombatManager {
         return damage;
     }
 
+    /**
+     * @param attacker entity id
+     * @param attacked entity id
+     * @return Take into account evasion and if it hits then return damage
+     */
     private static Optional<Integer> hit(int attacker, int attacked) {
         // calculate evasion
         float evasion = getEvasion(attacked);
@@ -48,6 +65,12 @@ public class CombatManager {
         return Optional.empty();
     }
 
+
+    /**
+     * @param attacked entity id
+     * @param evasion entity id
+     * @return defanse of entity, taking into account evasion
+     */
     private static int calculateDefense(int attacked, float evasion) {
         E entity = E(attacked);
         CharClass clazz = getCharClass(entity);
@@ -58,6 +81,11 @@ public class CombatManager {
         return (int) (evasion * defense * evasionModifier);
     }
 
+
+    /**
+     * @param attacker entity id
+     * @return damage that will cause
+     */
     private static int calculateDamage(int attacker) {
         E entity = E(attacker);
         CharClass clazz = getCharClass(entity);
@@ -73,30 +101,57 @@ public class CombatManager {
         return (int) Attributes.STRENGTH.of(clazz) * weaponDamage; // TODO calculate hero strength
     }
 
+
+    /**
+     * @param victimId entity id
+     * @return evasion of entity class
+     */
     private static float getEvasion(int victimId) {
         E victim = E(victimId);
         CharClass clazz = getCharClass(victim);
         return Attributes.EVASION.of(clazz) * 2; // TODO calculate extra evasion from items and hero modifier
     }
 
+
+    /**
+     * TODO move to another class
+     * @param victim entity
+     * @return class of current hero
+     */
     private static CharClass getCharClass(E victim) {
         int heroId = victim.getCharHero().heroId;
         Hero hero = Hero.values()[heroId];
         return CharClass.values()[hero.getClassId()];
     }
 
+
+    /**
+     * Send combat notification to user and near by entities
+     * @param victim entity id
+     * @param combatMessage message
+     */
     public static void notify(int victim, CombatMessage combatMessage) {
         EntityUpdate update = new EntityUpdate(victim, new Component[]{combatMessage}, new Class[0]);
         WorldManager.sendEntityUpdate(victim, update);
         WorldManager.notifyToNearEntities(victim, update);
     }
 
-    public static void update(int victim) {
+    /**
+     * Send an update to entity with current health
+     * @param victim entity id
+     */
+    static void update(int victim) {
         EntityUpdate update = new EntityUpdate(victim, new Component[]{E(victim).getHealth()}, new Class[0]);
         WorldManager.sendEntityUpdate(victim, update);
     }
 
-    public static int calculateMagicDamage(int target, Spell spell) {
+
+    /**
+     * @param target entity id
+     * @param spell spell used
+     * @return magical damage
+     */
+    static int calculateMagicDamage(int target, Spell spell) {
         // TODO complete
         if (spell.getSumHP() == 1) {
             return 80;

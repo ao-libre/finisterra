@@ -7,18 +7,11 @@ import ar.com.tamborindeguy.manager.ObjectManager;
 import ar.com.tamborindeguy.manager.SpellManager;
 import ar.com.tamborindeguy.manager.WorldManager;
 import ar.com.tamborindeguy.network.NetworkComunicator;
-import ar.com.tamborindeguy.network.inventory.InventoryUpdate;
-import ar.com.tamborindeguy.objects.types.Obj;
-import ar.com.tamborindeguy.objects.types.Type;
 import ar.com.tamborindeguy.systems.RandomMovementSystem;
 import com.artemis.Entity;
 import com.artemis.SuperMapper;
 import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
-import entity.Heading;
-import entity.character.info.Inventory;
-
-import java.util.Set;
 
 import static com.artemis.E.E;
 
@@ -59,7 +52,7 @@ public class WorldServer {
         // testing
         Entity player2 = WorldManager.createEntity("guidota2", Hero.WARRIOR.ordinal());
         E(player2).randomMovement();
-        MapManager.addPlayer(player2.getId());
+        MapManager.updateEntity(player2.getId());
     }
 
     void start() {

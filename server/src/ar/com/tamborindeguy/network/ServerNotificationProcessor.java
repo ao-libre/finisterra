@@ -15,6 +15,7 @@ import ar.com.tamborindeguy.network.notifications.RemoveEntity;
 import com.artemis.E;
 import entity.character.info.Inventory;
 
+import static ar.com.tamborindeguy.manager.ItemConsumers.TAKE_OFF;
 import static com.artemis.E.E;
 
 public class ServerNotificationProcessor implements INotificationProcessor {
@@ -51,7 +52,7 @@ public class ServerNotificationProcessor implements INotificationProcessor {
             return;
         }
         if (item.equipped) {
-            ItemConsumers.getEquipConsumer(false).accept(dropItem.getPlayerId(), ObjectManager.getObject(item.objId).get());
+            TAKE_OFF.accept(dropItem.getPlayerId(), ObjectManager.getObject(item.objId).get());
             item.equipped = false;
         }
         item.count -= dropItem.getCount();

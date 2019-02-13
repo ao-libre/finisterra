@@ -41,10 +41,6 @@ public class KryonetServerMarshalStrategy extends KryonetMarshalStrategy {
         ((Server)endpoint).sendToAllTCP(o);
     }
 
-    public void sendToAllExcept(int connectionId, Object o) {
-        ((Server)endpoint).sendToAllExceptTCP(connectionId, o);
-    }
-
     public void sendTo(int connectionId, Object o) {
         ((Server)endpoint).sendToTCP(connectionId, o);
     }

@@ -14,16 +14,16 @@ import java.util.function.BiConsumer;
 
 import static com.artemis.E.E;
 
+/**
+ * Every item can be used or wear, so here we have how to consume that action
+ */
 public class ItemConsumers {
 
-    public static BiConsumer<Integer, Obj> getEquipConsumer(boolean equipped) {
-        if (equipped) {
-            return equip();
-        }
-        return desequip();
-    }
+    public final static BiConsumer<Integer, Obj> WEAR = wear();
+    public final static BiConsumer<Integer, Obj> TAKE_OFF = takeOff();
 
-    private static BiConsumer<Integer, Obj> desequip() {
+
+    private static BiConsumer<Integer, Obj> takeOff() {
         return (player, obj) -> {
             E entity = E(player);
             if (obj instanceof WeaponObj) {
@@ -43,7 +43,7 @@ public class ItemConsumers {
         };
     }
 
-    private static BiConsumer<Integer, Obj> equip() {
+    private static BiConsumer<Integer, Obj> wear() {
         return (player, obj) -> {
             E entity = E(player);
             if (obj instanceof WeaponObj) {
