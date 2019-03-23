@@ -1,0 +1,48 @@
+
+human.png
+size: 64,32
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+body_0005_torso
+  rotate: false
+  xy: 1, 1
+  size: 13, 14
+  orig: 13, 14
+  offset: 0, 0
+  index: -1
+body_0000_head
+  rotate: false
+  xy: 1, 17
+  size: 11, 14
+  orig: 11, 14
+  offset: 0, 0
+  index: -1
+body_0004_l-arm
+  rotate: false
+  xy: 34, 17
+  size: 4, 14
+  orig: 4, 14
+  offset: 0, 0
+  index: -1
+body_0001_r-leg
+  rotate: false
+  xy: 25, 1
+  size: 7, 24
+  orig: 7, 24
+  offset: 0, 0
+  index: -1
+body_0002_l-leg
+  rotate: false
+  xy: 16, 1
+  size: 7, 24
+  orig: 7, 24
+  offset: 0, 0
+  index: -1
+body_0003_r-arm
+  rotate: false
+  xy: 34, 1
+  size: 4, 14
+  orig: 4, 14
+  offset: 0, 0
+  index: -1

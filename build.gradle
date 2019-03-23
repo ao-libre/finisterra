@@ -99,6 +99,7 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        compile "com.esotericsoftware.spine:spine-libgdx:3.5.51.1"
 
         compile 'junit:junit:4.+'
         testCompile 'junit:junit:4.+'

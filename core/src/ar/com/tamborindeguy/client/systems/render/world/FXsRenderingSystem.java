@@ -1,7 +1,6 @@
 package ar.com.tamborindeguy.client.systems.render.world;
 
 import ar.com.tamborindeguy.client.handlers.DescriptorHandler;
-import ar.com.tamborindeguy.client.handlers.ParticlesHandler;
 import ar.com.tamborindeguy.client.systems.camera.CameraSystem;
 import ar.com.tamborindeguy.model.descriptors.BodyDescriptor;
 import ar.com.tamborindeguy.model.descriptors.FXDescriptor;
@@ -13,10 +12,8 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.esotericsoftware.minlog.Log;
 import entity.Body;
 import entity.Ground;
 import graphics.FX;
@@ -90,7 +87,7 @@ public class FXsRenderingSystem extends IteratingSystem {
             FXDescriptor fxDescriptor = DescriptorHandler.getFX(fxId);
             Map<Integer, BundledAnimation> anims = this.fxs.computeIfAbsent(entityId, id -> new HashMap<>());
             int bodyOffset = getBodyOffset(entityId);
-            BundledAnimation anim = anims.computeIfAbsent(fxId, fxGraphic -> new BundledAnimation(DescriptorHandler.getGraphic(fxDescriptor.getIndexs()[0])));
+            BundledAnimation anim = anims.computeIfAbsent(fxId, fxGraphic -> new BundledAnimation(DescriptorHandler.getGraphic(fxDescriptor.getIndexs()[0]), false));
             TextureRegion graphic = anim.getGraphic(false);
             batch.draw(graphic, screenPos.x - (Tile.TILE_PIXEL_WIDTH + graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX(), screenPos.y - graphic.getRegionHeight() + fxDescriptor.getOffsetY() + bodyOffset);
             anim.setAnimationTime(anim.getAnimationTime() + getWorld().getDelta() * (anim.getFrames().size * 0.33f));

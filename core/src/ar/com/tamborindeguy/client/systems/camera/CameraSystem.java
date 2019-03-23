@@ -19,8 +19,8 @@ public class CameraSystem extends BaseSystem {
     public CameraSystem(float zoom, float width, float height) {
         this.zoom = zoom;
         float zoomFactorInverter = 1f / zoom;
-        setupViewport(AOGame.GAME_SCREEN_WIDTH * zoomFactorInverter,
-                AOGame.GAME_SCREEN_HEIGHT * zoomFactorInverter);
+        setupViewport(width * zoomFactorInverter,
+                height * zoomFactorInverter);
     }
 
     /**

@@ -39,8 +39,16 @@ import java.util.*;
 
 import static com.artemis.E.E;
 
+/**
+ * Every packet received from users will be processed here
+ */
 public class ServerRequestProcessor implements IRequestProcessor {
 
+    /**
+     * TODO implement when database is available
+     * @param request LoginRequest
+     * @param connectionId connection id
+     */
     @Override
     public void processRequest(LoginRequest request, int connectionId) {
         // TODO this creates a new character
@@ -50,6 +58,12 @@ public class ServerRequestProcessor implements IRequestProcessor {
         WorldManager.registerEntity(connectionId, entity.getId());
     }
 
+    /**
+     * Process {@link MovementRequest}. If it is valid, move player and notify.
+     * @param request
+     * @param connectionId
+     * @see MovementRequest
+     */
     @Override
     public void processRequest(MovementRequest request, int connectionId) {
         // TODO check map changed
@@ -90,6 +104,11 @@ public class ServerRequestProcessor implements IRequestProcessor {
         NetworkComunicator.sendTo(connectionId, new MovementResponse(request.requestNumber, nextPos));
     }
 
+    /**
+     * Attack and notify, if it was effective or not, to near users
+     * @param attackRequest attack type
+     * @param connectionId user connection id
+     */
     @Override
     public void processRequest(AttackRequest attackRequest, int connectionId) {
         int playerId = NetworkComunicator.getPlayerByConnection(connectionId);
@@ -118,6 +137,11 @@ public class ServerRequestProcessor implements IRequestProcessor {
         WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new AttackAnimation()}, new Class[0]));
     }
 
+    /**
+     * User wants to use or act over an item, do action and notify.
+     * @param itemAction user slot number
+     * @param connectionId user connection id
+     */
     @Override
     public void processRequest(ItemActionRequest itemAction, int connectionId) {
         int playerId = NetworkComunicator.getPlayerByConnection(connectionId);
@@ -139,6 +163,11 @@ public class ServerRequestProcessor implements IRequestProcessor {
         }
     }
 
+    /**
+     * User wants to meditate
+     * @param meditateRequest request (no data)
+     * @param connectionId user connection id
+     */
     @Override
     public void processRequest(MeditateRequest meditateRequest, int connectionId) {
         int playerId = NetworkComunicator.getPlayerByConnection(connectionId);
@@ -155,12 +184,22 @@ public class ServerRequestProcessor implements IRequestProcessor {
         }
     }
 
+    /**
+     * Notify near users that user talked
+     * @param talkRequest talk request with message
+     * @param connectionId user connection id
+     */
     @Override
     public void processRequest(TalkRequest talkRequest, int connectionId) {
         int playerId = NetworkComunicator.getPlayerByConnection(connectionId);
         WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new Dialog(talkRequest.getMessage())}, new Class[0]));
     }
 
+    /**
+     * User wants to take something from ground
+     * @param takeItemRequest request (no data)
+     * @param connectionId user connection id
+     */
     @Override
     public void processRequest(TakeItemRequest takeItemRequest, int connectionId) {
         int playerId = NetworkComunicator.getPlayerByConnection(connectionId);
@@ -192,7 +231,6 @@ public class ServerRequestProcessor implements IRequestProcessor {
     @Override
     public void processRequest(SpellCastRequest spellCastRequest, int connectionId) {
         int playerId = NetworkComunicator.getPlayerByConnection(connectionId);
-        E player = E(playerId);
         Spell spell = spellCastRequest.getSpell();
         WorldPos worldPos = spellCastRequest.getWorldPos();
         Log.info("Processing spell cast pos: " + spellCastRequest.getWorldPos());

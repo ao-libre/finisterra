@@ -35,7 +35,7 @@ public class MovementProcessorSystem extends IteratingSystem {
 
     public MovementProcessorSystem() {
         super(Aspect.all(Focused.class, AOPhysics.class,
-                WorldPos.class, WorldPos.class));
+                WorldPos.class));
     }
 
     public static WorldPos getDelta(WorldPos worldPos) {

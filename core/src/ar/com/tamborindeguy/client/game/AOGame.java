@@ -47,7 +47,7 @@ public class AOGame extends Game {
     public static final String GAME_SHADERS_LIGHT = "light.png";
 
     // TODO: This is for use in LwjglApplicationConfiguration and is platform-specific. Move to DesktopLauncher.
-    public static final int GAME_SCREEN_WIDTH = 1024;
+    public static final int GAME_SCREEN_WIDTH = 1280;
     public static final int GAME_SCREEN_HEIGHT = 768;
     public static final float GAME_SCREEN_ZOOM = 1.8f;
     public static final boolean GAME_FULL_SCREEN = false;

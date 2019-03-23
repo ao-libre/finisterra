@@ -34,7 +34,7 @@ public class AnimationHandler {
         Map<Integer, List<BundledAnimation>> result = new HashMap<>();
         int[] idx = {1};
         descriptors.forEach(descriptor -> {
-            result.put(idx[0]++, createAnimations((IDescriptor) descriptor));
+            result.put(idx[0]++, createAnimations((IDescriptor) descriptor, true));
         });
         return result;
     }
@@ -42,18 +42,18 @@ public class AnimationHandler {
     private static Map<Integer, List<BundledAnimation>> loadDescriptors(Map<Integer, ?> descriptors) {
         Map<Integer, List<BundledAnimation>> result = new HashMap<>();
         descriptors.forEach((id, descriptor) -> {
-            result.put(id, createAnimations((IDescriptor) descriptor));
+            result.put(id, createAnimations((IDescriptor) descriptor, true));
         });
         return result;
     }
 
-    private static List<BundledAnimation> createAnimations(IDescriptor descriptor) {
+    private static List<BundledAnimation> createAnimations(IDescriptor descriptor, boolean pingpong) {
         List<BundledAnimation> animations = new ArrayList<>();
         int[] indexs = descriptor.getIndexs();
         for (int i = 0; i < indexs.length; i++) {
             Graphic grh = DescriptorHandler.getGraphic(indexs[i]);
             if (grh != null) {
-                animations.add(new BundledAnimation(grh));
+                animations.add(new BundledAnimation(grh, pingpong));
             }
         }
         return animations;
@@ -62,35 +62,35 @@ public class AnimationHandler {
     public static BundledAnimation getHeadAnimation(Head head, int current) {
         return headAnimations.computeIfAbsent(head, h -> {
             HeadDescriptor descriptor = DescriptorHandler.getHead(h.index - 1);
-            return createAnimations(descriptor);
+            return createAnimations(descriptor, false);
         }).get(current);
     }
 
     public static BundledAnimation getBodyAnimation(Body body, int current) {
         return bodyAnimations.computeIfAbsent(body, b -> {
             BodyDescriptor descriptor = DescriptorHandler.getBody(b.index);
-            return createAnimations(descriptor);
+            return createAnimations(descriptor, true);
         }).get(current);
     }
 
     public static BundledAnimation getWeaponAnimation(Weapon weapon, int current) {
         return weaponAnimations.computeIfAbsent(weapon, w -> {
             WeaponDescriptor descriptor = DescriptorHandler.getWeapon(Math.max(w.index - 1, 0));
-            return createAnimations(descriptor);
+            return createAnimations(descriptor, true);
         }).get(current);
     }
 
     public static BundledAnimation getHelmetsAnimation(Helmet helmet, int current) {
         return helmetAnimations.computeIfAbsent(helmet, h -> {
             HelmetDescriptor descriptor = DescriptorHandler.getHelmet(Math.max(h.index - 1, 0));
-            return createAnimations(descriptor);
+            return createAnimations(descriptor, true);
         }).get(current);
     }
 
     public static BundledAnimation getShieldAnimation(Shield shield, int current) {
         return shieldAnimations.computeIfAbsent(shield, s -> {
             ShieldDescriptor descriptor = DescriptorHandler.getShield(Math.max(s.index - 1, 0));
-            return createAnimations(descriptor);
+            return createAnimations(descriptor, true);
         }).get(current);
     }
 
@@ -127,7 +127,7 @@ public class AnimationHandler {
     }
 
     public static BundledAnimation saveBundledAnimation(int grhIndex) {
-        BundledAnimation bundledAnimation = new BundledAnimation(DescriptorHandler.getGraphic(grhIndex));
+        BundledAnimation bundledAnimation = new BundledAnimation(DescriptorHandler.getGraphic(grhIndex), false);
         animations.put(grhIndex, bundledAnimation);
         return bundledAnimation;
     }
