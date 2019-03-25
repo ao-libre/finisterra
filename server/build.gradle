@@ -9,7 +9,7 @@ sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = ["src/"]
 
 apply plugin: 'application'
-mainClassName = "ar.com.tamborindeguy.core.ServerLauncher"
+mainClassName = "server.core.ServerLauncher"
 
 task dist(type: Jar) {
     from files(sourceSets.main.output.classesDir)
