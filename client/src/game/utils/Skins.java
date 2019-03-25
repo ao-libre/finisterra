@@ -1,0 +1,12 @@
+package game.utils;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
+public class Skins {
+
+    public static final Skin COMODORE_SKIN = new Skin(Gdx.files.internal("data/ui/commodore64-skin/skin/uiskin.json"));
+
+    public static final Skin AO_SKIN = new Skin(Gdx.files.internal("data/ui/skin/ao-skin.json"));
+
+}

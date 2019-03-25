@@ -4,7 +4,7 @@ apply plugin: 'application'
 sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = ["src/"]
 
-mainClassName = "ar.com.tamborindeguy.client.desktop.DesktopLauncher"
+mainClassName = "desktop.launcher.DesktopLauncher"
 tasks.run.workingDir = new File("assets/")
 
 task dist(type: Jar) {
