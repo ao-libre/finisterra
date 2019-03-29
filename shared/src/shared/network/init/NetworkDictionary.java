@@ -9,6 +9,7 @@ import entity.character.info.*;
 import entity.character.states.*;
 import entity.character.status.*;
 import graphics.FX;
+import map.Map;
 import movement.Destination;
 import movement.Moving;
 import movement.RandomMovement;
@@ -83,6 +84,8 @@ public class NetworkDictionary extends MarshalDictionary {
                 FXNotification.class,
 
                 // Other
+                int[][].class,
+                int[].class,
                 HashMap.class,
                 MapUtils.class,
                 ConcurrentLinkedDeque.class,
@@ -96,6 +99,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Hero.class,
 
                 // Components
+                Map.class,
                 Inventory.class,
                 Inventory.Item.class,
                 Inventory.Item[].class,

@@ -16,7 +16,7 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
     public KryonetClientMarshalStrategy() {
         this.host = "localhost";
         this.port = 7666;
-        endpoint = new Client();
+        endpoint = new Client(8192, 8192);
     }
 
     public KryonetClientMarshalStrategy(String host, int port) {

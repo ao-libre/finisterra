@@ -1,6 +1,6 @@
 package server.utils;
 
-import server.core.WorldServer;
+import server.core.Server;
 import shared.interfaces.Constants;
 import com.artemis.Component;
 import com.artemis.Entity;
@@ -47,7 +47,7 @@ public class WorldUtils {
     }
 
     public static Component[] getComponents(int playerId) {
-        List<Component> components = getComponents(WorldServer.getWorld().getEntity(playerId));
+        List<Component> components = getComponents(Server.getWorld().getEntity(playerId));
         return components.toArray(new Component[components.size()]);
     }
 

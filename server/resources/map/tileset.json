@@ -1,0 +1,15 @@
+{
+  "texturePath": "RPGTiles.png",
+  "tileWidth": 32,
+  "tileHeight": 32,
+  "terrainDefs": [
+    [
+      "sand",
+      "water"
+    ],
+    [
+      "sand",
+      "grass"
+    ]
+  ]
+}

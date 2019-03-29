@@ -90,8 +90,9 @@ public class MovementProcessorSystem extends IteratingSystem {
                 Set<Integer> nearEntities = WorldManager.getEntities();
                 nearEntities.remove(entity);
                 nearEntities.forEach(near -> Log.debug("Validating entity: " + near + " is not occuping the position"));
-                boolean blocked = MapUtils.isBlocked(MapHandler.get(expectedPos.map), expectedPos);
-                boolean occupied = MapUtils.hasEntity(nearEntities, expectedPos);
+
+                boolean blocked = false; //MapUtils.isBlocked(MapHandler.get(expectedPos.map), expectedPos);
+                boolean occupied = false; //MapUtils.hasEntity(nearEntities, expectedPos);
                 boolean valid = !(blocked ||
                         occupied ||
                         player.hasImmobile());
@@ -103,7 +104,7 @@ public class MovementProcessorSystem extends IteratingSystem {
                 requests.put(requestNumber, request);
                 GameScreen.getClient().sendToAll(request);
                 if (valid) { // Prediction
-                    ClientMapUtils.updateTile(Tile.EMPTY_INDEX, pos); // not used. TODO clean?
+                    // ClientMapUtils.updateTile(Tile.EMPTY_INDEX, pos); // not used. TODO clean?
                     Destination destination = new Destination(expectedPos, movement);
                     player.movementAdd(destination);
                     if (player.isMeditating()) {

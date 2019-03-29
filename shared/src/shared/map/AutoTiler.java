@@ -55,11 +55,12 @@ public class AutoTiler {
 
     private static String loadTexturePath(TilesetConfig conf) {
         // Validate texture path
-        final FileHandle tilesTextureHandle = Gdx.files.internal(conf.getTexturePath());
+        String path = "map/" + conf.getTexturePath();
+        final FileHandle tilesTextureHandle = Gdx.files.internal(path);
         if (!tilesTextureHandle.exists() || tilesTextureHandle.isDirectory()) {
             throw new IllegalArgumentException("Invalid Tile-set texture path");
         }
-        return conf.getTexturePath();
+        return path;
     }
 
     private static TilesetConfig loadTileSetConfig(FileHandle tilesetConfigFile) {

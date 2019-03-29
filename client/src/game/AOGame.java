@@ -1,6 +1,7 @@
 package game;
 
 import game.handlers.HandlerState;
+import game.systems.map.MapSystem;
 import game.systems.render.world.*;
 import game.handlers.AssetHandler;
 import game.screens.GameScreen;
@@ -29,19 +30,20 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 /**
  * Represents the game application.
  * Implements {@link ApplicationListener}.
- *
+ * <p>
  * This should be the primary instance of the app.
  */
 public class AOGame extends Game {
 
     // TODO: Class to handle resources?
-    public static final String GAME_GRAPHICS_PATH = "data/graficos/";
-    public static final String GAME_FXS_PATH = "data/fxs/";
-    public static final String GAME_PARTICLES_PATH = "data/particles/";
-    public static final String GAME_FONTS_PATH = "data/fonts/";
-    public static final String GAME_MAPS_PATH = "data/mapas/";
-    public static final String GAME_INIT_PATH = "data/init/";
-    public static final String GAME_SHADERS_PATH = "data/shaders/";
+    public static final String GAME_DATA_PATH = "data/";
+    public static final String GAME_GRAPHICS_PATH = GAME_DATA_PATH + "graficos/";
+    public static final String GAME_FXS_PATH = GAME_DATA_PATH + "fxs/";
+    public static final String GAME_PARTICLES_PATH = GAME_DATA_PATH + "particles/";
+    public static final String GAME_FONTS_PATH = GAME_DATA_PATH + "fonts/";
+    public static final String GAME_MAPS_PATH = GAME_DATA_PATH + "mapas/";
+    public static final String GAME_INIT_PATH = GAME_DATA_PATH + "init/";
+    public static final String GAME_SHADERS_PATH = GAME_DATA_PATH + "shaders/";
     public static final String GAME_GRAPHICS_EXTENSION = ".png";
     public static final String GAME_SHADERS_LIGHT = "light.png";
 
@@ -51,6 +53,7 @@ public class AOGame extends Game {
     public static final float GAME_SCREEN_ZOOM = 1.8f;
     public static final boolean GAME_FULL_SCREEN = false;
     public static final boolean GAME_VSYNC_ENABLED = true;
+
 
     protected SpriteBatch spriteBatch; // This is only used in GameScreen
 
@@ -65,18 +68,14 @@ public class AOGame extends Game {
         //
         // Load resources & stuff.
         AssetHandler.load();
-        if(AssetHandler.getState() == HandlerState.LOADED)
+        if (AssetHandler.getState() == HandlerState.LOADED)
             Gdx.app.debug("AOGame", "Handler loaded!");
         // Initialize network stuff
         clientSystem = new ClientSystem();
-        // TODO: Move this to login screen, read from text field, etc.
-        clientSystem.getKryonetClient().setHost("ec2-18-219-97-32.us-east-2.compute.amazonaws.com");
-        clientSystem.getKryonetClient().setPort(7666);
-        //
-        //
+//        // TODO: Move this to login screen, read from text field, etc.
+//        clientSystem.getKryonetClient().setHost("ec2-18-219-97-32.us-east-2.compute.amazonaws.com");
+//        clientSystem.getKryonetClient().setPort(7666);
         this.spriteBatch = new SpriteBatch();
-        // Artemis?
-        // TODO: Preload Artemis world, etc.
         initWorld();
         //
         // Preload GameScreen
@@ -85,7 +84,6 @@ public class AOGame extends Game {
         setScreen(new LoginScreen());
     }
 
-    // TODO: Hotfix. Not the place
     private static final int FONTS_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL - 1;
 
     public void initWorld() {
@@ -105,14 +103,12 @@ public class AOGame extends Game {
                 // Logic systems
                 .with(new PhysicsAttackSystem())
                 // Rendering
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new TiledMapSystem())
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 4, new MapLowerLayerRenderingSystem(spriteBatch))
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new MapSystem())
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new GroundFXsRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ObjectRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ParticleRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new CharacterRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new FXsRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new MapUpperLayerRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(spriteBatch))
                 .with(FONTS_PRIORITY, new StateRenderingSystem(spriteBatch))
                 .with(FONTS_PRIORITY, new CombatRenderingSystem(spriteBatch))
@@ -133,7 +129,6 @@ public class AOGame extends Game {
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         super.render();
     }
-
 
 
     public void showGameScreen() {

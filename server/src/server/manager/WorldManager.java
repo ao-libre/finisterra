@@ -1,7 +1,7 @@
 package server.manager;
 
+import server.core.Server;
 import server.network.NetworkComunicator;
-import server.core.WorldServer;
 import server.database.model.attributes.Attributes;
 import server.database.model.constants.Constants;
 import server.database.model.modifiers.Modifiers;
@@ -137,8 +137,8 @@ public class WorldManager {
 
     private static void setEntityPosition(E entity) {
         entity
-                .worldPosX(50)
-                .worldPosY(50)
+                .worldPosX(25)
+                .worldPosY(25)
                 .worldPosMap(1);
     }
 
@@ -221,6 +221,6 @@ public class WorldManager {
     }
 
     public static World getWorld() {
-        return WorldServer.getWorld();
+        return Server.getWorld();
     }
 }

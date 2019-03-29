@@ -48,7 +48,7 @@ allprojects {
     version = '1.0'
     ext {
         appName = 'ao-java'
-        gdxVersion = '1.9.8'
+        gdxVersion = '1.9.9'
         kryonetVersion = '2.22.0-RC1'
         roboVMVersion = '2.3.1'
         box2DLightsVersion = '1.4'
@@ -93,17 +93,13 @@ project(":client") {
     dependencies {
         compile project(":shared")
 
-        compile 'org.mongodb:mongo-java-driver:2.12.3'
         compile 'org.ini4j:ini4j:0.5.1'
 
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         compile "com.esotericsoftware.spine:spine-libgdx:3.5.51.1"
 
         compile 'junit:junit:4.+'
         testCompile 'junit:junit:4.+'
-        testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
         testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     }
@@ -120,6 +116,9 @@ project(":server") {
     dependencies {
         compile project(":shared")
         compile 'org.mongodb:mongo-java-driver:2.12.3'
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     }
 }
 
@@ -144,6 +143,7 @@ project(":shared") {
         // common
         compile "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
         provided "net.onedaybeard.artemis:artemis-odb-processor:1.4.0"
+        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "net.mostlyoriginal.artemis-odb:contrib-core:$artemisContribVersion"
         compile "net.mostlyoriginal.artemis-odb:contrib-jam:$artemisContribVersion"
         compile "net.mostlyoriginal.artemis-odb:contrib-eventbus:$artemisContribVersion"

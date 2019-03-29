@@ -1,6 +1,6 @@
 package server.network;
 
-import server.core.WorldServer;
+import server.core.Server;
 import server.manager.ObjectManager;
 import server.manager.WorldManager;
 import shared.network.interaction.DropItem;
@@ -61,7 +61,7 @@ public class ServerNotificationProcessor implements INotificationProcessor {
         update.add(slot, inventory.items[slot]); // should remove item if count <= 0
         NetworkComunicator.sendTo(NetworkComunicator.getConnectionByPlayer(dropItem.getPlayerId()), update);
         // add new obj entity to world
-        int object = WorldServer.getWorld().create();
+        int object = Server.getWorld().create();
         E(object).worldPos()
                 .worldPosMap(dropItem.getPosition().map)
                 .worldPosX(dropItem.getPosition().x)

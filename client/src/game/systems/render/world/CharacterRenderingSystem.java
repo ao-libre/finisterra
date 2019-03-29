@@ -6,6 +6,7 @@ import model.textures.BundledAnimation;
 import game.handlers.AnimationHandler;
 import game.systems.OrderedEntityProcessingSystem;
 import game.systems.camera.CameraSystem;
+import shared.model.map.Tile;
 import shared.util.Util;
 import com.artemis.Aspect;
 import com.artemis.E;
@@ -49,7 +50,6 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
 
     @Override
     protected void process(Entity e) {
-
         E player = E(e);
         Pos2D currentPos = player.worldPosPos2D();
         Pos2D screenPos = Util.toScreen(currentPos);
@@ -82,7 +82,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             this.player = player;
             this.heading = heading;
             this.screenPos = screenPos;
-            bodyPixelOffsetX = screenPos.x - 32.0f;
+            bodyPixelOffsetX = screenPos.x - Tile.TILE_PIXEL_WIDTH;
             bodyPixelOffsetY = screenPos.y;
             calculateOffsets();
         }

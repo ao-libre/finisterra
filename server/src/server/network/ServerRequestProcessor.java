@@ -1,6 +1,7 @@
 package server.network;
 
 import server.manager.*;
+import server.map.Maps;
 import server.utils.WorldUtils;
 import shared.interfaces.Constants;
 import shared.interfaces.FXs;
@@ -45,14 +46,13 @@ import static com.artemis.E.E;
 public class ServerRequestProcessor implements IRequestProcessor {
 
     /**
-     * TODO implement when database is available
      * @param request LoginRequest
      * @param connectionId connection id
      */
     @Override
     public void processRequest(LoginRequest request, int connectionId) {
-        // TODO this creates a new character
         final Entity entity = WorldManager.createEntity(request.username, request.heroId);
+        NetworkComunicator.sendTo(connectionId, new EntityUpdate(Maps.mapEntity, WorldUtils.getComponents(Maps.mapEntity), new Class[0]));
         NetworkComunicator.sendTo(connectionId, new EntityUpdate(entity.getId(), WorldUtils.getComponents(entity.getId()), new Class[0]));
         NetworkComunicator.sendTo(connectionId, new LoginOK(entity.getId()));
         WorldManager.registerEntity(connectionId, entity.getId());
@@ -79,7 +79,7 @@ public class ServerRequestProcessor implements IRequestProcessor {
         WorldPos worldPos = player.getWorldPos();
         WorldPos oldPos = new WorldPos(worldPos);
         WorldPos nextPos = WorldUtils.getNextPos(worldPos, request.movement);
-        boolean blocked = MapUtils.isBlocked(MapManager.get(nextPos.map), nextPos);
+        boolean blocked = false; //MapUtils.isBlocked(MapManager.get(nextPos.map), nextPos);
         boolean occupied = MapUtils.hasEntity(MapManager.getNearEntities(playerId), nextPos);
         if (!(player.hasImmobile() || blocked || occupied)) {
             Log.info("Player: " + playerId + ". Moved from: " + oldPos + " to: " + nextPos);

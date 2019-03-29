@@ -9,7 +9,9 @@ sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = ["src/"]
 
 apply plugin: 'application'
-mainClassName = "server.core.ServerLauncher"
+mainClassName = "server.ServerLauncher"
+
+tasks.run.workingDir = new File("resources/")
 
 task dist(type: Jar) {
     from files(sourceSets.main.output.classesDir)
@@ -19,13 +21,4 @@ task dist(type: Jar) {
     manifest {
         attributes 'Main-Class': mainClassName
     }
-}
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    compile project(":shared")
-    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
