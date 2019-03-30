@@ -1,5 +1,9 @@
 package server.manager;
 
+import com.artemis.Component;
+import com.artemis.E;
+import entity.CombatMessage;
+import server.core.Server;
 import server.database.model.attributes.Attributes;
 import server.database.model.modifiers.Modifiers;
 import shared.interfaces.CharClass;
@@ -9,9 +13,6 @@ import shared.network.notifications.EntityUpdate;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
 import shared.objects.types.WeaponObj;
-import com.artemis.Component;
-import com.artemis.E;
-import entity.CombatMessage;
 
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -24,9 +25,18 @@ import static com.artemis.E.E;
 /*
  * All logic related to Combat: calculation of damage, evasion, magic, etc.
  */
-public class CombatManager {
+public class CombatManager extends DefaultManager {
 
     public static final String MISS = "MISS";
+
+    public CombatManager(Server server) {
+        super(server);
+    }
+
+    @Override
+    public void init() {
+
+    }
 
     /**
      * Update the attacked entity in case it was damaged
@@ -34,7 +44,7 @@ public class CombatManager {
      * @param attacked victim entity id
      * @return possible damage
      */
-    public static Optional<Integer> attack(int attacker, int attacked) {
+    public Optional<Integer> attack(int attacker, int attacked) {
         Optional<Integer> damage = hit(attacker, attacked);
         if (damage.isPresent()) {
             E(attacked).getHealth().min -= damage.get();
@@ -48,7 +58,7 @@ public class CombatManager {
      * @param attacked entity id
      * @return Take into account evasion and if it hits then return damage
      */
-    private static Optional<Integer> hit(int attacker, int attacked) {
+    private Optional<Integer> hit(int attacker, int attacked) {
         // calculate evasion
         float evasion = getEvasion(attacked);
         // hit??
@@ -69,7 +79,7 @@ public class CombatManager {
      * @param evasion entity id
      * @return defanse of entity, taking into account evasion
      */
-    private static int calculateDefense(int attacked, float evasion) {
+    private int calculateDefense(int attacked, float evasion) {
         E entity = E(attacked);
         CharClass clazz = getCharClass(entity);
         float evasionModifier = Modifiers.EVASION.of(clazz);
@@ -84,13 +94,13 @@ public class CombatManager {
      * @param attacker entity id
      * @return damage that will cause
      */
-    private static int calculateDamage(int attacker) {
+    private int calculateDamage(int attacker) {
         E entity = E(attacker);
         CharClass clazz = getCharClass(entity);
         int weaponDamage = 0;
         if (entity.hasWeapon()) {
             int weaponIndex = entity.getWeapon().index;
-            Optional<Obj> object = ObjectManager.getObject(weaponIndex);
+            Optional<Obj> object = getServer().getObjectManager().getObject(weaponIndex);
             if (object.isPresent() && object.get().getType().equals(Type.WEAPON)) {
                 WeaponObj weapon = (WeaponObj) object.get();
                 weaponDamage = ThreadLocalRandom.current().nextInt(weapon.getMinHit(), weapon.getMaxHit() + 1);
@@ -104,7 +114,7 @@ public class CombatManager {
      * @param victimId entity id
      * @return evasion of entity class
      */
-    private static float getEvasion(int victimId) {
+    private float getEvasion(int victimId) {
         E victim = E(victimId);
         CharClass clazz = getCharClass(victim);
         return Attributes.EVASION.of(clazz) * 2; // TODO calculate extra evasion from items and hero modifier
@@ -116,7 +126,7 @@ public class CombatManager {
      * @param victim entity
      * @return class of current hero
      */
-    private static CharClass getCharClass(E victim) {
+    private CharClass getCharClass(E victim) {
         int heroId = victim.getCharHero().heroId;
         Hero hero = Hero.values()[heroId];
         return CharClass.values()[hero.getClassId()];
@@ -128,19 +138,19 @@ public class CombatManager {
      * @param victim entity id
      * @param combatMessage message
      */
-    public static void notify(int victim, CombatMessage combatMessage) {
+    public void notify(int victim, CombatMessage combatMessage) {
         EntityUpdate update = new EntityUpdate(victim, new Component[]{combatMessage}, new Class[0]);
-        WorldManager.sendEntityUpdate(victim, update);
-        WorldManager.notifyToNearEntities(victim, update);
+        getServer().getWorldManager().sendEntityUpdate(victim, update);
+        getServer().getWorldManager().notifyToNearEntities(victim, update);
     }
 
     /**
      * Send an update to entity with current health
      * @param victim entity id
      */
-    static void update(int victim) {
+    void update(int victim) {
         EntityUpdate update = new EntityUpdate(victim, new Component[]{E(victim).getHealth()}, new Class[0]);
-        WorldManager.sendEntityUpdate(victim, update);
+        getServer().getWorldManager().sendEntityUpdate(victim, update);
     }
 
 
@@ -156,4 +166,5 @@ public class CombatManager {
         }
         return -80;
     }
+
 }

@@ -1,86 +1,119 @@
 package server.core;
 
-import com.artemis.Entity;
-import com.artemis.SuperMapper;
-import com.artemis.World;
-import com.artemis.WorldConfigurationBuilder;
-import com.badlogic.gdx.ApplicationListener;
+import com.artemis.*;
 import com.badlogic.gdx.Gdx;
-import server.manager.MapManager;
-import server.manager.ObjectManager;
-import server.manager.SpellManager;
-import server.manager.WorldManager;
+import network.Network;
+import server.manager.*;
 import server.map.Maps;
-import server.network.NetworkComunicator;
+import server.manager.NetworkManager;
+import server.network.model.Player;
 import server.systems.RandomMovementSystem;
 import shared.interfaces.Hero;
 import shared.map.AutoTiler;
 import shared.map.model.MapDescriptor;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 import static com.artemis.E.E;
 
-public class Server implements ApplicationListener {
+public class Server  {
 
-    private static World world;
+    private final int tcpPort;
+    private final int udpPort;
+    private World world;
     private final WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
+    private Map<Class<? extends IManager>, IManager> managers = new HashMap<>();
+    private KryonetServerMarshalStrategy strategy;
 
-    @Override
-    public void create() {
-        initSystems();
-        createWorld();
-        createMap();
+    public Server(int tcpPort, int udpPort) {
+        this.tcpPort = tcpPort;
+        this.udpPort = udpPort;
     }
 
-    public static World getWorld() {
+    public void create() {
+        initWorld();
+        createMap();
+        initManagers();
+    }
+
+    private void initManagers() {
+        managers.put(NetworkManager.class, new NetworkManager(this, strategy));
+        managers.put(CombatManager.class, new CombatManager(this));
+        managers.put(ItemManager.class, new ItemManager(this));
+        managers.put(SpellManager.class, new SpellManager(this));
+        managers.put(MapManager.class, new MapManager(this));
+        managers.put(WorldManager.class, new WorldManager(this));
+        managers.put(SpellManager.class, new SpellManager(this));
+    }
+
+    public World getWorld() {
         return world;
     }
 
-    private void initSystems() {
+    private void initWorld() {
         System.out.println("Initializing systems...");
 
-        ObjectManager.load();
-        SpellManager.load();
-
-        KryonetServerMarshalStrategy server = new KryonetServerMarshalStrategy();
-
+        strategy = new KryonetServerMarshalStrategy(tcpPort, udpPort);
         builder
                 .with(new SuperMapper())
-                .with(new ServerSystem(server))
-                .with(new RandomMovementSystem());
-        new NetworkComunicator(server);
+                .with(new ServerSystem(this, strategy))
+                .with(new RandomMovementSystem(this));
+        world = new World(builder.build());
+        System.out.println("WORLD CREATED");
+
     }
 
 
     private void createWorld() {
-        System.out.println("Creating world...");
-        world = new World(builder.build());
         // testing
-        Entity player2 = WorldManager.createEntity("guidota2", Hero.WARRIOR.ordinal());
+        int player2 = getWorldManager().createEntity("guidota2", Hero.WARRIOR.ordinal());
         E(player2).randomMovement();
-        MapManager.updateEntity(player2.getId());
+        getMapManager().updateEntity(player2);
     }
 
     private void createMap() {
-        String path = "map/tileset.json";
-        MapDescriptor map = AutoTiler.load(50, 50, Gdx.files.internal(path));
-        Maps.generateMapEntity(map, path);
+
     }
 
-
-    @Override
-    public void resize(int width, int height) {}
-
-    @Override
-    public void render() {
+    public void update() {
         world.process();
     }
 
-    @Override
-    public void pause() {}
+    public void addPlayers(Set<Player> players) {
+        // TODO
+    }
 
-    @Override
-    public void resume() {}
+    public <T extends IManager> T getManager(Class<T> managerType) {
+        return managerType.cast(managers.get(managerType));
+    }
 
-    @Override
-    public void dispose() {}
+    public ItemManager getItemManager() {
+        return getManager(ItemManager.class);
+    }
+
+    public MapManager getMapManager() {
+        return getManager(MapManager.class);
+    }
+
+    public WorldManager getWorldManager() {
+        return getManager(WorldManager.class);
+    }
+
+    public NetworkManager getNetworkManager() {
+        return getManager(NetworkManager.class);
+    }
+
+    public SpellManager getSpellManager() {
+        return getManager(SpellManager.class);
+    }
+
+    public CombatManager getCombatManager() {
+        return getManager(CombatManager.class);
+    }
+
+    public ObjectManager getObjectManager() {
+        return getManager(ObjectManager.class);
+    }
 }

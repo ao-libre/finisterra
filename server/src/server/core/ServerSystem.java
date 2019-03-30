@@ -1,8 +1,10 @@
 package server.core;
 
+import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
+import net.mostlyoriginal.api.network.system.MarshalSystem;
 import server.manager.MapManager;
 import server.manager.WorldManager;
-import server.network.NetworkComunicator;
+import server.manager.NetworkManager;
 import server.network.ServerNotificationProcessor;
 import server.network.ServerRequestProcessor;
 import shared.network.init.NetworkDictionary;
@@ -10,16 +12,24 @@ import shared.network.interfaces.INotification;
 import shared.network.interfaces.INotificationProcessor;
 import shared.network.interfaces.IRequest;
 import shared.network.interfaces.IRequestProcessor;
-import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
-import net.mostlyoriginal.api.network.system.MarshalSystem;
+
+import java.util.Optional;
 
 public class ServerSystem extends MarshalSystem {
 
-    private static IRequestProcessor requestProcessor = new ServerRequestProcessor();
-    private static INotificationProcessor notificationProcessor = new ServerNotificationProcessor();
+    private IRequestProcessor requestProcessor;
+    private INotificationProcessor notificationProcessor;
+    private Server server;
 
-    public ServerSystem(MarshalStrategy strategy) {
+    public ServerSystem(Server server, MarshalStrategy strategy) {
+        this(server, strategy, new ServerRequestProcessor(server), new ServerNotificationProcessor(server));
+    }
+
+    public ServerSystem(Server server, MarshalStrategy strategy, IRequestProcessor requestProcessor, INotificationProcessor notificationProcessor) {
         super(new NetworkDictionary(), strategy);
+        this.server = server;
+        this.requestProcessor = requestProcessor;
+        this.notificationProcessor = notificationProcessor;
         start();
     }
 
@@ -35,12 +45,19 @@ public class ServerSystem extends MarshalSystem {
     @Override
     public void disconnected(int connectionId) {
         super.disconnected(connectionId);
-        if (!NetworkComunicator.connectionHasPlayer(connectionId)) {
-            return;
-        }
-        int playerToDisconnect = NetworkComunicator.getPlayerByConnection(connectionId);
-        NetworkComunicator.unregisterUserConnection(playerToDisconnect, connectionId);
-        WorldManager.unregisterEntity(playerToDisconnect);
-        MapManager.removeEntity(playerToDisconnect);
+        getServer().ifPresent(server -> {
+            if (!server.getNetworkManager().connectionHasPlayer(connectionId)) {
+                return;
+            }
+            int playerToDisconnect = server.getNetworkManager().getPlayerByConnection(connectionId);
+            server.getNetworkManager().unregisterUserConnection(playerToDisconnect, connectionId);
+            server.getWorldManager().unregisterEntity(playerToDisconnect);
+            server.getMapManager().removeEntity(playerToDisconnect);
+
+        });
+    }
+
+    public Optional<Server> getServer() {
+        return Optional.ofNullable(server);
     }
 }

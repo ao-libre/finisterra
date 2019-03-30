@@ -1,11 +1,5 @@
 package server.manager;
 
-import server.network.NetworkComunicator;
-import server.database.ServerDescriptorReader;
-import shared.model.Spell;
-import shared.model.readers.DescriptorsReader;
-import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.FXNotification;
 import com.artemis.Component;
 import com.artemis.E;
 import com.esotericsoftware.minlog.Log;
@@ -14,6 +8,12 @@ import entity.Dialog;
 import entity.character.states.Immobile;
 import entity.character.status.Health;
 import entity.character.status.Mana;
+import server.core.Server;
+import server.database.ServerDescriptorReader;
+import shared.model.Spell;
+import shared.model.readers.DescriptorsReader;
+import shared.network.notifications.EntityUpdate;
+import shared.network.notifications.FXNotification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,20 +25,25 @@ import static com.artemis.E.E;
 /**
  * Spell Logic
  */
-public class SpellManager {
+public class SpellManager extends DefaultManager {
     private static DescriptorsReader reader = new ServerDescriptorReader();
     private static Map<Integer, Spell> spells;
 
-    public static void load() {
+    public SpellManager(Server server) {
+        super(server);
+    }
+
+    @Override
+    public void init() {
         Log.info("Loading spells...");
         spells = reader.loadSpells("hechizos");
     }
 
-    public static Optional<Spell> getSpell(int id) {
+    public Optional<Spell> getSpell(int id) {
         return Optional.ofNullable(spells.get(id));
     }
 
-    public static void castSpell(int playerId, int target, Spell spell) {
+    public void castSpell(int playerId, int target, Spell spell) {
         int requiredMana = spell.getRequiredMana();
         Mana mana = E(playerId).getMana();
         // TODO check stamina
@@ -48,21 +53,21 @@ public class SpellManager {
             }
             mana.min -= requiredMana;
             // update mana
-            NetworkComunicator.sendTo(NetworkComunicator.getConnectionByPlayer(playerId), new EntityUpdate(playerId, new Component[]{mana}, new Class[0]));
+            getNetworkManager().sendTo(getNetworkManager().getConnectionByPlayer(playerId), new EntityUpdate(playerId, new Component[]{mana}, new Class[0]));
             // add FX
             List<Component> toAdd = new ArrayList<>();
             List<Class> toRemove = new ArrayList<>();
             int fxGrh = spell.getFxGrh();
             if (fxGrh > 0) {
-                WorldManager.notifyUpdate(target, new FXNotification(target, fxGrh - 1));
+                getServer().getWorldManager().notifyUpdate(target, new FXNotification(target, fxGrh - 1));
             }
             E targetEntity = E(target);
             if (spell.getSumHP() > 0) {
                 Health health = targetEntity.getHealth();
                 int damage = CombatManager.calculateMagicDamage(target, spell);
                 health.min += damage;
-                CombatManager.notify(target, new CombatMessage(String.valueOf(damage)));
-                CombatManager.update(target);
+                getServer().getCombatManager().notify(target, new CombatMessage(String.valueOf(damage)));
+                getServer().getCombatManager().update(target);
             }
             if (spell.isImmobilize()) {
                 targetEntity.immobile();
@@ -71,14 +76,18 @@ public class SpellManager {
                 targetEntity.immobile(false);
                 toRemove.add(Immobile.class);
             }
-            WorldManager.notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS)}, new Class[0]));
-            WorldManager.notifyUpdate(target, new EntityUpdate(target, toAdd.toArray(new Component[0]), toRemove.toArray(new Class[0])));
+            getServer().getWorldManager().notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS)}, new Class[0]));
+            getServer().getWorldManager().notifyUpdate(target, new EntityUpdate(target, toAdd.toArray(new Component[0]), toRemove.toArray(new Class[0])));
         } else {
             // TODO notify no mana
         }
     }
 
-    private static boolean isValid(int target, Spell spell) {
+    private NetworkManager getNetworkManager() {
+        return getServer().getNetworkManager();
+    }
+
+    private boolean isValid(int target, Spell spell) {
         E targetEntity = E(target);
         int spellTarget = spell.getTarget();
         switch (spellTarget) {

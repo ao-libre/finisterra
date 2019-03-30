@@ -1,7 +1,10 @@
 package server.manager;
 
+import com.artemis.E;
+import com.artemis.World;
+import com.esotericsoftware.minlog.Log;
+import entity.Heading;
 import server.core.Server;
-import server.network.NetworkComunicator;
 import server.database.model.attributes.Attributes;
 import server.database.model.constants.Constants;
 import server.database.model.modifiers.Modifiers;
@@ -9,11 +12,6 @@ import shared.interfaces.CharClass;
 import shared.interfaces.Hero;
 import shared.interfaces.Race;
 import shared.network.notifications.RemoveEntity;
-import com.artemis.E;
-import com.artemis.Entity;
-import com.artemis.World;
-import com.esotericsoftware.minlog.Log;
-import entity.Heading;
 import shared.objects.types.*;
 
 import java.util.Set;
@@ -21,10 +19,19 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
 
-public class WorldManager {
+public class WorldManager extends DefaultManager {
 
-    public static Entity createEntity(String name, int heroId) {
-        Entity player = getWorld().createEntity();
+    public WorldManager(Server server) {
+        super(server);
+    }
+
+    @Override
+    public void init() {
+
+    }
+
+    public int createEntity(String name, int heroId) {
+        int player = getWorld().create();
 
         E entity = E(player);
         // set position
@@ -34,12 +41,12 @@ public class WorldManager {
         // set class
         setClassAndAttributes(heroId, entity);
         // set inventory
-        setInventory(player, entity);
+        setInventory(player);
 
         return player;
     }
 
-    private static void setClassAndAttributes(int heroId, E entity) {
+    private void setClassAndAttributes(int heroId, E entity) {
         Hero hero = Hero.values()[heroId];
         entity.charHeroHeroId(heroId);
         CharClass charClass = CharClass.values()[hero.getClassId()];
@@ -56,7 +63,7 @@ public class WorldManager {
         setHead(entity, race);
     }
 
-    private static void setHead(E entity, Race race) {
+    private void setHead(E entity, Race race) {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         int headIndex = 0;
         switch (race) {
@@ -78,7 +85,7 @@ public class WorldManager {
         entity.headIndex(headIndex);
     }
 
-    public static void setNakedBody(E entity, Race race) {
+    void setNakedBody(E entity, Race race) {
         int bodyIndex = 1;
         switch (race) {
             case GNOME:
@@ -99,7 +106,7 @@ public class WorldManager {
         entity.bodyIndex(bodyIndex);
     }
 
-    private static void calculateMana(E entity, CharClass heroClass) {
+    private void calculateMana(E entity, CharClass heroClass) {
         float intelligenceAttr = Attributes.INTELLIGENCE.of(heroClass);
         float manaMod = Modifiers.MANA.of(heroClass);
         Float manaBase = Constants.getMana(heroClass);
@@ -108,7 +115,7 @@ public class WorldManager {
         entity.manaMin(maxMana);
     }
 
-    private static void calculateHP(CharClass heroClass, E entity) {
+    private void calculateHP(CharClass heroClass, E entity) {
         float heroStrength = Attributes.STRENGTH.of(heroClass);
         float heroHealthMod = Modifiers.HEALTH.of(heroClass);
         Float hpBase = Constants.getHp(heroClass);
@@ -117,33 +124,33 @@ public class WorldManager {
         entity.healthMin(maxHP);
     }
 
-    private static void setInventory(Entity player, E entity) {
-        entity.inventory();
-        addItem(player.getId(), Type.HELMET);
+    private void setInventory(int player) {
+        E(player).inventory();
+        addItem(player, Type.HELMET);
 
-        addItem(player.getId(), Type.ARMOR);
-        addItem(player.getId(), Type.WEAPON);
-        addItem(player.getId(), Type.SHIELD);
-        addPotion(player.getId(), PotionKind.HP);
-        addPotion(player.getId(), PotionKind.MANA);
+        addItem(player, Type.ARMOR);
+        addItem(player, Type.WEAPON);
+        addItem(player, Type.SHIELD);
+        addPotion(player, PotionKind.HP);
+        addPotion(player, PotionKind.MANA);
     }
 
-    private static void setHeadAndBody(String name, E entity) {
+    private void setHeadAndBody(String name, E entity) {
         entity
                 .headingCurrent(Heading.HEADING_NORTH)
                 .character()
                 .nameText(name);
     }
 
-    private static void setEntityPosition(E entity) {
+    private void setEntityPosition(E entity) {
         entity
                 .worldPosX(25)
                 .worldPosY(25)
                 .worldPosMap(1);
     }
 
-    private static void addPotion(int player, PotionKind kind) {
-        Set<Obj> objs = ObjectManager.getTypeObjects(Type.POTION);
+    private void addPotion(int player, PotionKind kind) {
+        Set<Obj> objs = getServer().getObjectManager().getTypeObjects(Type.POTION);
         objs.stream() //
                 .map(PotionObj.class::cast) //
                 .filter(potion -> {
@@ -154,8 +161,8 @@ public class WorldManager {
                 .ifPresent(obj -> E(player).getInventory().add(obj.getId()));
     }
 
-    private static void addItem(int player, Type type) {
-        Set<Obj> objs = ObjectManager.getTypeObjects(type);
+    private void addItem(int player, Type type) {
+        Set<Obj> objs = getServer().getObjectManager().getTypeObjects(type);
         objs.stream()
                 .filter(obj -> {
                     if (obj instanceof ObjWithClasses) {
@@ -183,44 +190,44 @@ public class WorldManager {
                 .ifPresent(obj -> E(player).getInventory().add(obj.getId()));
     }
 
-    public static void registerItem(int id) {
-        MapManager.updateEntity(id);
+    public void registerItem(int id) {
+        getServer().getMapManager().updateEntity(id);
     }
 
-    public static void registerEntity(int connectionId, int id) {
-        NetworkComunicator.registerUserConnection(id, connectionId);
-        MapManager.updateEntity(id);
+    public void registerEntity(int connectionId, int id) {
+        getServer().getNetworkManager().registerUserConnection(id, connectionId);
+        getServer().getMapManager().updateEntity(id);
     }
 
-    public static void unregisterEntity(int playerToDisconnect) {
+    public void unregisterEntity(int playerToDisconnect) {
         getWorld().delete(playerToDisconnect);
     }
 
-    static void sendEntityRemove(int user, int entity) {
-        if (NetworkComunicator.playerHasConnection(user)) {
-            NetworkComunicator.sendTo(NetworkComunicator.getConnectionByPlayer(user), new RemoveEntity(entity));
+    void sendEntityRemove(int user, int entity) {
+        if (getServer().getNetworkManager().playerHasConnection(user)) {
+            getServer().getNetworkManager().sendTo(getServer().getNetworkManager().getConnectionByPlayer(user), new RemoveEntity(entity));
         }
     }
 
-    public static void sendEntityUpdate(int user, Object update) {
-        if (NetworkComunicator.playerHasConnection(user)) {
-            NetworkComunicator.sendTo(NetworkComunicator.getConnectionByPlayer(user), update);
+    void sendEntityUpdate(int user, Object update) {
+        if (getServer().getNetworkManager().playerHasConnection(user)) {
+            getServer().getNetworkManager().sendTo(getServer().getNetworkManager().getConnectionByPlayer(user), update);
         }
     }
 
-    public static void notifyToNearEntities(int entityId, Object update) {
-        MapManager.getNearEntities(entityId).forEach(nearPlayer -> {
+    public void notifyToNearEntities(int entityId, Object update) {
+        getServer().getMapManager().getNearEntities(entityId).forEach(nearPlayer -> {
             Log.info("Notifying near player " + nearPlayer + ". Update: " + update);
             sendEntityUpdate(nearPlayer, update);
         });
     }
 
-    public static void notifyUpdate(int entityId, Object update) {
+    public void notifyUpdate(int entityId, Object update) {
         sendEntityUpdate(entityId, update);
         notifyToNearEntities(entityId, update);
     }
 
-    public static World getWorld() {
-        return Server.getWorld();
+    private World getWorld() {
+        return getServer().getWorld();
     }
 }
