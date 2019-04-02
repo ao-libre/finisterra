@@ -1,17 +1,14 @@
-plugins {
-    id 'java'
-}
-
-group 'ar.com.tamborindeguy'
-version '1.0'
+apply plugin: "java"
+apply plugin: 'application'
 
 sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = ["src/"]
 
-apply plugin: 'application'
 mainClassName = "server.ServerLauncher"
-
 tasks.run.workingDir = new File("resources/")
+dependencies {
+    compile project(":shared")
+}
 
 task dist(type: Jar) {
     from files(sourceSets.main.output.classesDir)
@@ -22,3 +19,6 @@ task dist(type: Jar) {
         attributes 'Main-Class': mainClassName
     }
 }
+
+dist.dependsOn classes
+run.dependsOn classes

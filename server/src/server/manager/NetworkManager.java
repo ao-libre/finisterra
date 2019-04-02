@@ -15,11 +15,11 @@ public class NetworkManager extends DefaultManager {
     private Map<Integer, Integer> playerByConnection = new HashMap<>();
     private Map<Integer, Integer> connectionByPlayer = new HashMap<>();
 
-    private static KryonetServerMarshalStrategy strategy;
+    private KryonetServerMarshalStrategy strategy;
 
     public NetworkManager(Server server, KryonetServerMarshalStrategy strategy) {
         super(server);
-        NetworkManager.strategy = strategy;
+        this.strategy = strategy;
     }
 
     public void stop() {

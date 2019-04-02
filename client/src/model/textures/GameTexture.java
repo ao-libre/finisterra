@@ -1,9 +1,9 @@
 package model.textures;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import game.handlers.DescriptorHandler;
 import game.handlers.SurfaceHandler;
 import shared.model.Graphic;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class GameTexture {
 

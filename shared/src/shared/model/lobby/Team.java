@@ -1,4 +1,4 @@
-package server.network.model;
+package shared.model.lobby;
 
 public enum Team {
     REAL_ARMY,

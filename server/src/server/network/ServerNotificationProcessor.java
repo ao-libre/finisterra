@@ -1,22 +1,16 @@
 package server.network;
 
 import com.artemis.E;
-import com.artemis.World;
 import entity.character.info.Inventory;
 import server.core.Server;
 import shared.network.interaction.DropItem;
-import shared.network.interfaces.INotification;
-import shared.network.interfaces.INotificationProcessor;
+import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.inventory.InventoryUpdate;
-import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.FXNotification;
-import shared.network.notifications.RemoveEntity;
 
 import static com.artemis.E.E;
 
-public class ServerNotificationProcessor implements INotificationProcessor {
-
+public class ServerNotificationProcessor extends DefaultNotificationProcessor {
 
     private Server server;
 
@@ -29,17 +23,8 @@ public class ServerNotificationProcessor implements INotificationProcessor {
     }
 
     @Override
-    public void defaultProcess(INotification notification) {
-    }
-
-    @Override
     public void processNotification(EntityUpdate entityUpdate) {
         getServer().getWorldManager().notifyToNearEntities(entityUpdate.entityId, entityUpdate);
-    }
-
-    @Override
-    public void processNotification(RemoveEntity removeEntity) {
-        defaultProcess(removeEntity);
     }
 
     @Override
@@ -81,13 +66,4 @@ public class ServerNotificationProcessor implements INotificationProcessor {
         getServer().getWorldManager().registerItem(object);
     }
 
-    @Override
-    public void processNotification(MovementNotification movementNotification) {
-        defaultProcess(movementNotification);
-    }
-
-    @Override
-    public void processNotification(FXNotification fxNotification) {
-        defaultProcess(fxNotification);
-    }
 }

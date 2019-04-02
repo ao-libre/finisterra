@@ -1,14 +1,14 @@
 package game.managers;
 
-import model.textures.BundledAnimation;
-import game.handlers.AnimationHandler;
-import shared.model.map.Map;
-import shared.model.map.Tile;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import game.handlers.AnimationHandler;
+import model.textures.BundledAnimation;
+import shared.model.map.Map;
+import shared.model.map.Tile;
 
 import java.util.HashMap;
 

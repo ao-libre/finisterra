@@ -30,6 +30,7 @@ public class ObjectLoader extends Loader<Map<Integer, Obj>> {
         iniFile.load(file);
         int numObjs = Integer.parseInt(iniFile.get("init", "NumOBJs"));
 
+        ObjectFactory objectFactory = new ObjectFactory();
         for (int i = 1; i <= numObjs; i++) {
             Profile.Section section = iniFile.get(OBJ + String.valueOf(i));
             if (section == null) {
@@ -38,8 +39,8 @@ public class ObjectLoader extends Loader<Map<Integer, Obj>> {
             Integer type = section.get(OBJTYPE, int.class);
             Integer grhIndex = section.get(GRH_INDEX, int.class);
             String name = section.get(NAME);
-            Obj object = ObjectFactory.createObject(i, type, name, grhIndex);
-            ObjectFactory.fillObject(object, section);
+            Obj object = objectFactory.createObject(i, type, name, grhIndex);
+            objectFactory.fillObject(object, section);
             objects.put(i, object);
         }
         return objects;

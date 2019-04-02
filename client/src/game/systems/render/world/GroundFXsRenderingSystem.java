@@ -1,12 +1,5 @@
 package game.systems.render.world;
 
-import game.handlers.DescriptorHandler;
-import game.managers.WorldManager;
-import game.systems.camera.CameraSystem;
-import model.descriptors.FXDescriptor;
-import shared.model.map.Tile;
-import model.textures.BundledAnimation;
-import shared.util.Util;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
@@ -17,9 +10,16 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.esotericsoftware.minlog.Log;
 import entity.Ground;
 import entity.character.Character;
+import game.handlers.DescriptorHandler;
+import game.managers.WorldManager;
+import game.systems.camera.CameraSystem;
 import graphics.FX;
+import model.descriptors.FXDescriptor;
+import model.textures.BundledAnimation;
 import position.Pos2D;
 import position.WorldPos;
+import shared.model.map.Tile;
+import shared.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;

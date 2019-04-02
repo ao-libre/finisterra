@@ -1,16 +1,6 @@
 package game.network;
 
-import game.screens.GameScreen;
-import game.ui.GUI;
-import game.managers.WorldManager;
-import shared.network.interaction.DropItem;
-import shared.network.interfaces.INotification;
-import shared.network.interfaces.INotificationProcessor;
-import shared.network.inventory.InventoryUpdate;
-import shared.network.movement.MovementNotification;
-import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.FXNotification;
-import shared.network.notifications.RemoveEntity;
+import camera.Focused;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.Entity;
@@ -18,14 +8,19 @@ import com.artemis.EntityEdit;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
+import game.managers.WorldManager;
+import game.screens.GameScreen;
+import game.ui.GUI;
+import shared.network.interfaces.DefaultNotificationProcessor;
+import shared.network.inventory.InventoryUpdate;
+import shared.network.movement.MovementNotification;
+import shared.network.notifications.EntityUpdate;
+import shared.network.notifications.FXNotification;
+import shared.network.notifications.RemoveEntity;
 
 import static com.artemis.E.E;
 
-public class ClientNotificationProcessor implements INotificationProcessor {
-
-    @Override
-    public void defaultProcess(INotification notification) {
-    }
+public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     @Override
     public void processNotification(EntityUpdate entityUpdate) {
@@ -34,6 +29,9 @@ public class ClientNotificationProcessor implements INotificationProcessor {
             Entity newEntity = GameScreen.getWorld().createEntity();
             WorldManager.registerEntity(entityUpdate.entityId, newEntity.getId());
             addComponentsToEntity(newEntity, entityUpdate);
+            if (newEntity.getComponent(Focused.class) != null) {
+                GameScreen.setPlayer(newEntity.getId());
+            }
         } else {
             Log.info("Network entity exists: " + entityUpdate.entityId + ". Updating");
             updateEntity(entityUpdate);
@@ -60,11 +58,6 @@ public class ClientNotificationProcessor implements INotificationProcessor {
             }
         });
         GUI.getInventory().updateUserInventory();
-    }
-
-    @Override
-    public void processNotification(DropItem dropItem) {
-        defaultProcess(dropItem);
     }
 
     @Override

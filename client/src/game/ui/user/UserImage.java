@@ -1,10 +1,5 @@
 package game.ui.user;
 
-import game.screens.GameScreen;
-import game.utils.Colors;
-import game.utils.Fonts;
-import model.textures.BundledAnimation;
-import game.handlers.AnimationHandler;
 import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -17,6 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.sun.javafx.text.GlyphLayout;
 import entity.Heading;
+import game.handlers.AnimationHandler;
+import game.screens.GameScreen;
+import game.utils.Colors;
+import game.utils.Fonts;
+import model.textures.BundledAnimation;
 
 import static com.artemis.E.E;
 

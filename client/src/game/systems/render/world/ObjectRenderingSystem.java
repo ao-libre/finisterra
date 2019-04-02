@@ -1,17 +1,17 @@
 package game.systems.render.world;
 
-import game.handlers.ObjectHandler;
-import game.systems.camera.CameraSystem;
-import shared.model.map.Tile;
-import shared.objects.types.Obj;
-import shared.util.Util;
 import com.artemis.Aspect;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entity.Object;
+import game.handlers.ObjectHandler;
+import game.systems.camera.CameraSystem;
 import position.Pos2D;
 import position.WorldPos;
+import shared.model.map.Tile;
+import shared.objects.types.Obj;
+import shared.util.Util;
 
 import java.util.Optional;
 

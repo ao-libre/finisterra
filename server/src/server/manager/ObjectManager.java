@@ -15,18 +15,18 @@ import java.util.stream.Collectors;
 /**
  * Load and contains all the objects
  */
-public class ObjectManager extends DefaultManager {
+public class ObjectManager implements IManager {
 
-    private DescriptorsReader reader = new ServerDescriptorReader();
+    private DescriptorsReader reader;
     private Map<Integer, Obj> objects;
 
-    public ObjectManager(Server server) {
-        super(server);
+    public ObjectManager() {
+        init();
     }
 
-    @Override
     public void init() {
         Log.info("Loading objects...");
+        reader = new ServerDescriptorReader();
         objects = reader.loadObjects("obj");
     }
 
@@ -37,4 +37,10 @@ public class ObjectManager extends DefaultManager {
     public Set<Obj> getTypeObjects(Type type) {
         return objects.values().stream().filter(obj -> obj.getType().equals(type)).collect(Collectors.toSet());
     }
+
+    @Override
+    public Server getServer() {
+        return null;
+    }
+
 }

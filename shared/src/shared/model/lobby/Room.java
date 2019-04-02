@@ -1,4 +1,4 @@
-package server.network.model;
+package shared.model.lobby;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +9,8 @@ public class Room {
     private final int id = ThreadLocalRandom.current().nextInt();
     private Set<Player> players = new HashSet<>();
     private int maxPlayers;
+
+    private Room() {}
 
     public Room(int maxPlayers) {
         this.maxPlayers = maxPlayers;
@@ -25,15 +27,20 @@ public class Room {
         return players.size() <= maxPlayers;
     }
 
-    public boolean hasPlayer(Player player) {
-        return players.contains(player);
+    public void remove(Player player) {
+        players.remove(player);
     }
 
-    public void exit(Player player) {
-        players.remove(player);
+    public boolean has(Player player) {
+        return players.contains(player);
     }
 
     public Set<Player> getPlayers() {
         return players;
+    }
+
+    @Override
+    public String toString() {
+        return "Room: " + players.size() + "/" + maxPlayers;
     }
 }

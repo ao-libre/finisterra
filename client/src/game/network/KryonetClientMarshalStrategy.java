@@ -13,16 +13,10 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
     private String host;
     private int port;
 
-    public KryonetClientMarshalStrategy() {
-        this.host = "localhost";
-        this.port = 7666;
-        endpoint = new Client(8192, 8192);
-    }
-
     public KryonetClientMarshalStrategy(String host, int port) {
         this.host = host;
         this.port = port;
-        endpoint = new Client();
+        endpoint = new Client(8192, 8192);
     }
 
     public void setHost(String host) {
@@ -57,7 +51,6 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
         endpoint.addListener(listener); // can be safely called more than once.
         endpoint.start();
         connectEndpoint(); // Let it block! Let it block! Let it block! ♫
-//      new Thread(() -> connectEndpoint()).start();
     }
 
     @Override

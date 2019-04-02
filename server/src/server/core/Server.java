@@ -1,16 +1,14 @@
 package server.core;
 
-import com.artemis.*;
-import com.badlogic.gdx.Gdx;
-import network.Network;
+import com.artemis.FluidEntityPlugin;
+import com.artemis.SuperMapper;
+import com.artemis.World;
+import com.artemis.WorldConfigurationBuilder;
 import server.manager.*;
-import server.map.Maps;
-import server.manager.NetworkManager;
-import server.network.model.Player;
 import server.systems.RandomMovementSystem;
+import server.systems.ServerSystem;
 import shared.interfaces.Hero;
-import shared.map.AutoTiler;
-import shared.map.model.MapDescriptor;
+import shared.model.lobby.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,20 +20,25 @@ public class Server  {
 
     private final int tcpPort;
     private final int udpPort;
+    private ObjectManager objectManager;
     private World world;
     private final WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
     private Map<Class<? extends IManager>, IManager> managers = new HashMap<>();
     private KryonetServerMarshalStrategy strategy;
+    private Set<Player> players;
 
-    public Server(int tcpPort, int udpPort) {
+    public Server(int tcpPort, int udpPort, ObjectManager objectManager) {
         this.tcpPort = tcpPort;
         this.udpPort = udpPort;
+        this.objectManager = objectManager;
+        create();
     }
 
     public void create() {
         initWorld();
         createMap();
         initManagers();
+        createWorld();
     }
 
     private void initManagers() {
@@ -44,8 +47,8 @@ public class Server  {
         managers.put(ItemManager.class, new ItemManager(this));
         managers.put(SpellManager.class, new SpellManager(this));
         managers.put(MapManager.class, new MapManager(this));
+        managers.put(ObjectManager.class, objectManager);
         managers.put(WorldManager.class, new WorldManager(this));
-        managers.put(SpellManager.class, new SpellManager(this));
     }
 
     public World getWorld() {
@@ -57,12 +60,11 @@ public class Server  {
 
         strategy = new KryonetServerMarshalStrategy(tcpPort, udpPort);
         builder
-                .with(new SuperMapper())
+                .with(new FluidEntityPlugin())
                 .with(new ServerSystem(this, strategy))
                 .with(new RandomMovementSystem(this));
         world = new World(builder.build());
         System.out.println("WORLD CREATED");
-
     }
 
 
@@ -82,7 +84,14 @@ public class Server  {
     }
 
     public void addPlayers(Set<Player> players) {
-        // TODO
+        this.players = players;
+
+        players.forEach(player -> {
+            // register player
+
+            // create entity
+            // notify
+        });
     }
 
     public <T extends IManager> T getManager(Class<T> managerType) {

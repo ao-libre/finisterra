@@ -1,13 +1,13 @@
 package game.handlers;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Json;
 import model.descriptors.*;
 import model.readers.GenericReader;
 import model.serializers.BodyDescriptorSerializer;
 import model.serializers.GraphicsSerializer;
 import shared.model.Graphic;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Json;
 
 import java.util.ArrayList;
 import java.util.List;

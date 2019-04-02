@@ -1,12 +1,12 @@
 package game.utils;
 
-import game.AOGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import game.AOGame;
 
 public class Fonts {
 
@@ -50,7 +50,7 @@ public class Fonts {
     }
 
     private static BitmapFont generate(Color color, int size, Color borderColor, int borderWidth, int shadowOffset, int spaceX, String font) {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(AOGame.GAME_FONTS_PATH + font));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(Resources.GAME_FONTS_PATH + font));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = size;
         parameter.color = color;

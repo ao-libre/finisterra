@@ -1,7 +1,7 @@
 package game.managers;
 
-import game.screens.GameScreen;
 import com.artemis.World;
+import game.screens.GameScreen;
 
 import java.util.HashMap;
 import java.util.HashSet;

@@ -1,15 +1,18 @@
 package server.network;
 
+import camera.Focused;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.World;
 import com.esotericsoftware.minlog.Log;
 import entity.*;
 import entity.Object;
+import entity.character.CanWrite;
 import entity.character.info.Inventory;
 import entity.character.states.Meditating;
 import graphics.FX;
 import movement.Destination;
+import physics.AOPhysics;
 import physics.AttackAnimation;
 import position.WorldPos;
 import server.core.Server;
@@ -18,14 +21,16 @@ import server.utils.WorldUtils;
 import shared.interfaces.Constants;
 import shared.interfaces.FXs;
 import shared.model.Spell;
+import shared.model.lobby.Player;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.MeditateRequest;
 import shared.network.interaction.TakeItemRequest;
 import shared.network.interaction.TalkRequest;
-import shared.network.interfaces.IRequestProcessor;
+import shared.network.interfaces.DefaultRequestProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
+import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.login.LoginOK;
 import shared.network.login.LoginRequest;
 import shared.network.movement.MovementNotification;
@@ -43,8 +48,7 @@ import static server.utils.WorldUtils.WorldUtils;
 /**
  * Every packet received from users will be processed here
  */
-public class ServerRequestProcessor implements IRequestProcessor {
-
+public class ServerRequestProcessor extends DefaultRequestProcessor {
 
     private Server server;
 
@@ -58,6 +62,41 @@ public class ServerRequestProcessor implements IRequestProcessor {
 
     public Server getServer() {
         return server;
+    }
+
+    private NetworkManager getNetworkManager() {
+        return getServer().getNetworkManager();
+    }
+
+    private MapManager getMapManager() {
+        return getServer().getMapManager();
+    }
+
+    private WorldManager getWorldManager() {
+        return getServer().getWorldManager();
+    }
+
+    private CombatManager getCombatManager() {
+        return getServer().getCombatManager();
+    }
+
+    private ItemManager getItemManager() {
+        return getServer().getItemManager();
+    }
+
+    private SpellManager getSpellManager() {
+        return getServer().getSpellManager();
+    }
+
+    private List<WorldPos> getArea(WorldPos worldPos, int range /*impar*/) {
+        List<WorldPos> positions = new ArrayList<>();
+        int i = range / 2;
+        for (int x = worldPos.x - i; x <= worldPos.x + i ; x++) {
+            for (int y = worldPos.y - i; y <= worldPos.y + i ; y++) {
+                positions.add(new WorldPos(x, y, worldPos.map));
+            }
+        }
+        return positions;
     }
 
     /**
@@ -74,8 +113,18 @@ public class ServerRequestProcessor implements IRequestProcessor {
         getWorldManager().registerEntity(connectionId, entity);
     }
 
-    private NetworkManager getNetworkManager() {
-        return getServer().getNetworkManager();
+    @Override
+    public void processRequest(PlayerLoginRequest playerLoginRequest, int connectionId) {
+        Player player = playerLoginRequest.getPlayer();
+        final int entity = getWorldManager().createEntity(player.getPlayerName(), player.getHero().ordinal());
+        int mapEntityId = getMapManager().mapEntity;
+        getNetworkManager().sendTo(connectionId, new EntityUpdate(mapEntityId, WorldUtils(getWorld()).getComponents(mapEntityId), new Class[0]));
+        List<Component> components = WorldUtils(getWorld()).getComponents(getWorld().getEntity(entity));
+        components.add(new Focused());
+        components.add(new AOPhysics());
+        components.add(new CanWrite());
+        getNetworkManager().sendTo(connectionId, new EntityUpdate(entity, components.toArray(new Component[0]), new Class[0]));
+        getWorldManager().registerEntity(connectionId, entity);
     }
 
     /**
@@ -126,14 +175,6 @@ public class ServerRequestProcessor implements IRequestProcessor {
         getNetworkManager().sendTo(connectionId, new MovementResponse(request.requestNumber, nextPos));
     }
 
-    private MapManager getMapManager() {
-        return getServer().getMapManager();
-    }
-
-    private WorldManager getWorldManager() {
-        return getServer().getWorldManager();
-    }
-
     /**
      * Attack and notify, if it was effective or not, to near users
      * @param attackRequest attack type
@@ -167,10 +208,6 @@ public class ServerRequestProcessor implements IRequestProcessor {
         getWorldManager().notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new AttackAnimation()}, new Class[0]));
     }
 
-    private CombatManager getCombatManager() {
-        return getServer().getCombatManager();
-    }
-
     /**
      * User wants to use or act over an item, do action and notify.
      * @param itemAction user slot number
@@ -195,10 +232,6 @@ public class ServerRequestProcessor implements IRequestProcessor {
                 getItemManager().use(playerId, item);
             }
         }
-    }
-
-    private ItemManager getItemManager() {
-        return getServer().getItemManager();
     }
 
     /**
@@ -297,21 +330,6 @@ public class ServerRequestProcessor implements IRequestProcessor {
             }
         }
 
-    }
-
-    private SpellManager getSpellManager() {
-        return getServer().getSpellManager();
-    }
-
-    private List<WorldPos> getArea(WorldPos worldPos, int range /*impar*/) {
-        List<WorldPos> positions = new ArrayList<>();
-        int i = range / 2;
-        for (int x = worldPos.x - i; x <= worldPos.x + i ; x++) {
-            for (int y = worldPos.y - i; y <= worldPos.y + i ; y++) {
-                positions.add(new WorldPos(x, y, worldPos.map));
-            }
-        }
-        return positions;
     }
 
 }

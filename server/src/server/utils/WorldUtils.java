@@ -7,7 +7,6 @@ import com.artemis.utils.Bag;
 import entity.Heading;
 import physics.AOPhysics;
 import position.WorldPos;
-import server.core.Server;
 import shared.interfaces.Constants;
 
 import java.util.ArrayList;

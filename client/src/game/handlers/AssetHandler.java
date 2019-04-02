@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 
 public class AssetHandler {
 
-    private static HandlerState state = HandlerState.UNLOADED;
+    private static StateHandler state = StateHandler.UNLOADED;
 
     public static void load() {
         // TODO: Needs refactoring
@@ -21,14 +21,14 @@ public class AssetHandler {
         ParticlesHandler.load();
         Gdx.app.log("Loading", "Finish loading");
 
-        state = HandlerState.LOADED;
+        state = StateHandler.LOADED;
     }
 
     public static void unload() {
         // TODO: Implement this
     }
 
-    public static HandlerState getState() {
+    public static StateHandler getState() {
         return state;
     }
 }

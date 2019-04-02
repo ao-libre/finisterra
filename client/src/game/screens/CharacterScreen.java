@@ -1,9 +1,5 @@
 package game.screens;
 
-import static com.artemis.E.E;
-
-import game.handlers.ObjectHandler;
-import game.utils.Skins;
 import com.artemis.E;
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
@@ -12,14 +8,21 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import game.handlers.ObjectHandler;
+import game.utils.Skins;
 import shared.objects.types.*;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.artemis.E.E;
 
 public class CharacterScreen extends ScreenAdapter {
 

@@ -9,8 +9,6 @@ import movement.RandomMovement;
 import physics.AOPhysics;
 import position.WorldPos;
 import server.core.Server;
-import server.manager.MapManager;
-import server.manager.WorldManager;
 import server.utils.WorldUtils;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;

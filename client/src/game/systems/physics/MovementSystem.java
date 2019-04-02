@@ -1,15 +1,15 @@
 package game.systems.physics;
 
-import game.utils.WorldUtils;
-import shared.model.map.Tile;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
+import game.utils.WorldUtils;
 import movement.Destination;
 import physics.AOPhysics;
 import position.WorldPos;
+import shared.model.map.Tile;
 
 import static com.artemis.E.E;
 

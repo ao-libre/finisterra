@@ -1,7 +1,5 @@
 package game.systems.anim;
 
-import model.textures.BundledAnimation;
-import game.handlers.AnimationHandler;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
@@ -10,6 +8,8 @@ import entity.Heading;
 import entity.Shield;
 import entity.Weapon;
 import entity.character.Character;
+import game.handlers.AnimationHandler;
+import model.textures.BundledAnimation;
 import movement.Moving;
 import physics.AttackAnimation;
 

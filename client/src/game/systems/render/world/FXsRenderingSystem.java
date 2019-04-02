@@ -1,12 +1,5 @@
 package game.systems.render.world;
 
-import game.handlers.DescriptorHandler;
-import game.systems.camera.CameraSystem;
-import model.descriptors.BodyDescriptor;
-import model.descriptors.FXDescriptor;
-import shared.model.map.Tile;
-import model.textures.BundledAnimation;
-import shared.util.Util;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
@@ -16,11 +9,21 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entity.Body;
 import entity.Ground;
+import game.handlers.DescriptorHandler;
+import game.systems.camera.CameraSystem;
 import graphics.FX;
+import model.descriptors.BodyDescriptor;
+import model.descriptors.FXDescriptor;
+import model.textures.BundledAnimation;
 import position.Pos2D;
 import position.WorldPos;
+import shared.model.map.Tile;
+import shared.util.Util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.artemis.E.E;
 

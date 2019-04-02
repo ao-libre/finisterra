@@ -1,10 +1,8 @@
-package server.core;
+package server.systems;
 
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
-import server.manager.MapManager;
-import server.manager.WorldManager;
-import server.manager.NetworkManager;
+import server.core.Server;
 import server.network.ServerNotificationProcessor;
 import server.network.ServerRequestProcessor;
 import shared.network.init.NetworkDictionary;
@@ -13,13 +11,17 @@ import shared.network.interfaces.INotificationProcessor;
 import shared.network.interfaces.IRequest;
 import shared.network.interfaces.IRequestProcessor;
 
+import java.util.Deque;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class ServerSystem extends MarshalSystem {
 
     private IRequestProcessor requestProcessor;
     private INotificationProcessor notificationProcessor;
     private Server server;
+    private Deque<NetworkJob> netQueue = new ConcurrentLinkedDeque<>();
+
 
     public ServerSystem(Server server, MarshalStrategy strategy) {
         this(server, strategy, new ServerRequestProcessor(server), new ServerNotificationProcessor(server));
@@ -35,11 +37,26 @@ public class ServerSystem extends MarshalSystem {
 
     @Override
     public void received(int connectionId, Object object) {
+        netQueue.add(new NetworkJob(connectionId, object));
+    }
+
+    private void processJob(NetworkJob job) {
+        int connectionId = job.connectionId;
+        Object object = job.receivedObject;
         if (object instanceof IRequest) {
             ((IRequest) object).accept(requestProcessor, connectionId);
         } else if (object instanceof INotification) {
             ((INotification) object).accept(notificationProcessor);
         }
+    }
+
+    @Override
+    protected void processSystem() {
+        super.processSystem();
+        while (netQueue.peek() != null) {
+            processJob(netQueue.poll());
+        }
+
     }
 
     @Override
@@ -59,5 +76,15 @@ public class ServerSystem extends MarshalSystem {
 
     public Optional<Server> getServer() {
         return Optional.ofNullable(server);
+    }
+
+    private static class NetworkJob {
+        private final int connectionId;
+        private final Object receivedObject;
+
+        private NetworkJob(int connectionId, Object receivedObject) {
+            this.connectionId = connectionId;
+            this.receivedObject = receivedObject;
+        }
     }
 }

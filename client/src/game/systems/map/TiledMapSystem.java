@@ -16,13 +16,13 @@
  *******************************************************************************/
 package game.systems.map;
 
-import game.handlers.MapHandler;
-import shared.model.map.Map;
 import camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
+import game.handlers.MapHandler;
 import position.WorldPos;
+import shared.model.map.Map;
 
 import static com.artemis.E.E;
 

@@ -1,11 +1,5 @@
 package game.systems.render.world;
 
-import game.handlers.DescriptorHandler;
-import game.utils.Fonts;
-import game.systems.OrderedEntityProcessingSystem;
-import game.systems.camera.CameraSystem;
-import shared.model.map.Tile;
-import shared.util.Util;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
@@ -16,8 +10,14 @@ import com.badlogic.gdx.utils.Align;
 import com.esotericsoftware.minlog.Log;
 import entity.Body;
 import entity.CombatMessage;
+import game.handlers.DescriptorHandler;
+import game.systems.OrderedEntityProcessingSystem;
+import game.systems.camera.CameraSystem;
+import game.utils.Fonts;
 import position.Pos2D;
 import position.WorldPos;
+import shared.model.map.Tile;
+import shared.util.Util;
 
 import java.util.Comparator;
 

@@ -1,31 +1,36 @@
 package game;
 
-import game.handlers.HandlerState;
-import game.systems.map.MapSystem;
-import game.systems.render.world.*;
+import com.artemis.SuperMapper;
+import com.artemis.World;
+import com.artemis.WorldConfigurationBuilder;
+import com.artemis.managers.TagManager;
+import com.artemis.managers.UuidEntityManager;
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.handlers.AssetHandler;
+import game.handlers.StateHandler;
 import game.screens.GameScreen;
 import game.screens.LoginScreen;
+import game.screens.ScreenEnum;
+import game.screens.ScreenManager;
 import game.systems.anim.IdleAnimationSystem;
 import game.systems.anim.MovementAnimationSystem;
 import game.systems.camera.CameraFocusSystem;
 import game.systems.camera.CameraMovementSystem;
 import game.systems.camera.CameraSystem;
-import game.systems.map.TiledMapSystem;
+import game.systems.map.MapSystem;
 import game.systems.network.ClientSystem;
 import game.systems.physics.MovementProcessorSystem;
 import game.systems.physics.MovementSystem;
 import game.systems.physics.PhysicsAttackSystem;
 import game.systems.physics.PlayerInputSystem;
 import game.systems.render.ui.CoordinatesRenderingSystem;
-import com.artemis.SuperMapper;
-import com.artemis.World;
-import com.artemis.WorldConfigurationBuilder;
-import com.artemis.managers.TagManager;
-import com.artemis.managers.UuidEntityManager;
-import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import game.systems.render.world.*;
+import shared.model.lobby.Player;
 
 /**
  * Represents the game application.
@@ -35,91 +40,24 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class AOGame extends Game {
 
-    // TODO: Class to handle resources?
-    public static final String GAME_DATA_PATH = "data/";
-    public static final String GAME_GRAPHICS_PATH = GAME_DATA_PATH + "graficos/";
-    public static final String GAME_FXS_PATH = GAME_DATA_PATH + "fxs/";
-    public static final String GAME_PARTICLES_PATH = GAME_DATA_PATH + "particles/";
-    public static final String GAME_FONTS_PATH = GAME_DATA_PATH + "fonts/";
-    public static final String GAME_MAPS_PATH = GAME_DATA_PATH + "mapas/";
-    public static final String GAME_INIT_PATH = GAME_DATA_PATH + "init/";
-    public static final String GAME_SHADERS_PATH = GAME_DATA_PATH + "shaders/";
-    public static final String GAME_GRAPHICS_EXTENSION = ".png";
-    public static final String GAME_SHADERS_LIGHT = "light.png";
-
-    // TODO: This is for use in LwjglApplicationConfiguration and is platform-specific. Move to DesktopLauncher.
-    public static final int GAME_SCREEN_WIDTH = 1280;
-    public static final int GAME_SCREEN_HEIGHT = 768;
     public static final float GAME_SCREEN_ZOOM = 1.8f;
-    public static final boolean GAME_FULL_SCREEN = false;
-    public static final boolean GAME_VSYNC_ENABLED = true;
-
-
-    protected SpriteBatch spriteBatch; // This is only used in GameScreen
-
-    private GameScreen gameScreen; // Game main screen
     private ClientSystem clientSystem; // Marshal client system (Kryonet)
-    private World world;
+
+    // Screens
+    private GameScreen gameScreen; // Game main screen
+    private LoginScreen loginScreen;
 
     @Override
     public void create() {
         Gdx.app.debug("AOGame", "Creating AOGame...");
-        // Loading screen
-        //
+
         // Load resources & stuff.
         AssetHandler.load();
-        if (AssetHandler.getState() == HandlerState.LOADED)
+        if (AssetHandler.getState() == StateHandler.LOADED)
             Gdx.app.debug("AOGame", "Handler loaded!");
-        // Initialize network stuff
-        clientSystem = new ClientSystem();
-//        // TODO: Move this to login screen, read from text field, etc.
-//        clientSystem.getKryonetClient().setHost("ec2-18-219-97-32.us-east-2.compute.amazonaws.com");
-//        clientSystem.getKryonetClient().setPort(7666);
-        this.spriteBatch = new SpriteBatch();
-        initWorld();
-        //
-        // Preload GameScreen
-        gameScreen = new GameScreen(world);
-        // Login screen / Launcher
-        setScreen(new LoginScreen());
-    }
 
-    private static final int FONTS_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL - 1;
-
-    public void initWorld() {
-        WorldConfigurationBuilder worldConfigBuilder = new WorldConfigurationBuilder();
-        worldConfigBuilder.with(new SuperMapper())
-                .with(clientSystem)
-                // Player movement
-                .with(new PlayerInputSystem())
-                .with(new MovementProcessorSystem())
-                .with(new MovementAnimationSystem())
-                .with(new IdleAnimationSystem())
-                .with(new MovementSystem())
-                // Camera
-                .with(new CameraSystem(AOGame.GAME_SCREEN_ZOOM))
-                .with(new CameraFocusSystem())
-                .with(new CameraMovementSystem())
-                // Logic systems
-                .with(new PhysicsAttackSystem())
-                // Rendering
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new MapSystem())
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new GroundFXsRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ObjectRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ParticleRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new CharacterRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new FXsRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(spriteBatch))
-                .with(FONTS_PRIORITY, new StateRenderingSystem(spriteBatch))
-                .with(FONTS_PRIORITY, new CombatRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new NameRenderingSystem(spriteBatch))
-                .with(FONTS_PRIORITY, new DialogRenderingSystem(spriteBatch))
-                .with(FONTS_PRIORITY, new CharacterStatesRenderingSystem(spriteBatch))
-                // Other
-                .with(new TagManager())
-                .with(new UuidEntityManager()); // why?
-
-        world = new World(worldConfigBuilder.build()); // preload Artemis world
+        ScreenManager.getInstance().initialize(this);
+        toLogin();
     }
 
     @Override
@@ -130,25 +68,24 @@ public class AOGame extends Game {
         super.render();
     }
 
-
     public void showGameScreen() {
         setScreen(gameScreen);
     }
 
-    public SpriteBatch getSpriteBatch() {
-        return spriteBatch;
+    public void toGame(String host, int port, Player player) {
+        ScreenManager.getInstance().showScreen(ScreenEnum.GAME, host, port, player);
     }
 
-    public GameScreen getGameScreen() {
-        return gameScreen;
+    public void toLogin() {
+        ScreenManager.getInstance().showScreen(ScreenEnum.LOGIN);
     }
 
-    public void setGameScreen(GameScreen gameScreen) {
-        this.gameScreen = gameScreen;
+    public void toLobby(Object... params) {
+        ScreenManager.getInstance().showScreen(ScreenEnum.LOBBY, params);
     }
 
-    public Screen getCurrentScreen() {
-        return getScreen();
+    public void toRoom(Object... params) {
+        ScreenManager.getInstance().showScreen(ScreenEnum.ROOM, params);
     }
 
     public ClientSystem getClientSystem() {

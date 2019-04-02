@@ -1,16 +1,16 @@
 package game.ui;
 
-import game.handlers.ObjectHandler;
-import shared.objects.types.Obj;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import game.handlers.ObjectHandler;
+import shared.objects.types.Obj;
 
 import java.util.Optional;
 
-import static entity.character.info.Inventory.*;
+import static entity.character.info.Inventory.Item;
 
 public class Slot extends Actor {
 

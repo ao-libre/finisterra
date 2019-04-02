@@ -1,8 +1,9 @@
 package model.readers;
 
 import game.AOGame;
-import shared.model.Spell;
+import game.utils.Resources;
 import model.loaders.MapLoader;
+import shared.model.Spell;
 import shared.model.loaders.ObjectLoader;
 import shared.model.loaders.SpellLoader;
 import shared.model.map.Map;
@@ -15,20 +16,20 @@ public class AODescriptorsReader implements DescriptorsReader {
     public Map loadMap(String map) {
         Reader<Map> reader = new Reader<>();
         MapLoader loader = new MapLoader();
-        return reader.read(AOGame.GAME_MAPS_PATH + "Mapa" + map + ".map", loader);
+        return reader.read(Resources.GAME_MAPS_PATH + "Mapa" + map + ".map", loader);
     }
 
     @Override
     public java.util.Map<Integer, Obj> loadObjects(String objects) {
         Reader<java.util.Map<Integer, Obj>> reader = new Reader<>();
         ObjectLoader loader = new ObjectLoader();
-        return reader.read(AOGame.GAME_INIT_PATH + objects + ".dat", loader);
+        return reader.read(Resources.GAME_INIT_PATH + objects + ".dat", loader);
     }
 
     @Override
     public java.util.Map<Integer, Spell> loadSpells(String spells) {
         Reader<java.util.Map<Integer, Spell>> reader = new Reader<>();
-        return reader.read(AOGame.GAME_INIT_PATH + spells + ".dat", new SpellLoader());
+        return reader.read(Resources.GAME_INIT_PATH + spells + ".dat", new SpellLoader());
     }
 
 }

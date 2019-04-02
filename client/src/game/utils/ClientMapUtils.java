@@ -1,12 +1,12 @@
 package game.utils;
 
-import game.screens.GameScreen;
+import com.artemis.E;
 import game.handlers.MapHandler;
+import game.screens.GameScreen;
+import position.WorldPos;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.model.map.WorldPosition;
-import com.artemis.E;
-import position.WorldPos;
 
 public class ClientMapUtils {
 

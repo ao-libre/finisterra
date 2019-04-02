@@ -1,11 +1,5 @@
 package game.systems.render.world;
 
-import game.utils.Fonts;
-import game.systems.OrderedEntityProcessingSystem;
-import game.systems.camera.CameraSystem;
-import shared.interfaces.Hero;
-import shared.model.map.Tile;
-import shared.util.Util;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
@@ -14,8 +8,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entity.character.Character;
 import entity.character.info.Name;
+import game.systems.OrderedEntityProcessingSystem;
+import game.systems.camera.CameraSystem;
+import game.utils.Fonts;
 import position.Pos2D;
 import position.WorldPos;
+import shared.interfaces.Hero;
+import shared.model.map.Tile;
+import shared.util.Util;
 
 import java.util.Comparator;
 

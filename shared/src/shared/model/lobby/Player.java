@@ -1,16 +1,27 @@
-package server.network.model;
+package shared.model.lobby;
 
 import shared.interfaces.Hero;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class Player {
 
-    private final int connectionId;
+    private int connectionId;
+    private String playerName;
     private Team team;
     private Hero hero;
     private boolean ready;
 
-    public Player(int connectionId) {
+    private Player() {}
+
+    public Player(int connectionId, String playerName) {
         this.connectionId = connectionId;
+        this.playerName = playerName;
+        this.hero = Hero.values()[ThreadLocalRandom.current().nextInt(Hero.values().length)];
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 
     public int getConnectionId() {
@@ -39,5 +50,10 @@ public class Player {
 
     public void setReady(boolean ready) {
         this.ready = ready;
+    }
+
+    @Override
+    public String toString() {
+        return getPlayerName() + " Team: " + getTeam().toString() + " Ready: " + isReady();
     }
 }

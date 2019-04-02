@@ -1,61 +1,48 @@
 package game.systems.network;
 
-import game.network.ClientNotificationProcessor;
+import com.badlogic.gdx.Gdx;
+import game.network.GameNotificationProcessor;
 import game.network.ClientResponseProcessor;
 import game.network.KryonetClientMarshalStrategy;
+import net.mostlyoriginal.api.network.marshal.common.MarshalState;
+import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
+import net.mostlyoriginal.api.network.system.MarshalSystem;
+import shared.interfaces.Hero;
 import shared.network.init.NetworkDictionary;
 import shared.network.interfaces.INotification;
 import shared.network.interfaces.INotificationProcessor;
 import shared.network.interfaces.IResponse;
 import shared.network.interfaces.IResponseProcessor;
+import shared.network.lobby.JoinLobbyRequest;
 import shared.network.login.LoginRequest;
-import com.badlogic.gdx.Gdx;
-import net.mostlyoriginal.api.network.marshal.common.MarshalState;
-import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
-import net.mostlyoriginal.api.network.system.MarshalSystem;
 
 public class ClientSystem extends MarshalSystem {
 
     public static IResponseProcessor responseProcessor = new ClientResponseProcessor();
-    public static INotificationProcessor notificationProcessor = new ClientNotificationProcessor();
+    public static INotificationProcessor notificationProcessor = new GameNotificationProcessor();
 
     public boolean login = true;
 
-    public ClientSystem() {
-        super(new NetworkDictionary(), new KryonetClientMarshalStrategy());
+    public ClientSystem(String host, int port) {
+        super(new NetworkDictionary(), new KryonetClientMarshalStrategy(host, port));
     }
 
-    public ClientSystem(MarshalStrategy client) {
-        super(new NetworkDictionary(), client);
-    }
+//    public void login(String username, Hero hero) {
+//        // TODO: Why thread? Could use a timeout but theoretically already connected & started.
+//        // TODO: Is explicit getMarshal().update() necessary?
+//        if (getMarshal().getState() == MarshalState.STARTED) {
+//            new Thread(() -> {
+//                sendLogin(username, hero);
+//                while (isLoggingIn()) {
+//                    getMarshal().update();
+//                    // wait connection ok
+//                }
+//            }).start();
+//        }
+//    }
 
-    @Override
-    public void start() {
-        if (getMarshal().getState() != MarshalState.STARTED || getMarshal().getState() != MarshalState.STARTING) {
-            super.start();
-        }
-    }
-
-    public void login(String user, int classId) {
-        // TODO: Why thread? Could use a timeout but theoretically already connected & started.
-        // TODO: Is explicit getMarshal().update() necessary?
-        if (getMarshal().getState() == MarshalState.STARTED) {
-            new Thread(() -> {
-                sendLogin(user, classId);
-                while (isLoggingIn()) {
-                    getMarshal().update();
-                    // wait connection ok
-                }
-            }).start();
-        }
-    }
-
-    private void sendLogin(String user, int classId) {
-        getMarshal().sendToAll(new LoginRequest(user, classId));
-    }
-
-    private boolean isLoggingIn() {
-        return login;
+    private void sendLogin(String username, Hero hero) {
+        getMarshal().sendToAll(new JoinLobbyRequest(username, hero));
     }
 
     public void loginFinished() {

@@ -1,16 +1,5 @@
 package object;
 
-import game.handlers.AssetHandler;
-import game.handlers.HandlerState;
-import game.screens.CharacterScreen;
-import game.systems.render.world.AnimationRenderingSystem;
-import object.systems.FaceChangerSystem;
-import game.systems.anim.IdleAnimationSystem;
-import game.systems.anim.MovementAnimationSystem;
-import game.systems.camera.CameraFocusSystem;
-import game.systems.camera.CameraMovementSystem;
-import game.systems.camera.CameraSystem;
-import game.systems.physics.PlayerInputSystem;
 import com.artemis.Entity;
 import com.artemis.SuperMapper;
 import com.artemis.World;
@@ -20,6 +9,17 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
+import game.handlers.AssetHandler;
+import game.handlers.StateHandler;
+import game.screens.CharacterScreen;
+import game.systems.anim.IdleAnimationSystem;
+import game.systems.anim.MovementAnimationSystem;
+import game.systems.camera.CameraFocusSystem;
+import game.systems.camera.CameraMovementSystem;
+import game.systems.camera.CameraSystem;
+import game.systems.physics.PlayerInputSystem;
+import game.systems.render.world.AnimationRenderingSystem;
+import object.systems.FaceChangerSystem;
 
 import static com.artemis.E.E;
 
@@ -37,7 +37,7 @@ public class ObjectCreator extends Game {
     public void create() {
         Gdx.app.debug("AOGame", "Opening Objects Creator...");
         AssetHandler.load();
-        if(AssetHandler.getState() == HandlerState.LOADED)
+        if(AssetHandler.getState() == StateHandler.LOADED)
             Gdx.app.debug("AOGame", "Handler loaded!");
         this.spriteBatch = new PolygonSpriteBatch();
         initWorld();

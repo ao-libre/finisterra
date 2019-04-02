@@ -16,12 +16,12 @@
  *******************************************************************************/
 package model.textures;
 
-import game.handlers.DescriptorHandler;
-import shared.model.Graphic;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.Array;
+import game.handlers.DescriptorHandler;
+import shared.model.Graphic;
 
 public class BundledAnimation {
 
