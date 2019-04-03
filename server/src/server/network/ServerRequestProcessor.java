@@ -11,6 +11,7 @@ import entity.character.CanWrite;
 import entity.character.info.Inventory;
 import entity.character.states.Meditating;
 import graphics.FX;
+import map.Cave;
 import movement.Destination;
 import physics.AOPhysics;
 import physics.AttackAnimation;
@@ -150,7 +151,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         WorldPos worldPos = player.getWorldPos();
         WorldPos oldPos = new WorldPos(worldPos);
         WorldPos nextPos = worldUtils.getNextPos(worldPos, request.movement);
-        boolean blocked = false; //MapUtils.isBlocked(MapManager.get(nextPos.map), nextPos);
+        Cave cave = E(getServer().getMapManager().mapEntity).getCave();
+        boolean blocked = cave.tiles[nextPos.x][nextPos.y];
         boolean occupied = MapUtils.hasEntity(getMapManager().getNearEntities(playerId), nextPos);
         if (!(player.hasImmobile() || blocked || occupied)) {
             Log.info("Player: " + playerId + ". Moved from: " + oldPos + " to: " + nextPos);

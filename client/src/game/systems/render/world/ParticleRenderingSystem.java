@@ -80,7 +80,7 @@ public class ParticleRenderingSystem extends IteratingSystem {
         }
         fx.particles.forEach(effect -> {
             ParticleEffect particleEffect = particles.computeIfAbsent(entityId, id -> new HashMap<>()).computeIfAbsent(effect, eff -> ParticlesHandler.getParticle(eff));
-            final float particleX = screenPos.x - (Tile.TILE_PIXEL_WIDTH / 2);
+            final float particleX = screenPos.x + (Tile.TILE_PIXEL_WIDTH / 2);
             final float particleY = screenPos.y - 4;
             particleEffect.setPosition(particleX, particleY);
             particleEffect.draw(batch, world.getDelta());

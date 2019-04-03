@@ -35,12 +35,12 @@ public class Util {
 
     public static Pos2D toScreen(WorldPos worldPos) {
         return new Pos2D(worldPos.x * Tile.TILE_PIXEL_WIDTH,
-                worldPos.y * Tile.TILE_PIXEL_HEIGHT);
+                worldPos.y * Tile.TILE_PIXEL_HEIGHT + Tile.TILE_PIXEL_HEIGHT);
     }
 
     public static Pos2D toScreen(Pos2D pos) {
         return new Pos2D(pos.x * Tile.TILE_PIXEL_WIDTH,
-                pos.y * Tile.TILE_PIXEL_HEIGHT);
+                pos.y * Tile.TILE_PIXEL_HEIGHT + Tile.TILE_PIXEL_HEIGHT);
     }
 
     public static Pos2D toGUI(Pos2D pos) {
@@ -49,7 +49,7 @@ public class Util {
     }
 
     public static WorldPos toWorld(Pos2D pos) {
-        return new WorldPos((int) (pos.x / Tile.TILE_PIXEL_WIDTH) + 1, (int) (pos.y / Tile.TILE_PIXEL_HEIGHT) + 1);
+        return new WorldPos((int) (pos.x / Tile.TILE_PIXEL_WIDTH), (int) (pos.y / Tile.TILE_PIXEL_HEIGHT));
     }
 
     public static WorldPos getNextPos(WorldPos pos, AOPhysics.Movement movement) {

@@ -1,5 +1,7 @@
 package server.map;
 
+import java.util.Arrays;
+
 import static com.badlogic.gdx.math.MathUtils.random;
 
 public class CaveGenerator {
@@ -49,6 +51,26 @@ public class CaveGenerator {
             return caveGenerator;
         }
 
+    }
+
+    public static void main(String args[]) {
+        CaveGenerator caveGenerator = CaveGenerator.Builder
+                .create()
+                .height(60)
+                .width(60)
+                .chanceAlive(0.35f)
+                .steps(3)
+                .build();
+        boolean[][] tiles = caveGenerator.generateMap();
+
+        for (boolean[] row : tiles)
+        {
+            String[] s = new String[row.length];
+            for (int i = 0; i < row.length; i++) {
+                s[i] = row[i] ? "X" : "-";
+            }
+            System.out.println(Arrays.toString(s));
+        }
     }
 
     public boolean[][] generateMap(){

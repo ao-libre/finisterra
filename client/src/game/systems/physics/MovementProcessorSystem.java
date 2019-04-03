@@ -9,11 +9,14 @@ import com.esotericsoftware.minlog.Log;
 import entity.Heading;
 import game.managers.WorldManager;
 import game.screens.GameScreen;
+import game.systems.map.CaveSystem;
+import game.systems.map.MapSystem;
 import movement.Destination;
 import physics.AOPhysics;
 import position.WorldPos;
 import shared.network.interaction.MeditateRequest;
 import shared.network.movement.MovementRequest;
+import shared.util.MapUtils;
 import shared.util.Util;
 
 import java.util.Optional;
@@ -25,6 +28,7 @@ import static com.artemis.E.E;
 @Wire
 public class MovementProcessorSystem extends IteratingSystem {
 
+    private CaveSystem caveSystem;
     public static java.util.Map<Integer, MovementRequest> requests = new ConcurrentHashMap<>();
     private static int requestNumber;
 
@@ -87,8 +91,8 @@ public class MovementProcessorSystem extends IteratingSystem {
                 nearEntities.remove(entity);
                 nearEntities.forEach(near -> Log.debug("Validating entity: " + near + " is not occuping the position"));
 
-                boolean blocked = false; //MapUtils.isBlocked(MapHandler.get(expectedPos.map), expectedPos);
-                boolean occupied = false; //MapUtils.hasEntity(nearEntities, expectedPos);
+                boolean blocked = caveSystem.isBlocked(expectedPos.x, expectedPos.y); //MapUtils.isBlocked(MapHandler.get(expectedPos.map), expectedPos);
+                boolean occupied = MapUtils.hasEntity(nearEntities, expectedPos);
                 boolean valid = !(blocked ||
                         occupied ||
                         player.hasImmobile());

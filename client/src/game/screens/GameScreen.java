@@ -13,6 +13,7 @@ import game.systems.anim.MovementAnimationSystem;
 import game.systems.camera.CameraFocusSystem;
 import game.systems.camera.CameraMovementSystem;
 import game.systems.camera.CameraSystem;
+import game.systems.map.CaveSystem;
 import game.systems.map.MapSystem;
 import game.systems.network.ClientSystem;
 import game.systems.physics.MovementProcessorSystem;
@@ -67,7 +68,7 @@ public class GameScreen extends ScreenAdapter {
                 // Logic systems
                 .with(new PhysicsAttackSystem())
                 // Rendering
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new MapSystem())
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new CaveSystem())
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new GroundFXsRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ObjectRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ParticleRenderingSystem(spriteBatch))

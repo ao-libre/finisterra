@@ -82,7 +82,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             this.player = player;
             this.heading = heading;
             this.screenPos = screenPos;
-            bodyPixelOffsetX = screenPos.x - Tile.TILE_PIXEL_WIDTH;
+            bodyPixelOffsetX = screenPos.x;
             bodyPixelOffsetY = screenPos.y;
             calculateOffsets();
         }

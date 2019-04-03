@@ -1,11 +1,14 @@
 package server.manager;
 
 import com.artemis.E;
+import com.artemis.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
+import map.Cave;
 import position.WorldPos;
 import server.core.Server;
+import server.map.CaveGenerator;
 import server.map.MapGenerator;
 import shared.map.AutoTiler;
 import shared.map.model.MapDescriptor;
@@ -25,8 +28,8 @@ public class MapManager extends DefaultManager {
 
     public static final int MAP_COUNT = 1; // TODO set to 1 to load faster
     public static final int MAX_DISTANCE = 15;
-    private static Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
-    private static Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
+    private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
+    private Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
 
     private static HashMap<Integer, shared.model.map.Map> maps = new HashMap<>();
     public int mapEntity;
@@ -37,21 +40,40 @@ public class MapManager extends DefaultManager {
 
     @Override
     public void init() {
-        String path = "map/tileset.json";
-        MapDescriptor map = AutoTiler.load(50, 50, Gdx.files.internal(path));
-        generateMapEntity(map, path);
+        CaveGenerator caveGenerator = CaveGenerator.Builder
+                .create()
+                .height(60)
+                .width(60)
+                .chanceAlive(0.35f)
+                .steps(3)
+                .build();
+        boolean[][] tiles = caveGenerator.generateMap();
+
+        for (boolean[] row : tiles)
+        {
+            String[] s = new String[row.length];
+            for (int i = 0; i < row.length; i++) {
+                s[i] = row[i] ? "X" : "-";
+            }
+            System.out.println(Arrays.toString(s));
+        }
+
+        Cave cave = new Cave(tiles, 60, 60);
+        Entity map = getServer().getWorld().createEntity();
+        map.edit().add(cave);
+        mapEntity = map.getId();
     }
 
-    public void generateMapEntity(MapDescriptor descriptor, String path) {
-        int[][] tiles = MapGenerator.generateMap(descriptor);
-        mapEntity = getServer().getWorld().create();
-
-        E map = E(mapEntity).map();
-        map.mapTiles(tiles);
-        map.mapPath(path);
-        map.mapHeight(descriptor.getMapHeight());
-        map.mapWidth(descriptor.getMapWidth());
-    }
+//    public void generateMapEntity(MapDescriptor descriptor, String path) {
+//        int[][] tiles = MapGenerator.generateMap(descriptor);
+//        mapEntity = getServer().getWorld().create();
+//
+//        E map = E(mapEntity).map();
+//        map.mapTiles(tiles);
+//        map.mapPath(path);
+//        map.mapHeight(descriptor.getMapHeight());
+//        map.mapWidth(descriptor.getMapWidth());
+//    }
 
     /**
      * @param entityId

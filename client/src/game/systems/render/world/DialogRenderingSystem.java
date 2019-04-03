@@ -68,7 +68,7 @@ public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
             Fonts.dialogLayout.setText(font, dialog.text);
             float width = Math.min(Fonts.dialogLayout.width, MAX_LENGTH);
             Fonts.dialogLayout.setText(font, dialog.text, font.getColor(), width, Align.center, true);
-            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (width + Tile.TILE_PIXEL_WIDTH) / 2;
+            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x + (Tile.TILE_PIXEL_WIDTH - width) / 2;
             float  up = Dialog.DEFAULT_TIME - dialog.time <= TIME ? (Dialog.DEFAULT_TIME - dialog.time) * VELOCITY : DISTANCE_TO_TOP;
             float offsetY = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY() - up;
             final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y + 50 - offsetY + Fonts.dialogLayout.height;

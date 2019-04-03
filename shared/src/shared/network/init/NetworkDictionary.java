@@ -9,6 +9,7 @@ import entity.character.info.*;
 import entity.character.states.*;
 import entity.character.status.*;
 import graphics.FX;
+import map.Cave;
 import map.Map;
 import movement.Destination;
 import movement.Moving;
@@ -133,6 +134,8 @@ public class NetworkDictionary extends MarshalDictionary {
 
                 // Other
 
+                boolean[][].class,
+                boolean[].class,
                 int[][].class,
                 int[].class,
                 HashMap.class,
@@ -201,6 +204,7 @@ public class NetworkDictionary extends MarshalDictionary {
 
                 // Components
                 Map.class,
+                Cave.class,
                 Obj.class,
                 Inventory.class,
                 Inventory.Item.class,

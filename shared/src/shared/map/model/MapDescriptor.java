@@ -127,7 +127,7 @@ public class MapDescriptor {
         private final int tileWidth;
         private final int tileHeight;
 
-        private TileDescriptor(int tileWidth, int tileHeight) {
+        TileDescriptor(int tileWidth, int tileHeight) {
             this.tileWidth = tileWidth;
             this.tileHeight = tileHeight;
         }

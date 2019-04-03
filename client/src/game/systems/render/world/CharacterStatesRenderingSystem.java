@@ -70,7 +70,7 @@ public class CharacterStatesRenderingSystem extends IteratingSystem {
                 Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
                 Pos2D mousePos = Util.toScreen(worldPos.get());
                 Pos2D screenPos = new Pos2D(cameraPos.x - mousePos.x, cameraPos.y - mousePos.y);
-                batch.draw(Slot.selection, (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - Tile.TILE_PIXEL_WIDTH, (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y, Tile.TILE_PIXEL_WIDTH, Tile.TILE_PIXEL_HEIGHT);
+                batch.draw(Slot.selection, (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x, (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y, Tile.TILE_PIXEL_WIDTH, Tile.TILE_PIXEL_HEIGHT);
                 batch.setColor(Color.WHITE);
             }
         }

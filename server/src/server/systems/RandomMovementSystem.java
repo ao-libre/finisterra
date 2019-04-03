@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
+import map.Cave;
 import movement.Destination;
 import movement.RandomMovement;
 import physics.AOPhysics;
@@ -53,7 +54,8 @@ public class RandomMovementSystem extends IteratingSystem {
             WorldPos worldPos = player.getWorldPos();
             WorldPos oldPos = new WorldPos(worldPos);
             WorldPos nextPos = worldUtils.getNextPos(worldPos, mov);
-            boolean blocked = false; //MapUtils.isBlocked(MapManager.get(nextPos.map), nextPos);
+            Cave cave = E(getServer().getMapManager().mapEntity).getCave();
+            boolean blocked = (boolean) cave.tiles[nextPos.x][nextPos.y];
             boolean occupied = MapUtils.hasEntity(getServer().getMapManager().getNearEntities(entityId), nextPos);
             if (player.hasImmobile() || blocked || occupied) {
                 nextPos = oldPos;

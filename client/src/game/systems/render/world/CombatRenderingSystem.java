@@ -76,7 +76,7 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
             Fonts.dialogLayout.setText(font, combatMessage.text);
             float width = Fonts.dialogLayout.width;
             Fonts.dialogLayout.setText(font, combatMessage.text, font.getColor(), width, Align.center, true);
-            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH + Fonts.dialogLayout.width) / 2;
+            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x + (Tile.TILE_PIXEL_WIDTH - Fonts.dialogLayout.width) / 2;
             int bodyOffset = 20 - DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
             final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y - combatMessage.offset + bodyOffset + Fonts.dialogLayout.height; //40 should be the Y offset of the entity
             font.draw(batch, Fonts.dialogLayout, fontX, fontY);
