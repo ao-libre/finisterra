@@ -2,7 +2,7 @@ package shared.network.login;
 
 import shared.network.interfaces.IRequest;
 import shared.network.interfaces.IRequestProcessor;
-
+@Deprecated
 public class LoginRequest implements IRequest {
 
     public static final String INVALID_CREDENTIALS = "Invalid credentials";

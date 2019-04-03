@@ -27,10 +27,13 @@ public class ObjectFactory {
     public static final String CLAVE = "CLAVE";
     public static final String LINGOTEINDEX = "Lingoteindex";
 
-    public static Obj createObject(int id, int kind, String name, int grhIndex) {
+    public ObjectFactory() {}
+
+    public Obj createObject(int id, int kind, String name, int grhIndex) {
         return createObject(id, Type.values()[kind-1], name, grhIndex);
     }
-    private static Obj createObject(int id, Type kind, String name, int grhIndex) {
+
+    public Obj createObject(int id, Type kind, String name, int grhIndex) {
         switch (kind) {
             case ANVIL:
                 return new AnvilObj(id, name, grhIndex);
@@ -110,7 +113,7 @@ public class ObjectFactory {
         }
     }
 
-    public static void fillObject(Obj obj, Profile.Section section){
+    public void fillObject(Obj obj, Profile.Section section){
         obj.fillObject(section);
     }
 

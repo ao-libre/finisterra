@@ -1,6 +1,5 @@
 package game.systems.camera;
 
-import shared.util.Util;
 import camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.Entity;
@@ -9,6 +8,7 @@ import com.artemis.managers.TagManager;
 import com.artemis.systems.IteratingSystem;
 import position.Pos2D;
 import position.WorldPos;
+import shared.util.Util;
 
 import static com.artemis.E.E;
 

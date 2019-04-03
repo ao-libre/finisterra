@@ -1,11 +1,5 @@
 package game.systems.render.world;
 
-import game.handlers.DescriptorHandler;
-import game.utils.Fonts;
-import game.systems.OrderedEntityProcessingSystem;
-import game.systems.camera.CameraSystem;
-import shared.model.map.Tile;
-import shared.util.Util;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
@@ -16,8 +10,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import entity.Body;
 import entity.Dialog;
+import game.handlers.DescriptorHandler;
+import game.systems.OrderedEntityProcessingSystem;
+import game.systems.camera.CameraSystem;
+import game.utils.Fonts;
 import position.Pos2D;
 import position.WorldPos;
+import shared.model.map.Tile;
+import shared.util.Util;
 
 import java.util.Comparator;
 
@@ -68,7 +68,7 @@ public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
             Fonts.dialogLayout.setText(font, dialog.text);
             float width = Math.min(Fonts.dialogLayout.width, MAX_LENGTH);
             Fonts.dialogLayout.setText(font, dialog.text, font.getColor(), width, Align.center, true);
-            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (width + Tile.TILE_PIXEL_WIDTH) / 2;
+            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x + (Tile.TILE_PIXEL_WIDTH - width) / 2;
             float  up = Dialog.DEFAULT_TIME - dialog.time <= TIME ? (Dialog.DEFAULT_TIME - dialog.time) * VELOCITY : DISTANCE_TO_TOP;
             float offsetY = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY() - up;
             final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y + 50 - offsetY + Fonts.dialogLayout.height;

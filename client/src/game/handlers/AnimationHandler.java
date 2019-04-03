@@ -1,10 +1,10 @@
 package game.handlers;
 
+import entity.*;
+import graphics.FX;
 import model.descriptors.*;
 import model.textures.BundledAnimation;
 import shared.model.Graphic;
-import entity.*;
-import graphics.FX;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

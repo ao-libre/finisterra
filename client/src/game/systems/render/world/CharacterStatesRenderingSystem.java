@@ -1,13 +1,5 @@
 package game.systems.render.world;
 
-import game.ui.GUI;
-import game.ui.Slot;
-import game.utils.Colors;
-import game.utils.Fonts;
-import game.utils.WorldUtils;
-import game.systems.camera.CameraSystem;
-import shared.model.map.Tile;
-import shared.util.Util;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
@@ -16,8 +8,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import entity.character.Character;
+import game.systems.camera.CameraSystem;
+import game.ui.GUI;
+import game.ui.Slot;
+import game.utils.Colors;
+import game.utils.Fonts;
+import game.utils.WorldUtils;
 import position.Pos2D;
 import position.WorldPos;
+import shared.model.map.Tile;
+import shared.util.Util;
 
 import java.util.Optional;
 
@@ -70,7 +70,7 @@ public class CharacterStatesRenderingSystem extends IteratingSystem {
                 Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
                 Pos2D mousePos = Util.toScreen(worldPos.get());
                 Pos2D screenPos = new Pos2D(cameraPos.x - mousePos.x, cameraPos.y - mousePos.y);
-                batch.draw(Slot.selection, (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - Tile.TILE_PIXEL_WIDTH, (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y, Tile.TILE_PIXEL_WIDTH, Tile.TILE_PIXEL_HEIGHT);
+                batch.draw(Slot.selection, (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x, (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y, Tile.TILE_PIXEL_WIDTH, Tile.TILE_PIXEL_HEIGHT);
                 batch.setColor(Color.WHITE);
             }
         }

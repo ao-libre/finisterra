@@ -1,8 +1,5 @@
 package game.ui.user;
 
-import game.screens.GameScreen;
-import game.utils.Colors;
-import game.utils.Fonts;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,6 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.sun.javafx.text.GlyphLayout;
+import game.screens.GameScreen;
+import game.utils.Colors;
+import game.utils.Fonts;
 
 import static com.artemis.E.E;
 

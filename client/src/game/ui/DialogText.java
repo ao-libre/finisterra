@@ -1,8 +1,8 @@
 package game.ui;
 
-import game.utils.Skins;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import game.utils.Skins;
 
 public class DialogText extends Table {
 

@@ -1,9 +1,5 @@
 package game.systems.render.world;
 
-import game.utils.Colors;
-import game.utils.Fonts;
-import model.textures.TextureUtils;
-import game.systems.camera.CameraSystem;
 import camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
@@ -13,6 +9,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entity.character.Character;
+import game.systems.camera.CameraSystem;
+import game.utils.Colors;
+import game.utils.Fonts;
+import model.textures.TextureUtils;
 
 import static com.artemis.E.E;
 

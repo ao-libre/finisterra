@@ -1,12 +1,5 @@
 package game.systems.render.world;
 
-import game.handlers.DescriptorHandler;
-import game.managers.WorldManager;
-import game.systems.camera.CameraSystem;
-import model.descriptors.FXDescriptor;
-import shared.model.map.Tile;
-import model.textures.BundledAnimation;
-import shared.util.Util;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
@@ -17,9 +10,16 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.esotericsoftware.minlog.Log;
 import entity.Ground;
 import entity.character.Character;
+import game.handlers.DescriptorHandler;
+import game.managers.WorldManager;
+import game.systems.camera.CameraSystem;
 import graphics.FX;
+import model.descriptors.FXDescriptor;
+import model.textures.BundledAnimation;
 import position.Pos2D;
 import position.WorldPos;
+import shared.model.map.Tile;
+import shared.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,7 +94,7 @@ public class GroundFXsRenderingSystem extends IteratingSystem {
             Map<Integer, BundledAnimation> anims = this.fxs.computeIfAbsent(entityId, id -> new HashMap<>());
             BundledAnimation anim = anims.computeIfAbsent(fxId, fxGraphic -> new BundledAnimation(DescriptorHandler.getGraphic(fxDescriptor.getIndexs()[0]), false));
             TextureRegion graphic = anim.getGraphic(false);
-            batch.draw(graphic, screenPos.x - (Tile.TILE_PIXEL_WIDTH + graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX(), screenPos.y - graphic.getRegionHeight() + fxDescriptor.getOffsetY());
+            batch.draw(graphic, screenPos.x + (Tile.TILE_PIXEL_WIDTH - graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX(), screenPos.y - graphic.getRegionHeight() + fxDescriptor.getOffsetY());
             anim.setAnimationTime(anim.getAnimationTime() + getWorld().getDelta() * (anim.getFrames().size * 0.33f));
             float animationTime = anim.getAnimationTime();
             float animationDuration = anim.getAnimation().getAnimationDuration();

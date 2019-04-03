@@ -1,10 +1,10 @@
 package game.handlers;
 
-import game.managers.MapManager;
-import shared.model.map.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
+import game.managers.MapManager;
+import shared.model.map.Map;
 
 import java.util.HashMap;
 

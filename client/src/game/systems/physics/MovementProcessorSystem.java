@@ -1,14 +1,5 @@
 package game.systems.physics;
 
-import game.screens.GameScreen;
-import game.utils.ClientMapUtils;
-import game.handlers.MapHandler;
-import game.managers.WorldManager;
-import shared.model.map.Tile;
-import shared.network.interaction.MeditateRequest;
-import shared.network.movement.MovementRequest;
-import shared.util.MapUtils;
-import shared.util.Util;
 import camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
@@ -16,9 +7,17 @@ import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.esotericsoftware.minlog.Log;
 import entity.Heading;
+import game.managers.WorldManager;
+import game.screens.GameScreen;
+import game.systems.map.CaveSystem;
+import game.systems.map.MapSystem;
 import movement.Destination;
 import physics.AOPhysics;
 import position.WorldPos;
+import shared.network.interaction.MeditateRequest;
+import shared.network.movement.MovementRequest;
+import shared.util.MapUtils;
+import shared.util.Util;
 
 import java.util.Optional;
 import java.util.Set;
@@ -29,6 +28,7 @@ import static com.artemis.E.E;
 @Wire
 public class MovementProcessorSystem extends IteratingSystem {
 
+    private CaveSystem caveSystem;
     public static java.util.Map<Integer, MovementRequest> requests = new ConcurrentHashMap<>();
     private static int requestNumber;
 
@@ -90,7 +90,8 @@ public class MovementProcessorSystem extends IteratingSystem {
                 Set<Integer> nearEntities = WorldManager.getEntities();
                 nearEntities.remove(entity);
                 nearEntities.forEach(near -> Log.debug("Validating entity: " + near + " is not occuping the position"));
-                boolean blocked = MapUtils.isBlocked(MapHandler.get(expectedPos.map), expectedPos);
+
+                boolean blocked = caveSystem.isBlocked(expectedPos.x, expectedPos.y); //MapUtils.isBlocked(MapHandler.get(expectedPos.map), expectedPos);
                 boolean occupied = MapUtils.hasEntity(nearEntities, expectedPos);
                 boolean valid = !(blocked ||
                         occupied ||
@@ -103,7 +104,7 @@ public class MovementProcessorSystem extends IteratingSystem {
                 requests.put(requestNumber, request);
                 GameScreen.getClient().sendToAll(request);
                 if (valid) { // Prediction
-                    ClientMapUtils.updateTile(Tile.EMPTY_INDEX, pos); // not used. TODO clean?
+                    // ClientMapUtils.updateTile(Tile.EMPTY_INDEX, pos); // not used. TODO clean?
                     Destination destination = new Destination(expectedPos, movement);
                     player.movementAdd(destination);
                     if (player.isMeditating()) {

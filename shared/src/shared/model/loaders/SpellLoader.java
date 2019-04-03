@@ -105,7 +105,7 @@ public class SpellLoader extends Loader<Map<Integer, Spell>> {
         return spells;
     }
 
-    private static class SpellSetter<T> {
+    public static class SpellSetter<T> {
         private String field;
         private BiConsumer<Spell, T> setter;
 

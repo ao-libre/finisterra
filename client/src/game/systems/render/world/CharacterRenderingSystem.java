@@ -1,12 +1,5 @@
 package game.systems.render.world;
 
-import game.handlers.DescriptorHandler;
-import model.descriptors.BodyDescriptor;
-import model.textures.BundledAnimation;
-import game.handlers.AnimationHandler;
-import game.systems.OrderedEntityProcessingSystem;
-import game.systems.camera.CameraSystem;
-import shared.util.Util;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
@@ -16,8 +9,16 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import entity.*;
 import entity.character.Character;
+import game.handlers.AnimationHandler;
+import game.handlers.DescriptorHandler;
+import game.systems.OrderedEntityProcessingSystem;
+import game.systems.camera.CameraSystem;
+import model.descriptors.BodyDescriptor;
+import model.textures.BundledAnimation;
 import position.Pos2D;
 import position.WorldPos;
+import shared.model.map.Tile;
+import shared.util.Util;
 
 import java.util.Comparator;
 
@@ -49,7 +50,6 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
 
     @Override
     protected void process(Entity e) {
-
         E player = E(e);
         Pos2D currentPos = player.worldPosPos2D();
         Pos2D screenPos = Util.toScreen(currentPos);
@@ -82,7 +82,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             this.player = player;
             this.heading = heading;
             this.screenPos = screenPos;
-            bodyPixelOffsetX = screenPos.x - 32.0f;
+            bodyPixelOffsetX = screenPos.x;
             bodyPixelOffsetY = screenPos.y;
             calculateOffsets();
         }

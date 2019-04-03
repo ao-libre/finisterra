@@ -2,6 +2,11 @@ package shared.network.interfaces;
 
 import shared.network.interaction.DropItem;
 import shared.network.inventory.InventoryUpdate;
+import shared.network.lobby.JoinRoomNotification;
+import shared.network.lobby.NewRoomNotification;
+import shared.network.lobby.player.ChangeHeroNotification;
+import shared.network.lobby.player.ChangeTeamNotification;
+import shared.network.lobby.player.ReadyNotification;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.FXNotification;
@@ -22,4 +27,14 @@ public interface INotificationProcessor {
     void processNotification(MovementNotification movementNotification);
 
     void processNotification(FXNotification fxNotification);
+
+    void processNotification(JoinRoomNotification joinRoomNotification);
+
+    void processNotification(NewRoomNotification newRoomNotification);
+
+    void processNotification(ChangeTeamNotification changeTeamNotification);
+
+    void processNotification(ChangeHeroNotification changeHeroNotification);
+
+    void processNotification(ReadyNotification readyNotification);
 }

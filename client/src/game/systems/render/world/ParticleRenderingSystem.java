@@ -1,9 +1,5 @@
 package game.systems.render.world;
 
-import game.handlers.ParticlesHandler;
-import game.systems.camera.CameraSystem;
-import shared.model.map.Tile;
-import shared.util.Util;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
@@ -11,9 +7,13 @@ import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import game.handlers.ParticlesHandler;
+import game.systems.camera.CameraSystem;
 import graphics.FX;
 import position.Pos2D;
 import position.WorldPos;
+import shared.model.map.Tile;
+import shared.util.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,7 +80,7 @@ public class ParticleRenderingSystem extends IteratingSystem {
         }
         fx.particles.forEach(effect -> {
             ParticleEffect particleEffect = particles.computeIfAbsent(entityId, id -> new HashMap<>()).computeIfAbsent(effect, eff -> ParticlesHandler.getParticle(eff));
-            final float particleX = screenPos.x - (Tile.TILE_PIXEL_WIDTH / 2);
+            final float particleX = screenPos.x + (Tile.TILE_PIXEL_WIDTH / 2);
             final float particleY = screenPos.y - 4;
             particleEffect.setPosition(particleX, particleY);
             particleEffect.draw(batch, world.getDelta());

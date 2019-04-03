@@ -1,8 +1,8 @@
 package model.serializers;
 
-import shared.model.Graphic;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import shared.model.Graphic;
 
 public class GraphicsSerializer implements Json.Serializer {
 

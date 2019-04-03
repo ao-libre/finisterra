@@ -1,11 +1,11 @@
 package game.handlers;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import model.readers.AODescriptorsReader;
 import model.textures.GameTexture;
 import shared.model.readers.DescriptorsReader;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.HashMap;
 import java.util.Map;

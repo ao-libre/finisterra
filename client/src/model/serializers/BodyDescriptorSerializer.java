@@ -1,9 +1,9 @@
 package model.serializers;
 
-import model.descriptors.BodyDescriptor;
-import model.descriptors.Descriptor;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import model.descriptors.BodyDescriptor;
+import model.descriptors.Descriptor;
 
 public class BodyDescriptorSerializer implements Json.Serializer {
     @Override

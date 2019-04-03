@@ -1,25 +1,26 @@
 package game.handlers;
 
-import game.AOGame;
-import shared.interfaces.Constants;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
+import game.AOGame;
+import game.utils.Resources;
+import shared.interfaces.Constants;
 
 import java.util.HashMap;
 
 public class SurfaceHandler implements Constants {
 
     private static HashMap<String, Texture> surfaces = new HashMap<String, Texture>();
-    private static String graphicsPath = AOGame.GAME_GRAPHICS_PATH;
+    private static String graphicsPath = Resources.GAME_GRAPHICS_PATH;
 
     public static void loadAllTextures() {
         FileHandle file = Gdx.app.getFiles().internal(graphicsPath);
         if (file.isDirectory()) {
             for (FileHandle tmp : file.list()) {
-                if (tmp.extension() == AOGame.GAME_GRAPHICS_EXTENSION) {
+                if (tmp.extension() == Resources.GAME_GRAPHICS_EXTENSION) {
                     Gdx.app.debug(SurfaceHandler.class.getSimpleName(), "Cargando " + tmp.name());
                     SurfaceHandler.loadTexture(tmp.nameWithoutExtension());
                 }
@@ -28,8 +29,8 @@ public class SurfaceHandler implements Constants {
     }
 
     public static void loadTexture(String fileName) {
-        Texture texture = new Texture(graphicsPath + fileName + AOGame.GAME_GRAPHICS_EXTENSION);
-        texture.setFilter(TextureFilter.Linear, TextureFilter.Nearest);
+        Texture texture = new Texture(graphicsPath + fileName + Resources.GAME_GRAPHICS_EXTENSION);
+        texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
         texture.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
         SurfaceHandler.add(fileName, texture);
     }

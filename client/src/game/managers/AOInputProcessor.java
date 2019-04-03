@@ -1,12 +1,18 @@
 package game.managers;
 
+import com.artemis.E;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.handlers.DescriptorHandler;
 import game.screens.GameScreen;
+import game.screens.LoginScreen;
 import game.ui.GUI;
 import game.utils.AlternativeKeys;
 import game.utils.WorldUtils;
-import game.screens.LoginScreen;
 import shared.model.AttackType;
 import shared.model.Spell;
 import shared.network.combat.AttackRequest;
@@ -16,12 +22,6 @@ import shared.network.interaction.MeditateRequest;
 import shared.network.interaction.TakeItemRequest;
 import shared.network.interaction.TalkRequest;
 import shared.network.inventory.ItemActionRequest;
-import com.artemis.E;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.esotericsoftware.minlog.Log;
 
 import java.util.Optional;
 import java.util.Random;

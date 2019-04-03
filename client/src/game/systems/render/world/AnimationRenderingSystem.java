@@ -1,6 +1,5 @@
 package game.systems.render.world;
 
-import game.systems.camera.CameraSystem;
 import com.artemis.Aspect;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
@@ -12,6 +11,7 @@ import com.esotericsoftware.spine.*;
 import entity.Body;
 import entity.Heading;
 import entity.character.Character;
+import game.systems.camera.CameraSystem;
 import position.WorldPos;
 
 @Wire

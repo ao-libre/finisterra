@@ -1,11 +1,5 @@
 package game.systems.render.world;
 
-import game.utils.Fonts;
-import game.systems.OrderedEntityProcessingSystem;
-import game.systems.camera.CameraSystem;
-import shared.interfaces.Hero;
-import shared.model.map.Tile;
-import shared.util.Util;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
@@ -14,8 +8,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entity.character.Character;
 import entity.character.info.Name;
+import game.systems.OrderedEntityProcessingSystem;
+import game.systems.camera.CameraSystem;
+import game.utils.Fonts;
 import position.Pos2D;
 import position.WorldPos;
+import shared.interfaces.Hero;
+import shared.model.map.Tile;
+import shared.util.Util;
 
 import java.util.Comparator;
 
@@ -61,7 +61,7 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
                         player.hasLevel() && player.getLevel().level < 13 ? Fonts.NEWBIE_NAME_FONT :
                                 player.hasCriminal() ? Fonts.CRIMINAL_NAME_FONT : Fonts.CITIZEN_NAME_FONT;
         Fonts.layout.setText(font, player.getName().text);
-        final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH + Fonts.layout.width) / 2;
+        final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x + ((Tile.TILE_PIXEL_WIDTH - Fonts.layout.width) / 2);
         final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y;
         font.draw(batch, Fonts.layout, fontX, fontY);
         return fontY;
@@ -73,7 +73,7 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
             clanOrHero = player.getClan().name;
         }
         Fonts.layout.setText(Fonts.CLAN_FONT, "<" + clanOrHero + ">");
-        final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH + Fonts.layout.width) / 2;
+        final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x + ((Tile.TILE_PIXEL_WIDTH - Fonts.layout.width) / 2);
         final float fontY = nameY - Fonts.layout.height - 5;
         Fonts.CLAN_FONT.draw(batch, Fonts.layout, fontX, fontY);
     }

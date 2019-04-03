@@ -1,30 +1,90 @@
 package game.screens;
 
-import game.AOGame;
-import game.ui.GUI;
 import com.artemis.*;
 import com.artemis.managers.TagManager;
-import com.badlogic.gdx.Gdx;
+import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import game.AOGame;
+import game.systems.anim.IdleAnimationSystem;
+import game.systems.anim.MovementAnimationSystem;
+import game.systems.camera.CameraFocusSystem;
+import game.systems.camera.CameraMovementSystem;
+import game.systems.camera.CameraSystem;
+import game.systems.map.CaveSystem;
+import game.systems.map.MapSystem;
+import game.systems.network.ClientSystem;
+import game.systems.physics.MovementProcessorSystem;
+import game.systems.physics.MovementSystem;
+import game.systems.physics.PhysicsAttackSystem;
+import game.systems.physics.PlayerInputSystem;
+import game.systems.render.ui.CoordinatesRenderingSystem;
+import game.systems.render.world.*;
+import game.ui.GUI;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
+import shared.model.lobby.Player;
+import shared.network.lobby.player.PlayerLoginRequest;
 
 import static com.artemis.E.E;
 
 public class GameScreen extends ScreenAdapter {
 
     public static World world;
+    public static int player = -1;
+    private static GUI gui = new GUI();
+
     protected FPSLogger logger;
     protected GameState state;
-    //
-    public static int player = -1;
-    private static GUI gui;
+    private static ClientSystem clientSystem;
+    private SpriteBatch spriteBatch;
 
-    public GameScreen(World world) {
-        this.world = world;
+    private static final int FONTS_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL - 1;
+
+    public GameScreen(String host, int port, Player player) {
+        this.clientSystem = new ClientSystem(host, port);
+        this.spriteBatch = new SpriteBatch();
         this.logger = new FPSLogger();
-        gui = new GUI();
+        clientSystem.start();
+        initWorld();
+        clientSystem.getKryonetClient().sendToAll(new PlayerLoginRequest(player));
+    }
+
+    public void initWorld() {
+        WorldConfigurationBuilder worldConfigBuilder = new WorldConfigurationBuilder();
+        worldConfigBuilder.with(new SuperMapper())
+                .with(clientSystem)
+                // Player movement
+                .with(new PlayerInputSystem())
+                .with(new MovementProcessorSystem())
+                .with(new MovementAnimationSystem())
+                .with(new IdleAnimationSystem())
+                .with(new MovementSystem())
+                // Camera
+                .with(new CameraSystem(AOGame.GAME_SCREEN_ZOOM))
+                .with(new CameraFocusSystem())
+                .with(new CameraMovementSystem())
+                // Logic systems
+                .with(new PhysicsAttackSystem())
+                // Rendering
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new CaveSystem())
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new GroundFXsRenderingSystem(spriteBatch))
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ObjectRenderingSystem(spriteBatch))
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ParticleRenderingSystem(spriteBatch))
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new CharacterRenderingSystem(spriteBatch))
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new FXsRenderingSystem(spriteBatch))
+                .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(spriteBatch))
+                .with(FONTS_PRIORITY, new StateRenderingSystem(spriteBatch))
+                .with(FONTS_PRIORITY, new CombatRenderingSystem(spriteBatch))
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new NameRenderingSystem(spriteBatch))
+                .with(FONTS_PRIORITY, new DialogRenderingSystem(spriteBatch))
+                .with(FONTS_PRIORITY, new CharacterStatesRenderingSystem(spriteBatch))
+                // Other
+                .with(new TagManager())
+                .with(new UuidEntityManager()); // why?
+
+        world = new World(worldConfigBuilder.build()); // preload Artemis world
     }
 
     protected void postWorldInit() {
@@ -63,7 +123,9 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         this.update(delta);
-        this.drawUI();
+        if (player >= 0) {
+            this.drawUI();
+        }
     }
 
     @Override
@@ -91,7 +153,6 @@ public class GameScreen extends ScreenAdapter {
         gui.dispose();
     }
 
-
     public static int getPlayer() {
         return player;
     }
@@ -100,16 +161,12 @@ public class GameScreen extends ScreenAdapter {
         GameScreen.player = player;
         E entity = E(player);
         entity
-                .aOPhysics() //
-                .focused() //
-                .canWrite() //
                 .fXAddParticleEffect(2);
         GUI.getInventory().updateUserInventory();
     }
 
     public static MarshalStrategy getClient() {
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
-        return game.getClientSystem().getMarshal();
+        return clientSystem.getKryonetClient();
     }
 
     protected void updateRunning(float deltaTime) {
@@ -126,18 +183,6 @@ public class GameScreen extends ScreenAdapter {
 
     protected void resumeSystems() {
         //
-    }
-
-    public void setGame(AOGame game) {
-        WorldScreen.game = game;
-    }
-
-    public GameState getState() {
-        return state;
-    }
-
-    public void setState(GameState state) {
-        this.state = state;
     }
 
     public static World getWorld() {

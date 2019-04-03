@@ -89,6 +89,7 @@ public class MapDescriptor {
                 final int tileId = tiles[col][row];
                 final TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
                 cell.setTile(tileSet.getTile(tileId));
+                cell.setFlipVertically(true);
                 mapLayer.setCell(col, row, cell);
             }
         }
@@ -126,7 +127,7 @@ public class MapDescriptor {
         private final int tileWidth;
         private final int tileHeight;
 
-        private TileDescriptor(int tileWidth, int tileHeight) {
+        TileDescriptor(int tileWidth, int tileHeight) {
             this.tileWidth = tileWidth;
             this.tileHeight = tileHeight;
         }

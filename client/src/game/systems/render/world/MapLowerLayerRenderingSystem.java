@@ -1,15 +1,13 @@
 package game.systems.render.world;
 
+import com.artemis.BaseSystem;
+import com.artemis.annotations.Wire;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.managers.MapManager;
 import game.systems.camera.CameraSystem;
 import game.systems.map.TiledMapSystem;
 import shared.model.map.Map;
 import shared.model.map.Tile;
-import com.artemis.BaseSystem;
-import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import static com.artemis.E.E;
 
 @Wire
 public class MapLowerLayerRenderingSystem extends BaseSystem {

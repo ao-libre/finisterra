@@ -1,11 +1,5 @@
 package game.systems.render.world;
 
-import game.handlers.DescriptorHandler;
-import game.utils.Fonts;
-import game.systems.OrderedEntityProcessingSystem;
-import game.systems.camera.CameraSystem;
-import shared.model.map.Tile;
-import shared.util.Util;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
@@ -16,8 +10,14 @@ import com.badlogic.gdx.utils.Align;
 import com.esotericsoftware.minlog.Log;
 import entity.Body;
 import entity.CombatMessage;
+import game.handlers.DescriptorHandler;
+import game.systems.OrderedEntityProcessingSystem;
+import game.systems.camera.CameraSystem;
+import game.utils.Fonts;
 import position.Pos2D;
 import position.WorldPos;
+import shared.model.map.Tile;
+import shared.util.Util;
 
 import java.util.Comparator;
 
@@ -76,7 +76,7 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
             Fonts.dialogLayout.setText(font, combatMessage.text);
             float width = Fonts.dialogLayout.width;
             Fonts.dialogLayout.setText(font, combatMessage.text, font.getColor(), width, Align.center, true);
-            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x - (Tile.TILE_PIXEL_WIDTH + Fonts.dialogLayout.width) / 2;
+            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x + (Tile.TILE_PIXEL_WIDTH - Fonts.dialogLayout.width) / 2;
             int bodyOffset = 20 - DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
             final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y - combatMessage.offset + bodyOffset + Fonts.dialogLayout.height; //40 should be the Y offset of the entity
             font.draw(batch, Fonts.dialogLayout, fontX, fontY);

@@ -1,13 +1,5 @@
 package game.ui;
 
-import game.screens.GameScreen;
-import game.utils.Skins;
-import game.utils.WorldUtils;
-import game.handlers.ObjectHandler;
-import shared.network.interaction.DropItem;
-import shared.network.inventory.InventoryUpdate;
-import shared.network.inventory.ItemActionRequest;
-import shared.objects.types.Obj;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -17,6 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import entity.character.info.Inventory.Item;
+import game.handlers.ObjectHandler;
+import game.screens.GameScreen;
+import game.utils.Skins;
+import game.utils.WorldUtils;
+import shared.network.interaction.DropItem;
+import shared.network.inventory.InventoryUpdate;
+import shared.network.inventory.ItemActionRequest;
+import shared.objects.types.Obj;
 
 import java.util.ArrayList;
 import java.util.Optional;

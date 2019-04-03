@@ -1,9 +1,9 @@
 package object.systems;
 
-import game.utils.WorldUtils;
 import camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.systems.IteratingSystem;
+import game.utils.WorldUtils;
 import physics.AOPhysics;
 
 import static com.artemis.E.E;

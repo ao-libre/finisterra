@@ -1,9 +1,9 @@
 package model.loaders;
 
-import shared.model.Graphic;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import shared.model.Graphic;
 
 import java.util.ArrayList;
 

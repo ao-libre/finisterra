@@ -1,34 +1,85 @@
 package server.manager;
 
-import server.utils.WorldUtils;
-import shared.network.notifications.EntityUpdate;
+import com.artemis.E;
+import com.artemis.Entity;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
+import map.Cave;
 import position.WorldPos;
+import server.core.Server;
+import server.map.CaveGenerator;
+import server.map.MapGenerator;
+import shared.map.AutoTiler;
+import shared.map.model.MapDescriptor;
+import shared.network.notifications.EntityUpdate;
 
 import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.artemis.E.E;
+import static server.utils.WorldUtils.WorldUtils;
 
 /**
  * Logic regarding maps, contains information about entities in each map, and how are they related.
  */
-public class MapManager {
+public class MapManager extends DefaultManager {
 
     public static final int MAP_COUNT = 1; // TODO set to 1 to load faster
     public static final int MAX_DISTANCE = 15;
-    private static Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
-    private static Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
+    private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
+    private Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
 
     private static HashMap<Integer, shared.model.map.Map> maps = new HashMap<>();
+    public int mapEntity;
+
+    public MapManager(Server server) {
+        super(server);
+    }
+
+    @Override
+    public void init() {
+        CaveGenerator caveGenerator = CaveGenerator.Builder
+                .create()
+                .height(60)
+                .width(60)
+                .chanceAlive(0.35f)
+                .steps(3)
+                .build();
+        boolean[][] tiles = caveGenerator.generateMap();
+
+        for (boolean[] row : tiles)
+        {
+            String[] s = new String[row.length];
+            for (int i = 0; i < row.length; i++) {
+                s[i] = row[i] ? "X" : "-";
+            }
+            System.out.println(Arrays.toString(s));
+        }
+
+        Cave cave = new Cave(tiles, 60, 60);
+        Entity map = getServer().getWorld().createEntity();
+        map.edit().add(cave);
+        mapEntity = map.getId();
+    }
+
+//    public void generateMapEntity(MapDescriptor descriptor, String path) {
+//        int[][] tiles = MapGenerator.generateMap(descriptor);
+//        mapEntity = getServer().getWorld().create();
+//
+//        E map = E(mapEntity).map();
+//        map.mapTiles(tiles);
+//        map.mapPath(path);
+//        map.mapHeight(descriptor.getMapHeight());
+//        map.mapWidth(descriptor.getMapWidth());
+//    }
 
     /**
      * @param entityId
      * @return a set of near entities or empty
      */
-    public static Set<Integer> getNearEntities(int entityId) {
+    public Set<Integer> getNearEntities(int entityId) {
         return nearEntities.getOrDefault(entityId, ConcurrentHashMap.newKeySet());
     }
 
@@ -36,7 +87,7 @@ public class MapManager {
      * @param map number
      * @return a set of entities in current map
      */
-    public static Set<Integer> getEntitiesInMap(int map) {
+    public Set<Integer> getEntitiesInMap(int map) {
         return entitiesByMap.get(map);
     }
 
@@ -46,7 +97,7 @@ public class MapManager {
      * @param player player id
      * @param previusPos previus position in case its moving, empty if is a new position
      */
-    public static void movePlayer(int player, Optional<WorldPos> previusPos) {
+    public void movePlayer(int player, Optional<WorldPos> previusPos) {
         WorldPos actualPos = E(player).getWorldPos();
         previusPos.ifPresent(it -> {
             if (it.equals(actualPos)) {
@@ -69,7 +120,7 @@ public class MapManager {
      * Remove entity from map and unlink near entities
      * @param entity
      */
-    public static void removeEntity(int entity) {
+    public void removeEntity(int entity) {
         int map = E(entity).getWorldPos().map;
         // remove from near entities
         nearEntities.computeIfPresent(entity, (player, removeFrom) -> {
@@ -85,7 +136,7 @@ public class MapManager {
      * Add entity to map and calculate near entities
      * @param player
      */
-    public static void updateEntity(int player) {
+    public void updateEntity(int player) {
         int map = E(player).getWorldPos().map;
         Set<Integer> entities = entitiesByMap.computeIfAbsent(map, (it) -> new HashSet<>());
         entities.add(player);
@@ -102,8 +153,8 @@ public class MapManager {
      * @param entity1
      * @param entity2
      */
-    private static void addNearEntities(int entity1, int entity2) {
-        int distance = WorldUtils.distance(E(entity2).getWorldPos(), E(entity1).getWorldPos());
+    private void addNearEntities(int entity1, int entity2) {
+        int distance = WorldUtils(getServer().getWorld()).distance(E(entity2).getWorldPos(), E(entity1).getWorldPos());
         if (distance >= 0 && distance <= MAX_DISTANCE) {
             linkEntities(entity1, entity2);
             linkEntities(entity2, entity1);
@@ -115,8 +166,8 @@ public class MapManager {
      * @param player1
      * @param player2
      */
-    private static void removeNearEntity(int player1, int player2) {
-        int distance = WorldUtils.distance(E(player2).getWorldPos(), E(player1).getWorldPos());
+    private void removeNearEntity(int player1, int player2) {
+        int distance = WorldUtils(getServer().getWorld()).distance(E(player2).getWorldPos(), E(player1).getWorldPos());
         if (distance < 0 || distance > MAX_DISTANCE) {
             unlinkEntities(player1, player2);
             unlinkEntities(player2, player1);
@@ -128,12 +179,12 @@ public class MapManager {
      * @param entity1
      * @param entity2
      */
-    private static void unlinkEntities(int entity1, int entity2) {
+    private void unlinkEntities(int entity1, int entity2) {
         if (nearEntities.containsKey(entity1)) {
             nearEntities.get(entity1).remove(entity2);
         }
         // always notify that this entity is not longer in range
-        WorldManager.sendEntityRemove(entity1, entity2);
+        getServer().getWorldManager().sendEntityRemove(entity1, entity2);
     }
 
 
@@ -142,11 +193,11 @@ public class MapManager {
      * @param entity1
      * @param entity2
      */
-    private static void linkEntities(int entity1, int entity2) {
+    private void linkEntities(int entity1, int entity2) {
         Set<Integer> near = nearEntities.computeIfAbsent(entity1, (i) -> new HashSet<>());
         if (near.add(entity2)) {
-            EntityUpdate update = new EntityUpdate(entity2, WorldUtils.getComponents(entity2), new Class[0]);
-            WorldManager.sendEntityUpdate(entity1, update);
+            EntityUpdate update = new EntityUpdate(entity2, WorldUtils(getServer().getWorld()).getComponents(entity2), new Class[0]);
+            getServer().getWorldManager().sendEntityUpdate(entity1, update);
         }
     }
 
@@ -154,7 +205,7 @@ public class MapManager {
     /**
      * Initialize maps. TODO refactor
      */
-    public static void initialize() {
+    public void initialize() {
         Log.info("Loading maps...");
         for (int i = 1; i <= MAP_COUNT; i++) {
             //                FileInputStream mapStream = new FileInputStream("resources/maps/" + "Mapa" + i + ".json");
@@ -164,7 +215,7 @@ public class MapManager {
         }
     }
 
-    private static Json getJson() {
+    private Json getJson() {
         Json json = new Json();
         json.addClassTag("map", shared.model.map.Map.class);
         return json;
@@ -174,7 +225,9 @@ public class MapManager {
      * @param mapNumber
      * @return corresponding Map
      */
-    public static shared.model.map.Map get(int mapNumber) {
+    public shared.model.map.Map get(int mapNumber) {
         return maps.get(mapNumber);
     }
+
+
 }

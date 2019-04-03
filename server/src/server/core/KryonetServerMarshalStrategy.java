@@ -8,17 +8,18 @@ import java.io.IOException;
 
 public class KryonetServerMarshalStrategy extends KryonetMarshalStrategy {
 
-    public static final int TCP_PORT = 7666;
-    public static final int UDP_PORT = 7667;
+    private final int tcpPort;
+    private final int udpPort;
 
-    public KryonetServerMarshalStrategy() {
+    public KryonetServerMarshalStrategy(int tcpPort, int udpPort) {
+        this.tcpPort = tcpPort;
+        this.udpPort = udpPort;
         endpoint = new Server() {
             @Override
             public void sendToTCP(int connectionID, Object object) {
                 System.out.println("Sent message to " + connectionID);
                 super.sendToTCP(connectionID, object);
             }
-
         };
     }
 
@@ -26,7 +27,7 @@ public class KryonetServerMarshalStrategy extends KryonetMarshalStrategy {
     protected void connectEndpoint() {
         try {
             System.out.print("Starting server... ");
-            ((Server)endpoint).bind(TCP_PORT, UDP_PORT);
+            ((Server) endpoint).bind(tcpPort, udpPort);
             System.out.println("Server UP and listening");
             state = MarshalState.STARTED;
         } catch (IOException e) {
@@ -38,11 +39,11 @@ public class KryonetServerMarshalStrategy extends KryonetMarshalStrategy {
 
     @Override
     public void sendToAll(Object o) {
-        ((Server)endpoint).sendToAllTCP(o);
+        ((Server) endpoint).sendToAllTCP(o);
     }
 
     public void sendTo(int connectionId, Object o) {
-        ((Server)endpoint).sendToTCP(connectionId, o);
+        ((Server) endpoint).sendToTCP(connectionId, o);
     }
 
 }

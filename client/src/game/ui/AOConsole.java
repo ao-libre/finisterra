@@ -1,10 +1,10 @@
 package game.ui;
 
-import game.utils.Colors;
-import game.utils.Fonts;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import game.utils.Colors;
+import game.utils.Fonts;
 
 import java.util.LinkedList;
 

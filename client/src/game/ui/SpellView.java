@@ -1,17 +1,20 @@
 package game.ui;
 
-import game.screens.GameScreen;
-import game.utils.Skins;
-import game.handlers.SpellHandler;
-import shared.model.Spell;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import game.handlers.SpellHandler;
+import game.screens.GameScreen;
+import game.utils.Skins;
+import shared.model.Spell;
 
 import java.util.Optional;
 

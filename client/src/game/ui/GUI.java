@@ -1,7 +1,5 @@
 package game.ui;
 
-import game.managers.AOInputProcessor;
-import game.ui.user.UserInformation;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -9,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import game.managers.AOInputProcessor;
+import game.ui.user.UserInformation;
 
 
 public class GUI {

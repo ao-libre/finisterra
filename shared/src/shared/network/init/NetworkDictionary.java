@@ -9,6 +9,8 @@ import entity.character.info.*;
 import entity.character.states.*;
 import entity.character.status.*;
 import graphics.FX;
+import map.Cave;
+import map.Map;
 import movement.Destination;
 import movement.Moving;
 import movement.RandomMovement;
@@ -22,8 +24,22 @@ import position.WorldPos;
 import shared.interfaces.CharClass;
 import shared.interfaces.Constants;
 import shared.interfaces.Hero;
+import shared.map.AutoTiler;
+import shared.map.model.MapDescriptor;
+import shared.map.model.TILE_BITS;
+import shared.map.model.TerrainType;
+import shared.map.model.TilesetConfig;
 import shared.model.AttackType;
 import shared.model.Spell;
+import shared.model.loaders.ObjectLoader;
+import shared.model.loaders.SpellLoader;
+import shared.model.lobby.Lobby;
+import shared.model.lobby.Player;
+import shared.model.lobby.Room;
+import shared.model.lobby.Team;
+import shared.model.readers.DescriptorsReader;
+import shared.model.readers.Loader;
+import shared.model.readers.Reader;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.AttackResponse;
 import shared.network.combat.SpellCastRequest;
@@ -31,23 +47,29 @@ import shared.network.interaction.DropItem;
 import shared.network.interaction.MeditateRequest;
 import shared.network.interaction.TakeItemRequest;
 import shared.network.interaction.TalkRequest;
+import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.interfaces.INotificationProcessor;
 import shared.network.interfaces.IResponseProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
-import shared.network.login.LoginFailed;
-import shared.network.login.LoginOK;
-import shared.network.login.LoginRequest;
+import shared.network.lobby.*;
+import shared.network.lobby.player.ChangeHeroNotification;
+import shared.network.lobby.player.ChangeTeamNotification;
+import shared.network.lobby.player.PlayerLoginRequest;
+import shared.network.lobby.player.ReadyNotification;
 import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.FXNotification;
 import shared.network.notifications.RemoveEntity;
-import shared.objects.types.PotionKind;
+import shared.objects.factory.ObjectFactory;
+import shared.objects.types.*;
+import shared.objects.types.common.*;
 import shared.util.MapUtils;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -56,9 +78,7 @@ public class NetworkDictionary extends MarshalDictionary {
 
     public NetworkDictionary() {
         registerAll(
-                // Requests
-                LoginRequest.class,
-                LoginFailed.class,
+                // Game Requests
                 MovementRequest.class,
                 AttackRequest.class,
                 MeditateRequest.class,
@@ -67,23 +87,59 @@ public class NetworkDictionary extends MarshalDictionary {
                 TakeItemRequest.class,
                 SpellCastRequest.class,
 
-                // Responses
-                LoginOK.class,
+                // Game Responses
                 MovementResponse.class,
                 AttackResponse.class,
 
-                // Notifications
+                // Game Notifications
                 EntityUpdate.class,
                 RemoveEntity.class,
                 MovementNotification.class,
                 InventoryUpdate.class,
                 IResponseProcessor.class,
                 INotificationProcessor.class,
+                DefaultNotificationProcessor.class,
                 DropItem.class,
                 FXNotification.class,
 
+                // Lobby
+                Lobby.class,
+                Player.class,
+                Room.class,
+                Room[].class,
+                Team.class,
+
+                // Lobby Player
+                ChangeHeroNotification.class,
+                ChangeTeamNotification.class,
+                ReadyNotification.class,
+
+                // Lobby Requests
+                CreateRoomRequest.class,
+                ExitRoomRequest.class,
+                JoinLobbyRequest.class,
+                JoinRoomRequest.class,
+                StartGameRequest.class,
+                PlayerLoginRequest.class,
+
+                // Lobby Responses
+                CreateRoomResponse.class,
+                JoinLobbyResponse.class,
+                JoinRoomResponse.class,
+                StartGameResponse.class,
+
+                // Lobby Notificaitons
+                JoinRoomNotification.class,
+                NewRoomNotification.class,
+
                 // Other
+
+                boolean[][].class,
+                boolean[].class,
+                int[][].class,
+                int[].class,
                 HashMap.class,
+                HashSet.class,
                 MapUtils.class,
                 ConcurrentLinkedDeque.class,
                 Component.class,
@@ -94,8 +150,62 @@ public class NetworkDictionary extends MarshalDictionary {
                 CharClass.class,
                 CharHero.class,
                 Hero.class,
+                Loader.class,
+                Reader.class,
+
+                ObjectLoader.class,
+                SpellLoader.class,
+                SpellLoader.SpellSetter.class,
+                DescriptorsReader.class,
+                AutoTiler.class,
+                MapDescriptor.class,
+                MapDescriptor.MapDescriptorBuilder.class,
+                TilesetConfig.class,
+                TerrainType.class,
+                TILE_BITS.class,
+                Type.class,
+                ObjectFactory.class,
+                ArmorObj.class,
+                ArrowObj.class,
+                BoatObj.class,
+                DepositObj.class,
+                DoorObj.class,
+                DrinkObj.class,
+                Food.class,
+                HelmetObj.class,
+                IEquipable.class,
+                IFillObject.class,
+                KeyObj.class,
+                MagicObj.class,
+                MineralObj.class,
+                MusicalObj.class,
+                ObjWithClasses.class,
+                PosterObj.class,
+                PotionKind.class,
+                PotionObj.class,
+                ShieldObj.class,
+                SpellObj.class,
+                WeaponObj.class,
+                AnvilObj.class,
+                BonfireObj.class,
+                BookObj.class,
+                ContainerObj.class,
+                FlowerObj.class,
+                ForgeObj.class,
+                ForumObj.class,
+                FurnitureObj.class,
+                GemObj.class,
+                GoldObj.class,
+                JewelObj.class,
+                StainObj.class,
+                TeleportObj.class,
+                TreeObj.class,
+                WoodObj.class,
 
                 // Components
+                Map.class,
+                Cave.class,
+                Obj.class,
                 Inventory.class,
                 Inventory.Item.class,
                 Inventory.Item[].class,
