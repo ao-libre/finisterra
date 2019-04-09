@@ -29,8 +29,8 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
             Entity newEntity = GameScreen.getWorld().createEntity();
             WorldManager.registerEntity(entityUpdate.entityId, newEntity.getId());
             addComponentsToEntity(newEntity, entityUpdate);
-            if (newEntity.getComponent(Focused.class) != null) {
-                GameScreen.setPlayer(newEntity.getId());
+            if (E(entityUpdate.entityId).entity().getComponent(Focused.class) != null) {
+                GameScreen.setPlayer(entityUpdate.entityId);
             }
         } else {
             Log.info("Network entity exists: " + entityUpdate.entityId + ". Updating");

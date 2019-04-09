@@ -1,12 +1,14 @@
 package shared.interfaces;
 
+import com.artemis.E;
+
 public enum CharClass {
     MAGICIAN,
     WARRIOR,
     CLERIC,
     PALADIN,
     ASSESIN,
-    BARD,
+    BARDIC,
     DRUID,
     PIRATE,
     THIEF,
@@ -26,7 +28,7 @@ public enum CharClass {
             case "asesino":
                 return ASSESIN;
             case "bardo":
-                return BARD;
+                return BARDIC;
             case "druida":
                 return DRUID;
             case "pirata":
@@ -39,5 +41,11 @@ public enum CharClass {
                 return ARCHER;
         }
         return null;
+    }
+
+    public static CharClass get(E entity) {
+        int heroId = entity.getCharHero().heroId;
+        Hero hero = Hero.getHeros().get(heroId);
+        return values()[hero.getClassId()];
     }
 }

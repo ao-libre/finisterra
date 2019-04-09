@@ -5,6 +5,7 @@ import com.artemis.Component;
 import entity.*;
 import entity.Object;
 import entity.character.CanWrite;
+import entity.character.attributes.*;
 import entity.character.info.*;
 import entity.character.states.*;
 import entity.character.status.*;
@@ -133,7 +134,6 @@ public class NetworkDictionary extends MarshalDictionary {
                 NewRoomNotification.class,
 
                 // Other
-
                 boolean[][].class,
                 boolean[].class,
                 int[][].class,
@@ -231,7 +231,6 @@ public class NetworkDictionary extends MarshalDictionary {
                 Ground.class,
                 PotionKind.class,
                 Criminal.class,
-                Elv.class,
                 Exp.class,
                 GM.class,
                 Health.class,
@@ -256,6 +255,13 @@ public class NetworkDictionary extends MarshalDictionary {
                 RandomMovement.class,
                 Network.class,
                 Attack.class,
+                Agility.class,
+                Strength.class,
+                Intelligence.class,
+                Charisma.class,
+                Constitution.class,
+                Hit.class,
+                Armor.class,
                 AttackAnimation.class
         );
     }

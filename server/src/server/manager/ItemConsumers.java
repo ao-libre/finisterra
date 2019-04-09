@@ -39,7 +39,7 @@ public class ItemConsumers {
                 entity.removeWeapon();
                 getServer().getWorldManager().notifyUpdate(player, new EntityUpdate(player, new Component[0], new Class[] {Weapon.class}));
             } else if (obj instanceof ArmorObj) {
-                Hero hero = Hero.values()[entity.getCharHero().heroId];
+                Hero hero = Hero.getHeros().get(entity.getCharHero().heroId);
                 getServer().getWorldManager().setNakedBody(entity, Race.values()[hero.getRaceId()]);
                 getServer().getWorldManager().notifyUpdate(player, new EntityUpdate(player, new Component[]{entity.getBody()}, new Class[0]));
             } else if (obj instanceof HelmetObj) {
@@ -56,16 +56,17 @@ public class ItemConsumers {
         return (player, obj) -> {
             E entity = E(player);
             if (obj instanceof WeaponObj) {
-                entity.weaponIndex(((WeaponObj) obj).getAnimationId());
+                entity.weaponIndex(obj.getId());
                 getServer().getWorldManager().notifyUpdate(player, new EntityUpdate(player, new Component[]{entity.getWeapon()}, new Class[0]));
             } else if (obj instanceof ArmorObj) {
                 entity.bodyIndex(((ArmorObj) obj).getBodyNumber());
-                getServer().getWorldManager().notifyUpdate(player, new EntityUpdate(player, new Component[]{entity.getBody()}, new Class[0]));
+                entity.armorIndex(obj.getId());
+                getServer().getWorldManager().notifyUpdate(player, new EntityUpdate(player, new Component[]{entity.getBody(), entity.getArmor()}, new Class[0]));
             } else if (obj instanceof HelmetObj) {
-                entity.helmetIndex(((HelmetObj) obj).getAnimationId());
+                entity.helmetIndex(obj.getId());
                 getServer().getWorldManager().notifyUpdate(player, new EntityUpdate(player, new Component[]{entity.getHelmet()}, new Class[0]));
             } else if (obj instanceof ShieldObj) {
-                entity.shieldIndex(((ShieldObj) obj).getAnimationId());
+                entity.shieldIndex(obj.getId());
                 getServer().getWorldManager().notifyUpdate(player, new EntityUpdate(player, new Component[]{entity.getShield()}, new Class[0]));
             }
         };

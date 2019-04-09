@@ -36,7 +36,7 @@ public class Balance {
         result.put(CharClass.PIRATE, 0.6f);
         result.put(CharClass.THIEF, 0.7f);
         result.put(CharClass.CLERIC, 0.85f);
-        result.put(CharClass.BARD, 0.8f);
+        result.put(CharClass.BARDIC, 0.8f);
         result.put(CharClass.MAGICIAN, 0.6f);
         result.put(CharClass.DRUID, 0.75f);
         return result;
@@ -52,7 +52,7 @@ public class Balance {
         result.put(CharClass.PIRATE, 9.5f);
         result.put(CharClass.THIEF, 10f);
         result.put(CharClass.CLERIC, 8.5f);
-        result.put(CharClass.BARD, 8.5f);
+        result.put(CharClass.BARDIC, 8.5f);
         result.put(CharClass.MAGICIAN, 7.5f);
         result.put(CharClass.DRUID, 8.5f);
         return result;
@@ -68,7 +68,7 @@ public class Balance {
         result.put(CharClass.PIRATE, new Modifier(0.5f, 0.4f));
         result.put(CharClass.THIEF, new Modifier(0.8f, 1.05f));
         result.put(CharClass.CLERIC, new Modifier(0.4f, 0.4f));
-        result.put(CharClass.BARD, new Modifier(0.4f, 0.4f));
+        result.put(CharClass.BARDIC, new Modifier(0.4f, 0.4f));
         result.put(CharClass.MAGICIAN, new Modifier(0.3f, 0.4f));
         result.put(CharClass.DRUID, new Modifier(0.4f, 0.4f));
         return result;
@@ -84,7 +84,7 @@ public class Balance {
         result.put(CharClass.PIRATE, new Modifier(0.9f, 0.8f));
         result.put(CharClass.THIEF, new Modifier(0.85f, 0.85f));
         result.put(CharClass.CLERIC, new Modifier(0.7f, 0.7f));
-        result.put(CharClass.BARD, new Modifier(0.7f, 0.7f));
+        result.put(CharClass.BARDIC, new Modifier(0.7f, 0.7f));
         result.put(CharClass.MAGICIAN, new Modifier(0.5f, 0.5f));
         result.put(CharClass.DRUID, new Modifier(0.75f, 0.75f));
         return result;
@@ -100,7 +100,7 @@ public class Balance {
         result.put(CharClass.PIRATE, new Modifier(0.9f, 0.95f));
         result.put(CharClass.THIEF, new Modifier(0.8f, 0.75f));
         result.put(CharClass.CLERIC, new Modifier(0.85f, 0.8f));
-        result.put(CharClass.BARD, new Modifier(0.7f, 0.75f));
+        result.put(CharClass.BARDIC, new Modifier(0.7f, 0.75f));
         result.put(CharClass.MAGICIAN, new Modifier(0.5f, 0.5f));
         result.put(CharClass.DRUID, new Modifier(0.65f, 0.7f));
         return result;
@@ -116,7 +116,7 @@ public class Balance {
         result.put(CharClass.PIRATE, 1.25f);
         result.put(CharClass.THIEF, 1.1f);
         result.put(CharClass.CLERIC, 0.8f);
-        result.put(CharClass.BARD, 1.075f);
+        result.put(CharClass.BARDIC, 1.075f);
         result.put(CharClass.MAGICIAN, 0.4f);
         result.put(CharClass.DRUID, 0.75f);
         return result;

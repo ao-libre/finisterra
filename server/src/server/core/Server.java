@@ -4,6 +4,8 @@ import com.artemis.FluidEntityPlugin;
 import com.artemis.SuperMapper;
 import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
+import server.combat.CombatSystem;
+import server.combat.PhysicalCombatSystem;
 import server.manager.*;
 import server.systems.RandomMovementSystem;
 import server.systems.ServerSystem;
@@ -22,7 +24,6 @@ public class Server  {
     private final int udpPort;
     private ObjectManager objectManager;
     private World world;
-    private final WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
     private Map<Class<? extends IManager>, IManager> managers = new HashMap<>();
     private KryonetServerMarshalStrategy strategy;
     private Set<Player> players;
@@ -49,6 +50,7 @@ public class Server  {
         managers.put(MapManager.class, new MapManager(this));
         managers.put(ObjectManager.class, objectManager);
         managers.put(WorldManager.class, new WorldManager(this));
+        managers.put(PhysicalCombatSystem.class, new PhysicalCombatSystem(this));
     }
 
     public World getWorld() {
@@ -57,7 +59,7 @@ public class Server  {
 
     private void initWorld() {
         System.out.println("Initializing systems...");
-
+        final WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
         strategy = new KryonetServerMarshalStrategy(tcpPort, udpPort);
         builder
                 .with(new FluidEntityPlugin())
@@ -118,8 +120,8 @@ public class Server  {
         return getManager(SpellManager.class);
     }
 
-    public CombatManager getCombatManager() {
-        return getManager(CombatManager.class);
+    public CombatSystem getCombatManager() {
+        return getManager(PhysicalCombatSystem.class);
     }
 
     public ObjectManager getObjectManager() {

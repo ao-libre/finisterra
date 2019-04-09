@@ -57,7 +57,6 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
             return;
         }
         CombatMessage combatMessage = player.getCombatMessage();
-        Log.info("Combate message: " + combatMessage);
         combatMessage.offset -= getWorld().getDelta() * combatMessage.time * 15.0f;
         if (combatMessage.offset < 0) {
             combatMessage.offset = 0;

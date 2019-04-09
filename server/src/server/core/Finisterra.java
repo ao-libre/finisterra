@@ -3,6 +3,7 @@ package server.core;
 import com.artemis.FluidEntityPlugin;
 import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import server.manager.LobbyNetworkManager;
@@ -35,6 +36,7 @@ public class Finisterra implements ApplicationListener {
 
     @Override
     public void create() {
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
         init();
         Gdx.app.log("Server initialization", "Finisterra...");
         lobby = new Lobby();

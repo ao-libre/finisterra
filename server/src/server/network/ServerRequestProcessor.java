@@ -16,11 +16,13 @@ import movement.Destination;
 import physics.AOPhysics;
 import physics.AttackAnimation;
 import position.WorldPos;
+import server.combat.CombatSystem;
 import server.core.Server;
 import server.manager.*;
 import server.utils.WorldUtils;
 import shared.interfaces.Constants;
 import shared.interfaces.FXs;
+import shared.model.AttackType;
 import shared.model.Spell;
 import shared.model.lobby.Player;
 import shared.network.combat.AttackRequest;
@@ -77,7 +79,11 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         return getServer().getWorldManager();
     }
 
-    private CombatManager getCombatManager() {
+    private CombatSystem getCombatSystem(AttackType type) {
+        if (type.equals(AttackType.PHYSICAL)) {
+            return getServer().getCombatManager();
+        }
+        // TODO
         return getServer().getCombatManager();
     }
 
@@ -155,12 +161,10 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         boolean blocked = cave.tiles[nextPos.x][nextPos.y];
         boolean occupied = MapUtils.hasEntity(getMapManager().getNearEntities(playerId), nextPos);
         if (!(player.hasImmobile() || blocked || occupied)) {
-            Log.info("Player: " + playerId + ". Moved from: " + oldPos + " to: " + nextPos);
             player.worldPosMap(nextPos.map);
             player.worldPosX(nextPos.x);
             player.worldPosY(nextPos.y);
         } else {
-            Log.info("Player: " + playerId + ". Wants to move to: " + nextPos + ", but stay at: " + oldPos);
             nextPos = oldPos;
         }
 
@@ -187,27 +191,30 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         int playerId = getNetworkManager().getPlayerByConnection(connectionId);
         E player = E(playerId);
 
-        WorldPos worldPos = player.getWorldPos();
-        Heading heading = player.getHeading();
-        WorldPos facingPos = WorldUtils(getServer().getWorld()).getFacingPos(worldPos, heading);
+        getCombatSystem(AttackType.PHYSICAL).userAttack(playerId, Optional.empty());
 
-        Optional<Integer> victim = getMapManager().getNearEntities(playerId)
-                .stream()
-                .filter(near -> E(near).hasWorldPos() && E(near).getWorldPos().equals(facingPos))
-                .findFirst();
-        if (victim.isPresent() && E(victim.get()).hasCharHero()) {
-            Optional<Integer> damage = getCombatManager().attack(playerId, victim.get());
-            if (damage.isPresent()) {
-                getCombatManager().notify(victim.get(), new CombatMessage("-" + Integer.toString(damage.get())));
-                // TODO fix fxgrh
-                getWorldManager().notifyUpdate(victim.get(), new FXNotification(victim.get(), FXs.FX_BLOOD));
-            } else {
-                getCombatManager().notify(playerId, new CombatMessage(CombatManager.MISS));
-            }
-        } else {
-            getCombatManager().notify(playerId, new CombatMessage(CombatManager.MISS));
-        }
-        getWorldManager().notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new AttackAnimation()}, new Class[0]));
+//        WorldPos worldPos = player.getWorldPos();
+//        Heading heading = player.getHeading();
+//        WorldPos facingPos = WorldUtils(getServer().getWorld()).getFacingPos(worldPos, heading);
+//
+//        Optional<Integer> victim = getMapManager().getNearEntities(playerId)
+//                .stream()
+//                .filter(near -> E(near).hasWorldPos() && E(near).getWorldPos().equals(facingPos))
+//                .findFirst();
+//        if (victim.isPresent() && E(victim.get()).hasCharHero()) {
+//
+//            Optional<Integer> damage = getCombatManager().attack(playerId, victim.get());
+//            if (damage.isPresent()) {
+//                getCombatManager().notify(victim.get(), new CombatMessage("-" + Integer.toString(damage.get())));
+//                // TODO fix fxgrh
+//                getWorldManager().notifyUpdate(victim.get(), new FXNotification(victim.get(), FXs.FX_BLOOD));
+//            } else {
+//                getCombatManager().notify(playerId, new CombatMessage(CombatManager.MISS));
+//            }
+//        } else {
+//            getCombatManager().notify(playerId, new CombatMessage(CombatManager.MISS));
+//        }
+//
     }
 
     /**
@@ -287,7 +294,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
                 .findFirst()
                 .ifPresent(objectEntityId -> {
                     Object object = E(objectEntityId).getObject();
-                    int index = player.getInventory().add(object.index, object.count);
+                    int index = player.getInventory().add(object.index, object.count, false);
                     if (index >= 0) {
                         Log.info("Adding item to index: " + index);
                         InventoryUpdate update = new InventoryUpdate();

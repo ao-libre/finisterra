@@ -12,12 +12,15 @@ public class Player {
     private Hero hero;
     private boolean ready;
 
-    private Player() {}
-
-    public Player(int connectionId, String playerName) {
+    public Player () {}
+    public Player(int connectionId, String playerName, Hero hero) {
         this.connectionId = connectionId;
         this.playerName = playerName;
-        this.hero = Hero.values()[ThreadLocalRandom.current().nextInt(Hero.values().length)];
+        this.hero = hero;
+    }
+
+    public Player(int connectionId, String playerName) {
+        this(connectionId, playerName, Hero.getRandom());
     }
 
     public String getPlayerName() {

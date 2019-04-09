@@ -8,6 +8,7 @@ import server.database.model.attributes.Attributes;
 import server.database.model.modifiers.Modifiers;
 import shared.interfaces.CharClass;
 import shared.interfaces.Hero;
+import shared.interfaces.Race;
 import shared.model.Spell;
 import shared.network.notifications.EntityUpdate;
 import shared.objects.types.Obj;
@@ -25,9 +26,10 @@ import static com.artemis.E.E;
 /*
  * All logic related to Combat: calculation of damage, evasion, magic, etc.
  */
+@Deprecated
 public class CombatManager extends DefaultManager {
 
-    public static final String MISS = "MISS";
+
 
     public CombatManager(Server server) {
         super(server);
@@ -96,7 +98,6 @@ public class CombatManager extends DefaultManager {
      */
     private int calculateDamage(int attacker) {
         E entity = E(attacker);
-        CharClass clazz = getCharClass(entity);
         int weaponDamage = 0;
         if (entity.hasWeapon()) {
             int weaponIndex = entity.getWeapon().index;
@@ -106,7 +107,7 @@ public class CombatManager extends DefaultManager {
                 weaponDamage = ThreadLocalRandom.current().nextInt(weapon.getMinHit(), weapon.getMaxHit() + 1);
             }
         }
-        return (int) Attributes.STRENGTH.of(clazz) * weaponDamage; // TODO calculate hero strength
+        return entity.strengthValue() * weaponDamage;
     }
 
 
@@ -117,7 +118,7 @@ public class CombatManager extends DefaultManager {
     private float getEvasion(int victimId) {
         E victim = E(victimId);
         CharClass clazz = getCharClass(victim);
-        return Attributes.EVASION.of(clazz) * 2; // TODO calculate extra evasion from items and hero modifier
+        return 2; // TODO calculate extra evasion from items and hero modifier
     }
 
 
@@ -126,9 +127,9 @@ public class CombatManager extends DefaultManager {
      * @param victim entity
      * @return class of current hero
      */
-    private CharClass getCharClass(E victim) {
+    public static CharClass getCharClass(E victim) {
         int heroId = victim.getCharHero().heroId;
-        Hero hero = Hero.values()[heroId];
+        Hero hero = Hero.getHeros().get(heroId);
         return CharClass.values()[hero.getClassId()];
     }
 

@@ -68,7 +68,7 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
     }
 
     private void drawClanName(E player, Pos2D screenPos, float nameY) {
-        String clanOrHero = Hero.values()[player.getCharHero().heroId].name();
+        String clanOrHero = Hero.getHeros().get(player.getCharHero().heroId).name();
         if (player.hasClan() && !player.getClan().name.isEmpty()) {
             clanOrHero = player.getClan().name;
         }

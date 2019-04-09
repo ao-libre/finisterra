@@ -26,7 +26,7 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(JoinLobbyRequest joinLobbyRequest, int connectionId) {
         String playerName = joinLobbyRequest.getPlayerName();
-        Player player = new Player(connectionId, playerName);
+        Player player = new Player(connectionId, playerName, joinLobbyRequest.getHero());
         Lobby lobby = finisterra.getLobby();
         lobby.addWaitingPlayer(player);
         finisterra.getNetworkManager().registerUserConnection(player, connectionId);

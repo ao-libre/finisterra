@@ -66,8 +66,8 @@ public class SpellManager extends DefaultManager {
                 Health health = targetEntity.getHealth();
                 int damage = CombatManager.calculateMagicDamage(target, spell);
                 health.min += damage;
-                getServer().getCombatManager().notify(target, new CombatMessage(String.valueOf(damage)));
-                getServer().getCombatManager().update(target);
+//                getServer().getCombatManager().notify(target, new CombatMessage(String.valueOf(damage)));
+//                getServer().getCombatManager().update(target);
             }
             if (spell.isImmobilize()) {
                 targetEntity.immobile();

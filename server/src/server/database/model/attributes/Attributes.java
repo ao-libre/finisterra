@@ -2,26 +2,28 @@ package server.database.model.attributes;
 
 
 import shared.interfaces.CharClass;
+import shared.interfaces.Race;
 
 public enum Attributes {
 
     STRENGTH,
-    INTELLIGENCE,
     AGILITY,
-    EVASION;
+    INTELLIGENCE,
+    CHARISMA,
+    CONSTITUTION;
 
-    private static float[][] attributes = new float[CharClass.values().length][Attributes.values().length];
+    private static int[][] attributes = new int[Race.values().length][Attributes.values().length];
 
     static {
-        attributes[CharClass.WARRIOR.ordinal()] = new float[]{25,0,13,13};
-        attributes[CharClass.MAGICIAN.ordinal()] = new float[]{13,25,18,11};
-        attributes[CharClass.PALADIN.ordinal()] = new float[]{19,15,15,14};
-        attributes[CharClass.ROGUE.ordinal()] = new float[]{16,16,23,23};
-        attributes[CharClass.CLERIC.ordinal()] = new float[]{14,21,16,17};
+        attributes[Race.HUMAN.ordinal()] = new int[]{1, 1, 0, 0, 2};
+        attributes[Race.ELF.ordinal()] = new int[]{-1, 3, 2, 2, 1};
+        attributes[Race.DROW.ordinal()] = new int[]{2, 3, 2, -3, 0};
+        attributes[Race.DWARF.ordinal()] = new int[]{3, 0, -2, -2, 3};
+        attributes[Race.GNOME.ordinal()] = new int[]{-2, 3, 4, 0, -2};
     }
 
-    public float of(CharClass clazz) {
-        return attributes[clazz.ordinal()][this.ordinal()];
+    public int of(Race race) {
+        return attributes[race.ordinal()][this.ordinal()];
     }
 
 }
