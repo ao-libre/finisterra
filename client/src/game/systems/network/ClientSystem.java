@@ -1,11 +1,9 @@
 package game.systems.network;
 
 import com.badlogic.gdx.Gdx;
-import game.network.GameNotificationProcessor;
 import game.network.ClientResponseProcessor;
+import game.network.GameNotificationProcessor;
 import game.network.KryonetClientMarshalStrategy;
-import net.mostlyoriginal.api.network.marshal.common.MarshalState;
-import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import shared.interfaces.Hero;
 import shared.network.init.NetworkDictionary;
@@ -14,7 +12,6 @@ import shared.network.interfaces.INotificationProcessor;
 import shared.network.interfaces.IResponse;
 import shared.network.interfaces.IResponseProcessor;
 import shared.network.lobby.JoinLobbyRequest;
-import shared.network.login.LoginRequest;
 
 public class ClientSystem extends MarshalSystem {
 

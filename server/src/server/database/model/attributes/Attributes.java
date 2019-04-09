@@ -1,7 +1,6 @@
 package server.database.model.attributes;
 
 
-import shared.interfaces.CharClass;
 import shared.interfaces.Race;
 
 public enum Attributes {

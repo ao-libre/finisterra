@@ -1,8 +1,8 @@
 package launcher;
 
-import object.ObjectCreator;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import object.ObjectCreator;
 
 public class CreatorLauncher {
 

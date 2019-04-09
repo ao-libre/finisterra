@@ -8,11 +8,15 @@ import com.artemis.EntityEdit;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
+import game.AOGame;
 import game.managers.WorldManager;
 import game.screens.GameScreen;
+import game.screens.LobbyScreen;
+import game.screens.RoomScreen;
 import game.ui.GUI;
 import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.inventory.InventoryUpdate;
+import shared.network.lobby.JoinRoomNotification;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.FXNotification;
@@ -96,5 +100,17 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
                 edit.remove(remove);
             }
         });
+    }
+
+    @Override
+    public void processNotification(JoinRoomNotification joinRoomNotification) {
+        Gdx.app.postRunnable(() -> {
+            AOGame game = (AOGame) Gdx.app.getApplicationListener();
+            if (game.getScreen() instanceof RoomScreen) {
+                RoomScreen room = (RoomScreen) game.getScreen();
+                room.getRoom().add(joinRoomNotification.getPlayer());
+            }
+        });
+        joinRoomNotification.getPlayer();
     }
 }

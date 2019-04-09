@@ -14,7 +14,6 @@ import game.systems.camera.CameraFocusSystem;
 import game.systems.camera.CameraMovementSystem;
 import game.systems.camera.CameraSystem;
 import game.systems.map.CaveSystem;
-import game.systems.map.MapSystem;
 import game.systems.network.ClientSystem;
 import game.systems.physics.MovementProcessorSystem;
 import game.systems.physics.MovementSystem;

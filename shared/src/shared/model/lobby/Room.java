@@ -39,6 +39,10 @@ public class Room {
         return players;
     }
 
+    public boolean isFull() {
+        return players.size() >= maxPlayers;
+    }
+
     @Override
     public String toString() {
         return "Room: " + players.size() + "/" + maxPlayers;

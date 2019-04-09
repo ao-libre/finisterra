@@ -4,7 +4,7 @@ import com.artemis.Component;
 import com.artemis.Entity;
 import com.artemis.World;
 import com.artemis.utils.Bag;
-import entity.Heading;
+import entity.character.states.Heading;
 import physics.AOPhysics;
 import position.WorldPos;
 import shared.interfaces.Constants;
@@ -25,6 +25,9 @@ public class WorldUtils {
     }
 
     public int distance(WorldPos pos1, WorldPos pos2) {
+        if (pos1 == null || pos2 == null) {
+            return -1;
+        }
         if (pos1.map != pos2.map) {
             return -1;
         }

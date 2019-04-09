@@ -1,4 +1,4 @@
-package entity;
+package entity.character.equipment;
 
 import com.artemis.Component;
 import com.artemis.annotations.DelayedComponentRemoval;
@@ -6,14 +6,14 @@ import com.artemis.annotations.DelayedComponentRemoval;
 import java.io.Serializable;
 
 @DelayedComponentRemoval
-public class Helmet extends Component implements Serializable {
+public class Weapon extends Component implements Serializable {
 
     public int index;
 
-    public Helmet() {
+    public Weapon() {
     }
 
-    public Helmet(int index) {
+    public Weapon(int index) {
         this.index = index;
     }
 

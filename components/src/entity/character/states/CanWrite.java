@@ -1,4 +1,4 @@
-package entity.character;
+package entity.character.states;
 
 import com.artemis.Component;
 

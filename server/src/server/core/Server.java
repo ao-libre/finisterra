@@ -1,7 +1,6 @@
 package server.core;
 
 import com.artemis.FluidEntityPlugin;
-import com.artemis.SuperMapper;
 import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
 import server.combat.CombatSystem;

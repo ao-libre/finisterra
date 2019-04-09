@@ -2,9 +2,9 @@ package server.manager;
 
 import com.artemis.Component;
 import com.artemis.E;
-import entity.Helmet;
-import entity.Shield;
-import entity.Weapon;
+import entity.character.equipment.Helmet;
+import entity.character.equipment.Shield;
+import entity.character.equipment.Weapon;
 import server.core.Server;
 import shared.interfaces.Hero;
 import shared.interfaces.Race;

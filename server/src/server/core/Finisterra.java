@@ -9,7 +9,6 @@ import com.badlogic.gdx.Gdx;
 import server.manager.LobbyNetworkManager;
 import server.manager.ObjectManager;
 import server.systems.FinisterraSystem;
-import server.systems.ServerSystem;
 import shared.model.lobby.Lobby;
 import shared.model.lobby.Room;
 import shared.network.lobby.StartGameResponse;

@@ -1,11 +1,11 @@
 package position;
 
 import com.artemis.Component;
-import entity.Heading;
+import entity.character.states.Heading;
 
 import java.util.Objects;
 
-import static entity.Heading.*;
+import static entity.character.states.Heading.*;
 
 public class WorldPos extends Component {
 

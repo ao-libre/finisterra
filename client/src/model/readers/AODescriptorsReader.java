@@ -1,6 +1,5 @@
 package model.readers;
 
-import game.AOGame;
 import game.utils.Resources;
 import model.loaders.MapLoader;
 import shared.model.Spell;

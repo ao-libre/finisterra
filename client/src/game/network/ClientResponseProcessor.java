@@ -1,11 +1,7 @@
 package game.network;
 
-import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import game.AOGame;
-import game.managers.WorldManager;
-import game.screens.GameScreen;
 import game.screens.LobbyScreen;
 import game.screens.LoginScreen;
 import game.screens.RoomScreen;
@@ -19,8 +15,6 @@ import shared.network.lobby.StartGameResponse;
 import shared.network.login.LoginFailed;
 import shared.network.login.LoginOK;
 import shared.network.movement.MovementResponse;
-
-import static com.artemis.E.E;
 
 public class ClientResponseProcessor implements IResponseProcessor {
 
@@ -65,7 +59,11 @@ public class ClientResponseProcessor implements IResponseProcessor {
 
     @Override
     public void processResponse(JoinRoomResponse joinRoomResponse) {
-
+        Gdx.app.postRunnable(() -> {
+            AOGame game = (AOGame) Gdx.app.getApplicationListener();
+            LobbyScreen lobby = (LobbyScreen) game.getScreen();
+            game.toRoom(lobby.getClientSystem(), joinRoomResponse.getRoom(), joinRoomResponse.getPlayer());
+        });
     }
 
     @Override

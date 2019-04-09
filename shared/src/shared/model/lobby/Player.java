@@ -2,7 +2,7 @@ package shared.model.lobby;
 
 import shared.interfaces.Hero;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Optional;
 
 public class Player {
 
@@ -32,7 +32,7 @@ public class Player {
     }
 
     public Team getTeam() {
-        return team;
+        return Optional.ofNullable(team).orElse(Team.NO_TEAM);
     }
 
     public void setTeam(Team team) {

@@ -1,4 +1,4 @@
-package entity;
+package entity.character.equipment;
 
 import com.artemis.Component;
 

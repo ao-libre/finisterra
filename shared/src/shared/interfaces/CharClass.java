@@ -1,19 +1,28 @@
 package shared.interfaces;
 
 import com.artemis.E;
+import com.esotericsoftware.minlog.Log;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public enum CharClass {
-    MAGICIAN,
-    WARRIOR,
-    CLERIC,
-    PALADIN,
-    ASSESIN,
+    ARCHER,
+    ASSASSIN,
     BARDIC,
+    CLERIC,
     DRUID,
+    MAGICIAN,
+    PALADIN,
     PIRATE,
-    THIEF,
     ROGUE,
-    ARCHER;
+    THIEF,
+    WARRIOR;
+
+    private static final List<CharClass> VALUES =
+            Collections.unmodifiableList(Arrays.asList(values()));
+    private static final int SIZE = VALUES.size();
 
     public static CharClass getClass(String classString) {
         switch (classString.toLowerCase()) {
@@ -26,7 +35,7 @@ public enum CharClass {
             case "guerrero":
                 return WARRIOR;
             case "asesino":
-                return ASSESIN;
+                return ASSASSIN;
             case "bardo":
                 return BARDIC;
             case "druida":
@@ -46,6 +55,6 @@ public enum CharClass {
     public static CharClass get(E entity) {
         int heroId = entity.getCharHero().heroId;
         Hero hero = Hero.getHeros().get(heroId);
-        return values()[hero.getClassId()];
+        return VALUES.get(hero.getClassId());
     }
 }

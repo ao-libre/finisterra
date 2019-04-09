@@ -23,7 +23,7 @@ public enum Modifiers {
         modifiers[CharClass.ARCHER.ordinal()] = new float[]{0.9f, 0.8f, 1f, 0.5f, 0.9f, 1.1f, 0.4f, 0.8f, 9.5f};
         modifiers[CharClass.PALADIN.ordinal()] = new float[]{0.9f, 0.95f, 0.75f, 0.4f, 0.925f, 0.8f, 0.4f, 1f, 9.5f};
         modifiers[CharClass.ROGUE.ordinal()] = new float[]{0.7f, 0.85f, 0.8f, 0.95f, 0.85f, 0.7f, 1.05f, 2f, 9.5f};
-        modifiers[CharClass.ASSESIN.ordinal()] = new float[]{1.1f, 0.9f, 0.75f, 0.4f, 0.9f, 0.8f, 0.4f, 0.8f, 8.5f};
+        modifiers[CharClass.ASSASSIN.ordinal()] = new float[]{1.1f, 0.9f, 0.75f, 0.4f, 0.9f, 0.8f, 0.4f, 0.8f, 8.5f};
         modifiers[CharClass.PIRATE.ordinal()] = new float[]{1.25f, 0.9f, 0.5f, 0.6f, 0.95f, 0.8f, 0.4f, 0.6f, 9.5f};
         modifiers[CharClass.THIEF.ordinal()] = new float[]{1.1f, 0.8f, 0.85f, 0.8f, 0.75f, 0.85f, 1.05f, 0.7f, 10f};
         modifiers[CharClass.CLERIC.ordinal()] = new float[]{0.8f, 0.85f, 0.7f, 0.4f, 0.8f, 0.7f, 0.4f, 0.85f, 8.5f};

@@ -3,7 +3,7 @@ package server.manager;
 import com.artemis.E;
 import com.artemis.World;
 import com.esotericsoftware.minlog.Log;
-import entity.Heading;
+import entity.character.states.Heading;
 import entity.character.status.Hit;
 import server.core.Server;
 import server.database.model.attributes.Attributes;
@@ -14,6 +14,7 @@ import shared.interfaces.Race;
 import shared.network.notifications.RemoveEntity;
 import shared.objects.types.*;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
@@ -106,7 +107,7 @@ public class WorldManager extends DefaultManager {
                 maxLvl = 3;
                 break;
             case PALADIN:
-            case ASSESIN:
+            case ASSASSIN:
             case ROGUE:
                 minLvl = 1;
                 maxLvl = 3;
@@ -182,10 +183,10 @@ public class WorldManager extends DefaultManager {
         float manaPerLvlFactor;
         switch (heroClass) {
             case ROGUE:
-                manaPerLvlFactor = 1/ 3 * 2;
+                manaPerLvlFactor = 1 / 3 * 2;
                 break;
             case PALADIN:
-            case ASSESIN:
+            case ASSASSIN:
                 manaPerLvlFactor = 1;
                 break;
             case MAGICIAN:
@@ -201,7 +202,7 @@ public class WorldManager extends DefaultManager {
                 break;
         }
         float manaPerLvl = entity.intelligenceValue() * manaPerLvlFactor;
-        int maxMana = (int) (manaPerLvl * entity.levelLevel() + manaBase);
+        int maxMana = (int) (manaPerLvl * (entity.levelLevel() - 1) + manaBase);
         maxMana = maxMana == manaBase ? 0 : maxMana;
         entity.manaMax(maxMana);
         entity.manaMin(maxMana);
@@ -221,7 +222,7 @@ public class WorldManager extends DefaultManager {
         });
         addItem(player, Type.ARMOR).ifPresent(armor -> {
             E(player).armorIndex(armor.getId());
-            E(player).bodyIndex(((ArmorObj)armor).getBodyNumber());
+            E(player).bodyIndex(((ArmorObj) armor).getBodyNumber());
         });
         addItem(player, Type.WEAPON).ifPresent(weapon -> {
             E(player).weaponIndex(weapon.getId());
@@ -265,14 +266,13 @@ public class WorldManager extends DefaultManager {
                 .filter(obj -> {
                     if (obj instanceof ObjWithClasses) {
                         int heroId = E(player).getCharHero().heroId;
-                        Hero hero = Hero.getHeros().get(heroId);
-                        CharClass clazz = CharClass.values()[hero.getClassId()];
+                        CharClass clazz = CharClass.get(E(player));
                         Set<CharClass> forbiddenClasses = ((ObjWithClasses) obj).getForbiddenClasses();
                         boolean supported = forbiddenClasses.size() == 0 || !forbiddenClasses.contains(clazz);
                         if (supported && obj instanceof ArmorObj) {
-                            if (((ArmorObj) obj).isDwarf()) {
-                                Race race = Race.values()[hero.getRaceId()];
-                                supported = race.equals(Race.GNOME) || race.equals(Race.DWARF);
+                            Race race = Race.of(E(player));
+                            if (race.equals(Race.GNOME) || race.equals(Race.DWARF)) {
+                                supported = ((ArmorObj) obj).isDwarf();
                             } else if (((ArmorObj) obj).isWomen()) {
                                 supported = false; // TODO
                             }
@@ -282,11 +282,37 @@ public class WorldManager extends DefaultManager {
                         PotionObj potion = (PotionObj) obj;
                         return potion.getKind().equals(PotionKind.HP) || potion.getKind().equals(PotionKind.MANA);
                     }
-                    return true;
+                    return false;
                 })
-                .findFirst();
-        result.ifPresent(obj -> E(player).getInventory().add(obj.getId(), true));
+                .max((obj1, obj2) -> getComparator(obj1, obj2));
+        result.ifPresent(obj -> {
+            CharClass clazz = CharClass.get(E(player));
+            Set<CharClass> forbiddenClasses = ((ObjWithClasses) obj).getForbiddenClasses();
+            Log.info("Item found for class: " + clazz.name() + " and forbidden classes are: " + Arrays.toString(forbiddenClasses.toArray()));
+            E(player).getInventory().add(obj.getId(), true);
+        });
         return result;
+    }
+
+    private int getComparator(Obj obj1, Obj obj2) {
+        if (obj1 instanceof ArmorObj) {
+            ArmorObj armor1 = (ArmorObj) obj1;
+            ArmorObj armor2 = (ArmorObj) obj2;
+            return armor1.getMaxDef() - armor2.getMaxDef();
+        } else if (obj1 instanceof WeaponObj) {
+            WeaponObj weapon1 = (WeaponObj) obj1;
+            WeaponObj weapon2 = (WeaponObj) obj2;
+            return weapon1.getMaxHit() - weapon2.getMaxHit();
+        } else if (obj1 instanceof ShieldObj) {
+            ShieldObj shield1 = (ShieldObj) obj1;
+            ShieldObj shield2 = (ShieldObj) obj2;
+            return shield1.getMaxDef() - shield2.getMaxDef();
+        } else if (obj1 instanceof HelmetObj) {
+            HelmetObj helmet1 = (HelmetObj) obj1;
+            HelmetObj helmet2 = (HelmetObj) obj2;
+            return helmet1.getMaxDef() - helmet2.getMaxDef();
+        }
+        return obj1.getName().compareTo(obj2.getName());
     }
 
     public void registerItem(int id) {

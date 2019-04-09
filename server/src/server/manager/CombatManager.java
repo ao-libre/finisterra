@@ -2,13 +2,11 @@ package server.manager;
 
 import com.artemis.Component;
 import com.artemis.E;
-import entity.CombatMessage;
+import entity.world.CombatMessage;
 import server.core.Server;
-import server.database.model.attributes.Attributes;
 import server.database.model.modifiers.Modifiers;
 import shared.interfaces.CharClass;
 import shared.interfaces.Hero;
-import shared.interfaces.Race;
 import shared.model.Spell;
 import shared.network.notifications.EntityUpdate;
 import shared.objects.types.Obj;

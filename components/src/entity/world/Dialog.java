@@ -1,4 +1,4 @@
-package entity;
+package entity.world;
 
 import com.artemis.Component;
 import com.artemis.annotations.DelayedComponentRemoval;

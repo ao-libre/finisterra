@@ -3,13 +3,12 @@ package server.combat;
 import com.artemis.Component;
 import com.artemis.E;
 import com.esotericsoftware.minlog.Log;
-import entity.CombatMessage;
-import entity.Heading;
+import entity.character.states.Heading;
 import entity.character.status.Health;
+import entity.world.CombatMessage;
 import physics.AttackAnimation;
 import position.WorldPos;
 import server.core.Server;
-import server.database.model.attributes.Attributes;
 import server.database.model.modifiers.Modifiers;
 import server.manager.IManager;
 import shared.interfaces.CharClass;
@@ -116,7 +115,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         ThreadLocalRandom random = ThreadLocalRandom.current();
         float modifier = kind == AttackKind.PROJECTILE ? Modifiers.PROJECTILE.of(clazz) : kind == AttackKind.WEAPON ? Modifiers.WEAPON.of(clazz) : Modifiers.WRESTLING.of(clazz);
         Log.info("Modifier: " + modifier);
-        int weaponDamage = weapon.isPresent() ? random.nextInt(weapon.get().getMinHit(), weapon.get().getMaxHit()) : random.nextInt(4, 9);
+        int weaponDamage = weapon.isPresent() ? random.nextInt(weapon.get().getMinHit(), weapon.get().getMaxHit() + 1) : random.nextInt(4, 9);
         Log.info("Weapon Damage: " + weaponDamage);
         int maxWeaponDamage = weapon.isPresent() ? weapon.get().getMaxHit() : 9;
         Log.info("Max Weapon Damage: " + maxWeaponDamage);
@@ -191,7 +190,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
 
     @Override
     boolean isAttackable(int entityId) {
-        return true;
+        return E(entityId).hasWorldPos();
     }
 
     /**
@@ -200,7 +199,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
      * @param victim        entity id
      * @param combatMessage message
      */
-    public void notify(int victim, CombatMessage combatMessage) {
+    private void notify(int victim, CombatMessage combatMessage) {
         EntityUpdate update = new EntityUpdate(victim, new Component[]{combatMessage}, new Class[0]);
         getServer().getWorldManager().sendEntityUpdate(victim, update);
         getServer().getWorldManager().notifyToNearEntities(victim, update);
@@ -211,7 +210,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
      *
      * @param victim entity id
      */
-    void update(int victim) {
+    private void update(int victim) {
         EntityUpdate update = new EntityUpdate(victim, new Component[]{E(victim).getHealth()}, new Class[0]);
         getServer().getWorldManager().sendEntityUpdate(victim, update);
         getServer().getWorldManager().notifyUpdate(victim, new FXNotification(victim, FXs.FX_BLOOD));
@@ -222,7 +221,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         private final String userMessage;
         private String victimMessage;
 
-        public AttackResult(int damage, String userMessage, String victimMessage) {
+        AttackResult(int damage, String userMessage, String victimMessage) {
 
             this.damage = damage;
             this.userMessage = userMessage;

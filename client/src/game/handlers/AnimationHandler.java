@@ -1,12 +1,15 @@
 package game.handlers;
 
-import entity.*;
+import entity.character.equipment.Helmet;
+import entity.character.equipment.Shield;
+import entity.character.equipment.Weapon;
+import entity.character.parts.Body;
+import entity.character.parts.Head;
 import graphics.FX;
 import model.descriptors.*;
 import model.textures.BundledAnimation;
 import shared.model.Graphic;
 import shared.objects.types.HelmetObj;
-import shared.objects.types.Obj;
 import shared.objects.types.ShieldObj;
 import shared.objects.types.WeaponObj;
 

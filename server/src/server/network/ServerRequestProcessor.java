@@ -5,11 +5,12 @@ import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.World;
 import com.esotericsoftware.minlog.Log;
-import entity.*;
-import entity.Object;
-import entity.character.CanWrite;
 import entity.character.info.Inventory;
+import entity.character.states.CanWrite;
 import entity.character.states.Meditating;
+import entity.world.Dialog;
+import entity.world.Ground;
+import entity.world.Object;
 import graphics.FX;
 import map.Cave;
 import movement.Destination;
@@ -21,7 +22,6 @@ import server.core.Server;
 import server.manager.*;
 import server.utils.WorldUtils;
 import shared.interfaces.Constants;
-import shared.interfaces.FXs;
 import shared.model.AttackType;
 import shared.model.Spell;
 import shared.model.lobby.Player;
@@ -189,32 +189,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(AttackRequest attackRequest, int connectionId) {
         int playerId = getNetworkManager().getPlayerByConnection(connectionId);
-        E player = E(playerId);
-
         getCombatSystem(AttackType.PHYSICAL).userAttack(playerId, Optional.empty());
-
-//        WorldPos worldPos = player.getWorldPos();
-//        Heading heading = player.getHeading();
-//        WorldPos facingPos = WorldUtils(getServer().getWorld()).getFacingPos(worldPos, heading);
-//
-//        Optional<Integer> victim = getMapManager().getNearEntities(playerId)
-//                .stream()
-//                .filter(near -> E(near).hasWorldPos() && E(near).getWorldPos().equals(facingPos))
-//                .findFirst();
-//        if (victim.isPresent() && E(victim.get()).hasCharHero()) {
-//
-//            Optional<Integer> damage = getCombatManager().attack(playerId, victim.get());
-//            if (damage.isPresent()) {
-//                getCombatManager().notify(victim.get(), new CombatMessage("-" + Integer.toString(damage.get())));
-//                // TODO fix fxgrh
-//                getWorldManager().notifyUpdate(victim.get(), new FXNotification(victim.get(), FXs.FX_BLOOD));
-//            } else {
-//                getCombatManager().notify(playerId, new CombatMessage(CombatManager.MISS));
-//            }
-//        } else {
-//            getCombatManager().notify(playerId, new CombatMessage(CombatManager.MISS));
-//        }
-//
     }
 
     /**

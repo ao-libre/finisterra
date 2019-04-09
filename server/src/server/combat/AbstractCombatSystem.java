@@ -1,6 +1,7 @@
 package server.combat;
 
 import server.core.Server;
+
 import java.util.Optional;
 
 public abstract class AbstractCombatSystem implements CombatSystem {

@@ -1,17 +1,12 @@
 package server.manager;
 
-import com.artemis.E;
 import com.artemis.Entity;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
 import map.Cave;
 import position.WorldPos;
 import server.core.Server;
 import server.map.CaveGenerator;
-import server.map.MapGenerator;
-import shared.map.AutoTiler;
-import shared.map.model.MapDescriptor;
 import shared.network.notifications.EntityUpdate;
 
 import java.io.InputStream;

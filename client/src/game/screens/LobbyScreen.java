@@ -1,9 +1,7 @@
 package game.screens;
 
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
@@ -11,6 +9,7 @@ import game.systems.network.ClientSystem;
 import shared.model.lobby.Player;
 import shared.model.lobby.Room;
 import shared.network.lobby.CreateRoomRequest;
+import shared.network.lobby.JoinRoomRequest;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -55,7 +54,21 @@ public class LobbyScreen extends AbstractScreen {
             }
         });
 
+        TextButton joinRoomButton = new TextButton("JOIN ROOM", getSkin());
+        joinRoomButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+                Room selected = roomList.getSelected();
+                if (selected != null && !selected.isFull()) {
+                    clientSystem.getKryonetClient().sendToAll(new JoinRoomRequest(selected.getId()));
+                }
+            }
+        });
+
         getMainTable().add(roomList).width(400).height(400);
+        getMainTable().row();
+        getMainTable().add(joinRoomButton);
         getMainTable().row();
         getMainTable().add(createRoomButton);
 

@@ -2,7 +2,7 @@ package game.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
-import entity.Heading;
+import entity.character.states.Heading;
 import game.screens.GameScreen;
 import game.systems.camera.CameraSystem;
 import physics.AOPhysics;

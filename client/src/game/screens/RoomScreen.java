@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import game.systems.network.ClientSystem;
 import shared.model.lobby.Player;
 import shared.model.lobby.Room;
-import shared.network.lobby.CreateRoomRequest;
 import shared.network.lobby.StartGameRequest;
 
 public class RoomScreen extends AbstractScreen{
@@ -30,6 +29,10 @@ public class RoomScreen extends AbstractScreen{
 
     private void updatePlayers() {
         playerList.setItems(room.getPlayers().toArray(new Player[0]));
+    }
+
+    public Room getRoom() {
+        return room;
     }
 
     @Override
