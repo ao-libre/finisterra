@@ -75,7 +75,7 @@ public class ItemManager extends DefaultManager {
                     case MANA:
                         Mana mana = E(player).getMana();
                         final int level = E(player).levelLevel();
-                        mana.min += mana.max * 0.05f;
+                        mana.min += mana.max * 0.045f;
                         mana.min = Math.min(mana.min, mana.max);
                         components.add(mana);
                         break;
