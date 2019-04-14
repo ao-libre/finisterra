@@ -78,5 +78,9 @@ public abstract class Obj implements IFillObject {
     public int getId() {
         return id;
     }
+
+    @Override public String toString() {
+        return getId() + ":" + getType().toString();
+    }
 }
 

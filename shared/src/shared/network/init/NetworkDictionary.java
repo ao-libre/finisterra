@@ -2,6 +2,7 @@ package shared.network.init;
 
 import camera.Focused;
 import com.artemis.Component;
+import com.artemis.FluidIteratingSystem;
 import entity.character.attributes.*;
 import entity.character.equipment.Armor;
 import entity.character.equipment.Helmet;
@@ -12,9 +13,7 @@ import entity.character.parts.Body;
 import entity.character.parts.Head;
 import entity.character.states.*;
 import entity.character.status.*;
-import entity.world.CombatMessage;
-import entity.world.Dialog;
-import entity.world.Ground;
+import entity.world.*;
 import entity.world.Object;
 import graphics.FX;
 import map.Cave;
@@ -145,6 +144,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 boolean[].class,
                 int[][].class,
                 int[].class,
+                Integer[].class,
                 HashMap.class,
                 HashSet.class,
                 MapUtils.class,
@@ -160,6 +160,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Loader.class,
                 Reader.class,
 
+                FluidIteratingSystem.class,
                 ObjectLoader.class,
                 SpellLoader.class,
                 SpellLoader.SpellSetter.class,
@@ -210,6 +211,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 WoodObj.class,
 
                 // Components
+                SpellBook.class,
                 Map.class,
                 Cave.class,
                 Obj.class,
@@ -269,6 +271,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Constitution.class,
                 Hit.class,
                 Armor.class,
+                Footprint.class,
                 AttackAnimation.class
         );
     }

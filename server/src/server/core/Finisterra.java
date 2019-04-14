@@ -8,6 +8,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import server.manager.LobbyNetworkManager;
 import server.manager.ObjectManager;
+import server.manager.SpellManager;
 import server.systems.FinisterraSystem;
 import shared.model.lobby.Lobby;
 import shared.model.lobby.Room;
@@ -26,6 +27,7 @@ public class Finisterra implements ApplicationListener {
     private World world;
     private LobbyNetworkManager networkManager;
     private ObjectManager objectManager;
+    private SpellManager spellManager;
 
     public Finisterra(int tcpPort, int udpPort) {
         this.tcpPort = tcpPort;
@@ -51,12 +53,13 @@ public class Finisterra implements ApplicationListener {
 
     private void init() {
         objectManager = new ObjectManager();
+        spellManager = new SpellManager();
     }
 
     public void startGame(Room room) {
         int tcpPort = getNextPort();
         int udpPort = getNextPort();
-        Server server = new Server(tcpPort, udpPort, objectManager);
+        Server server = new Server(tcpPort, udpPort, objectManager, spellManager);
         server.addPlayers(room.getPlayers());
         servers.add(server);
         room.getPlayers().forEach(player -> {

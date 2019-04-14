@@ -30,7 +30,6 @@ public class SpellView extends Window {
     public SpellView() {
         super("Spells", Skins.COMODORE_SKIN, "black");
         spells = new List<>(Skins.COMODORE_SKIN, "black");
-        spells.setItems(SpellHandler.getSpells());
         pane = new ScrollPane(spells, Skins.COMODORE_SKIN);
         pane.setTransform(true);
         pane.setSmoothScrolling(false);
@@ -66,6 +65,10 @@ public class SpellView extends Window {
                 over = isOver();
             }
         });
+    }
+
+    public void updateSpells() {
+        spells.setItems(SpellHandler.getSpells());
     }
 
     public boolean isOver() {

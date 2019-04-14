@@ -127,7 +127,7 @@ public class CombatManager extends DefaultManager {
      */
     public static CharClass getCharClass(E victim) {
         int heroId = victim.getCharHero().heroId;
-        Hero hero = Hero.getHeros().get(heroId);
+        Hero hero = Hero.getHeroes().get(heroId);
         return CharClass.values()[hero.getClassId()];
     }
 

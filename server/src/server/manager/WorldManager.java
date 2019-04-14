@@ -11,19 +11,20 @@ import server.database.model.modifiers.Modifiers;
 import shared.interfaces.CharClass;
 import shared.interfaces.Hero;
 import shared.interfaces.Race;
+import shared.model.Spell;
+import shared.model.lobby.Team;
 import shared.network.notifications.RemoveEntity;
 import shared.objects.types.*;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import static com.artemis.E.E;
 
 public class WorldManager extends DefaultManager {
 
-    public static final int ATTR_BASE_VALUE = 18;
+    private static final int ATTR_BASE_VALUE = 18;
     private static int MAX_LEVEL = 45;
     private static int STAT_MAXHIT_UNDER36 = 99;
     private static int STAT_MAXHIT_OVER36 = 999;
@@ -38,10 +39,18 @@ public class WorldManager extends DefaultManager {
 
     }
 
-    public int createEntity(String name, int heroId) {
+    public int createEntity(String name, int heroId, Team team) {
         int player = getWorld().create();
 
         E entity = E(player);
+        switch (team) {
+            case NO_TEAM:
+                entity.gM();
+                break;
+            case CAOS_ARMY:
+                entity.criminal();
+                break;
+        }
         // set position
         setEntityPosition(entity);
         // set head and body
@@ -49,14 +58,52 @@ public class WorldManager extends DefaultManager {
         // set class
         setClassAndAttributes(heroId, entity);
         // set inventory
-        setInventory(player);
+        setInventory(player, Hero.getHeroes().get(heroId), team);
+        // set spells
+        setSpells(player, Hero.getHeroes().get(heroId));
 
         return player;
     }
 
+    private void setSpells(int player, Hero hero) {
+        Set<Spell> spells = getSpells(hero);
+        final List<Integer> ids = spells
+            .stream()
+            .map(spell -> getServer().getSpellManager().getId(spell))
+            .collect(Collectors.toList());
+        final Integer[] spellIds = ids.toArray(new Integer[0]);
+        E(player).spellBookSpells(spellIds);
+    }
+
+    private Set<Spell> getSpells(Hero hero) {
+        final Map<Integer, Spell> spells = getServer().getSpellManager().getSpells();
+        Set<Spell> result = new HashSet<>();
+        Spell apoca = spells.get(25);
+        Spell desca = spells.get(23);
+        Spell tormenta = spells.get(15);
+        Spell misil = spells.get(8);
+        Spell inmo = spells.get(24);
+        Spell remo = spells.get(10);
+        switch (hero) {
+            case MAGO:
+            case BARDO:
+            case CLERIGO:
+                result.add(apoca);
+                break;
+        }
+        if (!(hero.equals(Hero.GUERRERO) || hero.equals(Hero.ARQUERO))) {
+            result.add(misil);
+            result.add(tormenta);
+            result.add(desca);
+            result.add(inmo);
+            result.add(remo);
+        }
+        return result;
+    }
+
     private void setClassAndAttributes(int heroId, E entity) {
         // set body and head
-        Hero hero = Hero.getHeros().get(heroId);
+        Hero hero = Hero.getHeroes().get(heroId);
         Race race = Race.values()[hero.getRaceId()];
         setNakedBody(entity, race);
         setHead(entity, race);
@@ -64,16 +111,17 @@ public class WorldManager extends DefaultManager {
 
         CharClass charClass = CharClass.values()[hero.getClassId()];
         setAttributesAndStats(entity, charClass, race);
-
     }
 
     private void setAttributesAndStats(E entity, CharClass charClass, Race race) {
         // set attributes
-        entity.agilityValue(ATTR_BASE_VALUE + Attributes.AGILITY.of(race));
+        //        entity.agilityValue(ATTR_BASE_VALUE + Attributes.AGILITY.of(race));
+        entity.agilityValue(38);
         entity.charismaValue(ATTR_BASE_VALUE + Attributes.CHARISMA.of(race));
         entity.constitutionValue(ATTR_BASE_VALUE + Attributes.CONSTITUTION.of(race));
         entity.intelligenceValue(ATTR_BASE_VALUE + Attributes.INTELLIGENCE.of(race));
-        entity.strengthValue(ATTR_BASE_VALUE + Attributes.STRENGTH.of(race));
+        //        entity.strengthValue(ATTR_BASE_VALUE + Attributes.STRENGTH.of(race));
+        entity.strengthValue(38);
 
         // set stats
         setLevel(entity);
@@ -128,7 +176,9 @@ public class WorldManager extends DefaultManager {
                 maxLvl = 0;
                 break;
         }
-        int maxHit = Math.min(STAT_MAXHIT_OVER36, Math.min(minLvl * breakingLvl + (entity.getLevel().level - breakingLvl) * maxLvl, STAT_MAXHIT_UNDER36));
+        int maxHit = Math.min(STAT_MAXHIT_OVER36,
+                              Math.min(minLvl * breakingLvl + (entity.getLevel().level - breakingLvl) * maxLvl,
+                                       STAT_MAXHIT_UNDER36));
         entity.hit();
         Hit hit = entity.getHit();
         hit.setMax(maxHit);
@@ -215,80 +265,236 @@ public class WorldManager extends DefaultManager {
         entity.healthMin(maxHP);
     }
 
-    private void setInventory(int player) {
+    private void setInventory(int player, Hero hero, Team team) {
         E(player).inventory();
-        addItem(player, Type.HELMET).ifPresent(helmet -> {
+        addPotion(player, PotionKind.HP);
+        if (E(player).manaMax() > 0) {
+            addPotion(player, PotionKind.MANA);
+        }
+        getHelmet(hero, team).ifPresent(helmet -> {
             E(player).helmetIndex(helmet.getId());
+            E(player).getInventory().add(helmet.getId(), true);
         });
-        addItem(player, Type.ARMOR).ifPresent(armor -> {
+        getArmor(hero, team).ifPresent(armor -> {
             E(player).armorIndex(armor.getId());
             E(player).bodyIndex(((ArmorObj) armor).getBodyNumber());
+            E(player).getInventory().add(armor.getId(), true);
         });
-        addItem(player, Type.WEAPON).ifPresent(weapon -> {
-            E(player).weaponIndex(weapon.getId());
-        });
-        addItem(player, Type.SHIELD).ifPresent(shield -> {
+        final Set<Obj> weapons = getWeapon(hero, team);
+        if (!weapons.isEmpty()) {
+            final Obj next = weapons.iterator().next();
+            E(player).weaponIndex(next.getId());
+            E(player).getInventory().add(next.getId(), true);
+        }
+        ;
+        getShield(hero, team).ifPresent(shield -> {
             E(player).shieldIndex(shield.getId());
+            E(player).getInventory().add(shield.getId(), true);
         });
-        addPotion(player, PotionKind.HP);
-        addPotion(player, PotionKind.MANA);
     }
 
     private void setHeadAndBody(String name, E entity) {
         entity
-                .headingCurrent(Heading.HEADING_NORTH)
-                .character()
-                .nameText(name);
+            .headingCurrent(Heading.HEADING_NORTH)
+            .character()
+            .nameText(name);
     }
 
     private void setEntityPosition(E entity) {
         entity
-                .worldPosX(25)
-                .worldPosY(25)
-                .worldPosMap(1);
+            .worldPosX(25)
+            .worldPosY(25)
+            .worldPosMap(1);
     }
 
     private void addPotion(int player, PotionKind kind) {
         Set<Obj> objs = getServer().getObjectManager().getTypeObjects(Type.POTION);
         objs.stream() //
-                .map(PotionObj.class::cast) //
-                .filter(potion -> {
-                    PotionKind potionKind = potion.getKind();
-                    return potionKind != null && potionKind.equals(kind);
-                }) //
-                .findFirst() //
-                .ifPresent(obj -> E(player).getInventory().add(obj.getId(), false));
+            .map(PotionObj.class::cast) //
+            .filter(potion -> {
+                PotionKind potionKind = potion.getKind();
+                return potionKind != null && potionKind.equals(kind);
+            }) //
+            .findFirst() //
+            .ifPresent(obj -> E(player).getInventory().add(obj.getId(), false));
     }
+
+    private Optional<Obj> getArmor(Hero hero, Team team) {
+        final Random random = new Random();
+        Optional<Obj> result = Optional.empty();
+        final ObjectManager objectManager = getServer().getObjectManager();
+        List<Integer> noTeam;
+        List<Integer> real;
+        List<Integer> chaos;
+        List<Integer> set;
+        switch (hero) {
+            case PALADIN:
+                noTeam = Arrays.asList(195, 485, 496);
+                real = Collections.singletonList(680);
+                chaos = Collections.singletonList(683);
+
+                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
+                result = objectManager.getObject(set.get(random.nextInt(set.size())));
+                break;
+            case GUERRERO:
+                noTeam = Arrays.asList(243, 968);
+                real = Arrays.asList(681, 694);
+                chaos = Arrays.asList(685, 695);
+
+                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
+                result = objectManager.getObject(set.get(random.nextInt(set.size())));
+                break;
+            case MAGO:
+                noTeam = Arrays.asList(525, 969);
+                real = Arrays.asList(549, 682);
+                chaos = Arrays.asList(558, 686);
+
+                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
+                result = objectManager.getObject(set.get(random.nextInt(set.size())));
+                break;
+            case BARDO:
+                noTeam = Arrays.asList(519, 359, 484);
+                real = Collections.singletonList(520);
+                chaos = Collections.singletonList(523);
+
+                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
+                result = objectManager.getObject(set.get(random.nextInt(set.size())));
+                break;
+            case ARQUERO:
+                noTeam = Arrays.asList(964, 965);
+                real = Collections.singletonList(1040);
+                chaos = Collections.singletonList(1041);
+
+                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
+                result = objectManager.getObject(set.get(random.nextInt(set.size())));
+                break;
+            case ASESINO:
+                noTeam = Arrays.asList(356, 495);
+                real = Arrays.asList(521, 691);
+                chaos = Arrays.asList(684, 701);
+
+                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
+                result = objectManager.getObject(set.get(random.nextInt(set.size())));
+                break;
+            case CLERIGO:
+                noTeam = Arrays.asList(356, 495);
+                real = Collections.singletonList(521);
+                chaos = Collections.singletonList(523);
+
+                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
+                result = objectManager.getObject(set.get(random.nextInt(set.size())));
+                break;
+        }
+        return result;
+    }
+
+    private Optional<Obj> getHelmet(Hero hero, Team team) {
+        Optional<Obj> result = Optional.empty();
+        final ObjectManager objectManager = getServer().getObjectManager();
+        switch (hero) {
+            case PALADIN:
+            case GUERRERO:
+                result = objectManager.getObject(405);
+                break;
+            case ARQUERO:
+                Random random = new Random();
+                result = objectManager.getObject(Arrays.asList(1052, 1003).get(random.nextInt(2)));
+                break;
+            case CLERIGO:
+            case ASESINO:
+                result = objectManager.getObject(131);
+                break;
+            case BARDO:
+            case MAGO:
+                result = objectManager.getObject(851);
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
+    private Optional<Obj> getShield(Hero hero, Team team) {
+        Optional<Obj> result = Optional.empty();
+        final ObjectManager objectManager = getServer().getObjectManager();
+        switch (hero) {
+            case PALADIN:
+            case CLERIGO:
+            case GUERRERO:
+                result = objectManager.getObject(team.equals(Team.NO_TEAM) ? 130 : team.equals(Team.REAL_ARMY) ? 1038 : 1037);
+                break;
+            case BARDO:
+            case ASESINO:
+                result = objectManager.getObject(404);
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
+    private Set<Obj> getWeapon(Hero hero, Team type) {
+        Set<Obj> result = new HashSet<>();
+        final ObjectManager objectManager = getServer().getObjectManager();
+        switch (hero) {
+            case PALADIN:
+            case GUERRERO:
+                result.add(objectManager.getObject(403).get());
+                break;
+            case ARQUERO:
+                result.add(objectManager.getObject(665).get());
+                result.add(objectManager.getObject(366).get());
+                break;
+            case BARDO:
+                result.add(objectManager.getObject(365).get());
+                break;
+            case CLERIGO:
+                result.add(objectManager.getObject(129).get());
+                break;
+            case ASESINO:
+                result.add(objectManager.getObject(367).get());
+                break;
+            case MAGO:
+                result.add(objectManager.getObject(660).get());
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
+
 
     private Optional<Obj> addItem(int player, Type type) {
         Set<Obj> objs = getServer().getObjectManager().getTypeObjects(type);
         Optional<Obj> result = objs.stream()
-                .filter(obj -> {
-                    if (obj instanceof ObjWithClasses) {
-                        int heroId = E(player).getCharHero().heroId;
-                        CharClass clazz = CharClass.get(E(player));
-                        Set<CharClass> forbiddenClasses = ((ObjWithClasses) obj).getForbiddenClasses();
-                        boolean supported = forbiddenClasses.size() == 0 || !forbiddenClasses.contains(clazz);
-                        if (supported && obj instanceof ArmorObj) {
-                            Race race = Race.of(E(player));
-                            if (race.equals(Race.GNOME) || race.equals(Race.DWARF)) {
-                                supported = ((ArmorObj) obj).isDwarf();
-                            } else if (((ArmorObj) obj).isWomen()) {
-                                supported = false; // TODO
-                            }
+            .filter(obj -> {
+                if (obj instanceof ObjWithClasses) {
+                    int heroId = E(player).getCharHero().heroId;
+                    CharClass clazz = CharClass.get(E(player));
+                    Set<CharClass> forbiddenClasses = ((ObjWithClasses) obj).getForbiddenClasses();
+                    boolean supported = forbiddenClasses.size() == 0 || !forbiddenClasses.contains(clazz);
+                    if (supported && obj instanceof ArmorObj) {
+                        Race race = Race.of(E(player));
+                        if (race.equals(Race.GNOME) || race.equals(Race.DWARF)) {
+                            supported = ((ArmorObj) obj).isDwarf();
+                        } else if (((ArmorObj) obj).isWomen()) {
+                            supported = false; // TODO
                         }
-                        return supported;
-                    } else if (obj.getType().equals(Type.POTION)) {
-                        PotionObj potion = (PotionObj) obj;
-                        return potion.getKind().equals(PotionKind.HP) || potion.getKind().equals(PotionKind.MANA);
                     }
-                    return false;
-                })
-                .max((obj1, obj2) -> getComparator(obj1, obj2));
+                    return supported;
+                } else if (obj.getType().equals(Type.POTION)) {
+                    PotionObj potion = (PotionObj) obj;
+                    return potion.getKind().equals(PotionKind.HP) || potion.getKind().equals(PotionKind.MANA);
+                }
+                return false;
+            })
+            .max(this::getComparator);
         result.ifPresent(obj -> {
             CharClass clazz = CharClass.get(E(player));
             Set<CharClass> forbiddenClasses = ((ObjWithClasses) obj).getForbiddenClasses();
-            Log.info("Item found for class: " + clazz.name() + " and forbidden classes are: " + Arrays.toString(forbiddenClasses.toArray()));
+            Log.info("Item found for class: " + clazz.name() + " and forbidden classes are: " + Arrays
+                .toString(forbiddenClasses.toArray()));
             E(player).getInventory().add(obj.getId(), true);
         });
         return result;
@@ -330,7 +536,8 @@ public class WorldManager extends DefaultManager {
 
     void sendEntityRemove(int user, int entity) {
         if (getServer().getNetworkManager().playerHasConnection(user)) {
-            getServer().getNetworkManager().sendTo(getServer().getNetworkManager().getConnectionByPlayer(user), new RemoveEntity(entity));
+            getServer().getNetworkManager()
+                .sendTo(getServer().getNetworkManager().getConnectionByPlayer(user), new RemoveEntity(entity));
         }
     }
 

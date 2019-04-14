@@ -3,6 +3,7 @@ package server.manager;
 import com.artemis.Entity;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
+import entity.world.Footprint;
 import map.Cave;
 import position.WorldPos;
 import server.core.Server;
@@ -25,6 +26,7 @@ public class MapManager extends DefaultManager {
     public static final int MAX_DISTANCE = 15;
     private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
+    private Map<Integer, Set<Integer>> entitiesFootprints = new ConcurrentHashMap<>();
 
     private static HashMap<Integer, shared.model.map.Map> maps = new HashMap<>();
     public int mapEntity;
@@ -98,14 +100,20 @@ public class MapManager extends DefaultManager {
             if (it.equals(actualPos)) {
                 return;
             }
+            //create footprint
+            final int footprintId = getServer().getWorld().create();
+            E(footprintId).footprintEntityId(player);
+            E(footprintId).worldPosMap(it.map);
+            E(footprintId).worldPosX(it.x);
+            E(footprintId).worldPosY(it.y);
+            entitiesFootprints.computeIfAbsent(player, (playerId) -> new HashSet<>()).add(footprintId);
+
             if (it.map != actualPos.map) {
                 getEntitiesInMap(it.map).remove(player);
             }
             if (nearEntities.containsKey(player)) {
                 Set<Integer> near = new HashSet<>(nearEntities.get(player));
-                near.forEach(nearEntity -> {
-                    removeNearEntity(player, nearEntity);
-                });
+                near.forEach(nearEntity -> removeNearEntity(player, nearEntity));
             }
         });
         updateEntity(player);
@@ -224,5 +232,7 @@ public class MapManager extends DefaultManager {
         return maps.get(mapNumber);
     }
 
-
+    public Map<Integer, Set<Integer>> getEntitiesFootprints() {
+        return entitiesFootprints;
+    }
 }

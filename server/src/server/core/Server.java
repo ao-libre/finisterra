@@ -4,12 +4,15 @@ import com.artemis.FluidEntityPlugin;
 import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
 import server.combat.CombatSystem;
+import server.combat.MagicCombatSystem;
 import server.combat.PhysicalCombatSystem;
 import server.manager.*;
+import server.systems.FootprintSystem;
 import server.systems.RandomMovementSystem;
 import server.systems.ServerSystem;
 import shared.interfaces.Hero;
 import shared.model.lobby.Player;
+import shared.model.lobby.Team;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,15 +25,17 @@ public class Server  {
     private final int tcpPort;
     private final int udpPort;
     private ObjectManager objectManager;
+    private SpellManager spellManager;
     private World world;
     private Map<Class<? extends IManager>, IManager> managers = new HashMap<>();
     private KryonetServerMarshalStrategy strategy;
     private Set<Player> players;
 
-    public Server(int tcpPort, int udpPort, ObjectManager objectManager) {
+    public Server(int tcpPort, int udpPort, ObjectManager objectManager, SpellManager spellManager) {
         this.tcpPort = tcpPort;
         this.udpPort = udpPort;
         this.objectManager = objectManager;
+        this.spellManager = spellManager;
         create();
     }
 
@@ -43,13 +48,13 @@ public class Server  {
 
     private void initManagers() {
         managers.put(NetworkManager.class, new NetworkManager(this, strategy));
-        managers.put(CombatManager.class, new CombatManager(this));
         managers.put(ItemManager.class, new ItemManager(this));
-        managers.put(SpellManager.class, new SpellManager(this));
         managers.put(MapManager.class, new MapManager(this));
+        managers.put(SpellManager.class, spellManager);
         managers.put(ObjectManager.class, objectManager);
         managers.put(WorldManager.class, new WorldManager(this));
         managers.put(PhysicalCombatSystem.class, new PhysicalCombatSystem(this));
+        managers.put(MagicCombatSystem.class, new MagicCombatSystem(this));
     }
 
     public World getWorld() {
@@ -63,6 +68,7 @@ public class Server  {
         builder
                 .with(new FluidEntityPlugin())
                 .with(new ServerSystem(this, strategy))
+                .with(new FootprintSystem(this, 500))
                 .with(new RandomMovementSystem(this));
         world = new World(builder.build());
         System.out.println("WORLD CREATED");
@@ -71,7 +77,7 @@ public class Server  {
 
     private void createWorld() {
         // testing
-        int player2 = getWorldManager().createEntity("guidota2", Hero.WARRIOR.ordinal());
+        int player2 = getWorldManager().createEntity("guidota2", Hero.GUERRERO.ordinal(), Team.NO_TEAM);
         E(player2).randomMovement();
         getMapManager().updateEntity(player2);
     }
@@ -121,6 +127,10 @@ public class Server  {
 
     public CombatSystem getCombatManager() {
         return getManager(PhysicalCombatSystem.class);
+    }
+
+    public MagicCombatSystem getMagicCombatManager() {
+        return getManager(MagicCombatSystem.class);
     }
 
     public ObjectManager getObjectManager() {

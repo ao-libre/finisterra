@@ -1,7 +1,6 @@
 package shared.interfaces;
 
 import com.artemis.E;
-import com.esotericsoftware.minlog.Log;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -54,7 +53,7 @@ public enum CharClass {
 
     public static CharClass get(E entity) {
         int heroId = entity.getCharHero().heroId;
-        Hero hero = Hero.getHeros().get(heroId);
+        Hero hero = Hero.getHeroes().get(heroId);
         return VALUES.get(hero.getClassId());
     }
 }

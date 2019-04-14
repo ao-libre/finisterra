@@ -39,7 +39,7 @@ public class ItemConsumers {
                 entity.removeWeapon();
                 getServer().getWorldManager().notifyUpdate(player, new EntityUpdate(player, new Component[0], new Class[] {Weapon.class}));
             } else if (obj instanceof ArmorObj) {
-                Hero hero = Hero.getHeros().get(entity.getCharHero().heroId);
+                Hero hero = Hero.getHeroes().get(entity.getCharHero().heroId);
                 getServer().getWorldManager().setNakedBody(entity, Race.values()[hero.getRaceId()]);
                 getServer().getWorldManager().notifyUpdate(player, new EntityUpdate(player, new Component[]{entity.getBody()}, new Class[0]));
             } else if (obj instanceof HelmetObj) {

@@ -1,11 +1,18 @@
 package game.handlers;
 
+import entity.character.info.SpellBook;
+import game.screens.GameScreen;
 import model.readers.AODescriptorsReader;
 import shared.model.Spell;
 import shared.model.readers.DescriptorsReader;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static com.artemis.E.E;
 
 public class SpellHandler {
 
@@ -21,7 +28,11 @@ public class SpellHandler {
     }
 
     public static Spell[] getSpells() {
-        return spells.values().toArray(new Spell[spells.size()]);
+        final int player = GameScreen.getPlayer();
+        final SpellBook spellBook = E(player).getSpellBook();
+
+        return Arrays.stream(spellBook.spells).map(SpellHandler::getSpell).filter(Optional::isPresent).map(Optional::get)
+            .distinct().toArray(Spell[]::new);
     }
 
 }

@@ -19,6 +19,7 @@ import shared.objects.types.*;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -68,24 +69,25 @@ public class CharacterScreen extends ScreenAdapter {
         chooser.update(delta);
     }
 
-    private static void change(Part part, int index) {
+    private static void change(Part part, Obj obj) {
         E entity = E(player);
         switch (part) {
             case BODY:
                 entity.removeBody();
-                entity.bodyIndex(index);
+                entity.armorIndex(obj.getId());
+                entity.bodyIndex(((ArmorObj) obj).getBodyNumber());
                 break;
             case HELMET:
                 entity.removeHelmet();
-                entity.helmetIndex(index);
+                entity.helmetIndex(obj.getId());
                 break;
             case SHIELD:
                 entity.removeShield();
-                entity.shieldIndex(index);
+                entity.shieldIndex(obj.getId());
                 break;
             case WEAPON:
                 entity.removeWeapon();
-                entity.weaponIndex(index);
+                entity.weaponIndex(obj.getId());
                 break;
         }
     }
@@ -122,9 +124,9 @@ public class CharacterScreen extends ScreenAdapter {
             for (Part part : Part.values()) {
                 Label label = new Label(part.name(), Skins.COMODORE_SKIN);
                 table.add(label).left().padTop(20).row();
-                SelectBox<Integer> select = new SelectBox<>(Skins.COMODORE_SKIN);
-                Integer[] items = getItems(part).toArray(new Integer[0]);
-                Arrays.sort(items);
+                SelectBox<Obj> select = new SelectBox<>(Skins.COMODORE_SKIN);
+                Obj[] items = getItems(part).toArray(new Obj[0]);
+                Arrays.sort(items, Comparator.comparingInt(Obj::getId));
                 select.setItems(items);
                 select.addListener(new ChangeListener() {
                     @Override
@@ -134,22 +136,22 @@ public class CharacterScreen extends ScreenAdapter {
                         }
                     }
                 });
-                table.add(select).right().width(100).row();
+                table.add(select).right().width(200).row();
             }
             stage.addActor(table);
             stage.setKeyboardFocus(table);
         }
 
-        private Set<Integer> getItems(Part part) {
+        private Set<Obj> getItems(Part part) {
             switch (part) {
                 case WEAPON:
-                    return ObjectHandler.getTypeObjects(Type.WEAPON).stream().map(WeaponObj.class::cast).map(WeaponObj::getAnimationId).collect(Collectors.toSet());
+                    return ObjectHandler.getTypeObjects(Type.WEAPON).stream().map(WeaponObj.class::cast).collect(Collectors.toSet());
                 case SHIELD:
-                    return ObjectHandler.getTypeObjects(Type.SHIELD).stream().map(ShieldObj.class::cast).map(ShieldObj::getAnimationId).collect(Collectors.toSet());
+                    return ObjectHandler.getTypeObjects(Type.SHIELD).stream().map(ShieldObj.class::cast).collect(Collectors.toSet());
                 case BODY:
-                    return ObjectHandler.getTypeObjects(Type.ARMOR).stream().map(ArmorObj.class::cast).map(ArmorObj::getBodyNumber).collect(Collectors.toSet());
+                    return ObjectHandler.getTypeObjects(Type.ARMOR).stream().map(ArmorObj.class::cast).collect(Collectors.toSet());
                 case HELMET:
-                    return ObjectHandler.getTypeObjects(Type.HELMET).stream().map(HelmetObj.class::cast).map(HelmetObj::getAnimationId).collect(Collectors.toSet());
+                    return ObjectHandler.getTypeObjects(Type.HELMET).stream().map(HelmetObj.class::cast).collect(Collectors.toSet());
             }
             return Collections.emptySet();
         }
