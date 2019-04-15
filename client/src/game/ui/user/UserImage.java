@@ -69,6 +69,10 @@ public class UserImage extends Image {
         batch.setColor(color);
     }
 
+    public void refresh() {
+        head = null;
+    }
+
     public TextureRegion getHead() {
         if (head == null) {
             int playerId = GameScreen.getPlayer();

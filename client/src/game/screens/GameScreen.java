@@ -163,6 +163,7 @@ public class GameScreen extends ScreenAdapter {
 //                .fXAddParticleEffect(2);
         GUI.getInventory().updateUserInventory();
         GUI.getSpellView().updateSpells();
+        GUI.getUserTable().refresh();
     }
 
     public static MarshalStrategy getClient() {

@@ -44,9 +44,9 @@ public class MagicCombatSystem implements IManager {
         final long timestamp = spellCastRequest.getTimestamp();
         Optional<Integer> target = getTarget(userId, targetPos, timestamp);
         if (target.isPresent()) {
-            castSpell(userId, target.get(), spell);
             AttackAnimation attackAnimation = new AttackAnimation();
             getServer().getWorldManager().notifyUpdate(userId, new EntityUpdate(userId, new Component[]{attackAnimation}, new Class[0]));
+            castSpell(userId, target.get(), spell);
         } else {
             // TODO
 //            List<WorldPos> area = getArea(worldPos, 3);
@@ -78,7 +78,6 @@ public class MagicCombatSystem implements IManager {
         return footprints != null && footprints.stream().anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()));
     }
 
-
     private void castSpell(int playerId, int target, Spell spell) {
         int requiredMana = spell.getRequiredMana();
         Mana mana = E(playerId).getMana();
@@ -107,6 +106,9 @@ public class MagicCombatSystem implements IManager {
                 getServer().getWorldManager().sendEntityUpdate(target, new EntityUpdate(target, new Component[]{health}, new Class[0]));
                 if (health.min == 0) {
                     getServer().getWorldManager().userDie(target);
+                    if (playerId == target) { // TODO HACK
+                        return;
+                    }
                 }
             }
             if (spell.isImmobilize()) {

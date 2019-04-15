@@ -28,7 +28,8 @@ public class ServerSystem extends MarshalSystem {
         this(server, strategy, new ServerRequestProcessor(server), new ServerNotificationProcessor(server));
     }
 
-    public ServerSystem(Server server, MarshalStrategy strategy, IRequestProcessor requestProcessor, INotificationProcessor notificationProcessor) {
+    public ServerSystem(Server server, MarshalStrategy strategy, IRequestProcessor requestProcessor,
+                        INotificationProcessor notificationProcessor) {
         super(new NetworkDictionary(), strategy);
         this.server = server;
         this.requestProcessor = requestProcessor;
@@ -55,9 +56,7 @@ public class ServerSystem extends MarshalSystem {
     protected void processSystem() {
         super.processSystem();
         while (netQueue.peek() != null) {
-            Gdx.app.postRunnable(() -> {
-                processJob(netQueue.poll());
-            });
+            processJob(netQueue.poll());
         }
     }
 
@@ -81,6 +80,7 @@ public class ServerSystem extends MarshalSystem {
     }
 
     private static class NetworkJob {
+
         private final int connectionId;
         private final Object receivedObject;
 

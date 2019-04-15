@@ -101,18 +101,11 @@ public class Server  {
         world.process();
     }
 
-    public void addPlayers(Set<Player> players) {
+    void addPlayers(Set<Player> players) {
         this.players = players;
-
-        players.forEach(player -> {
-            // register player
-
-            // create entity
-            // notify
-        });
     }
 
-    public <T extends IManager> T getManager(Class<T> managerType) {
+    private <T extends IManager> T getManager(Class<T> managerType) {
         return managerType.cast(managers.get(managerType));
     }
 

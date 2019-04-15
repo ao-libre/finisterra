@@ -114,6 +114,10 @@ public class GUI {
         return spellView;
     }
 
+    public static UserInformation getUserTable() {
+        return userTable;
+    }
+
     public void draw() {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();

@@ -1,6 +1,7 @@
 package game.systems.network;
 
 import com.badlogic.gdx.Gdx;
+import com.esotericsoftware.minlog.Log;
 import game.network.ClientResponseProcessor;
 import game.network.GameNotificationProcessor;
 import game.network.KryonetClientMarshalStrategy;
@@ -21,10 +22,11 @@ public class ClientSystem extends MarshalSystem {
     public ClientSystem(String host, int port) {
         super(new NetworkDictionary(), new KryonetClientMarshalStrategy(host, port));
     }
-    
+
     @Override
     public void received(int connectionId, Object object) {
         Gdx.app.postRunnable(() -> {
+            Log.info(object.toString());
             if (object instanceof IResponse) {
                 ((IResponse) object).accept(responseProcessor);
             } else if (object instanceof INotification) {

@@ -37,6 +37,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
             WorldManager.registerEntity(entityUpdate.entityId, newEntity.getId());
             addComponentsToEntity(newEntity, entityUpdate);
             if (E(newEntity).hasFocused()) {
+                Log.info("New focused player: " + newEntity.getId());
                 GameScreen.setPlayer(newEntity.getId());
             }
         } else {
@@ -47,7 +48,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     @Override
     public void processNotification(RemoveEntity removeEntity) {
-        Log.debug("Unregistering entity: " + removeEntity.entityId);
+        Log.info("Unregistering entity: " + removeEntity.entityId);
         WorldManager.unregisterEntity(removeEntity.entityId);
     }
 
@@ -91,18 +92,16 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     private void updateEntity(EntityUpdate entityUpdate) {
         int entityId = WorldManager.getNetworkedEntity(entityUpdate.entityId);
         Entity entity = WorldManager.getWorld().getEntity(entityId);
-        Gdx.app.postRunnable(() -> {
-            EntityEdit edit = entity.edit();
-            for (Component component : entityUpdate.components) {
-                // this should replace if already exists
-                edit.add(component);
-                Log.info("Adding component: " + component.toString());
-            }
-            for (Class remove : entityUpdate.toRemove) {
-                Log.info("Removing component: " + remove.getSimpleName());
-                edit.remove(remove);
-            }
-        });
+        EntityEdit edit = entity.edit();
+        for (Component component : entityUpdate.components) {
+            // this should replace if already exists
+            edit.add(component);
+            Log.info("Adding component: " + component.toString());
+        }
+        for (Class remove : entityUpdate.toRemove) {
+            Log.info("Removing component: " + remove.getSimpleName());
+            edit.remove(remove);
+        }
     }
 
     @Override
@@ -110,7 +109,11 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         AOGame game = (AOGame) Gdx.app.getApplicationListener();
         if (game.getScreen() instanceof RoomScreen) {
             RoomScreen room = (RoomScreen) game.getScreen();
-            room.getRoom().add(joinRoomNotification.getPlayer());
+            if (joinRoomNotification.isEnter()) {
+                room.getRoom().add(joinRoomNotification.getPlayer());
+            } else {
+                room.getRoom().remove(joinRoomNotification.getPlayer());
+            }
             room.updatePlayers();
         }
     }

@@ -21,8 +21,13 @@ public class JoinRoomNotification implements INotification {
         return player;
     }
 
+
     @Override
     public void accept(INotificationProcessor processor) {
         processor.processNotification(this);
+    }
+
+    public boolean isEnter() {
+        return enter;
     }
 }

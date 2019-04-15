@@ -2,7 +2,6 @@ package shared.network.init;
 
 import camera.Focused;
 import com.artemis.Component;
-import com.artemis.FluidIteratingSystem;
 import entity.character.attributes.*;
 import entity.character.equipment.Armor;
 import entity.character.equipment.Helmet;
@@ -48,7 +47,6 @@ import shared.model.readers.DescriptorsReader;
 import shared.model.readers.Loader;
 import shared.model.readers.Reader;
 import shared.network.combat.AttackRequest;
-import shared.network.combat.AttackResponse;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.DropItem;
 import shared.network.interaction.MeditateRequest;
@@ -96,7 +94,6 @@ public class NetworkDictionary extends MarshalDictionary {
 
                 // Game Responses
                 MovementResponse.class,
-                AttackResponse.class,
 
                 // Game Notifications
                 EntityUpdate.class,
@@ -160,7 +157,6 @@ public class NetworkDictionary extends MarshalDictionary {
                 Loader.class,
                 Reader.class,
 
-                FluidIteratingSystem.class,
                 ObjectLoader.class,
                 SpellLoader.class,
                 SpellLoader.SpellSetter.class,

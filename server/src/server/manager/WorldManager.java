@@ -601,10 +601,10 @@ public class WorldManager extends DefaultManager {
         final E e = E(entityId);
         final String name = e.getName().text;
         final int connectionByPlayer = getServer().getNetworkManager().getConnectionByPlayer(entityId);
-        getServer().getWorldManager().unregisterEntity(entityId);
         getServer().getMapManager().removeEntity(entityId);
         getServer().getWorldManager().sendEntityRemove(entityId, entityId);
         login(connectionByPlayer, new Player(connectionByPlayer, name, Hero.getRandom()));
+        getServer().getWorldManager().unregisterEntity(entityId);
     }
 
     public void login(int connectionId, Player player) {

@@ -1,21 +1,16 @@
 package server.network;
 
-import camera.Focused;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.World;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
-import entity.character.states.CanWrite;
 import entity.character.states.Meditating;
 import entity.world.Dialog;
-import entity.world.Ground;
 import entity.world.Object;
 import graphics.FX;
 import map.Cave;
 import movement.Destination;
-import physics.AOPhysics;
-import physics.AttackAnimation;
 import position.WorldPos;
 import server.combat.CombatSystem;
 import server.core.Server;
@@ -23,9 +18,7 @@ import server.manager.*;
 import server.utils.WorldUtils;
 import shared.interfaces.Constants;
 import shared.model.AttackType;
-import shared.model.Spell;
 import shared.model.lobby.Player;
-import shared.model.lobby.Team;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.MeditateRequest;
@@ -35,13 +28,10 @@ import shared.network.interfaces.DefaultRequestProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
 import shared.network.lobby.player.PlayerLoginRequest;
-import shared.network.login.LoginOK;
-import shared.network.login.LoginRequest;
 import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.FXNotification;
 import shared.util.MapUtils;
 
 import java.util.*;
@@ -107,20 +97,6 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         return positions;
     }
 
-    /**
-     * @param request LoginRequest
-     * @param connectionId connection id
-     */
-    @Override
-    public void processRequest(LoginRequest request, int connectionId) {
-        final int entity = getWorldManager().createEntity(request.username, request.heroId, Team.NO_TEAM);
-        int mapEntityId = getMapManager().mapEntity;
-        getNetworkManager().sendTo(connectionId, new EntityUpdate(mapEntityId, WorldUtils(getWorld()).getComponents(mapEntityId), new Class[0]));
-        getNetworkManager().sendTo(connectionId, new EntityUpdate(entity, WorldUtils(getWorld()).getComponents(entity), new Class[0]));
-        getNetworkManager().sendTo(connectionId, new LoginOK(entity));
-        getWorldManager().registerEntity(connectionId, entity);
-    }
-
     @Override
     public void processRequest(PlayerLoginRequest playerLoginRequest, int connectionId) {
         Player player = playerLoginRequest.getPlayer();
@@ -139,14 +115,9 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     public void processRequest(MovementRequest request, int connectionId) {
         // TODO check map changed
 
-        // validate if valid
         int playerId = getNetworkManager().getPlayerByConnection(connectionId);
-
-        // update server entity
         E player = E(playerId);
-
         WorldUtils worldUtils = WorldUtils(getServer().getWorld());
-
         player.headingCurrent(worldUtils.getHeading(request.movement));
 
         WorldPos worldPos = player.getWorldPos();
