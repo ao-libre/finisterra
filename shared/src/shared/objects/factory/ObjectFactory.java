@@ -220,6 +220,7 @@ public class ObjectFactory {
     }
 
     public static void fill(WeaponObj obj, Profile.Section section) {
+        obj.setStab(section.get("Apuñala", int.class) == 1);
         obj.setAnimationId(section.get(ANIM, int.class));
         obj.setMaxHit(section.get(MAX_HIT, int.class));
         obj.setMinHit(section.get(MIN_HIT, int.class));
