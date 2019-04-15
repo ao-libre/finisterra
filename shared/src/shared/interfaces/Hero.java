@@ -9,7 +9,7 @@ public enum Hero {
 
     GUERRERO(CharClass.WARRIOR.ordinal(), Race.DWARF.ordinal()),
     MAGO(CharClass.MAGICIAN.ordinal(), Race.GNOME.ordinal()),
-    ASESINO(CharClass.ROGUE.ordinal(), Race.DROW.ordinal()),
+    ASESINO(CharClass.ASSASSIN.ordinal(), Race.DROW.ordinal()),
     PALADIN(CharClass.PALADIN.ordinal(), Race.HUMAN.ordinal()),
     BARDO(CharClass.BARDIC.ordinal(), Race.ELF.ordinal()),
     ARQUERO(CharClass.ARCHER.ordinal(), Race.DWARF.ordinal()),

@@ -101,9 +101,13 @@ public class MagicCombatSystem implements IManager {
                 Health health = targetEntity.getHealth();
                 int damage = calculateMagicDamage(playerId, target, spell);
                 health.min += damage;
+                health.min = Math.max(0, health.min);
                 final CombatMessage combatMessage = new CombatMessage(String.valueOf(damage));
                 getServer().getWorldManager().notifyUpdate(target, new EntityUpdate(target, new Component[]{combatMessage}, new Class[0]));
                 getServer().getWorldManager().sendEntityUpdate(target, new EntityUpdate(target, new Component[]{health}, new Class[0]));
+                if (health.min == 0) {
+                    getServer().getWorldManager().userDie(target);
+                }
             }
             if (spell.isImmobilize()) {
                 targetEntity.immobile();

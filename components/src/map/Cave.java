@@ -18,7 +18,7 @@ public class Cave extends Component {
     }
 
     public boolean isBlocked(int x, int y) {
-        return inRange(x, y) && tiles[x][y];
+        return !inRange(x, y) || tiles[x][y];
     }
 
     private boolean inRange(int x, int y) {

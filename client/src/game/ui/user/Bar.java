@@ -1,5 +1,6 @@
 package game.ui.user;
 
+import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -48,18 +49,31 @@ public class Bar extends Actor {
         float barY = getY() + (float) BAR_HEIGHT / 2;
         int player = GameScreen.getPlayer();
         int min = 0, max = 0;
+        final E entity = E(player);
+        if (entity == null) {
+            return;
+        }
         switch (kind) {
             case HP:
-                min = E(player).getHealth().min;
-                max = E(player).getHealth().max;
+                if (!entity.hasHealth()) {
+                    return;
+                }
+                min = entity.getHealth().min;
+                max = entity.getHealth().max;
                 break;
             case MANA:
-                min = E(player).getMana().min;
-                max = E(player).getMana().max;
+                if (!entity.hasMana()) {
+                    return;
+                }
+                min = entity.getMana().min;
+                max = entity.getMana().max;
                 break;
             case ENERGY:
-                min = E(player).getStamina().min;
-                max = E(player).getStamina().max;
+                if (!entity.hasStamina()) {
+                    return;
+                }
+                min = entity.getStamina().min;
+                max = entity.getStamina().max;
         }
 
         drawBar(batch, barX, barY, min, max);

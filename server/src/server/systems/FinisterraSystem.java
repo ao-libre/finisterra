@@ -5,12 +5,15 @@ import net.mostlyoriginal.api.network.system.MarshalSystem;
 import server.core.Finisterra;
 import server.network.FinisterraRequestProcessor;
 import shared.model.lobby.Player;
+import shared.model.lobby.Room;
 import shared.network.init.NetworkDictionary;
 import shared.network.interfaces.INotificationProcessor;
 import shared.network.interfaces.IRequest;
 import shared.network.interfaces.IRequestProcessor;
+import shared.network.lobby.ExitRoomRequest;
 
 import java.util.Deque;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class FinisterraSystem extends MarshalSystem {
@@ -51,12 +54,12 @@ public class FinisterraSystem extends MarshalSystem {
     @Override
     public void disconnected(int connectionId) {
         super.disconnected(connectionId);
-        Player player = finisterra.getNetworkManager().getPlayerByConnection(connectionId);
-        finisterra.getLobby().playerDisconnected(player);
+        requestProcessor.processRequest(new ExitRoomRequest(), connectionId);
         finisterra.getNetworkManager().unregisterUserConnection(connectionId);
     }
 
     private static class NetworkJob {
+
         private final int connectionId;
         private final Object receivedObject;
 

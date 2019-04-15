@@ -1,5 +1,6 @@
 package game.utils;
 
+import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 import entity.character.states.Heading;
@@ -18,7 +19,14 @@ public class WorldUtils {
 
     public static Optional<WorldPos> mouseToWorldPos() {
         CameraSystem camera = GameScreen.getWorld().getSystem(CameraSystem.class);
-        WorldPos worldPos = E(GameScreen.getPlayer()).getWorldPos();
+        if (GameScreen.getPlayer() < 0) {
+            return Optional.empty();
+        }
+        final E e = E(GameScreen.getPlayer());
+        if (e == null || !e.hasWorldPos()) {
+            return Optional.empty();
+        }
+        WorldPos worldPos = e.getWorldPos();
         int map = worldPos.map;
 
         // Mouse coordinates in world

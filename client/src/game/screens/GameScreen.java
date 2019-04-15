@@ -158,10 +158,11 @@ public class GameScreen extends ScreenAdapter {
 
     public static void setPlayer(int player) {
         GameScreen.player = player;
-        E entity = E(player);
-        entity
-                .fXAddParticleEffect(2);
+//        E entity = E(player);
+//        entity
+//                .fXAddParticleEffect(2);
         GUI.getInventory().updateUserInventory();
+        GUI.getSpellView().updateSpells();
     }
 
     public static MarshalStrategy getClient() {

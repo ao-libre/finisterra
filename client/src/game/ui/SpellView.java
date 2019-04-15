@@ -53,6 +53,7 @@ public class SpellView extends Window {
         });
         add(cast).align(Align.left);
         addListener(new ClickListener() {
+
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 super.enter(event, x, y, pointer, fromActor);
@@ -69,6 +70,7 @@ public class SpellView extends Window {
 
     public void updateSpells() {
         spells.setItems(SpellHandler.getSpells());
+        setVisible(E(GameScreen.getPlayer()).manaMax() > 0);
     }
 
     public boolean isOver() {
@@ -77,12 +79,6 @@ public class SpellView extends Window {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (GameScreen.getPlayer() >=0) {
-            if (E(GameScreen.getPlayer()).manaMax() <= 0) {
-                setVisible(false);
-                return;
-            }
-        }
         super.draw(batch, over ? parentAlpha : parentAlpha * 0.5f);
     }
 }

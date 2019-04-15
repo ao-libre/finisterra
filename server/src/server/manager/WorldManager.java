@@ -1,10 +1,16 @@
 package server.manager;
 
+import camera.Focused;
+import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.World;
 import com.esotericsoftware.minlog.Log;
+import entity.character.states.CanWrite;
 import entity.character.states.Heading;
 import entity.character.status.Hit;
+import map.Cave;
+import physics.AOPhysics;
+import position.WorldPos;
 import server.core.Server;
 import server.database.model.attributes.Attributes;
 import server.database.model.modifiers.Modifiers;
@@ -12,7 +18,9 @@ import shared.interfaces.CharClass;
 import shared.interfaces.Hero;
 import shared.interfaces.Race;
 import shared.model.Spell;
+import shared.model.lobby.Player;
 import shared.model.lobby.Team;
+import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
 import shared.objects.types.*;
 
@@ -21,6 +29,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import static com.artemis.E.E;
+import static server.utils.WorldUtils.WorldUtils;
 
 public class WorldManager extends DefaultManager {
 
@@ -28,7 +37,6 @@ public class WorldManager extends DefaultManager {
     private static int MAX_LEVEL = 45;
     private static int STAT_MAXHIT_UNDER36 = 99;
     private static int STAT_MAXHIT_OVER36 = 999;
-
 
     public WorldManager(Server server) {
         super(server);
@@ -283,10 +291,15 @@ public class WorldManager extends DefaultManager {
         final Set<Obj> weapons = getWeapon(hero, team);
         if (!weapons.isEmpty()) {
             final Obj next = weapons.iterator().next();
-            E(player).weaponIndex(next.getId());
             E(player).getInventory().add(next.getId(), true);
+            E(player).weaponIndex(next.getId());
+            weapons.forEach(weapon -> {
+                if (weapon != next) {
+                    E(player).getInventory().add(weapon.getId(), false);
+                }
+            });
         }
-        ;
+
         getShield(hero, team).ifPresent(shield -> {
             E(player).shieldIndex(shield.getId());
             E(player).getInventory().add(shield.getId(), true);
@@ -301,10 +314,32 @@ public class WorldManager extends DefaultManager {
     }
 
     private void setEntityPosition(E entity) {
+        WorldPos worldPos = getValidPosition(1);
         entity
-            .worldPosX(25)
-            .worldPosY(25)
-            .worldPosMap(1);
+            .worldPosX(worldPos.x)
+            .worldPosY(worldPos.y)
+            .worldPosMap(worldPos.map);
+    }
+
+    private WorldPos getValidPosition(int map) {
+        final E entity = E(getServer().getMapManager().mapEntity);
+        if (entity.hasCave()) {
+            final Cave cave = entity.getCave();
+            final int midHeight = cave.height / 2;
+            final int midWidth = cave.width / 2;
+            WorldPos validPos = getRandomPos(midWidth, midHeight, map);
+            while (cave.isBlocked(validPos.x, validPos.y)) {
+                validPos = getRandomPos(cave.width, cave.height, map);
+            }
+            return validPos;
+        }
+        return new WorldPos(1, 1, 1);
+    }
+
+    private WorldPos getRandomPos(int maxWidth, int maxHeight, int map) {
+        final int x = ThreadLocalRandom.current().nextInt(maxWidth);
+        final int y = ThreadLocalRandom.current().nextInt(maxHeight);
+        return new WorldPos(x, y, map);
     }
 
     private void addPotion(int player, PotionKind kind) {
@@ -560,5 +595,25 @@ public class WorldManager extends DefaultManager {
 
     private World getWorld() {
         return getServer().getWorld();
+    }
+
+    public void userDie(int entityId) {
+        final E e = E(entityId);
+        final String name = e.getName().text;
+        final int connectionByPlayer = getServer().getNetworkManager().getConnectionByPlayer(entityId);
+        getServer().getWorldManager().unregisterEntity(entityId);
+        getServer().getMapManager().removeEntity(entityId);
+        getServer().getWorldManager().sendEntityRemove(entityId, entityId);
+        login(connectionByPlayer, new Player(connectionByPlayer, name, Hero.getRandom()));
+    }
+
+    public void login(int connectionId, Player player) {
+            final int entity = createEntity(player.getPlayerName(), player.getHero().ordinal(), player.getTeam());
+            List<Component> components = WorldUtils(getWorld()).getComponents(getWorld().getEntity(entity));
+            components.add(new Focused());
+            components.add(new AOPhysics());
+            components.add(new CanWrite());
+            getServer().getNetworkManager().sendTo(connectionId, new EntityUpdate(entity, components.toArray(new Component[0]), new Class[0]));
+            registerEntity(connectionId, entity);
     }
 }

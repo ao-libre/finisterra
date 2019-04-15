@@ -22,6 +22,7 @@ import static com.artemis.E.E;
 
 public class Server  {
 
+    private int roomId;
     private final int tcpPort;
     private final int udpPort;
     private ObjectManager objectManager;
@@ -31,12 +32,25 @@ public class Server  {
     private KryonetServerMarshalStrategy strategy;
     private Set<Player> players;
 
-    public Server(int tcpPort, int udpPort, ObjectManager objectManager, SpellManager spellManager) {
+    public Server(int roomId, int tcpPort, int udpPort, ObjectManager objectManager, SpellManager spellManager) {
+        this.roomId = roomId;
         this.tcpPort = tcpPort;
         this.udpPort = udpPort;
         this.objectManager = objectManager;
         this.spellManager = spellManager;
         create();
+    }
+
+    public int getTcpPort() {
+        return tcpPort;
+    }
+
+    public int getUdpPort() {
+        return udpPort;
+    }
+
+    public int getRoomId() {
+        return roomId;
     }
 
     public void create() {
@@ -77,9 +91,6 @@ public class Server  {
 
     private void createWorld() {
         // testing
-        int player2 = getWorldManager().createEntity("guidota2", Hero.GUERRERO.ordinal(), Team.NO_TEAM);
-        E(player2).randomMovement();
-        getMapManager().updateEntity(player2);
     }
 
     private void createMap() {

@@ -70,8 +70,10 @@ public class ClientResponseProcessor implements IResponseProcessor {
     public void processResponse(StartGameResponse startGameResponse) {
         Gdx.app.postRunnable(() -> {
             AOGame game = (AOGame) Gdx.app.getApplicationListener();
-            RoomScreen roomScreen = (RoomScreen) game.getScreen();
-            game.toGame(startGameResponse.getHost(), startGameResponse.getTcpPort(), roomScreen.getPlayer());
+            if (game.getScreen() instanceof RoomScreen) {
+                RoomScreen roomScreen = (RoomScreen) game.getScreen();
+                game.toGame(startGameResponse.getHost(), startGameResponse.getTcpPort(), roomScreen.getPlayer());
+            }
         });
     }
 

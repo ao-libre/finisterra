@@ -14,6 +14,8 @@ import shared.model.lobby.Lobby;
 import shared.model.lobby.Room;
 import shared.network.lobby.StartGameResponse;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -57,14 +59,21 @@ public class Finisterra implements ApplicationListener {
     }
 
     public void startGame(Room room) {
-        int tcpPort = getNextPort();
-        int udpPort = getNextPort();
-        Server server = new Server(tcpPort, udpPort, objectManager, spellManager);
-        server.addPlayers(room.getPlayers());
-        servers.add(server);
+        Server roomServer = servers.stream().filter(server -> server.getRoomId() == room.getId()).findFirst().orElseGet(() ->{
+            int tcpPort = getNextPort();
+            int udpPort = getNextPort();
+            Server server = new Server(room.getId(), tcpPort, udpPort, objectManager, spellManager);
+            server.addPlayers(room.getPlayers());
+            servers.add(server);
+            return server;
+        });
         room.getPlayers().forEach(player -> {
             int connectionId = getNetworkManager().getConnectionByPlayer(player);
-            getNetworkManager().sendTo(connectionId, new StartGameResponse("localhost", tcpPort, udpPort));
+            try {
+                getNetworkManager().sendTo(connectionId, new StartGameResponse(InetAddress.getLocalHost().getHostAddress(), roomServer.getTcpPort(), roomServer.getUdpPort()));
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
         });
     }
 

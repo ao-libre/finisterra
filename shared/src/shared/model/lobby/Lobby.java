@@ -53,7 +53,6 @@ public class Lobby {
     }
 
     public void playerDisconnected(Player player) {
-        // TODO Notify all
         if (!exitRoom(player)) {
             removeWaitingPlayer(player);
         }

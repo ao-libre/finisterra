@@ -105,7 +105,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
             min = obj.getMinDef();
             max = obj.getMaxDef();
         }
-        return ThreadLocalRandom.current().nextInt(min, max);
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
     private int getBaseDamage(E entity, Optional<WeaponObj> weapon) {
@@ -123,7 +123,6 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         Log.info("User damage: " + userDamage);
         return (int) ((3 * weaponDamage + ((maxWeaponDamage) / 5) * Math.max(0, entity.strengthValue() - 15) + userDamage) * modifier);
     }
-
 
     @Override
     Optional<Integer> getTarget(int userId) {
@@ -158,6 +157,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
             update(entityId);
         } else {
             // TODO die
+            getServer().getWorldManager().userDie(entityId);
         }
     }
 

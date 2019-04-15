@@ -14,13 +14,7 @@ public class KryonetServerMarshalStrategy extends KryonetMarshalStrategy {
     public KryonetServerMarshalStrategy(int tcpPort, int udpPort) {
         this.tcpPort = tcpPort;
         this.udpPort = udpPort;
-        endpoint = new Server() {
-            @Override
-            public void sendToTCP(int connectionID, Object object) {
-                System.out.println("Sent message to " + connectionID);
-                super.sendToTCP(connectionID, object);
-            }
-        };
+        endpoint = new Server();
     }
 
     @Override

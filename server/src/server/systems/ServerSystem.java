@@ -1,5 +1,6 @@
 package server.systems;
 
+import com.badlogic.gdx.Gdx;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import server.core.Server;
@@ -54,9 +55,10 @@ public class ServerSystem extends MarshalSystem {
     protected void processSystem() {
         super.processSystem();
         while (netQueue.peek() != null) {
-            processJob(netQueue.poll());
+            Gdx.app.postRunnable(() -> {
+                processJob(netQueue.poll());
+            });
         }
-
     }
 
     @Override
@@ -67,9 +69,9 @@ public class ServerSystem extends MarshalSystem {
                 return;
             }
             int playerToDisconnect = server.getNetworkManager().getPlayerByConnection(connectionId);
+            server.getMapManager().removeEntity(playerToDisconnect);
             server.getNetworkManager().unregisterUserConnection(playerToDisconnect, connectionId);
             server.getWorldManager().unregisterEntity(playerToDisconnect);
-            server.getMapManager().removeEntity(playerToDisconnect);
 
         });
     }

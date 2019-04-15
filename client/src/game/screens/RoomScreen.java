@@ -1,5 +1,6 @@
 package game.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -27,7 +28,7 @@ public class RoomScreen extends AbstractScreen{
         return me;
     }
 
-    private void updatePlayers() {
+    public void updatePlayers() {
         playerList.setItems(room.getPlayers().toArray(new Player[0]));
     }
 
@@ -47,7 +48,7 @@ public class RoomScreen extends AbstractScreen{
             }
         });
 
-        getMainTable().add(playerList).width(400).height(400);
+        getMainTable().add(playerList).width(Gdx.graphics.getWidth() - (Gdx.graphics.getWidth() * 0.1f)).height(400);
         getMainTable().row();
         getMainTable().add(start);
     }

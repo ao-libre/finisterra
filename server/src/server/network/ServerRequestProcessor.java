@@ -124,15 +124,9 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(PlayerLoginRequest playerLoginRequest, int connectionId) {
         Player player = playerLoginRequest.getPlayer();
-        final int entity = getWorldManager().createEntity(player.getPlayerName(), player.getHero().ordinal(), player.getTeam());
         int mapEntityId = getMapManager().mapEntity;
         getNetworkManager().sendTo(connectionId, new EntityUpdate(mapEntityId, WorldUtils(getWorld()).getComponents(mapEntityId), new Class[0]));
-        List<Component> components = WorldUtils(getWorld()).getComponents(getWorld().getEntity(entity));
-        components.add(new Focused());
-        components.add(new AOPhysics());
-        components.add(new CanWrite());
-        getNetworkManager().sendTo(connectionId, new EntityUpdate(entity, components.toArray(new Component[0]), new Class[0]));
-        getWorldManager().registerEntity(connectionId, entity);
+        getServer().getWorldManager().login(connectionId, player);
     }
 
     /**
@@ -159,7 +153,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         WorldPos oldPos = new WorldPos(worldPos);
         WorldPos nextPos = worldUtils.getNextPos(worldPos, request.movement);
         Cave cave = E(getServer().getMapManager().mapEntity).getCave();
-        boolean blocked = cave.tiles[nextPos.x][nextPos.y];
+        boolean blocked = cave.isBlocked(nextPos.x, nextPos.y);
         boolean occupied = MapUtils.hasEntity(getMapManager().getNearEntities(playerId), nextPos);
         if (!(player.hasImmobile() || blocked || occupied)) {
             player.worldPosMap(nextPos.map);

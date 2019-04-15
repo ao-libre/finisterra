@@ -6,6 +6,7 @@ import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
 import game.AOGame;
@@ -14,9 +15,11 @@ import game.screens.GameScreen;
 import game.screens.LobbyScreen;
 import game.screens.RoomScreen;
 import game.ui.GUI;
+import shared.model.lobby.Lobby;
 import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.lobby.JoinRoomNotification;
+import shared.network.lobby.NewRoomNotification;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.FXNotification;
@@ -33,9 +36,8 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
             Entity newEntity = GameScreen.getWorld().createEntity();
             WorldManager.registerEntity(entityUpdate.entityId, newEntity.getId());
             addComponentsToEntity(newEntity, entityUpdate);
-            if (E(entityUpdate.entityId).entity().getComponent(Focused.class) != null) {
-                GameScreen.setPlayer(entityUpdate.entityId);
-                GUI.getSpellView().updateSpells();
+            if (E(newEntity).hasFocused()) {
+                GameScreen.setPlayer(newEntity.getId());
             }
         } else {
             Log.info("Network entity exists: " + entityUpdate.entityId + ". Updating");
@@ -105,13 +107,19 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     @Override
     public void processNotification(JoinRoomNotification joinRoomNotification) {
-        Gdx.app.postRunnable(() -> {
-            AOGame game = (AOGame) Gdx.app.getApplicationListener();
-            if (game.getScreen() instanceof RoomScreen) {
-                RoomScreen room = (RoomScreen) game.getScreen();
-                room.getRoom().add(joinRoomNotification.getPlayer());
-            }
-        });
-        joinRoomNotification.getPlayer();
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        if (game.getScreen() instanceof RoomScreen) {
+            RoomScreen room = (RoomScreen) game.getScreen();
+            room.getRoom().add(joinRoomNotification.getPlayer());
+            room.updatePlayers();
+        }
+    }
+
+    @Override public void processNotification(NewRoomNotification newRoomNotification) {
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        if (game.getScreen() instanceof LobbyScreen) {
+            final LobbyScreen lobby = (LobbyScreen) game.getScreen();
+            lobby.roomCreated(newRoomNotification.getRoom());
+        }
     }
 }
