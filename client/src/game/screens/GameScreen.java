@@ -4,7 +4,9 @@ import com.artemis.*;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
@@ -30,6 +32,9 @@ import static com.artemis.E.E;
 
 public class GameScreen extends ScreenAdapter {
 
+    public static final int GAME_SCREEN_WIDTH = 800;
+    public static final int GAME_SCREEN_HEIGHT = 600;
+
     public static World world;
     public static int player = -1;
     private static GUI gui = new GUI();
@@ -40,6 +45,7 @@ public class GameScreen extends ScreenAdapter {
     private SpriteBatch spriteBatch;
 
     private static final int FONTS_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL - 1;
+    private CameraSystem cameraSystem;
 
     public GameScreen(String host, int port, Player player) {
         this.clientSystem = new ClientSystem(host, port);
@@ -52,6 +58,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void initWorld() {
         WorldConfigurationBuilder worldConfigBuilder = new WorldConfigurationBuilder();
+        cameraSystem = new CameraSystem(AOGame.GAME_SCREEN_ZOOM, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
         worldConfigBuilder.with(new SuperMapper())
                 .with(clientSystem)
                 // Player movement
@@ -61,7 +68,7 @@ public class GameScreen extends ScreenAdapter {
                 .with(new IdleAnimationSystem())
                 .with(new MovementSystem())
                 // Camera
-                .with(new CameraSystem(AOGame.GAME_SCREEN_ZOOM))
+                .with(cameraSystem)
                 .with(new CameraFocusSystem())
                 .with(new CameraMovementSystem())
                 // Logic systems
@@ -110,6 +117,10 @@ public class GameScreen extends ScreenAdapter {
                 break;
             }
         }
+    }
+
+    public OrthographicCamera getGUICamera() {
+        return cameraSystem.guiCamera;
     }
 
     @Override

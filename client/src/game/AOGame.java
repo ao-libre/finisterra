@@ -11,6 +11,7 @@ import game.screens.LoginScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
 import game.systems.network.ClientSystem;
+import game.utils.Cursors;
 import shared.model.lobby.Player;
 
 /**
@@ -21,12 +22,7 @@ import shared.model.lobby.Player;
  */
 public class AOGame extends Game {
 
-    public static final float GAME_SCREEN_ZOOM = 1.8f;
-    private ClientSystem clientSystem; // Marshal client system (Kryonet)
-
-    // Screens
-    private GameScreen gameScreen; // Game main screen
-    private LoginScreen loginScreen;
+    public static final float GAME_SCREEN_ZOOM = 1.5f;
 
     @Override
     public void create() {
@@ -37,6 +33,7 @@ public class AOGame extends Game {
         if (AssetHandler.getState() == StateHandler.LOADED)
             Gdx.app.debug("AOGame", "Handler loaded!");
 
+        Cursors.setCursor("hand");
         ScreenManager.getInstance().initialize(this);
         toLogin();
     }
@@ -47,10 +44,6 @@ public class AOGame extends Game {
         gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         super.render();
-    }
-
-    public void showGameScreen() {
-        setScreen(gameScreen);
     }
 
     public void toGame(String host, int port, Player player) {
@@ -69,7 +62,4 @@ public class AOGame extends Game {
         ScreenManager.getInstance().showScreen(ScreenEnum.ROOM, params);
     }
 
-    public ClientSystem getClientSystem() {
-        return clientSystem;
-    }
 }

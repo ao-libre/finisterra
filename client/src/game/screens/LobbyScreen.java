@@ -81,4 +81,5 @@ public class LobbyScreen extends AbstractScreen {
     public ClientSystem getClientSystem() {
         return clientSystem;
     }
+
 }

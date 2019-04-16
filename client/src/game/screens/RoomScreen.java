@@ -52,4 +52,5 @@ public class RoomScreen extends AbstractScreen{
         getMainTable().row();
         getMainTable().add(start);
     }
+
 }

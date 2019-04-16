@@ -12,6 +12,7 @@ import game.screens.GameScreen;
 import game.screens.LoginScreen;
 import game.ui.GUI;
 import game.utils.AlternativeKeys;
+import game.utils.Cursors;
 import game.utils.WorldUtils;
 import shared.model.AttackType;
 import shared.model.Spell;
@@ -49,9 +50,7 @@ public class AOInputProcessor extends Stage {
                 } else {
                     // TODO can't attack because interval
                 }
-                Pixmap pm = new Pixmap(Gdx.files.internal("data/ui/images/cursor-arrow.png"));
-                Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 10, 4));
-                pm.dispose();
+                Cursors.setCursor("hand");
                 GUI.getSpellView().toCast = Optional.empty();
             } else {
                 Optional<String> name = WorldManager.getEntities()
@@ -110,8 +109,7 @@ public class AOInputProcessor extends Stage {
                 case Input.Keys.ESCAPE:
                     // Disconnect & go back to LoginScreen
                     AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                    game.getClientSystem().stop();
-                    game.setScreen(new LoginScreen());
+                    // TODO implement
             }
         }
         switch (keycode) {

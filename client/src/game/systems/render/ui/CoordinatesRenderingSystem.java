@@ -5,6 +5,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.systems.OrderedEntityProcessingSystem;
@@ -46,7 +47,7 @@ public class CoordinatesRenderingSystem extends OrderedEntityProcessingSystem {
     protected void process(Entity e) {
         E player = E(e);
         WorldPos worldPos = player.getWorldPos();
-        drawCoordinates(10, 10, worldPos);
+        drawCoordinates(10, Gdx.graphics.getHeight() - 10, worldPos);
     }
 
     private void drawCoordinates(int offsetX, int offsetY, WorldPos worldPos) {
@@ -60,7 +61,7 @@ public class CoordinatesRenderingSystem extends OrderedEntityProcessingSystem {
 
         //text
         batch.setColor(Color.WHITE.cpy());
-        Fonts.WHITE_FONT.draw(batch, Fonts.layout, fontX - offsetX, offsetY + Fonts.layout.height);
+        Fonts.WHITE_FONT.draw(batch, Fonts.layout, fontX - offsetX, offsetY - Fonts.layout.height);
     }
 
     @Override

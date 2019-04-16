@@ -52,6 +52,9 @@ public class MovementProcessorSystem extends IteratingSystem {
         requests.remove(requestNumber);
         if (!predicted.equals(destination)) {
             E player = E.E(GameScreen.getPlayer());
+            if (!player.hasMovement()) {
+                return;
+            }
             player.getMovement().destinations.clear();
             WorldPos worldPos = player.getWorldPos();
             worldPos.offsetY = 0;
