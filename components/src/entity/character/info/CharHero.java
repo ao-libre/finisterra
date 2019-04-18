@@ -13,4 +13,11 @@ public class CharHero extends Component implements Serializable {
         this.heroId = heroId;
     }
 
+    public int getHeroId() {
+        return heroId;
+    }
+
+    public void setHeroId(int heroId) {
+        this.heroId = heroId;
+    }
 }

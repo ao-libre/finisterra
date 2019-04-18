@@ -14,4 +14,11 @@ public class SpellBook extends Component implements Serializable {
         this.spells = spells;
     }
 
+    public Integer[] getSpells() {
+        return spells;
+    }
+
+    public void setSpells(Integer[] spells) {
+        this.spells = spells;
+    }
 }
