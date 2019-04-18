@@ -11,7 +11,7 @@ buildscript {
         // lib for artemis-odb weaving.
         // see https://github.com/junkdog/artemis-odb/wiki/Bytecode-weaving
         classpath 'net.onedaybeard.artemis:artemis-odb-gradle-plugin:2.2.0'
-        classpath "net.onedaybeard.artemis:artemis-fluid-gradle-plugin:2.1.0"
+        classpath "net.onedaybeard.artemis:artemis-fluid-gradle-plugin:2.2.0"
     }
 }
 
