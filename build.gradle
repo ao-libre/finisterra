@@ -142,7 +142,6 @@ project(":shared") {
 
         // common
         compile "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
-        provided "net.onedaybeard.artemis:artemis-odb-processor:1.4.0"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "net.mostlyoriginal.artemis-odb:contrib-core:$artemisContribVersion"
         compile "net.mostlyoriginal.artemis-odb:contrib-jam:$artemisContribVersion"
