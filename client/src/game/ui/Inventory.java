@@ -118,7 +118,7 @@ public class Inventory extends Window {
                         GameScreen.getClient().sendToAll(update);
                         updateUserInventory();
                     } else {
-                        WorldUtils.mouseToWorldPos().ifPresent(worldPos -> GameScreen.getClient().sendToAll(new DropItem(E(GameScreen.getPlayer()).networkId(), draggingIndex(), worldPos)));
+                        WorldUtils.mouseToWorldPos().ifPresent(worldPos -> GameScreen.getClient().sendToAll(new DropItem(E(GameScreen.getPlayer()).getNetwork().id, draggingIndex(), worldPos)));
                     }
                 }
                 dragging = Optional.empty();

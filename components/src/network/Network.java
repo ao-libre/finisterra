@@ -9,4 +9,12 @@ public class Network extends Component implements Serializable {
 
     public Network() {
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
 }

@@ -2,7 +2,6 @@ package server.systems;
 
 import com.artemis.Aspect;
 import com.artemis.E;
-import com.artemis.FluidIteratingSystem;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.utils.TimeUtils;
 import entity.world.Footprint;

@@ -27,7 +27,7 @@ public class WorldManager {
     }
 
     public static void registerEntity(int networkId, int entityId) {
-        E(entityId).networkId(networkId);
+        E(entityId).network().getNetwork().id = networkId;
         networkedEntities.put(networkId, entityId);
     }
 

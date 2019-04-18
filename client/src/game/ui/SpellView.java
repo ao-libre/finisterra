@@ -44,7 +44,7 @@ public class SpellView extends Window {
         final Spell[] spells = SpellHandler.getSpells();
         Arrays.sort(spells, getComparator());
         Arrays.stream(spells).forEach(spell -> add(new SpellSlot(this, spell)).width(SpellSlot.SIZE).height(SpellSlot.SIZE).row());
-        setVisible(E(GameScreen.getPlayer()).manaMax() > 0);
+        setVisible(E(GameScreen.getPlayer()).getMana().max > 0);
     }
 
     public void preparedToCast(Spell spell) {

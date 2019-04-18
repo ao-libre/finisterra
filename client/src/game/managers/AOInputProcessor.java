@@ -46,7 +46,7 @@ public class AOInputProcessor extends Stage {
                 E player = E.E(GameScreen.getPlayer());
                 if (!player.hasAttack() || player.getAttack().interval - GameScreen.getWorld().getDelta() < 0) {
                     GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos));
-                    player.attackInterval();
+                    player.attack();
                 } else {
                     // TODO can't attack because interval
                 }
@@ -131,7 +131,7 @@ public class AOInputProcessor extends Stage {
         E player = E(GameScreen.getPlayer());
         if (!player.hasAttack() || player.getAttack().interval - GameScreen.getWorld().getDelta() <= 0) {
             GameScreen.getClient().sendToAll(new AttackRequest(AttackType.PHYSICAL));
-            player.attackInterval();
+            player.attack();
         }
     }
 

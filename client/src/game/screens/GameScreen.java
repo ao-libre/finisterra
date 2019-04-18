@@ -58,7 +58,7 @@ public class GameScreen extends ScreenAdapter {
 
     public void initWorld() {
         WorldConfigurationBuilder worldConfigBuilder = new WorldConfigurationBuilder();
-        cameraSystem = new CameraSystem(AOGame.GAME_SCREEN_ZOOM, GAME_SCREEN_WIDTH, GAME_SCREEN_HEIGHT);
+        cameraSystem = new CameraSystem(AOGame.GAME_SCREEN_ZOOM, 1280, 768);
         worldConfigBuilder.with(new SuperMapper())
                 .with(clientSystem)
                 // Player movement

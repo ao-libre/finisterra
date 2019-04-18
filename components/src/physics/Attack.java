@@ -14,4 +14,12 @@ public class Attack extends Component implements Serializable {
 
     public Attack() {
     }
+
+    public void setInterval(float interval) {
+        this.interval = interval;
+    }
+
+    public float getInterval() {
+        return interval;
+    }
 }

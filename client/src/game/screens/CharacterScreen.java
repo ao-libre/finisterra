@@ -75,7 +75,7 @@ public class CharacterScreen extends ScreenAdapter {
             case BODY:
                 entity.removeBody();
                 entity.armorIndex(obj.getId());
-                entity.bodyIndex(((ArmorObj) obj).getBodyNumber());
+                entity.body().getBody().index = ((ArmorObj) obj).getBodyNumber();
                 break;
             case HELMET:
                 entity.removeHelmet();
