@@ -5,6 +5,7 @@ import shared.objects.factory.ObjectFactory;
 
 public class WeaponObj extends ObjWithClasses {
 
+    private boolean stab;
     private int animationId;
     private int dwarfAnimationId;
     private int minHit, maxHit;
@@ -54,5 +55,13 @@ public class WeaponObj extends ObjWithClasses {
     public void fillObject(Profile.Section section) {
         super.fillObject(section);
         ObjectFactory.fill(this, section);
+    }
+
+    public boolean isStab() {
+        return stab;
+    }
+
+    public void setStab(boolean stab) {
+        this.stab = stab;
     }
 }

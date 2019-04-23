@@ -30,13 +30,20 @@ public class CameraSystem extends BaseSystem {
     }
 
     protected void setupViewport(float width, float height) {
-        camera = new OrthographicCamera(width, height);
-        camera.setToOrtho(true, width, height);
-        camera.update();
+        createGameCamera(width, height);
+        createGuiCamera(width, height);
+    }
 
+    private void createGuiCamera(float width, float height) {
         guiCamera = new OrthographicCamera(width, height);
         guiCamera.setToOrtho(false, width, height);
         guiCamera.update();
+    }
+
+    private void createGameCamera(float width, float height) {
+        camera = new OrthographicCamera(width, height);
+        camera.setToOrtho(true, width, height);
+        camera.update();
     }
 
     @Override

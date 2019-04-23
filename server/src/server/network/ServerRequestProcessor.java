@@ -1,27 +1,23 @@
 package server.network;
 
-import camera.Focused;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.World;
 import com.esotericsoftware.minlog.Log;
-import entity.*;
-import entity.Object;
-import entity.character.CanWrite;
 import entity.character.info.Inventory;
 import entity.character.states.Meditating;
+import entity.world.Dialog;
+import entity.world.Object;
 import graphics.FX;
 import map.Cave;
 import movement.Destination;
-import physics.AOPhysics;
-import physics.AttackAnimation;
 import position.WorldPos;
+import server.combat.CombatSystem;
 import server.core.Server;
 import server.manager.*;
 import server.utils.WorldUtils;
 import shared.interfaces.Constants;
-import shared.interfaces.FXs;
-import shared.model.Spell;
+import shared.model.AttackType;
 import shared.model.lobby.Player;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
@@ -32,13 +28,10 @@ import shared.network.interfaces.DefaultRequestProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
 import shared.network.lobby.player.PlayerLoginRequest;
-import shared.network.login.LoginOK;
-import shared.network.login.LoginRequest;
 import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.FXNotification;
 import shared.util.MapUtils;
 
 import java.util.*;
@@ -77,7 +70,11 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         return getServer().getWorldManager();
     }
 
-    private CombatManager getCombatManager() {
+    private CombatSystem getCombatSystem(AttackType type) {
+        if (type.equals(AttackType.PHYSICAL)) {
+            return getServer().getCombatManager();
+        }
+        // TODO
         return getServer().getCombatManager();
     }
 
@@ -100,32 +97,12 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         return positions;
     }
 
-    /**
-     * @param request LoginRequest
-     * @param connectionId connection id
-     */
-    @Override
-    public void processRequest(LoginRequest request, int connectionId) {
-        final int entity = getWorldManager().createEntity(request.username, request.heroId);
-        int mapEntityId = getMapManager().mapEntity;
-        getNetworkManager().sendTo(connectionId, new EntityUpdate(mapEntityId, WorldUtils(getWorld()).getComponents(mapEntityId), new Class[0]));
-        getNetworkManager().sendTo(connectionId, new EntityUpdate(entity, WorldUtils(getWorld()).getComponents(entity), new Class[0]));
-        getNetworkManager().sendTo(connectionId, new LoginOK(entity));
-        getWorldManager().registerEntity(connectionId, entity);
-    }
-
     @Override
     public void processRequest(PlayerLoginRequest playerLoginRequest, int connectionId) {
         Player player = playerLoginRequest.getPlayer();
-        final int entity = getWorldManager().createEntity(player.getPlayerName(), player.getHero().ordinal());
         int mapEntityId = getMapManager().mapEntity;
         getNetworkManager().sendTo(connectionId, new EntityUpdate(mapEntityId, WorldUtils(getWorld()).getComponents(mapEntityId), new Class[0]));
-        List<Component> components = WorldUtils(getWorld()).getComponents(getWorld().getEntity(entity));
-        components.add(new Focused());
-        components.add(new AOPhysics());
-        components.add(new CanWrite());
-        getNetworkManager().sendTo(connectionId, new EntityUpdate(entity, components.toArray(new Component[0]), new Class[0]));
-        getWorldManager().registerEntity(connectionId, entity);
+        getServer().getWorldManager().login(connectionId, player);
     }
 
     /**
@@ -138,29 +115,22 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     public void processRequest(MovementRequest request, int connectionId) {
         // TODO check map changed
 
-        // validate if valid
         int playerId = getNetworkManager().getPlayerByConnection(connectionId);
-
-        // update server entity
         E player = E(playerId);
-
         WorldUtils worldUtils = WorldUtils(getServer().getWorld());
-
         player.headingCurrent(worldUtils.getHeading(request.movement));
 
         WorldPos worldPos = player.getWorldPos();
         WorldPos oldPos = new WorldPos(worldPos);
         WorldPos nextPos = worldUtils.getNextPos(worldPos, request.movement);
         Cave cave = E(getServer().getMapManager().mapEntity).getCave();
-        boolean blocked = cave.tiles[nextPos.x][nextPos.y];
+        boolean blocked = cave.isBlocked(nextPos.x, nextPos.y);
         boolean occupied = MapUtils.hasEntity(getMapManager().getNearEntities(playerId), nextPos);
         if (!(player.hasImmobile() || blocked || occupied)) {
-            Log.info("Player: " + playerId + ". Moved from: " + oldPos + " to: " + nextPos);
             player.worldPosMap(nextPos.map);
             player.worldPosX(nextPos.x);
             player.worldPosY(nextPos.y);
         } else {
-            Log.info("Player: " + playerId + ". Wants to move to: " + nextPos + ", but stay at: " + oldPos);
             nextPos = oldPos;
         }
 
@@ -185,29 +155,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(AttackRequest attackRequest, int connectionId) {
         int playerId = getNetworkManager().getPlayerByConnection(connectionId);
-        E player = E(playerId);
-
-        WorldPos worldPos = player.getWorldPos();
-        Heading heading = player.getHeading();
-        WorldPos facingPos = WorldUtils(getServer().getWorld()).getFacingPos(worldPos, heading);
-
-        Optional<Integer> victim = getMapManager().getNearEntities(playerId)
-                .stream()
-                .filter(near -> E(near).hasWorldPos() && E(near).getWorldPos().equals(facingPos))
-                .findFirst();
-        if (victim.isPresent() && E(victim.get()).hasCharHero()) {
-            Optional<Integer> damage = getCombatManager().attack(playerId, victim.get());
-            if (damage.isPresent()) {
-                getCombatManager().notify(victim.get(), new CombatMessage("-" + Integer.toString(damage.get())));
-                // TODO fix fxgrh
-                getWorldManager().notifyUpdate(victim.get(), new FXNotification(victim.get(), FXs.FX_BLOOD));
-            } else {
-                getCombatManager().notify(playerId, new CombatMessage(CombatManager.MISS));
-            }
-        } else {
-            getCombatManager().notify(playerId, new CombatMessage(CombatManager.MISS));
-        }
-        getWorldManager().notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new AttackAnimation()}, new Class[0]));
+        getCombatSystem(AttackType.PHYSICAL).userAttack(playerId, Optional.empty());
     }
 
     /**
@@ -287,7 +235,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
                 .findFirst()
                 .ifPresent(objectEntityId -> {
                     Object object = E(objectEntityId).getObject();
-                    int index = player.getInventory().add(object.index, object.count);
+                    int index = player.getInventory().add(object.index, object.count, false);
                     if (index >= 0) {
                         Log.info("Adding item to index: " + index);
                         InventoryUpdate update = new InventoryUpdate();
@@ -304,34 +252,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(SpellCastRequest spellCastRequest, int connectionId) {
         int playerId = getNetworkManager().getPlayerByConnection(connectionId);
-        Spell spell = spellCastRequest.getSpell();
-        WorldPos worldPos = spellCastRequest.getWorldPos();
-        Log.info("Processing spell cast pos: " + spellCastRequest.getWorldPos());
-        Set<Integer> entities = new HashSet<>(getMapManager().getNearEntities(playerId));
-        entities.add(playerId);
-        Optional<Integer> target = entities
-                .stream()
-                .filter(entity -> E(entity).getWorldPos().equals(worldPos))
-                .findFirst();
-        if (target.isPresent()) {
-            getSpellManager().castSpell(playerId, target.get(), spell);
-            AttackAnimation attackAnimation = new AttackAnimation();
-            getWorldManager().notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{attackAnimation}, new Class[0]));
-        } else {
-            List<WorldPos> area = getArea(worldPos, 3);
-            int fxGrh = spell.getFxGrh();
-            if (fxGrh > 0) {
-                area.forEach(pos -> {
-                    World world = getServer().getWorld();
-                    int entity = world.create();
-                    // TODO notify all near users instead of playerid
-                    getWorldManager().notifyUpdate(playerId, new EntityUpdate(entity, new Component[]{pos, new Ground()}, new Class[0]));
-                    getWorldManager().notifyUpdate(playerId, new FXNotification(entity, fxGrh - 1));
-                    world.delete(entity);
-                });
-            }
-        }
-
+        getServer().getMagicCombatManager().spell(playerId, spellCastRequest);
     }
 
 }

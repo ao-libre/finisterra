@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.esotericsoftware.spine.*;
-import entity.Body;
-import entity.Heading;
 import entity.character.Character;
+import entity.character.parts.Body;
+import entity.character.states.Heading;
 import game.systems.camera.CameraSystem;
 import position.WorldPos;
 

@@ -1,10 +1,17 @@
 package game.handlers;
 
-import entity.*;
+import entity.character.equipment.Helmet;
+import entity.character.equipment.Shield;
+import entity.character.equipment.Weapon;
+import entity.character.parts.Body;
+import entity.character.parts.Head;
 import graphics.FX;
 import model.descriptors.*;
 import model.textures.BundledAnimation;
 import shared.model.Graphic;
+import shared.objects.types.HelmetObj;
+import shared.objects.types.ShieldObj;
+import shared.objects.types.WeaponObj;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -75,21 +82,24 @@ public class AnimationHandler {
 
     public static BundledAnimation getWeaponAnimation(Weapon weapon, int current) {
         return weaponAnimations.computeIfAbsent(weapon, w -> {
-            WeaponDescriptor descriptor = DescriptorHandler.getWeapon(Math.max(w.index - 1, 0));
+            WeaponObj weaponObj = (WeaponObj) ObjectHandler.getObject(w.index).get();
+            WeaponDescriptor descriptor = DescriptorHandler.getWeapon(Math.max(weaponObj.getAnimationId() - 1, 0));
             return createAnimations(descriptor, true);
         }).get(current);
     }
 
     public static BundledAnimation getHelmetsAnimation(Helmet helmet, int current) {
         return helmetAnimations.computeIfAbsent(helmet, h -> {
-            HelmetDescriptor descriptor = DescriptorHandler.getHelmet(Math.max(h.index - 1, 0));
+            HelmetObj helmetObj = (HelmetObj) ObjectHandler.getObject(h.index).get();
+            HelmetDescriptor descriptor = DescriptorHandler.getHelmet(Math.max(helmetObj.getAnimationId() - 1, 0));
             return createAnimations(descriptor, true);
         }).get(current);
     }
 
     public static BundledAnimation getShieldAnimation(Shield shield, int current) {
         return shieldAnimations.computeIfAbsent(shield, s -> {
-            ShieldDescriptor descriptor = DescriptorHandler.getShield(Math.max(s.index - 1, 0));
+            ShieldObj shieldObj = (ShieldObj) ObjectHandler.getObject(s.index).get();
+            ShieldDescriptor descriptor = DescriptorHandler.getShield(Math.max(shieldObj.getAnimationId() - 1, 0));
             return createAnimations(descriptor, true);
         }).get(current);
     }

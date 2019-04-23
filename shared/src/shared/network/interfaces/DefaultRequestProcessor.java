@@ -8,15 +8,9 @@ import shared.network.interaction.TalkRequest;
 import shared.network.inventory.ItemActionRequest;
 import shared.network.lobby.*;
 import shared.network.lobby.player.PlayerLoginRequest;
-import shared.network.login.LoginRequest;
 import shared.network.movement.MovementRequest;
 
 public class DefaultRequestProcessor implements IRequestProcessor {
-
-    @Override
-    public void processRequest(LoginRequest request, int connectionId) {
-
-    }
 
     @Override
     public void processRequest(MovementRequest request, int connectionId) {

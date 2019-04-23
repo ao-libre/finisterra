@@ -9,6 +9,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.handlers.AssetHandler;
 import game.handlers.StateHandler;
 import game.screens.CharacterScreen;
@@ -19,15 +20,16 @@ import game.systems.camera.CameraMovementSystem;
 import game.systems.camera.CameraSystem;
 import game.systems.physics.PlayerInputSystem;
 import game.systems.render.world.AnimationRenderingSystem;
+import game.systems.render.world.CharacterRenderingSystem;
 import object.systems.FaceChangerSystem;
 
 import static com.artemis.E.E;
 
 public class ObjectCreator extends Game {
 
-    private static final float GAME_SCREEN_ZOOM = 4f;
+    private static final float GAME_SCREEN_ZOOM = 2f;
 
-    private PolygonSpriteBatch spriteBatch; // This is only used in GameScreen
+    private SpriteBatch spriteBatch; // This is only used in GameScreen
 
     private World world;
 
@@ -39,7 +41,7 @@ public class ObjectCreator extends Game {
         AssetHandler.load();
         if(AssetHandler.getState() == StateHandler.LOADED)
             Gdx.app.debug("AOGame", "Handler loaded!");
-        this.spriteBatch = new PolygonSpriteBatch();
+        this.spriteBatch = new SpriteBatch();
         initWorld();
         postWorldInit();
         addCharacter();
@@ -61,8 +63,8 @@ public class ObjectCreator extends Game {
                 // Logic systems
                 .with(new TagManager())
                 // Rendering
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new AnimationRenderingSystem(spriteBatch));
-//                .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new CharacterRenderingSystem(spriteBatch));
+//                .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new AnimationRenderingSystem(spriteBatch));
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new CharacterRenderingSystem(spriteBatch));
 
         world = new World(worldConfigBuilder.build()); // preload Artemis world
     }
@@ -80,8 +82,8 @@ public class ObjectCreator extends Game {
         E(player)
                 .headIndex(4)
                 .bodyIndex(101)
-                .shieldIndex(1)
-                .weaponIndex(3)
+//                .shieldIndex(1)
+//                .weaponIndex(3)
                 .heading()
                 .moving(true)
                 .aOPhysics()

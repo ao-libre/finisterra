@@ -7,9 +7,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
-import com.esotericsoftware.minlog.Log;
-import entity.Body;
-import entity.CombatMessage;
+import entity.character.parts.Body;
+import entity.world.CombatMessage;
 import game.handlers.DescriptorHandler;
 import game.systems.OrderedEntityProcessingSystem;
 import game.systems.camera.CameraSystem;
@@ -57,7 +56,6 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
             return;
         }
         CombatMessage combatMessage = player.getCombatMessage();
-        Log.info("Combate message: " + combatMessage);
         combatMessage.offset -= getWorld().getDelta() * combatMessage.time * 15.0f;
         if (combatMessage.offset < 0) {
             combatMessage.offset = 0;

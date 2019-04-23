@@ -17,14 +17,14 @@ public class Inventory extends Component {
         items[i] =  item;
     }
 
-    public void add(int objId) {
-        add(objId,1);
+    public void add(int objId, boolean equipped) {
+        add(objId,1, equipped);
     }
 
-    public int add(int objId, int count) {
+    public int add(int objId, int count, boolean equiped) {
         for (int i = 0; i < 20; i++) {
             if (items[i] == null) {
-                items[i] = new Item(objId, count);
+                items[i] = new Item(objId, count, equiped);
                 return i;
             } else if (items[i].objId == objId) {
                 items[i].count += count;
@@ -58,10 +58,15 @@ public class Inventory extends Component {
         public int objId;
         public boolean equipped;
 
-        public Item(){}
-        public Item(int objId, int count) {
+        public Item() {}
+
+        public Item(int objId, int count, boolean equipped){
             this.objId = objId;
             this.count = count;
+            this.equipped = equipped;
+        }
+        public Item(int objId, int count) {
+            this(objId, count, false);
         }
 
     }

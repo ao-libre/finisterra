@@ -55,7 +55,7 @@ public class RandomMovementSystem extends IteratingSystem {
             WorldPos oldPos = new WorldPos(worldPos);
             WorldPos nextPos = worldUtils.getNextPos(worldPos, mov);
             Cave cave = E(getServer().getMapManager().mapEntity).getCave();
-            boolean blocked = (boolean) cave.tiles[nextPos.x][nextPos.y];
+            boolean blocked = cave.isBlocked(nextPos.x, nextPos.y);
             boolean occupied = MapUtils.hasEntity(getServer().getMapManager().getNearEntities(entityId), nextPos);
             if (player.hasImmobile() || blocked || occupied) {
                 nextPos = oldPos;

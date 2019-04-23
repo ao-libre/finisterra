@@ -3,6 +3,8 @@ package server.manager;
 import com.artemis.Component;
 import com.artemis.E;
 import com.esotericsoftware.minlog.Log;
+import entity.character.attributes.Agility;
+import entity.character.attributes.Strength;
 import entity.character.info.Inventory;
 import entity.character.status.Health;
 import entity.character.status.Mana;
@@ -67,21 +69,23 @@ public class ItemManager extends DefaultManager {
                 switch (potion.getKind()) {
                     case HP:
                         Health health = E(player).getHealth();
-                        Log.debug("User health: " + health.min);
                         health.min = Math.min(health.min + random, health.max);
-                        Log.debug("User heal: " + random + "new health: " + health.min);
                         components.add(health);
                         break;
                     case MANA:
                         Mana mana = E(player).getMana();
-                        Log.debug("Prevois mana: " + mana.min);
-                        mana.min = Math.min(mana.min + random, mana.max);
-                        Log.debug("New mana: " + mana.min);
+                        final int level = E(player).levelLevel();
+                        mana.min += mana.max * 0.045f;
+                        mana.min = Math.min(mana.min, mana.max);
                         components.add(mana);
                         break;
                     case AGILITY:
+                        Agility agility = E(player).getAgility();
+                        // TODO
                     case POISON:
                     case STRENGTH:
+                        Strength strength = E(player).getStrength();
+                        // TODO
                         break;
                 }
                 // Notify update to user

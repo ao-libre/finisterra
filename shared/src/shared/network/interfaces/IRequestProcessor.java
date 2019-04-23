@@ -8,12 +8,9 @@ import shared.network.interaction.TalkRequest;
 import shared.network.inventory.ItemActionRequest;
 import shared.network.lobby.*;
 import shared.network.lobby.player.PlayerLoginRequest;
-import shared.network.login.LoginRequest;
 import shared.network.movement.MovementRequest;
 
 public interface IRequestProcessor {
-
-    void processRequest(LoginRequest request, int connectionId);
 
     void processRequest(MovementRequest request, int connectionId);
 

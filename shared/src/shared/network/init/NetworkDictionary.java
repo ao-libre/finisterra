@@ -2,12 +2,18 @@ package shared.network.init;
 
 import camera.Focused;
 import com.artemis.Component;
-import entity.*;
-import entity.Object;
-import entity.character.CanWrite;
+import entity.character.attributes.*;
+import entity.character.equipment.Armor;
+import entity.character.equipment.Helmet;
+import entity.character.equipment.Shield;
+import entity.character.equipment.Weapon;
 import entity.character.info.*;
+import entity.character.parts.Body;
+import entity.character.parts.Head;
 import entity.character.states.*;
 import entity.character.status.*;
+import entity.world.*;
+import entity.world.Object;
 import graphics.FX;
 import map.Cave;
 import map.Map;
@@ -41,7 +47,6 @@ import shared.model.readers.DescriptorsReader;
 import shared.model.readers.Loader;
 import shared.model.readers.Reader;
 import shared.network.combat.AttackRequest;
-import shared.network.combat.AttackResponse;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.DropItem;
 import shared.network.interaction.MeditateRequest;
@@ -89,7 +94,6 @@ public class NetworkDictionary extends MarshalDictionary {
 
                 // Game Responses
                 MovementResponse.class,
-                AttackResponse.class,
 
                 // Game Notifications
                 EntityUpdate.class,
@@ -133,11 +137,11 @@ public class NetworkDictionary extends MarshalDictionary {
                 NewRoomNotification.class,
 
                 // Other
-
                 boolean[][].class,
                 boolean[].class,
                 int[][].class,
                 int[].class,
+                Integer[].class,
                 HashMap.class,
                 HashSet.class,
                 MapUtils.class,
@@ -203,6 +207,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 WoodObj.class,
 
                 // Components
+                SpellBook.class,
                 Map.class,
                 Cave.class,
                 Obj.class,
@@ -231,7 +236,6 @@ public class NetworkDictionary extends MarshalDictionary {
                 Ground.class,
                 PotionKind.class,
                 Criminal.class,
-                Elv.class,
                 Exp.class,
                 GM.class,
                 Health.class,
@@ -256,6 +260,14 @@ public class NetworkDictionary extends MarshalDictionary {
                 RandomMovement.class,
                 Network.class,
                 Attack.class,
+                Agility.class,
+                Strength.class,
+                Intelligence.class,
+                Charisma.class,
+                Constitution.class,
+                Hit.class,
+                Armor.class,
+                Footprint.class,
                 AttackAnimation.class
         );
     }
