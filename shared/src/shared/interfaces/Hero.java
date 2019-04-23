@@ -15,23 +15,18 @@ public enum Hero {
     ARQUERO(CharClass.ARCHER.ordinal(), Race.DWARF.ordinal()),
     CLERIGO(CharClass.CLERIC.ordinal(), Race.HUMAN.ordinal());
 
-    private static final List<Hero> VALUES;
-    private static final int SIZE;
+    private static final List<Hero> VALUES = Collections.unmodifiableList(Arrays.asList(values()));;
+    private static final int SIZE = VALUES.size();
     private static final Random RANDOM = new Random();
-
-    static {
-        final List<Hero> list = Arrays.asList(values());
-        list.remove(ARQUERO);
-        VALUES = Collections.unmodifiableList(list);
-        SIZE =  VALUES.size();
-    }
 
     public static Hero getRandom() {
         return VALUES.get(RANDOM.nextInt(SIZE));
     }
 
     public static List<Hero> getHeroes() {
-        return VALUES;
+        final List<Hero> result = Arrays.asList(VALUES.toArray(new Hero[0]));
+        result.remove(ARQUERO);
+        return result;
     }
 
     private final int classId;
