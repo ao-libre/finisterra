@@ -10,6 +10,7 @@ import server.manager.LobbyNetworkManager;
 import server.manager.ObjectManager;
 import server.manager.SpellManager;
 import server.systems.FinisterraSystem;
+import server.utils.IpChecker;
 import shared.model.lobby.Lobby;
 import shared.model.lobby.Room;
 import shared.network.lobby.StartGameResponse;
@@ -70,8 +71,11 @@ public class Finisterra implements ApplicationListener {
         room.getPlayers().forEach(player -> {
             int connectionId = getNetworkManager().getConnectionByPlayer(player);
             try {
-                getNetworkManager().sendTo(connectionId, new StartGameResponse(InetAddress.getLocalHost().getHostAddress(), roomServer.getTcpPort(), roomServer.getUdpPort()));
+                final String ip = IpChecker.getIp();
+                getNetworkManager().sendTo(connectionId, new StartGameResponse(ip, roomServer.getTcpPort(), roomServer.getUdpPort()));
             } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });

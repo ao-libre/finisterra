@@ -57,7 +57,7 @@ public class SpellView extends Window {
     }
 
     public boolean isOver() {
-        return Stream.of(getChildren().items).filter(Objects::nonNull).map(SpellSlot.class::cast).anyMatch(SpellSlot::isOver);
+        return Stream.of(getChildren().items).filter(SpellSlot.class::isInstance).map(SpellSlot.class::cast).anyMatch(SpellSlot::isOver);
     }
 
 }
