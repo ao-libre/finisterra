@@ -78,6 +78,7 @@ public class MagicCombatSystem implements IManager {
         return footprints != null && footprints.stream().anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()));
     }
 
+    // TODO refactor what elements/components to send
     private void castSpell(int playerId, int target, Spell spell) {
         int requiredMana = spell.getRequiredMana();
         Mana mana = E(playerId).getMana();
@@ -87,18 +88,19 @@ public class MagicCombatSystem implements IManager {
                 // TODO notify not valid target
                 return;
             }
-            updateMana(playerId, requiredMana, mana);
+
             // add FX
             List<Component> toAdd = new ArrayList<>();
             List<Class> toRemove = new ArrayList<>();
             int fxGrh = spell.getFxGrh();
-            if (fxGrh > 0) {
-                getServer().getWorldManager().notifyUpdate(target, new FXNotification(target, fxGrh - 1));
-            }
             E targetEntity = E(target);
             if (spell.getSumHP() > 0) {
                 Health health = targetEntity.getHealth();
                 int damage = calculateMagicDamage(playerId, target, spell);
+                if (damage < 0 && target == playerId) {
+                    // TODO message you can't attack yourself
+                    return;
+                }
                 health.min += damage;
                 health.min = Math.max(0, health.min);
                 final CombatMessage combatMessage = new CombatMessage(String.valueOf(damage));
@@ -114,10 +116,20 @@ public class MagicCombatSystem implements IManager {
             if (spell.isImmobilize()) {
                 targetEntity.immobile();
                 toAdd.add(targetEntity.getImmobile());
-            } else if (spell.isRemoveParalysis() && targetEntity.isImmobile()) {
-                targetEntity.immobile(false);
-                toRemove.add(Immobile.class);
+            } else if (spell.isRemoveParalysis()) {
+                if (targetEntity.isImmobile()) {
+                    targetEntity.immobile(false);
+                    toRemove.add(Immobile.class);
+                } else {
+                    // TODO message
+                    return;
+                }
             }
+
+            if (fxGrh > 0) {
+                getServer().getWorldManager().notifyUpdate(target, new FXNotification(target, fxGrh - 1));
+            }
+            updateMana(playerId, requiredMana, mana);
             getServer().getWorldManager().notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS)}, new Class[0]));
             getServer().getWorldManager().notifyUpdate(target, new EntityUpdate(target, toAdd.toArray(new Component[0]), toRemove.toArray(new Class[0])));
         } else {

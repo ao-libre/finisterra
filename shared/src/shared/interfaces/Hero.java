@@ -12,7 +12,7 @@ public enum Hero {
     ASESINO(CharClass.ASSASSIN.ordinal(), Race.DROW.ordinal()),
     PALADIN(CharClass.PALADIN.ordinal(), Race.HUMAN.ordinal()),
     BARDO(CharClass.BARDIC.ordinal(), Race.ELF.ordinal()),
-    ARQUERO(CharClass.ARCHER.ordinal(), Race.DWARF.ordinal()),
+//    ARQUERO(CharClass.ARCHER.ordinal(), Race.DWARF.ordinal()), TODO
     CLERIGO(CharClass.CLERIC.ordinal(), Race.HUMAN.ordinal());
 
     private static final List<Hero> VALUES =
