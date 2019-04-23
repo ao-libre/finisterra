@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public enum Hero {
 
@@ -24,9 +25,7 @@ public enum Hero {
     }
 
     public static List<Hero> getHeroes() {
-        final List<Hero> result = Arrays.asList(VALUES.toArray(new Hero[0]));
-        result.remove(ARQUERO);
-        return result;
+        return VALUES.stream().filter(h -> !ARQUERO.equals(h)).collect(Collectors.toList());
     }
 
     private final int classId;
