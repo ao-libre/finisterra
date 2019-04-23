@@ -4,11 +4,19 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
-import entity.*;
 import entity.character.Character;
+import entity.character.equipment.Helmet;
+import entity.character.equipment.Shield;
+import entity.character.equipment.Weapon;
+import entity.character.parts.Body;
+import entity.character.parts.Head;
+import entity.character.states.Heading;
 import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
 import game.systems.OrderedEntityProcessingSystem;
@@ -26,6 +34,9 @@ import static com.artemis.E.E;
 
 @Wire
 public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
+
+    public static final float SHADOW_ALPHA = 0.15f;
+    private static Texture shadow = new Texture(Gdx.files.local("data/ui/images/shadow22.png"));
 
     private final SpriteBatch batch;
 
@@ -54,6 +65,12 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         Pos2D currentPos = player.worldPosPos2D();
         Pos2D screenPos = Util.toScreen(currentPos);
         final Heading heading = player.getHeading();
+        if (player.hasBody()) {
+            final Color currentColor = new Color(batch.getColor());
+            batch.setColor(currentColor.r, currentColor.g, currentColor.b, SHADOW_ALPHA);
+            batch.draw(shadow, screenPos.x + (Tile.TILE_PIXEL_WIDTH - shadow.getWidth()) / 2, screenPos.y - shadow.getHeight() + 2);
+            batch.setColor(currentColor);
+        }
         CharacterDrawer.createDrawer(batch, player, heading, screenPos).draw();
 
     }

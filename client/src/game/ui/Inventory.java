@@ -118,7 +118,7 @@ public class Inventory extends Window {
                         GameScreen.getClient().sendToAll(update);
                         updateUserInventory();
                     } else {
-                        WorldUtils.mouseToWorldPos().ifPresent(worldPos -> GameScreen.getClient().sendToAll(new DropItem(E(GameScreen.getPlayer()).networkId(), draggingIndex(), worldPos)));
+                        WorldUtils.mouseToWorldPos().ifPresent(worldPos -> GameScreen.getClient().sendToAll(new DropItem(E(GameScreen.getPlayer()).getNetwork().id, draggingIndex(), worldPos)));
                     }
                 }
                 dragging = Optional.empty();
@@ -158,7 +158,6 @@ public class Inventory extends Window {
         dragging.ifPresent(slot -> slot.getItem().ifPresent(item -> {
             Optional<Obj> object = ObjectHandler.getObject(item.objId);
             object.ifPresent(obj -> {
-                // TODO
                 TextureRegion graphic = ObjectHandler.getGraphic(obj);
                 batch.draw(graphic, Gdx.input.getX() - (graphic.getRegionWidth() / 2) - 4, Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2));
             });

@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import game.managers.AOInputProcessor;
 import game.utils.Skins;
 
 public abstract class AbstractScreen extends ScreenAdapter {
@@ -49,4 +50,9 @@ public abstract class AbstractScreen extends ScreenAdapter {
     }
 
     abstract void createContent();
+
+    @Override public void dispose() {
+        super.dispose();
+        getStage().dispose();
+    }
 }

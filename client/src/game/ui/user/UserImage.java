@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.sun.javafx.text.GlyphLayout;
-import entity.Heading;
+import entity.character.states.Heading;
 import game.handlers.AnimationHandler;
 import game.screens.GameScreen;
 import game.utils.Colors;
@@ -67,6 +67,10 @@ public class UserImage extends Image {
             batch.draw(head, getX() + getWidth() - 2, getY() + getHeight() - 5, 0, 0, headW, headH, 3.5f, 3.5f, 180);
         }
         batch.setColor(color);
+    }
+
+    public void refresh() {
+        head = null;
     }
 
     public TextureRegion getHead() {

@@ -1,5 +1,6 @@
 package shared.network.combat;
 
+import com.badlogic.gdx.utils.TimeUtils;
 import position.WorldPos;
 import shared.model.Spell;
 import shared.network.interfaces.IRequest;
@@ -8,12 +9,14 @@ import shared.network.interfaces.IRequestProcessor;
 public class SpellCastRequest implements IRequest {
     private Spell spell;
     private WorldPos worldPos;
+    private long timestamp;
 
     public SpellCastRequest(){}
 
     public SpellCastRequest(Spell spell, WorldPos worldPos) {
         this.spell = spell;
         this.worldPos = worldPos;
+        this.timestamp = TimeUtils.millis();
     }
 
     public Spell getSpell() {
@@ -22,6 +25,10 @@ public class SpellCastRequest implements IRequest {
 
     public WorldPos getWorldPos() {
         return worldPos;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
     }
 
     @Override

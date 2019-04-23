@@ -3,16 +3,19 @@ package server.core;
 import com.artemis.FluidEntityPlugin;
 import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import server.manager.LobbyNetworkManager;
 import server.manager.ObjectManager;
+import server.manager.SpellManager;
 import server.systems.FinisterraSystem;
-import server.systems.ServerSystem;
 import shared.model.lobby.Lobby;
 import shared.model.lobby.Room;
 import shared.network.lobby.StartGameResponse;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,6 +29,7 @@ public class Finisterra implements ApplicationListener {
     private World world;
     private LobbyNetworkManager networkManager;
     private ObjectManager objectManager;
+    private SpellManager spellManager;
 
     public Finisterra(int tcpPort, int udpPort) {
         this.tcpPort = tcpPort;
@@ -35,6 +39,7 @@ public class Finisterra implements ApplicationListener {
 
     @Override
     public void create() {
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
         init();
         Gdx.app.log("Server initialization", "Finisterra...");
         lobby = new Lobby();
@@ -50,17 +55,25 @@ public class Finisterra implements ApplicationListener {
 
     private void init() {
         objectManager = new ObjectManager();
+        spellManager = new SpellManager();
     }
 
     public void startGame(Room room) {
-        int tcpPort = getNextPort();
-        int udpPort = getNextPort();
-        Server server = new Server(tcpPort, udpPort, objectManager);
-        server.addPlayers(room.getPlayers());
-        servers.add(server);
+        Server roomServer = servers.stream().filter(server -> server.getRoomId() == room.getId()).findFirst().orElseGet(() ->{
+            int tcpPort = getNextPort();
+            int udpPort = getNextPort();
+            Server server = new Server(room.getId(), tcpPort, udpPort, objectManager, spellManager);
+            server.addPlayers(room.getPlayers());
+            servers.add(server);
+            return server;
+        });
         room.getPlayers().forEach(player -> {
             int connectionId = getNetworkManager().getConnectionByPlayer(player);
-            getNetworkManager().sendTo(connectionId, new StartGameResponse("localhost", tcpPort, udpPort));
+            try {
+                getNetworkManager().sendTo(connectionId, new StartGameResponse(InetAddress.getLocalHost().getHostAddress(), roomServer.getTcpPort(), roomServer.getUdpPort()));
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
         });
     }
 

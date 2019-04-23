@@ -47,8 +47,8 @@ public class CharacterStatusRenderingSystem extends IteratingSystem {
 
     private void drawExp(E player) {
         int maxExp = player.getExp().exp;
-        int minExp = player.getElv().elv;
-        drawBar(maxExp, minExp, (int) OFFSET_X, 0, Colors.EXP.cpy(), OFFSET_Y);
+//        int minExp = player.getElu().elu;
+        drawBar(maxExp, maxExp, (int) OFFSET_X, 0, Colors.EXP.cpy(), OFFSET_Y);
     }
 
     private void drawMana(E player) {

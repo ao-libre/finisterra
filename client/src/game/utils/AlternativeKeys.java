@@ -4,10 +4,10 @@ import com.badlogic.gdx.Input;
 
 public class AlternativeKeys {
 
-    public static final int ATTACK_1 = Input.Keys.SHIFT_LEFT;
+    public static final int ATTACK_1 = Input.Keys.SPACE;
     public static final int ATTACK_2 = Input.Keys.SHIFT_RIGHT;
     public static final int MEDITATE = Input.Keys.M;
-    public static final int USE = Input.Keys.Q;
+    public static final int USE = Input.Keys.SHIFT_LEFT;
     public static final int HIDE = Input.Keys.O;
     public static final int INVENTORY = Input.Keys.I;
     public static final int SPELLS = Input.Keys.K;

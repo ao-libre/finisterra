@@ -46,15 +46,12 @@ public class CaveSystem extends IteratingSystem {
     }
 
     public Optional<Cave> getCurrent() {
-        return this.id != -1 ? Optional.ofNullable(E(this.id).getCave()) : Optional.empty();
+        return this.id != -1 && E(this.id).hasCave() ? Optional.ofNullable(E(this.id).getCave()) : Optional.empty();
     }
 
     public boolean isBlocked(int x, int y) {
         Optional<Cave> cave = getCurrent();
-        if (cave.isPresent()) {
-            return cave.get().tiles[x][y];
-        }
-        return true;
+        return cave.isPresent() && cave.get().isBlocked(x, y);
     }
 
     @Override
@@ -65,7 +62,7 @@ public class CaveSystem extends IteratingSystem {
 
     @Override
     protected void process(int entityId) {
-        if(renderer == null) {
+        if (renderer == null) {
             return;
         }
         renderer.setView(cameraSystem.camera);

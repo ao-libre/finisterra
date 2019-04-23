@@ -12,6 +12,7 @@ import game.screens.GameScreen;
 import game.screens.LoginScreen;
 import game.ui.GUI;
 import game.utils.AlternativeKeys;
+import game.utils.Cursors;
 import game.utils.WorldUtils;
 import shared.model.AttackType;
 import shared.model.Spell;
@@ -45,13 +46,11 @@ public class AOInputProcessor extends Stage {
                 E player = E.E(GameScreen.getPlayer());
                 if (!player.hasAttack() || player.getAttack().interval - GameScreen.getWorld().getDelta() < 0) {
                     GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos));
-                    player.attackInterval();
+                    player.attack();
                 } else {
                     // TODO can't attack because interval
                 }
-                Pixmap pm = new Pixmap(Gdx.files.internal("data/ui/images/cursor-arrow.png"));
-                Gdx.graphics.setCursor(Gdx.graphics.newCursor(pm, 10, 4));
-                pm.dispose();
+                Cursors.setCursor("hand");
                 GUI.getSpellView().toCast = Optional.empty();
             } else {
                 Optional<String> name = WorldManager.getEntities()
@@ -110,8 +109,7 @@ public class AOInputProcessor extends Stage {
                 case Input.Keys.ESCAPE:
                     // Disconnect & go back to LoginScreen
                     AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                    game.getClientSystem().stop();
-                    game.setScreen(new LoginScreen());
+                    // TODO implement
             }
         }
         switch (keycode) {
@@ -133,7 +131,7 @@ public class AOInputProcessor extends Stage {
         E player = E(GameScreen.getPlayer());
         if (!player.hasAttack() || player.getAttack().interval - GameScreen.getWorld().getDelta() <= 0) {
             GameScreen.getClient().sendToAll(new AttackRequest(AttackType.PHYSICAL));
-            player.attackInterval();
+            player.attack();
         }
     }
 

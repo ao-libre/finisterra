@@ -1,5 +1,6 @@
 package server.systems;
 
+import com.badlogic.gdx.Gdx;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import server.core.Server;
@@ -27,7 +28,8 @@ public class ServerSystem extends MarshalSystem {
         this(server, strategy, new ServerRequestProcessor(server), new ServerNotificationProcessor(server));
     }
 
-    public ServerSystem(Server server, MarshalStrategy strategy, IRequestProcessor requestProcessor, INotificationProcessor notificationProcessor) {
+    public ServerSystem(Server server, MarshalStrategy strategy, IRequestProcessor requestProcessor,
+                        INotificationProcessor notificationProcessor) {
         super(new NetworkDictionary(), strategy);
         this.server = server;
         this.requestProcessor = requestProcessor;
@@ -56,7 +58,6 @@ public class ServerSystem extends MarshalSystem {
         while (netQueue.peek() != null) {
             processJob(netQueue.poll());
         }
-
     }
 
     @Override
@@ -67,9 +68,9 @@ public class ServerSystem extends MarshalSystem {
                 return;
             }
             int playerToDisconnect = server.getNetworkManager().getPlayerByConnection(connectionId);
+            server.getMapManager().removeEntity(playerToDisconnect);
             server.getNetworkManager().unregisterUserConnection(playerToDisconnect, connectionId);
             server.getWorldManager().unregisterEntity(playerToDisconnect);
-            server.getMapManager().removeEntity(playerToDisconnect);
 
         });
     }
@@ -79,6 +80,7 @@ public class ServerSystem extends MarshalSystem {
     }
 
     private static class NetworkJob {
+
         private final int connectionId;
         private final Object receivedObject;
 

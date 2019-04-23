@@ -14,4 +14,11 @@ public class Name extends Component implements Serializable{
         this.text = name;
     }
 
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 }

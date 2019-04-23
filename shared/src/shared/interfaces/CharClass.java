@@ -1,17 +1,27 @@
 package shared.interfaces;
 
+import com.artemis.E;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public enum CharClass {
-    MAGICIAN,
-    WARRIOR,
+    ARCHER,
+    ASSASSIN,
+    BARDIC,
     CLERIC,
-    PALADIN,
-    ASSESIN,
-    BARD,
     DRUID,
+    MAGICIAN,
+    PALADIN,
     PIRATE,
-    THIEF,
     ROGUE,
-    ARCHER;
+    THIEF,
+    WARRIOR;
+
+    private static final List<CharClass> VALUES =
+            Collections.unmodifiableList(Arrays.asList(values()));
+    private static final int SIZE = VALUES.size();
 
     public static CharClass getClass(String classString) {
         switch (classString.toLowerCase()) {
@@ -24,9 +34,9 @@ public enum CharClass {
             case "guerrero":
                 return WARRIOR;
             case "asesino":
-                return ASSESIN;
+                return ASSASSIN;
             case "bardo":
-                return BARD;
+                return BARDIC;
             case "druida":
                 return DRUID;
             case "pirata":
@@ -39,5 +49,11 @@ public enum CharClass {
                 return ARCHER;
         }
         return null;
+    }
+
+    public static CharClass get(E entity) {
+        int heroId = entity.getCharHero().heroId;
+        Hero hero = Hero.getHeroes().get(heroId);
+        return VALUES.get(hero.getClassId());
     }
 }

@@ -12,4 +12,8 @@ public class UserInformation extends Table {
         add(status).right().bottom().pad(10);
     }
 
+    public void refresh() {
+        head.refresh();
+    }
+
 }

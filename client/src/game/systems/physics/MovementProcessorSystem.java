@@ -6,11 +6,10 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.esotericsoftware.minlog.Log;
-import entity.Heading;
+import entity.character.states.Heading;
 import game.managers.WorldManager;
 import game.screens.GameScreen;
 import game.systems.map.CaveSystem;
-import game.systems.map.MapSystem;
 import movement.Destination;
 import physics.AOPhysics;
 import position.WorldPos;
@@ -53,6 +52,9 @@ public class MovementProcessorSystem extends IteratingSystem {
         requests.remove(requestNumber);
         if (!predicted.equals(destination)) {
             E player = E.E(GameScreen.getPlayer());
+            if (!player.hasMovement()) {
+                return;
+            }
             player.getMovement().destinations.clear();
             WorldPos worldPos = player.getWorldPos();
             worldPos.offsetY = 0;

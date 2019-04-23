@@ -23,7 +23,6 @@ public class Slot extends Actor {
     private Optional<Item> item = Optional.empty();
 
     private boolean selected;
-    private boolean equipped;
 
     Slot() {
     }
@@ -50,7 +49,7 @@ public class Slot extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(background, getX(), getY(), 34, 34);
+        batch.draw(background, getX(), getY(), SIZE, SIZE);
         if (item.isPresent()) {
             drawItem(batch);
             if (item.get().equipped) {
