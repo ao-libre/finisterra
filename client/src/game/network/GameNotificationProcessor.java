@@ -70,15 +70,19 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     @Override
     public void processNotification(MovementNotification movementNotification) {
-        int playerId = WorldManager.getNetworkedEntity(movementNotification.getPlayerId());
-        E(playerId).aOPhysics();
-        E(playerId).movementAdd(movementNotification.getDestination());
+        if (WorldManager.hasNetworkedEntity(movementNotification.getPlayerId())) {
+            int playerId = WorldManager.getNetworkedEntity(movementNotification.getPlayerId());
+            E(playerId).aOPhysics();
+            E(playerId).movementAdd(movementNotification.getDestination());
+        }
     }
 
     @Override
     public void processNotification(FXNotification fxNotification) {
-        int target = WorldManager.getNetworkedEntity(fxNotification.getTarget());
-        E(target).fXAddFx(fxNotification.getFxGrh());
+        if (WorldManager.hasNetworkedEntity(fxNotification.getTarget())) {
+            int target = WorldManager.getNetworkedEntity(fxNotification.getTarget());
+            E(target).fXAddFx(fxNotification.getFxGrh());
+        }
     }
 
     private void addComponentsToEntity(Entity newEntity, EntityUpdate entityUpdate) {
@@ -90,6 +94,9 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     }
 
     private void updateEntity(EntityUpdate entityUpdate) {
+        if (WorldManager.hasNetworkedEntity(entityUpdate.entityId)) {
+            return;
+        }
         int entityId = WorldManager.getNetworkedEntity(entityUpdate.entityId);
         Entity entity = WorldManager.getWorld().getEntity(entityId);
         EntityEdit edit = entity.edit();

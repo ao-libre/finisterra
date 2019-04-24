@@ -22,6 +22,10 @@ public class WorldManager {
         return networkedEntities.get(networkId);
     }
 
+    public static boolean hasNetworkedEntity(int networkId) {
+        return networkedEntities.containsKey(networkId);
+    }
+
     public static Set<Integer> getEntities() {
         return new HashSet<>(networkedEntities.values());
     }
