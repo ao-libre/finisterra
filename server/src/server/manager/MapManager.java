@@ -1,5 +1,6 @@
 package server.manager;
 
+import com.artemis.E;
 import com.artemis.Entity;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
@@ -124,7 +125,12 @@ public class MapManager extends DefaultManager {
      * @param entity
      */
     public void removeEntity(int entity) {
-        int map = E(entity).getWorldPos().map;
+        final E e = E(entity);
+        if (e == null || !e.hasWorldPos()) {
+            return;
+        }
+        final WorldPos worldPos = e.getWorldPos();
+        int map = worldPos.map;
         // remove from near entities
         nearEntities.computeIfPresent(entity, (player, removeFrom) -> {
             removeFrom.forEach(nearEntity -> {
