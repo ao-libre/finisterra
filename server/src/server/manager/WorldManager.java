@@ -111,7 +111,8 @@ public class WorldManager extends DefaultManager {
 
     private void setClassAndAttributes(int heroId, E entity) {
         // set body and head
-        Hero hero = Hero.getHeroes().get(heroId);
+        final List<Hero> heroes = Hero.getHeroes();
+        Hero hero = heroes.size() > heroId ? heroes.get(heroId) : heroes.get(0);
         Race race = Race.values()[hero.getRaceId()];
         setNakedBody(entity, race);
         setHead(entity, race);
