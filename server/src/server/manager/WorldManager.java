@@ -64,11 +64,14 @@ public class WorldManager extends DefaultManager {
         // set head and body
         setHeadAndBody(name, entity);
         // set class
-        setClassAndAttributes(heroId, entity);
+        final List<Hero> heroes = Hero.getHeroes();
+        Hero hero = heroes.size() > heroId ? heroes.get(heroId) : heroes.get(0);
+
+        setClassAndAttributes(hero, entity);
         // set inventory
-        setInventory(player, Hero.getHeroes().get(heroId), team);
+        setInventory(player, hero, team);
         // set spells
-        setSpells(player, Hero.getHeroes().get(heroId));
+        setSpells(player, hero);
 
         return player;
     }
@@ -109,14 +112,13 @@ public class WorldManager extends DefaultManager {
         return result;
     }
 
-    private void setClassAndAttributes(int heroId, E entity) {
+    private void setClassAndAttributes(Hero hero, E entity) {
         // set body and head
-        final List<Hero> heroes = Hero.getHeroes();
-        Hero hero = heroes.size() > heroId ? heroes.get(heroId) : heroes.get(0);
+
         Race race = Race.values()[hero.getRaceId()];
         setNakedBody(entity, race);
         setHead(entity, race);
-        entity.charHeroHeroId(heroId);
+        entity.charHeroHeroId(hero.ordinal());
 
         CharClass charClass = CharClass.values()[hero.getClassId()];
         setAttributesAndStats(entity, charClass, race);
