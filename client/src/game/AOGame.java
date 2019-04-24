@@ -22,7 +22,7 @@ import shared.model.lobby.Player;
  */
 public class AOGame extends Game {
 
-    public static final float GAME_SCREEN_ZOOM = 1.5f;
+    public static final float GAME_SCREEN_ZOOM = 1.9f;
 
     @Override
     public void create() {
@@ -41,7 +41,7 @@ public class AOGame extends Game {
     @Override
     public void render() {
         GL20 gl = Gdx.gl;
-        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        gl.glClearColor(0.0f, 0.0f, 0.0f, 1f);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         super.render();
     }

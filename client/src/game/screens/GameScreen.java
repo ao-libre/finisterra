@@ -3,6 +3,7 @@ package game.screens;
 import com.artemis.*;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -31,9 +32,6 @@ import shared.network.lobby.player.PlayerLoginRequest;
 import static com.artemis.E.E;
 
 public class GameScreen extends ScreenAdapter {
-
-    public static final int GAME_SCREEN_WIDTH = 800;
-    public static final int GAME_SCREEN_HEIGHT = 600;
 
     public static World world;
     public static int player = -1;
@@ -86,6 +84,7 @@ public class GameScreen extends ScreenAdapter {
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new NameRenderingSystem(spriteBatch))
                 .with(FONTS_PRIORITY, new DialogRenderingSystem(spriteBatch))
                 .with(FONTS_PRIORITY, new CharacterStatesRenderingSystem(spriteBatch))
+//                .with(FONTS_PRIORITY, new LightRenderingSystem(spriteBatch))
                 // Other
                 .with(new TagManager())
                 .with(new UuidEntityManager()); // why?

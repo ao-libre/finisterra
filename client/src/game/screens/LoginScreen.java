@@ -13,7 +13,7 @@ import shared.network.lobby.JoinLobbyRequest;
 
 public class LoginScreen extends AbstractScreen {
 
-    private static final String SERVER_IP = "localhost";
+    private static final String SERVER_IP = "ec2-18-231-116-111.sa-east-1.compute.amazonaws.com";
     private static final int SERVER_PORT = 7666;
     private ClientSystem clientSystem;
     private World world;

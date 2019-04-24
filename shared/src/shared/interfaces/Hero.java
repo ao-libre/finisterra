@@ -21,7 +21,8 @@ public enum Hero {
     private static final Random RANDOM = new Random();
 
     public static Hero getRandom() {
-        return VALUES.get(RANDOM.nextInt(SIZE));
+        final List<Hero> heroes = getHeroes();
+        return heroes.get(RANDOM.nextInt(heroes.size()));
     }
 
     public static List<Hero> getHeroes() {

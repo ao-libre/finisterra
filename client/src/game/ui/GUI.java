@@ -81,15 +81,15 @@ public class GUI {
         Container<Table> spellsContainer = new Container<>();
         float screenW = getWidth();
         float screenH = getHeight();
-        float width = screenW * 10f / 100f;
+        float width = screenW * 4f / 100f;
         spellView = new SpellView();
-        spellView.setFillParent(true);
-        spellsContainer.setWidth(SpellSlot.SIZE);
+        spellsContainer.setWidth(width);
         spellsContainer.setHeight(SpellView.MAX_SPELLS * SpellSlot.SIZE);
         spellsContainer.setActor(spellView);
         spellsContainer.setTransform(true);
-        spellsContainer.setScale(0.85f);
-        spellsContainer.setPosition(getWidth(), (screenH / 2) + 20, Align.right);
+        final float scaleXY = width / SpellSlot.SIZE;
+        spellsContainer.setScale(scaleXY);
+        spellsContainer.setPosition(getWidth() - 5, (screenH / 2), Align.right);
         return spellsContainer;
     }
 
@@ -100,7 +100,7 @@ public class GUI {
         inventory = new Inventory();
         final float zoom = width / inventory.getWidth();
         inventoryContainer.setScale(zoom);
-        inventoryContainer.setPosition((getWidth() * 98f / 100f) - width * zoom, 1, Align.bottom);
+        inventoryContainer.setPosition((getWidth() * 98f / 100f) - width, 1, Align.right | Align.bottom);
         inventoryContainer.setActor(inventory);
         inventoryContainer.setTransform(true);
         return inventoryContainer;

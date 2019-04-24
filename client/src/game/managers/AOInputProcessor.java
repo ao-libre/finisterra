@@ -11,6 +11,7 @@ import game.handlers.DescriptorHandler;
 import game.screens.GameScreen;
 import game.screens.LoginScreen;
 import game.ui.GUI;
+import game.utils.AOKeys;
 import game.utils.AlternativeKeys;
 import game.utils.Cursors;
 import game.utils.WorldUtils;
@@ -32,6 +33,7 @@ import static com.artemis.E.E;
 public class AOInputProcessor extends Stage {
 
     private static final Random r = new Random();
+    public static boolean alternativeKeys = false;
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
@@ -73,52 +75,95 @@ public class AOInputProcessor extends Stage {
     @Override
     public boolean keyUp(int keycode) {
         if (!GUI.getDialog().isVisible()) {
-            switch (keycode) {
-                case AlternativeKeys.INVENTORY:
-                    toggleInventory();
-                    break;
-                case AlternativeKeys.SPELLS:
-                    toggleSpells();
-                    break;
-                case AlternativeKeys.MEDITATE:
-                    toggleMeditate();
-                    break;
-                case AlternativeKeys.DROP:
-                    dropItem();
-                    break;
-                case AlternativeKeys.TAKE:
-                    takeItem();
-                    break;
-                case AlternativeKeys.EQUIP:
-                    equip();
-                    break;
-                case AlternativeKeys.USE:
-                    use();
-                    break;
-                case AlternativeKeys.ATTACK_1:
-                    attack();
-                    break;
-                case AlternativeKeys.ATTACK_2:
-                    attack();
-                    break;
-                case Input.Keys.O: // testing fxs
-                    int randomFx = r.nextInt(DescriptorHandler.getFxs().size());
-                    Log.info("FX: " + randomFx);
-                    E(GameScreen.getPlayer()).fXAddFx(randomFx);
-                    break;
-                case Input.Keys.ESCAPE:
-                    // Disconnect & go back to LoginScreen
-                    AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                    // TODO implement
+            if (alternativeKeys) {
+                doAlternativeActions(keycode);
+            } else {
+                doActions(keycode);
             }
         }
         switch (keycode) {
             case AlternativeKeys.TALK:
                 toggleDialogText();
                 break;
+            case Input.Keys.F1:
+                alternativeKeys = !alternativeKeys;
+                break;
         }
 
         return super.keyUp(keycode);
+    }
+
+
+    private void doActions(int keycode) {
+        switch (keycode) {
+            case AOKeys.INVENTORY:
+                toggleInventory();
+                break;
+            case AOKeys.SPELLS:
+                toggleSpells();
+                break;
+            case AOKeys.MEDITATE:
+                toggleMeditate();
+                break;
+            case AOKeys.DROP:
+                dropItem();
+                break;
+            case AOKeys.TAKE:
+                takeItem();
+                break;
+            case AOKeys.EQUIP:
+                equip();
+                break;
+            case AOKeys.USE:
+                use();
+                break;
+            case AOKeys.ATTACK_1:
+                attack();
+                break;
+            case AOKeys.ATTACK_2:
+                attack();
+                break;
+            case Input.Keys.ESCAPE:
+                // Disconnect & go back to LoginScreen
+                AOGame game = (AOGame) Gdx.app.getApplicationListener();
+                // TODO implement
+        }
+    }
+
+    private void doAlternativeActions(int keycode) {
+        switch (keycode) {
+            case AlternativeKeys.INVENTORY:
+                toggleInventory();
+                break;
+            case AlternativeKeys.SPELLS:
+                toggleSpells();
+                break;
+            case AlternativeKeys.MEDITATE:
+                toggleMeditate();
+                break;
+            case AlternativeKeys.DROP:
+                dropItem();
+                break;
+            case AlternativeKeys.TAKE:
+                takeItem();
+                break;
+            case AlternativeKeys.EQUIP:
+                equip();
+                break;
+            case AlternativeKeys.USE:
+                use();
+                break;
+            case AlternativeKeys.ATTACK_1:
+                attack();
+                break;
+            case AlternativeKeys.ATTACK_2:
+                attack();
+                break;
+            case Input.Keys.ESCAPE:
+                // Disconnect & go back to LoginScreen
+                AOGame game = (AOGame) Gdx.app.getApplicationListener();
+                // TODO implement
+        }
     }
 
     private void use() {

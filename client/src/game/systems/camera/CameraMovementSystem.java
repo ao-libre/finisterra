@@ -4,6 +4,7 @@ import camera.AOCamera;
 import com.artemis.Aspect;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
+import com.badlogic.gdx.math.Vector3;
 import position.Pos2D;
 
 import static com.artemis.E.E;
@@ -28,6 +29,8 @@ public class CameraMovementSystem extends IteratingSystem {
     @Override
     protected void process(int camera) {
         final Pos2D pos = E(camera).getPos2D();
+
+//        cameraSystem.camera.position.lerp(new Vector3(pos.x, pos.y, 0), 0.6f);
         cameraSystem.camera.position.x = (pos.x);
         cameraSystem.camera.position.y = (pos.y);
         cameraSystem.camera.update();
