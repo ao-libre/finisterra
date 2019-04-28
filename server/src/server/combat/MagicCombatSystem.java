@@ -69,7 +69,11 @@ public class MagicCombatSystem implements IManager {
         entities.add(userId);
         return entities
                 .stream()
-                .filter(entity -> E(entity).getWorldPos().equals(worldPos) || footprintOf(entity, worldPos))
+                .map(entity -> E(entity))
+                .filter(Objects::nonNull)
+                .filter(entity -> entity.hasWorldPos())
+                .filter(entity -> entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos))
+                .map(E::id)
                 .findFirst();
     }
 
