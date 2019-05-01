@@ -6,6 +6,8 @@ import shared.objects.types.Type;
 
 public class ContainerObj extends Obj {
 
+    public ContainerObj() {}
+
     public ContainerObj(int id, String name, int grhIndex) {
         super(id, name, grhIndex);
     }

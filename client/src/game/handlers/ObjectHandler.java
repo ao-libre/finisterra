@@ -1,31 +1,28 @@
 package game.handlers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import model.readers.AODescriptorsReader;
 import model.textures.GameTexture;
-import shared.model.readers.DescriptorsReader;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
+import shared.util.ObjJson;
+import shared.util.SharedResources;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ObjectHandler {
 
-    private static DescriptorsReader reader = new AODescriptorsReader();
-    private static Map<Integer, Obj> objects;
+    private static Map<Integer, Obj> objects = new HashMap<>();
     private static Map<Obj, GameTexture> textures = new HashMap<>();
     private static Map<Obj, GameTexture> flipped = new HashMap<>();
 
     public static void load() {
-        objects = reader.loadObjects("obj");
+        ObjJson.loadObjectsByType(objects, Gdx.files.internal(SharedResources.OBJECTS_FOLDER));
     }
 
     public static Optional<Obj> getObject(int id) {
-        return Optional.of(objects.get(id));
+        return Optional.ofNullable(objects.get(id));
     }
 
     public static TextureRegion getGraphic(Obj obj) {

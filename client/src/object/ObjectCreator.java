@@ -8,7 +8,6 @@ import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.handlers.AssetHandler;
 import game.handlers.StateHandler;
@@ -19,7 +18,6 @@ import game.systems.camera.CameraFocusSystem;
 import game.systems.camera.CameraMovementSystem;
 import game.systems.camera.CameraSystem;
 import game.systems.physics.PlayerInputSystem;
-import game.systems.render.world.AnimationRenderingSystem;
 import game.systems.render.world.CharacterRenderingSystem;
 import object.systems.FaceChangerSystem;
 

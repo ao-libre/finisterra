@@ -5,6 +5,8 @@ import shared.objects.types.Obj;
 import shared.objects.types.Type;
 
 public class GemObj extends Obj {
+
+    public GemObj() {}
     public GemObj(int id, String name, int grhIndex) {
         super(id, name, grhIndex);
     }

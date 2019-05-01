@@ -10,6 +10,7 @@ public class ArmorObj extends ObjWithClasses {
     private boolean women;
     private boolean dwarf;
 
+    public ArmorObj() {}
     public ArmorObj(int id, String name, int grhIndex) {
         super(id, name, grhIndex);
     }

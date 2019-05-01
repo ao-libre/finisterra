@@ -1,9 +1,12 @@
 package shared.objects.types;
 
+import entity.character.equipment.Helmet;
 import org.ini4j.Profile;
 import shared.objects.factory.ObjectFactory;
 
 public class HelmetObj extends ObjWithClasses {
+
+    public HelmetObj(){}
     public int getBodyNumber() {
         return bodyNumber;
     }

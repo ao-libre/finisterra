@@ -9,6 +9,8 @@ public class PotionObj extends Obj {
     private int min,max;
     private int effecTime;
 
+    public PotionObj() {}
+
     public PotionObj(int id, String name, int grhIndex) {
         super(id, name, grhIndex);
     }

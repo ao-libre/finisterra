@@ -1,5 +1,6 @@
 package shared.objects.types;
 
+import entity.character.equipment.Shield;
 import org.ini4j.Profile;
 import shared.objects.factory.ObjectFactory;
 
@@ -8,6 +9,8 @@ public class ShieldObj extends ObjWithClasses {
     private int bodyNumber;
     private int animationId;
     private int minDef, maxDef;
+
+    public ShieldObj(){}
 
     public int getAnimationId() {
         return animationId;

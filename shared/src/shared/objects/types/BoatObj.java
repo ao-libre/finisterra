@@ -1,6 +1,11 @@
 package shared.objects.types;
 
+import shared.objects.types.common.BonfireObj;
+
 public class BoatObj extends Obj{
+
+    public BoatObj() {}
+
     public BoatObj(int id, String name, int grhIndex) {
         super(id, name, grhIndex);
     }

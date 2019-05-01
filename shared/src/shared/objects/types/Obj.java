@@ -6,13 +6,15 @@ import shared.objects.factory.ObjectFactory;
 public abstract class Obj implements IFillObject {
 
     private int id;
-    private final String name;
-    private final int grhIndex;
-    private boolean collectable;
-    private int value;
-    private boolean crucial;
-    private boolean newbie;
-    private boolean notDrop;
+    private String name;
+    private int grhIndex;
+    private boolean collectable = false;
+    private int value = 0;
+    private boolean crucial = false;
+    private boolean newbie = false;
+    private boolean notDrop = false;
+
+    public Obj() {}
 
     protected Obj(int id, String name, int grhIndex) {
         this.id = id;

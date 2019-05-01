@@ -7,6 +7,8 @@ public class MagicObj extends ObjWithClasses {
     private int minHit, maxHit;
     private int minDef, maxDef;
 
+    public MagicObj() {}
+
     public int getMaxHit() {
         return maxHit;
     }

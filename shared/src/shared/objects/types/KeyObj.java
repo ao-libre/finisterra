@@ -4,6 +4,7 @@ public class KeyObj extends Obj {
 
     private int key;
 
+    public KeyObj() {}
     public KeyObj(int id, String name, int grhIndex) {
         super(id, name, grhIndex);
     }

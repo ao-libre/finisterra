@@ -87,7 +87,6 @@ project(":client") {
     sourceSets {
         // run the annotation processor compile time.
         main { compileClasspath += configurations.provided }
-        test.java.srcDirs = ["tests/"]
     }
 
     dependencies {
@@ -96,26 +95,30 @@ project(":client") {
         compile 'org.ini4j:ini4j:0.5.1'
 
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.esotericsoftware.spine:spine-libgdx:3.5.51.1"
 
-        compile 'junit:junit:4.+'
-        testCompile 'junit:junit:4.+'
         testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
         testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    }
+}
+
+project(":design") {
+    apply plugin: "java"
+
+    dependencies {
+        compile project(":client")
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+        compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
 }
 
 project(":server") {
     apply plugin: "java"
 
-    sourceSets {
-        // run the annotation processor compile time.
-        test.java.srcDirs = ["tests/"]
-    }
-
     dependencies {
         compile project(":shared")
-        compile 'org.mongodb:mongo-java-driver:2.12.3'
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
@@ -136,9 +139,6 @@ project(":shared") {
     dependencies {
         compile project(":components")
         compile 'org.ini4j:ini4j:0.5.1'
-
-        compile 'junit:junit:4.+'
-        testCompile 'junit:junit:4.+'
 
         // common
         compile "net.onedaybeard.artemis:artemis-odb:$artemisVersion"

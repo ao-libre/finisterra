@@ -4,6 +4,8 @@ public class SpellObj extends Obj {
 
     private int spellIndex;
 
+    public SpellObj() {}
+
     public SpellObj(int id, String name, int grhIndex) {
         super(id, name, grhIndex);
     }

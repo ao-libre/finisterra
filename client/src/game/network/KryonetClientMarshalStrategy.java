@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
 
-    protected static final int CONNECTION_TIMEOUT = 1000;
+    protected static final int CONNECTION_TIMEOUT = 3000;
     private String host;
     private int port;
 

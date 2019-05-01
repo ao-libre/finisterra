@@ -7,6 +7,8 @@ public class DoorObj extends Obj {
     private int closeIndex;
     private int closeKeyIndex;
 
+    public DoorObj() {}
+
     public DoorObj(int id, String name, int grhIndex) {
         super(id, name, grhIndex);
     }

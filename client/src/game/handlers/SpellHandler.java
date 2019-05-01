@@ -1,26 +1,25 @@
 package game.handlers;
 
+import com.badlogic.gdx.Gdx;
 import entity.character.info.SpellBook;
 import game.screens.GameScreen;
 import model.readers.AODescriptorsReader;
 import shared.model.Spell;
 import shared.model.readers.DescriptorsReader;
+import shared.util.SharedResources;
+import shared.util.SpellJson;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 import static com.artemis.E.E;
 
 public class SpellHandler {
 
     private static DescriptorsReader reader = new AODescriptorsReader();
-    private static Map<Integer, Spell> spells;
+    public static Map<Integer, Spell> spells = new HashMap<>();
 
     public static void load() {
-        spells = reader.loadSpells("hechizos");
+        SpellJson.load(spells, Gdx.files.internal(SharedResources.SPELLS_JSON_FILE));
     }
 
     public static Optional<Spell> getSpell(int id) {

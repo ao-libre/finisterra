@@ -10,6 +10,8 @@ public class WeaponObj extends ObjWithClasses {
     private int dwarfAnimationId;
     private int minHit, maxHit;
 
+    public WeaponObj() {}
+
     public int getAnimationId() {
         return animationId;
     }

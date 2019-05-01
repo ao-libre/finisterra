@@ -6,6 +6,7 @@ sourceSets.main.java.srcDirs = ["src/"]
 
 mainClassName = "server.ServerLauncher"
 tasks.run.workingDir = new File("resources/")
+
 dependencies {
     compile project(":shared")
 }

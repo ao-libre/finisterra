@@ -94,7 +94,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     }
 
     private void updateEntity(EntityUpdate entityUpdate) {
-        if (WorldManager.hasNetworkedEntity(entityUpdate.entityId)) {
+        if (!WorldManager.hasNetworkedEntity(entityUpdate.entityId)) {
             return;
         }
         int entityId = WorldManager.getNetworkedEntity(entityUpdate.entityId);

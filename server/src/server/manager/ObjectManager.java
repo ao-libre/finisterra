@@ -1,12 +1,16 @@
 package server.manager;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.esotericsoftware.minlog.Log;
 import server.core.Server;
 import server.database.ServerDescriptorReader;
 import shared.model.readers.DescriptorsReader;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
+import shared.util.ObjJson;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -17,8 +21,7 @@ import java.util.stream.Collectors;
  */
 public class ObjectManager implements IManager {
 
-    private DescriptorsReader reader;
-    private Map<Integer, Obj> objects;
+    private Map<Integer, Obj> objects = new HashMap<>();
 
     public ObjectManager() {
         init();
@@ -26,8 +29,8 @@ public class ObjectManager implements IManager {
 
     public void init() {
         Log.info("Loading objects...");
-        reader = new ServerDescriptorReader();
-        objects = reader.loadObjects("obj");
+        final FileHandle folder = Gdx.files.internal("objects/");
+        ObjJson.loadObjectsByType(objects, folder);
     }
 
     public Optional<Obj> getObject(int id) {

@@ -27,6 +27,8 @@ public class ArrowObj extends ObjWithClasses {
         this.maxHit = maxHit;
     }
 
+    public ArrowObj() {}
+
     @Override
     public Type getType() {
         return Type.ARROW;
