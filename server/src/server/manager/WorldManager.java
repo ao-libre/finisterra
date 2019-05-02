@@ -21,6 +21,7 @@ import shared.model.Spell;
 import shared.model.lobby.Player;
 import shared.model.lobby.Team;
 import shared.network.notifications.EntityUpdate;
+import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.notifications.RemoveEntity;
 import shared.objects.types.*;
 
@@ -47,7 +48,7 @@ public class WorldManager extends DefaultManager {
 
     }
 
-    public int createEntity(String name, int heroId, Team team) {
+    public int createEntity(String name, Hero hero, Team team) {
         int player = getWorld().create();
 
         E entity = E(player);
@@ -64,9 +65,6 @@ public class WorldManager extends DefaultManager {
         // set head and body
         setHeadAndBody(name, entity);
         // set class
-        final List<Hero> heroes = Hero.getHeroes();
-        Hero hero = heroes.size() > heroId ? heroes.get(heroId) : heroes.get(0);
-
         setClassAndAttributes(hero, entity);
         // set inventory
         setInventory(player, hero, team);
@@ -158,8 +156,8 @@ public class WorldManager extends DefaultManager {
         switch (charClass) {
             case WARRIOR:
             case ARCHER:
-                minLvl = 2;
-                maxLvl = 3;
+                minLvl = 3;
+                maxLvl = 2;
                 break;
             case PIRATE:
                 minLvl = 3;
@@ -168,8 +166,8 @@ public class WorldManager extends DefaultManager {
             case PALADIN:
             case ASSASSIN:
             case ROGUE:
-                minLvl = 1;
-                maxLvl = 3;
+                minLvl = 3;
+                maxLvl = 1;
                 break;
             case CLERIC:
             case BARDIC:
@@ -484,13 +482,13 @@ public class WorldManager extends DefaultManager {
                 result.add(objectManager.getObject(366).get());
                 break;
             case BARDO:
-                result.add(objectManager.getObject(365).get());
+                result.add(objectManager.getObject(366).get());
                 break;
             case CLERIGO:
                 result.add(objectManager.getObject(129).get());
                 break;
             case ASESINO:
-                result.add(objectManager.getObject(367).get());
+                result.add(objectManager.getObject(559).get());
                 break;
             case MAGO:
                 result.add(objectManager.getObject(660).get());
@@ -610,11 +608,12 @@ public class WorldManager extends DefaultManager {
         // reset mana
         e.getMana().min = e.getMana().max;
 
-        sendEntityUpdate(entityId, new EntityUpdate(entityId, new Component[]{e.getMana(), e.getHealth()}, new Class[0]));
+        sendEntityUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(e.getHealth(), e.getMana()).build());
+        notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(e.getWorldPos()).build());
     }
 
     public void login(int connectionId, Player player) {
-            final int entity = createEntity(player.getPlayerName(), player.getHero().ordinal(), player.getTeam());
+            final int entity = createEntity(player.getPlayerName(), player.getHero(), player.getTeam());
             List<Component> components = WorldUtils(getWorld()).getComponents(getWorld().getEntity(entity));
             components.add(new Focused());
             components.add(new AOPhysics());

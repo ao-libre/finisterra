@@ -16,6 +16,7 @@ import shared.model.Spell;
 import shared.network.combat.SpellCastRequest;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
+import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.notifications.FXNotification;
 import shared.objects.types.HelmetObj;
 import shared.objects.types.Obj;
@@ -24,10 +25,12 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
+import static java.lang.String.format;
 import static shared.util.Messages.*;
 
 public class MagicCombatSystem implements IManager {
 
+    public static final String SPACE = " ";
     private Server server;
 
     public MagicCombatSystem(Server server) {
@@ -45,22 +48,23 @@ public class MagicCombatSystem implements IManager {
         Optional<Integer> target = getTarget(userId, targetPos, timestamp);
         if (target.isPresent()) {
             AttackAnimation attackAnimation = new AttackAnimation();
-            getServer().getWorldManager().notifyUpdate(userId, new EntityUpdate(userId, new Component[]{attackAnimation}, new Class[0]));
+            getServer().getWorldManager()
+                .notifyUpdate(userId, new EntityUpdate(userId, new Component[] {attackAnimation}, new Class[0]));
             castSpell(userId, target.get(), spell);
         } else {
             // TODO
-//            List<WorldPos> area = getArea(worldPos, 3);
-//            int fxGrh = spell.getFxGrh();
-//            if (fxGrh > 0) {
-//                area.forEach(pos -> {
-//                    World world = getServer().getWorld();
-//                    int entity = world.create();
-//                    // TODO notify all near users instead of playerid
-//                    getServer().getWorldManager().notifyUpdate(userId, new EntityUpdate(entity, new Component[]{pos, new Ground()}, new Class[0]));
-//                    getServer().getWorldManager().notifyUpdate(userId, new FXNotification(entity, fxGrh - 1));
-//                    world.delete(entity);
-//                });
-//            }
+            //            List<WorldPos> area = getArea(worldPos, 3);
+            //            int fxGrh = spell.getFxGrh();
+            //            if (fxGrh > 0) {
+            //                area.forEach(pos -> {
+            //                    World world = getServer().getWorld();
+            //                    int entity = world.create();
+            //                    // TODO notify all near users instead of playerid
+            //                    getServer().getWorldManager().notifyUpdate(userId, new EntityUpdate(entity, new Component[]{pos, new Ground()}, new Class[0]));
+            //                    getServer().getWorldManager().notifyUpdate(userId, new FXNotification(entity, fxGrh - 1));
+            //                    world.delete(entity);
+            //                });
+            //            }
         }
     }
 
@@ -68,13 +72,13 @@ public class MagicCombatSystem implements IManager {
         Set<Integer> entities = new HashSet<>(getServer().getMapManager().getNearEntities(userId));
         entities.add(userId);
         return entities
-                .stream()
-                .map(entity -> E(entity))
-                .filter(Objects::nonNull)
-                .filter(entity -> entity.hasWorldPos())
-                .filter(entity -> entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos))
-                .map(E::id)
-                .findFirst();
+            .stream()
+            .map(entity -> E(entity))
+            .filter(Objects::nonNull)
+            .filter(entity -> entity.hasWorldPos())
+            .filter(entity -> entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos))
+            .map(E::id)
+            .findFirst();
     }
 
     private boolean footprintOf(Integer entity, WorldPos worldPos) {
@@ -85,45 +89,60 @@ public class MagicCombatSystem implements IManager {
     // TODO refactor what elements/components to send
     private void castSpell(int playerId, int target, Spell spell) {
         int requiredMana = spell.getRequiredMana();
+        int requiredStamina = spell.getRequiredStamina(); // TODO check stamina
         Mana mana = E(playerId).getMana();
-        // TODO check stamina ?
+
+        EntityUpdateBuilder playerUpdateBuilder = EntityUpdateBuilder.of(playerId);
+        EntityUpdateBuilder victimUpdateBuilder = EntityUpdateBuilder.of(target);
+        EntityUpdateBuilder victimUpdateToAllBuilder = EntityUpdateBuilder.of(target);
+
         if (mana.min > requiredMana) {
             if (!isValid(target, spell)) {
                 notifyInfo(playerId, INVALID_TARGET);
                 return;
             }
 
-            // add FX
-            List<Component> toAdd = new ArrayList<>();
-            List<Class> toRemove = new ArrayList<>();
-            int fxGrh = spell.getFxGrh();
-            E targetEntity = E(target);
-            if (spell.getSumHP() > 0) {
-                Health health = targetEntity.getHealth();
-                int damage = calculateMagicDamage(playerId, target, spell);
-                if (damage < 0 && target == playerId) {
+            if (playerId == target) {
+                if (spell.getSumHP() == 2 || spell.isImmobilize() || spell.isParalyze()) {
                     notifyMagic(playerId, CANT_ATTACK_YOURSELF);
                     return;
                 }
+                notifyMagic(playerId, spell.getOwnerMsg());
+            } else {
+                notifyMagic(playerId, spell.getOriginMsg() + SPACE + getName(target));
+                notifyMagic(target, getName(playerId) + SPACE + spell.getTargetMsg());
+            }
+
+            int fxGrh = spell.getFxGrh();
+            E targetEntity = E(target);
+            int damage = 0;
+            if (spell.getSumHP() > 0) {
+                Health health = targetEntity.getHealth();
+                damage = calculateMagicDamage(playerId, target, spell);
                 health.min += damage;
                 health.min = Math.max(0, health.min);
-                final CombatMessage combatMessage = CombatMessage.magic(String.valueOf(damage));
-                getWorldManager().notifyUpdate(target, new EntityUpdate(target, new Component[]{combatMessage}, new Class[0]));
-                getWorldManager().sendEntityUpdate(target, new EntityUpdate(target, new Component[]{health}, new Class[0]));
-                if (health.min == 0) {
+                victimUpdateToAllBuilder.withComponents(CombatMessage.magic(damage > 0 ? "+" : "-" + Math.abs(damage)));
+                victimUpdateBuilder.withComponents(health);
+                if (damage > 0) {
+                    notifyMagic(playerId, format(HEAL_TO, getName(target), Math.abs(damage)));
+                    notifyMagic(target, format(HEAL_BY, getName(playerId), Math.abs(damage)));
+                } else {
+                    notifyMagic(playerId, format(DAMAGE_TO, Math.abs(damage), getName(target)));
+                    notifyMagic(target, format(DAMAGED_BY, getName(playerId), Math.abs(damage)));
+                }
+                if (health.min <= 0) {
                     getWorldManager().userDie(target);
-                    if (playerId == target) { // TODO HACK
-                        return;
-                    }
+                    notifyMagic(playerId, format(KILL, getName(target)));
+                    notifyMagic(target, format(KILLED, getName(playerId)));
                 }
             }
             if (spell.isImmobilize()) {
                 targetEntity.immobile();
-                toAdd.add(targetEntity.getImmobile());
+                victimUpdateToAllBuilder.withComponents(targetEntity.getImmobile());
             } else if (spell.isRemoveParalysis()) {
                 if (targetEntity.isImmobile()) {
                     targetEntity.immobile(false);
-                    toRemove.add(Immobile.class);
+                    victimUpdateToAllBuilder.remove(Immobile.class);
                 } else {
                     notifyInfo(playerId, NOT_PARALYSIS);
                     return;
@@ -136,15 +155,10 @@ public class MagicCombatSystem implements IManager {
 
             updateMana(playerId, requiredMana, mana);
 
-            if (playerId == target) {
-                notifyMagic(playerId, spell.getOwnerMsg());
-            } else {
-                notifyMagic(playerId, spell.getOriginMsg() + " " + getName(target));;
-                notifyMagic(target, getName(playerId) + " " + spell.getTargetMsg());
-            }
-
-            getWorldManager().notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS)}, new Class[0]));
-            getWorldManager().notifyUpdate(target, new EntityUpdate(target, toAdd.toArray(new Component[0]), toRemove.toArray(new Class[0])));
+            getWorldManager().sendEntityUpdate(target, victimUpdateBuilder.build());
+            getWorldManager().notifyUpdate(target, victimUpdateToAllBuilder.build());
+            getWorldManager().notifyUpdate(playerId, playerUpdateBuilder
+                .withComponents(new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS)).build());
         } else {
             notifyInfo(playerId, NOT_ENOUGHT_MANA);
         }
@@ -163,11 +177,11 @@ public class MagicCombatSystem implements IManager {
             if (E(target).hasHelmet()) {
                 final Optional<Obj> obj = getServer().getObjectManager().getObject(E(target).getHelmet().index);
                 obj
-                        .filter(HelmetObj.class::isInstance)
-                        .map(HelmetObj.class::cast)
-                        .ifPresent(helmet -> {
-                            // TODO Magic def
-                        });
+                    .filter(HelmetObj.class::isInstance)
+                    .map(HelmetObj.class::cast)
+                    .ifPresent(helmet -> {
+                        // TODO Magic def
+                    });
             }
             // TODO anillos
             damage = -damage;
@@ -178,7 +192,7 @@ public class MagicCombatSystem implements IManager {
     private void updateMana(int playerId, int requiredMana, Mana mana) {
         mana.min -= requiredMana;
         // update mana
-        getWorldManager().sendEntityUpdate(playerId, new EntityUpdate(playerId, new Component[]{mana}, new Class[0]));
+        getWorldManager().sendEntityUpdate(playerId, new EntityUpdate(playerId, new Component[] {mana}, new Class[0]));
     }
 
     private boolean isValid(int target, Spell spell) {
@@ -187,8 +201,8 @@ public class MagicCombatSystem implements IManager {
         switch (spellTarget) {
             case 1:
                 return targetEntity.isCharacter();
-//            case 2:
-//                return targetEntity.isNPC();
+            //            case 2:
+            //                return targetEntity.isNPC();
             case 3:
                 return targetEntity.isCharacter();
         }

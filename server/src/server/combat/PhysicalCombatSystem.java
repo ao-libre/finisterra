@@ -71,14 +71,26 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
             }
 
             // TODO attack power can be bow
-            int evasionPower = evasionPower(targetId.get()) + shieldEvasionPower(targetId.get());
+
+            int evasionPower = evasionPower(targetId.get()) + (E(targetId.get()).hasShield() ? shieldEvasionPower(targetId.get()) : 0);
             double prob = Math.max(10, Math.min(90, 50 + (weaponAttackPower(userId) - evasionPower) * 0.4));
             if (ThreadLocalRandom.current().nextInt(101) <= prob) {
                 return true;
             } else {
-                notifyCombat(userId, ATTACK_FAILED);
-                notifyCombat(targetId.get(), format(ATTACKED_AND_FAILED, getName(userId)));
-                // TODO calculate if was evaded by shield
+                int skills = 200;
+                prob = Math.max(10, Math.min(90, 100 * 100 / skills));
+
+                // shield evasion
+                if (E(targetId.get()).hasShield() && ThreadLocalRandom.current().nextInt(101) <= prob) {
+                    notifyCombat(targetId.get(), SHIELD_DEFENSE);
+                    notifyCombat(userId, format(DEFENDED_WITH_SHIELD, getName(targetId.get())));
+                    // TODO sound
+                    // TODO shield animation
+                } else {
+                    notifyCombat(userId, ATTACK_FAILED);
+                    notifyCombat(targetId.get(), format(ATTACKED_AND_FAILED, getName(userId)));
+
+                }
             }
         }
         return false;
@@ -135,8 +147,8 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         AttackKind kind = AttackKind.getKind(entity);
         ThreadLocalRandom random = ThreadLocalRandom.current();
         float modifier = kind == AttackKind.PROJECTILE ?
-            Modifiers.PROJECTILE.of(clazz) :
-            kind == AttackKind.WEAPON ? Modifiers.WEAPON.of(clazz) : Modifiers.WRESTLING.of(clazz);
+            Modifiers.PROJECTILE_DAMAGE.of(clazz) :
+            kind == AttackKind.WEAPON ? Modifiers.WEAPON_DAMAGE.of(clazz) : Modifiers.WRESTLING_DAMAGE.of(clazz);
         Log.info("Modifier: " + modifier);
         int weaponDamage =
             weapon.map(weaponObj -> random.nextInt(weaponObj.getMinHit(), weaponObj.getMaxHit() + 1))
@@ -185,7 +197,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
 
         final E target = E(entityId);
         Health health = target.getHealth();
-        health.min = Math.max(0, health.min - damage);
+        health.min = Math.max(0, health.min - result.damage);
         if (health.min > 0) {
             update(entityId);
         } else {

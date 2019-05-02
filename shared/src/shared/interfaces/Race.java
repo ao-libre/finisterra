@@ -11,7 +11,7 @@ public enum Race {
 
     public static Race of(E entity) {
         int heroId = entity.getCharHero().heroId;
-        Hero hero = Hero.getHeroes().get(heroId);
+        Hero hero = Hero.values()[heroId];
         return values()[hero.getRaceId()];
     }
 }

@@ -74,7 +74,7 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
                     font = Fonts.STAB_FONT;
                     break;
                 case MAGIC:
-                    font = Fonts.MAGIC_COMBAT_FONT;
+                    font = combatMessage.text.startsWith("+") ? Fonts.GM_NAME_FONT : Fonts.MAGIC_COMBAT_FONT;
                     break;
                 default:
                     font = Fonts.COMBAT_FONT;

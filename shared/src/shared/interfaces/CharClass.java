@@ -53,7 +53,7 @@ public enum CharClass {
 
     public static CharClass get(E entity) {
         int heroId = entity.getCharHero().heroId;
-        Hero hero = Hero.getHeroes().get(heroId);
+        Hero hero = Hero.values()[heroId];
         return VALUES.get(hero.getClassId());
     }
 }

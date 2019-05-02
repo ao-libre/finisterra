@@ -11,11 +11,8 @@ public class Messages {
     public final static String ATTACK_FAILED = "Has fallado!!";
     public final static String ATTACKED_AND_FAILED = "%s ha intentado atacarte pero fallo!!";
 
-    public final static String ATTACK_TO = "Has atacado a %s por %d !!";
-    public final static String ATTACKED_BY = "Has sido atacado por %s, te ha quitado %d puntos de vida!!";
-
-    public final static String HEAL_TO = "Has curado a %s por %d !!";
-    public final static String HEAL_BY = "Has sido curado por %s, recuperaste %d puntos de vida!!";
+    public final static String SHIELD_DEFENSE = "Has rechazado con el escudo!!";
+    public final static String DEFENDED_WITH_SHIELD = "%s te ha rechazado el ataque con el escudo!!";
 
     public final static String KILL = "Has matado a %s !!";
     public final static String KILLED = "Has sido matado por %s. Estas muerto!!";
@@ -30,6 +27,12 @@ public class Messages {
     public static final String VICTIM_NORMAL_HIT = "%s te ha golpeado por %d";
 
     // MAGIC COMBAT
+    public static final String DAMAGE_TO = "Le has quitado %d puntos de vida a %s";
+    public static final String DAMAGED_BY = "%s te ha quitado %d puntos de vida";
+
+    public final static String HEAL_TO = "Has curado a %s por %d puntos de vida !!";
+    public final static String HEAL_BY = "Has sido curado por %s, recuperaste %d puntos de vida!!";
+
     public static final String INVALID_TARGET = "No es un target valido!";
     public static final String NOT_ENOUGHT_MANA = "No tienes mana suficiente.";
 
