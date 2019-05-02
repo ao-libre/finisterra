@@ -72,7 +72,7 @@ public class Finisterra implements ApplicationListener {
             int connectionId = getNetworkManager().getConnectionByPlayer(player);
             try {
                 final String ip = IpChecker.getIp();
-                getNetworkManager().sendTo(connectionId, new StartGameResponse("localhost", roomServer.getTcpPort(), roomServer.getUdpPort()));
+                getNetworkManager().sendTo(connectionId, new StartGameResponse(ip, roomServer.getTcpPort(), roomServer.getUdpPort()));
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             } catch (Exception e) {
