@@ -168,9 +168,6 @@ public class GameScreen extends ScreenAdapter {
 
     public static void setPlayer(int player) {
         GameScreen.player = player;
-//        E entity = E(player);
-//        entity
-//                .fXAddParticleEffect(2);
         GUI.getInventory().updateUserInventory();
         GUI.getSpellView().updateSpells();
         GUI.getUserTable().refresh();
@@ -178,6 +175,10 @@ public class GameScreen extends ScreenAdapter {
 
     public static MarshalStrategy getClient() {
         return clientSystem.getKryonetClient();
+    }
+
+    public static GUI getGui() {
+        return gui;
     }
 
     protected void updateRunning(float deltaTime) {

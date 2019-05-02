@@ -3,13 +3,9 @@ package game.managers;
 import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.esotericsoftware.minlog.Log;
 import game.AOGame;
-import game.handlers.DescriptorHandler;
 import game.screens.GameScreen;
-import game.screens.LoginScreen;
 import game.ui.GUI;
 import game.utils.AOKeys;
 import game.utils.AlternativeKeys;
@@ -62,9 +58,9 @@ public class AOInputProcessor extends Stage {
                         .map(entity -> E(entity).getName().text)
                         .findFirst();
                 if (name.isPresent()) {
-                    GUI.getConsole().addMessage("Ves a " + name.get());
+                    GUI.getConsole().addInfo("Ves a " + name.get());
                 } else {
-                    GUI.getConsole().addMessage("No ves nada interesante");
+                    GUI.getConsole().addInfo("No ves nada interesante");
                 }
 
             }

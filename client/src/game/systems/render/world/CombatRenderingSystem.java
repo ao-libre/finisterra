@@ -24,6 +24,8 @@ import static com.artemis.E.E;
 
 public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
 
+    public static final float VELOCITY = 25.0f;
+    private static final float FONT_DARKNESS_PERCENT = 10f;
     private SpriteBatch batch;
     private CameraSystem cameraSystem;
 
@@ -56,27 +58,43 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
             return;
         }
         CombatMessage combatMessage = player.getCombatMessage();
-        combatMessage.offset -= getWorld().getDelta() * combatMessage.time * 15.0f;
+        combatMessage.offset -= getWorld().getDelta() * combatMessage.time * VELOCITY;
         if (combatMessage.offset < 0) {
             combatMessage.offset = 0;
         }
 
         combatMessage.time -= world.getDelta();
         if (combatMessage.time > 0) {
+            BitmapFont font;
+            switch (combatMessage.kind) {
+                case PHYSICAL:
+                    font = Fonts.COMBAT_FONT;
+                    break;
+                case STAB:
+                    font = Fonts.STAB_FONT;
+                    break;
+                case MAGIC:
+                    font = Fonts.MAGIC_COMBAT_FONT;
+                    break;
+                default:
+                    font = Fonts.COMBAT_FONT;
+            }
 
-            BitmapFont font = combatMessage.kind == CombatMessage.Kind.PHYSICAL ? Fonts.COMBAT_FONT : Fonts.MAGIC_COMBAT_FONT;
             Color copy = font.getColor().cpy();
             if (combatMessage.time < CombatMessage.DEFAULT_ALPHA) {
                 combatMessage.alpha = combatMessage.time / CombatMessage.DEFAULT_ALPHA;
                 font.getColor().a = combatMessage.alpha;
+                font.getColor().premultiplyAlpha();
             }
 
             Fonts.dialogLayout.setText(font, combatMessage.text);
             float width = Fonts.dialogLayout.width;
             Fonts.dialogLayout.setText(font, combatMessage.text, font.getColor(), width, Align.center, true);
-            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x + (Tile.TILE_PIXEL_WIDTH - Fonts.dialogLayout.width) / 2;
-            int bodyOffset = 20 - DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
-            final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y - combatMessage.offset + bodyOffset + Fonts.dialogLayout.height; //40 should be the Y offset of the entity
+            final float fontX =
+                (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x + (Tile.TILE_PIXEL_WIDTH - Fonts.dialogLayout.width) / 2;
+            int bodyOffset = 40 - DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
+            final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y - combatMessage.offset + bodyOffset
+                + Fonts.dialogLayout.height; //40 should be the Y offset of the entity
             font.draw(batch, Fonts.dialogLayout, fontX, fontY);
             font.setColor(copy);
         } else {

@@ -9,6 +9,7 @@ import shared.interfaces.CharClass;
 import shared.interfaces.Hero;
 import shared.model.Spell;
 import shared.network.notifications.EntityUpdate;
+import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
 import shared.objects.types.WeaponObj;
@@ -138,7 +139,7 @@ public class CombatManager extends DefaultManager {
      * @param combatMessage message
      */
     public void notify(int victim, CombatMessage combatMessage) {
-        EntityUpdate update = new EntityUpdate(victim, new Component[]{combatMessage}, new Class[0]);
+        EntityUpdate update = EntityUpdateBuilder.of(victim).withComponents(combatMessage).build();
         getServer().getWorldManager().sendEntityUpdate(victim, update);
         getServer().getWorldManager().notifyToNearEntities(victim, update);
     }
@@ -148,7 +149,7 @@ public class CombatManager extends DefaultManager {
      * @param victim entity id
      */
     void update(int victim) {
-        EntityUpdate update = new EntityUpdate(victim, new Component[]{E(victim).getHealth()}, new Class[0]);
+        EntityUpdate update = EntityUpdateBuilder.of(victim).withComponents(E(victim).getHealth()).build();
         getServer().getWorldManager().sendEntityUpdate(victim, update);
     }
 

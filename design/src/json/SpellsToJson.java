@@ -1,4 +1,4 @@
-package launcher;
+package json;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

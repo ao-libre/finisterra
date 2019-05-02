@@ -601,13 +601,16 @@ public class WorldManager extends DefaultManager {
     }
 
     public void userDie(int entityId) {
+        // RESET USER. TODO implement ghost
         final E e = E(entityId);
-        final String name = e.getName().text;
-        final int connectionByPlayer = getServer().getNetworkManager().getConnectionByPlayer(entityId);
-        getServer().getMapManager().removeEntity(entityId);
-        getServer().getWorldManager().sendEntityRemove(entityId, entityId);
-        login(connectionByPlayer, new Player(connectionByPlayer, name, Hero.getRandom()));
-        getServer().getWorldManager().unregisterEntity(entityId);
+        setEntityPosition(e);
+
+        // reset health
+        e.getHealth().min = e.getHealth().max;
+        // reset mana
+        e.getMana().min = e.getMana().max;
+
+        sendEntityUpdate(entityId, new EntityUpdate(entityId, new Component[]{e.getMana(), e.getHealth()}, new Class[0]));
     }
 
     public void login(int connectionId, Player player) {

@@ -14,6 +14,7 @@ import game.managers.WorldManager;
 import game.screens.GameScreen;
 import game.screens.LobbyScreen;
 import game.screens.RoomScreen;
+import game.ui.AOConsole;
 import game.ui.GUI;
 import shared.model.lobby.Lobby;
 import shared.network.interfaces.DefaultNotificationProcessor;
@@ -21,6 +22,7 @@ import shared.network.inventory.InventoryUpdate;
 import shared.network.lobby.JoinRoomNotification;
 import shared.network.lobby.NewRoomNotification;
 import shared.network.movement.MovementNotification;
+import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.FXNotification;
 import shared.network.notifications.RemoveEntity;
@@ -130,6 +132,32 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         if (game.getScreen() instanceof LobbyScreen) {
             final LobbyScreen lobby = (LobbyScreen) game.getScreen();
             lobby.roomCreated(newRoomNotification.getRoom());
+        }
+    }
+
+    @Override public void processNotification(ConsoleMessage consoleMessage) {
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        if (game.getScreen() instanceof GameScreen) {
+            final GUI gui = GameScreen.getGui();
+            final AOConsole console = gui.getConsole();
+            final String message = consoleMessage.getMessage();
+            switch (consoleMessage.getKind()) {
+                case INFO:
+                    console.addInfo(message);
+                    break;
+                case ERROR:
+                    console.addError(message);
+                    break;
+                case COMBAT:
+                    console.addCombat(message);
+                    break;
+                case WARNING:
+                    console.addWarning(message);
+                    break;
+                default:
+                    console.addInfo(message);
+                    break;
+            }
         }
     }
 }

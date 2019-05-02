@@ -8,6 +8,7 @@ import shared.network.lobby.player.ChangeHeroNotification;
 import shared.network.lobby.player.ChangeTeamNotification;
 import shared.network.lobby.player.ReadyNotification;
 import shared.network.movement.MovementNotification;
+import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.FXNotification;
 import shared.network.notifications.RemoveEntity;
@@ -71,6 +72,10 @@ public class DefaultNotificationProcessor implements INotificationProcessor {
 
     @Override
     public void processNotification(ReadyNotification readyNotification) {
+
+    }
+
+    @Override public void processNotification(ConsoleMessage consoleMessage) {
 
     }
 }

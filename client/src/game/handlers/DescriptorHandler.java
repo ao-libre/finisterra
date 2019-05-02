@@ -37,17 +37,17 @@ public class DescriptorHandler {
     public static void load() {
         graphics = new GenericReader<Graphic>().read(GRAPHICS, Graphic.class, new GraphicsSerializer(), Graphic::getGrhIndex);
         bodies = new GenericReader<BodyDescriptor>().read(BODIES, BodyDescriptor.class, new BodyDescriptorSerializer(), Descriptor::getId);
-        weapons = load(WEAPONS);
-        shields = load(SHIELDS);
-        heads = load(HEADS);
-        helmets = load(HELMETS);
-        fxs = load(FXS);
+        weapons = load(WEAPONS, WeaponDescriptor.class);
+        shields = load(SHIELDS, ShieldDescriptor.class);
+        heads = load(HEADS, HeadDescriptor.class);
+        helmets = load(HELMETS, HelmetDescriptor.class);
+        fxs = load(FXS, FXDescriptor.class);
     }
 
-    public static List load(String fileName) {
+    public static List load(String fileName, Class clazz) {
         Json json = getJson();
         FileHandle file = Gdx.files.internal(GAME_DESCRIPTORS_FOLDER + fileName + JSON_EXTENSION);
-        return json.fromJson(ArrayList.class, file);
+        return json.fromJson(ArrayList.class, clazz, file);
     }
 
     private static Json getJson() {

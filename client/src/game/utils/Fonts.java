@@ -19,6 +19,7 @@ public class Fonts {
     public static final BitmapFont DIALOG_FONT;
     public static final BitmapFont MAGIC_FONT;
     public static final BitmapFont WRITING_FONT;
+    public static final BitmapFont STAB_FONT;
     public static final BitmapFont COMBAT_FONT;
     public static final BitmapFont MAGIC_COMBAT_FONT;
     public static final BitmapFont CLAN_FONT;
@@ -41,6 +42,7 @@ public class Fonts {
         MAGIC_FONT = generate(Colors.MANA, 10, Color.BLACK, 0, 1, -1);
         WRITING_FONT = generate(Color.BLACK, 6, Color.WHITE, 1, 0, -2);
         COMBAT_FONT = generate(Colors.COMBAT, 9, Color.BLACK, 0, 1, -1);
+        STAB_FONT = generate(Color.WHITE, 9, Color.BLACK, 0, 1, -1);
         MAGIC_COMBAT_FONT = generate(Colors.MANA, 9, Color.BLACK, 0, 1, -1);
     }
 

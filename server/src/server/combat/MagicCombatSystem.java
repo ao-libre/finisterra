@@ -2,7 +2,6 @@ package server.combat;
 
 import com.artemis.Component;
 import com.artemis.E;
-import com.artemis.World;
 import entity.character.states.Immobile;
 import entity.character.status.Health;
 import entity.character.status.Mana;
@@ -11,11 +10,11 @@ import entity.world.Dialog;
 import physics.AttackAnimation;
 import position.WorldPos;
 import server.core.Server;
-import server.manager.CombatManager;
 import server.manager.IManager;
-import server.manager.ObjectManager;
+import server.manager.WorldManager;
 import shared.model.Spell;
 import shared.network.combat.SpellCastRequest;
+import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.FXNotification;
 import shared.objects.types.HelmetObj;
@@ -25,6 +24,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
+import static shared.util.Messages.*;
 
 public class MagicCombatSystem implements IManager {
 
@@ -89,7 +89,7 @@ public class MagicCombatSystem implements IManager {
         // TODO check stamina ?
         if (mana.min > requiredMana) {
             if (!isValid(target, spell)) {
-                // TODO notify not valid target
+                notifyInfo(playerId, INVALID_TARGET);
                 return;
             }
 
@@ -102,16 +102,16 @@ public class MagicCombatSystem implements IManager {
                 Health health = targetEntity.getHealth();
                 int damage = calculateMagicDamage(playerId, target, spell);
                 if (damage < 0 && target == playerId) {
-                    // TODO message you can't attack yourself
+                    notifyMagic(playerId, CANT_ATTACK_YOURSELF);
                     return;
                 }
                 health.min += damage;
                 health.min = Math.max(0, health.min);
-                final CombatMessage combatMessage = new CombatMessage(String.valueOf(damage));
-                getServer().getWorldManager().notifyUpdate(target, new EntityUpdate(target, new Component[]{combatMessage}, new Class[0]));
-                getServer().getWorldManager().sendEntityUpdate(target, new EntityUpdate(target, new Component[]{health}, new Class[0]));
+                final CombatMessage combatMessage = CombatMessage.magic(String.valueOf(damage));
+                getWorldManager().notifyUpdate(target, new EntityUpdate(target, new Component[]{combatMessage}, new Class[0]));
+                getWorldManager().sendEntityUpdate(target, new EntityUpdate(target, new Component[]{health}, new Class[0]));
                 if (health.min == 0) {
-                    getServer().getWorldManager().userDie(target);
+                    getWorldManager().userDie(target);
                     if (playerId == target) { // TODO HACK
                         return;
                     }
@@ -125,19 +125,28 @@ public class MagicCombatSystem implements IManager {
                     targetEntity.immobile(false);
                     toRemove.add(Immobile.class);
                 } else {
-                    // TODO message
+                    notifyInfo(playerId, NOT_PARALYSIS);
                     return;
                 }
             }
 
             if (fxGrh > 0) {
-                getServer().getWorldManager().notifyUpdate(target, new FXNotification(target, fxGrh - 1));
+                getWorldManager().notifyUpdate(target, new FXNotification(target, fxGrh - 1));
             }
+
             updateMana(playerId, requiredMana, mana);
-            getServer().getWorldManager().notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS)}, new Class[0]));
-            getServer().getWorldManager().notifyUpdate(target, new EntityUpdate(target, toAdd.toArray(new Component[0]), toRemove.toArray(new Class[0])));
+
+            if (playerId == target) {
+                notifyMagic(playerId, spell.getOwnerMsg());
+            } else {
+                notifyMagic(playerId, spell.getOriginMsg() + " " + getName(target));;
+                notifyMagic(target, getName(playerId) + " " + spell.getTargetMsg());
+            }
+
+            getWorldManager().notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS)}, new Class[0]));
+            getWorldManager().notifyUpdate(target, new EntityUpdate(target, toAdd.toArray(new Component[0]), toRemove.toArray(new Class[0])));
         } else {
-            // TODO notify no mana
+            notifyInfo(playerId, NOT_ENOUGHT_MANA);
         }
     }
 
@@ -148,6 +157,7 @@ public class MagicCombatSystem implements IManager {
         damage = ThreadLocalRandom.current().nextInt(minHP, maxHP + 1);
         damage = damage * (3 * E(user).levelLevel()) / 100;
         if (spell.getSumHP() == 1) { // HEAL
+            // TODO
         } else if (spell.getSumHP() == 2) {
             int magicDefense;
             if (E(target).hasHelmet()) {
@@ -168,7 +178,7 @@ public class MagicCombatSystem implements IManager {
     private void updateMana(int playerId, int requiredMana, Mana mana) {
         mana.min -= requiredMana;
         // update mana
-        getServer().getWorldManager().sendEntityUpdate(playerId, new EntityUpdate(playerId, new Component[]{mana}, new Class[0]));
+        getWorldManager().sendEntityUpdate(playerId, new EntityUpdate(playerId, new Component[]{mana}, new Class[0]));
     }
 
     private boolean isValid(int target, Spell spell) {
@@ -184,6 +194,24 @@ public class MagicCombatSystem implements IManager {
         }
 
         return false;
+    }
+
+    private void notifyInfo(int userId, String message) {
+        final ConsoleMessage combat = ConsoleMessage.info(message);
+        getWorldManager().sendEntityUpdate(userId, combat);
+    }
+
+    private void notifyMagic(int userId, String message) {
+        final ConsoleMessage combat = ConsoleMessage.combat(message);
+        getWorldManager().sendEntityUpdate(userId, combat);
+    }
+
+    private String getName(int userId) {
+        return E(userId).getName().text;
+    }
+
+    private WorldManager getWorldManager() {
+        return getServer().getWorldManager();
     }
 
 }

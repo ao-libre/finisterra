@@ -15,6 +15,7 @@ public class Colors {
     public static final Color COMBAT = rgb(255, 76, 60);
     public static final Color GREY = rgb(149, 165, 166);
     public static final Color TRANSPARENT_RED = rgba(231, 76, 60, 0.35f);
+    public static final Color YELLOW = rgb(244, 244, 143);
 
     private static Color rgba(int r, int g, int b, float a) {
         return new Color((float) r / 255, (float) g / 255, (float) b / 255, a);

@@ -1,11 +1,18 @@
 package launcher;
 
 import com.badlogic.gdx.Game;
+import json.GraphicsToJson;
+import json.SeparateObjByType;
+import json.SpellsToJson;
 
 public class DesignCenter extends Game {
 
+    public static final String OUTPUT_FOLDER = "/output/";
+
+
     @Override public void create() {
-//        SeparateObjByType.run("output/objects/");
-        SpellsToJson.run("output/spells/");
+//        SeparateObjByType.run(OUTPUT_FOLDER);
+//        SpellsToJson.run(OUTPUT_FOLDER);
+        GraphicsToJson.run(OUTPUT_FOLDER);
     }
 }

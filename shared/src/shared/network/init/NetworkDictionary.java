@@ -65,6 +65,7 @@ import shared.network.lobby.player.ReadyNotification;
 import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
+import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.FXNotification;
 import shared.network.notifications.RemoveEntity;
@@ -97,6 +98,7 @@ public class NetworkDictionary extends MarshalDictionary {
 
                 // Game Notifications
                 EntityUpdate.class,
+                EntityUpdate.EntityUpdateBuilder.class,
                 RemoveEntity.class,
                 MovementNotification.class,
                 InventoryUpdate.class,
@@ -105,6 +107,8 @@ public class NetworkDictionary extends MarshalDictionary {
                 DefaultNotificationProcessor.class,
                 DropItem.class,
                 FXNotification.class,
+                ConsoleMessage.class,
+                ConsoleMessage.Kind.class,
 
                 // Lobby
                 Lobby.class,

@@ -1,10 +1,11 @@
-package launcher;
+package json;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import shared.objects.types.*;
 import shared.util.ObjJson;
+import shared.util.SharedResources;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,7 +15,7 @@ public class SeparateObjByType {
     public static void run(String output) {
         // load
         Map<Integer, Obj> objects = new HashMap<>();
-        final FileHandle folder = Gdx.files.internal("objects/");
+        final FileHandle folder = Gdx.files.internal(SharedResources.OBJECTS_FOLDER);
         ObjJson.loadObjectsByType(objects, folder);
         // write
         Json json = new ObjJson();

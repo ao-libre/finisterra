@@ -47,11 +47,11 @@ public abstract class AbstractCombatSystem implements CombatSystem {
         if (canAttack(userId, realTargetId)) {
             hit(userId, realTargetId.get());
         } else {
-            failed(userId);
+            failed(userId, realTargetId);
         }
     }
 
-    protected abstract void failed(int entityId);
+    protected abstract void failed(int entityId, Optional<Integer> targetId);
 
     @Override
     public void hit(int userId, int entityId) {

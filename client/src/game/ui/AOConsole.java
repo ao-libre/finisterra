@@ -10,15 +10,32 @@ import java.util.LinkedList;
 
 public class AOConsole extends Actor {
 
-    public static final float MAX_MESSAGES = 6;
+    static final float MAX_MESSAGES = 6;
     private LinkedList<Actor> messages = new LinkedList<>();
+
+    private static Label.LabelStyle ERROR_STYLE = new Label.LabelStyle(Fonts.CONSOLE_FONT, Colors.TRANSPARENT_RED);
+    private static Label.LabelStyle INFO_STYLE = new Label.LabelStyle(Fonts.CONSOLE_FONT, Colors.GREY);
+    private static Label.LabelStyle WARNING_STYLE = new Label.LabelStyle(Fonts.CONSOLE_FONT, Colors.YELLOW);
+    private static Label.LabelStyle COMBAT_STYLE  = new Label.LabelStyle(Fonts.CONSOLE_FONT, Colors.COMBAT);
 
     AOConsole() {
         super();
     }
 
-    public void addMessage(String message) {
-        addMessage(message, new Label.LabelStyle(Fonts.CONSOLE_FONT, Colors.GREY));
+    public void addInfo(String message) {
+        addMessage(message, INFO_STYLE);
+    }
+
+    public void addError(String message) {
+        addMessage(message, ERROR_STYLE);
+    }
+
+    public void addWarning(String message) {
+        addMessage(message, WARNING_STYLE);
+    }
+
+    public void addCombat(String message) {
+        addMessage(message, COMBAT_STYLE);
     }
 
     private void addMessage(String message, Label.LabelStyle style) {

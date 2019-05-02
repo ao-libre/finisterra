@@ -11,9 +11,11 @@ import position.WorldPos;
 import server.core.Server;
 import server.database.model.modifiers.Modifiers;
 import server.manager.IManager;
+import server.manager.WorldManager;
 import shared.interfaces.CharClass;
 import shared.interfaces.FXs;
 import shared.interfaces.Race;
+import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.FXNotification;
 import shared.objects.types.*;
@@ -22,43 +24,61 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
+import static java.lang.String.format;
 import static server.utils.WorldUtils.WorldUtils;
+import static shared.util.Messages.*;
 
 public class PhysicalCombatSystem extends AbstractCombatSystem implements IManager {
 
     private static final String MISS = "MISS";
-
-    private static final String USER_CRITIC_HIT = "Has golpeado criticamente a %s por %d";
-    private static final String VICTIM_CRITIC_HIT = "%s te ha golpeado criticamente por por %d";
-
-    private static final String USER_STAB_HIT = "Has apuñalado a %s por %d";
-    private static final String VICTIM_STAB_HIT = "%s te ha apuñalado por %d";
-
-    private static final String USER_NORMAL_HIT = "Has golpeado a %s por %d";
-    private static final String VICTIM_NORMAL_HIT = "%s te ha golpeado por %d";
+    private static final float ASSASIN_STAB_FACTOR = 1.5f;
+    private static final float NORMAL_STAB_FACTOR = 1.4f;
 
     public PhysicalCombatSystem(Server server) {
         super(server);
     }
 
     @Override
-    protected void failed(int entityId) {
-        notify(entityId, new CombatMessage(MISS));
+    protected void failed(int entityId, Optional<Integer> targetId) {
+        notify(targetId.isPresent() ? targetId.get() : entityId, CombatMessage.physic(MISS));
     }
 
     @Override
     public boolean canAttack(int userId, Optional<Integer> targetId) {
-        // TODO estas muerto
-        // TODO no podes atacar un muerto
-        // TODO es del otro team?
+        // estas muerto
+        final E e = E(userId);
+        if (e != null && e.hasHealth() && e.getHealth().min == 0) {
+            notifyCombat(userId, DEAD_CANT_ATTACK);
+            return false;
+        }
+
         if (targetId.isPresent()) {
+            // no podes atacar un muerto
+            E t = E(targetId.get());
+            if (t == null) {
+                Log.info("Can't find target");
+                return false;
+            }
+            if (t.hasHealth() && t.getHealth().min == 0) {
+                notifyCombat(userId, CANT_ATTACK_DEAD);
+                return false;
+            }
+
+            // es del otro team? ciuda - crimi
+            if (!e.isCriminal() && !t.isCriminal() /* TODO agregar seguro */) {
+                // notifyCombat(userId, CANT_ATTACK_CITIZEN);
+                // TODO descomentar: return false;
+            }
+
             // TODO attack power can be bow
             int evasionPower = evasionPower(targetId.get()) + shieldEvasionPower(targetId.get());
             double prob = Math.max(10, Math.min(90, 50 + (weaponAttackPower(userId) - evasionPower) * 0.4));
             if (ThreadLocalRandom.current().nextInt(101) <= prob) {
                 return true;
             } else {
-                // calculate if was evaded by shield
+                notifyCombat(userId, ATTACK_FAILED);
+                notifyCombat(targetId.get(), format(ATTACKED_AND_FAILED, getName(userId)));
+                // TODO calculate if was evaded by shield
             }
         }
         return false;
@@ -119,9 +139,10 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
             kind == AttackKind.WEAPON ? Modifiers.WEAPON.of(clazz) : Modifiers.WRESTLING.of(clazz);
         Log.info("Modifier: " + modifier);
         int weaponDamage =
-            weapon.isPresent() ? random.nextInt(weapon.get().getMinHit(), weapon.get().getMaxHit() + 1) : random.nextInt(4, 9);
+            weapon.map(weaponObj -> random.nextInt(weaponObj.getMinHit(), weaponObj.getMaxHit() + 1))
+                .orElseGet(() -> random.nextInt(4, 9));
         Log.info("Weapon Damage: " + weaponDamage);
-        int maxWeaponDamage = weapon.isPresent() ? weapon.get().getMaxHit() : 9;
+        int maxWeaponDamage = weapon.map(WeaponObj::getMaxHit).orElse(9);
         Log.info("Max Weapon Damage: " + maxWeaponDamage);
         int userDamage = random.nextInt(entity.getHit().getMin() - 10, entity.getHit().getMax() + 1);
         Log.info("User damage: " + userDamage);
@@ -146,59 +167,104 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
 
     @Override
     void doHit(int userId, int entityId, int damage) {
+        boolean userStab = canStab(userId);
         AttackResult result =
-            canStab(userId, entityId) ?
+            userStab ?
                 doStab(userId, entityId, damage) :
                 canCriticAttack(userId, entityId) ?
                     doCrititAttack(userId, entityId, damage) :
                     doNormalAttack(userId, entityId, damage);
 
         // TODO send console messages
-        getServer().getWorldManager()
-            .notifyUpdate(userId, new EntityUpdate(userId, new Component[] {new AttackAnimation()}, new Class[0]));
-        notify(entityId, new CombatMessage("-" + result.damage));
+        notifyCombat(userId, result.userMessage);
+        notifyCombat(entityId, result.victimMessage);
 
-        Health health = E(entityId).getHealth();
+        getWorldManager()
+            .notifyUpdate(userId, new EntityUpdate(userId, new Component[] {new AttackAnimation()}, new Class[0]));
+        notify(entityId, userStab ? CombatMessage.stab("" + result.damage) : CombatMessage.physic("" + result.damage));
+
+        final E target = E(entityId);
+        Health health = target.getHealth();
         health.min = Math.max(0, health.min - damage);
         if (health.min > 0) {
             update(entityId);
         } else {
             // TODO die
-            getServer().getWorldManager().userDie(entityId);
+            notifyCombat(entityId, format(KILL, getName(entityId)));
+            notifyCombat(entityId, format(KILLED, getName(userId)));
+            getWorldManager().userDie(entityId);
         }
     }
 
+    private void notifyCombat(int userId, String message) {
+        final ConsoleMessage combat = ConsoleMessage.combat(message);
+        getWorldManager().sendEntityUpdate(userId, combat);
+    }
+
+    private WorldManager getWorldManager() {
+        return getServer().getWorldManager();
+    }
+
     private AttackResult doNormalAttack(int userId, int entityId, int damage) {
-        return new AttackResult(damage, String.format(USER_NORMAL_HIT, getName(entityId), damage),
-                                String.format(VICTIM_NORMAL_HIT, getName(userId), damage));
+        return new AttackResult(damage, format(USER_NORMAL_HIT, getName(entityId), damage),
+                                format(VICTIM_NORMAL_HIT, getName(userId), damage));
     }
 
     private AttackResult doCrititAttack(int userId, int entityId, int damage) {
         // TODO
-        return new AttackResult(damage, String.format(USER_CRITIC_HIT, getName(entityId), damage),
-                                String.format(VICTIM_CRITIC_HIT, getName(userId), damage));
+        return new AttackResult(damage, format(USER_CRITIC_HIT, getName(entityId), damage),
+                                format(VICTIM_CRITIC_HIT, getName(userId), damage));
     }
 
     private boolean canCriticAttack(int userId, int entityId) {
         return false;
     }
 
-    private boolean canStab(int userId, int entityId) {
+    private boolean canStab(int userId) {
         final E e = E(userId);
-        final CharClass clazz = CharClass.get(e);
         boolean result = false;
         if (e.hasWeapon()) {
             final Optional<Obj> object = getServer().getObjectManager().getObject(e.getWeapon().index);
-            result =
-                object.filter(WeaponObj.class::isInstance).map(WeaponObj.class::cast).filter(WeaponObj::isStab).isPresent();
+            result = object
+                .filter(WeaponObj.class::isInstance)
+                .map(WeaponObj.class::cast)
+                .filter(WeaponObj::isStab)
+                .isPresent();
         }
-        return result || clazz.equals(CharClass.ASSASSIN);
+
+        return result && stabProbability(userId);
+    }
+
+    private boolean stabProbability(int userId) {
+        float skill = 100;
+        int lucky;
+        E e = E(userId);
+        final CharClass clazz = CharClass.get(e);
+        switch (clazz) {
+            case ASSASSIN:
+                lucky = (int) (((0.00003f * skill - 0.002) * skill + 0.098f) * skill + 4.25f);
+                break;
+            case CLERIC:
+            case PALADIN:
+            case PIRATE:
+                lucky = (int) (((0.000003f * skill - 0.0006f) * skill + 0.0107f) * skill + 4.93f);
+                break;
+            case BARDIC:
+                lucky = (int) (((0.000002f * skill - 0.0002f) * skill + 0.032f) * skill + 4.81f);
+                break;
+            default:
+                lucky = (int) (0.0361f * skill + 4.39f);
+                break;
+
+        }
+        return ThreadLocalRandom.current().nextInt(101) < lucky;
     }
 
     private AttackResult doStab(int userId, int entityId, int damage) {
-        // TODO
-        return new AttackResult(damage, String.format(USER_STAB_HIT, getName(entityId), damage),
-                                String.format(VICTIM_STAB_HIT, getName(userId), damage));
+        final CharClass clazz = CharClass.get(E(userId));
+        damage += (int) (CharClass.ASSASSIN.equals(clazz) ? damage * ASSASIN_STAB_FACTOR : damage * NORMAL_STAB_FACTOR);
+        return new AttackResult(damage, format(USER_STAB_HIT, getName(entityId), damage),
+                                format(VICTIM_STAB_HIT, getName(userId), damage));
     }
 
     private String getName(int userId) {
@@ -246,17 +312,6 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
             this.victimMessage = victimMessage;
         }
 
-        public int getDamage() {
-            return damage;
-        }
-
-        public String getUserMessage() {
-            return userMessage;
-        }
-
-        public String getVictimMessage() {
-            return victimMessage;
-        }
     }
 
 
