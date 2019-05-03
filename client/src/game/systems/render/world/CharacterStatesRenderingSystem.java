@@ -37,8 +37,8 @@ public class CharacterStatesRenderingSystem extends IteratingSystem {
 
     @Override
     protected void begin() {
-        cameraSystem.guiCamera.update();
-        batch.setProjectionMatrix(cameraSystem.guiCamera.combined);
+        cameraSystem.camera.update();
+        batch.setProjectionMatrix(cameraSystem.camera.combined);
         batch.begin();
     }
 
@@ -52,14 +52,12 @@ public class CharacterStatesRenderingSystem extends IteratingSystem {
         if (isInAnyState(entity)) {
             E player = E(entity);
             Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
-            Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
-            Pos2D screenPos = new Pos2D(cameraPos.x - playerPos.x, cameraPos.y - playerPos.y);
 
             if (player.hasWriting()) {
                 Fonts.dialogLayout.setText(Fonts.WRITING_FONT, ".");
                 Fonts.dialogLayout.setText(Fonts.WRITING_FONT, ".", Fonts.WRITING_FONT.getColor(), Fonts.dialogLayout.width, Align.center, true);
-                final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x + 8 - (Fonts.dialogLayout.width / 2) - (Tile.TILE_PIXEL_WIDTH / 2) - 2;
-                final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y + 40 + Fonts.dialogLayout.height;
+                final float fontX = playerPos.x + 8 - (Fonts.dialogLayout.width / 2) - (Tile.TILE_PIXEL_WIDTH / 2) - 2;
+                final float fontY = playerPos.y - 40 + Fonts.dialogLayout.height;
                 Fonts.WRITING_FONT.draw(batch, Fonts.dialogLayout, fontX, fontY);
             }
         }
@@ -67,10 +65,8 @@ public class CharacterStatesRenderingSystem extends IteratingSystem {
             Optional<WorldPos> worldPos = WorldUtils.mouseToWorldPos();
             if (worldPos.isPresent()) {
                 batch.setColor(Colors.TRANSPARENT_RED);
-                Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
                 Pos2D mousePos = Util.toScreen(worldPos.get());
-                Pos2D screenPos = new Pos2D(cameraPos.x - mousePos.x, cameraPos.y - mousePos.y);
-                batch.draw(Slot.selection, (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x, (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y, Tile.TILE_PIXEL_WIDTH, Tile.TILE_PIXEL_HEIGHT);
+                batch.draw(Slot.selection, mousePos.x, mousePos.y, Tile.TILE_PIXEL_WIDTH, Tile.TILE_PIXEL_HEIGHT);
                 batch.setColor(Color.WHITE);
             }
         }

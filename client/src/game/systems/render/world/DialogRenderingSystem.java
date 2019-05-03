@@ -14,23 +14,26 @@ import game.handlers.DescriptorHandler;
 import game.systems.OrderedEntityProcessingSystem;
 import game.systems.camera.CameraSystem;
 import game.utils.Fonts;
+import model.textures.BundledAnimation;
 import position.Pos2D;
 import position.WorldPos;
 import shared.model.map.Tile;
 import shared.util.Util;
 
 import java.util.Comparator;
+import java.util.Optional;
 
 @Wire
 public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
 
-    public static final int ALPHA_TIME = 2;
-    public static final int MAX_LENGTH = 120;
-    public static final int DISTANCE_TO_TOP = 5;
-    public static final float TIME = 0.3f;
-    public static final float VELOCITY = DISTANCE_TO_TOP / TIME;
+    private static final int ALPHA_TIME = 2;
+    private static final int MAX_LENGTH = 120;
+    private static final int DISTANCE_TO_TOP = 5;
+    private static final float TIME = 0.3f;
+    private static final float VELOCITY = DISTANCE_TO_TOP / TIME;
     private SpriteBatch batch;
     private CameraSystem cameraSystem;
+    private CharacterRenderingSystem characterRenderingSystem;
 
     public DialogRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(Dialog.class, Body.class, WorldPos.class));
@@ -39,8 +42,8 @@ public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
 
     @Override
     protected void begin() {
-        cameraSystem.guiCamera.update();
-        batch.setProjectionMatrix(cameraSystem.guiCamera.combined);
+        cameraSystem.camera.update();
+        batch.setProjectionMatrix(cameraSystem.camera.combined);
         batch.begin();
     }
 
@@ -53,8 +56,6 @@ public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
     protected void process(Entity e) {
         E player = E.E(e);
         Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
-        Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
-        Pos2D screenPos = new Pos2D(cameraPos.x - playerPos.x, cameraPos.y - playerPos.y);
         Dialog dialog = player.getDialog();
         dialog.time -= world.getDelta();
         if (dialog.time > 0) {
@@ -66,19 +67,19 @@ public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
             }
 
             Fonts.dialogLayout.setText(font, dialog.text);
+            int lines = Math.max(1, (int) Fonts.dialogLayout.width / MAX_LENGTH);
             float width = Math.min(Fonts.dialogLayout.width, MAX_LENGTH);
-            Fonts.dialogLayout.setText(font, dialog.text, font.getColor(), width, Align.center, true);
-            final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x + (Tile.TILE_PIXEL_WIDTH - width) / 2;
-            float  up = Dialog.DEFAULT_TIME - dialog.time <= TIME ? (Dialog.DEFAULT_TIME - dialog.time) * VELOCITY : DISTANCE_TO_TOP;
-            float offsetY = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY() - up;
-            final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y + 50 - offsetY + Fonts.dialogLayout.height;
+            Fonts.dialogLayout.setText(font, dialog.text, font.getColor(), width, Align.center | Align.top, true);
+            final float fontX = playerPos.x + (Tile.TILE_PIXEL_WIDTH - width) / 2;
+            float up = Dialog.DEFAULT_TIME - dialog.time <= TIME ? (Dialog.DEFAULT_TIME - dialog.time) * VELOCITY : DISTANCE_TO_TOP;
+            float offsetY = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
+            final float fontY = playerPos.y - 65 + offsetY - up + Fonts.dialogLayout.height;
             font.draw(batch, Fonts.dialogLayout, fontX, fontY);
             font.setColor(copy);
         } else {
             player.removeDialog();
         }
     }
-
     @Override
     protected Comparator<? super Entity> getComparator() {
         return Comparator.comparingInt(entity -> E.E(entity).getWorldPos().y);

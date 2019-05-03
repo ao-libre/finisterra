@@ -37,7 +37,7 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
     @Override
     protected void begin() {
         cameraSystem.guiCamera.update();
-        batch.setProjectionMatrix(cameraSystem.guiCamera.combined);
+        batch.setProjectionMatrix(cameraSystem.camera.combined);
         batch.begin();
     }
 
@@ -50,11 +50,9 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
     protected void process(Entity e) {
         E player = E(e);
         Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
-        Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
-        Pos2D screenPos = new Pos2D(cameraPos.x - playerPos.x, cameraPos.y - playerPos.y);
 
-        float nameY = drawName(player, screenPos);
-        drawClanName(player, screenPos, nameY);
+        float nameY = drawName(player, playerPos);
+        drawClanName(player, playerPos, nameY);
     }
 
     private float drawName(E player, Pos2D screenPos) {
@@ -63,8 +61,9 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
                         player.hasLevel() && player.getLevel().level < 13 ? Fonts.NEWBIE_NAME_FONT :
                                 player.hasCriminal() ? Fonts.CRIMINAL_NAME_FONT : Fonts.CITIZEN_NAME_FONT;
         Fonts.layout.setText(font, player.getName().text);
-        final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x + ((Tile.TILE_PIXEL_WIDTH - Fonts.layout.width) / 2);
-        final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y;
+        final float fontX = screenPos.x + ((Tile.TILE_PIXEL_WIDTH - Fonts.layout.width) / 2);
+        final float fontY = screenPos.y;
+
         font.draw(batch, Fonts.layout, fontX, fontY);
         return fontY;
     }
@@ -75,8 +74,8 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
             clanOrHero = player.getClan().name;
         }
         Fonts.layout.setText(Fonts.CLAN_FONT, "<" + clanOrHero + ">");
-        final float fontX = (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x + ((Tile.TILE_PIXEL_WIDTH - Fonts.layout.width) / 2);
-        final float fontY = nameY - Fonts.layout.height - 5;
+        final float fontX = screenPos.x + ((Tile.TILE_PIXEL_WIDTH - Fonts.layout.width) / 2);
+        final float fontY = nameY + Fonts.layout.height + 5;
         Fonts.CLAN_FONT.draw(batch, Fonts.layout, fontX, fontY);
     }
 

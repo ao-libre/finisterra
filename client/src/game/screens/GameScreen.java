@@ -27,6 +27,7 @@ import game.systems.render.world.*;
 import game.ui.GUI;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 import shared.model.lobby.Player;
+import shared.model.map.Tile;
 import shared.network.lobby.player.PlayerLoginRequest;
 
 import static com.artemis.E.E;
@@ -56,38 +57,38 @@ public class GameScreen extends ScreenAdapter {
 
     public void initWorld() {
         WorldConfigurationBuilder worldConfigBuilder = new WorldConfigurationBuilder();
-        cameraSystem = new CameraSystem(AOGame.GAME_SCREEN_ZOOM, 1280, 768);
+        cameraSystem = new CameraSystem(AOGame.GAME_SCREEN_ZOOM);
         worldConfigBuilder.with(new SuperMapper())
-                .with(clientSystem)
-                // Player movement
-                .with(new PlayerInputSystem())
-                .with(new MovementProcessorSystem())
-                .with(new MovementAnimationSystem())
-                .with(new IdleAnimationSystem())
-                .with(new MovementSystem())
-                // Camera
-                .with(cameraSystem)
-                .with(new CameraFocusSystem())
-                .with(new CameraMovementSystem())
-                // Logic systems
-                .with(new PhysicsAttackSystem())
-                // Rendering
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new CaveSystem())
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new GroundFXsRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ObjectRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new ParticleRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new CharacterRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new FXsRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(spriteBatch))
-                .with(FONTS_PRIORITY, new StateRenderingSystem(spriteBatch))
-                .with(FONTS_PRIORITY, new CombatRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new NameRenderingSystem(spriteBatch))
-                .with(FONTS_PRIORITY, new DialogRenderingSystem(spriteBatch))
-                .with(FONTS_PRIORITY, new CharacterStatesRenderingSystem(spriteBatch))
-//                .with(FONTS_PRIORITY, new LightRenderingSystem(spriteBatch))
-                // Other
-                .with(new TagManager())
-                .with(new UuidEntityManager()); // why?
+            .with(clientSystem)
+            // Player movement
+            .with(new PlayerInputSystem())
+            .with(new MovementProcessorSystem())
+            .with(new MovementAnimationSystem())
+            .with(new IdleAnimationSystem())
+            .with(new MovementSystem())
+            // Camera
+            .with(cameraSystem)
+            .with(new CameraFocusSystem())
+            .with(new CameraMovementSystem())
+            // Logic systems
+            .with(new PhysicsAttackSystem())
+            // Rendering
+            .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new CaveSystem())
+            .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new GroundFXsRenderingSystem(spriteBatch))
+            .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new CharacterRenderingSystem(spriteBatch))
+            .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new ObjectRenderingSystem(spriteBatch))
+            .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new ParticleRenderingSystem(spriteBatch))
+            .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new FXsRenderingSystem(spriteBatch))
+            .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(spriteBatch))
+            .with(FONTS_PRIORITY, new StateRenderingSystem(spriteBatch))
+            .with(FONTS_PRIORITY, new CombatRenderingSystem(spriteBatch))
+            .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new NameRenderingSystem(spriteBatch))
+            .with(FONTS_PRIORITY, new DialogRenderingSystem(spriteBatch))
+            .with(FONTS_PRIORITY, new CharacterStatesRenderingSystem(spriteBatch))
+            //                .with(FONTS_PRIORITY, new LightRenderingSystem(spriteBatch))
+            // Other
+            .with(new TagManager())
+            .with(new UuidEntityManager()); // why?
 
         world = new World(worldConfigBuilder.build()); // preload Artemis world
     }
@@ -95,8 +96,8 @@ public class GameScreen extends ScreenAdapter {
     protected void postWorldInit() {
         Entity cameraEntity = world.createEntity();
         E(cameraEntity)
-                .aOCamera(true)
-                .pos2D();
+            .aOCamera(true)
+            .pos2D();
         world.getSystem(TagManager.class).register("camera", cameraEntity);
     }
 
@@ -151,6 +152,12 @@ public class GameScreen extends ScreenAdapter {
             this.state = GameState.RUNNING;
             this.resumeSystems();
         }
+    }
+
+    @Override public void resize(int width, int height) {
+        cameraSystem.camera.viewportWidth = Tile.TILE_PIXEL_WIDTH * 15f;  //We will see width/32f units!
+        cameraSystem.camera.viewportHeight = cameraSystem.camera.viewportWidth * height / width;
+        cameraSystem.camera.update();
     }
 
     protected void drawUI() {

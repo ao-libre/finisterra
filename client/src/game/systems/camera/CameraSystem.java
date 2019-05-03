@@ -3,6 +3,7 @@ package game.systems.camera;
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import shared.model.map.Tile;
 
 /**
  * Setup and manages basic orthographic camera.
@@ -35,14 +36,14 @@ public class CameraSystem extends BaseSystem {
     }
 
     private void createGuiCamera(float width, float height) {
-        guiCamera = new OrthographicCamera(width, height);
-        guiCamera.setToOrtho(false, width, height);
+        guiCamera = new OrthographicCamera(Tile.TILE_PIXEL_WIDTH * 15, Tile.TILE_PIXEL_WIDTH * 15 * (height / width));
+        guiCamera.setToOrtho(false, Tile.TILE_PIXEL_WIDTH * 15, Tile.TILE_PIXEL_WIDTH * 15 * (height / width));
         guiCamera.update();
     }
 
     private void createGameCamera(float width, float height) {
-        camera = new OrthographicCamera(width, height);
-        camera.setToOrtho(true, width, height);
+        camera = new OrthographicCamera(Tile.TILE_PIXEL_WIDTH * 15, Tile.TILE_PIXEL_WIDTH * 15 * (height / width));
+        camera.setToOrtho(true, Tile.TILE_PIXEL_WIDTH * 15, Tile.TILE_PIXEL_WIDTH * 15 * (height / width));
         camera.update();
     }
 

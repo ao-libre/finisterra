@@ -58,6 +58,7 @@ public class GUI {
         float screenH = getHeight();
         console = new AOConsole();
         console.setY(screenH - 16 * AOConsole.MAX_MESSAGES);
+        console.setX(5);
         consoleContainer.setActor(console);
         consoleContainer.setPosition(0, screenH - console.getHeight(), Align.top | Align.left);
         return console;
@@ -65,7 +66,7 @@ public class GUI {
 
     private Container<Table> createUserStatus() {
         Container<Table> userContainer = new Container<>();
-        float width = getWidth() * 30 / 100f;
+        float width = getWidth() * 35 / 100f;
         userContainer.setWidth(width);
         userContainer.setHeight(64);
         float scaleXY = width / (64 + 200);
@@ -81,7 +82,7 @@ public class GUI {
         Container<Table> spellsContainer = new Container<>();
         float screenW = getWidth();
         float screenH = getHeight();
-        float width = screenW * 4f / 100f;
+        float width = screenW * 6f / 100f;
         spellView = new SpellView();
         spellsContainer.setWidth(width);
         spellsContainer.setHeight(SpellView.MAX_SPELLS * SpellSlot.SIZE);
@@ -95,7 +96,7 @@ public class GUI {
 
     private Container<Table> createInventory() {
         Container<Table> inventoryContainer = new Container<>();
-        float width = getWidth() * 20 / 100f;
+        float width = getWidth() * 30 / 100f;
         inventoryContainer.setWidth(width);
         inventory = new Inventory();
         final float zoom = width / inventory.getWidth();

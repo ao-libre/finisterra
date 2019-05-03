@@ -202,7 +202,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
             update(entityId);
         } else {
             // TODO die
-            notifyCombat(entityId, format(KILL, getName(entityId)));
+            notifyCombat(userId, format(KILL, getName(entityId)));
             notifyCombat(entityId, format(KILLED, getName(userId)));
             getWorldManager().userDie(entityId);
         }

@@ -22,7 +22,7 @@ import shared.model.lobby.Player;
  */
 public class AOGame extends Game {
 
-    public static final float GAME_SCREEN_ZOOM = 1.9f;
+    public static final float GAME_SCREEN_ZOOM = 1f;
 
     @Override
     public void create() {

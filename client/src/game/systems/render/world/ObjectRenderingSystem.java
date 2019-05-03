@@ -41,7 +41,7 @@ public class ObjectRenderingSystem extends IteratingSystem {
         object.ifPresent(obj -> {
             WorldPos objectPos = E(objectId).getWorldPos();
             Pos2D screenPos = Util.toScreen(objectPos);
-            batch.draw(ObjectHandler.getIngameGraphic(obj), screenPos.x, screenPos.y - Tile.TILE_PIXEL_HEIGHT);
+            batch.draw(ObjectHandler.getIngameGraphic(obj), screenPos.x, screenPos.y);
         });
     }
 

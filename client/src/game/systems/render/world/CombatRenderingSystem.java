@@ -36,8 +36,8 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
 
     @Override
     protected void begin() {
-        cameraSystem.guiCamera.update();
-        batch.setProjectionMatrix(cameraSystem.guiCamera.combined);
+        cameraSystem.camera.update();
+        batch.setProjectionMatrix(cameraSystem.camera.combined);
         batch.begin();
     }
 
@@ -50,8 +50,6 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
     protected void process(Entity e) {
         E player = E(e);
         Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
-        Pos2D cameraPos = new Pos2D(cameraSystem.camera.position.x, cameraSystem.camera.position.y);
-        Pos2D screenPos = new Pos2D(cameraPos.x - playerPos.x, cameraPos.y - playerPos.y);
 
         if (!player.hasCombatMessage()) {
             // TODO bug here, sometimes getter return null
@@ -90,11 +88,10 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
             Fonts.dialogLayout.setText(font, combatMessage.text);
             float width = Fonts.dialogLayout.width;
             Fonts.dialogLayout.setText(font, combatMessage.text, font.getColor(), width, Align.center, true);
-            final float fontX =
-                (cameraSystem.guiCamera.viewportWidth / 2) - screenPos.x + (Tile.TILE_PIXEL_WIDTH - Fonts.dialogLayout.width) / 2;
-            int bodyOffset = 40 - DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
-            final float fontY = (cameraSystem.guiCamera.viewportHeight / 2) + screenPos.y - combatMessage.offset + bodyOffset
-                + Fonts.dialogLayout.height; //40 should be the Y offset of the entity
+            final float fontX = playerPos.x + (Tile.TILE_PIXEL_WIDTH - Fonts.dialogLayout.width) / 2;
+            int bodyOffset =  DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
+            final float fontY = playerPos.y + combatMessage.offset + bodyOffset - 65
+                + Fonts.dialogLayout.height;
             font.draw(batch, Fonts.dialogLayout, fontX, fontY);
             font.setColor(copy);
         } else {

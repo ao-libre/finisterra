@@ -30,27 +30,31 @@ public class Fonts {
     private static final String FIRA_FONT = "FuraMono-Bold Powerline.otf";
 
     static {
-        WHITE_FONT = generate(Color.WHITE, 10, Color.BLACK, 0, 0, 0);
-        WHITE_FONT_WITH_BORDER = generate(Color.WHITE, 11, Color.BLACK, 0, 1, 0);
-        CONSOLE_FONT = generate(Color.WHITE, 14, Color.BLACK, 0, 0, 0);
-        GM_NAME_FONT = generate(Colors.GM, 10, Color.BLACK, 0, 1, -1);
-        NEWBIE_NAME_FONT = generate(Colors.NEWBIE, 10, Color.BLACK, 0, 1, -1);
-        CITIZEN_NAME_FONT = generate(Colors.CITIZEN, 10, Color.BLACK, 0, 1, -1);
-        CRIMINAL_NAME_FONT = generate(Colors.CRIMINAL, 10, Color.BLACK, 0, 1, -1);
-        CLAN_FONT = generate(Colors.GREY, 9, Color.BLACK, 0, 1, -1);
-        DIALOG_FONT = generate(Color.WHITE, 10, Color.BLACK, 0, 1, -1);
-        MAGIC_FONT = generate(Colors.MANA, 10, Color.BLACK, 0, 1, -1);
-        WRITING_FONT = generate(Color.BLACK, 6, Color.WHITE, 1, 0, -2);
-        COMBAT_FONT = generate(Colors.COMBAT, 9, Color.BLACK, 0, 1, -1);
-        STAB_FONT = generate(Color.WHITE, 9, Color.BLACK, 0, 1, -1);
-        MAGIC_COMBAT_FONT = generate(Colors.MANA, 9, Color.BLACK, 0, 1, -1);
+        WHITE_FONT = gui(Color.WHITE, 10, Color.BLACK, 0, 0, 0, COMMODORE_FONT);
+        WHITE_FONT_WITH_BORDER = gui(Color.WHITE, 11, Color.BLACK, 0, 1, 0, COMMODORE_FONT);
+        CONSOLE_FONT = gui(Color.WHITE, 14, Color.BLACK, 0, 0, 0, COMMODORE_FONT);
+        GM_NAME_FONT = generate(Colors.GM, 10, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
+        NEWBIE_NAME_FONT = generate(Colors.NEWBIE, 10, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
+        CITIZEN_NAME_FONT = generate(Colors.CITIZEN, 10, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
+        CRIMINAL_NAME_FONT = generate(Colors.CRIMINAL, 10, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
+        CLAN_FONT = generate(Colors.GREY, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
+        DIALOG_FONT = generate(Color.WHITE, 10, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
+        MAGIC_FONT = generate(Colors.MANA, 10, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
+        WRITING_FONT = generate(Color.BLACK, 6, Color.WHITE, 1, 0, -2, COMMODORE_FONT);
+        COMBAT_FONT = generate(Colors.COMBAT, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
+        STAB_FONT = generate(Color.WHITE, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
+        MAGIC_COMBAT_FONT = generate(Colors.MANA, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
     }
 
-    private static BitmapFont generate(Color color, int size, Color borderColor, int borderWidth, int shadowOffset, int spaceX) {
-        return generate(color, size, borderColor, borderWidth, shadowOffset, spaceX, COMMODORE_FONT);
+    private static BitmapFont generate(Color color, int size, Color borderColor, int borderWidth, int shadowOffset, int spaceX, String commodoreFont) {
+        return generate(color, size, borderColor, borderWidth, shadowOffset, spaceX, true, COMMODORE_FONT);
     }
 
-    private static BitmapFont generate(Color color, int size, Color borderColor, int borderWidth, int shadowOffset, int spaceX, String font) {
+    private static BitmapFont gui(Color color, int size, Color borderColor, int borderWidth, int shadowOffset, int spaceX, String commodoreFont) {
+        return generate(color, size, borderColor, borderWidth, shadowOffset, spaceX, false, COMMODORE_FONT);
+    }
+
+    private static BitmapFont generate(Color color, int size, Color borderColor, int borderWidth, int shadowOffset, int spaceX, boolean flip, String font) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(Resources.GAME_FONTS_PATH + font));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = size;
@@ -60,6 +64,7 @@ public class Fonts {
         parameter.shadowOffsetX = shadowOffset;
         parameter.shadowOffsetY = shadowOffset;
         parameter.spaceX = spaceX;
+        parameter.flip = flip;
         BitmapFont generatedFont = generator.generateFont(parameter);
         generatedFont.setUseIntegerPositions(false);
         generator.dispose(); // don't forget to dispose to avoid memory leaks!

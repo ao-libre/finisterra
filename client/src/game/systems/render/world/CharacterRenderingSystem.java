@@ -29,6 +29,7 @@ import shared.model.map.Tile;
 import shared.util.Util;
 
 import java.util.Comparator;
+import java.util.Optional;
 
 import static com.artemis.E.E;
 
@@ -79,7 +80,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         return Comparator.comparingInt(entity -> E(entity).getWorldPos().y);
     }
 
-    private static class CharacterDrawer {
+    public static class CharacterDrawer {
         private SpriteBatch batch;
         private E player;
         private Heading heading;
@@ -171,9 +172,8 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         }
 
         private float getMovementOffsetY() {
-            float animationTime = bodyAnimation.getAnimationTime();
-            float interpolationTime = bodyAnimation.getAnimation().getAnimationDuration() / 2;
-            return Interpolation.circle.apply(Math.min(1f, animationTime < interpolationTime ? animationTime / interpolationTime : interpolationTime / animationTime));
+            BundledAnimation bodyAnimation = this.bodyAnimation;
+            return getMovementOffset(bodyAnimation);
         }
 
         void drawHelmet() {
@@ -216,6 +216,13 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             }
         }
     }
+
+    private static float getMovementOffset(BundledAnimation bodyAnimation) {
+        float animationTime = bodyAnimation.getAnimationTime();
+        float interpolationTime = bodyAnimation.getAnimation().getAnimationDuration() / 2;
+        return Interpolation.circle.apply(Math.min(1f, animationTime < interpolationTime ? animationTime / interpolationTime : interpolationTime / animationTime));
+    }
+
 }
 
 
