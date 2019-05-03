@@ -8,7 +8,7 @@ mainClassName = "launcher.DesktopLauncher"
 tasks.run.workingDir = new File("assets/")
 
 task dist(type: Jar) {
-    from files(sourceSets.main.output.classesDir)
+    from files(sourceSets.main.output.classesDirs)
     from files(sourceSets.main.output.resourcesDir)
     from { configurations.compile.collect { zipTree(it) } }
     from files(new File("assets/"))

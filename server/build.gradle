@@ -12,7 +12,7 @@ dependencies {
 }
 
 task dist(type: Jar) {
-    from files(sourceSets.main.output.classesDir)
+    from files(sourceSets.main.output.classesDirs)
     from files(sourceSets.main.output.resourcesDir)
     from { configurations.compile.collect { zipTree(it) } }
 
