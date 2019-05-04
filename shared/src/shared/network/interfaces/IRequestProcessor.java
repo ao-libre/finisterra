@@ -9,6 +9,7 @@ import shared.network.inventory.ItemActionRequest;
 import shared.network.lobby.*;
 import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.movement.MovementRequest;
+import shared.network.time.TimeSyncRequest;
 
 public interface IRequestProcessor {
 
@@ -37,4 +38,6 @@ public interface IRequestProcessor {
     void processRequest(StartGameRequest startGameRequest, int connectionId);
 
     void processRequest(PlayerLoginRequest playerLoginRequest, int connectionId);
+
+    void processRequest(TimeSyncRequest timeSyncRequest, int connectionId);
 }

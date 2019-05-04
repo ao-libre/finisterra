@@ -98,9 +98,7 @@ public class ObjJson extends Json {
             final FileHandle jsonFile = folder.child(type.name().toLowerCase() + ".json");
             if (jsonFile.exists() && !jsonFile.isDirectory()) {
                 final ArrayList<? extends Obj> listObjs = json.fromJson(ArrayList.class, classForType, jsonFile);
-                listObjs.forEach(obj -> {
-                    objects.put(obj.getId(), obj);
-                });
+                listObjs.forEach(obj -> objects.put(obj.getId(), obj));
             }
         });
     }

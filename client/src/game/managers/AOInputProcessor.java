@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.AOGame;
 import game.screens.GameScreen;
+import game.systems.network.TimeSync;
 import game.ui.GUI;
 import game.utils.AOKeys;
 import game.utils.AlternativeKeys;
@@ -43,7 +44,10 @@ public class AOInputProcessor extends Stage {
                 Spell spell = toCast.get();
                 E player = E.E(GameScreen.getPlayer());
                 if (!player.hasAttack() || player.getAttack().interval - GameScreen.getWorld().getDelta() < 0) {
-                    GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos));
+                    TimeSync timeSyncSystem = GameScreen.getWorld().getSystem(TimeSync.class);
+                    long rtt = timeSyncSystem.getRtt();
+                    long timeOffset = timeSyncSystem.getTimeOffset();
+                    GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos, rtt + timeOffset));
                     player.attack();
                 } else {
                     // TODO can't attack because interval

@@ -5,6 +5,7 @@ import shared.network.lobby.JoinLobbyResponse;
 import shared.network.lobby.JoinRoomResponse;
 import shared.network.lobby.StartGameResponse;
 import shared.network.movement.MovementResponse;
+import shared.network.time.TimeSyncResponse;
 
 public interface IResponseProcessor {
 
@@ -17,4 +18,6 @@ public interface IResponseProcessor {
     void processResponse(JoinRoomResponse joinRoomResponse);
 
     void processResponse(StartGameResponse startGameResponse);
+
+    void processResponse(TimeSyncResponse timeSyncResponse);
 }

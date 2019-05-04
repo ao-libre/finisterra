@@ -8,6 +8,8 @@ import shared.model.lobby.Room;
 import shared.model.lobby.Team;
 import shared.network.interfaces.DefaultRequestProcessor;
 import shared.network.lobby.*;
+import shared.network.time.TimeSyncRequest;
+import shared.network.time.TimeSyncResponse;
 
 import java.util.Optional;
 
@@ -86,5 +88,14 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
     public void processRequest(StartGameRequest startGameRequest, int connectionId) {
         Optional<Room> room = finisterra.getLobby().getRoom(startGameRequest.getRoomId());
         room.ifPresent(room1 -> finisterra.startGame(room1));
+    }
+
+    @Override public void processRequest(TimeSyncRequest request, int connectionId) {
+        long receiveTime = System.nanoTime();
+        TimeSyncResponse response = new TimeSyncResponse();
+        response.receiveTime = receiveTime;
+        response.requestId = request.requestId;
+        response.sendTime = System.nanoTime();
+        finisterra.getNetworkManager().sendTo(connectionId, response);
     }
 }

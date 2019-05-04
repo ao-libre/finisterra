@@ -268,8 +268,9 @@ public class WorldManager extends DefaultManager {
     }
 
     private void setHP(E entity, CharClass charClass) {
-        int average = (int) Modifiers.HEALTH.of(charClass) * entity.getLevel().level;
-        int maxHP = ThreadLocalRandom.current().nextInt(average - 10, average + 11);
+        int initialBase = 20 + ThreadLocalRandom.current().nextInt(-2, 2);
+        int average = (int) Modifiers.HEALTH.of(charClass) * entity.getLevel().level - 1;
+        int maxHP = initialBase + ThreadLocalRandom.current().nextInt(average - 15, average + 15);
         entity.healthMax(maxHP);
         entity.healthMin(maxHP);
     }

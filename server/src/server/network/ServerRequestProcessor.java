@@ -3,6 +3,7 @@ package server.network;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.World;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
 import entity.character.states.Meditating;
@@ -32,6 +33,8 @@ import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
 import shared.network.notifications.EntityUpdate;
+import shared.network.time.TimeSyncRequest;
+import shared.network.time.TimeSyncResponse;
 import shared.util.MapUtils;
 
 import java.util.*;
@@ -253,6 +256,16 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     public void processRequest(SpellCastRequest spellCastRequest, int connectionId) {
         int playerId = getNetworkManager().getPlayerByConnection(connectionId);
         getServer().getMagicCombatManager().spell(playerId, spellCastRequest);
+    }
+
+    @Override
+    public void processRequest(TimeSyncRequest request, int connectionId) {
+        long receiveTime = TimeUtils.millis();
+        TimeSyncResponse response = new TimeSyncResponse();
+        response.receiveTime = receiveTime;
+        response.requestId = request.requestId;
+        response.sendTime = TimeUtils.millis();
+        getNetworkManager().sendTo(connectionId, response);
     }
 
 }

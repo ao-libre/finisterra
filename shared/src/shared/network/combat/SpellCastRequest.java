@@ -13,10 +13,10 @@ public class SpellCastRequest implements IRequest {
 
     public SpellCastRequest(){}
 
-    public SpellCastRequest(Spell spell, WorldPos worldPos) {
+    public SpellCastRequest(Spell spell, WorldPos worldPos, long timestamp) {
         this.spell = spell;
         this.worldPos = worldPos;
-        this.timestamp = TimeUtils.millis();
+        this.timestamp = TimeUtils.millis() + timestamp;
     }
 
     public Spell getSpell() {

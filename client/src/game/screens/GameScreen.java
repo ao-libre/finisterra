@@ -18,6 +18,7 @@ import game.systems.camera.CameraMovementSystem;
 import game.systems.camera.CameraSystem;
 import game.systems.map.CaveSystem;
 import game.systems.network.ClientSystem;
+import game.systems.network.TimeSync;
 import game.systems.physics.MovementProcessorSystem;
 import game.systems.physics.MovementSystem;
 import game.systems.physics.PhysicsAttackSystem;
@@ -60,6 +61,7 @@ public class GameScreen extends ScreenAdapter {
         cameraSystem = new CameraSystem(AOGame.GAME_SCREEN_ZOOM);
         worldConfigBuilder.with(new SuperMapper())
             .with(clientSystem)
+            .with(new TimeSync())
             // Player movement
             .with(new PlayerInputSystem())
             .with(new MovementProcessorSystem())
@@ -155,9 +157,12 @@ public class GameScreen extends ScreenAdapter {
     }
 
     @Override public void resize(int width, int height) {
-        cameraSystem.camera.viewportWidth = Tile.TILE_PIXEL_WIDTH * 15f;  //We will see width/32f units!
+        cameraSystem.camera.viewportWidth = Tile.TILE_PIXEL_WIDTH * 24f;  //We will see width/32f units!
         cameraSystem.camera.viewportHeight = cameraSystem.camera.viewportWidth * height / width;
         cameraSystem.camera.update();
+
+        cameraSystem.guiCamera.viewportWidth = width;
+        cameraSystem.guiCamera.viewportHeight = cameraSystem.camera.viewportWidth * height / width;;
     }
 
     protected void drawUI() {

@@ -9,6 +9,7 @@ import shared.network.inventory.ItemActionRequest;
 import shared.network.lobby.*;
 import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.movement.MovementRequest;
+import shared.network.time.TimeSyncRequest;
 
 public class DefaultRequestProcessor implements IRequestProcessor {
 
@@ -74,6 +75,10 @@ public class DefaultRequestProcessor implements IRequestProcessor {
 
     @Override
     public void processRequest(PlayerLoginRequest playerLoginRequest, int connectionId) {
+
+    }
+
+    @Override public void processRequest(TimeSyncRequest timeSyncRequest, int connectionId) {
 
     }
 }

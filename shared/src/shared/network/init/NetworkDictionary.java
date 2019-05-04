@@ -69,6 +69,8 @@ import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.FXNotification;
 import shared.network.notifications.RemoveEntity;
+import shared.network.time.TimeSyncRequest;
+import shared.network.time.TimeSyncResponse;
 import shared.objects.factory.ObjectFactory;
 import shared.objects.types.*;
 import shared.objects.types.common.*;
@@ -92,9 +94,11 @@ public class NetworkDictionary extends MarshalDictionary {
                 ItemActionRequest.class,
                 TakeItemRequest.class,
                 SpellCastRequest.class,
+                TimeSyncRequest.class,
 
                 // Game Responses
                 MovementResponse.class,
+                TimeSyncResponse.class,
 
                 // Game Notifications
                 EntityUpdate.class,

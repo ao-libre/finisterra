@@ -36,14 +36,14 @@ public class CameraSystem extends BaseSystem {
     }
 
     private void createGuiCamera(float width, float height) {
-        guiCamera = new OrthographicCamera(Tile.TILE_PIXEL_WIDTH * 15, Tile.TILE_PIXEL_WIDTH * 15 * (height / width));
-        guiCamera.setToOrtho(false, Tile.TILE_PIXEL_WIDTH * 15, Tile.TILE_PIXEL_WIDTH * 15 * (height / width));
+        guiCamera = new OrthographicCamera(Tile.TILE_PIXEL_WIDTH * 24, Tile.TILE_PIXEL_WIDTH * 24 * (height / width));
+        guiCamera.setToOrtho(false, Tile.TILE_PIXEL_WIDTH * 24, Tile.TILE_PIXEL_WIDTH * 24 * (height / width));
         guiCamera.update();
     }
 
     private void createGameCamera(float width, float height) {
-        camera = new OrthographicCamera(Tile.TILE_PIXEL_WIDTH * 15, Tile.TILE_PIXEL_WIDTH * 15 * (height / width));
-        camera.setToOrtho(true, Tile.TILE_PIXEL_WIDTH * 15, Tile.TILE_PIXEL_WIDTH * 15 * (height / width));
+        camera = new OrthographicCamera(Tile.TILE_PIXEL_WIDTH * 24, Tile.TILE_PIXEL_WIDTH * 24 * (height / width));
+        camera.setToOrtho(true, Tile.TILE_PIXEL_WIDTH * 24, Tile.TILE_PIXEL_WIDTH * 24 * (height / width));
         camera.update();
     }
 

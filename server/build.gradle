@@ -21,5 +21,13 @@ task dist(type: Jar) {
     }
 }
 
+// The run task added by the application plugin
+// is also of type JavaExec.
+tasks.withType(JavaExec) {
+    // Assign all Java system properties from
+    // the command line to the JavaExec task.
+    systemProperties System.properties
+}
+
 dist.dependsOn classes
 run.dependsOn classes
