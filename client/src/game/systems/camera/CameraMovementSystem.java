@@ -9,11 +9,6 @@ import position.Pos2D;
 
 import static com.artemis.E.E;
 
-/**
- * CameraMovementSystem CharHero
- *
- * @author rt
- */
 @Wire
 public class CameraMovementSystem extends IteratingSystem {
 
@@ -30,7 +25,6 @@ public class CameraMovementSystem extends IteratingSystem {
     protected void process(int camera) {
         final Pos2D pos = E(camera).getPos2D();
 
-//        cameraSystem.camera.position.lerp(new Vector3(pos.x, pos.y, 0), 0.6f);
         cameraSystem.camera.position.x = (pos.x);
         cameraSystem.camera.position.y = (pos.y);
         cameraSystem.camera.update();

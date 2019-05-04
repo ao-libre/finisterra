@@ -3,14 +3,13 @@ package game.systems.network;
 import com.artemis.BaseSystem;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.esotericsoftware.minlog.Log;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
 
 @Wire
 public class TimeSync extends BaseSystem {
 
-    public static final int SEND_REQUEST_EVERY_X = 10;
+    public static final int SEND_REQUEST_EVERY_X_IN_SEGS = 60;
     private ClientSystem client;
     private int requestId;
     private long sendTime;
@@ -18,7 +17,7 @@ public class TimeSync extends BaseSystem {
     private long rtt;
     private long timeOffset;
 
-    private float time = SEND_REQUEST_EVERY_X;
+    private float time = 0;
     /**
      * Returns a message to be sent, which should be sent immediately as the send time is tracked.
      */
@@ -59,7 +58,7 @@ public class TimeSync extends BaseSystem {
         float delta = getWorld().getDelta();
         time -= delta;
         if (time < 0) {
-            time = SEND_REQUEST_EVERY_X;
+            time = SEND_REQUEST_EVERY_X_IN_SEGS;
             sendRequest();
         }
     }
