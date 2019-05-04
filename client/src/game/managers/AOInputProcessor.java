@@ -3,9 +3,11 @@ package game.managers;
 import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.AOGame;
 import game.screens.GameScreen;
+import game.systems.camera.CameraSystem;
 import game.systems.network.TimeSync;
 import game.ui.GUI;
 import game.utils.AOKeys;
@@ -31,6 +33,13 @@ public class AOInputProcessor extends Stage {
 
     private static final Random r = new Random();
     public static boolean alternativeKeys = false;
+
+    @Override public boolean scrolled(int amount) {
+        System.out.println("Scrolled: " + amount);
+        CameraSystem system = GameScreen.getWorld().getSystem(CameraSystem.class);
+        system.zoom(amount, system.ZOOM_TIME);
+        return super.scrolled(amount);
+    }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {

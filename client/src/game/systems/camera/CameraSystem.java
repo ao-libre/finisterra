@@ -3,6 +3,9 @@ package game.systems.camera;
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
+import game.AOGame;
 import shared.model.map.Tile;
 
 /**
@@ -15,6 +18,14 @@ public class CameraSystem extends BaseSystem {
     private final float zoom;
     public OrthographicCamera camera;
     public OrthographicCamera guiCamera;
+
+    public final static float ZOOM_TIME = 0.5f;
+
+    public float desiredZoom = AOGame.GAME_SCREEN_ZOOM;
+
+    // member variables:
+    float timeToCameraZoomTarget, cameraZoomOrigin, cameraZoomDuration;
+
 
     public CameraSystem(float zoom, float width, float height) {
         this.zoom = zoom;
@@ -49,6 +60,18 @@ public class CameraSystem extends BaseSystem {
 
     @Override
     protected void processSystem() {
+        // in render():
+        if (timeToCameraZoomTarget >= 0){
+            timeToCameraZoomTarget -= getWorld().getDelta();
+            float progress = timeToCameraZoomTarget < 0 ? 1 : 1f - timeToCameraZoomTarget / cameraZoomDuration;
+            camera.zoom = Interpolation.fastSlow.apply(cameraZoomOrigin, desiredZoom, progress);
+        }
+    }
 
+    public void zoom(int inout, float duration){
+        cameraZoomOrigin = camera.zoom;
+        desiredZoom += inout * 0.025f;
+        desiredZoom = MathUtils.clamp(desiredZoom, AOGame.GAME_SCREEN_ZOOM, AOGame.GAME_SCREEN_MAX_ZOOM);
+        timeToCameraZoomTarget = cameraZoomDuration = duration;
     }
 }

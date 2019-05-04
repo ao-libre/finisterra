@@ -66,12 +66,6 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         Pos2D currentPos = player.worldPosPos2D();
         Pos2D screenPos = Util.toScreen(currentPos);
         final Heading heading = player.getHeading();
-        if (player.hasBody()) {
-            final Color currentColor = new Color(batch.getColor());
-            batch.setColor(currentColor.r, currentColor.g, currentColor.b, SHADOW_ALPHA);
-            batch.draw(shadow, screenPos.x + (Tile.TILE_PIXEL_WIDTH - shadow.getWidth()) / 2, screenPos.y - shadow.getHeight() + 2);
-            batch.setColor(currentColor);
-        }
         CharacterDrawer.createDrawer(batch, player, heading, screenPos).draw();
 
     }
@@ -106,6 +100,7 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
         }
 
         public void draw() {
+            drawShadow();
             int current = player.getHeading().current;
             switch (current) {
                 case Heading.HEADING_NORTH:
@@ -136,6 +131,15 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                     drawHelmet();
                     drawShield();
                     break;
+            }
+        }
+
+        private void drawShadow() {
+            if (player.hasBody()) {
+                final Color currentColor = new Color(batch.getColor());
+                batch.setColor(currentColor.r, currentColor.g, currentColor.b, SHADOW_ALPHA);
+                batch.draw(shadow, screenPos.x + (Tile.TILE_PIXEL_WIDTH - shadow.getWidth()) / 2, screenPos.y - shadow.getHeight() + 2);
+                batch.setColor(currentColor);
             }
         }
 

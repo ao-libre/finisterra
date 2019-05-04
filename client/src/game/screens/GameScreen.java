@@ -78,16 +78,16 @@ public class GameScreen extends ScreenAdapter {
             .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new CaveSystem())
             .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new GroundFXsRenderingSystem(spriteBatch))
             .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new CharacterRenderingSystem(spriteBatch))
+            .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new NameRenderingSystem(spriteBatch))
             .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new ObjectRenderingSystem(spriteBatch))
             .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new ParticleRenderingSystem(spriteBatch))
             .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new FXsRenderingSystem(spriteBatch))
-            .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(spriteBatch))
             .with(FONTS_PRIORITY, new StateRenderingSystem(spriteBatch))
             .with(FONTS_PRIORITY, new CombatRenderingSystem(spriteBatch))
-            .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new NameRenderingSystem(spriteBatch))
             .with(FONTS_PRIORITY, new DialogRenderingSystem(spriteBatch))
             .with(FONTS_PRIORITY, new CharacterStatesRenderingSystem(spriteBatch))
-            //                .with(FONTS_PRIORITY, new LightRenderingSystem(spriteBatch))
+            .with(FONTS_PRIORITY - 1, new LightRenderingSystem(spriteBatch))
+            .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(spriteBatch))
             // Other
             .with(new TagManager())
             .with(new UuidEntityManager()); // why?
@@ -162,6 +162,8 @@ public class GameScreen extends ScreenAdapter {
         cameraSystem.camera.update();
 
         GUI.getStage().getViewport().update(width, height);
+
+        getWorld().getSystem(LightRenderingSystem.class).resize(width, height);
     }
 
     protected void drawUI() {

@@ -55,13 +55,14 @@ public class CoordinatesRenderingSystem extends OrderedEntityProcessingSystem {
         Fonts.layout.setText(Fonts.WHITE_FONT, worldPosString);
         float fontX = cameraSystem.guiCamera.viewportWidth - Fonts.layout.width;
         //background
+        Color oldColor = batch.getColor();
         Color black = Color.BLACK.cpy();
         batch.setColor(black.r, black.g, black.b, ALPHA);
         batch.draw(TextureUtils.white, fontX - (BORDER / 2) - offsetX, offsetY - (BORDER / 2), Fonts.layout.width + BORDER, Fonts.layout.height + BORDER);
-
         //text
         batch.setColor(Color.WHITE.cpy());
-        Fonts.WHITE_FONT.draw(batch, Fonts.layout, fontX - offsetX, offsetY - Fonts.layout.height);
+        Fonts.WHITE_FONT.draw(batch, Fonts.layout, fontX - offsetX, offsetY + Fonts.layout.height);
+        batch.setColor(oldColor);
     }
 
     @Override
