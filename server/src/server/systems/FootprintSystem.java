@@ -23,13 +23,13 @@ public class FootprintSystem extends IteratingSystem {
 
     @Override
     protected void process(int entityId) {
-        final E e = E.E(entityId);
-        if (TimeUtils.millis() - e.footprintTimestamp() >= liveTime) {
-            final Set<Integer> footprints = server.getMapManager().getEntitiesFootprints().get(e.footprintEntityId());
+        final E footprint = E.E(entityId);
+        if (TimeUtils.millis() - footprint.footprintTimestamp() >= liveTime) {
+            final Set<Integer> footprints = server.getMapManager().getEntitiesFootprints().get(footprint.footprintEntityId());
             if (footprints != null) {
-                footprints.remove(e.id());
+                footprints.remove(footprint.id());
             }
-            e.deleteFromWorld();
+            footprint.deleteFromWorld();
         }
     }
 }

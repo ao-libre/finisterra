@@ -161,8 +161,7 @@ public class GameScreen extends ScreenAdapter {
         cameraSystem.camera.viewportHeight = cameraSystem.camera.viewportWidth * height / width;
         cameraSystem.camera.update();
 
-        cameraSystem.guiCamera.viewportWidth = width;
-        cameraSystem.guiCamera.viewportHeight = cameraSystem.camera.viewportWidth * height / width;;
+        GUI.getStage().getViewport().update(width, height);
     }
 
     protected void drawUI() {

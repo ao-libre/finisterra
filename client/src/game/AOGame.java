@@ -6,11 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import game.handlers.AssetHandler;
 import game.handlers.StateHandler;
-import game.screens.GameScreen;
-import game.screens.LoginScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
-import game.systems.network.ClientSystem;
 import game.utils.Cursors;
 import shared.model.lobby.Player;
 

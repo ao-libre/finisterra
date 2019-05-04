@@ -18,12 +18,14 @@ import game.ui.user.UserInformation;
 
 public class GUI {
 
+    public static final int CONSOLE_TOP_BORDER = 16;
+    public static final int CONSOLE_LEFT_BORDER = 5;
     private static Inventory inventory;
     private static SpellView spellView;
     private static UserInformation userTable;
     private static DialogText dialog;
     private static AOConsole console;
-    private Stage stage;
+    private static Stage stage;
     private OrthographicCamera camera;
 
     public GUI() {
@@ -57,8 +59,8 @@ public class GUI {
         Container<Actor> consoleContainer = new Container<>();
         float screenH = getHeight();
         console = new AOConsole();
-        console.setY(screenH - 16 * AOConsole.MAX_MESSAGES);
-        console.setX(5);
+        console.setY(screenH - CONSOLE_TOP_BORDER * AOConsole.MAX_MESSAGES);
+        console.setX(CONSOLE_LEFT_BORDER);
         consoleContainer.setActor(console);
         consoleContainer.setPosition(0, screenH - console.getHeight(), Align.top | Align.left);
         return console;
@@ -66,7 +68,7 @@ public class GUI {
 
     private Container<Table> createUserStatus() {
         Container<Table> userContainer = new Container<>();
-        float width = getWidth() * 35 / 100f;
+        float width = getWidth() * 30 / 100f;
         userContainer.setWidth(width);
         userContainer.setHeight(64);
         float scaleXY = width / (64 + 200);
@@ -82,7 +84,7 @@ public class GUI {
         Container<Table> spellsContainer = new Container<>();
         float screenW = getWidth();
         float screenH = getHeight();
-        float width = screenW * 6f / 100f;
+        float width = screenW * 4f / 100f;
         spellView = new SpellView();
         spellsContainer.setWidth(width);
         spellsContainer.setHeight(SpellView.MAX_SPELLS * SpellSlot.SIZE);
@@ -96,7 +98,7 @@ public class GUI {
 
     private Container<Table> createInventory() {
         Container<Table> inventoryContainer = new Container<>();
-        float width = getWidth() * 30 / 100f;
+        float width = getWidth() * 20 / 100f;
         inventoryContainer.setWidth(width);
         inventory = new Inventory();
         final float zoom = width / inventory.getWidth();
@@ -151,6 +153,10 @@ public class GUI {
     public void draw() {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+    }
+
+    public static Stage getStage() {
+        return stage;
     }
 
     public void dispose() {

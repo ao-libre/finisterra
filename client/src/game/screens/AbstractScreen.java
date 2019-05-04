@@ -50,7 +50,8 @@ public abstract class AbstractScreen extends ScreenAdapter {
     }
 
     @Override public void resize(int width, int height) {
-        getStage().getViewport().update(width, height, true);
+        getStage().getViewport().update(width, height);
+
     }
 
     abstract void createContent();
