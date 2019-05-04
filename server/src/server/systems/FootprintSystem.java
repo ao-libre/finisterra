@@ -21,7 +21,8 @@ public class FootprintSystem extends IteratingSystem {
         this.liveTime = liveTime;
     }
 
-    @Override protected void process(int entityId) {
+    @Override
+    protected void process(int entityId) {
         final E e = E.E(entityId);
         if (TimeUtils.millis() - e.footprintTimestamp() >= liveTime) {
             final Set<Integer> footprints = server.getMapManager().getEntitiesFootprints().get(e.footprintEntityId());

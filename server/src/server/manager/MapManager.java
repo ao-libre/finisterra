@@ -3,6 +3,7 @@ package server.manager;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
 import entity.world.Footprint;
 import map.Cave;
@@ -107,6 +108,7 @@ public class MapManager extends DefaultManager {
             E(footprintId).worldPosMap(it.map);
             E(footprintId).worldPosX(it.x);
             E(footprintId).worldPosY(it.y);
+            E(footprintId).footprintTimestamp(TimeUtils.millis());
             entitiesFootprints.computeIfAbsent(player, (playerId) -> new HashSet<>()).add(footprintId);
 
             if (it.map != actualPos.map) {

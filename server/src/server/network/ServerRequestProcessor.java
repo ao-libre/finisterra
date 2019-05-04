@@ -116,8 +116,6 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      */
     @Override
     public void processRequest(MovementRequest request, int connectionId) {
-        // TODO check map changed
-
         int playerId = getNetworkManager().getPlayerByConnection(connectionId);
         E player = E(playerId);
         WorldUtils worldUtils = WorldUtils(getServer().getWorld());
