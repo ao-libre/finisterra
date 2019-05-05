@@ -39,12 +39,12 @@ public class Slot extends Actor {
         return item.isPresent() ? item.get().count : 0;
     }
 
-    void setItem(Item item) {
-        this.item = Optional.ofNullable(item);
-    }
-
     Optional<Item> getItem() {
         return item;
+    }
+
+    void setItem(Item item) {
+        this.item = Optional.ofNullable(item);
     }
 
     @Override

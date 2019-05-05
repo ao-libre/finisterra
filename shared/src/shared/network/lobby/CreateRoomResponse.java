@@ -10,7 +10,8 @@ public class CreateRoomResponse implements IResponse {
     private Room room;
     private Player player;
 
-    private CreateRoomResponse() { }
+    private CreateRoomResponse() {
+    }
 
     public CreateRoomResponse(Room room, Player player) {
         this.room = room;

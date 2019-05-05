@@ -9,14 +9,14 @@ import java.util.HashMap;
 public class InventoryUpdate implements INotification {
 
     private int id;
+    private HashMap<Integer, Inventory.Item> updates = new HashMap<>();
 
-    public InventoryUpdate() {}
+    public InventoryUpdate() {
+    }
 
     public InventoryUpdate(int id) {
         this.id = id;
     }
-
-    private HashMap<Integer, Inventory.Item> updates = new HashMap<>();
 
     public void add(int i, Inventory.Item item) {
         updates.put(i, item);

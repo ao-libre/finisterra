@@ -7,7 +7,8 @@ import java.io.Serializable;
 public class Armor extends Component implements Serializable {
     private int index;
 
-    public Armor() {}
+    public Armor() {
+    }
 
     public Armor(int index) {
         this.index = index;

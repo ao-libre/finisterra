@@ -27,46 +27,16 @@ import static com.artemis.E.E;
 
 public class CharacterScreen extends ScreenAdapter {
 
-    private final Chooser chooser;
-
-    enum Part {
-        BODY,
-        HELMET,
-        SHIELD,
-        WEAPON
-    }
-
     public static World world;
     private static int player;
+    private final Chooser chooser;
     private FPSLogger logger;
     private GameState state;
-
     public CharacterScreen(World world, int player) {
         CharacterScreen.world = world;
         CharacterScreen.player = player;
         this.logger = new FPSLogger();
         chooser = new Chooser();
-    }
-
-    protected void update(float deltaTime) {
-        this.logger.log();
-        world.setDelta(MathUtils.clamp(deltaTime, 0, 1 / 16f));
-        world.process();
-    }
-
-    @Override
-    public void show() {
-        this.state = GameState.RUNNING;
-    }
-
-    @Override
-    public void render(float delta) {
-        this.update(delta);
-        drawUI(delta);
-    }
-
-    private void drawUI(float delta) {
-        chooser.update(delta);
     }
 
     private static void change(Part part, Obj obj) {
@@ -92,6 +62,27 @@ public class CharacterScreen extends ScreenAdapter {
         }
     }
 
+    protected void update(float deltaTime) {
+        this.logger.log();
+        world.setDelta(MathUtils.clamp(deltaTime, 0, 1 / 16f));
+        world.process();
+    }
+
+    @Override
+    public void show() {
+        this.state = GameState.RUNNING;
+    }
+
+    @Override
+    public void render(float delta) {
+        this.update(delta);
+        drawUI(delta);
+    }
+
+    private void drawUI(float delta) {
+        chooser.update(delta);
+    }
+
     @Override
     public void pause() {
         if (this.state == GameState.RUNNING) {
@@ -104,6 +95,13 @@ public class CharacterScreen extends ScreenAdapter {
         if (this.state == GameState.PAUSED) {
             this.state = GameState.RUNNING;
         }
+    }
+
+    enum Part {
+        BODY,
+        HELMET,
+        SHIELD,
+        WEAPON
     }
 
     private static class Chooser extends Window {

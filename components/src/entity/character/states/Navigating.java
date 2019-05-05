@@ -7,5 +7,6 @@ import java.io.Serializable;
 
 @DelayedComponentRemoval
 public class Navigating extends Component implements Serializable {
-    public Navigating(){}
+    public Navigating() {
+    }
 }

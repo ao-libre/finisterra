@@ -1,10 +1,13 @@
 package shared.objects.types;
 
-import shared.objects.types.common.BonfireObj;
+public class BoatObj extends Obj {
 
-public class BoatObj extends Obj{
+    private int bodyIndex;
+    private int minDef, maxDef;
+    private int minHit, maxHit;
 
-    public BoatObj() {}
+    public BoatObj() {
+    }
 
     public BoatObj(int id, String name, int grhIndex) {
         super(id, name, grhIndex);
@@ -50,9 +53,6 @@ public class BoatObj extends Obj{
         this.maxHit = maxHit;
     }
 
-    private int bodyIndex;
-    private int minDef, maxDef;
-    private int minHit, maxHit;
     @Override
     public Type getType() {
         return Type.BOAT;

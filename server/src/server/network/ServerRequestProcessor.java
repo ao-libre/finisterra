@@ -37,7 +37,9 @@ import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
 import shared.util.MapUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static com.artemis.E.E;
 import static server.utils.WorldUtils.WorldUtils;
@@ -92,8 +94,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     private List<WorldPos> getArea(WorldPos worldPos, int range /*impar*/) {
         List<WorldPos> positions = new ArrayList<>();
         int i = range / 2;
-        for (int x = worldPos.x - i; x <= worldPos.x + i ; x++) {
-            for (int y = worldPos.y - i; y <= worldPos.y + i ; y++) {
+        for (int x = worldPos.x - i; x <= worldPos.x + i; x++) {
+            for (int y = worldPos.y - i; y <= worldPos.y + i; y++) {
                 positions.add(new WorldPos(x, y, worldPos.map));
             }
         }
@@ -110,6 +112,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
 
     /**
      * Process {@link MovementRequest}. If it is valid, move player and notify.
+     *
      * @param request
      * @param connectionId
      * @see MovementRequest
@@ -150,8 +153,9 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
 
     /**
      * Attack and notify, if it was effective or not, to near users
+     *
      * @param attackRequest attack type
-     * @param connectionId user connection id
+     * @param connectionId  user connection id
      */
     @Override
     public void processRequest(AttackRequest attackRequest, int connectionId) {
@@ -161,7 +165,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
 
     /**
      * User wants to use or act over an item, do action and notify.
-     * @param itemAction user slot number
+     *
+     * @param itemAction   user slot number
      * @param connectionId user connection id
      */
     @Override
@@ -187,8 +192,9 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
 
     /**
      * User wants to meditate
+     *
      * @param meditateRequest request (no data)
-     * @param connectionId user connection id
+     * @param connectionId    user connection id
      */
     @Override
     public void processRequest(MeditateRequest meditateRequest, int connectionId) {
@@ -208,7 +214,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
 
     /**
      * Notify near users that user talked
-     * @param talkRequest talk request with message
+     *
+     * @param talkRequest  talk request with message
      * @param connectionId user connection id
      */
     @Override
@@ -219,8 +226,9 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
 
     /**
      * User wants to take something from ground
+     *
      * @param takeItemRequest request (no data)
-     * @param connectionId user connection id
+     * @param connectionId    user connection id
      */
     @Override
     public void processRequest(TakeItemRequest takeItemRequest, int connectionId) {

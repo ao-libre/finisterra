@@ -12,10 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public class UserStatus extends Table {
 
     private final static Texture BACKGROUND_TEXTURE = new Texture(Gdx.files.local("data/ui/images/status-background.png"));
-    private static Drawable background;
     private final static Bar hp = new Bar(Bar.Kind.HP);
     private final static Bar mana = new Bar(Bar.Kind.MANA);
     private final static Bar energy = new Bar(Bar.Kind.ENERGY);
+    private static Drawable background;
 
     public UserStatus() {
         background = new TextureRegionDrawable(new TextureRegion(BACKGROUND_TEXTURE));

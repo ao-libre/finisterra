@@ -20,11 +20,11 @@ public class Heading extends Component implements Serializable {
         this.current = heading;
     }
 
-    public void setCurrent(int current) {
-        this.current = current;
-    }
-
     public int getCurrent() {
         return current;
+    }
+
+    public void setCurrent(int current) {
+        this.current = current;
     }
 }

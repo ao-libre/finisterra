@@ -12,7 +12,9 @@ public class Player {
     private Hero hero;
     private boolean ready;
 
-    public Player () {}
+    public Player() {
+    }
+
     public Player(int connectionId, String playerName, Hero hero) {
         this.connectionId = connectionId;
         this.playerName = playerName;
@@ -43,12 +45,12 @@ public class Player {
         return hero;
     }
 
-    public boolean isReady() {
-        return ready;
-    }
-
     public void setHero(Hero hero) {
         this.hero = hero;
+    }
+
+    public boolean isReady() {
+        return ready;
     }
 
     public void setReady(boolean ready) {

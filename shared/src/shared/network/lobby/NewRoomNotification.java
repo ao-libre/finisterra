@@ -8,7 +8,8 @@ public class NewRoomNotification implements INotification {
 
     private Room room;
 
-    public NewRoomNotification() {}
+    public NewRoomNotification() {
+    }
 
     public NewRoomNotification(Room room) {
         this.room = room;

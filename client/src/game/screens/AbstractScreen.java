@@ -5,7 +5,6 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import game.managers.AOInputProcessor;
 import game.utils.Skins;
 
 public abstract class AbstractScreen extends ScreenAdapter {
@@ -49,14 +48,16 @@ public abstract class AbstractScreen extends ScreenAdapter {
         getStage().addActor(getMainTable());
     }
 
-    @Override public void resize(int width, int height) {
+    @Override
+    public void resize(int width, int height) {
         getStage().getViewport().update(width, height);
 
     }
 
     abstract void createContent();
 
-    @Override public void dispose() {
+    @Override
+    public void dispose() {
         super.dispose();
         getStage().dispose();
     }

@@ -21,7 +21,10 @@ import shared.network.notifications.FXNotification;
 import shared.objects.types.HelmetObj;
 import shared.objects.types.Obj;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
@@ -49,7 +52,7 @@ public class MagicCombatSystem implements IManager {
         if (target.isPresent()) {
             AttackAnimation attackAnimation = new AttackAnimation();
             getServer().getWorldManager()
-                .notifyUpdate(userId, new EntityUpdate(userId, new Component[] {attackAnimation}, new Class[0]));
+                    .notifyUpdate(userId, new EntityUpdate(userId, new Component[]{attackAnimation}, new Class[0]));
             castSpell(userId, target.get(), spell);
         } else {
             // TODO
@@ -72,13 +75,13 @@ public class MagicCombatSystem implements IManager {
         Set<Integer> entities = new HashSet<>(getServer().getMapManager().getNearEntities(userId));
         entities.add(userId);
         return entities
-            .stream()
-            .map(entity -> E(entity))
-            .filter(Objects::nonNull)
-            .filter(entity -> entity.hasWorldPos())
-            .filter(entity -> entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos))
-            .map(E::id)
-            .findFirst();
+                .stream()
+                .map(entity -> E(entity))
+                .filter(Objects::nonNull)
+                .filter(entity -> entity.hasWorldPos())
+                .filter(entity -> entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos))
+                .map(E::id)
+                .findFirst();
     }
 
     private boolean footprintOf(Integer entity, WorldPos worldPos) {
@@ -158,7 +161,7 @@ public class MagicCombatSystem implements IManager {
             getWorldManager().sendEntityUpdate(target, victimUpdateBuilder.build());
             getWorldManager().notifyUpdate(target, victimUpdateToAllBuilder.build());
             getWorldManager().notifyUpdate(playerId, playerUpdateBuilder
-                .withComponents(new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS)).build());
+                    .withComponents(new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS)).build());
         } else {
             notifyInfo(playerId, NOT_ENOUGHT_MANA);
         }
@@ -177,11 +180,11 @@ public class MagicCombatSystem implements IManager {
             if (E(target).hasHelmet()) {
                 final Optional<Obj> obj = getServer().getObjectManager().getObject(E(target).getHelmet().index);
                 obj
-                    .filter(HelmetObj.class::isInstance)
-                    .map(HelmetObj.class::cast)
-                    .ifPresent(helmet -> {
-                        // TODO Magic def
-                    });
+                        .filter(HelmetObj.class::isInstance)
+                        .map(HelmetObj.class::cast)
+                        .ifPresent(helmet -> {
+                            // TODO Magic def
+                        });
             }
             // TODO anillos
             damage = -damage;
@@ -192,7 +195,7 @@ public class MagicCombatSystem implements IManager {
     private void updateMana(int playerId, int requiredMana, Mana mana) {
         mana.min -= requiredMana;
         // update mana
-        getWorldManager().sendEntityUpdate(playerId, new EntityUpdate(playerId, new Component[] {mana}, new Class[0]));
+        getWorldManager().sendEntityUpdate(playerId, new EntityUpdate(playerId, new Component[]{mana}, new Class[0]));
     }
 
     private boolean isValid(int target, Spell spell) {

@@ -7,7 +7,8 @@ public class TalkRequest implements IRequest {
 
     private String message;
 
-    public TalkRequest() {}
+    public TalkRequest() {
+    }
 
     public TalkRequest(String message) {
         this.message = message;

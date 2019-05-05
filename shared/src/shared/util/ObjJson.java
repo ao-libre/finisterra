@@ -17,7 +17,7 @@ public class ObjJson extends Json {
         setIgnoreUnknownFields(true);
         Arrays.stream(Type.values()).forEach(type -> {
             final Class clazz = getClassForType(type);
-            if (clazz!= null) {
+            if (clazz != null) {
                 addClassTag(type.name().toLowerCase(), clazz);
             }
         });

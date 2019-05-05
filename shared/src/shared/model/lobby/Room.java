@@ -10,7 +10,8 @@ public class Room {
     private Set<Player> players = new HashSet<>();
     private int maxPlayers;
 
-    private Room() {}
+    private Room() {
+    }
 
     public Room(int maxPlayers) {
         this.maxPlayers = maxPlayers;

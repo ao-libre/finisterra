@@ -7,7 +7,8 @@ public class JoinRoomRequest implements IRequest {
 
     private int id;
 
-    public JoinRoomRequest() {}
+    public JoinRoomRequest() {
+    }
 
     public JoinRoomRequest(int id) {
         this.id = id;

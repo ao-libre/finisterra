@@ -5,7 +5,6 @@ import com.artemis.Entity;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
-import entity.world.Footprint;
 import map.Cave;
 import position.WorldPos;
 import server.core.Server;
@@ -26,12 +25,11 @@ public class MapManager extends DefaultManager {
 
     public static final int MAP_COUNT = 1; // TODO set to 1 to load faster
     public static final int MAX_DISTANCE = 15;
+    private static HashMap<Integer, shared.model.map.Map> maps = new HashMap<>();
+    public int mapEntity;
     private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesFootprints = new ConcurrentHashMap<>();
-
-    private static HashMap<Integer, shared.model.map.Map> maps = new HashMap<>();
-    public int mapEntity;
 
     public MapManager(Server server) {
         super(server);
@@ -48,8 +46,7 @@ public class MapManager extends DefaultManager {
                 .build();
         boolean[][] tiles = caveGenerator.generateMap();
 
-        for (boolean[] row : tiles)
-        {
+        for (boolean[] row : tiles) {
             String[] s = new String[row.length];
             for (int i = 0; i < row.length; i++) {
                 s[i] = row[i] ? "X" : "-";
@@ -93,7 +90,8 @@ public class MapManager extends DefaultManager {
 
     /**
      * Move entity to current position, leaving old relations if goes out of range
-     * @param player player id
+     *
+     * @param player     player id
      * @param previusPos previus position in case its moving, empty if is a new position
      */
     public void movePlayer(int player, Optional<WorldPos> previusPos) {
@@ -124,6 +122,7 @@ public class MapManager extends DefaultManager {
 
     /**
      * Remove entity from map and unlink near entities
+     *
      * @param entity
      */
     public void removeEntity(int entity) {
@@ -145,6 +144,7 @@ public class MapManager extends DefaultManager {
 
     /**
      * Add entity to map and calculate near entities
+     *
      * @param player
      */
     public void updateEntity(int player) {
@@ -161,6 +161,7 @@ public class MapManager extends DefaultManager {
 
     /**
      * Link entity1 and entity2 if they are in near range
+     *
      * @param entity1
      * @param entity2
      */
@@ -174,6 +175,7 @@ public class MapManager extends DefaultManager {
 
     /**
      * Unlink entities if they are out of range
+     *
      * @param player1
      * @param player2
      */
@@ -187,6 +189,7 @@ public class MapManager extends DefaultManager {
 
     /**
      * Unlink entities
+     *
      * @param entity1
      * @param entity2
      */
@@ -201,6 +204,7 @@ public class MapManager extends DefaultManager {
 
     /**
      * Link entities
+     *
      * @param entity1
      * @param entity2
      */

@@ -76,12 +76,15 @@ public class Constants {
     public static Float getHp(CharClass charClass) {
         return HP_CONSTANTS.get(charClass);
     }
+
     public static Float getMana(CharClass charClass) {
         return MANA_CONSTANTS.get(charClass);
     }
+
     public static Float getMovement(CharClass charClass) {
         return MOV_VELOCITY_CONSTANTS.get(charClass);
     }
+
     public static Float getEvasion(CharClass charClass) {
         return EVASION_CONSTANTS.get(charClass);
     }

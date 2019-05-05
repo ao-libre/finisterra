@@ -15,7 +15,6 @@ import shared.model.lobby.Lobby;
 import shared.model.lobby.Room;
 import shared.network.lobby.StartGameResponse;
 
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Properties;
@@ -23,9 +22,9 @@ import java.util.Set;
 
 public class Finisterra implements ApplicationListener {
 
-    private Set<Server> servers = new HashSet<>();
     private final int tcpPort;
     private final int udpPort;
+    private Set<Server> servers = new HashSet<>();
     private int lastPort;
     private Lobby lobby;
     private World world;
@@ -66,7 +65,7 @@ public class Finisterra implements ApplicationListener {
     }
 
     public void startGame(Room room) {
-        Server roomServer = servers.stream().filter(server -> server.getRoomId() == room.getId()).findFirst().orElseGet(() ->{
+        Server roomServer = servers.stream().filter(server -> server.getRoomId() == room.getId()).findFirst().orElseGet(() -> {
             int tcpPort = getNextPort();
             int udpPort = getNextPort();
             Server server = new Server(room.getId(), tcpPort, udpPort, objectManager, spellManager);
@@ -81,7 +80,7 @@ public class Finisterra implements ApplicationListener {
                 String property = System.getProperty("server.useLocalhost");
                 System.out.println(property);
                 boolean shouldUseLocalHost = Boolean.parseBoolean(property);
-                getNetworkManager().sendTo(connectionId, new StartGameResponse(shouldUseLocalHost ? "localhost" :ip, roomServer.getTcpPort(), roomServer.getUdpPort()));
+                getNetworkManager().sendTo(connectionId, new StartGameResponse(shouldUseLocalHost ? "localhost" : ip, roomServer.getTcpPort(), roomServer.getUdpPort()));
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             } catch (Exception e) {

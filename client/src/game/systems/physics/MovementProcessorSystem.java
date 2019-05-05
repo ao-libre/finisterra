@@ -27,9 +27,9 @@ import static com.artemis.E.E;
 @Wire
 public class MovementProcessorSystem extends IteratingSystem {
 
-    private CaveSystem caveSystem;
     public static java.util.Map<Integer, MovementRequest> requests = new ConcurrentHashMap<>();
     private static int requestNumber;
+    private CaveSystem caveSystem;
 
     public MovementProcessorSystem() {
         super(Aspect.all(Focused.class, AOPhysics.class,
@@ -68,7 +68,7 @@ public class MovementProcessorSystem extends IteratingSystem {
     private static AOPhysics.Movement getDir(WorldPos worldPos, WorldPos destination) {
         if (worldPos.x < destination.x) {
             return AOPhysics.Movement.RIGHT;
-        } else if (worldPos.x >  destination.x) {
+        } else if (worldPos.x > destination.x) {
             return AOPhysics.Movement.LEFT;
         } else if (worldPos.y < destination.y) {
             return AOPhysics.Movement.DOWN;

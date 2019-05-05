@@ -2,7 +2,6 @@ package server.manager;
 
 import com.artemis.Component;
 import com.artemis.E;
-import com.esotericsoftware.minlog.Log;
 import entity.character.attributes.Agility;
 import entity.character.attributes.Strength;
 import entity.character.info.Inventory;
@@ -75,7 +74,7 @@ public class ItemManager extends DefaultManager {
                     case MANA:
                         Mana mana = E(player).getMana();
                         final int level = E(player).levelLevel();
-                        mana.min += mana.max * 0.045f;
+                        mana.min += mana.max * 0.04f + level / 2 + 40 / level;
                         mana.min = Math.min(mana.min, mana.max);
                         components.add(mana);
                         break;

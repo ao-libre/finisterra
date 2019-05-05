@@ -4,93 +4,94 @@ import java.util.Optional;
 
 public class Tile {
 
-	public static final int EMPTY_INDEX = -1;
-	public static final float TILE_PIXEL_WIDTH = 32.0f;
-	public static final float TILE_PIXEL_HEIGHT = 32.0f;
+    public static final int EMPTY_INDEX = -1;
+    public static final float TILE_PIXEL_WIDTH = 32.0f;
+    public static final float TILE_PIXEL_HEIGHT = 32.0f;
 
-	private int[] graphic;
+    private int[] graphic;
 
-	private int charIndex = EMPTY_INDEX;
-	private int objIndex = EMPTY_INDEX;
-	private int npcIndex = EMPTY_INDEX;
-	
-	private WorldPosition tileExit = new WorldPosition();
-	private boolean blocked;
+    private int charIndex = EMPTY_INDEX;
+    private int objIndex = EMPTY_INDEX;
+    private int npcIndex = EMPTY_INDEX;
 
-	private int trigger;
+    private WorldPosition tileExit = new WorldPosition();
+    private boolean blocked;
 
-	public Tile() {}
+    private int trigger;
 
-	public Tile(int[] graphic, int charIndex, int objIndex,
-				int npcIndex, WorldPosition tileExit, boolean blocked,
-				int trigger) {
-		this.setGraphic(graphic);
-		this.setCharIndex(charIndex);
-		this.setObjIndex(objIndex);
-		this.setNpcIndex(npcIndex);
-		this.setTileExit(Optional.ofNullable(tileExit).orElse(new WorldPosition(0, 0, 0)));
-		this.setBlocked(blocked);
-		this.setTrigger(trigger);
-	}
+    public Tile() {
+    }
 
-	public int getGraphic(int index) {
-		return this.graphic[index];
-	}
+    public Tile(int[] graphic, int charIndex, int objIndex,
+                int npcIndex, WorldPosition tileExit, boolean blocked,
+                int trigger) {
+        this.setGraphic(graphic);
+        this.setCharIndex(charIndex);
+        this.setObjIndex(objIndex);
+        this.setNpcIndex(npcIndex);
+        this.setTileExit(Optional.ofNullable(tileExit).orElse(new WorldPosition(0, 0, 0)));
+        this.setBlocked(blocked);
+        this.setTrigger(trigger);
+    }
 
-	public int[] getGraphic() {
-		return this.graphic;
-	}
+    public int getGraphic(int index) {
+        return this.graphic[index];
+    }
 
-	public void setGraphic(int[] graphic) {
-		this.graphic = graphic;
-	}
+    public int[] getGraphic() {
+        return this.graphic;
+    }
 
-	public int getCharIndex() {
-		return charIndex;
-	}
+    public void setGraphic(int[] graphic) {
+        this.graphic = graphic;
+    }
 
-	public void setCharIndex(int charIndex) {
-		this.charIndex = charIndex;
-	}
+    public int getCharIndex() {
+        return charIndex;
+    }
 
-	public int getObjIndex() {
-		return objIndex;
-	}
+    public void setCharIndex(int charIndex) {
+        this.charIndex = charIndex;
+    }
 
-	public void setObjIndex(int objIndex) {
-		this.objIndex = objIndex;
-	}
+    public int getObjIndex() {
+        return objIndex;
+    }
 
-	public int getNpcIndex() {
-		return npcIndex;
-	}
+    public void setObjIndex(int objIndex) {
+        this.objIndex = objIndex;
+    }
 
-	public void setNpcIndex(int npcIndex) {
-		this.npcIndex = npcIndex;
-	}
+    public int getNpcIndex() {
+        return npcIndex;
+    }
 
-	public WorldPosition getTileExit() {
-		return tileExit;
-	}
+    public void setNpcIndex(int npcIndex) {
+        this.npcIndex = npcIndex;
+    }
 
-	public void setTileExit(WorldPosition tileExit) {
-		this.tileExit = tileExit;
-	}
+    public WorldPosition getTileExit() {
+        return tileExit;
+    }
 
-	public boolean isBlocked() {
-		return blocked;
-	}
+    public void setTileExit(WorldPosition tileExit) {
+        this.tileExit = tileExit;
+    }
 
-	public void setBlocked(boolean blocked) {
-		this.blocked = blocked;
-	}
+    public boolean isBlocked() {
+        return blocked;
+    }
 
-	public int getTrigger() {
-		return trigger;
-	}
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
 
-	public void setTrigger(int trigger) {
-		this.trigger = trigger;
-	}
+    public int getTrigger() {
+        return trigger;
+    }
+
+    public void setTrigger(int trigger) {
+        this.trigger = trigger;
+    }
 
 }

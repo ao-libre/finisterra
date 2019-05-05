@@ -18,6 +18,7 @@ public class TimeSync extends BaseSystem {
     private long timeOffset;
 
     private float time = 0;
+
     /**
      * Returns a message to be sent, which should be sent immediately as the send time is tracked.
      */
@@ -37,7 +38,7 @@ public class TimeSync extends BaseSystem {
 
         if (response.requestId == requestId) {
             rtt = (receiveTime - sendTime) - (response.sendTime - response.receiveTime);
-            timeOffset = ( (response.receiveTime - sendTime) + (response.sendTime - receiveTime) ) / 2;
+            timeOffset = ((response.receiveTime - sendTime) + (response.sendTime - receiveTime)) / 2;
         }
     }
 

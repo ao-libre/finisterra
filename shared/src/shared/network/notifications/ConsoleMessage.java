@@ -10,7 +10,8 @@ public class ConsoleMessage implements INotification {
     private String message;
     private Kind kind;
 
-    public ConsoleMessage() {}
+    public ConsoleMessage() {
+    }
 
     private ConsoleMessage(String message, Kind kind) {
         this.message = message;
@@ -41,7 +42,8 @@ public class ConsoleMessage implements INotification {
         return kind;
     }
 
-    @Override public void accept(INotificationProcessor processor) {
+    @Override
+    public void accept(INotificationProcessor processor) {
         processor.processNotification(this);
     }
 

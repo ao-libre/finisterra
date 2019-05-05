@@ -11,7 +11,8 @@ public class DropItem implements INotification {
     private int playerId;
     private int slot;
 
-    public DropItem(){}
+    public DropItem() {
+    }
 
     public DropItem(int playerId, int slot, WorldPos position) {
         this(playerId, slot, 1, position);

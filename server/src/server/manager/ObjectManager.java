@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.esotericsoftware.minlog.Log;
 import server.core.Server;
-import server.database.ServerDescriptorReader;
-import shared.model.readers.DescriptorsReader;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
 import shared.util.ObjJson;

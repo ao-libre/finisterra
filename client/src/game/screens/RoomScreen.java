@@ -10,7 +10,7 @@ import shared.model.lobby.Player;
 import shared.model.lobby.Room;
 import shared.network.lobby.StartGameRequest;
 
-public class RoomScreen extends AbstractScreen{
+public class RoomScreen extends AbstractScreen {
     private ClientSystem clientSystem;
     private Room room;
     private Player me;

@@ -7,7 +7,8 @@ public class StartGameRequest implements IRequest {
 
     private int roomId;
 
-    private StartGameRequest() {}
+    private StartGameRequest() {
+    }
 
     public StartGameRequest(int roomId) {
         this.roomId = roomId;

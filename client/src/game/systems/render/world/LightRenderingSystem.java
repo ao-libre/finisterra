@@ -10,19 +10,14 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import entity.character.states.Immobile;
 import game.screens.GameScreen;
 import game.systems.OrderedEntityProcessingSystem;
 import game.systems.camera.CameraSystem;
-import game.utils.Fonts;
 import game.utils.Resources;
-import game.utils.WorldUtils;
 import position.Pos2D;
-import position.WorldPos;
 import shared.model.map.Tile;
 import shared.util.Util;
 
@@ -38,11 +33,9 @@ public class LightRenderingSystem extends OrderedEntityProcessingSystem {
     private final Texture light;
     private final float width;
     private final float height;
-
-    private CameraSystem cameraSystem;
-
     FrameBuffer lightBuffer;
     TextureRegion lightBufferRegion;
+    private CameraSystem cameraSystem;
     private Color prevColor;
     private int blendDstFunc;
     private int blendSrcFunc;
@@ -89,7 +82,7 @@ public class LightRenderingSystem extends OrderedEntityProcessingSystem {
         lightBuffer.begin();
         Gdx.gl.glEnable(GL20.GL_BLEND);
 
-        Gdx.gl.glClearColor(0f,0f,0f,1);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();

@@ -1,12 +1,21 @@
 package shared.objects.types;
 
-import entity.character.equipment.Helmet;
 import org.ini4j.Profile;
 import shared.objects.factory.ObjectFactory;
 
 public class HelmetObj extends ObjWithClasses {
 
-    public HelmetObj(){}
+    private int bodyNumber;
+    private int animationId;
+    private int minDef, maxDef;
+
+    public HelmetObj() {
+    }
+
+    public HelmetObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
+    }
+
     public int getBodyNumber() {
         return bodyNumber;
     }
@@ -37,14 +46,6 @@ public class HelmetObj extends ObjWithClasses {
 
     public void setMaxDef(int maxDef) {
         this.maxDef = maxDef;
-    }
-
-    private int bodyNumber;
-    private int animationId;
-    private int minDef, maxDef;
-
-    public HelmetObj(int id, String name, int grhIndex) {
-        super(id, name, grhIndex);
     }
 
     @Override

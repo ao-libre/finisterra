@@ -4,8 +4,8 @@ import com.artemis.Component;
 import shared.network.interfaces.INotification;
 import shared.network.interfaces.INotificationProcessor;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Set;
 
 public class EntityUpdate implements INotification {
 
@@ -22,6 +22,11 @@ public class EntityUpdate implements INotification {
         this.toRemove = toRemove;
     }
 
+    @Override
+    public void accept(INotificationProcessor processor) {
+        processor.processNotification(this);
+    }
+
     public static class EntityUpdateBuilder {
 
         private EntityUpdate entityUpdate;
@@ -35,7 +40,7 @@ public class EntityUpdate implements INotification {
             return builder;
         }
 
-        public EntityUpdateBuilder withComponents(Component... components){
+        public EntityUpdateBuilder withComponents(Component... components) {
             for (Component component : components) {
                 this.components.add(component);
             }
@@ -54,12 +59,5 @@ public class EntityUpdate implements INotification {
             entityUpdate.toRemove = toRemove.toArray(new Class[0]);
             return entityUpdate;
         }
-    }
-
-
-
-    @Override
-    public void accept(INotificationProcessor processor) {
-        processor.processNotification(this);
     }
 }

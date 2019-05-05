@@ -7,7 +7,8 @@ public class ReadyNotification implements INotification {
 
     private boolean ready;
 
-    public ReadyNotification() {}
+    public ReadyNotification() {
+    }
 
     public ReadyNotification(boolean ready) {
         this.ready = ready;

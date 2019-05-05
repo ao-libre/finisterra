@@ -12,6 +12,7 @@ import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.FXNotification;
 import shared.network.notifications.RemoveEntity;
+import shared.network.sound.SoundNotification;
 
 public class DefaultNotificationProcessor implements INotificationProcessor {
 
@@ -75,7 +76,13 @@ public class DefaultNotificationProcessor implements INotificationProcessor {
 
     }
 
-    @Override public void processNotification(ConsoleMessage consoleMessage) {
+    @Override
+    public void processNotification(ConsoleMessage consoleMessage) {
+
+    }
+
+    @Override
+    public void processNotification(SoundNotification soundNotification) {
 
     }
 }

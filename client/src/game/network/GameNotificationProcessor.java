@@ -1,12 +1,10 @@
 package game.network;
 
-import camera.Focused;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
 import game.AOGame;
@@ -16,7 +14,6 @@ import game.screens.LobbyScreen;
 import game.screens.RoomScreen;
 import game.ui.AOConsole;
 import game.ui.GUI;
-import shared.model.lobby.Lobby;
 import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.lobby.JoinRoomNotification;
@@ -26,6 +23,7 @@ import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.FXNotification;
 import shared.network.notifications.RemoveEntity;
+import shared.network.sound.SoundNotification;
 
 import static com.artemis.E.E;
 
@@ -127,7 +125,8 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         }
     }
 
-    @Override public void processNotification(NewRoomNotification newRoomNotification) {
+    @Override
+    public void processNotification(NewRoomNotification newRoomNotification) {
         AOGame game = (AOGame) Gdx.app.getApplicationListener();
         if (game.getScreen() instanceof LobbyScreen) {
             final LobbyScreen lobby = (LobbyScreen) game.getScreen();
@@ -135,7 +134,8 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         }
     }
 
-    @Override public void processNotification(ConsoleMessage consoleMessage) {
+    @Override
+    public void processNotification(ConsoleMessage consoleMessage) {
         AOGame game = (AOGame) Gdx.app.getApplicationListener();
         if (game.getScreen() instanceof GameScreen) {
             final GUI gui = GameScreen.getGui();
@@ -159,5 +159,12 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
                     break;
             }
         }
+    }
+
+    @Override
+    public void processNotification(SoundNotification soundNotification) {
+        int soundNumber = soundNotification.getSoundNumber();
+        // TODO obtener el sonido a reproducir
+        // TODO reproducir
     }
 }

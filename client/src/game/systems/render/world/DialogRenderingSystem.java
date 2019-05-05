@@ -14,14 +14,12 @@ import game.handlers.DescriptorHandler;
 import game.systems.OrderedEntityProcessingSystem;
 import game.systems.camera.CameraSystem;
 import game.utils.Fonts;
-import model.textures.BundledAnimation;
 import position.Pos2D;
 import position.WorldPos;
 import shared.model.map.Tile;
 import shared.util.Util;
 
 import java.util.Comparator;
-import java.util.Optional;
 
 @Wire
 public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
@@ -80,6 +78,7 @@ public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
             player.removeDialog();
         }
     }
+
     @Override
     protected Comparator<? super Entity> getComparator() {
         return Comparator.comparingInt(entity -> E.E(entity).getWorldPos().y);

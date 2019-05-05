@@ -11,7 +11,8 @@ public class SpellCastRequest implements IRequest {
     private WorldPos worldPos;
     private long timestamp;
 
-    public SpellCastRequest(){}
+    public SpellCastRequest() {
+    }
 
     public SpellCastRequest(Spell spell, WorldPos worldPos, long timestamp) {
         this.spell = spell;

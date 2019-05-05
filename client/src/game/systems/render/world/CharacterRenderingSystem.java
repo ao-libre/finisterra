@@ -29,7 +29,6 @@ import shared.model.map.Tile;
 import shared.util.Util;
 
 import java.util.Comparator;
-import java.util.Optional;
 
 import static com.artemis.E.E;
 
@@ -46,6 +45,12 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
     public CharacterRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(Character.class, WorldPos.class, Body.class, Heading.class));
         this.batch = batch;
+    }
+
+    private static float getMovementOffset(BundledAnimation bodyAnimation) {
+        float animationTime = bodyAnimation.getAnimationTime();
+        float interpolationTime = bodyAnimation.getAnimation().getAnimationDuration() / 2;
+        return Interpolation.circle.apply(Math.min(1f, animationTime < interpolationTime ? animationTime / interpolationTime : interpolationTime / animationTime));
     }
 
     @Override
@@ -97,6 +102,10 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             bodyPixelOffsetX = screenPos.x;
             bodyPixelOffsetY = screenPos.y;
             calculateOffsets();
+        }
+
+        static CharacterDrawer createDrawer(SpriteBatch batch, E player, Heading heading, Pos2D screenPos) {
+            return new CharacterDrawer(batch, player, heading, screenPos);
         }
 
         public void draw() {
@@ -152,10 +161,6 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
             idle = !player.isMoving() ? bodyAnimation.getIdleTime() : 0;
             bodyPixelOffsetX = bodyPixelOffsetX + ((32.0f - bodyRegion.getRegionWidth()) / 2);
             bodyPixelOffsetY = screenPos.y - (bodyRegion.getRegionHeight() - 32.0f) - 32.0f;
-        }
-
-        static CharacterDrawer createDrawer(SpriteBatch batch, E player, Heading heading, Pos2D screenPos) {
-            return new CharacterDrawer(batch, player, heading, screenPos);
         }
 
         void drawBody() {
@@ -219,12 +224,6 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
                 batch.draw(region, x + offsetX, (y + offsetY));
             }
         }
-    }
-
-    private static float getMovementOffset(BundledAnimation bodyAnimation) {
-        float animationTime = bodyAnimation.getAnimationTime();
-        float interpolationTime = bodyAnimation.getAnimation().getAnimationDuration() / 2;
-        return Interpolation.circle.apply(Math.min(1f, animationTime < interpolationTime ? animationTime / interpolationTime : interpolationTime / animationTime));
     }
 
 }

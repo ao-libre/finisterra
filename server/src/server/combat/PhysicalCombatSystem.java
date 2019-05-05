@@ -18,6 +18,7 @@ import shared.interfaces.Race;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.FXNotification;
+import shared.network.sound.SoundNotification;
 import shared.objects.types.*;
 
 import java.util.*;
@@ -86,6 +87,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
                     notifyCombat(userId, format(DEFENDED_WITH_SHIELD, getName(targetId.get())));
                     // TODO sound
                     // TODO shield animation
+                    getWorldManager().notifyUpdate(targetId.get(), new SoundNotification(10));
                 } else {
                     notifyCombat(userId, ATTACK_FAILED);
                     notifyCombat(targetId.get(), format(ATTACKED_AND_FAILED, getName(userId)));
@@ -101,7 +103,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         E entity = E(userId);
         final Optional<Obj> obj = getServer().getObjectManager().getObject(entity.getWeapon().index);
         final Optional<WeaponObj> weapon =
-            obj.isPresent() && Type.WEAPON.equals(obj.get().getType()) ? Optional.of((WeaponObj) obj.get()) : Optional.empty();
+                obj.isPresent() && Type.WEAPON.equals(obj.get().getType()) ? Optional.of((WeaponObj) obj.get()) : Optional.empty();
 
         int baseDamage = getBaseDamage(entity, weapon);
         Log.info("Base Damage: " + baseDamage);
@@ -147,19 +149,19 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         AttackKind kind = AttackKind.getKind(entity);
         ThreadLocalRandom random = ThreadLocalRandom.current();
         float modifier = kind == AttackKind.PROJECTILE ?
-            Modifiers.PROJECTILE_DAMAGE.of(clazz) :
-            kind == AttackKind.WEAPON ? Modifiers.WEAPON_DAMAGE.of(clazz) : Modifiers.WRESTLING_DAMAGE.of(clazz);
+                Modifiers.PROJECTILE_DAMAGE.of(clazz) :
+                kind == AttackKind.WEAPON ? Modifiers.WEAPON_DAMAGE.of(clazz) : Modifiers.WRESTLING_DAMAGE.of(clazz);
         Log.info("Modifier: " + modifier);
         int weaponDamage =
-            weapon.map(weaponObj -> random.nextInt(weaponObj.getMinHit(), weaponObj.getMaxHit() + 1))
-                .orElseGet(() -> random.nextInt(4, 9));
+                weapon.map(weaponObj -> random.nextInt(weaponObj.getMinHit(), weaponObj.getMaxHit() + 1))
+                        .orElseGet(() -> random.nextInt(4, 9));
         Log.info("Weapon Damage: " + weaponDamage);
         int maxWeaponDamage = weapon.map(WeaponObj::getMaxHit).orElse(9);
         Log.info("Max Weapon Damage: " + maxWeaponDamage);
         int userDamage = random.nextInt(entity.getHit().getMin() - 10, entity.getHit().getMax() + 1);
         Log.info("User damage: " + userDamage);
         return (int) ((3 * weaponDamage + ((maxWeaponDamage) / 5) * Math.max(0, entity.strengthValue() - 15) + userDamage)
-            * modifier);
+                * modifier);
     }
 
     @Override
@@ -169,30 +171,30 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         WorldPos worldPos = entity.getWorldPos();
         WorldPos targetPos = WorldUtils(getServer().getWorld()).getFacingPos(worldPos, headingTo);
         return getServer()
-            .getMapManager()
-            .getNearEntities(userId)
-            .stream()
-            .filter(
-                targetId -> E(targetId).hasWorldPos() && E(targetId).getWorldPos().equals(targetPos) && isAttackable(targetId))
-            .findFirst();
+                .getMapManager()
+                .getNearEntities(userId)
+                .stream()
+                .filter(
+                        targetId -> E(targetId).hasWorldPos() && E(targetId).getWorldPos().equals(targetPos) && isAttackable(targetId))
+                .findFirst();
     }
 
     @Override
     void doHit(int userId, int entityId, int damage) {
         boolean userStab = canStab(userId);
         AttackResult result =
-            userStab ?
-                doStab(userId, entityId, damage) :
-                canCriticAttack(userId, entityId) ?
-                    doCrititAttack(userId, entityId, damage) :
-                    doNormalAttack(userId, entityId, damage);
+                userStab ?
+                        doStab(userId, entityId, damage) :
+                        canCriticAttack(userId, entityId) ?
+                                doCrititAttack(userId, entityId, damage) :
+                                doNormalAttack(userId, entityId, damage);
 
         // TODO send console messages
         notifyCombat(userId, result.userMessage);
         notifyCombat(entityId, result.victimMessage);
 
         getWorldManager()
-            .notifyUpdate(userId, new EntityUpdate(userId, new Component[] {new AttackAnimation()}, new Class[0]));
+                .notifyUpdate(userId, new EntityUpdate(userId, new Component[]{new AttackAnimation()}, new Class[0]));
         notify(entityId, userStab ? CombatMessage.stab("" + result.damage) : CombatMessage.physic("" + result.damage));
 
         final E target = E(entityId);
@@ -219,13 +221,13 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
 
     private AttackResult doNormalAttack(int userId, int entityId, int damage) {
         return new AttackResult(damage, format(USER_NORMAL_HIT, getName(entityId), damage),
-                                format(VICTIM_NORMAL_HIT, getName(userId), damage));
+                format(VICTIM_NORMAL_HIT, getName(userId), damage));
     }
 
     private AttackResult doCrititAttack(int userId, int entityId, int damage) {
         // TODO
         return new AttackResult(damage, format(USER_CRITIC_HIT, getName(entityId), damage),
-                                format(VICTIM_CRITIC_HIT, getName(userId), damage));
+                format(VICTIM_CRITIC_HIT, getName(userId), damage));
     }
 
     private boolean canCriticAttack(int userId, int entityId) {
@@ -238,10 +240,10 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         if (e.hasWeapon()) {
             final Optional<Obj> object = getServer().getObjectManager().getObject(e.getWeapon().index);
             result = object
-                .filter(WeaponObj.class::isInstance)
-                .map(WeaponObj.class::cast)
-                .filter(WeaponObj::isStab)
-                .isPresent();
+                    .filter(WeaponObj.class::isInstance)
+                    .map(WeaponObj.class::cast)
+                    .filter(WeaponObj::isStab)
+                    .isPresent();
         }
 
         return result && stabProbability(userId);
@@ -276,7 +278,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         final CharClass clazz = CharClass.get(E(userId));
         damage += (int) (CharClass.ASSASSIN.equals(clazz) ? damage * ASSASIN_STAB_FACTOR : damage * NORMAL_STAB_FACTOR);
         return new AttackResult(damage, format(USER_STAB_HIT, getName(entityId), damage),
-                                format(VICTIM_STAB_HIT, getName(userId), damage));
+                format(VICTIM_STAB_HIT, getName(userId), damage));
     }
 
     private String getName(int userId) {
@@ -295,7 +297,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
      * @param combatMessage message
      */
     private void notify(int victim, CombatMessage combatMessage) {
-        EntityUpdate update = new EntityUpdate(victim, new Component[] {combatMessage}, new Class[0]);
+        EntityUpdate update = new EntityUpdate(victim, new Component[]{combatMessage}, new Class[0]);
         getServer().getWorldManager().sendEntityUpdate(victim, update);
         getServer().getWorldManager().notifyToNearEntities(victim, update);
     }
@@ -306,26 +308,10 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
      * @param victim entity id
      */
     private void update(int victim) {
-        EntityUpdate update = new EntityUpdate(victim, new Component[] {E(victim).getHealth()}, new Class[0]);
+        EntityUpdate update = new EntityUpdate(victim, new Component[]{E(victim).getHealth()}, new Class[0]);
         getServer().getWorldManager().sendEntityUpdate(victim, update);
         getServer().getWorldManager().notifyUpdate(victim, new FXNotification(victim, FXs.FX_BLOOD));
     }
-
-    private static class AttackResult {
-
-        private final int damage;
-        private final String userMessage;
-        private String victimMessage;
-
-        AttackResult(int damage, String userMessage, String victimMessage) {
-
-            this.damage = damage;
-            this.userMessage = userMessage;
-            this.victimMessage = victimMessage;
-        }
-
-    }
-
 
     private enum AttackKind {
         WEAPON,
@@ -343,12 +329,27 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         BODY;
 
         private static final List<AttackPlace> VALUES =
-            Collections.unmodifiableList(Arrays.asList(values()));
+                Collections.unmodifiableList(Arrays.asList(values()));
         private static final int SIZE = VALUES.size();
         private static final Random RANDOM = new Random();
 
         public static AttackPlace getRandom() {
             return VALUES.get(RANDOM.nextInt(SIZE));
         }
+    }
+
+    private static class AttackResult {
+
+        private final int damage;
+        private final String userMessage;
+        private String victimMessage;
+
+        AttackResult(int damage, String userMessage, String victimMessage) {
+
+            this.damage = damage;
+            this.userMessage = userMessage;
+            this.victimMessage = victimMessage;
+        }
+
     }
 }

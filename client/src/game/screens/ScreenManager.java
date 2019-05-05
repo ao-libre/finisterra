@@ -9,7 +9,8 @@ public class ScreenManager {
 
     private AOGame game;
 
-    private ScreenManager() {}
+    private ScreenManager() {
+    }
 
     public static ScreenManager getInstance() {
         if (instance == null) {

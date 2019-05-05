@@ -7,7 +7,8 @@ import java.io.Serializable;
 public class CharHero extends Component implements Serializable {
     public int heroId;
 
-    public CharHero() {}
+    public CharHero() {
+    }
 
     public CharHero(int heroId) {
         this.heroId = heroId;

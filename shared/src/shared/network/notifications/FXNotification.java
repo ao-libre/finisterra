@@ -7,7 +7,8 @@ public class FXNotification implements INotification {
     private int target;
     private int fxGrh;
 
-    public FXNotification(){}
+    public FXNotification() {
+    }
 
     public FXNotification(int target, int fxGrh) {
         this.target = target;

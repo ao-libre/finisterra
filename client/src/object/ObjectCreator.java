@@ -37,7 +37,7 @@ public class ObjectCreator extends Game {
     public void create() {
         Gdx.app.debug("AOGame", "Opening Objects Creator...");
         AssetHandler.load();
-        if(AssetHandler.getState() == StateHandler.LOADED)
+        if (AssetHandler.getState() == StateHandler.LOADED)
             Gdx.app.debug("AOGame", "Handler loaded!");
         this.spriteBatch = new SpriteBatch();
         initWorld();

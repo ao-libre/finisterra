@@ -9,7 +9,8 @@ public class JoinLobbyRequest implements IRequest {
     private Hero hero;
     private String playerName;
 
-    public JoinLobbyRequest() {}
+    public JoinLobbyRequest() {
+    }
 
     public JoinLobbyRequest(String playerName, Hero hero) {
         this.playerName = playerName;

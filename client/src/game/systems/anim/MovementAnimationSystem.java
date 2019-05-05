@@ -30,7 +30,7 @@ public class MovementAnimationSystem extends IteratingSystem {
         // reset animation time
         E entity = E(entityId);
         final Heading heading = entity.getHeading();
-        if(!entity.movementHasMovements()) {
+        if (!entity.movementHasMovements()) {
             updateAnimationTime(entity, heading, true);
         }
     }

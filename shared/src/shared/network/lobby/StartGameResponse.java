@@ -9,7 +9,8 @@ public class StartGameResponse implements IResponse {
     private int tcpPort;
     private int udpPort;
 
-    private StartGameResponse() {}
+    private StartGameResponse() {
+    }
 
     public StartGameResponse(String host, int tcpPort, int udpPort) {
         this.host = host;

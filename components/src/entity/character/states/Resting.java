@@ -6,7 +6,8 @@ import com.artemis.annotations.DelayedComponentRemoval;
 import java.io.Serializable;
 
 @DelayedComponentRemoval
-public class Resting extends Component implements Serializable{
-    public Resting(){}
+public class Resting extends Component implements Serializable {
+    public Resting() {
+    }
 
 }

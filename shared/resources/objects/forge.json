@@ -1,1 +1,12 @@
-[{"id":385,"name":"Fragua","grhIndex":722,"collectable":true,"value":0,"crucial":false,"newbie":false,"notDrop":false}]
+[
+  {
+    "id": 385,
+    "name": "Fragua",
+    "grhIndex": 722,
+    "collectable": true,
+    "value": 0,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  }
+]

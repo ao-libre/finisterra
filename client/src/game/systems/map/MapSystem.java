@@ -46,7 +46,7 @@ public class MapSystem extends IteratingSystem {
         }
 
         shapeRenderer = new ShapeRenderer();
-        
+
     }
 
     @Override
@@ -58,7 +58,7 @@ public class MapSystem extends IteratingSystem {
 
     @Override
     protected void process(int entityId) {
-        if(renderer == null) {
+        if (renderer == null) {
             return;
         }
         renderer.setView(cameraSystem.camera);

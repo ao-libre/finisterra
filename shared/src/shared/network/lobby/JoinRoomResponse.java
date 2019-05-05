@@ -10,7 +10,8 @@ public class JoinRoomResponse implements IResponse {
     private Room room;
     private Player player;
 
-    private JoinRoomResponse() {}
+    private JoinRoomResponse() {
+    }
 
     public JoinRoomResponse(Room room, Player player) {
         this.room = room;

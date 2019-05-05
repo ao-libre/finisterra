@@ -33,10 +33,10 @@ public class GraphicsToJson {
         List<T> list = new ArrayList<>();
         if (clazz != null && spells != null && !spells.isEmpty()) {
             spells
-                .stream()
-                .filter(clazz::isInstance)
-                .map(clazz::cast)
-                .forEach(list::add);
+                    .stream()
+                    .filter(clazz::isInstance)
+                    .map(clazz::cast)
+                    .forEach(list::add);
             list.sort(Comparator.comparingInt(Obj::getId));
         }
 

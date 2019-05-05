@@ -10,7 +10,8 @@ public class Movement extends Component implements Serializable {
 
     public Deque<Destination> destinations = new ConcurrentLinkedDeque<>();
 
-    public Movement() {}
+    public Movement() {
+    }
 
     public void add(Destination destination) {
         destinations.add(destination);

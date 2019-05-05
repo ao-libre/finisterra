@@ -8,7 +8,8 @@ public class AttackRequest implements IRequest {
 
     private AttackType type;
 
-    public AttackRequest() {}
+    public AttackRequest() {
+    }
 
     public AttackRequest(AttackType type) {
         this.type = type;

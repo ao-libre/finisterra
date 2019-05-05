@@ -18,6 +18,6 @@ public class SpellJson extends Json {
     public static void load(Map<Integer, Spell> spells, FileHandle file) {
         Json spellJson = new SpellJson();
         final HashMap<String, Spell> loadedSpells = spellJson.fromJson(HashMap.class, Spell.class, file);
-        loadedSpells.forEach((k,v) -> spells.put(Integer.parseInt(k),v));
+        loadedSpells.forEach((k, v) -> spells.put(Integer.parseInt(k), v));
     }
 }

@@ -16,9 +16,8 @@ import java.util.function.BiConsumer;
 
 public class SpellLoader extends Loader<Map<Integer, Spell>> {
 
-    private static final String HECHIZO = "hechizo";
-
     public static final Set<SpellSetter<?>> setters;
+    private static final String HECHIZO = "hechizo";
 
     static {
         setters = new HashSet<>();

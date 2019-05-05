@@ -9,14 +9,17 @@ import shared.model.readers.DescriptorsReader;
 import shared.util.SharedResources;
 import shared.util.SpellJson;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import static com.artemis.E.E;
 
 public class SpellHandler {
 
-    private static DescriptorsReader reader = new AODescriptorsReader();
     public static Map<Integer, Spell> spells = new HashMap<>();
+    private static DescriptorsReader reader = new AODescriptorsReader();
 
     public static void load() {
         SpellJson.load(spells, Gdx.files.internal(SharedResources.SPELLS_JSON_FILE));
@@ -31,7 +34,7 @@ public class SpellHandler {
         final SpellBook spellBook = E(player).getSpellBook();
 
         return Arrays.stream(spellBook.spells).map(SpellHandler::getSpell).filter(Optional::isPresent).map(Optional::get)
-            .distinct().toArray(Spell[]::new);
+                .distinct().toArray(Spell[]::new);
     }
 
 }

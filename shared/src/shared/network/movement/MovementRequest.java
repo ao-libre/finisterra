@@ -1,6 +1,5 @@
 package shared.network.movement;
 
-import com.badlogic.gdx.utils.TimeUtils;
 import physics.AOPhysics;
 import position.WorldPos;
 import shared.network.interfaces.IRequest;
@@ -15,7 +14,8 @@ public class MovementRequest implements IRequest {
     public WorldPos predicted;
     public AOPhysics.Movement movement;
 
-    public MovementRequest(){}
+    public MovementRequest() {
+    }
 
     public MovementRequest(int requestNumber, WorldPos predicted, AOPhysics.Movement movement, boolean valid) {
         this.requestNumber = requestNumber;

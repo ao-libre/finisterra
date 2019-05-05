@@ -1,1 +1,222 @@
-[{"id":1,"name":"Manzana Roja","grhIndex":506,"collectable":false,"value":2,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":21,"name":"Porción de Tarta","grhIndex":515,"collectable":false,"value":2,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":22,"name":"Frutas del Bosque","grhIndex":516,"collectable":false,"value":2,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":23,"name":"Pan de Trigo","grhIndex":517,"collectable":false,"value":3,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":24,"name":"Pan de Maíz","grhIndex":518,"collectable":false,"value":3,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":25,"name":"Pastel","grhIndex":519,"collectable":false,"value":9,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":26,"name":"Pollo","grhIndex":520,"collectable":false,"value":7,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":27,"name":"Chuleta","grhIndex":521,"collectable":false,"value":10,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":28,"name":"Queso de Cabra","grhIndex":522,"collectable":false,"value":6,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":29,"name":"Sandía","grhIndex":523,"collectable":false,"value":5,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":64,"name":"Manzana Roja","grhIndex":506,"collectable":false,"value":2,"crucial":false,"newbie":false,"notDrop":false,"min":0},{"id":81,"name":"Sandía","grhIndex":523,"collectable":false,"value":5,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":139,"name":"Pescado","grhIndex":573,"collectable":false,"value":8,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":158,"name":"Banana","grhIndex":581,"collectable":false,"value":2,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":467,"name":"Manzana Roja (Newbie)","grhIndex":506,"collectable":false,"value":0,"crucial":false,"newbie":true,"notDrop":false,"min":0},{"id":544,"name":"Pez Dorado","grhIndex":845,"collectable":false,"value":16,"crucial":false,"newbie":false,"notDrop":false,"min":0},{"id":545,"name":"Pez Espada","grhIndex":846,"collectable":false,"value":13,"crucial":false,"newbie":false,"notDrop":false,"min":0},{"id":546,"name":"Merluza","grhIndex":847,"collectable":false,"value":13,"crucial":false,"newbie":false,"notDrop":false,"min":0},{"id":754,"name":"Rábano","grhIndex":591,"collectable":false,"value":5,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":775,"name":"Hipocampo","grhIndex":848,"collectable":false,"value":13,"crucial":false,"newbie":false,"notDrop":false,"min":0}]
+[
+  {
+    "id": 1,
+    "name": "Manzana Roja",
+    "grhIndex": 506,
+    "collectable": false,
+    "value": 2,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 21,
+    "name": "Porción de Tarta",
+    "grhIndex": 515,
+    "collectable": false,
+    "value": 2,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 22,
+    "name": "Frutas del Bosque",
+    "grhIndex": 516,
+    "collectable": false,
+    "value": 2,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 23,
+    "name": "Pan de Trigo",
+    "grhIndex": 517,
+    "collectable": false,
+    "value": 3,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 24,
+    "name": "Pan de Maíz",
+    "grhIndex": 518,
+    "collectable": false,
+    "value": 3,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 25,
+    "name": "Pastel",
+    "grhIndex": 519,
+    "collectable": false,
+    "value": 9,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 26,
+    "name": "Pollo",
+    "grhIndex": 520,
+    "collectable": false,
+    "value": 7,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 27,
+    "name": "Chuleta",
+    "grhIndex": 521,
+    "collectable": false,
+    "value": 10,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 28,
+    "name": "Queso de Cabra",
+    "grhIndex": 522,
+    "collectable": false,
+    "value": 6,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 29,
+    "name": "Sandía",
+    "grhIndex": 523,
+    "collectable": false,
+    "value": 5,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 64,
+    "name": "Manzana Roja",
+    "grhIndex": 506,
+    "collectable": false,
+    "value": 2,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 81,
+    "name": "Sandía",
+    "grhIndex": 523,
+    "collectable": false,
+    "value": 5,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 139,
+    "name": "Pescado",
+    "grhIndex": 573,
+    "collectable": false,
+    "value": 8,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 158,
+    "name": "Banana",
+    "grhIndex": 581,
+    "collectable": false,
+    "value": 2,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 467,
+    "name": "Manzana Roja (Newbie)",
+    "grhIndex": 506,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": true,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 544,
+    "name": "Pez Dorado",
+    "grhIndex": 845,
+    "collectable": false,
+    "value": 16,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 545,
+    "name": "Pez Espada",
+    "grhIndex": 846,
+    "collectable": false,
+    "value": 13,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 546,
+    "name": "Merluza",
+    "grhIndex": 847,
+    "collectable": false,
+    "value": 13,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 754,
+    "name": "Rábano",
+    "grhIndex": 591,
+    "collectable": false,
+    "value": 5,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 775,
+    "name": "Hipocampo",
+    "grhIndex": 848,
+    "collectable": false,
+    "value": 13,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  }
+]

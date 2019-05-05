@@ -6,7 +6,8 @@ public class Clan extends Component {
 
     public String name;
 
-    public Clan() {}
+    public Clan() {
+    }
 
     public Clan(String clan) {
         this.name = clan;

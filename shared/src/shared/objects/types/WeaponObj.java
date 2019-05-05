@@ -10,7 +10,12 @@ public class WeaponObj extends ObjWithClasses {
     private int dwarfAnimationId;
     private int minHit, maxHit;
 
-    public WeaponObj() {}
+    public WeaponObj() {
+    }
+
+    public WeaponObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
+    }
 
     public int getAnimationId() {
         return animationId;
@@ -42,10 +47,6 @@ public class WeaponObj extends ObjWithClasses {
 
     public void setMaxHit(int maxHit) {
         this.maxHit = maxHit;
-    }
-
-    public WeaponObj(int id, String name, int grhIndex) {
-        super(id, name, grhIndex);
     }
 
     @Override

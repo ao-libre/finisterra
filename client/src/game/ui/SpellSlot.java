@@ -7,17 +7,13 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.esotericsoftware.minlog.Log;
 import game.utils.Resources;
 import shared.model.Spell;
 
-import java.util.function.Consumer;
-
 public class SpellSlot extends Actor {
 
-    static final int SIZE = 64;
     public static final float ICON_ALPHA = 0.5f;
-
+    static final int SIZE = 64;
     public static Texture selection = new Texture(Gdx.files.local("data/ui/images/slot-selection.png"));
     public static Texture background = new Texture(Gdx.files.local("data/ui/images/table-background.png"));
     private final SpellView spellView;
@@ -31,7 +27,8 @@ public class SpellSlot extends Actor {
         this.spell = spell;
         clickListener = new ClickListener() {
 
-            @Override public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
                 onClick();
             }
@@ -44,7 +41,7 @@ public class SpellSlot extends Actor {
         batch.draw(background, getX(), getY());
         drawSpell(batch);
         spellView.toCast.filter(sp -> sp.equals(spell)).ifPresent(sp -> drawSelection(batch));
-        if(isOver()) {
+        if (isOver()) {
             // TODO draw spell name
         }
     }
@@ -71,7 +68,7 @@ public class SpellSlot extends Actor {
 
     private Texture getSpellIcon() {
         if (icon == null) {
-            icon = new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH+ spell.getFxGrh() +".png"));
+            icon = new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getFxGrh() + ".png"));
         }
         return icon;
     }

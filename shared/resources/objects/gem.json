@@ -1,1 +1,152 @@
-[{"id":386,"name":"Lingote de Hierro","grhIndex":724,"collectable":false,"value":70,"crucial":false,"newbie":false,"notDrop":false},{"id":387,"name":"Lingote de Plata","grhIndex":725,"collectable":false,"value":120,"crucial":false,"newbie":false,"notDrop":false},{"id":388,"name":"Lingote de Oro","grhIndex":723,"collectable":false,"value":350,"crucial":false,"newbie":false,"notDrop":false},{"id":406,"name":"Gema Lunar","grhIndex":700,"collectable":false,"value":0,"crucial":false,"newbie":false,"notDrop":false},{"id":407,"name":"Gema Azul","grhIndex":701,"collectable":false,"value":0,"crucial":false,"newbie":false,"notDrop":false},{"id":408,"name":"Gema Naranja","grhIndex":702,"collectable":false,"value":0,"crucial":false,"newbie":false,"notDrop":false},{"id":409,"name":"Gema Celeste","grhIndex":703,"collectable":false,"value":0,"crucial":false,"newbie":false,"notDrop":false},{"id":410,"name":"Gema Lila","grhIndex":704,"collectable":false,"value":0,"crucial":false,"newbie":false,"notDrop":false},{"id":411,"name":"Gema Roja","grhIndex":705,"collectable":false,"value":0,"crucial":false,"newbie":false,"notDrop":false},{"id":412,"name":"Gema Verde","grhIndex":706,"collectable":false,"value":0,"crucial":false,"newbie":false,"notDrop":false},{"id":413,"name":"Gema Violeta","grhIndex":707,"collectable":false,"value":0,"crucial":false,"newbie":false,"notDrop":false},{"id":560,"name":"Gema Sagrada Recuperada por Shadow VX","grhIndex":705,"collectable":false,"value":0,"crucial":false,"newbie":false,"notDrop":false},{"id":613,"name":"Gema Sagrada","grhIndex":700,"collectable":false,"value":0,"crucial":false,"newbie":false,"notDrop":false},{"id":618,"name":"Monedas de Oro","grhIndex":511,"collectable":false,"value":0,"crucial":false,"newbie":false,"notDrop":false},{"id":652,"name":"Piedra de Arghâl","grhIndex":705,"collectable":false,"value":0,"crucial":false,"newbie":false,"notDrop":false}]
+[
+  {
+    "id": 386,
+    "name": "Lingote de Hierro",
+    "grhIndex": 724,
+    "collectable": false,
+    "value": 70,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  },
+  {
+    "id": 387,
+    "name": "Lingote de Plata",
+    "grhIndex": 725,
+    "collectable": false,
+    "value": 120,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  },
+  {
+    "id": 388,
+    "name": "Lingote de Oro",
+    "grhIndex": 723,
+    "collectable": false,
+    "value": 350,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  },
+  {
+    "id": 406,
+    "name": "Gema Lunar",
+    "grhIndex": 700,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  },
+  {
+    "id": 407,
+    "name": "Gema Azul",
+    "grhIndex": 701,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  },
+  {
+    "id": 408,
+    "name": "Gema Naranja",
+    "grhIndex": 702,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  },
+  {
+    "id": 409,
+    "name": "Gema Celeste",
+    "grhIndex": 703,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  },
+  {
+    "id": 410,
+    "name": "Gema Lila",
+    "grhIndex": 704,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  },
+  {
+    "id": 411,
+    "name": "Gema Roja",
+    "grhIndex": 705,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  },
+  {
+    "id": 412,
+    "name": "Gema Verde",
+    "grhIndex": 706,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  },
+  {
+    "id": 413,
+    "name": "Gema Violeta",
+    "grhIndex": 707,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  },
+  {
+    "id": 560,
+    "name": "Gema Sagrada Recuperada por Shadow VX",
+    "grhIndex": 705,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  },
+  {
+    "id": 613,
+    "name": "Gema Sagrada",
+    "grhIndex": 700,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  },
+  {
+    "id": 618,
+    "name": "Monedas de Oro",
+    "grhIndex": 511,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  },
+  {
+    "id": 652,
+    "name": "Piedra de Arghâl",
+    "grhIndex": 705,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false
+  }
+]

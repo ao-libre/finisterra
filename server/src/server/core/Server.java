@@ -10,21 +10,17 @@ import server.manager.*;
 import server.systems.FootprintSystem;
 import server.systems.RandomMovementSystem;
 import server.systems.ServerSystem;
-import shared.interfaces.Hero;
 import shared.model.lobby.Player;
-import shared.model.lobby.Team;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.artemis.E.E;
+public class Server {
 
-public class Server  {
-
-    private int roomId;
     private final int tcpPort;
     private final int udpPort;
+    private int roomId;
     private ObjectManager objectManager;
     private SpellManager spellManager;
     private World world;

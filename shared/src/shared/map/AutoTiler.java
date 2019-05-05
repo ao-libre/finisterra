@@ -18,9 +18,9 @@ import java.util.Map;
 
 /**
  * AutoTiler
- *
+ * <p>
  * Procedurally generate a terrain map using corner matching "Wang Tiles"
- *  See: http://www.cr31.co.uk/stagecast/wang/2corn.html
+ * See: http://www.cr31.co.uk/stagecast/wang/2corn.html
  */
 public class AutoTiler {
 
