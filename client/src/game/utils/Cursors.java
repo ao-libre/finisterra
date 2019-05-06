@@ -26,7 +26,7 @@ public class Cursors {
 
             Pixmap pixmap = texture.getTextureData().consumePixmap();
             Pixmap out = Pixmaps.outline(pixmap, new Color(0, 0, 0, 0.1f));
-            Pixmap out2 = Pixmaps.scale(out, 4);
+            Pixmap out2 = Pixmaps.scale(out, 2);
 
             out.dispose();
             pixmap.dispose();

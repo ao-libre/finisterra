@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
-import javafx.util.Pair;
 import shared.map.model.MapDescriptor;
 import shared.map.model.MapDescriptor.MapDescriptorBuilder;
 import shared.map.model.TerrainType;
 import shared.map.model.TilesetConfig;
+import shared.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;

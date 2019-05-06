@@ -38,4 +38,11 @@ public class Messages {
 
     public static final String NOT_PARALYSIS = "No esta paralizado!";
     public static final String CANT_ATTACK_YOURSELF = "No puedes atacarte a vos mismo";
+
+    // MANA
+    public static final String MANA_RECOVERED = "Has recuperado %d puntos de mana!";
+    public static final String MEDITATE_STOP = "Has terminado de meditar.";
+    public static final String MEDITATE_START = "Comienzas a meditar.";
+    public static final String MANA_FULL = "Ya tienes toda la mana.";
+
 }

@@ -6,18 +6,16 @@ import com.artemis.World;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
-import entity.character.states.Meditating;
 import entity.world.Dialog;
 import entity.world.Object;
-import graphics.FX;
 import map.Cave;
 import movement.Destination;
 import position.WorldPos;
 import server.combat.CombatSystem;
 import server.core.Server;
 import server.manager.*;
+import server.systems.MeditateSystem;
 import server.utils.WorldUtils;
-import shared.interfaces.Constants;
 import shared.model.AttackType;
 import shared.model.lobby.Player;
 import shared.network.combat.AttackRequest;
@@ -199,17 +197,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(MeditateRequest meditateRequest, int connectionId) {
         int playerId = getNetworkManager().getPlayerByConnection(connectionId);
-        E player = E(playerId);
-        boolean meditating = player.isMeditating();
-        if (meditating) {
-            player.removeFX();
-            player.removeMeditating();
-            getWorldManager().notifyUpdate(playerId, new EntityUpdate(playerId, new Component[0], new Class[]{FX.class, Meditating.class}));
-        } else {
-            player.fXAddParticleEffect(Constants.MEDITATE_NW_FX);
-            player.meditating();
-            getWorldManager().notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{player.getMeditating(), player.getFX()}, new Class[0]));
-        }
+        MeditateSystem meditateSystem = server.getWorld().getSystem(MeditateSystem.class);
+        meditateSystem.toggle(playerId);
     }
 
     /**

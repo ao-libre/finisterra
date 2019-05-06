@@ -5,6 +5,7 @@ import shared.network.interfaces.INotification;
 import shared.network.interfaces.INotificationProcessor;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class EntityUpdate implements INotification {
@@ -52,6 +53,10 @@ public class EntityUpdate implements INotification {
                 this.toRemove.add(clazz);
             }
             return this;
+        }
+
+        public boolean isEmpty() {
+            return components.isEmpty() && toRemove.isEmpty();
         }
 
         public EntityUpdate build() {

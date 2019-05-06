@@ -2,6 +2,7 @@ package shared.network.init;
 
 import camera.Focused;
 import com.artemis.Component;
+import com.artemis.FluidIteratingSystem;
 import entity.character.attributes.*;
 import entity.character.equipment.Armor;
 import entity.character.equipment.Helmet;
@@ -69,6 +70,7 @@ import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.FXNotification;
 import shared.network.notifications.RemoveEntity;
+import shared.network.sound.SoundNotification;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
 import shared.objects.factory.ObjectFactory;
@@ -164,6 +166,8 @@ public class NetworkDictionary extends MarshalDictionary {
                 Hero.class,
                 Loader.class,
                 Reader.class,
+                FluidIteratingSystem.class,
+                SoundNotification.class,
 
                 ObjectLoader.class,
                 SpellLoader.class,
