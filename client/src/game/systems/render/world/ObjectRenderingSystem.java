@@ -9,7 +9,6 @@ import game.handlers.ObjectHandler;
 import game.systems.camera.CameraSystem;
 import position.Pos2D;
 import position.WorldPos;
-import shared.model.map.Tile;
 import shared.objects.types.Obj;
 import shared.util.Util;
 

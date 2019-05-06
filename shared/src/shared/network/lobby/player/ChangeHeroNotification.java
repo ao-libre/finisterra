@@ -8,7 +8,8 @@ public class ChangeHeroNotification implements INotification {
 
     private Hero hero;
 
-    public ChangeHeroNotification() {}
+    public ChangeHeroNotification() {
+    }
 
     public ChangeHeroNotification(Hero hero) {
         this.hero = hero;

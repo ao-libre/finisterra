@@ -19,6 +19,12 @@
  *
  * @author Rodrigo Troncoso
  * @version 0.1
+ * @author Rodrigo Troncoso
+ * @version 0.1
+ * @since 2014-04-17
+ * <p>
+ * Now packs everything in GameTextures (previously known as BundledTexture)
+ * treating everything as an animation
  * @since 2014-04-17
  */
 /**

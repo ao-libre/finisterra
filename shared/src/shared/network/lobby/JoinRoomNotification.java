@@ -10,7 +10,8 @@ public class JoinRoomNotification implements INotification {
 
     private boolean enter; // or exit
 
-    public JoinRoomNotification() {}
+    public JoinRoomNotification() {
+    }
 
     public JoinRoomNotification(Player player, boolean enter) {
         this.player = player;

@@ -7,7 +7,12 @@ public class MagicObj extends ObjWithClasses {
     private int minHit, maxHit;
     private int minDef, maxDef;
 
-    public MagicObj() {}
+    public MagicObj() {
+    }
+
+    public MagicObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
+    }
 
     public int getMaxHit() {
         return maxHit;
@@ -39,10 +44,6 @@ public class MagicObj extends ObjWithClasses {
 
     public void setMinHit(int minHit) {
         this.minHit = minHit;
-    }
-
-    public MagicObj(int id, String name, int grhIndex) {
-        super(id, name, grhIndex);
     }
 
     @Override

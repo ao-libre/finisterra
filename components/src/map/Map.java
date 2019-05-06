@@ -13,7 +13,8 @@ public class Map extends Component implements Serializable {
     public int width;
     public int height;
 
-    public Map() {}
+    public Map() {
+    }
 
     public Map(int[][] tiles, String path, int width, int height) {
         this.tiles = tiles;

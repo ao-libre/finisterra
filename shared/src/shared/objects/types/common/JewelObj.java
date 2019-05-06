@@ -6,7 +6,9 @@ import shared.objects.types.Type;
 
 public class JewelObj extends Obj {
 
-    public JewelObj() {}
+    public JewelObj() {
+    }
+
     public JewelObj(int id, String name, int grhIndex) {
         super(id, name, grhIndex);
     }

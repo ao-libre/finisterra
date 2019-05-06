@@ -3,28 +3,27 @@ package server.core;
 import com.artemis.FluidEntityPlugin;
 import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 import server.combat.CombatSystem;
 import server.combat.MagicCombatSystem;
 import server.combat.PhysicalCombatSystem;
 import server.manager.*;
 import server.systems.FootprintSystem;
+import server.systems.MeditateSystem;
 import server.systems.RandomMovementSystem;
 import server.systems.ServerSystem;
-import shared.interfaces.Hero;
 import shared.model.lobby.Player;
-import shared.model.lobby.Team;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.artemis.E.E;
+public class Server {
 
-public class Server  {
-
-    private int roomId;
     private final int tcpPort;
     private final int udpPort;
+    private int roomId;
     private ObjectManager objectManager;
     private SpellManager spellManager;
     private World world;
@@ -82,6 +81,7 @@ public class Server  {
         builder
                 .with(new FluidEntityPlugin())
                 .with(new ServerSystem(this, strategy))
+                .with(new MeditateSystem(this, 0.4f))
                 .with(new FootprintSystem(this, 500))
                 .with(new RandomMovementSystem(this));
         world = new World(builder.build());
@@ -98,6 +98,7 @@ public class Server  {
     }
 
     public void update() {
+        world.setDelta(MathUtils.clamp(Gdx.graphics.getDeltaTime(), 0, 1 / 16f));
         world.process();
     }
 

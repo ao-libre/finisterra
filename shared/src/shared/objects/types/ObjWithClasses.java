@@ -17,6 +17,9 @@ public abstract class ObjWithClasses extends Obj {
         super(id, name, grhIndex);
     }
 
+    public ObjWithClasses() {
+    }
+
     public void addClass(CharClass charClass) {
         forbiddenClasses.addClass(charClass);
     }
@@ -24,8 +27,6 @@ public abstract class ObjWithClasses extends Obj {
     public Set<CharClass> getForbiddenClasses() {
         return this.forbiddenClasses.getForbiddenClasses();
     }
-
-    public ObjWithClasses() {}
 
     @Override
     public void fillObject(Profile.Section section) {
@@ -54,7 +55,8 @@ public abstract class ObjWithClasses extends Obj {
             return forbiddenClasses;
         }
 
-        @Override public void write(Json json) {
+        @Override
+        public void write(Json json) {
             if (forbiddenClasses == null || forbiddenClasses.isEmpty()) {
                 return;
             }
@@ -67,7 +69,8 @@ public abstract class ObjWithClasses extends Obj {
             json.writeArrayEnd();
         }
 
-        @Override public void read(Json json, JsonValue jsonData) {
+        @Override
+        public void read(Json json, JsonValue jsonData) {
             final JsonValue cp = jsonData.child;
             if (cp == null) {
                 return;

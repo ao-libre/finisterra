@@ -6,8 +6,9 @@ import com.artemis.annotations.DelayedComponentRemoval;
 import java.io.Serializable;
 
 @DelayedComponentRemoval
-public class Writing extends Component implements Serializable{
+public class Writing extends Component implements Serializable {
 
-    public Writing(){}
+    public Writing() {
+    }
 
 }

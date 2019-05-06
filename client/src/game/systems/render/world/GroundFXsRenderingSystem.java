@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.artemis.E.E;
+
 // TODO deduplicate code (see FXsRenderingSystem)
 @Wire
 public class GroundFXsRenderingSystem extends IteratingSystem {
@@ -98,7 +99,7 @@ public class GroundFXsRenderingSystem extends IteratingSystem {
             anim.setAnimationTime(anim.getAnimationTime() + getWorld().getDelta() * (anim.getFrames().size * 0.33f));
             float animationTime = anim.getAnimationTime();
             float animationDuration = anim.getAnimation().getAnimationDuration();
-            Log.info(E(entityId).networkId() + "- Time: " + animationTime  + " .Duration: " + animationDuration);
+            Log.info(E(entityId).networkId() + "- Time: " + animationTime + " .Duration: " + animationDuration);
             if (anim.isAnimationFinished()) {
                 removeFXs.add(fxId);
                 anims.remove(fxId);

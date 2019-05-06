@@ -63,5 +63,6 @@ public class NetworkManager extends DefaultManager {
     }
 
     @Override
-    public void init() {}
+    public void init() {
+    }
 }

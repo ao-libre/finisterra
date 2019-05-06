@@ -77,9 +77,9 @@ public class WorldManager extends DefaultManager {
     private void setSpells(int player, Hero hero) {
         Set<Spell> spells = getSpells(hero);
         final List<Integer> ids = spells
-            .stream()
-            .map(spell -> getServer().getSpellManager().getId(spell))
-            .collect(Collectors.toList());
+                .stream()
+                .map(spell -> getServer().getSpellManager().getId(spell))
+                .collect(Collectors.toList());
         final Integer[] spellIds = ids.toArray(new Integer[0]);
         E(player).spellBookSpells(spellIds);
     }
@@ -186,8 +186,8 @@ public class WorldManager extends DefaultManager {
                 break;
         }
         int maxHit = Math.min(STAT_MAXHIT_OVER36,
-                              Math.min(minLvl * breakingLvl + (entity.getLevel().level - breakingLvl) * maxLvl,
-                                       STAT_MAXHIT_UNDER36));
+                Math.min(minLvl * breakingLvl + (entity.getLevel().level - breakingLvl) * maxLvl,
+                        STAT_MAXHIT_UNDER36));
         entity.hit();
         Hit hit = entity.getHit();
         hit.setMax(maxHit);
@@ -310,17 +310,17 @@ public class WorldManager extends DefaultManager {
 
     private void setHeadAndBody(String name, E entity) {
         entity
-            .headingCurrent(Heading.HEADING_NORTH)
-            .character()
-            .nameText(name);
+                .headingCurrent(Heading.HEADING_NORTH)
+                .character()
+                .nameText(name);
     }
 
     private void setEntityPosition(E entity) {
         WorldPos worldPos = getValidPosition(1);
         entity
-            .worldPosX(worldPos.x)
-            .worldPosY(worldPos.y)
-            .worldPosMap(worldPos.map);
+                .worldPosX(worldPos.x)
+                .worldPosY(worldPos.y)
+                .worldPosMap(worldPos.map);
     }
 
     private WorldPos getValidPosition(int map) {
@@ -347,13 +347,13 @@ public class WorldManager extends DefaultManager {
     private void addPotion(int player, PotionKind kind) {
         Set<Obj> objs = getServer().getObjectManager().getTypeObjects(Type.POTION);
         objs.stream() //
-            .map(PotionObj.class::cast) //
-            .filter(potion -> {
-                PotionKind potionKind = potion.getKind();
-                return potionKind != null && potionKind.equals(kind);
-            }) //
-            .findFirst() //
-            .ifPresent(obj -> E(player).getInventory().add(obj.getId(), false));
+                .map(PotionObj.class::cast) //
+                .filter(potion -> {
+                    PotionKind potionKind = potion.getKind();
+                    return potionKind != null && potionKind.equals(kind);
+                }) //
+                .findFirst() //
+                .ifPresent(obj -> E(player).getInventory().add(obj.getId(), false));
     }
 
     private Optional<Obj> getArmor(Hero hero, Team team) {
@@ -501,37 +501,36 @@ public class WorldManager extends DefaultManager {
     }
 
 
-
     private Optional<Obj> addItem(int player, Type type) {
         Set<Obj> objs = getServer().getObjectManager().getTypeObjects(type);
         Optional<Obj> result = objs.stream()
-            .filter(obj -> {
-                if (obj instanceof ObjWithClasses) {
-                    int heroId = E(player).getCharHero().heroId;
-                    CharClass clazz = CharClass.get(E(player));
-                    Set<CharClass> forbiddenClasses = ((ObjWithClasses) obj).getForbiddenClasses();
-                    boolean supported = forbiddenClasses.size() == 0 || !forbiddenClasses.contains(clazz);
-                    if (supported && obj instanceof ArmorObj) {
-                        Race race = Race.of(E(player));
-                        if (race.equals(Race.GNOME) || race.equals(Race.DWARF)) {
-                            supported = ((ArmorObj) obj).isDwarf();
-                        } else if (((ArmorObj) obj).isWomen()) {
-                            supported = false; // TODO
+                .filter(obj -> {
+                    if (obj instanceof ObjWithClasses) {
+                        int heroId = E(player).getCharHero().heroId;
+                        CharClass clazz = CharClass.get(E(player));
+                        Set<CharClass> forbiddenClasses = ((ObjWithClasses) obj).getForbiddenClasses();
+                        boolean supported = forbiddenClasses.size() == 0 || !forbiddenClasses.contains(clazz);
+                        if (supported && obj instanceof ArmorObj) {
+                            Race race = Race.of(E(player));
+                            if (race.equals(Race.GNOME) || race.equals(Race.DWARF)) {
+                                supported = ((ArmorObj) obj).isDwarf();
+                            } else if (((ArmorObj) obj).isWomen()) {
+                                supported = false; // TODO
+                            }
                         }
+                        return supported;
+                    } else if (obj.getType().equals(Type.POTION)) {
+                        PotionObj potion = (PotionObj) obj;
+                        return potion.getKind().equals(PotionKind.HP) || potion.getKind().equals(PotionKind.MANA);
                     }
-                    return supported;
-                } else if (obj.getType().equals(Type.POTION)) {
-                    PotionObj potion = (PotionObj) obj;
-                    return potion.getKind().equals(PotionKind.HP) || potion.getKind().equals(PotionKind.MANA);
-                }
-                return false;
-            })
-            .max(this::getComparator);
+                    return false;
+                })
+                .max(this::getComparator);
         result.ifPresent(obj -> {
             CharClass clazz = CharClass.get(E(player));
             Set<CharClass> forbiddenClasses = ((ObjWithClasses) obj).getForbiddenClasses();
             Log.info("Item found for class: " + clazz.name() + " and forbidden classes are: " + Arrays
-                .toString(forbiddenClasses.toArray()));
+                    .toString(forbiddenClasses.toArray()));
             E(player).getInventory().add(obj.getId(), true);
         });
         return result;
@@ -574,7 +573,7 @@ public class WorldManager extends DefaultManager {
     void sendEntityRemove(int user, int entity) {
         if (getServer().getNetworkManager().playerHasConnection(user)) {
             getServer().getNetworkManager()
-                .sendTo(getServer().getNetworkManager().getConnectionByPlayer(user), new RemoveEntity(entity));
+                    .sendTo(getServer().getNetworkManager().getConnectionByPlayer(user), new RemoveEntity(entity));
         }
     }
 
@@ -614,12 +613,12 @@ public class WorldManager extends DefaultManager {
     }
 
     public void login(int connectionId, Player player) {
-            final int entity = createEntity(player.getPlayerName(), player.getHero(), player.getTeam());
-            List<Component> components = WorldUtils(getWorld()).getComponents(getWorld().getEntity(entity));
-            components.add(new Focused());
-            components.add(new AOPhysics());
-            components.add(new CanWrite());
-            getServer().getNetworkManager().sendTo(connectionId, new EntityUpdate(entity, components.toArray(new Component[0]), new Class[0]));
-            registerEntity(connectionId, entity);
+        final int entity = createEntity(player.getPlayerName(), player.getHero(), player.getTeam());
+        List<Component> components = WorldUtils(getWorld()).getComponents(getWorld().getEntity(entity));
+        components.add(new Focused());
+        components.add(new AOPhysics());
+        components.add(new CanWrite());
+        getServer().getNetworkManager().sendTo(connectionId, new EntityUpdate(entity, components.toArray(new Component[0]), new Class[0]));
+        registerEntity(connectionId, entity);
     }
 }

@@ -1,1 +1,368 @@
-[{"id":131,"name":"Casco de Hierro Completo","grhIndex":558,"collectable":false,"value":4550,"crucial":false,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","PIRATE","BARDIC","THIEF","MAGICIAN"]},"bodyNumber":2,"animationId":6,"minDef":10,"maxDef":20},{"id":132,"name":"Casco de Hierro","grhIndex":559,"collectable":false,"value":700,"crucial":false,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","PIRATE","MAGICIAN"]},"bodyNumber":2,"animationId":1,"minDef":3,"maxDef":8},{"id":370,"name":"Capucha de Cazador","grhIndex":467,"collectable":false,"value":4550,"crucial":false,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["PIRATE","DRUID","ASSASSIN","WARRIOR","BARDIC","CLERIC","ROGUE","PALADIN","THIEF","MAGICIAN"]},"bodyNumber":2,"animationId":9,"minDef":6,"maxDef":14},{"id":383,"name":"Sombrero Mágico","grhIndex":18994,"collectable":false,"value":10000,"crucial":true,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["PIRATE","DRUID","ASSASSIN","WARRIOR","BARDIC","CLERIC","ARCHER","ROGUE","PALADIN","THIEF"]},"bodyNumber":2,"animationId":7,"minDef":1,"maxDef":1},{"id":405,"name":"Casco de Plata","grhIndex":717,"collectable":false,"value":26100,"crucial":false,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","PIRATE","BARDIC","THIEF","MAGICIAN"]},"bodyNumber":2,"animationId":8,"minDef":20,"maxDef":25},{"id":661,"name":"Sombrero de Aprendiz","grhIndex":1013,"collectable":false,"value":6000,"crucial":true,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["PIRATE","DRUID","ASSASSIN","WARRIOR","BARDIC","CLERIC","ARCHER","ROGUE","PALADIN","THIEF"]},"bodyNumber":2,"animationId":3,"minDef":1,"maxDef":1},{"id":662,"name":"Sombrero de Mago","grhIndex":1018,"collectable":false,"value":25000,"crucial":true,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["PIRATE","DRUID","ASSASSIN","WARRIOR","BARDIC","CLERIC","ARCHER","ROGUE","PALADIN","THIEF"]},"bodyNumber":2,"animationId":4,"minDef":1,"maxDef":1},{"id":851,"name":"Laureles","grhIndex":55,"collectable":false,"value":10000,"crucial":false,"newbie":false,"notDrop":false,"forbiddenClasses":{},"bodyNumber":2,"animationId":5,"minDef":0,"maxDef":0},{"id":1001,"name":"Casco de Águila","grhIndex":20238,"collectable":false,"value":2500,"crucial":false,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["PIRATE"]},"bodyNumber":2,"animationId":14,"minDef":1,"maxDef":5},{"id":1002,"name":"Casco de Lobo","grhIndex":20066,"collectable":false,"value":4200,"crucial":true,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["PIRATE","MAGICIAN"]},"bodyNumber":2,"animationId":11,"minDef":3,"maxDef":7},{"id":1003,"name":"Casco de Oso","grhIndex":20067,"collectable":false,"value":10500,"crucial":true,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["PIRATE","WARRIOR","ASSASSIN","BARDIC","CLERIC","ARCHER","ROGUE","PALADIN","THIEF","MAGICIAN"]},"bodyNumber":2,"animationId":12,"minDef":10,"maxDef":15},{"id":1004,"name":"Casco de Tigre","grhIndex":20068,"collectable":false,"value":18500,"crucial":true,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["PIRATE","WARRIOR","ASSASSIN","BARDIC","CLERIC","ARCHER","ROGUE","PALADIN","THIEF","MAGICIAN"]},"bodyNumber":2,"animationId":13,"minDef":10,"maxDef":15},{"id":1010,"name":"Sombrero Pirata","grhIndex":22034,"collectable":false,"value":25000,"crucial":false,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","WARRIOR","ASSASSIN","BARDIC","CLERIC","ARCHER","ROGUE","PALADIN","THIEF","MAGICIAN"]},"bodyNumber":0,"animationId":15,"minDef":6,"maxDef":2},{"id":1051,"name":"Casco Simple (Newbie)","grhIndex":559,"collectable":false,"value":120,"crucial":false,"newbie":true,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","PIRATE","MAGICIAN"]},"bodyNumber":2,"animationId":1,"minDef":1,"maxDef":1},{"id":1052,"name":"Capucha de Cazador (Newbie)","grhIndex":467,"collectable":false,"value":125,"crucial":false,"newbie":true,"notDrop":false,"forbiddenClasses":{"CP":["PIRATE","DRUID","ASSASSIN","WARRIOR","BARDIC","CLERIC","ROGUE","PALADIN","THIEF","MAGICIAN"]},"bodyNumber":2,"animationId":9,"minDef":1,"maxDef":1}]
+[
+  {
+    "id": 131,
+    "name": "Casco de Hierro Completo",
+    "grhIndex": 558,
+    "collectable": false,
+    "value": 4550,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "PIRATE",
+        "BARDIC",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 6,
+    "minDef": 10,
+    "maxDef": 20
+  },
+  {
+    "id": 132,
+    "name": "Casco de Hierro",
+    "grhIndex": 559,
+    "collectable": false,
+    "value": 700,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "PIRATE",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 1,
+    "minDef": 3,
+    "maxDef": 8
+  },
+  {
+    "id": 370,
+    "name": "Capucha de Cazador",
+    "grhIndex": 467,
+    "collectable": false,
+    "value": 4550,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "PIRATE",
+        "DRUID",
+        "ASSASSIN",
+        "WARRIOR",
+        "BARDIC",
+        "CLERIC",
+        "ROGUE",
+        "PALADIN",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 9,
+    "minDef": 6,
+    "maxDef": 14
+  },
+  {
+    "id": 383,
+    "name": "Sombrero Mágico",
+    "grhIndex": 18994,
+    "collectable": false,
+    "value": 10000,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "PIRATE",
+        "DRUID",
+        "ASSASSIN",
+        "WARRIOR",
+        "BARDIC",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "PALADIN",
+        "THIEF"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 7,
+    "minDef": 1,
+    "maxDef": 1
+  },
+  {
+    "id": 405,
+    "name": "Casco de Plata",
+    "grhIndex": 717,
+    "collectable": false,
+    "value": 26100,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "PIRATE",
+        "BARDIC",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 8,
+    "minDef": 20,
+    "maxDef": 25
+  },
+  {
+    "id": 661,
+    "name": "Sombrero de Aprendiz",
+    "grhIndex": 1013,
+    "collectable": false,
+    "value": 6000,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "PIRATE",
+        "DRUID",
+        "ASSASSIN",
+        "WARRIOR",
+        "BARDIC",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "PALADIN",
+        "THIEF"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 3,
+    "minDef": 1,
+    "maxDef": 1
+  },
+  {
+    "id": 662,
+    "name": "Sombrero de Mago",
+    "grhIndex": 1018,
+    "collectable": false,
+    "value": 25000,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "PIRATE",
+        "DRUID",
+        "ASSASSIN",
+        "WARRIOR",
+        "BARDIC",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "PALADIN",
+        "THIEF"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 4,
+    "minDef": 1,
+    "maxDef": 1
+  },
+  {
+    "id": 851,
+    "name": "Laureles",
+    "grhIndex": 55,
+    "collectable": false,
+    "value": 10000,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {},
+    "bodyNumber": 2,
+    "animationId": 5,
+    "minDef": 0,
+    "maxDef": 0
+  },
+  {
+    "id": 1001,
+    "name": "Casco de Águila",
+    "grhIndex": 20238,
+    "collectable": false,
+    "value": 2500,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 14,
+    "minDef": 1,
+    "maxDef": 5
+  },
+  {
+    "id": 1002,
+    "name": "Casco de Lobo",
+    "grhIndex": 20066,
+    "collectable": false,
+    "value": 4200,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "PIRATE",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 11,
+    "minDef": 3,
+    "maxDef": 7
+  },
+  {
+    "id": 1003,
+    "name": "Casco de Oso",
+    "grhIndex": 20067,
+    "collectable": false,
+    "value": 10500,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "PIRATE",
+        "WARRIOR",
+        "ASSASSIN",
+        "BARDIC",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "PALADIN",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 12,
+    "minDef": 10,
+    "maxDef": 15
+  },
+  {
+    "id": 1004,
+    "name": "Casco de Tigre",
+    "grhIndex": 20068,
+    "collectable": false,
+    "value": 18500,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "PIRATE",
+        "WARRIOR",
+        "ASSASSIN",
+        "BARDIC",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "PALADIN",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 13,
+    "minDef": 10,
+    "maxDef": 15
+  },
+  {
+    "id": 1010,
+    "name": "Sombrero Pirata",
+    "grhIndex": 22034,
+    "collectable": false,
+    "value": 25000,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "WARRIOR",
+        "ASSASSIN",
+        "BARDIC",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "PALADIN",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 0,
+    "animationId": 15,
+    "minDef": 6,
+    "maxDef": 2
+  },
+  {
+    "id": 1051,
+    "name": "Casco Simple (Newbie)",
+    "grhIndex": 559,
+    "collectable": false,
+    "value": 120,
+    "crucial": false,
+    "newbie": true,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "PIRATE",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 1,
+    "minDef": 1,
+    "maxDef": 1
+  },
+  {
+    "id": 1052,
+    "name": "Capucha de Cazador (Newbie)",
+    "grhIndex": 467,
+    "collectable": false,
+    "value": 125,
+    "crucial": false,
+    "newbie": true,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "PIRATE",
+        "DRUID",
+        "ASSASSIN",
+        "WARRIOR",
+        "BARDIC",
+        "CLERIC",
+        "ROGUE",
+        "PALADIN",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 9,
+    "minDef": 1,
+    "maxDef": 1
+  }
+]

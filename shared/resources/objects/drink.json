@@ -1,1 +1,123 @@
-[{"id":42,"name":"Vino","grhIndex":536,"collectable":false,"value":10,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":43,"name":"Botella de Agua","grhIndex":537,"collectable":false,"value":3,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":160,"name":"Cerveza","grhIndex":585,"collectable":false,"value":7,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":161,"name":"Jugo de Frutas","grhIndex":584,"collectable":false,"value":12,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":468,"name":"Botella de Agua (Newbie)","grhIndex":537,"collectable":false,"value":0,"crucial":false,"newbie":true,"notDrop":false,"min":0},{"id":498,"name":"Sidra","grhIndex":20509,"collectable":false,"value":30,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":522,"name":"Hipocrás","grhIndex":20507,"collectable":false,"value":40,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":550,"name":"Porrón de cerveza","grhIndex":20508,"collectable":false,"value":50,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":557,"name":"Vino de canela","grhIndex":20504,"collectable":false,"value":70,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":612,"name":"Cerveza de los enanos","grhIndex":20506,"collectable":false,"value":90,"crucial":true,"newbie":false,"notDrop":false,"min":0},{"id":622,"name":"Barrilito de cerveza","grhIndex":20505,"collectable":false,"value":100,"crucial":true,"newbie":false,"notDrop":false,"min":0}]
+[
+  {
+    "id": 42,
+    "name": "Vino",
+    "grhIndex": 536,
+    "collectable": false,
+    "value": 10,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 43,
+    "name": "Botella de Agua",
+    "grhIndex": 537,
+    "collectable": false,
+    "value": 3,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 160,
+    "name": "Cerveza",
+    "grhIndex": 585,
+    "collectable": false,
+    "value": 7,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 161,
+    "name": "Jugo de Frutas",
+    "grhIndex": 584,
+    "collectable": false,
+    "value": 12,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 468,
+    "name": "Botella de Agua (Newbie)",
+    "grhIndex": 537,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": true,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 498,
+    "name": "Sidra",
+    "grhIndex": 20509,
+    "collectable": false,
+    "value": 30,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 522,
+    "name": "Hipocrás",
+    "grhIndex": 20507,
+    "collectable": false,
+    "value": 40,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 550,
+    "name": "Porrón de cerveza",
+    "grhIndex": 20508,
+    "collectable": false,
+    "value": 50,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 557,
+    "name": "Vino de canela",
+    "grhIndex": 20504,
+    "collectable": false,
+    "value": 70,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 612,
+    "name": "Cerveza de los enanos",
+    "grhIndex": 20506,
+    "collectable": false,
+    "value": 90,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  },
+  {
+    "id": 622,
+    "name": "Barrilito de cerveza",
+    "grhIndex": 20505,
+    "collectable": false,
+    "value": 100,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "min": 0
+  }
+]

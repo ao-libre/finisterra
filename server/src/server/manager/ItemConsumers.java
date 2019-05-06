@@ -1,6 +1,5 @@
 package server.manager;
 
-import com.artemis.Component;
 import com.artemis.E;
 import entity.character.equipment.Helmet;
 import entity.character.equipment.Shield;
@@ -8,7 +7,6 @@ import entity.character.equipment.Weapon;
 import server.core.Server;
 import shared.interfaces.Hero;
 import shared.interfaces.Race;
-import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.objects.types.*;
 
@@ -21,9 +19,9 @@ import static com.artemis.E.E;
  */
 public class ItemConsumers {
 
+    private Server server;
     public final BiConsumer<Integer, Obj> WEAR = wear();
     public final BiConsumer<Integer, Obj> TAKE_OFF = takeOff();
-    private Server server;
 
     public ItemConsumers(Server server) {
         this.server = server;
@@ -38,7 +36,6 @@ public class ItemConsumers {
             E entity = E(player);
             if (obj instanceof WeaponObj) {
                 entity.removeWeapon();
-
                 getServer().getWorldManager().notifyUpdate(player, EntityUpdateBuilder.of(player).remove(Weapon.class).build());
             } else if (obj instanceof ArmorObj) {
                 Hero hero = Hero.getHeroes().get(entity.getCharHero().heroId);
@@ -59,14 +56,14 @@ public class ItemConsumers {
             E entity = E(player);
             if (obj instanceof WeaponObj) {
                 entity.weaponIndex(obj.getId());
-                getServer().getWorldManager().notifyUpdate(player,  EntityUpdateBuilder.of(player).withComponents(entity.getWeapon()).build());
+                getServer().getWorldManager().notifyUpdate(player, EntityUpdateBuilder.of(player).withComponents(entity.getWeapon()).build());
             } else if (obj instanceof ArmorObj) {
                 entity.bodyIndex(((ArmorObj) obj).getBodyNumber());
                 entity.armorIndex(obj.getId());
-                getServer().getWorldManager().notifyUpdate(player,  EntityUpdateBuilder.of(player).withComponents(entity.getBody(), entity.getArmor()).build());
+                getServer().getWorldManager().notifyUpdate(player, EntityUpdateBuilder.of(player).withComponents(entity.getBody(), entity.getArmor()).build());
             } else if (obj instanceof HelmetObj) {
                 entity.helmetIndex(obj.getId());
-                getServer().getWorldManager().notifyUpdate(player,  EntityUpdateBuilder.of(player).withComponents(entity.getHelmet()).build());
+                getServer().getWorldManager().notifyUpdate(player, EntityUpdateBuilder.of(player).withComponents(entity.getHelmet()).build());
             } else if (obj instanceof ShieldObj) {
                 entity.shieldIndex(obj.getId());
                 getServer().getWorldManager().notifyUpdate(player, EntityUpdateBuilder.of(player).withComponents(entity.getShield()).build());

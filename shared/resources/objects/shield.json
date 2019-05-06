@@ -1,1 +1,252 @@
-[{"id":128,"name":"Escudo de Hierro","grhIndex":557,"collectable":false,"value":4200,"crucial":false,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","PIRATE","ASSASSIN","BARDIC","ARCHER","THIEF","MAGICIAN"]},"bodyNumber":2,"animationId":4,"minDef":1,"maxDef":3},{"id":130,"name":"Escudo de Plata","grhIndex":4860,"collectable":false,"value":13000,"crucial":false,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","PIRATE","ASSASSIN","BARDIC","ARCHER","THIEF","MAGICIAN"]},"bodyNumber":2,"animationId":6,"minDef":2,"maxDef":5},{"id":133,"name":"Escudo Imperial","grhIndex":560,"collectable":false,"value":7800,"crucial":false,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","PIRATE","ASSASSIN","BARDIC","THIEF","MAGICIAN"]},"bodyNumber":2,"animationId":1,"minDef":1,"maxDef":4},{"id":404,"name":"Escudo de Tortuga","grhIndex":712,"collectable":false,"value":350,"crucial":true,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","PIRATE","THIEF","MAGICIAN"]},"bodyNumber":2,"animationId":3,"minDef":1,"maxDef":1},{"id":491,"name":"Escudo Real RM","grhIndex":560,"collectable":false,"value":350,"crucial":true,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","MAGICIAN"]},"bodyNumber":2,"animationId":1,"minDef":1,"maxDef":1},{"id":494,"name":"Escudo Legionario RM","grhIndex":13255,"collectable":false,"value":1,"crucial":true,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","MAGICIAN"]},"bodyNumber":2,"animationId":5,"minDef":1,"maxDef":1},{"id":625,"name":"Escudo AlejoLp","grhIndex":560,"collectable":false,"value":1750000,"crucial":false,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","PIRATE","ASSASSIN","BARDIC","THIEF","MAGICIAN"]},"bodyNumber":2,"animationId":1,"minDef":10,"maxDef":12},{"id":708,"name":"Escudo Infernal","grhIndex":13255,"collectable":false,"value":7800,"crucial":false,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","PIRATE","ASSASSIN","BARDIC","THIEF","MAGICIAN"]},"bodyNumber":2,"animationId":5,"minDef":1,"maxDef":4},{"id":1037,"name":"Escudo Legionario","grhIndex":23069,"collectable":false,"value":350,"crucial":false,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","PIRATE","THIEF","MAGICIAN"]},"bodyNumber":2,"animationId":9,"minDef":1,"maxDef":1},{"id":1038,"name":"Escudo Real","grhIndex":23068,"collectable":false,"value":350,"crucial":false,"newbie":false,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","PIRATE","THIEF","MAGICIAN"]},"bodyNumber":2,"animationId":7,"minDef":1,"maxDef":1},{"id":1048,"name":"Escudo (Newbie)","grhIndex":712,"collectable":false,"value":100,"crucial":true,"newbie":true,"notDrop":false,"forbiddenClasses":{"CP":["DRUID","PIRATE","THIEF","MAGICIAN"]},"bodyNumber":2,"animationId":3,"minDef":0,"maxDef":1}]
+[
+  {
+    "id": 128,
+    "name": "Escudo de Hierro",
+    "grhIndex": 557,
+    "collectable": false,
+    "value": 4200,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "PIRATE",
+        "ASSASSIN",
+        "BARDIC",
+        "ARCHER",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 4,
+    "minDef": 1,
+    "maxDef": 3
+  },
+  {
+    "id": 130,
+    "name": "Escudo de Plata",
+    "grhIndex": 4860,
+    "collectable": false,
+    "value": 13000,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "PIRATE",
+        "ASSASSIN",
+        "BARDIC",
+        "ARCHER",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 6,
+    "minDef": 2,
+    "maxDef": 5
+  },
+  {
+    "id": 133,
+    "name": "Escudo Imperial",
+    "grhIndex": 560,
+    "collectable": false,
+    "value": 7800,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "PIRATE",
+        "ASSASSIN",
+        "BARDIC",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 1,
+    "minDef": 1,
+    "maxDef": 4
+  },
+  {
+    "id": 404,
+    "name": "Escudo de Tortuga",
+    "grhIndex": 712,
+    "collectable": false,
+    "value": 350,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "PIRATE",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 3,
+    "minDef": 1,
+    "maxDef": 1
+  },
+  {
+    "id": 491,
+    "name": "Escudo Real RM",
+    "grhIndex": 560,
+    "collectable": false,
+    "value": 350,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 1,
+    "minDef": 1,
+    "maxDef": 1
+  },
+  {
+    "id": 494,
+    "name": "Escudo Legionario RM",
+    "grhIndex": 13255,
+    "collectable": false,
+    "value": 1,
+    "crucial": true,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 5,
+    "minDef": 1,
+    "maxDef": 1
+  },
+  {
+    "id": 625,
+    "name": "Escudo AlejoLp",
+    "grhIndex": 560,
+    "collectable": false,
+    "value": 1750000,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "PIRATE",
+        "ASSASSIN",
+        "BARDIC",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 1,
+    "minDef": 10,
+    "maxDef": 12
+  },
+  {
+    "id": 708,
+    "name": "Escudo Infernal",
+    "grhIndex": 13255,
+    "collectable": false,
+    "value": 7800,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "PIRATE",
+        "ASSASSIN",
+        "BARDIC",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 5,
+    "minDef": 1,
+    "maxDef": 4
+  },
+  {
+    "id": 1037,
+    "name": "Escudo Legionario",
+    "grhIndex": 23069,
+    "collectable": false,
+    "value": 350,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "PIRATE",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 9,
+    "minDef": 1,
+    "maxDef": 1
+  },
+  {
+    "id": 1038,
+    "name": "Escudo Real",
+    "grhIndex": 23068,
+    "collectable": false,
+    "value": 350,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "PIRATE",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 7,
+    "minDef": 1,
+    "maxDef": 1
+  },
+  {
+    "id": 1048,
+    "name": "Escudo (Newbie)",
+    "grhIndex": 712,
+    "collectable": false,
+    "value": 100,
+    "crucial": true,
+    "newbie": true,
+    "notDrop": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "PIRATE",
+        "THIEF",
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 2,
+    "animationId": 3,
+    "minDef": 0,
+    "maxDef": 1
+  }
+]

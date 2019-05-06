@@ -11,12 +11,11 @@ import java.util.LinkedList;
 public class AOConsole extends Actor {
 
     static final float MAX_MESSAGES = 6;
-    private LinkedList<Actor> messages = new LinkedList<>();
-
     private static Label.LabelStyle ERROR_STYLE = new Label.LabelStyle(Fonts.CONSOLE_FONT, Colors.TRANSPARENT_RED);
     private static Label.LabelStyle INFO_STYLE = new Label.LabelStyle(Fonts.CONSOLE_FONT, Colors.GREY);
     private static Label.LabelStyle WARNING_STYLE = new Label.LabelStyle(Fonts.CONSOLE_FONT, Colors.YELLOW);
-    private static Label.LabelStyle COMBAT_STYLE  = new Label.LabelStyle(Fonts.CONSOLE_FONT, Colors.COMBAT);
+    private static Label.LabelStyle COMBAT_STYLE = new Label.LabelStyle(Fonts.CONSOLE_FONT, Colors.COMBAT);
+    private LinkedList<Actor> messages = new LinkedList<>();
 
     AOConsole() {
         super();

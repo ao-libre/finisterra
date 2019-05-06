@@ -9,7 +9,9 @@ public class MovementResponse implements IResponse {
     public int requestNumber;
     public WorldPos destination;
 
-    public MovementResponse() {}
+    public MovementResponse() {
+    }
+
     public MovementResponse(int requestNumber, WorldPos pos) {
         this.requestNumber = requestNumber;
         this.destination = pos;

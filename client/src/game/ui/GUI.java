@@ -2,14 +2,12 @@ package game.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
-import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.managers.AOInputProcessor;
 import game.screens.GameScreen;
@@ -30,6 +28,30 @@ public class GUI {
 
     public GUI() {
         this.stage = new AOInputProcessor();
+    }
+
+    public static Inventory getInventory() {
+        return inventory;
+    }
+
+    public static DialogText getDialog() {
+        return dialog;
+    }
+
+    public static AOConsole getConsole() {
+        return console;
+    }
+
+    public static SpellView getSpellView() {
+        return spellView;
+    }
+
+    public static UserInformation getUserTable() {
+        return userTable;
+    }
+
+    public static Stage getStage() {
+        return stage;
     }
 
     public void initialize() {
@@ -130,33 +152,9 @@ public class GUI {
         return Gdx.graphics.getWidth();
     }
 
-    public static Inventory getInventory() {
-        return inventory;
-    }
-
-    public static DialogText getDialog() {
-        return dialog;
-    }
-
-    public static AOConsole getConsole() {
-        return console;
-    }
-
-    public static SpellView getSpellView() {
-        return spellView;
-    }
-
-    public static UserInformation getUserTable() {
-        return userTable;
-    }
-
     public void draw() {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-    }
-
-    public static Stage getStage() {
-        return stage;
     }
 
     public void dispose() {

@@ -6,7 +6,8 @@ import com.artemis.annotations.DelayedComponentRemoval;
 import java.io.Serializable;
 
 @DelayedComponentRemoval
-public class Immobile extends Component implements Serializable{
-    public Immobile() {}
+public class Immobile extends Component implements Serializable {
+    public Immobile() {
+    }
 
 }

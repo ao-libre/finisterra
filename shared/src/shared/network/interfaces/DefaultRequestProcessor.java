@@ -78,7 +78,8 @@ public class DefaultRequestProcessor implements IRequestProcessor {
 
     }
 
-    @Override public void processRequest(TimeSyncRequest timeSyncRequest, int connectionId) {
+    @Override
+    public void processRequest(TimeSyncRequest timeSyncRequest, int connectionId) {
 
     }
 }

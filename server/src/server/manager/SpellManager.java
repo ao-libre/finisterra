@@ -42,7 +42,8 @@ public class SpellManager implements IManager {
         return spells;
     }
 
-    @Override public Server getServer() {
+    @Override
+    public Server getServer() {
         return null;
     }
 }

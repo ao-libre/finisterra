@@ -6,7 +6,8 @@ import com.artemis.annotations.DelayedComponentRemoval;
 import java.io.Serializable;
 
 @DelayedComponentRemoval
-public class Meditating extends Component implements Serializable{
-    public Meditating(){}
+public class Meditating extends Component implements Serializable {
+    public Meditating() {
+    }
 
 }

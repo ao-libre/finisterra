@@ -14,7 +14,8 @@ public abstract class Obj implements IFillObject {
     private boolean newbie = false;
     private boolean notDrop = false;
 
-    public Obj() {}
+    public Obj() {
+    }
 
     protected Obj(int id, String name, int grhIndex) {
         this.id = id;
@@ -81,7 +82,8 @@ public abstract class Obj implements IFillObject {
         return id;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return getId() + ":" + getType().toString();
     }
 }

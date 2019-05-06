@@ -89,9 +89,9 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
             float width = Fonts.dialogLayout.width;
             Fonts.dialogLayout.setText(font, combatMessage.text, font.getColor(), width, Align.center, true);
             final float fontX = playerPos.x + (Tile.TILE_PIXEL_WIDTH - Fonts.dialogLayout.width) / 2;
-            int bodyOffset =  DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
+            int bodyOffset = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
             final float fontY = playerPos.y + combatMessage.offset + bodyOffset - 65
-                + Fonts.dialogLayout.height;
+                    + Fonts.dialogLayout.height;
             font.draw(batch, Fonts.dialogLayout, fontX, fontY);
             font.setColor(copy);
         } else {

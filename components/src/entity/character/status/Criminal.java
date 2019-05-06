@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 public class Criminal extends Component implements Serializable {
 
-    public Criminal() { }
+    public Criminal() {
+    }
 
 }

@@ -1,1 +1,72 @@
-[{"id":362,"name":"Tambor","grhIndex":684,"collectable":false,"value":2200,"crucial":false,"newbie":false,"notDrop":false,"soundIndexs":{"class":"java.util.HashSet","items":[]}},{"id":469,"name":"Laúd","grhIndex":685,"collectable":false,"value":2200,"crucial":false,"newbie":false,"notDrop":false,"soundIndexs":{"class":"java.util.HashSet","items":[]}},{"id":540,"name":"Flauta","grhIndex":686,"collectable":false,"value":2200,"crucial":false,"newbie":false,"notDrop":false,"soundIndexs":{"class":"java.util.HashSet","items":[]}},{"id":874,"name":"Cuerno de llamado Armada","grhIndex":11980,"collectable":false,"value":0,"crucial":false,"newbie":false,"notDrop":true,"soundIndexs":{"class":"java.util.HashSet","items":[]}},{"id":875,"name":"Cuerno de llamado Legionario","grhIndex":11979,"collectable":false,"value":0,"crucial":false,"newbie":false,"notDrop":true,"soundIndexs":{"class":"java.util.HashSet","items":[]}}]
+[
+  {
+    "id": 362,
+    "name": "Tambor",
+    "grhIndex": 684,
+    "collectable": false,
+    "value": 2200,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "soundIndexs": {
+      "class": "java.util.HashSet",
+      "items": []
+    }
+  },
+  {
+    "id": 469,
+    "name": "Laúd",
+    "grhIndex": 685,
+    "collectable": false,
+    "value": 2200,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "soundIndexs": {
+      "class": "java.util.HashSet",
+      "items": []
+    }
+  },
+  {
+    "id": 540,
+    "name": "Flauta",
+    "grhIndex": 686,
+    "collectable": false,
+    "value": 2200,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": false,
+    "soundIndexs": {
+      "class": "java.util.HashSet",
+      "items": []
+    }
+  },
+  {
+    "id": 874,
+    "name": "Cuerno de llamado Armada",
+    "grhIndex": 11980,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": true,
+    "soundIndexs": {
+      "class": "java.util.HashSet",
+      "items": []
+    }
+  },
+  {
+    "id": 875,
+    "name": "Cuerno de llamado Legionario",
+    "grhIndex": 11979,
+    "collectable": false,
+    "value": 0,
+    "crucial": false,
+    "newbie": false,
+    "notDrop": true,
+    "soundIndexs": {
+      "class": "java.util.HashSet",
+      "items": []
+    }
+  }
+]

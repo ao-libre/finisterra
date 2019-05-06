@@ -7,7 +7,8 @@ import java.io.Serializable;
 public class Strength extends Component implements Serializable {
     private int value;
 
-    public Strength() {}
+    public Strength() {
+    }
 
     public Strength(int value) {
         this.value = value;

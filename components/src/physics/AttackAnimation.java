@@ -12,6 +12,7 @@ public class AttackAnimation extends Component implements Serializable {
 
     public float time = DEFAULT_ANIM_TIME;
 
-    public AttackAnimation() {}
+    public AttackAnimation() {
+    }
 
 }

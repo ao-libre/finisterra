@@ -5,7 +5,8 @@ import shared.objects.types.Type;
 
 public class WoodObj extends Obj {
 
-    public WoodObj () {}
+    public WoodObj() {
+    }
 
     public WoodObj(int id, String name, int grhIndex) {
         super(id, name, grhIndex);

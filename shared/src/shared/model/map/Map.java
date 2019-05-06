@@ -8,10 +8,8 @@ public class Map {
     public static final int MIN_MAP_SIZE_HEIGHT = 1;
 
     public static final int TILE_BUFFER_SIZE = 7;
-
-    private boolean secureZone;
-
     protected Tile tiles[][];
+    private boolean secureZone;
 
     public Map() {
         this.tiles = new Tile[MAX_MAP_SIZE_WIDTH + 1][MAX_MAP_SIZE_HEIGHT + 1];

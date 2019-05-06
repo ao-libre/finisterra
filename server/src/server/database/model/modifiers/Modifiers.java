@@ -36,4 +36,4 @@ public enum Modifiers {
         return modifiers[clazz.ordinal()][this.ordinal()];
     }
 
-    }
+}

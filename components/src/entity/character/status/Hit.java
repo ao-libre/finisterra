@@ -9,7 +9,8 @@ public class Hit extends Component implements Serializable {
     private int min;
     private int max;
 
-    public Hit() {}
+    public Hit() {
+    }
 
     public Hit(int min, int max) {
 
@@ -21,12 +22,12 @@ public class Hit extends Component implements Serializable {
         return max;
     }
 
-    public int getMin() {
-        return min;
-    }
-
     public void setMax(int max) {
         this.max = max;
+    }
+
+    public int getMin() {
+        return min;
     }
 
     public void setMin(int min) {

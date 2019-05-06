@@ -8,7 +8,8 @@ public class SpellBook extends Component implements Serializable {
 
     public Integer[] spells;
 
-    public SpellBook() {}
+    public SpellBook() {
+    }
 
     public SpellBook(Integer[] spells) {
         this.spells = spells;

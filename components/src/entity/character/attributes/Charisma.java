@@ -7,7 +7,8 @@ import java.io.Serializable;
 public class Charisma extends Component implements Serializable {
     private int value;
 
-    public Charisma() {}
+    public Charisma() {
+    }
 
     public Charisma(int value) {
         this.value = value;

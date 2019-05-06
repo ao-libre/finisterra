@@ -11,6 +11,9 @@ public class ArrowObj extends ObjWithClasses {
         super(id, name, grhIndex);
     }
 
+    public ArrowObj() {
+    }
+
     public int getMinHit() {
         return minHit;
     }
@@ -26,8 +29,6 @@ public class ArrowObj extends ObjWithClasses {
     public void setMaxHit(int maxHit) {
         this.maxHit = maxHit;
     }
-
-    public ArrowObj() {}
 
     @Override
     public Type getType() {

@@ -3,11 +3,9 @@ package json;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import game.handlers.SpellHandler;
 import shared.model.Spell;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
-import shared.util.ObjJson;
 import shared.util.SpellJson;
 
 import java.util.*;
@@ -34,10 +32,10 @@ public class SpellsToJson {
         List<T> list = new ArrayList<>();
         if (clazz != null && spells != null && !spells.isEmpty()) {
             spells
-                .stream()
-                .filter(obj -> clazz.isInstance(obj))
-                .map(obj -> clazz.cast(obj))
-                .forEach(obj -> list.add(obj));
+                    .stream()
+                    .filter(obj -> clazz.isInstance(obj))
+                    .map(obj -> clazz.cast(obj))
+                    .forEach(obj -> list.add(obj));
             list.sort(Comparator.comparingInt(Obj::getId));
         }
 

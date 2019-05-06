@@ -23,7 +23,7 @@ public class Colors {
 
 
     private static Color rgb(int r, int g, int b) {
-        return rgba(r,g,b,1);
+        return rgba(r, g, b, 1);
     }
 
 }

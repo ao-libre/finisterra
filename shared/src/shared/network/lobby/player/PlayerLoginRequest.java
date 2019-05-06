@@ -8,7 +8,8 @@ public class PlayerLoginRequest implements IRequest {
 
     private Player player;
 
-    private PlayerLoginRequest() {}
+    private PlayerLoginRequest() {
+    }
 
     public PlayerLoginRequest(Player player) {
         this.player = player;

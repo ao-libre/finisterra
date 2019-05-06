@@ -26,7 +26,7 @@ public class Balance {
         shieldModifier = shield();
     }
 
-    private static Map<CharClass,Float> shield() {
+    private static Map<CharClass, Float> shield() {
         Map<CharClass, Float> result = new HashMap<>();
         result.put(CharClass.WARRIOR, 1f);
         result.put(CharClass.ARCHER, 0.8f);

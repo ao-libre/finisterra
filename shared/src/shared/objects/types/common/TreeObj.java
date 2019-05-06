@@ -5,7 +5,8 @@ import shared.objects.types.Type;
 
 public class TreeObj extends Obj {
 
-    public TreeObj() {}
+    public TreeObj() {
+    }
 
     public TreeObj(int id, String name, int grhIndex) {
         super(id, name, grhIndex);

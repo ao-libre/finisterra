@@ -7,7 +7,8 @@ import java.io.Serializable;
 public class Agility extends Component implements Serializable {
     private int value;
 
-    public Agility() {}
+    public Agility() {
+    }
 
     public Agility(int value) {
         this.value = value;

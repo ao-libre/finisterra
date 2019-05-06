@@ -20,17 +20,16 @@ import static com.artemis.E.E;
 public class Bar extends Actor {
 
     static final int TOTAL_WIDTH = 200;
+    static final int TOTAL_HEIGHT = 20;
     private static final int ICON_SIZE = 16;
     private static final int SPACE_WIDTH = 4;
     private static final int INTER_SPACE = 4;
     private static final int BAR_WIDTH = TOTAL_WIDTH - (SPACE_WIDTH * 2) - ICON_SIZE - INTER_SPACE;
-    static final int TOTAL_HEIGHT = 20;
     private static final int BAR_HEIGHT = 8;
-    private static Texture backgroundTexture = new Texture(Gdx.files.local("data/ui/images/bar.png"));
     private final static Texture HEALTH = new Texture(Gdx.files.local("data/ui/images/heart.png"));
     private final static Texture MAGIC = new Texture(Gdx.files.local("data/ui/images/magic.png"));
     private final static Texture ENERGY = new Texture(Gdx.files.local("data/ui/images/energy.png"));
-
+    private static Texture backgroundTexture = new Texture(Gdx.files.local("data/ui/images/bar.png"));
     private Drawable background;
     private Drawable bar;
     private Kind kind;

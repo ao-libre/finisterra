@@ -10,7 +10,8 @@ public class JoinLobbyResponse implements IResponse {
     private Player player;
     private Room[] rooms;
 
-    public JoinLobbyResponse() {}
+    public JoinLobbyResponse() {
+    }
 
     public JoinLobbyResponse(Player player, Room[] rooms) {
         this.player = player;

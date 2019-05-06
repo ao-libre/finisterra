@@ -14,11 +14,11 @@ public class Inventory extends Component {
     }
 
     public void set(int i, Item item) {
-        items[i] =  item;
+        items[i] = item;
     }
 
     public void add(int objId, boolean equipped) {
-        add(objId,1, equipped);
+        add(objId, 1, equipped);
     }
 
     public int add(int objId, int count, boolean equiped) {
@@ -58,13 +58,15 @@ public class Inventory extends Component {
         public int objId;
         public boolean equipped;
 
-        public Item() {}
+        public Item() {
+        }
 
-        public Item(int objId, int count, boolean equipped){
+        public Item(int objId, int count, boolean equipped) {
             this.objId = objId;
             this.count = count;
             this.equipped = equipped;
         }
+
         public Item(int objId, int count) {
             this(objId, count, false);
         }

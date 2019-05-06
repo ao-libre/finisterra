@@ -7,7 +7,8 @@ public class ItemActionRequest implements IRequest {
 
     private int slot;
 
-    public ItemActionRequest() {}
+    public ItemActionRequest() {
+    }
 
     public ItemActionRequest(int slot) {
         this.slot = slot;

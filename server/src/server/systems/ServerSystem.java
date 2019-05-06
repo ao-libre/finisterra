@@ -1,6 +1,5 @@
 package server.systems;
 
-import com.badlogic.gdx.Gdx;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import server.core.Server;

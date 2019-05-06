@@ -1,6 +1,5 @@
 package server.manager;
 
-import com.artemis.Component;
 import com.artemis.E;
 import entity.world.CombatMessage;
 import server.core.Server;
@@ -29,9 +28,33 @@ import static com.artemis.E.E;
 public class CombatManager extends DefaultManager {
 
 
-
     public CombatManager(Server server) {
         super(server);
+    }
+
+    /**
+     * TODO move to another class
+     *
+     * @param victim entity
+     * @return class of current hero
+     */
+    public static CharClass getCharClass(E victim) {
+        int heroId = victim.getCharHero().heroId;
+        Hero hero = Hero.getHeroes().get(heroId);
+        return CharClass.values()[hero.getClassId()];
+    }
+
+    /**
+     * @param target entity id
+     * @param spell  spell used
+     * @return magical damage
+     */
+    static int calculateMagicDamage(int target, Spell spell) {
+        // TODO complete
+        if (spell.getSumHP() == 1) {
+            return 80;
+        }
+        return -80;
     }
 
     @Override
@@ -41,6 +64,7 @@ public class CombatManager extends DefaultManager {
 
     /**
      * Update the attacked entity in case it was damaged
+     *
      * @param attacker attacker entity id
      * @param attacked victim entity id
      * @return possible damage
@@ -74,10 +98,9 @@ public class CombatManager extends DefaultManager {
         return Optional.empty();
     }
 
-
     /**
      * @param attacked entity id
-     * @param evasion entity id
+     * @param evasion  entity id
      * @return defanse of entity, taking into account evasion
      */
     private int calculateDefense(int attacked, float evasion) {
@@ -89,7 +112,6 @@ public class CombatManager extends DefaultManager {
 
         return (int) (evasion * defense * evasionModifier);
     }
-
 
     /**
      * @param attacker entity id
@@ -109,7 +131,6 @@ public class CombatManager extends DefaultManager {
         return entity.strengthValue() * weaponDamage;
     }
 
-
     /**
      * @param victimId entity id
      * @return evasion of entity class
@@ -120,22 +141,10 @@ public class CombatManager extends DefaultManager {
         return 2; // TODO calculate extra evasion from items and hero modifier
     }
 
-
-    /**
-     * TODO move to another class
-     * @param victim entity
-     * @return class of current hero
-     */
-    public static CharClass getCharClass(E victim) {
-        int heroId = victim.getCharHero().heroId;
-        Hero hero = Hero.getHeroes().get(heroId);
-        return CharClass.values()[hero.getClassId()];
-    }
-
-
     /**
      * Send combat notification to user and near by entities
-     * @param victim entity id
+     *
+     * @param victim        entity id
      * @param combatMessage message
      */
     public void notify(int victim, CombatMessage combatMessage) {
@@ -146,25 +155,12 @@ public class CombatManager extends DefaultManager {
 
     /**
      * Send an update to entity with current health
+     *
      * @param victim entity id
      */
     void update(int victim) {
         EntityUpdate update = EntityUpdateBuilder.of(victim).withComponents(E(victim).getHealth()).build();
         getServer().getWorldManager().sendEntityUpdate(victim, update);
-    }
-
-
-    /**
-     * @param target entity id
-     * @param spell spell used
-     * @return magical damage
-     */
-    static int calculateMagicDamage(int target, Spell spell) {
-        // TODO complete
-        if (spell.getSumHP() == 1) {
-            return 80;
-        }
-        return -80;
     }
 
 }

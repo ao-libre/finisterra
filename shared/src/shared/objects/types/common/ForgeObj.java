@@ -6,7 +6,9 @@ import shared.objects.types.Type;
 
 public class ForgeObj extends Obj {
 
-    public ForgeObj() {}
+    public ForgeObj() {
+    }
+
     public ForgeObj(int id, String name, int grhIndex) {
         super(id, name, grhIndex);
     }

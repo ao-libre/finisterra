@@ -27,96 +27,8 @@ public class ObjectFactory {
     public static final String CLAVE = "CLAVE";
     public static final String LINGOTEINDEX = "Lingoteindex";
 
-    public ObjectFactory() {}
-
-    public Obj createObject(int id, int kind, String name, int grhIndex) {
-        return createObject(id, Type.values()[kind-1], name, grhIndex);
+    public ObjectFactory() {
     }
-
-    public Obj createObject(int id, Type kind, String name, int grhIndex) {
-        switch (kind) {
-            case ANVIL:
-                return new AnvilObj(id, name, grhIndex);
-            case GEM:
-                return new GemObj(id, name, grhIndex);
-            case AURA:
-            case BOAT:
-                return new BoatObj(id, name, grhIndex) ;
-            case BOOK:
-                return new BookObj(id, name, grhIndex);
-            case DOOR:
-                return new DoorObj(id, name, grhIndex);
-            case FOOD:
-                return new Food(id, name, grhIndex);
-            case GOLD:
-                return new GoldObj(id, name, grhIndex);
-            case KEYS:
-                return new KeyObj(id, name, grhIndex);
-            case RING:
-                return new MagicObj(id, name, grhIndex);
-            case TREE:
-                return new TreeObj(id, name, grhIndex);
-            case WOOD:
-                return new WoodObj(id, name, grhIndex);
-            case ARMOR:
-                return new ArmorObj(id, name, grhIndex);
-            case ARROW:
-                return new ArrowObj(id, name, grhIndex);
-            case DRINK:
-                return new DrinkObj(id, name, grhIndex);
-            case FORGE:
-                return new ForgeObj(id, name, grhIndex);
-            case FORUM:
-                return new ForumObj(id, name, grhIndex);
-            case JEWEL:
-                return new JewelObj(id, name, grhIndex);
-            case METAL:
-                return new MineralObj(id, name, grhIndex);
-            case SPELL:
-                return new SpellObj(id, name, grhIndex);
-            case STAIN:
-                return new StainObj(id, name, grhIndex);
-            case BOTTLE:
-                return new DrinkObj(id, name, grhIndex);
-            case FLOWER:
-                return new FlowerObj(id, name, grhIndex);
-            case HELMET:
-                return new HelmetObj(id, name, grhIndex);
-            case POSTER:
-                return new PosterObj(id, name, grhIndex);
-            case POTION:
-                return new PotionObj(id, name, grhIndex);
-            case SHIELD:
-                return new ShieldObj(id, name, grhIndex);
-            case WEAPON:
-                return new WeaponObj(id, name, grhIndex);
-            case BONFIRE:
-                return new BonfireObj(id, name, grhIndex);
-            case DEPOSIT:
-                return new DepositObj(id, name, grhIndex);
-            case MUSICAL:
-                return new MusicalObj(id, name, grhIndex);
-            case TELEPORT:
-                return new TeleportObj(id, name, grhIndex);
-            case CONTAINER:
-                return new ContainerObj(id, name, grhIndex);
-            case FURNITURE:
-                return new FurnitureObj(id, name, grhIndex);
-            case EMPTY_BOTTLE:
-                default:
-                    return new Obj(id, name, grhIndex) {
-                        @Override
-                        public Type getType() {
-                            return null;
-                        }
-                    };
-        }
-    }
-
-    public void fillObject(Obj obj, Profile.Section section){
-        obj.fillObject(section);
-    }
-
 
     public static void fillCommon(Obj obj, Profile.Section section) {
         boolean collectable = section.get("Agarrable", int.class) == 1;
@@ -147,8 +59,8 @@ public class ObjectFactory {
 
     public static void fill(BoatObj obj, Profile.Section section) {
         obj.setBodyIndex(section.get(NUM_ROPAJE, int.class));
-        obj.setMaxDef(section.get(MAX_DEF, int.class ));
-        obj.setMinDef(section.get(MIN_DEF, int.class ));
+        obj.setMaxDef(section.get(MAX_DEF, int.class));
+        obj.setMinDef(section.get(MIN_DEF, int.class));
         obj.setMaxHit(section.get(MAX_HIT, int.class));
         obj.setMinHit(section.get(MIN_HIT, int.class));
     }
@@ -225,5 +137,93 @@ public class ObjectFactory {
         obj.setMaxHit(section.get(MAX_HIT, int.class));
         obj.setMinHit(section.get(MIN_HIT, int.class));
         obj.setDwarfAnimationId(section.get(RAZA_ENANA_ANIM, int.class));
+    }
+
+    public Obj createObject(int id, int kind, String name, int grhIndex) {
+        return createObject(id, Type.values()[kind - 1], name, grhIndex);
+    }
+
+    public Obj createObject(int id, Type kind, String name, int grhIndex) {
+        switch (kind) {
+            case ANVIL:
+                return new AnvilObj(id, name, grhIndex);
+            case GEM:
+                return new GemObj(id, name, grhIndex);
+            case AURA:
+            case BOAT:
+                return new BoatObj(id, name, grhIndex);
+            case BOOK:
+                return new BookObj(id, name, grhIndex);
+            case DOOR:
+                return new DoorObj(id, name, grhIndex);
+            case FOOD:
+                return new Food(id, name, grhIndex);
+            case GOLD:
+                return new GoldObj(id, name, grhIndex);
+            case KEYS:
+                return new KeyObj(id, name, grhIndex);
+            case RING:
+                return new MagicObj(id, name, grhIndex);
+            case TREE:
+                return new TreeObj(id, name, grhIndex);
+            case WOOD:
+                return new WoodObj(id, name, grhIndex);
+            case ARMOR:
+                return new ArmorObj(id, name, grhIndex);
+            case ARROW:
+                return new ArrowObj(id, name, grhIndex);
+            case DRINK:
+                return new DrinkObj(id, name, grhIndex);
+            case FORGE:
+                return new ForgeObj(id, name, grhIndex);
+            case FORUM:
+                return new ForumObj(id, name, grhIndex);
+            case JEWEL:
+                return new JewelObj(id, name, grhIndex);
+            case METAL:
+                return new MineralObj(id, name, grhIndex);
+            case SPELL:
+                return new SpellObj(id, name, grhIndex);
+            case STAIN:
+                return new StainObj(id, name, grhIndex);
+            case BOTTLE:
+                return new DrinkObj(id, name, grhIndex);
+            case FLOWER:
+                return new FlowerObj(id, name, grhIndex);
+            case HELMET:
+                return new HelmetObj(id, name, grhIndex);
+            case POSTER:
+                return new PosterObj(id, name, grhIndex);
+            case POTION:
+                return new PotionObj(id, name, grhIndex);
+            case SHIELD:
+                return new ShieldObj(id, name, grhIndex);
+            case WEAPON:
+                return new WeaponObj(id, name, grhIndex);
+            case BONFIRE:
+                return new BonfireObj(id, name, grhIndex);
+            case DEPOSIT:
+                return new DepositObj(id, name, grhIndex);
+            case MUSICAL:
+                return new MusicalObj(id, name, grhIndex);
+            case TELEPORT:
+                return new TeleportObj(id, name, grhIndex);
+            case CONTAINER:
+                return new ContainerObj(id, name, grhIndex);
+            case FURNITURE:
+                return new FurnitureObj(id, name, grhIndex);
+            case EMPTY_BOTTLE:
+            default:
+                return new Obj(id, name, grhIndex) {
+                    @Override
+                    public Type getType() {
+                        return null;
+                    }
+                };
+        }
+    }
+
+    public void fillObject(Obj obj, Profile.Section section) {
+        obj.fillObject(section);
     }
 }

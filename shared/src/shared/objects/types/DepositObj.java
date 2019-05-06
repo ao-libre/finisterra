@@ -3,7 +3,8 @@ package shared.objects.types;
 public class DepositObj extends Obj {
     private int mineralIndex;
 
-    public DepositObj() {}
+    public DepositObj() {
+    }
 
     public DepositObj(int id, String name, int grhIndex) {
         super(id, name, grhIndex);

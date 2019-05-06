@@ -27,14 +27,14 @@ public class RandomMovementSystem extends IteratingSystem {
     private static final Random RANDOM = new Random();
     private Server server;
 
-    public static Optional<AOPhysics.Movement> randomMovement()  {
-        int index = RANDOM.nextInt(SIZE * 50);
-        return Optional.ofNullable(VALUES.size() > index ? VALUES.get(index) : null);
-    }
-
     public RandomMovementSystem(Server server) {
         super(Aspect.all(RandomMovement.class));
         this.server = server;
+    }
+
+    public static Optional<AOPhysics.Movement> randomMovement() {
+        int index = RANDOM.nextInt(SIZE * 50);
+        return Optional.ofNullable(VALUES.size() > index ? VALUES.get(index) : null);
     }
 
     public Server getServer() {
@@ -68,7 +68,7 @@ public class RandomMovementSystem extends IteratingSystem {
             getServer().getMapManager().movePlayer(entityId, Optional.of(oldPos));
 
             // notify near users
-            getServer().getWorldManager().notifyUpdate(entityId, new EntityUpdate(entityId, new Component[] {player.getHeading()}, new Class[0])); // is necessary?
+            getServer().getWorldManager().notifyUpdate(entityId, new EntityUpdate(entityId, new Component[]{player.getHeading()}, new Class[0])); // is necessary?
             if (nextPos != oldPos) {
                 getServer().getWorldManager().notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov)));
             }

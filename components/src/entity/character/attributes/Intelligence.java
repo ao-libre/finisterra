@@ -7,7 +7,8 @@ import java.io.Serializable;
 public class Intelligence extends Component implements Serializable {
     private int value;
 
-    public Intelligence() {}
+    public Intelligence() {
+    }
 
     public Intelligence(int value) {
         this.value = value;

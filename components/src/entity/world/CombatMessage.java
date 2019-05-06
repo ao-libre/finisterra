@@ -21,6 +21,11 @@ public class CombatMessage extends Component implements Serializable {
     public CombatMessage() {
     }
 
+    public CombatMessage(String text, Kind kind) {
+        this.text = text;
+        this.kind = kind;
+    }
+
     public static CombatMessage magic(String text) {
         return new CombatMessage(text, Kind.MAGIC);
     }
@@ -31,11 +36,6 @@ public class CombatMessage extends Component implements Serializable {
 
     public static CombatMessage physic(String text) {
         return new CombatMessage(text, Kind.PHYSICAL);
-    }
-
-    public CombatMessage(String text, Kind kind) {
-        this.text = text;
-        this.kind = kind;
     }
 
     public enum Kind {

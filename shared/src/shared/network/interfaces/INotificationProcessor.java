@@ -12,6 +12,7 @@ import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.FXNotification;
 import shared.network.notifications.RemoveEntity;
+import shared.network.sound.SoundNotification;
 
 public interface INotificationProcessor {
 
@@ -40,4 +41,6 @@ public interface INotificationProcessor {
     void processNotification(ReadyNotification readyNotification);
 
     void processNotification(ConsoleMessage consoleMessage);
+
+    void processNotification(SoundNotification soundNotification);
 }
