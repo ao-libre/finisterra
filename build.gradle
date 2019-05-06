@@ -1,7 +1,5 @@
 buildscript {
 
-    ext.kotlin_version = '1.3.31'
-
     repositories {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
@@ -9,7 +7,6 @@ buildscript {
     }
 
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // lib for artemis-odb weaving.
         // see https://github.com/junkdog/artemis-odb/wiki/Bytecode-weaving
         classpath "net.onedaybeard.artemis:artemis-odb-gradle-plugin:2.2.0"
@@ -26,25 +23,11 @@ plugins {
 group 'ao-java'
 version 'v0.1.4'
 
-apply plugin: 'kotlin'
-
 sourceCompatibility = JavaVersion.VERSION_12
 targetCompatibility = JavaVersion.VERSION_12
 
 repositories {
     mavenCentral()
-}
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_12
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_12
 }
 
 allprojects {
