@@ -19,6 +19,8 @@ public class AssetHandler {
         SpellHandler.load();
         Gdx.app.log("Loading", "Loading particles...");
         ParticlesHandler.load();
+        Gdx.app.log("Loading", "Loading Sounds...");
+        SoundsHandler.load();
         Gdx.app.log("Loading", "Finish loading");
 
         state = StateHandler.LOADED;

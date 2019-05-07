@@ -5,6 +5,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
+import game.handlers.SoundsHandler;
 import game.managers.AOInputProcessor;
 import game.utils.AOKeys;
 import game.utils.AlternativeKeys;
@@ -38,6 +39,7 @@ public class PlayerInputSystem extends IteratingSystem {
         if (moving) {
             if (!aoPhysics.intentions.contains(movement)) {
                 aoPhysics.addIntention(movement);
+                SoundsHandler.playSound(23);
             }
         } else if (!moving) {
             aoPhysics.removeIntention(movement);
