@@ -35,12 +35,16 @@ public abstract class OrderedEntityProcessingSystem extends BaseEntitySystem
 
     @Override
     public final void inserted(IntBag entities) {
-        shouldSyncEntities = true;
+        setShouldSyncEntities(true);
     }
 
     @Override
     public final void removed(IntBag entities) {
-        shouldSyncEntities = true;
+        setShouldSyncEntities(true);
+    }
+
+    public void setShouldSyncEntities(boolean shouldSyncEntities) {
+        this.shouldSyncEntities = shouldSyncEntities;
     }
 
     private List<Entity> getEntities() {
@@ -51,15 +55,25 @@ public abstract class OrderedEntityProcessingSystem extends BaseEntitySystem
             for (int i = 0; i < intBag.size(); i++) {
                 this.entities.add(world.getEntity(ids[i]));
             }
+            entities.sort(getComparator());
             shouldSyncEntities = false;
         }
-        entities.sort(getComparator());
         return entities;
     }
 
     @Override
     protected final void processSystem() {
-        getEntities().forEach(e -> process(e));
+        getEntities().forEach(e -> {
+            beforeProcess();
+            process(e);
+            postProcess();
+        });
+    }
+
+    protected void postProcess() {
+    }
+
+    protected void beforeProcess() {
     }
 
     protected abstract void process(Entity e);

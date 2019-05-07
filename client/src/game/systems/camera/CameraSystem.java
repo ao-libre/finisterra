@@ -1,6 +1,7 @@
 package game.systems.camera;
 
 import com.artemis.BaseSystem;
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;
@@ -13,6 +14,7 @@ import shared.model.map.Tile;
  *
  * @author Daan van Yperen
  */
+@Wire
 public class CameraSystem extends BaseSystem {
 
     public final static float ZOOM_TIME = 0.5f;

@@ -22,32 +22,28 @@ import java.util.Map;
 
 import static com.artemis.E.E;
 
-@Wire
-public class ParticleRenderingSystem extends IteratingSystem {
-
-    private SpriteBatch batch;
-
-    private CameraSystem cameraSystem;
+@Wire(injectInherited=true)
+public class ParticleRenderingSystem extends RenderingSystem {
 
     private Map<Integer, Map<Integer, ParticleEffect>> particles = new HashMap<>();
     private int srcFunc;
     private int dstFunc;
 
     public ParticleRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(FX.class, WorldPos.class));
-        this.batch = batch;
+        super(Aspect.all(FX.class, WorldPos.class), batch, CameraKind.WORLD);
     }
 
     @Override
-    protected void begin() {
-        cameraSystem.camera.update();
-        batch.setProjectionMatrix(cameraSystem.camera.combined);
-        // remember SpriteBatch's current functions
-        srcFunc = batch.getBlendSrcFunc();
-        dstFunc = batch.getBlendDstFunc();
-        batch.enableBlending();
-        batch.begin();
-        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
+    protected void doBegin() {
+        srcFunc = getBatch().getBlendSrcFunc();
+        dstFunc = getBatch().getBlendDstFunc();
+        getBatch().enableBlending();
+        getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
+    }
+
+    @Override
+    protected void doEnd() {
+        getBatch().setBlendFunction(srcFunc, dstFunc);
     }
 
     @Override
@@ -57,8 +53,7 @@ public class ParticleRenderingSystem extends IteratingSystem {
     }
 
     @Override
-    protected void process(int entityId) {
-        E entity = E(entityId);
+    protected void process(E entity) {
         Pos2D screenPos = Util.toScreen(entity.worldPosPos2D());
         final FX fx = entity.getFX();
         if (fx.particles.isEmpty()) {
@@ -66,11 +61,11 @@ public class ParticleRenderingSystem extends IteratingSystem {
         }
         List<Integer> removeParticles = new ArrayList<>();
 
-        drawParticles(entityId, screenPos, fx, removeParticles);
+        drawParticles(entity.id(), screenPos, fx, removeParticles);
 
-        removeParticles.forEach(remove -> fx.removeParticle(remove));
+        removeParticles.forEach(fx::removeParticle);
         if (fx.particles.isEmpty()) {
-            particles.remove(entityId);
+            particles.remove(entity.id());
         }
     }
 
@@ -83,7 +78,7 @@ public class ParticleRenderingSystem extends IteratingSystem {
             final float particleX = screenPos.x + (Tile.TILE_PIXEL_WIDTH / 2);
             final float particleY = screenPos.y - 4;
             particleEffect.setPosition(particleX, particleY);
-            particleEffect.draw(batch, world.getDelta());
+            particleEffect.draw(getBatch(), world.getDelta());
             if (particleEffect.isComplete()) {
                 particleEffect.dispose();
                 removeParticles.add(effect);
@@ -91,9 +86,4 @@ public class ParticleRenderingSystem extends IteratingSystem {
         });
     }
 
-    @Override
-    protected void end() {
-        batch.setBlendFunction(srcFunc, dstFunc);
-        batch.end();
-    }
 }

@@ -99,6 +99,7 @@ public class GameScreen extends ScreenAdapter {
                 // Rendering
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new CaveSystem())
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new GroundFXsRenderingSystem(spriteBatch))
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new TargetRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new CharacterRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new NameRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new ObjectRenderingSystem(spriteBatch))

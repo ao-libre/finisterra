@@ -28,6 +28,8 @@ public class UserImage extends Image {
 
     public UserImage() {
         background = new TextureRegionDrawable(new TextureRegion(BACKGROUND_TEXTURE));
+        setWidth(64);
+        setHeight(64);
     }
 
     @Override
@@ -64,7 +66,8 @@ public class UserImage extends Image {
         if (getHead() != null) {
             int headW = head.getRegionWidth();
             int headH = head.getRegionHeight();
-            batch.draw(head, getX() + getWidth() - 2, getY() + getHeight() - 5, 0, 0, headW, headH, 3.5f, 3.5f, 180);
+            float scale = 2f;
+            batch.draw(head, getX() + headW, getY() - 50, headW * scale, headH * scale);
         }
         batch.setColor(color);
     }
@@ -82,6 +85,8 @@ public class UserImage extends Image {
                     BundledAnimation headAnimation = AnimationHandler.getHeadAnimation(player.getHead(), Heading.
                             HEADING_SOUTH);
                     head = headAnimation.getGraphic();
+                    head = new TextureRegion(head);
+                    head.flip(false, true);
                 }
             }
         }

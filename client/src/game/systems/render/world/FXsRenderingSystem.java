@@ -27,38 +27,29 @@ import java.util.Map;
 
 import static com.artemis.E.E;
 
-@Wire
-public class FXsRenderingSystem extends IteratingSystem {
-
-    private SpriteBatch batch;
-
-    private CameraSystem cameraSystem;
+@Wire(injectInherited=true)
+public class FXsRenderingSystem extends RenderingSystem {
 
     private Map<Integer, Map<Integer, BundledAnimation>> fxs = new HashMap<>();
     private int srcFunc;
     private int dstFunc;
 
     public FXsRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(FX.class, WorldPos.class).exclude(Ground.class));
-        this.batch = batch;
+        super(Aspect.all(FX.class, WorldPos.class).exclude(Ground.class), batch, CameraKind.WORLD);
+    }
+    @Override
+    protected void doBegin() {
+        srcFunc = getBatch().getBlendSrcFunc();
+        dstFunc = getBatch().getBlendDstFunc();
+        getBatch().enableBlending();
+        getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
     }
 
     @Override
-    protected void begin() {
-        cameraSystem.camera.update();
-        batch.setProjectionMatrix(cameraSystem.camera.combined);
-        dstFunc = batch.getBlendDstFunc();
-        srcFunc = batch.getBlendSrcFunc();
-        batch.enableBlending();
-        batch.begin();
-        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
+    protected void doEnd() {
+        getBatch().setBlendFunction(srcFunc, dstFunc);
     }
 
-    @Override
-    protected void end() {
-        batch.end();
-        batch.setBlendFunction(srcFunc, dstFunc);
-    }
 
     @Override
     protected void removed(int entityId) {
@@ -67,18 +58,17 @@ public class FXsRenderingSystem extends IteratingSystem {
     }
 
     @Override
-    protected void process(int entityId) {
-        E entity = E(entityId);
+    protected void process(E entity) {
         Pos2D screenPos = Util.toScreen(entity.worldPosPos2D());
         final FX fx = entity.getFX();
         if (fx.fxs.isEmpty()) {
             return;
         }
         List<Integer> removeFXs = new ArrayList<>();
-        drawFXs(entityId, screenPos, fx, removeFXs);
+        drawFXs(entity.id(), screenPos, fx, removeFXs);
         removeFXs.forEach(remove -> fx.removeFx(remove));
         if (fx.fxs.isEmpty()) {
-            fxs.remove(entityId);
+            fxs.remove(entity.id());
         }
     }
 
@@ -92,7 +82,7 @@ public class FXsRenderingSystem extends IteratingSystem {
             int bodyOffset = getBodyOffset(entityId);
             BundledAnimation anim = anims.computeIfAbsent(fxId, fxGraphic -> new BundledAnimation(DescriptorHandler.getGraphic(fxDescriptor.getIndexs()[0]), false));
             TextureRegion graphic = anim.getGraphic(false);
-            batch.draw(graphic, screenPos.x + (Tile.TILE_PIXEL_WIDTH - graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX(), screenPos.y - graphic.getRegionHeight() + fxDescriptor.getOffsetY() + bodyOffset);
+            getBatch().draw(graphic, screenPos.x + (Tile.TILE_PIXEL_WIDTH - graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX(), screenPos.y - graphic.getRegionHeight() + fxDescriptor.getOffsetY() + bodyOffset);
             anim.setAnimationTime(anim.getAnimationTime() + getWorld().getDelta() * (anim.getFrames().size * 0.33f));
             if (anim.isAnimationFinished()) {
                 removeFXs.add(fxId);

@@ -17,7 +17,6 @@ public class IntervalFluidIteratingSystem extends FluidIteratingSystem {
     @Override
     protected boolean checkProcessing() {
         float delta = getWorld().getDelta();
-        System.out.println(delta);
         acc += delta;
         if (acc >= interval) {
             acc -= interval;

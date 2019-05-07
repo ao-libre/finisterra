@@ -26,23 +26,20 @@ import java.util.Comparator;
 import static com.artemis.E.E;
 import static game.utils.Resources.GAME_SHADERS_LIGHT;
 
-@Wire
-public class LightRenderingSystem extends OrderedEntityProcessingSystem {
+@Wire(injectInherited=true)
+public class LightRenderingSystem extends RenderingSystem {
 
-    private final SpriteBatch batch;
     private final Texture light;
     private final float width;
     private final float height;
     FrameBuffer lightBuffer;
     TextureRegion lightBufferRegion;
-    private CameraSystem cameraSystem;
     private Color prevColor;
     private int blendDstFunc;
     private int blendSrcFunc;
 
     public LightRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(Focused.class));
-        this.batch = batch;
+        super(Aspect.all(Focused.class), batch, CameraKind.WORLD);
         light = new Texture(Gdx.files.internal(Resources.GAME_SHADERS_PATH + GAME_SHADERS_LIGHT));
 
         width = Tile.TILE_PIXEL_WIDTH * 32f;
@@ -52,26 +49,31 @@ public class LightRenderingSystem extends OrderedEntityProcessingSystem {
 
     @Override
     protected void begin() {
-        cameraSystem.camera.update();
-        batch.setProjectionMatrix(cameraSystem.camera.combined);
-        prevColor = batch.getColor();
-        blendDstFunc = batch.getBlendDstFunc();
-        blendSrcFunc = batch.getBlendSrcFunc();
+        getCamera().update();
+        getBatch().setProjectionMatrix(getCamera().combined);
+        doBegin();
     }
 
     @Override
     protected void end() {
-        batch.setColor(prevColor);
-        batch.setBlendFunction(blendSrcFunc, blendDstFunc);
+        doEnd();
     }
 
     @Override
-    protected void process(Entity e) {
-        int player = GameScreen.getPlayer();
-        E playerEntity = E(player);
-        if (player < 0 || playerEntity == null) {
-            return;
-        }
+    protected void doBegin() {
+        prevColor = getBatch().getColor();
+        blendDstFunc = getBatch().getBlendDstFunc();
+        blendSrcFunc = getBatch().getBlendSrcFunc();
+    }
+
+    @Override
+    protected void doEnd() {
+        getBatch().setColor(prevColor);
+        getBatch().setBlendFunction(blendSrcFunc, blendDstFunc);
+    }
+
+    @Override
+    protected void process(E playerEntity) {
         Pos2D pos = playerEntity.worldPosPos2D();
         renderLight(pos);
     }
@@ -85,22 +87,21 @@ public class LightRenderingSystem extends OrderedEntityProcessingSystem {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.begin();
-        batch.setColor(0.8f, 0.8f, 0.8f, 1f);
+        getBatch().begin();
+        getBatch().setColor(0.8f, 0.8f, 0.8f, 1f);
         float tx = playerPosition.x;
         float ty = playerPosition.y;
         int lightWidth = (int) (light.getWidth() * 2.5f);
         int lightHeight = (int) (light.getHeight() * 1.5f);
-        batch.enableBlending();
-        batch.setBlendFunction(GL20.GL_ZERO, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        batch.draw(light, tx - lightWidth / 2, ty - lightHeight / 2, lightWidth, lightHeight);
-        batch.end();
+        getBatch().enableBlending();
+        getBatch().setBlendFunction(GL20.GL_ZERO, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        getBatch().draw(light, tx - lightWidth / 2, ty - lightHeight / 2, lightWidth, lightHeight);
+        getBatch().end();
         lightBuffer.end();
 
-
-        batch.begin();
-        batch.draw(lightBuffer.getColorBufferTexture(), tx - width / 2, ty - height / 2, width, height);
-        batch.end();
+        getBatch().begin();
+        getBatch().draw(lightBuffer.getColorBufferTexture(), tx - width / 2, ty - height / 2, width, height);
+        getBatch().end();
     }
 
     public void resize(float width, float height) {
@@ -113,8 +114,4 @@ public class LightRenderingSystem extends OrderedEntityProcessingSystem {
         lightBuffer.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
     }
 
-    @Override
-    protected Comparator<? super Entity> getComparator() {
-        return Comparator.comparingInt(entity -> E(entity).getWorldPos().y);
-    }
 }

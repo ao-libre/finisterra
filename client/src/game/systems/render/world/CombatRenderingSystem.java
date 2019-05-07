@@ -3,9 +3,11 @@ package game.systems.render.world;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Align;
 import entity.character.parts.Body;
 import entity.world.CombatMessage;
@@ -22,33 +24,17 @@ import java.util.Comparator;
 
 import static com.artemis.E.E;
 
-public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
+@Wire(injectInherited=true)
+public class CombatRenderingSystem extends RenderingSystem {
 
     public static final float VELOCITY = 25.0f;
-    private static final float FONT_DARKNESS_PERCENT = 10f;
-    private SpriteBatch batch;
-    private CameraSystem cameraSystem;
 
     public CombatRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(CombatMessage.class, Body.class, WorldPos.class));
-        this.batch = batch;
+        super(Aspect.all(CombatMessage.class, Body.class, WorldPos.class), batch, CameraKind.WORLD);
     }
 
     @Override
-    protected void begin() {
-        cameraSystem.camera.update();
-        batch.setProjectionMatrix(cameraSystem.camera.combined);
-        batch.begin();
-    }
-
-    @Override
-    protected void end() {
-        batch.end();
-    }
-
-    @Override
-    protected void process(Entity e) {
-        E player = E(e);
+    protected void process(E player) {
         Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
 
         if (!player.hasCombatMessage()) {
@@ -80,7 +66,7 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
 
             Color copy = font.getColor().cpy();
             if (combatMessage.time < CombatMessage.DEFAULT_ALPHA) {
-                combatMessage.alpha = combatMessage.time / CombatMessage.DEFAULT_ALPHA;
+                combatMessage.alpha = MathUtils.clamp(combatMessage.time / CombatMessage.DEFAULT_ALPHA, 0f, 1f);
                 font.getColor().a = combatMessage.alpha;
                 font.getColor().premultiplyAlpha();
             }
@@ -92,15 +78,11 @@ public class CombatRenderingSystem extends OrderedEntityProcessingSystem {
             int bodyOffset = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
             final float fontY = playerPos.y + combatMessage.offset + bodyOffset - 65
                     + Fonts.dialogLayout.height;
-            font.draw(batch, Fonts.dialogLayout, fontX, fontY);
+            font.draw(getBatch(), Fonts.dialogLayout, fontX, fontY);
             font.setColor(copy);
         } else {
             player.removeCombatMessage();
         }
     }
 
-    @Override
-    protected Comparator<? super Entity> getComparator() {
-        return Comparator.comparingInt(entity -> E(entity).getWorldPos().y);
-    }
 }

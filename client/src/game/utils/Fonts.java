@@ -2,6 +2,7 @@ package game.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -57,6 +58,8 @@ public class Fonts {
     private static BitmapFont generate(Color color, int size, Color borderColor, int borderWidth, int shadowOffset, int spaceX, boolean flip, String font) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(Resources.GAME_FONTS_PATH + font));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.magFilter = Texture.TextureFilter.Linear;
+        parameter.minFilter = Texture.TextureFilter.Linear;
         parameter.size = size;
         parameter.color = color;
         parameter.borderColor = borderColor;

@@ -32,19 +32,14 @@ import java.util.Comparator;
 
 import static com.artemis.E.E;
 
-@Wire
-public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
+@Wire(injectInherited=true)
+public class CharacterRenderingSystem extends RenderingSystem {
 
     public static final float SHADOW_ALPHA = 0.15f;
     private static Texture shadow = new Texture(Gdx.files.local("data/ui/images/shadow22.png"));
 
-    private final SpriteBatch batch;
-
-    private CameraSystem cameraSystem;
-
     public CharacterRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(Character.class, WorldPos.class, Body.class, Heading.class));
-        this.batch = batch;
+        super(Aspect.all(Character.class, WorldPos.class, Body.class, Heading.class), batch, CameraKind.WORLD);
     }
 
     private static float getMovementOffset(BundledAnimation bodyAnimation) {
@@ -54,29 +49,11 @@ public class CharacterRenderingSystem extends OrderedEntityProcessingSystem {
     }
 
     @Override
-    protected void begin() {
-        cameraSystem.camera.update();
-        batch.setProjectionMatrix(cameraSystem.camera.combined);
-        batch.begin();
-    }
-
-    @Override
-    protected void end() {
-        batch.end();
-    }
-
-    @Override
-    protected void process(Entity e) {
-        E player = E(e);
+    protected void process(E player) {
         Pos2D currentPos = player.worldPosPos2D();
         Pos2D screenPos = Util.toScreen(currentPos);
         final Heading heading = player.getHeading();
-        CharacterDrawer.createDrawer(batch, player, heading, screenPos).draw();
-
-    }
-
-    protected Comparator<? super Entity> getComparator() {
-        return Comparator.comparingInt(entity -> E(entity).getWorldPos().y);
+        CharacterDrawer.createDrawer(getBatch(), player, heading, screenPos).draw();
     }
 
     public static class CharacterDrawer {

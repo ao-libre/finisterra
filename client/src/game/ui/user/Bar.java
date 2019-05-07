@@ -76,7 +76,7 @@ public class Bar extends Actor {
         }
 
         drawBar(batch, barX, barY, min, max);
-        drawText(batch, min, max, barX, barY);
+        drawText(batch, min, max, barX, barY + 1);
         batch.setColor(originalColor);
     }
 

@@ -21,32 +21,15 @@ import java.util.Comparator;
 
 import static com.artemis.E.E;
 
-@Wire
-public class NameRenderingSystem extends OrderedEntityProcessingSystem {
-
-    private SpriteBatch batch;
-    private CameraSystem cameraSystem;
+@Wire(injectInherited=true)
+public class NameRenderingSystem extends RenderingSystem {
 
     public NameRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(Character.class, WorldPos.class, Name.class));
-        this.batch = batch;
+        super(Aspect.all(Character.class, WorldPos.class, Name.class), batch, CameraKind.WORLD);
     }
 
     @Override
-    protected void begin() {
-        cameraSystem.guiCamera.update();
-        batch.setProjectionMatrix(cameraSystem.camera.combined);
-        batch.begin();
-    }
-
-    @Override
-    protected void end() {
-        batch.end();
-    }
-
-    @Override
-    protected void process(Entity e) {
-        E player = E(e);
+    protected void process(E player) {
         Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
 
         float nameY = drawName(player, playerPos);
@@ -62,7 +45,7 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
         final float fontX = screenPos.x + ((Tile.TILE_PIXEL_WIDTH - Fonts.layout.width) / 2);
         final float fontY = screenPos.y;
 
-        font.draw(batch, Fonts.layout, fontX, fontY);
+        font.draw(getBatch(), Fonts.layout, fontX, fontY);
         return fontY;
     }
 
@@ -74,11 +57,7 @@ public class NameRenderingSystem extends OrderedEntityProcessingSystem {
         Fonts.layout.setText(Fonts.CLAN_FONT, "<" + clanOrHero + ">");
         final float fontX = screenPos.x + ((Tile.TILE_PIXEL_WIDTH - Fonts.layout.width) / 2);
         final float fontY = nameY + Fonts.layout.height + 5;
-        Fonts.CLAN_FONT.draw(batch, Fonts.layout, fontX, fontY);
+        Fonts.CLAN_FONT.draw(getBatch(), Fonts.layout, fontX, fontY);
     }
 
-    @Override
-    protected Comparator<? super Entity> getComparator() {
-        return Comparator.comparingInt(entity -> E(entity).getWorldPos().y);
-    }
 }

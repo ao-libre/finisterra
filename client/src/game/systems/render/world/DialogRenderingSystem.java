@@ -21,38 +21,21 @@ import shared.util.Util;
 
 import java.util.Comparator;
 
-@Wire
-public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
+@Wire(injectInherited=true)
+public class DialogRenderingSystem extends RenderingSystem {
 
     private static final int ALPHA_TIME = 2;
     private static final int MAX_LENGTH = 120;
     private static final int DISTANCE_TO_TOP = 5;
     private static final float TIME = 0.3f;
     private static final float VELOCITY = DISTANCE_TO_TOP / TIME;
-    private SpriteBatch batch;
-    private CameraSystem cameraSystem;
-    private CharacterRenderingSystem characterRenderingSystem;
 
     public DialogRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(Dialog.class, Body.class, WorldPos.class));
-        this.batch = batch;
+        super(Aspect.all(Dialog.class, Body.class, WorldPos.class), batch, CameraKind.WORLD);
     }
 
     @Override
-    protected void begin() {
-        cameraSystem.camera.update();
-        batch.setProjectionMatrix(cameraSystem.camera.combined);
-        batch.begin();
-    }
-
-    @Override
-    protected void end() {
-        batch.end();
-    }
-
-    @Override
-    protected void process(Entity e) {
-        E player = E.E(e);
+    protected void process(E player) {
         Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
         Dialog dialog = player.getDialog();
         dialog.time -= world.getDelta();
@@ -72,15 +55,11 @@ public class DialogRenderingSystem extends OrderedEntityProcessingSystem {
             float up = Dialog.DEFAULT_TIME - dialog.time <= TIME ? (Dialog.DEFAULT_TIME - dialog.time) * VELOCITY : DISTANCE_TO_TOP;
             float offsetY = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
             final float fontY = playerPos.y - 65 + offsetY - up + Fonts.dialogLayout.height;
-            font.draw(batch, Fonts.dialogLayout, fontX, fontY);
+            font.draw(getBatch(), Fonts.dialogLayout, fontX, fontY);
             font.setColor(copy);
         } else {
             player.removeDialog();
         }
     }
 
-    @Override
-    protected Comparator<? super Entity> getComparator() {
-        return Comparator.comparingInt(entity -> E.E(entity).getWorldPos().y);
-    }
 }

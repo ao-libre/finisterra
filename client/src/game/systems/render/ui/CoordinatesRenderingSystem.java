@@ -47,7 +47,8 @@ public class CoordinatesRenderingSystem extends OrderedEntityProcessingSystem {
     protected void process(Entity e) {
         E player = E(e);
         WorldPos worldPos = player.getWorldPos();
-        drawCoordinates(10, Gdx.graphics.getHeight() - 10, worldPos);
+
+        drawCoordinates(50, Gdx.graphics.getHeight() - 50, worldPos);
     }
 
     private void drawCoordinates(int offsetX, int offsetY, WorldPos worldPos) {
