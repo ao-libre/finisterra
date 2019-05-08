@@ -37,15 +37,6 @@ public class SoundsHandler {
         soundsMap.clear();
     }
 
-    public static void playSound(Integer index) {
-        if (!soundsMap.containsKey(index)) {
-            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + index + ", but it was not loaded.");
-            return;
-        }
-        //TODO: it should be played with a global configurable volume
-        soundsMap.get(index).play();
-    }
-
     private static void loadSound(FileHandle file){
         Integer soundIdx;
 
@@ -62,6 +53,33 @@ public class SoundsHandler {
         {
             soundsMap.put(soundIdx,sound);
         }
+    }
+
+    public static void playSound(Integer index) {
+        if (!soundsMap.containsKey(index)) {
+            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + index + ", but it was not loaded.");
+            return;
+        }
+        //TODO: it should be played with a global configurable volume
+        soundsMap.get(index).play();
+    }
+
+    public static void loopSound(Integer index) {
+        if (!soundsMap.containsKey(index)) {
+            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + index + ", but it was not loaded.");
+            return;
+        }
+        //TODO: it should be played with a global configurable volume
+        soundsMap.get(index).loop();
+    }
+
+    public static void stopLoopSound(Integer index) {
+        if (!soundsMap.containsKey(index)) {
+            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + index + ", but it was not loaded.");
+            return;
+        }
+        //TODO: it should be played with a global configurable volume
+        soundsMap.get(index).stop();
     }
 
 }

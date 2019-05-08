@@ -39,7 +39,6 @@ public class PlayerInputSystem extends IteratingSystem {
         if (moving) {
             if (!aoPhysics.intentions.contains(movement)) {
                 aoPhysics.addIntention(movement);
-                SoundsHandler.playSound(23);
             }
         } else if (!moving) {
             aoPhysics.removeIntention(movement);
