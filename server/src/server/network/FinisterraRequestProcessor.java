@@ -46,6 +46,7 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         lobby.getWaitingPlayers()
                 .stream()
                 .filter(waitingPlayer -> !player.equals(waitingPlayer))
+                .filter(waitingPlayer -> networkManager.playerHasConnection(waitingPlayer))
                 .forEach(waitingPlayer -> {
                     networkManager.sendTo(networkManager.getConnectionByPlayer(waitingPlayer), new NewRoomNotification(room));
                 });

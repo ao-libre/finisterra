@@ -8,14 +8,14 @@ import java.io.Serializable;
 @DelayedComponentRemoval
 public class CombatMessage extends Component implements Serializable {
 
-    public static float DEFAULT_TIME = 2f;
-    public static float DEFAULT_ALPHA = 1f;
-    public static float DEFAULT_OFFSET = 20;
+    public static float DEFAULT_TIME = 1.7f;
+    public static float START_ALPHA = 1.7f;
+    public static float DEFAULT_OFFSET = 30;
     public Kind kind;
 
     public String text;
     public float time = DEFAULT_TIME;
-    public float alpha = DEFAULT_ALPHA;
+    public float alpha = START_ALPHA;
     public float offset = DEFAULT_OFFSET;
 
     public CombatMessage() {

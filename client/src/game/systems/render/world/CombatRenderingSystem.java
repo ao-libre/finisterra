@@ -2,32 +2,28 @@ package game.systems.render.world;
 
 import com.artemis.Aspect;
 import com.artemis.E;
-import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Align;
 import entity.character.parts.Body;
 import entity.world.CombatMessage;
 import game.handlers.DescriptorHandler;
-import game.systems.OrderedEntityProcessingSystem;
-import game.systems.camera.CameraSystem;
 import game.utils.Fonts;
 import position.Pos2D;
 import position.WorldPos;
 import shared.model.map.Tile;
 import shared.util.Util;
 
-import java.util.Comparator;
-
 import static com.artemis.E.E;
 
 @Wire(injectInherited=true)
 public class CombatRenderingSystem extends RenderingSystem {
 
-    public static final float VELOCITY = 25.0f;
+    public static final float VELOCITY = 1f;
 
     public CombatRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(CombatMessage.class, Body.class, WorldPos.class), batch, CameraKind.WORLD);
@@ -42,7 +38,7 @@ public class CombatRenderingSystem extends RenderingSystem {
             return;
         }
         CombatMessage combatMessage = player.getCombatMessage();
-        combatMessage.offset -= getWorld().getDelta() * combatMessage.time * VELOCITY;
+        combatMessage.offset = Interpolation.pow2OutInverse.apply(combatMessage.time / CombatMessage.DEFAULT_TIME) * CombatMessage.DEFAULT_OFFSET;
         if (combatMessage.offset < 0) {
             combatMessage.offset = 0;
         }
@@ -65,8 +61,8 @@ public class CombatRenderingSystem extends RenderingSystem {
             }
 
             Color copy = font.getColor().cpy();
-            if (combatMessage.time < CombatMessage.DEFAULT_ALPHA) {
-                combatMessage.alpha = MathUtils.clamp(combatMessage.time / CombatMessage.DEFAULT_ALPHA, 0f, 1f);
+            if (combatMessage.time < CombatMessage.START_ALPHA) {
+                combatMessage.alpha = MathUtils.clamp(combatMessage.time / CombatMessage.START_ALPHA, 0f, 1f);
                 font.getColor().a = combatMessage.alpha;
                 font.getColor().premultiplyAlpha();
             }
@@ -76,7 +72,7 @@ public class CombatRenderingSystem extends RenderingSystem {
             Fonts.dialogLayout.setText(font, combatMessage.text, font.getColor(), width, Align.center, true);
             final float fontX = playerPos.x + (Tile.TILE_PIXEL_WIDTH - Fonts.dialogLayout.width) / 2;
             int bodyOffset = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
-            final float fontY = playerPos.y + combatMessage.offset + bodyOffset - 65
+            final float fontY = playerPos.y + combatMessage.offset + bodyOffset - 70
                     + Fonts.dialogLayout.height;
             font.draw(getBatch(), Fonts.dialogLayout, fontX, fontY);
             font.setColor(copy);

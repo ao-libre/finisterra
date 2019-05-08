@@ -50,7 +50,7 @@ public class LobbyNetworkManager {
         return playerByConnection.containsKey(connectionId);
     }
 
-    public boolean playerHasConnection(int player) {
+    public boolean playerHasConnection(Player player) {
         return connectionByPlayer.containsKey(player);
     }
 

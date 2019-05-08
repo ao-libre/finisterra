@@ -8,6 +8,8 @@ import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
 import entity.character.parts.Body;
 import entity.character.states.Heading;
+import entity.character.status.Health;
+import entity.character.status.Stamina;
 import game.handlers.AnimationHandler;
 import model.textures.BundledAnimation;
 import movement.Moving;
@@ -57,7 +59,16 @@ public class IdleAnimationSystem extends IteratingSystem {
             final Shield weapon = entity.getShield();
             animations.add(AnimationHandler.getShieldAnimation(weapon, heading.current));
         }
-        animations.stream().filter(Objects::nonNull).forEach(animation -> animation.addDeltaIdleTime(!reset ? world.getDelta() : 0));
+        animations.stream().filter(Objects::nonNull).forEach(animation -> {
+            float delta = world.getDelta();
+            if (entity.hasHealth()) {
+                Health health = entity.getHealth();
+                if (health.min < health.max * 0.5f) {
+                    delta *= 2;
+                }
+            }
+            animation.addDeltaIdleTime(!reset ? delta : 0);
+        });
     }
 
 }
