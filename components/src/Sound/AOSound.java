@@ -4,17 +4,23 @@ import com.artemis.Component;
 
 public class AOSound extends Component {
 
-    public int soundID;
-    public boolean  shouldLoop;
-
+    public int soundID = -1;
+    public boolean shouldLoop = false;
 
     public AOSound(){
-        soundID = -1;
-        shouldLoop = false;
     }
 
     public AOSound(int ID, boolean loop){
-        soundID = ID;
-        shouldLoop = loop;
+        setSoundID(ID);
+        setShouldLoop(loop);
     }
+
+    public void setSoundID(int soundID) {
+        this.soundID = soundID;
+    }
+
+    public void setShouldLoop(boolean shouldLoop) {
+        this.shouldLoop = shouldLoop;
+    }
+
 }

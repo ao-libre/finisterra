@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
+import game.systems.Sound.SoundSytem;
 import game.systems.anim.IdleAnimationSystem;
 import game.systems.anim.MovementAnimationSystem;
 import game.systems.camera.CameraFocusSystem;
@@ -96,6 +97,8 @@ public class GameScreen extends ScreenAdapter {
                 .with(new CameraMovementSystem())
                 // Logic systems
                 .with(new PhysicsAttackSystem())
+                // Sound systems
+                .with(new SoundSytem())
                 // Rendering
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new CaveSystem())
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new GroundFXsRenderingSystem(spriteBatch))

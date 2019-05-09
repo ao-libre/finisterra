@@ -27,7 +27,9 @@ public class MovementSystem extends IteratingSystem {
         if (player.movementHasMovements()) {
 
             if (!player.isMoving()) {
-                SoundsHandler.loopSound(23);
+                //SoundsHandler.loopSound(23);
+                player.aOSound();
+                player.aOSoundSoundID(23).aOSoundShouldLoop(true);
             }
 
             player.moving(true);
@@ -45,7 +47,7 @@ public class MovementSystem extends IteratingSystem {
         } else {
 
             if (player.isMoving()) {
-                SoundsHandler.stopLoopSound(23);
+                player.removeAOSound();
             }
 
             player.moving(false);
