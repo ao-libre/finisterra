@@ -1,9 +1,8 @@
-package server.manager;
+package server.systems.manager;
 
 import camera.Focused;
 import com.artemis.Component;
 import com.artemis.E;
-import com.artemis.World;
 import com.esotericsoftware.minlog.Log;
 import entity.character.states.CanWrite;
 import entity.character.states.Heading;
@@ -41,11 +40,6 @@ public class WorldManager extends DefaultManager {
 
     public WorldManager(Server server) {
         super(server);
-    }
-
-    @Override
-    public void init() {
-
     }
 
     public int createEntity(String name, Hero hero, Team team) {
@@ -592,10 +586,6 @@ public class WorldManager extends DefaultManager {
     public void notifyUpdate(int entityId, Object update) {
         sendEntityUpdate(entityId, update);
         notifyToNearEntities(entityId, update);
-    }
-
-    private World getWorld() {
-        return getServer().getWorld();
     }
 
     public void userDie(int entityId) {

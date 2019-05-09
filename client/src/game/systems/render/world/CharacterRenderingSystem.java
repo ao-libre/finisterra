@@ -203,6 +203,11 @@ public class CharacterRenderingSystem extends RenderingSystem {
         }
     }
 
+    @Override
+    protected Comparator<? super Entity> getComparator() {
+        return (entity1, entity2) -> E(entity2).getWorldPos().y - E(entity1).getWorldPos().y;
+    }
+
 }
 
 

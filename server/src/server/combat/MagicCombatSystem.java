@@ -1,5 +1,6 @@
 package server.combat;
 
+import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.E;
 import entity.character.states.Immobile;
@@ -10,8 +11,8 @@ import entity.world.Dialog;
 import physics.AttackAnimation;
 import position.WorldPos;
 import server.core.Server;
-import server.manager.IManager;
-import server.manager.WorldManager;
+import server.systems.manager.IManager;
+import server.systems.manager.WorldManager;
 import shared.model.Spell;
 import shared.network.combat.SpellCastRequest;
 import shared.network.notifications.ConsoleMessage;
@@ -31,7 +32,7 @@ import static com.artemis.E.E;
 import static java.lang.String.format;
 import static shared.util.Messages.*;
 
-public class MagicCombatSystem implements IManager {
+public class MagicCombatSystem extends BaseSystem {
 
     public static final String SPACE = " ";
     private Server server;
@@ -231,4 +232,6 @@ public class MagicCombatSystem implements IManager {
         return getServer().getWorldManager();
     }
 
+    @Override
+    protected void processSystem() {}
 }

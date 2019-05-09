@@ -1,5 +1,6 @@
 package server.core;
 
+import com.artemis.BaseSystem;
 import com.artemis.FluidEntityPlugin;
 import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
@@ -8,7 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import server.combat.CombatSystem;
 import server.combat.MagicCombatSystem;
 import server.combat.PhysicalCombatSystem;
-import server.manager.*;
+import server.systems.manager.*;
 import server.systems.FootprintSystem;
 import server.systems.MeditateSystem;
 import server.systems.RandomMovementSystem;
@@ -27,7 +28,6 @@ public class Server {
     private ObjectManager objectManager;
     private SpellManager spellManager;
     private World world;
-    private Map<Class<? extends IManager>, IManager> managers = new HashMap<>();
     private KryonetServerMarshalStrategy strategy;
     private Set<Player> players;
 
@@ -55,19 +55,7 @@ public class Server {
     public void create() {
         initWorld();
         createMap();
-        initManagers();
         createWorld();
-    }
-
-    private void initManagers() {
-        managers.put(NetworkManager.class, new NetworkManager(this, strategy));
-        managers.put(ItemManager.class, new ItemManager(this));
-        managers.put(MapManager.class, new MapManager(this));
-        managers.put(SpellManager.class, spellManager);
-        managers.put(ObjectManager.class, objectManager);
-        managers.put(WorldManager.class, new WorldManager(this));
-        managers.put(PhysicalCombatSystem.class, new PhysicalCombatSystem(this));
-        managers.put(MagicCombatSystem.class, new MagicCombatSystem(this));
     }
 
     public World getWorld() {
@@ -81,6 +69,14 @@ public class Server {
         builder
                 .with(new FluidEntityPlugin())
                 .with(new ServerSystem(this, strategy))
+                .with(new NetworkManager(this, strategy))
+                .with(new ItemManager(this))
+                .with(new MapManager(this))
+                .with(spellManager)
+                .with(objectManager)
+                .with(new WorldManager(this))
+                .with(new PhysicalCombatSystem(this))
+                .with(new MagicCombatSystem(this))
                 .with(new MeditateSystem(this, 0.4f))
                 .with(new FootprintSystem(this, 500))
                 .with(new RandomMovementSystem(this));
@@ -106,8 +102,8 @@ public class Server {
         this.players = players;
     }
 
-    private <T extends IManager> T getManager(Class<T> managerType) {
-        return managerType.cast(managers.get(managerType));
+    private <T extends BaseSystem> T getManager(Class<T> managerType) {
+        return world.getSystem(managerType);
     }
 
     public ItemManager getItemManager() {

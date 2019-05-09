@@ -1,4 +1,4 @@
-package server.manager;
+package server.systems.manager;
 
 
 import server.core.KryonetServerMarshalStrategy;

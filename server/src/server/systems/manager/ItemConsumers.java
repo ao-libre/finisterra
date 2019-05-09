@@ -1,4 +1,4 @@
-package server.manager;
+package server.systems.manager;
 
 import com.artemis.E;
 import entity.character.equipment.Helmet;

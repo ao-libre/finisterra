@@ -23,7 +23,7 @@ public class PlayerInputSystem extends IteratingSystem {
     protected void process(int entityId) {
         E player = E(entityId);
         AOPhysics aoPhysics = player.getAOPhysics();
-        boolean isWriting = AOInputProcessor.alternativeKeys ? player.isWriting() : false;
+        boolean isWriting = AOInputProcessor.alternativeKeys && player.isWriting();
         final int moveUp = AOInputProcessor.alternativeKeys ? AlternativeKeys.MOVE_UP : AOKeys.MOVE_UP;
         final int moveDown = AOInputProcessor.alternativeKeys ? AlternativeKeys.MOVE_DOWN : AOKeys.MOVE_DOWN;
         final int moveLeft = AOInputProcessor.alternativeKeys ? AlternativeKeys.MOVE_LEFT : AOKeys.MOVE_LEFT;

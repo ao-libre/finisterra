@@ -1,5 +1,6 @@
 package server.combat;
 
+import com.artemis.BaseSystem;
 import com.artemis.E;
 import server.core.Server;
 import server.database.model.modifiers.Modifiers;
@@ -9,7 +10,7 @@ import java.util.Optional;
 
 import static com.artemis.E.E;
 
-public abstract class AbstractCombatSystem implements CombatSystem {
+public abstract class AbstractCombatSystem extends BaseSystem implements CombatSystem {
 
     private final Server server;
 
@@ -82,4 +83,6 @@ public abstract class AbstractCombatSystem implements CombatSystem {
 
     abstract boolean isAttackable(int entityId);
 
+    @Override
+    protected void processSystem() {}
 }

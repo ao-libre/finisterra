@@ -1,5 +1,6 @@
-package server.manager;
+package server.systems.manager;
 
+import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.esotericsoftware.minlog.Log;
@@ -17,13 +18,16 @@ import java.util.stream.Collectors;
 /**
  * Load and contains all the objects
  */
-public class ObjectManager implements IManager {
+public class ObjectManager extends BaseSystem {
 
     private Map<Integer, Obj> objects = new HashMap<>();
 
     public ObjectManager() {
         init();
     }
+
+    @Override
+    protected void processSystem() {}
 
     public void init() {
         Log.info("Loading objects...");
@@ -37,11 +41,6 @@ public class ObjectManager implements IManager {
 
     public Set<Obj> getTypeObjects(Type type) {
         return objects.values().stream().filter(obj -> obj.getType().equals(type)).collect(Collectors.toSet());
-    }
-
-    @Override
-    public Server getServer() {
-        return null;
     }
 
 }

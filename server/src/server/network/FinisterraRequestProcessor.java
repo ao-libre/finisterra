@@ -1,7 +1,7 @@
 package server.network;
 
 import server.core.Finisterra;
-import server.manager.LobbyNetworkManager;
+import server.systems.manager.LobbyNetworkManager;
 import shared.model.lobby.Lobby;
 import shared.model.lobby.Player;
 import shared.model.lobby.Room;

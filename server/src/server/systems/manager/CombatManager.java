@@ -1,4 +1,4 @@
-package server.manager;
+package server.systems.manager;
 
 import com.artemis.E;
 import entity.world.CombatMessage;
@@ -55,11 +55,6 @@ public class CombatManager extends DefaultManager {
             return 80;
         }
         return -80;
-    }
-
-    @Override
-    public void init() {
-
     }
 
     /**

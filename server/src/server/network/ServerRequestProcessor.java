@@ -13,7 +13,7 @@ import movement.Destination;
 import position.WorldPos;
 import server.combat.CombatSystem;
 import server.core.Server;
-import server.manager.*;
+import server.systems.manager.*;
 import server.systems.MeditateSystem;
 import server.utils.WorldUtils;
 import shared.model.AttackType;

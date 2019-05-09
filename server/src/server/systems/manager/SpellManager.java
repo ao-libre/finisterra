@@ -1,5 +1,6 @@
-package server.manager;
+package server.systems.manager;
 
+import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import server.core.Server;
@@ -17,13 +18,16 @@ import java.util.Optional;
 /**
  * Spell Logic
  */
-public class SpellManager implements IManager {
+public class SpellManager extends BaseSystem {
     private static DescriptorsReader reader = new ServerDescriptorReader();
     private static Map<Integer, Spell> spells = new HashMap<>();
 
     public SpellManager() {
         init();
     }
+
+    @Override
+    protected void processSystem() {}
 
     public void init() {
         Log.info("Loading spells...");
@@ -42,8 +46,4 @@ public class SpellManager implements IManager {
         return spells;
     }
 
-    @Override
-    public Server getServer() {
-        return null;
-    }
 }

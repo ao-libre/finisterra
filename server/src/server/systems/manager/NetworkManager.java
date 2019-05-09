@@ -1,4 +1,4 @@
-package server.manager;
+package server.systems.manager;
 
 
 import server.core.KryonetServerMarshalStrategy;
@@ -62,7 +62,4 @@ public class NetworkManager extends DefaultManager {
         return connectionByPlayer.get(playerId);
     }
 
-    @Override
-    public void init() {
-    }
 }

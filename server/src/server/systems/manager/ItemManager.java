@@ -1,4 +1,4 @@
-package server.manager;
+package server.systems.manager;
 
 import com.artemis.Component;
 import com.artemis.E;
@@ -34,7 +34,7 @@ public class ItemManager extends DefaultManager {
     }
 
     @Override
-    public void init() {
+    public void initialize() {
         itemConsumers = new ItemConsumers(getServer());
     }
 

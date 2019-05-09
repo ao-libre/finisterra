@@ -1,22 +1,20 @@
-package server.manager;
+package server.systems.manager;
 
+import com.artemis.BaseSystem;
 import server.core.Server;
 
-public abstract class DefaultManager implements IManager {
+public abstract class DefaultManager extends BaseSystem {
 
     private Server server;
 
     public DefaultManager(Server server) {
         this.server = server;
-        init();
     }
 
-    @Override
     public Server getServer() {
         return server;
     }
 
-    public abstract void init();
-
-
+    @Override
+    protected void processSystem() {}
 }

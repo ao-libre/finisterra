@@ -1,4 +1,4 @@
-package server.manager;
+package server.systems.manager;
 
 import com.artemis.E;
 import com.artemis.Entity;
@@ -36,7 +36,7 @@ public class MapManager extends DefaultManager {
     }
 
     @Override
-    public void init() {
+    protected void initialize() {
         CaveGenerator caveGenerator = CaveGenerator.Builder
                 .create()
                 .height(60)
@@ -55,7 +55,7 @@ public class MapManager extends DefaultManager {
         }
 
         Cave cave = new Cave(tiles, 60, 60);
-        Entity map = getServer().getWorld().createEntity();
+        Entity map = world.createEntity();
         map.edit().add(cave);
         mapEntity = map.getId();
     }
@@ -220,7 +220,7 @@ public class MapManager extends DefaultManager {
     /**
      * Initialize maps. TODO refactor
      */
-    public void initialize() {
+    public void initialize2() {
         Log.info("Loading maps...");
         for (int i = 1; i <= MAP_COUNT; i++) {
             //                FileInputStream mapStream = new FileInputStream("resources/maps/" + "Mapa" + i + ".json");
