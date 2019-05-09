@@ -50,9 +50,14 @@ public class NameRenderingSystem extends RenderingSystem {
     }
 
     private void drawClanName(E player, Pos2D screenPos, float nameY) {
-        String clanOrHero = Hero.values()[player.getCharHero().heroId].name();
+        String clanOrHero = null;
         if (player.hasClan() && !player.getClan().name.isEmpty()) {
             clanOrHero = player.getClan().name;
+        } else if (player.hasCharHero()){
+             clanOrHero = Hero.values()[player.getCharHero().heroId].name();
+        }
+        if (clanOrHero == null) {
+            return;
         }
         Fonts.layout.setText(Fonts.CLAN_FONT, "<" + clanOrHero + ">");
         final float fontX = screenPos.x + ((Tile.TILE_PIXEL_WIDTH - Fonts.layout.width) / 2);

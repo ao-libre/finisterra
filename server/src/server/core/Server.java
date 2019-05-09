@@ -71,6 +71,7 @@ public class Server {
                 .with(new MapManager(this))
                 .with(spellManager)
                 .with(objectManager)
+                .with(new NPCManager())
                 .with(new WorldManager(this))
                 .with(new PhysicalCombatSystem(this))
                 .with(new MagicCombatSystem(this))

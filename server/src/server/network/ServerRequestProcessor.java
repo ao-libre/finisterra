@@ -104,6 +104,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     public void processRequest(PlayerLoginRequest playerLoginRequest, int connectionId) {
         Player player = playerLoginRequest.getPlayer();
         getServer().getWorldManager().login(connectionId, player);
+        getServer().getWorldManager().addNPC();
     }
 
     /**

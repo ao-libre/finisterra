@@ -1,9 +1,11 @@
 package server.database;
 
 import shared.model.Spell;
+import shared.model.loaders.NPCLoader;
 import shared.model.loaders.ObjectLoader;
 import shared.model.loaders.SpellLoader;
 import shared.model.map.Map;
+import shared.model.npcs.NPC;
 import shared.model.readers.DescriptorsReader;
 import shared.model.readers.Reader;
 import shared.objects.types.Obj;
@@ -32,5 +34,11 @@ public class ServerDescriptorReader implements DescriptorsReader {
         return reader.read(objectsStream, loader);
     }
 
+    public java.util.Map<Integer, NPC> loadNPCs(String npcs) {
+        Reader<java.util.Map<Integer, NPC>> reader = new Reader<>();
+        NPCLoader loader = new NPCLoader();
+        InputStream objectsStream = ServerDescriptorReader.class.getClassLoader().getResourceAsStream("init/NPCs.dat");
+        return reader.read(objectsStream, loader);
+    }
 
 }

@@ -18,6 +18,7 @@ import shared.interfaces.Race;
 import shared.model.Spell;
 import shared.model.lobby.Player;
 import shared.model.lobby.Team;
+import shared.model.npcs.NPC;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.notifications.RemoveEntity;
@@ -39,6 +40,24 @@ public class WorldManager extends DefaultManager {
 
     public WorldManager(Server server) {
         super(server);
+    }
+
+    @Override
+    protected void initialize() {
+
+    }
+
+    public void addNPC() {
+        NPC npc = getWorld().getSystem(NPCManager.class).getNpcs().get(78);
+        int npcId = world.create();
+        E npcEntity = E(npcId);
+        npcEntity
+                .character()
+                .bodyIndex(npc.getBody())
+                .headingCurrent(npc.getHeading())
+                .nameText(npc.getName());
+        setEntityPosition(npcEntity);
+        registerItem(npcId);
     }
 
     public int createEntity(String name, Hero hero, Team team) {
@@ -602,6 +621,7 @@ public class WorldManager extends DefaultManager {
     }
 
     public void login(int connectionId, Player player) {
+
         final int entity = createEntity(player.getPlayerName(), player.getHero(), player.getTeam());
         List<Component> components = WorldUtils(getWorld()).getComponents(getWorld().getEntity(entity));
         components.add(new Focused());
