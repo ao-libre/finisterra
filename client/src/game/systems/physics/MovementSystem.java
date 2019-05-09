@@ -5,6 +5,7 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
+import game.handlers.SoundsHandler;
 import game.utils.WorldUtils;
 import movement.Destination;
 import physics.AOPhysics;
@@ -24,6 +25,13 @@ public class MovementSystem extends IteratingSystem {
     protected void process(int entity) {
         E player = E(entity);
         if (player.movementHasMovements()) {
+
+            if (!player.isMoving()) {
+                //SoundsHandler.loopSound(23);
+                player.aOSound();
+                player.aOSoundSoundID(23).aOSoundShouldLoop(true);
+            }
+
             player.moving(true);
 
             if (movePlayer(player)) {
@@ -37,6 +45,11 @@ public class MovementSystem extends IteratingSystem {
                 player.movementCompleteCurrent();
             }
         } else {
+
+            if (player.isMoving()) {
+                player.removeAOSound();
+            }
+
             player.moving(false);
         }
     }

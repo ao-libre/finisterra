@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
 import game.AOGame;
+import game.handlers.SoundsHandler;
 import game.managers.WorldManager;
 import game.screens.GameScreen;
 import game.screens.LobbyScreen;
@@ -164,7 +165,6 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     @Override
     public void processNotification(SoundNotification soundNotification) {
         int soundNumber = soundNotification.getSoundNumber();
-        // TODO obtener el sonido a reproducir
-        // TODO reproducir
+        SoundsHandler.playSound(soundNumber);
     }
 }

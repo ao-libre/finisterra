@@ -85,9 +85,8 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
                 if (E(targetId.get()).hasShield() && ThreadLocalRandom.current().nextInt(101) <= prob) {
                     notifyCombat(targetId.get(), SHIELD_DEFENSE);
                     notifyCombat(userId, format(DEFENDED_WITH_SHIELD, getName(targetId.get())));
-                    // TODO sound
                     // TODO shield animation
-                    getWorldManager().notifyUpdate(targetId.get(), new SoundNotification(10));
+                    getWorldManager().notifyUpdate(targetId.get(), new SoundNotification(37));
                 } else {
                     notifyCombat(userId, ATTACK_FAILED);
                     notifyCombat(targetId.get(), format(ATTACKED_AND_FAILED, getName(userId)));

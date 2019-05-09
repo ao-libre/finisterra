@@ -14,10 +14,12 @@ public class Resources {
     public static final String GAME_OBJECTS_PATH = GAME_DATA_PATH + "objects/";
     public static final String GAME_IMAGES_PATH = GAME_UI_PATH + "images/";
     public static final String GAME_SPELL_ICONS_PATH = GAME_UI_PATH + "spells/";
+    public static final String GAME_SOUNDS_PATH = GAME_DATA_PATH + "sounds/";
 
 
     public static final String GAME_SHADERS_PATH = GAME_DATA_PATH + "shaders/";
     public static final String GAME_GRAPHICS_EXTENSION = ".png";
+    public static final String GAME_SOUNDS_EXTENSION = "wav";
     public static final String GAME_SHADERS_LIGHT = "light.png";
     public static final String GAME_SPELLS_PATH = "spells/";
 
