@@ -6,3 +6,9 @@ build/
 **/build/
 out/
 **/out/
+desktop/assets/data/graficos2x/
+desktop/build*
+desktop/finisterra*
+desktop/java*
+desktop/packr.jar
+desktop/desktop*
