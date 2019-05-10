@@ -2,16 +2,14 @@ package server.systems.manager;
 
 import com.artemis.E;
 import com.artemis.Entity;
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.esotericsoftware.minlog.Log;
 import map.Cave;
 import position.WorldPos;
 import server.core.Server;
 import server.map.CaveGenerator;
 import shared.network.notifications.EntityUpdate;
+import shared.util.MapUtils;
 
-import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -23,10 +21,9 @@ import static server.utils.WorldUtils.WorldUtils;
  */
 public class MapManager extends DefaultManager {
 
-    public static final int MAP_COUNT = 1; // TODO set to 1 to load faster
     public static final int MAX_DISTANCE = 15;
     private static HashMap<Integer, shared.model.map.Map> maps = new HashMap<>();
-    public int mapEntity;
+//    public int mapEntity;
     private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesFootprints = new ConcurrentHashMap<>();
@@ -37,6 +34,11 @@ public class MapManager extends DefaultManager {
 
     @Override
     protected void initialize() {
+//        initCave();
+        MapUtils.initializeMaps(maps);
+    }
+
+    private void initCave() {
         CaveGenerator caveGenerator = CaveGenerator.Builder
                 .create()
                 .height(60)
@@ -57,7 +59,7 @@ public class MapManager extends DefaultManager {
         Cave cave = new Cave(tiles, 60, 60);
         Entity map = world.createEntity();
         map.edit().add(cave);
-        mapEntity = map.getId();
+//        mapEntity = map.getId();
     }
 
 //    public void generateMapEntity(MapDescriptor descriptor, String path) {
@@ -214,26 +216,6 @@ public class MapManager extends DefaultManager {
             EntityUpdate update = new EntityUpdate(entity2, WorldUtils(getServer().getWorld()).getComponents(entity2), new Class[0]);
             getServer().getWorldManager().sendEntityUpdate(entity1, update);
         }
-    }
-
-
-    /**
-     * Initialize maps. TODO refactor
-     */
-    public void initialize2() {
-        Log.info("Loading maps...");
-        for (int i = 1; i <= MAP_COUNT; i++) {
-            //                FileInputStream mapStream = new FileInputStream("resources/maps/" + "Mapa" + i + ".json");
-            InputStream mapStream = MapManager.class.getClassLoader().getResourceAsStream("maps/" + "Mapa" + i + ".json");
-            shared.model.map.Map map = getJson().fromJson(shared.model.map.Map.class, mapStream);
-            maps.put(i, map);
-        }
-    }
-
-    private Json getJson() {
-        Json json = new Json();
-        json.addClassTag("map", shared.model.map.Map.class);
-        return json;
     }
 
     /**

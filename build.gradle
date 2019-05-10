@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.2.31'
+    ext.kotlin_version = '1.3.31'
 
     repositories {
         mavenCentral()
@@ -8,8 +8,6 @@ buildscript {
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        // lib for artemis-odb weaving.
-        // see https://github.com/junkdog/artemis-odb/wiki/Bytecode-weaving
         classpath 'net.onedaybeard.artemis:artemis-odb-gradle-plugin:2.2.0'
         classpath "net.onedaybeard.artemis:artemis-fluid-gradle-plugin:2.2.0"
     }
@@ -33,13 +31,6 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-
-compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-}
-compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
 }
 
 allprojects {
@@ -70,10 +61,6 @@ project(":desktop") {
     dependencies {
         compile project(":client")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
 }
 
@@ -91,13 +78,10 @@ project(":client") {
 
     dependencies {
         compile project(":shared")
-
-        compile 'org.ini4j:ini4j:0.5.1'
-
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-
-        testCompile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        testCompile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        implementation 'org.ini4j:ini4j:0.5.1'
+        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
 }
 
@@ -108,22 +92,25 @@ project(":design") {
         compile project(":client")
         compile "com.soywiz:kaifu2x:0.4.0"
         implementation "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.0.1"
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
 }
 
 project(":server") {
     apply plugin: "java"
 
+    configurations {
+        provided
+    }
+
+    sourceSets {
+        // run the annotation processor compile time.
+        main { compileClasspath += configurations.provided }
+    }
+
     dependencies {
         compile project(":shared")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     }
 }
 
@@ -143,12 +130,11 @@ project(":shared") {
         compile 'org.ini4j:ini4j:0.5.1'
 
         // common
-        compile "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "net.mostlyoriginal.artemis-odb:contrib-core:$artemisContribVersion"
         compile "net.mostlyoriginal.artemis-odb:contrib-jam:$artemisContribVersion"
         compile "net.mostlyoriginal.artemis-odb:contrib-eventbus:$artemisContribVersion"
         compile "net.mostlyoriginal.artemis-odb:contrib-network:$artemisContribVersion"
+        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
     }
 }
 

@@ -1,4 +1,4 @@
-package images
+package design
 
 import com.soywiz.kaifu2x.Kaifu2x
 import com.soywiz.korim.bitmap.BitmapChannel
@@ -7,6 +7,7 @@ import com.soywiz.korio.Korio
 import com.soywiz.korio.vfs.UniversalVfs
 
 object Scale2x {
+
     @JvmStatic
     fun run(input : String, output : String) = Korio {
         defaultImageFormats.registerStandard()
@@ -22,8 +23,4 @@ object Scale2x {
         scaledImage.writeTo(outFile, ImageEncodingProps(quality = 100.toDouble() / 100.0))
     }
 
-
-
 }
-
-

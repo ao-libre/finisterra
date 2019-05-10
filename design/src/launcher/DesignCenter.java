@@ -1,7 +1,8 @@
 package launcher;
 
 import com.badlogic.gdx.Game;
-import images.Scale2x;
+import com.badlogic.gdx.Gdx;
+import design.Scale2x;
 
 import java.io.File;
 import java.util.Objects;
@@ -10,7 +11,6 @@ import java.util.stream.Stream;
 public class DesignCenter extends Game {
 
     public static final String OUTPUT_FOLDER = "/output/";
-
 
     @Override
     public void create() {
@@ -29,6 +29,7 @@ public class DesignCenter extends Game {
                 String inputFile = graficosInput.getPath() + "/" + fileName;
                 String outputFile = graficosOutput.getPath() + "/" + fileName;
                 if (!new File(graficosOutput + "/" + fileName).exists()) {
+                    Gdx.app.log(DesignCenter.class.getSimpleName(), "Scaling graphic " + fileName);
                     Scale2x.run(inputFile, outputFile);
                 }
             }

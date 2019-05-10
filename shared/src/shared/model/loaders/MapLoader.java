@@ -1,4 +1,4 @@
-package model.loaders;
+package shared.model.loaders;
 
 import shared.interfaces.Constants;
 import shared.model.map.Map;

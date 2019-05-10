@@ -19,6 +19,7 @@ import game.systems.camera.CameraFocusSystem;
 import game.systems.camera.CameraMovementSystem;
 import game.systems.camera.CameraSystem;
 import game.systems.map.CaveSystem;
+import game.systems.map.TiledMapSystem;
 import game.systems.network.ClientSystem;
 import game.systems.network.TimeSync;
 import game.systems.physics.MovementProcessorSystem;
@@ -79,7 +80,7 @@ public class GameScreen extends ScreenAdapter {
         return world;
     }
 
-    public void initWorld() {
+    private void initWorld() {
         WorldConfigurationBuilder worldConfigBuilder = new WorldConfigurationBuilder();
         cameraSystem = new CameraSystem(AOGame.GAME_SCREEN_ZOOM);
         worldConfigBuilder.with(new SuperMapper())
@@ -99,8 +100,9 @@ public class GameScreen extends ScreenAdapter {
                 .with(new PhysicsAttackSystem())
                 // Sound systems
                 .with(new SoundSytem())
+                .with(new TiledMapSystem())
                 // Rendering
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 5, new CaveSystem())
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new MapLowerLayerRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new GroundFXsRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new TargetRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new CharacterRenderingSystem(spriteBatch))
@@ -108,6 +110,7 @@ public class GameScreen extends ScreenAdapter {
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new ObjectRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new ParticleRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new FXsRenderingSystem(spriteBatch))
+                .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new MapUpperLayerRenderingSystem(spriteBatch))
                 .with(FONTS_PRIORITY, new StateRenderingSystem(spriteBatch))
                 .with(FONTS_PRIORITY, new CombatRenderingSystem(spriteBatch))
                 .with(FONTS_PRIORITY, new DialogRenderingSystem(spriteBatch))
@@ -193,7 +196,7 @@ public class GameScreen extends ScreenAdapter {
         getWorld().getSystem(LightRenderingSystem.class).resize(width, height);
     }
 
-    protected void drawUI() {
+    private void drawUI() {
         gui.draw();
     }
 
@@ -202,19 +205,19 @@ public class GameScreen extends ScreenAdapter {
         gui.dispose();
     }
 
-    protected void updateRunning(float deltaTime) {
+    private void updateRunning(float deltaTime) {
         //
     }
 
-    protected void updatePaused() {
+    private void updatePaused() {
         //
     }
 
-    protected void pauseSystems() {
+    private void pauseSystems() {
         //
     }
 
-    protected void resumeSystems() {
+    private void resumeSystems() {
         //
     }
 }

@@ -7,7 +7,6 @@ import com.esotericsoftware.minlog.Log;
 import entity.character.states.CanWrite;
 import entity.character.states.Heading;
 import entity.character.status.Hit;
-import map.Cave;
 import physics.AOPhysics;
 import position.WorldPos;
 import server.core.Server;
@@ -318,18 +317,18 @@ public class WorldManager extends DefaultManager {
     }
 
     private WorldPos getValidPosition(int map) {
-        final E entity = E(getServer().getMapManager().mapEntity);
-        if (entity.hasCave()) {
-            final Cave cave = entity.getCave();
-            final int midHeight = cave.height / 2;
-            final int midWidth = cave.width / 2;
-            WorldPos validPos = getRandomPos(midWidth, midHeight, map);
-            while (cave.isBlocked(validPos.x, validPos.y)) {
-                validPos = getRandomPos(cave.width, cave.height, map);
-            }
-            return validPos;
-        }
-        return new WorldPos(1, 1, 1);
+//        final E entity = E(getServer().getMapManager().mapEntity);
+//        if (entity.hasCave()) {
+//            final Cave cave = entity.getCave();
+//            final int midHeight = cave.height / 2;
+//            final int midWidth = cave.width / 2;
+//            WorldPos validPos = getRandomPos(midWidth, midHeight, map);
+//            while (cave.isBlocked(validPos.x, validPos.y)) {
+//                validPos = getRandomPos(cave.width, cave.height, map);
+//            }
+//            return validPos;
+//        }
+        return new WorldPos(1, 50, 50);
     }
 
     private WorldPos getRandomPos(int maxWidth, int maxHeight, int map) {
