@@ -5,10 +5,12 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import game.utils.Resources;
 
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,8 +18,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MusicHandler {
 
     private static Map<Integer, Music> musicMap = new ConcurrentHashMap<>();
+    private static Map<Integer, Sequencer> midiMap = new ConcurrentHashMap<>();
 
     private static String musicPath = Resources.GAME_MUSIC_PATH;
+    private static String midiPath = Resources.GAME_MIDI_PATH;
 
     public static void load(){
         FileHandle file = Gdx.app.getFiles().internal(musicPath);
@@ -33,6 +37,57 @@ public class MusicHandler {
                 String tmpExt = tmp.extension();
                 Gdx.app.debug(SoundsHandler.class.getSimpleName(), tmpExt);
             }
+        }
+
+        file = Gdx.app.getFiles().internal(midiPath);
+
+        if (!file.isDirectory())
+            return;
+
+        for (FileHandle tmp : file.list()) {
+            if (tmp.extension().equals(Resources.GAME_MIDI_EXTENSION)){
+                Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Cargando " + tmp.name());
+                loadMidi(tmp);
+            }else {
+                String tmpExt = tmp.extension();
+                Gdx.app.debug(SoundsHandler.class.getSimpleName(), tmpExt);
+            }
+        }
+
+    }
+
+    private static void loadMidi(FileHandle file) {
+        Integer midiID;
+
+        try {
+            midiID = Integer.valueOf(file.nameWithoutExtension());
+        } catch (NumberFormatException e) {
+            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error:" + file.name() + " should have a numeric name.", e);
+            return;
+        }
+
+        if (!midiMap.containsKey(midiID))
+        {
+            Sequencer sequencer = null;
+            try {
+
+                sequencer = MidiSystem.getSequencer();
+                sequencer.open();
+                sequencer.setSequence(file.read());
+                sequencer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
+
+            } catch (MidiUnavailableException e) {
+                Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error on loadMidi(FileHandle file): Midi is not available.", e);
+                return;
+            } catch (InvalidMidiDataException e) {
+                Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error on loadMidi(FileHandle file): Midi Data was invalid.", e);
+                return;
+            } catch (IOException e) {
+                Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error on loadMidi(FileHandle file): IO error.", e);
+                return;
+            }
+
+            midiMap.put(midiID,sequencer);
         }
 
     }
@@ -58,7 +113,7 @@ public class MusicHandler {
     public static void playMusic(int musicID){
 
         if (!musicMap.containsKey(musicID)) {
-            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + musicID + ", but it was not loaded.");
+            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play music index: " + musicID + ", but it was not loaded.");
             return;
         }
         //TODO: it should be played with a global configurable volume
@@ -69,7 +124,7 @@ public class MusicHandler {
     public static void stopMusic(int musicID){
 
         if (!musicMap.containsKey(musicID)) {
-            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + musicID + ", but it was not loaded.");
+            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not loaded.");
             return;
         }
         //TODO: it should be played with a global configurable volume
@@ -79,29 +134,29 @@ public class MusicHandler {
     public static void unload() {
         musicMap.forEach((k, v) -> v.dispose());
         musicMap.clear();
+
+        midiMap.clear();
     }
 
     //TODO: WIP!!!!!!!!!!!!!!
-    public static void PlayMIDI() {
+    public static void playMIDI(int midiID) {
+        Sequencer sequencer = midiMap.get(midiID);
 
+        if (sequencer == null) {
+            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
+            return;
+        }
+        sequencer.start();
+    }
 
-        Sequencer sequencer = null;
-        try {
-            sequencer = MidiSystem.getSequencer();
-            sequencer.open();
+    public static void stopMIDI(int midiID) {
+        Sequencer sequencer = midiMap.get(midiID);
 
-            //TODO: here the function will get the loaded file, this file will be loaded in load() using libgdx
-            //InputStream file = new BufferedInputStream(new FileInputStream(new File("midifile.mid")));
-
-            //sequencer.setSequence(file);
-
-            // Starts playback of the MIDI data in the currently loaded sequence.
-            sequencer.start();
-
-        } catch (MidiUnavailableException e) {
-            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error on PlayMIDI(): Midi is not available.", e);
+        if (sequencer == null) {
+            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
             return;
         }
 
+        sequencer.stop();
     }
 }

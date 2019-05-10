@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
+import game.handlers.MusicHandler;
 import game.systems.Sound.SoundSytem;
 import game.systems.anim.IdleAnimationSystem;
 import game.systems.anim.MovementAnimationSystem;
@@ -127,6 +128,9 @@ public class GameScreen extends ScreenAdapter {
                 .aOCamera(true)
                 .pos2D();
         world.getSystem(TagManager.class).register("camera", cameraEntity);
+
+        MusicHandler.stopMusic(101);
+        MusicHandler.playMIDI(1);
     }
 
     protected void update(float deltaTime) {
