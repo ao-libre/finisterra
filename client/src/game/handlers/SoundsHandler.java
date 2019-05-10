@@ -75,6 +75,14 @@ public class SoundsHandler {
         playSound(soundID, false);
     }
 
+    public static void updateVolume(Integer soundId, long  soundIndex, float volume) {
+        soundsMap.get(soundId).setVolume(soundIndex, volume);
+    }
+
+    public static void updatePan(Integer soundId, long  soundIndex, float pan, float volume) {
+        soundsMap.get(soundId).setPan(soundIndex, pan, volume);
+    }
+
     public static void stopSound(Integer soundID) {
         if (!soundsMap.containsKey(soundID)) {
             Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
