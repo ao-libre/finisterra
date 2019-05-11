@@ -3,6 +3,7 @@ package game.handlers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Timer;
 import game.utils.Resources;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -16,6 +17,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class MusicHandler {
+
+    public static final float MUSIC_FADE_STEP = 0.01f;
 
     private static Map<Integer, Music> musicMap = new ConcurrentHashMap<>();
     private static Map<Integer, Sequencer> midiMap = new ConcurrentHashMap<>();
@@ -131,6 +134,39 @@ public class MusicHandler {
         musicMap.get(musicID).stop();
     }
 
+    public static void FadeInMusic(int musicID, float fadeRate){
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                Music music = musicMap.get(musicID);
+
+                if (music.getVolume() < 1)
+                    music.setVolume(music.getVolume()+MUSIC_FADE_STEP);
+                else {
+                    this.cancel();
+                }
+            }
+        }, 0f, fadeRate);
+    }
+
+    public static void FadeOutMusic(int musicID, float fadeRate){
+
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                Music music = musicMap.get(musicID);
+
+                if (music.getVolume() >= MUSIC_FADE_STEP)
+                    music.setVolume(music.getVolume()-MUSIC_FADE_STEP);
+                else {
+                    music.stop();
+                    this.cancel();
+                }
+            }
+        }, 0f, fadeRate);
+
+    }
+
     public static void unload() {
         musicMap.forEach((k, v) -> v.dispose());
         musicMap.clear();
@@ -138,7 +174,7 @@ public class MusicHandler {
         midiMap.clear();
     }
 
-    //TODO: WIP!!!!!!!!!!!!!!
+    //TODO: MIDIs cant be faded at the moment
     public static void playMIDI(int midiID) {
         Sequencer sequencer = midiMap.get(midiID);
 

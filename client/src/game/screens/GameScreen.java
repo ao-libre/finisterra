@@ -129,7 +129,8 @@ public class GameScreen extends ScreenAdapter {
                 .pos2D();
         world.getSystem(TagManager.class).register("camera", cameraEntity);
 
-        MusicHandler.stopMusic(101);
+        MusicHandler.FadeOutMusic(101, 0.03f);
+        //MusicHandler.stopMusic(101);
         MusicHandler.playMIDI(1);
     }
 
