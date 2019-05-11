@@ -146,5 +146,5 @@ behind: false
 premultipliedAlpha: true
 spriteMode: single
 - Image Paths -
-/Users/guido.tamborindeguy/guido/repository/ao-java/desktop/assets/data/particles/aura64x64.png
+aura64x64.png
 

@@ -5,8 +5,3 @@ sourceSets.main.java.srcDirs = ["src/"]
 sourceSets.main.resources.srcDirs += [project(':shared').sourceSets.main.resources]
 
 mainClassName = "launcher.DesignCenterLauncher"
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}

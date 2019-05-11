@@ -10,7 +10,9 @@ import movement.RandomMovement;
 import physics.AOPhysics;
 import position.WorldPos;
 import server.core.Server;
+import server.systems.manager.MapManager;
 import server.utils.WorldUtils;
+import shared.model.map.Map;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
 import shared.util.MapUtils;
@@ -54,8 +56,9 @@ public class RandomMovementSystem extends IteratingSystem {
             WorldPos worldPos = player.getWorldPos();
             WorldPos oldPos = new WorldPos(worldPos);
             WorldPos nextPos = worldUtils.getNextPos(worldPos, mov);
-            Cave cave = E(getServer().getMapManager().mapEntity).getCave();
-            boolean blocked = cave.isBlocked(nextPos.x, nextPos.y);
+
+            Map map = world.getSystem(MapManager.class).get(nextPos.map);
+            boolean blocked = MapUtils.isBlocked(map, nextPos);
             boolean occupied = MapUtils.hasEntity(getServer().getMapManager().getNearEntities(entityId), nextPos);
             if (player.hasImmobile() || blocked || occupied) {
                 nextPos = oldPos;

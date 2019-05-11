@@ -5,7 +5,6 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
-import game.handlers.SoundsHandler;
 import game.utils.WorldUtils;
 import movement.Destination;
 import physics.AOPhysics;
@@ -27,7 +26,6 @@ public class MovementSystem extends IteratingSystem {
         if (player.movementHasMovements()) {
 
             if (!player.isMoving()) {
-                //SoundsHandler.loopSound(23);
                 player.aOSound();
                 player.aOSoundSoundID(23).aOSoundShouldLoop(true);
             }

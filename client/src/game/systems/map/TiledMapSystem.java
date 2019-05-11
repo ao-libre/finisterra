@@ -33,7 +33,6 @@ import static com.artemis.E.E;
  * @package com.mob.client.api.systems.map
  */
 @Wire
-@Deprecated
 public class TiledMapSystem extends IteratingSystem {
 
     public Map map;

@@ -18,6 +18,7 @@ import server.systems.MeditateSystem;
 import server.utils.WorldUtils;
 import shared.model.AttackType;
 import shared.model.lobby.Player;
+import shared.model.map.Map;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.MeditateRequest;
@@ -103,8 +104,6 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(PlayerLoginRequest playerLoginRequest, int connectionId) {
         Player player = playerLoginRequest.getPlayer();
-        int mapEntityId = getMapManager().mapEntity;
-        getNetworkManager().sendTo(connectionId, new EntityUpdate(mapEntityId, WorldUtils(getWorld()).getComponents(mapEntityId), new Class[0]));
         getServer().getWorldManager().login(connectionId, player);
     }
 
@@ -125,8 +124,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         WorldPos worldPos = player.getWorldPos();
         WorldPos oldPos = new WorldPos(worldPos);
         WorldPos nextPos = worldUtils.getNextPos(worldPos, request.movement);
-        Cave cave = E(getServer().getMapManager().mapEntity).getCave();
-        boolean blocked = cave.isBlocked(nextPos.x, nextPos.y);
+        Map map = getServer().getMapManager().get(nextPos.map);
+        boolean blocked = MapUtils.isBlocked(map, nextPos);
         boolean occupied = MapUtils.hasEntity(getMapManager().getNearEntities(playerId), nextPos);
         if (!(player.hasImmobile() || blocked || occupied)) {
             player.worldPosMap(nextPos.map);

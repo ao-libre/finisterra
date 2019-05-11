@@ -4,6 +4,7 @@ public class SharedResources {
 
     public static final String OBJECTS_FOLDER = "objects/";
     public static final String GRAPHICS_FOLDER = "graphics/";
+    public static final String MAPS_FOLDER = "maps/";
     public static final String SPELLS_FOLDER = "spells/";
     public static final String SPELLS_FILE = "spells";
     public static final String JSON_EXT = ".json";
