@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import game.handlers.MusicHandler;
 import game.systems.network.ClientSystem;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.interfaces.Hero;
@@ -29,6 +30,7 @@ public class LoginScreen extends AbstractScreen {
         clientSystem = new ClientSystem(SERVER_IP, SERVER_PORT);
         world = new World(builder.with(clientSystem).build());
         clientSystem.start();
+        MusicHandler.playMusic(101);
     }
 
     @Override
