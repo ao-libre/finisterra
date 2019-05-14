@@ -3,7 +3,6 @@ package game.systems.render.world;
 import camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
-import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -13,17 +12,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import game.screens.GameScreen;
-import game.systems.OrderedEntityProcessingSystem;
-import game.systems.camera.CameraSystem;
 import game.utils.Resources;
 import position.Pos2D;
 import shared.model.map.Tile;
 import shared.util.Util;
 
-import java.util.Comparator;
-
-import static com.artemis.E.E;
 import static game.utils.Resources.GAME_SHADERS_LIGHT;
 
 @Wire(injectInherited=true)

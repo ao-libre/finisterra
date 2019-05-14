@@ -19,7 +19,6 @@ import game.systems.anim.MovementAnimationSystem;
 import game.systems.camera.CameraFocusSystem;
 import game.systems.camera.CameraMovementSystem;
 import game.systems.camera.CameraSystem;
-import game.systems.map.CaveSystem;
 import game.systems.map.TiledMapSystem;
 import game.systems.network.ClientSystem;
 import game.systems.network.TimeSync;
@@ -39,7 +38,10 @@ import static com.artemis.E.E;
 
 public class GameScreen extends ScreenAdapter {
 
-    private static final int FONTS_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL - 1;
+    private static final int DECORATIONS = WorldConfigurationBuilder.Priority.NORMAL - 1;
+    public static final int RENDER_PRE_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 3;
+    public static final int RENDER_POST_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 1;
+    public static final int RENDER_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 2;
     public static World world;
     public static int player = -1;
     private static GUI gui = new GUI();
@@ -103,20 +105,21 @@ public class GameScreen extends ScreenAdapter {
                 .with(new SoundSytem())
                 .with(new TiledMapSystem())
                 // Rendering
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new MapLowerLayerRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new GroundFXsRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new TargetRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 2, new CharacterRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 3, new NameRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new ObjectRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new ParticleRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new FXsRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL + 1, new MapUpperLayerRenderingSystem(spriteBatch))
-                .with(FONTS_PRIORITY, new StateRenderingSystem(spriteBatch))
-                .with(FONTS_PRIORITY, new CombatRenderingSystem(spriteBatch))
-                .with(FONTS_PRIORITY, new DialogRenderingSystem(spriteBatch))
-                .with(FONTS_PRIORITY, new CharacterStatesRenderingSystem(spriteBatch))
-                .with(FONTS_PRIORITY - 1, new LightRenderingSystem(spriteBatch))
+                .with(RENDER_PRE_ENTITIES, new MapGroundRenderingSystem(spriteBatch))
+                .with(RENDER_PRE_ENTITIES, new GroundFXsRenderingSystem(spriteBatch))
+                .with(RENDER_PRE_ENTITIES, new TargetRenderingSystem(spriteBatch))
+                .with(RENDER_POST_ENTITIES, new ObjectRenderingSystem(spriteBatch))
+                .with(RENDER_PRE_ENTITIES, new NameRenderingSystem(spriteBatch))
+                .with(RENDER_ENTITIES, new CharacterRenderingSystem(spriteBatch))
+                .with(RENDER_ENTITIES, new WorldRenderingSystem(spriteBatch))
+                .with(RENDER_POST_ENTITIES, new MapUpperLayerRenderingSystem(spriteBatch))
+                .with(RENDER_POST_ENTITIES, new LightRenderingSystem(spriteBatch))
+                .with(RENDER_POST_ENTITIES, new ParticleRenderingSystem(spriteBatch))
+                .with(RENDER_POST_ENTITIES, new FXsRenderingSystem(spriteBatch))
+                .with(DECORATIONS, new StateRenderingSystem(spriteBatch))
+                .with(DECORATIONS, new CombatRenderingSystem(spriteBatch))
+                .with(DECORATIONS, new DialogRenderingSystem(spriteBatch))
+                .with(DECORATIONS, new CharacterStatesRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(spriteBatch))
                 // Other
                 .with(new TagManager())

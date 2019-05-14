@@ -15,23 +15,12 @@ buildscript {
     }
 }
 
-plugins {
-    id 'java'
-}
-
-group 'ao-java'
-version '1.0-SNAPSHOT'
-apply plugin: 'kotlin'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
 allprojects {
     apply plugin: "idea"
+
+    group 'ao-java'
     version = '0.1-SNAPSHOT'
+
     ext {
         appName = 'ao-java'
         gdxVersion = '1.9.9'
@@ -50,95 +39,6 @@ allprojects {
     }
 }
 
-project(":desktop") {
+subprojects {
     apply plugin: "java"
-
-    dependencies {
-        compile project(":client")
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-    }
-}
-
-project(":client") {
-    apply plugin: "java"
-
-    configurations {
-        provided
-    }
-
-    sourceSets {
-        // run the annotation processor compile time.
-        main { compileClasspath += configurations.provided }
-    }
-
-    dependencies {
-        compile project(":shared")
-        implementation 'org.ini4j:ini4j:0.5.1'
-        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
-    }
-}
-
-project(":design") {
-    apply plugin: "java"
-    apply plugin: "kotlin"
-
-    dependencies {
-        compile project(":client")
-        compile "com.soywiz:kaifu2x:0.4.0"
-        implementation "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.2.1"
-    }
-}
-
-project(":server") {
-    apply plugin: "java"
-
-    configurations {
-        provided
-    }
-
-    sourceSets {
-        // run the annotation processor compile time.
-        main { compileClasspath += configurations.provided }
-    }
-
-    dependencies {
-        compile project(":shared")
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
-    }
-}
-
-project(":shared") {
-    apply plugin: "java"
-
-    configurations {
-        provided
-    }
-
-    sourceSets {
-        main { compileClasspath += configurations.provided }
-    }
-
-    dependencies {
-        compile project(":components")
-        compile 'org.ini4j:ini4j:0.5.1'
-
-        // common
-        compile "net.mostlyoriginal.artemis-odb:contrib-core:$artemisContribVersion"
-        compile "net.mostlyoriginal.artemis-odb:contrib-jam:$artemisContribVersion"
-        compile "net.mostlyoriginal.artemis-odb:contrib-eventbus:$artemisContribVersion"
-        compile "net.mostlyoriginal.artemis-odb:contrib-network:$artemisContribVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-    }
-}
-
-project(":components") {
-    apply plugin: "java"
-
-    dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
-    }
 }

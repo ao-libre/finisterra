@@ -73,26 +73,30 @@ public class MapManager {
         }
         for (int y = minY; y <= maxY; y++) {
             for (int x = minX; x <= maxX; x++) {
-                int graphic = map.getTile(x, y).getGraphic(layer);
-                if (graphic == 0) {
-                    continue;
-                }
-
-                BundledAnimation animation = AnimationHandler.getGraphicAnimation(graphic);
-                TextureRegion tileRegion = animation.isAnimated() ? animation.getAnimatedGraphic(true) : animation.getGraphic();
-
-                if (animation != null && animation.isAnimated()) {
-                    animation.setAnimationTime(animation.getAnimationTime() + delta);
-                }
-
-                if (tileRegion != null) {
-                    final float mapPosX = (x * Tile.TILE_PIXEL_WIDTH);
-                    final float mapPosY = (y * Tile.TILE_PIXEL_HEIGHT);
-                    final float tileOffsetX = mapPosX - (tileRegion.getRegionWidth() * 0.5f) - (16.0f);
-                    final float tileOffsetY = mapPosY - tileRegion.getRegionHeight();
-                    batch.draw(tileRegion, tileOffsetX, tileOffsetY);
-                }
+                drawTile(map, batch, delta, layer, y, x);
             }
+        }
+    }
+
+    private static void drawTile(Map map, SpriteBatch batch, float delta, int layer, int y, int x) {
+        int graphic = map.getTile(x, y).getGraphic(layer);
+        if (graphic == 0) {
+            return;
+        }
+
+        BundledAnimation animation = AnimationHandler.getGraphicAnimation(graphic);
+        TextureRegion tileRegion = animation.isAnimated() ? animation.getAnimatedGraphic(true) : animation.getGraphic();
+
+        if (animation.isAnimated()) {
+            animation.setAnimationTime(animation.getAnimationTime() + delta);
+        }
+
+        if (tileRegion != null) {
+            final float mapPosX = (x * Tile.TILE_PIXEL_WIDTH);
+            final float mapPosY = (y * Tile.TILE_PIXEL_HEIGHT);
+            final float tileOffsetX = mapPosX + (Tile.TILE_PIXEL_WIDTH - tileRegion.getRegionWidth()) / 2;
+            final float tileOffsetY = mapPosY - tileRegion.getRegionHeight();
+            batch.draw(tileRegion, tileOffsetX, tileOffsetY);
         }
     }
 
@@ -107,4 +111,5 @@ public class MapManager {
     public static void initialize(Map map) {
         renderLayerToBuffer(map);
     }
+
 }

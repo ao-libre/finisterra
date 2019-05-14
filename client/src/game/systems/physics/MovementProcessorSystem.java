@@ -16,7 +16,7 @@ import position.WorldPos;
 import shared.model.map.Map;
 import shared.network.interaction.MeditateRequest;
 import shared.network.movement.MovementRequest;
-import shared.util.MapUtils;
+import shared.util.MapHelper;
 import shared.util.Util;
 
 import java.util.Optional;
@@ -93,8 +93,8 @@ public class MovementProcessorSystem extends IteratingSystem {
                 nearEntities.remove(entity);
                 nearEntities.forEach(near -> Log.debug("Validating entity: " + near + " is not occuping the position"));
                 Map map = MapHandler.get(expectedPos.map);
-                boolean blocked = MapUtils.isBlocked(map, expectedPos);
-                boolean occupied = MapUtils.hasEntity(nearEntities, expectedPos);
+                boolean blocked = MapHandler.getHelper().isBlocked(map, expectedPos);
+                boolean occupied = MapHandler.getHelper().hasEntity(nearEntities, expectedPos);
                 boolean valid = !(blocked ||
                         occupied ||
                         player.hasImmobile());

@@ -40,7 +40,7 @@ public class Util {
 
     public static Pos2D toScreen(Pos2D pos) {
         return new Pos2D(pos.x * Tile.TILE_PIXEL_WIDTH,
-                pos.y * Tile.TILE_PIXEL_HEIGHT + Tile.TILE_PIXEL_HEIGHT);
+                pos.y * Tile.TILE_PIXEL_HEIGHT);
     }
 
     public static Pos2D toGUI(Pos2D pos) {

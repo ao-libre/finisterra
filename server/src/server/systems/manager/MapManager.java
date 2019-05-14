@@ -8,7 +8,7 @@ import position.WorldPos;
 import server.core.Server;
 import server.map.CaveGenerator;
 import shared.network.notifications.EntityUpdate;
-import shared.util.MapUtils;
+import shared.util.MapHelper;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,19 +23,25 @@ public class MapManager extends DefaultManager {
 
     public static final int MAX_DISTANCE = 15;
     private static HashMap<Integer, shared.model.map.Map> maps = new HashMap<>();
-//    public int mapEntity;
+    private final MapHelper helper;
+    //    public int mapEntity;
     private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesFootprints = new ConcurrentHashMap<>();
 
     public MapManager(Server server) {
         super(server);
+        helper = MapHelper.instance();
     }
 
     @Override
     protected void initialize() {
 //        initCave();
-        MapUtils.initializeMaps(maps);
+        helper.initializeMaps(maps);
+    }
+
+    public MapHelper getHelper() {
+        return helper;
     }
 
     private void initCave() {

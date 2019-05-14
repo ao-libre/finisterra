@@ -36,7 +36,7 @@ import static com.artemis.E.E;
 public class TiledMapSystem extends IteratingSystem {
 
     public Map map;
-    public long mapNumber = -1;
+    public int mapNumber = -1;
 
     public TiledMapSystem() {
         super(Aspect.all(Focused.class, WorldPos.class));
