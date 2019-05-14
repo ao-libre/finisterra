@@ -20,7 +20,7 @@ import static com.artemis.E.E;
 public class MovementAnimationSystem extends IteratingSystem {
 
     public MovementAnimationSystem() {
-        super(Aspect.all(Character.class, Heading.class).one(
+        super(Aspect.all(Heading.class).one(
                 Moving.class, AttackAnimation.class));
     }
 

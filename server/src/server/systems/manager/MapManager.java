@@ -161,9 +161,7 @@ public class MapManager extends DefaultManager {
         entities.add(player);
         entities.stream()
                 .filter(entity -> entity != player)
-                .forEach(entity -> {
-                    addNearEntities(player, entity);
-                });
+                .forEach(entity -> addNearEntities(player, entity));
     }
 
 

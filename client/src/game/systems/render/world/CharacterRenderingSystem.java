@@ -36,7 +36,7 @@ import static com.artemis.E.E;
 public class CharacterRenderingSystem extends RenderingSystem {
 
     public static final float SHADOW_ALPHA = 0.15f;
-    public static final Aspect.Builder CHAR_ASPECT = Aspect.all(Character.class, WorldPos.class, Body.class, Heading.class);
+    public static final Aspect.Builder CHAR_ASPECT = Aspect.all(WorldPos.class, Body.class, Heading.class);
     private static Texture shadow = new Texture(Gdx.files.local("data/ui/images/shadow22.png"));
 
     public CharacterRenderingSystem(SpriteBatch batch) {

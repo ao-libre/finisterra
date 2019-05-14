@@ -47,35 +47,39 @@ public class RandomMovementSystem extends IteratingSystem {
         Optional<AOPhysics.Movement> randomMovement = randomMovement();
         randomMovement.ifPresent(mov -> {
             // update server entity
-            E player = E(entityId);
-
-            WorldUtils worldUtils = WorldUtils(getServer().getWorld());
-            player.headingCurrent(worldUtils.getHeading(mov));
-
-            WorldPos worldPos = player.getWorldPos();
-            WorldPos oldPos = new WorldPos(worldPos);
-            WorldPos nextPos = worldUtils.getNextPos(worldPos, mov);
-
-            MapManager mapManager = world.getSystem(MapManager.class);
-            Map map = mapManager.get(nextPos.map);
-            boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
-            boolean occupied = mapManager.getHelper().hasEntity(getServer().getMapManager().getNearEntities(entityId), nextPos);
-            if (player.hasImmobile() || blocked || occupied) {
-                nextPos = oldPos;
-            }
-
-            player.worldPosMap(nextPos.map);
-            player.worldPosX(nextPos.x);
-            player.worldPosY(nextPos.y);
-
-            getServer().getMapManager().movePlayer(entityId, Optional.of(oldPos));
-
-            // notify near users
-            getServer().getWorldManager().notifyUpdate(entityId, new EntityUpdate(entityId, new Component[]{player.getHeading()}, new Class[0])); // is necessary?
-            if (nextPos != oldPos) {
-                getServer().getWorldManager().notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov)));
-            }
+            moveEntity(entityId, mov);
         });
+    }
+
+    public void moveEntity(int entityId, AOPhysics.Movement mov) {
+        E player = E(entityId);
+
+        WorldUtils worldUtils = WorldUtils(getServer().getWorld());
+        player.headingCurrent(worldUtils.getHeading(mov));
+
+        WorldPos worldPos = player.getWorldPos();
+        WorldPos oldPos = new WorldPos(worldPos);
+        WorldPos nextPos = worldUtils.getNextPos(worldPos, mov);
+
+        MapManager mapManager = world.getSystem(MapManager.class);
+        Map map = mapManager.get(nextPos.map);
+        boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
+        boolean occupied = mapManager.getHelper().hasEntity(getServer().getMapManager().getNearEntities(entityId), nextPos);
+        if (player.hasImmobile() || blocked || occupied) {
+            nextPos = oldPos;
+        }
+
+        player.worldPosMap(nextPos.map);
+        player.worldPosX(nextPos.x);
+        player.worldPosY(nextPos.y);
+
+        getServer().getMapManager().movePlayer(entityId, Optional.of(oldPos));
+
+        // notify near users
+        getServer().getWorldManager().notifyUpdate(entityId, new EntityUpdate(entityId, new Component[]{player.getHeading()}, new Class[0])); // is necessary?
+        if (nextPos != oldPos) {
+            getServer().getWorldManager().notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov)));
+        }
     }
 
     private List<AOPhysics.Movement> otherMovements(Optional<AOPhysics.Movement> movement) {

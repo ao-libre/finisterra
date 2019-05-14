@@ -4,6 +4,7 @@ import camera.Focused;
 import com.artemis.Component;
 import com.artemis.E;
 import com.esotericsoftware.minlog.Log;
+import entity.character.Character;
 import entity.character.states.CanWrite;
 import entity.character.states.Heading;
 import entity.character.status.Hit;
@@ -52,7 +53,6 @@ public class WorldManager extends DefaultManager {
         int npcId = world.create();
         E npcEntity = E(npcId);
         npcEntity
-                .character()
                 .bodyIndex(npc.getBody())
                 .headingCurrent(npc.getHeading())
                 .nameText(npc.getName());
@@ -64,6 +64,7 @@ public class WorldManager extends DefaultManager {
         int player = getWorld().create();
 
         E entity = E(player);
+        entity.character();
         switch (team) {
             case NO_TEAM:
                 entity.gM();
