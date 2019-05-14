@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import game.handlers.AssetHandler;
+import game.handlers.MapHandler;
 import game.handlers.StateHandler;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;

@@ -76,7 +76,7 @@ import shared.network.time.TimeSyncResponse;
 import shared.objects.factory.ObjectFactory;
 import shared.objects.types.*;
 import shared.objects.types.common.*;
-import shared.util.MapUtils;
+import shared.util.MapHelper;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -154,7 +154,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Integer[].class,
                 HashMap.class,
                 HashSet.class,
-                MapUtils.class,
+                MapHelper.class,
                 ConcurrentLinkedDeque.class,
                 Component.class,
                 Component[].class,

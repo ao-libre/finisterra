@@ -328,7 +328,7 @@ public class WorldManager extends DefaultManager {
 //            }
 //            return validPos;
 //        }
-        return new WorldPos(1, 50, 50);
+        return new WorldPos(50, 50, map);
     }
 
     private WorldPos getRandomPos(int maxWidth, int maxHeight, int map) {

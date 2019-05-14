@@ -4,7 +4,6 @@ import com.artemis.Aspect;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
-import map.Cave;
 import movement.Destination;
 import movement.RandomMovement;
 import physics.AOPhysics;
@@ -15,7 +14,7 @@ import server.utils.WorldUtils;
 import shared.model.map.Map;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
-import shared.util.MapUtils;
+import shared.util.MapHelper;
 
 import java.util.*;
 
@@ -57,9 +56,10 @@ public class RandomMovementSystem extends IteratingSystem {
             WorldPos oldPos = new WorldPos(worldPos);
             WorldPos nextPos = worldUtils.getNextPos(worldPos, mov);
 
-            Map map = world.getSystem(MapManager.class).get(nextPos.map);
-            boolean blocked = MapUtils.isBlocked(map, nextPos);
-            boolean occupied = MapUtils.hasEntity(getServer().getMapManager().getNearEntities(entityId), nextPos);
+            MapManager mapManager = world.getSystem(MapManager.class);
+            Map map = mapManager.get(nextPos.map);
+            boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
+            boolean occupied = mapManager.getHelper().hasEntity(getServer().getMapManager().getNearEntities(entityId), nextPos);
             if (player.hasImmobile() || blocked || occupied) {
                 nextPos = oldPos;
             }

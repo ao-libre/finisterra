@@ -8,27 +8,30 @@ import position.WorldPos;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Set;
 
 import static com.artemis.E.E;
+import static java.lang.String.format;
 
-public class MapUtils {
+public class MapHelper {
 
     public static final int MAP_COUNT = 1; // TODO set to 1 to load faster
     private static Json mapJson = new Json();
-    static {
-        mapJson.addClassTag("map", shared.model.map.Map.class);
+
+    private MapHelper() {}
+
+    public static MapHelper instance() {
+        return new MapHelper();
     }
 
-    public static boolean isBlocked(Map map, WorldPos pos) {
+    public boolean isBlocked(Map map, WorldPos pos) {
+        Log.info(format("[%d:%d-%d]", pos.map, pos.x, pos.y) + "is blocked?");
         Tile tile = map.getTile(pos.x, pos.y);
         return tile.isBlocked();
     }
 
-    public static boolean hasEntity(Set<Integer> entities, WorldPos pos) {
+    public boolean hasEntity(Set<Integer> entities, WorldPos pos) {
         return entities.stream().anyMatch(entity -> {
             boolean isObject = E(entity).hasObject();
             boolean samePos = E(entity).hasWorldPos() && pos.equals(E(entity).getWorldPos());
@@ -40,14 +43,15 @@ public class MapUtils {
     /**
      * Initialize maps. TODO refactor
      */
-    public static void initializeMaps(HashMap<Integer, Map> maps) {
+    public void initializeMaps(HashMap<Integer, Map> maps) {
         Log.info("Loading maps...");
         for (int i = 1; i <= MAP_COUNT; i++) {
-            maps.put(i, getMap(i));
+            Map map = getMap(i);
+            maps.put(i, map);
         }
     }
 
-    public static Map getMap(int i) {
+    public Map getMap(int i) {
         FileHandle mapFile = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Mapa" + i + ".json");
         return mapJson.fromJson(Map.class, mapFile);
     }

@@ -13,11 +13,13 @@ import server.systems.FinisterraSystem;
 import server.utils.IpChecker;
 import shared.model.lobby.Lobby;
 import shared.model.lobby.Room;
+import shared.model.map.Map;
 import shared.network.lobby.StartGameResponse;
+import shared.util.MapHelper;
 
 import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 
 public class Finisterra implements ApplicationListener {
@@ -43,6 +45,7 @@ public class Finisterra implements ApplicationListener {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         init();
         Gdx.app.log("Server initialization", "Finisterra...");
+        HashMap<Integer, Map> maps = new HashMap<>();
         lobby = new Lobby();
         WorldConfigurationBuilder worldConfigurationBuilder = new WorldConfigurationBuilder();
         KryonetServerMarshalStrategy strategy = new KryonetServerMarshalStrategy(tcpPort, udpPort);
@@ -57,11 +60,6 @@ public class Finisterra implements ApplicationListener {
     private void init() {
         objectManager = new ObjectManager();
         spellManager = new SpellManager();
-
-        String property = System.getProperty("server.useLocalhost");
-        System.out.println("server.useLocalhost=" + property);
-        Properties properties = System.getProperties();
-        System.out.println("Properties: " + properties);
     }
 
     public void startGame(Room room) {

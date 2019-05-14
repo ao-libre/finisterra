@@ -1,14 +1,14 @@
-apply plugin: "java"
 apply plugin: 'application'
 
-sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = ["src/"]
 
 mainClassName = "server.ServerLauncher"
 tasks.run.workingDir = new File("resources/")
 
 dependencies {
-    compile project(":shared")
+    implementation project(":shared")
+    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
 }
 
 task dist(type: Jar) {
@@ -30,4 +30,3 @@ tasks.withType(JavaExec) {
 }
 
 dist.dependsOn classes
-run.dependsOn classes

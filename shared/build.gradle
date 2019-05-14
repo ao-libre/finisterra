@@ -1,24 +1,24 @@
-plugins {
-    id 'java'
-}
-
-group 'ar.com.tamborindeguy'
-version '1.0'
-
-sourceCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-sourceSets.main.java.srcDirs = ["src/"]
-sourceSets.main.resources.srcDirs = ["resources/"]
+dependencies {
+    compile project(":components")
+    compile 'org.ini4j:ini4j:0.5.1'
+    compile "net.mostlyoriginal.artemis-odb:contrib-core:$artemisContribVersion"
+    compile "net.mostlyoriginal.artemis-odb:contrib-jam:$artemisContribVersion"
+    compile "net.mostlyoriginal.artemis-odb:contrib-eventbus:$artemisContribVersion"
+    compile "net.mostlyoriginal.artemis-odb:contrib-network:$artemisContribVersion"
+    compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+}
 
+// FLUID
 apply plugin: "artemis-fluid"
 
 ext {
     fluidOutputDir = file("$buildDir/generated-sources/fluid/")
 }
 
-// Replace existing line.
 sourceSets.main.java.srcDirs = ["src/", fluidOutputDir]
+sourceSets.main.resources.srcDirs = ["resources/"]
 
 fluid {
     generatedSourcesDirectory = fluidOutputDir
@@ -34,22 +34,16 @@ fluid {
     // preferences.generateBooleanComponentAccessors = true // Generate boolean accessors for flag components?
     // preferences.swallowGettersWithParameters = false // global setting. overridden by @Fluid annotation.
 }
+
 compileJava.dependsOn fluid
 
 // Help intellIJ pick up the generated classes.
-idea.module {
-    excludeDirs -= file("$buildDir")
-    excludeDirs -= file("$buildDir/src")
-    excludeDirs += file("$buildDir/dependency-cache")
-    excludeDirs += file("$buildDir/libs")
-    excludeDirs += file("$buildDir/tmp")
-}
-
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+idea {
+    module {
+        excludeDirs -= file("$buildDir")
+        excludeDirs -= file("$buildDir/src")
+        excludeDirs += file("$buildDir/dependency-cache")
+        excludeDirs += file("$buildDir/libs")
+        excludeDirs += file("$buildDir/tmp")
+    }
 }

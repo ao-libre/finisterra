@@ -10,13 +10,13 @@ import shared.model.map.Map;
 import shared.model.map.Tile;
 
 @Wire
-public class MapLowerLayerRenderingSystem extends BaseSystem {
+public class MapGroundRenderingSystem extends BaseSystem {
 
     public SpriteBatch batch;
     private TiledMapSystem mapSystem;
     private CameraSystem cameraSystem;
 
-    public MapLowerLayerRenderingSystem(SpriteBatch spriteBatch) {
+    public MapGroundRenderingSystem(SpriteBatch spriteBatch) {
         this.batch = spriteBatch;
     }
 

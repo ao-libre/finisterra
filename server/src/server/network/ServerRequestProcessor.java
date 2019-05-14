@@ -8,7 +8,6 @@ import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
 import entity.world.Dialog;
 import entity.world.Object;
-import map.Cave;
 import movement.Destination;
 import position.WorldPos;
 import server.combat.CombatSystem;
@@ -34,7 +33,7 @@ import shared.network.movement.MovementResponse;
 import shared.network.notifications.EntityUpdate;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
-import shared.util.MapUtils;
+import shared.util.MapHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,9 +123,10 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         WorldPos worldPos = player.getWorldPos();
         WorldPos oldPos = new WorldPos(worldPos);
         WorldPos nextPos = worldUtils.getNextPos(worldPos, request.movement);
-        Map map = getServer().getMapManager().get(nextPos.map);
-        boolean blocked = MapUtils.isBlocked(map, nextPos);
-        boolean occupied = MapUtils.hasEntity(getMapManager().getNearEntities(playerId), nextPos);
+        MapManager mapManager = getServer().getMapManager();
+        Map map = mapManager.get(nextPos.map);
+        boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
+        boolean occupied = mapManager.getHelper().hasEntity(getMapManager().getNearEntities(playerId), nextPos);
         if (!(player.hasImmobile() || blocked || occupied)) {
             player.worldPosMap(nextPos.map);
             player.worldPosX(nextPos.x);
