@@ -42,3 +42,46 @@ All stuff shared between client and server, like network requests and responses,
 
 ## Images 
 ![alt text](https://github.com/guidotamb/ao-java/blob/master/src/main/resources/readme-example.png)
+
+### Key Config to play
+## Default
+
+# Combat
+ATTACK_1 = Input.Keys.CONTROL_LEFT;
+ATTACK_2 = Input.Keys.CONTROL_RIGHT;
+MEDITATE = Input.Keys.M;
+USE = Input.Keys.U;
+HIDE = Input.Keys.O;
+INVENTORY = Input.Keys.I;
+SPELLS = Input.Keys.K;
+TALK = Input.Keys.ENTER;
+DROP = Input.Keys.T;
+TAKE = Input.Keys.A;
+EQUIP = Input.Keys.E;
+
+# Move
+MOVE_LEFT = Input.Keys.LEFT;
+MOVE_RIGHT = Input.Keys.RIGHT;
+MOVE_UP = Input.Keys.UP;
+MOVE_DOWN = Input.Keys.DOWN;
+
+## Alternative wasd
+# Combat
+ATTACK_1 = Input.Keys.SPACE;
+ATTACK_2 = Input.Keys.SHIFT_RIGHT;
+MEDITATE = Input.Keys.M;
+USE = Input.Keys.SHIFT_LEFT;
+HIDE = Input.Keys.O;
+INVENTORY = Input.Keys.I;
+SPELLS = Input.Keys.K;
+TALK = Input.Keys.ENTER;
+DROP = Input.Keys.T;
+TAKE = Input.Keys.L;
+EQUIP = Input.Keys.E;
+# MOVE
+MOVE_LEFT = Input.Keys.A;
+MOVE_RIGHT = Input.Keys.D;
+MOVE_UP = Input.Keys.W;
+MOVE_DOWN = Input.Keys.S;
+
+
