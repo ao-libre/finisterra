@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Timer;
+import com.esotericsoftware.minlog.Log;
 import game.utils.Resources;
 
 import javax.sound.midi.InvalidMidiDataException;
@@ -27,10 +28,17 @@ public class MusicHandler {
     private static String midiPath = Resources.GAME_MIDI_PATH;
 
     public static void load(){
-        FileHandle file = Gdx.app.getFiles().internal(musicPath);
+        FileHandle file = Gdx.files.internal(musicPath);
 
-        if (!file.isDirectory())
+        if (!file.exists()) {
+            Log.info( "File not found " + file);
             return;
+        }
+
+        if (!file.isDirectory()) {
+            Log.info( "File is not directory " + file);
+            return;
+        }
 
         for (FileHandle tmp : file.list()) {
             if (tmp.extension().equals(Resources.GAME_MUSIC_EXTENSION)){
@@ -42,7 +50,7 @@ public class MusicHandler {
             }
         }
 
-        file = Gdx.app.getFiles().internal(midiPath);
+        file = Gdx.files.internal(midiPath);
 
         if (!file.isDirectory())
             return;
@@ -138,6 +146,10 @@ public class MusicHandler {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
+                if (!musicMap.containsKey(musicID)) {
+                    Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not playing or loaded.");
+                    return;
+                }
                 Music music = musicMap.get(musicID);
 
                 if (music.getVolume() < 1)
@@ -154,6 +166,10 @@ public class MusicHandler {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
+                if (!musicMap.containsKey(musicID)) {
+                    Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not playing or loaded.");
+                    return;
+                }
                 Music music = musicMap.get(musicID);
 
                 if (music.getVolume() >= MUSIC_FADE_STEP)

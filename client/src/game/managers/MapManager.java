@@ -95,7 +95,7 @@ public class MapManager {
             final float mapPosX = (x * Tile.TILE_PIXEL_WIDTH);
             final float mapPosY = (y * Tile.TILE_PIXEL_HEIGHT);
             final float tileOffsetX = mapPosX + (Tile.TILE_PIXEL_WIDTH - tileRegion.getRegionWidth()) / 2;
-            final float tileOffsetY = mapPosY - tileRegion.getRegionHeight();
+            final float tileOffsetY = mapPosY - tileRegion.getRegionHeight() + Tile.TILE_PIXEL_HEIGHT;
             batch.draw(tileRegion, tileOffsetX, tileOffsetY);
         }
     }

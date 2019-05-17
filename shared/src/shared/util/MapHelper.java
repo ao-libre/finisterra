@@ -26,7 +26,6 @@ public class MapHelper {
     }
 
     public boolean isBlocked(Map map, WorldPos pos) {
-        Log.info(format("[%d:%d-%d]", pos.map, pos.x, pos.y) + "is blocked?");
         Tile tile = map.getTile(pos.x, pos.y);
         return tile.isBlocked();
     }

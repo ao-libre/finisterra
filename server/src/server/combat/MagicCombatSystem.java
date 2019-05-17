@@ -3,6 +3,7 @@ package server.combat;
 import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.E;
+import com.esotericsoftware.minlog.Log;
 import entity.character.states.Immobile;
 import entity.character.status.Health;
 import entity.character.status.Mana;
@@ -51,35 +52,21 @@ public class MagicCombatSystem extends BaseSystem {
         final long timestamp = spellCastRequest.getTimestamp();
         Optional<Integer> target = getTarget(userId, targetPos, timestamp);
         if (target.isPresent()) {
-            AttackAnimation attackAnimation = new AttackAnimation();
             getServer().getWorldManager()
-                    .notifyUpdate(userId, new EntityUpdate(userId, new Component[]{attackAnimation}, new Class[0]));
+                    .notifyUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(new AttackAnimation()).build());
             castSpell(userId, target.get(), spell);
-        } else {
-            // TODO
-            //            List<WorldPos> area = getArea(worldPos, 3);
-            //            int fxGrh = spell.getFxGrh();
-            //            if (fxGrh > 0) {
-            //                area.forEach(pos -> {
-            //                    World world = getServer().getWorld();
-            //                    int entity = world.create();
-            //                    // TODO notify all near users instead of playerid
-            //                    getServer().getWorldManager().notifyUpdate(userId, new EntityUpdate(entity, new Component[]{pos, new Ground()}, new Class[0]));
-            //                    getServer().getWorldManager().notifyUpdate(userId, new FXNotification(entity, fxGrh - 1));
-            //                    world.delete(entity);
-            //                });
-            //            }
         }
     }
 
     private Optional<Integer> getTarget(int userId, WorldPos worldPos, long timestamp) {
         Set<Integer> entities = new HashSet<>(getServer().getMapManager().getNearEntities(userId));
         entities.add(userId);
+        // TODO check timestamp?
         return entities
                 .stream()
-                .map(entity -> E(entity))
+                .map(E::E)
                 .filter(Objects::nonNull)
-                .filter(entity -> entity.hasWorldPos())
+                .filter(E::hasWorldPos)
                 .filter(entity -> entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos))
                 .map(E::id)
                 .findFirst();
@@ -158,11 +145,13 @@ public class MagicCombatSystem extends BaseSystem {
             }
 
             updateMana(playerId, requiredMana, mana);
+            Dialog magicWords = new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS);
 
+            Log.info("Magic attack " + spell.getMagicWords());
             getWorldManager().sendEntityUpdate(target, victimUpdateBuilder.build());
             getWorldManager().notifyUpdate(target, victimUpdateToAllBuilder.build());
             getWorldManager().notifyUpdate(playerId, playerUpdateBuilder
-                    .withComponents(new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS)).build());
+                    .withComponents(magicWords).build());
         } else {
             notifyInfo(playerId, NOT_ENOUGHT_MANA);
         }

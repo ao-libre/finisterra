@@ -16,7 +16,7 @@ public class SoundsHandler {
     private static String soundsPath = Resources.GAME_SOUNDS_PATH;
 
     public static void load(){
-        FileHandle file = Gdx.app.getFiles().internal(soundsPath);
+        FileHandle file = Gdx.files.internal(soundsPath);
 
         if (!file.isDirectory())
             return;

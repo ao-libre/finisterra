@@ -35,7 +35,7 @@ fluid {
     // preferences.swallowGettersWithParameters = false // global setting. overridden by @Fluid annotation.
 }
 
-compileJava.dependsOn fluid
+//compileJava.dependsOn fluid
 
 // Help intellIJ pick up the generated classes.
 idea {

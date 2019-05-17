@@ -6,7 +6,7 @@ import com.artemis.annotations.DelayedComponentRemoval;
 @DelayedComponentRemoval
 public class Dialog extends Component {
 
-    public static float DEFAULT_TIME = 20;
+    public static float DEFAULT_TIME = 30;
     private static float DEFAULT_ALPHA = 1;
 
     public Kind kind = Kind.MESSAGE;
