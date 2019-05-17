@@ -42,7 +42,7 @@ public class FXsRenderingSystem extends RenderingSystem {
         srcFunc = getBatch().getBlendSrcFunc();
         dstFunc = getBatch().getBlendDstFunc();
         getBatch().enableBlending();
-//        getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
+        getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
     }
 
     @Override
