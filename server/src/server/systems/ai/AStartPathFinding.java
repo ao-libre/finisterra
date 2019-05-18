@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.minlog.Log;
+import position.WorldPos;
 
 public class AStartPathFinding {
 	 public final AStarMap map;
@@ -29,7 +30,7 @@ public class AStartPathFinding {
         };
     }
 
-    public Node findNextNode(Vector2 source, Vector2 target) {
+    public Node findNextNode(WorldPos source, WorldPos target) {
         int sourceX = MathUtils.floor(source.x);
         int sourceY = MathUtils.floor(source.y);
         int targetX = MathUtils.floor(target.x);
@@ -67,7 +68,7 @@ public class AStartPathFinding {
                 Node node = map.getNodeAt(x, y);
                 if (node.isWall) {
                     continue;
-                } 
+                }
                 // Add a connection for each valid neighbor
                 for (int offset = 0; offset < NEIGHBORHOOD.length; offset++) {
                     int neighborX = node.x + NEIGHBORHOOD[offset][0];

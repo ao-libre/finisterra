@@ -4,7 +4,6 @@ import com.artemis.Aspect;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.EBag;
-import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.minlog.Log;
 import entity.character.Character;
 import entity.world.Footprint;
@@ -16,10 +15,12 @@ import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
 import server.utils.WorldUtils;
 import shared.model.map.Map;
+import shared.model.map.Tile;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
 import shared.util.MapHelper;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -29,35 +30,51 @@ import static server.utils.WorldUtils.WorldUtils;
 
 public class PathFindingSystem extends IntervalFluidIteratingSystem {
 
-    public static final int MATRIX_SIZE = 15;
+    private HashMap<Integer, AStarMap> maps = new HashMap<>();
 
     public PathFindingSystem(float interval) {
         super(Aspect.all(WorldPos.class).exclude(Character.class, Footprint.class), interval);
     }
 
+    private MapManager getMapManager() {
+        return world.getSystem(MapManager.class);
+    }
+
+    private void updateMap(Integer map) {
+        if (getMapManager().getEntitiesInMap(map).size() == 0) {
+            return;
+        }
+        maps.put(map, createStarMap(map));
+    }
+
+    @Override
+    protected void begin() {
+        getMapManager().getMaps().forEach(map -> updateMap(map));
+    }
+
     @Override
     protected void process(E e) {
-        Log.info("Preprocess failing");
         WorldPos origin = e.getWorldPos();
-        findTarget(origin).ifPresent(target -> {
+        if (!maps.containsKey(origin.map)) {
+            return;
+        }
+        Optional<E> target1 = findTarget(origin);
+        Log.info("Path finding has target: " + target1.isPresent());
+        target1.ifPresent(target -> {
             WorldPos targetPos = target.getWorldPos();
-            AStarMap map = new AStarMap(MATRIX_SIZE, MATRIX_SIZE);
-            fillBlocks(e, map);
-            Log.info(map.toString());
             Log.info("Looking for target " + target.id() + (target.hasName() ? target.getName().text : ""));
-            int mid = (MATRIX_SIZE / 2) + 1;
-            int targetX = mid + targetPos.x - origin.x;
-            int targetY = mid + targetPos.y - origin.y;
-            Log.info("targetX: " + targetX + " - targetY: " + targetY);
             Log.info("Origin:" + origin);
             Log.info("Target:" + targetPos);
 
+            AStarMap map = maps.get(origin.map);
+            map.getNodeAt(origin.x, origin.y).isWall = false;
+            map.getNodeAt(targetPos.x, targetPos.y).isWall = false;
             AStartPathFinding aStartPathFinding = new AStartPathFinding(map);
-            Node from = aStartPathFinding.map.getNodeAt(mid, mid);
-            Node nextNode = aStartPathFinding
-                    .findNextNode(new Vector2(mid, mid), new Vector2(targetX, targetY));
+            Node from = aStartPathFinding.map.getNodeAt(origin.x, origin.y);
+            Node nextNode = aStartPathFinding.findNextNode(origin, targetPos);
             move(e, from, nextNode);
         });
+
 
     }
 
@@ -97,7 +114,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         WorldPos oldPos = new WorldPos(worldPos);
         WorldPos nextPos = worldUtils.getNextPos(worldPos, mov);
 
-        MapManager mapManager = world.getSystem(MapManager.class);
+        MapManager mapManager = getMapManager();
         Map map = mapManager.get(nextPos.map);
         boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
         boolean occupied = mapManager.getHelper().hasEntity(mapManager.getNearEntities(entityId), nextPos);
@@ -127,25 +144,28 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
                 .filter(E::hasWorldPos)
                 .filter(e -> {
                     int distance = WorldUtils(world).distance(e.getWorldPos(), worldPos);
-                    return distance < MATRIX_SIZE && distance > 0;
+                    return distance < 15 && distance > 0;
                 })
                 .findFirst();
     }
 
-    private void fillBlocks(E e, AStarMap map) {
-        WorldPos origin = e.getWorldPos();
-        MapManager mapManager = world.getSystem(MapManager.class);
-        int offset = MATRIX_SIZE / 2 + 1;
+    private AStarMap createStarMap(int map) {
+        MapManager mapManager = getMapManager();
+        Map realMap = mapManager.get(map);
+        int height = realMap.MAX_MAP_SIZE_HEIGHT;
+        int width = realMap.MAX_MAP_SIZE_WIDTH;
+
+        AStarMap aMap = new AStarMap(width, height);
         MapHelper helper = mapManager.getHelper();
-        Map realMap = helper.getMap(origin.map);
-        for (int x = 0; x < MATRIX_SIZE; x++) {
-            for (int y = 0; y < MATRIX_SIZE; y++) {
-                int mX = origin.x - offset + x;
-                int mY = y - offset + origin.y;
-                Node nodeAt = map.getNodeAt(x, y);
-                nodeAt.isWall = helper.isBlocked(realMap, mX, mY) || helper.hasEntity(mapManager.getNearEntities(e.id()), origin);
+        Set<Integer> entitiesInMap = mapManager.getEntitiesInMap(map);
+        for (int x = 1; x < width; x++) {
+            for (int y = 1; y < height; y++) {
+                Node nodeAt = aMap.getNodeAt(x, y);
+                Tile tile = realMap.getTile(x, y);
+                nodeAt.isWall = tile == null || helper.isBlocked(realMap, x, y) || helper.hasEntity(entitiesInMap, new WorldPos(x, y, map));
             }
         }
 
+        return aMap;
     }
 }

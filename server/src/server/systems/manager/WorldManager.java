@@ -49,13 +49,15 @@ public class WorldManager extends DefaultManager {
     }
 
     public void addNPC() {
-        NPC npc = getWorld().getSystem(NPCManager.class).getNpcs().get(78);
+        NPC npc = getWorld().getSystem(NPCManager.class).getNpcs().get(510);
         int npcId = world.create();
         E npcEntity = E(npcId);
         npcEntity
+                .aOPhysics()
                 .bodyIndex(npc.getBody())
                 .headingCurrent(npc.getHeading())
                 .nameText(npc.getName());
+        npcEntity.getAOPhysics().velocity = 70f;
         setEntityPosition(npcEntity);
         registerItem(npcId);
     }

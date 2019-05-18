@@ -3,42 +3,44 @@ package game.handlers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
+import com.esotericsoftware.minlog.Log;
 import game.utils.Resources;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 
 public class SoundsHandler {
 
     private static Map<Integer, Sound> soundsMap = new ConcurrentHashMap<>();
 
-    private static String soundsPath = Resources.GAME_SOUNDS_PATH;
+    public static void load() {
+        Reflections reflections = new Reflections("", new ResourcesScanner());
+        Set<String> fileNames = reflections.getResources(Pattern.compile(".*\\.wav"));
+        fileNames.forEach(file -> {
+            loadFile(file);
+        });
+    }
 
-    public static void load(){
-        FileHandle file = Gdx.files.internal(soundsPath);
-
-        if (!file.isDirectory())
-            return;
-
-        for (FileHandle tmp : file.list()) {
-            if (tmp.extension().equals(Resources.GAME_SOUNDS_EXTENSION)){
-                Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Cargando " + tmp.name());
-                loadSound(tmp);
-            }else {
-                String tmpExt = tmp.extension();
-                Gdx.app.debug(SoundsHandler.class.getSimpleName(), tmpExt);
-            }
+    private static void loadFile(String file) {
+        FileHandle musicFile = Gdx.files.internal(file);
+        if (musicFile.exists()) {
+            loadSound(musicFile);
+        } else {
+            Log.info("Sound file not found " + musicFile.name());
         }
-
     }
 
     public static void unload() {
-        soundsMap.forEach((k,v) -> v.dispose());
+        soundsMap.forEach((k, v) -> v.dispose());
         soundsMap.clear();
     }
 
-    private static void loadSound(FileHandle file){
+    private static void loadSound(FileHandle file) {
         Integer soundID;
 
         try {
@@ -50,9 +52,8 @@ public class SoundsHandler {
 
         Sound sound = Gdx.audio.newSound(file);
 
-        if (!soundsMap.containsKey(soundID))
-        {
-            soundsMap.put(soundID,sound);
+        if (!soundsMap.containsKey(soundID)) {
+            soundsMap.put(soundID, sound);
         }
     }
 
@@ -62,11 +63,9 @@ public class SoundsHandler {
             return -1;
         }
         //TODO: it should be played with a global configurable volume
-        if (loop == false){
+        if (loop == false) {
             return soundsMap.get(soundID).play();
-        }
-        else
-        {
+        } else {
             return soundsMap.get(soundID).loop();
         }
     }
@@ -75,11 +74,11 @@ public class SoundsHandler {
         playSound(soundID, false);
     }
 
-    public static void updateVolume(Integer soundId, long  soundIndex, float volume) {
+    public static void updateVolume(Integer soundId, long soundIndex, float volume) {
         soundsMap.get(soundId).setVolume(soundIndex, volume);
     }
 
-    public static void updatePan(Integer soundId, long  soundIndex, float pan, float volume) {
+    public static void updatePan(Integer soundId, long soundIndex, float pan, float volume) {
         soundsMap.get(soundId).setPan(soundIndex, pan, volume);
     }
 

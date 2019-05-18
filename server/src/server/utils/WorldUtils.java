@@ -31,7 +31,7 @@ public class WorldUtils {
         if (pos1.map != pos2.map) {
             return -1;
         }
-        return Math.abs((pos1.x - pos2.x) + (pos1.y - pos2.y));
+        return Math.abs(pos1.x - pos2.x) + Math.abs(pos1.y - pos2.y);
     }
 
     public WorldPos getNextPos(WorldPos pos, AOPhysics.Movement movement) {
