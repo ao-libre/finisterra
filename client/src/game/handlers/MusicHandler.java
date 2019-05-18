@@ -6,6 +6,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.minlog.Log;
 import game.utils.Resources;
+import org.reflections.Reflections;
+import org.reflections.scanners.ResourcesScanner;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
@@ -15,7 +17,9 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 public class MusicHandler {
 
@@ -28,43 +32,31 @@ public class MusicHandler {
     private static String midiPath = Resources.GAME_MIDI_PATH;
 
     public static void load(){
-        FileHandle file = Gdx.files.internal(musicPath);
+        Reflections reflections = new Reflections("", new ResourcesScanner());
+        Set<String> fileNames = reflections.getResources(Pattern.compile(".*\\.mp3"));
+        fileNames.addAll(reflections.getResources(Pattern.compile(".*\\.mid")));
+        fileNames.forEach(file -> {
+            loadFile(file);
+        });
+    }
 
-        if (!file.exists()) {
-            Log.info( "File not found " + file);
-            return;
-        }
-
-        if (!file.isDirectory()) {
-            Log.info( "File is not directory " + file);
-            return;
-        }
-
-        for (FileHandle tmp : file.list()) {
-            if (tmp.extension().equals(Resources.GAME_MUSIC_EXTENSION)){
-                Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Cargando " + tmp.name());
-                loadMusic(tmp);
-            }else {
-                String tmpExt = tmp.extension();
-                Gdx.app.debug(SoundsHandler.class.getSimpleName(), tmpExt);
+    private static void loadFile(String file) {
+        FileHandle musicFile = Gdx.files.internal(file);
+        if (musicFile.exists()) {
+            switch (musicFile.extension()) {
+                case Resources.GAME_MUSIC_EXTENSION:
+                    loadMusic(musicFile);
+                    break;
+                case Resources.GAME_MIDI_EXTENSION:
+                    loadMidi(musicFile);
+                    break;
+                default:
+                    Log.info("Music extension not supported " + musicFile.extension());
+                    break;
             }
+        } else {
+            Log.info("Trying to load music file but not found");
         }
-
-        file = Gdx.files.internal(midiPath);
-
-        if (!file.isDirectory())
-            return;
-
-        for (FileHandle tmp : file.list()) {
-            if (tmp.extension().equals(Resources.GAME_MIDI_EXTENSION)){
-                Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Cargando " + tmp.name());
-                loadMidi(tmp);
-            }else {
-                String tmpExt = tmp.extension();
-                Gdx.app.debug(SoundsHandler.class.getSimpleName(), tmpExt);
-            }
-        }
-
     }
 
     private static void loadMidi(FileHandle file) {

@@ -115,7 +115,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      */
     @Override
     public void processRequest(MovementRequest request, int connectionId) {
-        int playerId = getNetworkManager().getPlayerByConnection(connectionId);
+        NetworkManager networkManager = getWorld().getSystem(NetworkManager.class);
+        int playerId = networkManager.getPlayerByConnection(connectionId);
         E player = E(playerId);
         WorldUtils worldUtils = WorldUtils(getServer().getWorld());
         player.headingCurrent(worldUtils.getHeading(request.movement));
@@ -145,7 +146,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         }
 
         // notify user
-        getNetworkManager().sendTo(connectionId, new MovementResponse(request.requestNumber, nextPos));
+        networkManager.sendTo(connectionId, new MovementResponse(request.requestNumber, nextPos));
     }
 
     /**

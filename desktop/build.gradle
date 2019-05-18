@@ -2,9 +2,9 @@ apply plugin: 'application'
 
 sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = ["src/"]
+sourceSets.main.resources.srcDirs = ["assets/"]
 
 mainClassName = "launcher.DesktopLauncher"
-tasks.run.workingDir = new File("assets/")
 
 dependencies {
     compile project(":client")
@@ -17,7 +17,6 @@ task dist(type: Jar) {
     from files(sourceSets.main.output.classesDirs)
     from files(sourceSets.main.output.resourcesDir)
     from { configurations.compile.collect { zipTree(it) } }
-    from files(new File("assets/"))
 
     manifest {
         attributes 'Main-Class': project.mainClassName

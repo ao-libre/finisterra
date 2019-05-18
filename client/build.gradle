@@ -10,4 +10,5 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+    compile "org.reflections:reflections:0.9.11"
 }
