@@ -17,46 +17,46 @@ import java.util.function.BiConsumer;
 public class NPCLoader extends Loader<Map<Integer, NPC>> {
 
     private static final String NPC_STRING = "NPC";
-    public static final Set<NPCLoader.NPCSetter<?>> setters;
+    private final static Set<NPCLoader.NPCSetter<?>> setters = new HashSet<>();
 
     static {
-        setters = new HashSet<>();
-//        add("AfectaParalisis", ((npc, o) -> npc.setAffectParalysis(Boolean.parseBoolean(o))));
-//        add("Alineacion", ((npc, o) -> npc.setAlignment(Boolean.parseBoolean(o))));
-//        add("Attackable", ((npc, o) -> npc.setAttackable(Boolean.parseBoolean(o))));
-//        add("PoderAtaque", ((npc, o) -> npc.setAttackPower(Integer.parseInt(o))));
-//        add("BackUp", NPC::setBackup);
+
+        add("AfectaParalisis", ((npc, o) -> npc.setAffectParalysis(Boolean.parseBoolean(o))));
+        add("Alineacion", ((npc, o) -> npc.setAlignment(Boolean.parseBoolean(o))));
+        add("Attackable", ((npc, o) -> npc.setAttackable(Boolean.parseBoolean(o))));
+        add("PoderAtaque", ((npc, o) -> npc.setAttackPower(Integer.parseInt(o))));
+        add("BackUp", ((npc, o) -> npc.setBackup(Boolean.parseBoolean(o))));
         add("Body", ((npc, o) -> npc.setBody(Integer.parseInt(o))));
-//        add("Ciudad", NPC::setCity);
-//        add("Comercia", NPC::setCommerce);
-//        add("DEF", NPC::setDef);
-//        add("DEFm", NPC::setDefM);
-//        add("Desc", NPC::setDesc);
-//        add("AtacaDoble", NPC::setDobleAttack);
-//        add("Domable", NPC::setDomable);
-//        add("PoderEvasion", NPC::setEvasionPower);
-//        add("Faccion", NPC::setFaction);
-//        add("GiveEXP", NPC::setGiveEXP);
-//        add("GiveGLD", NPC::setGiveGLD);
-//        add("Head", NPC::setHead);
+        add("Ciudad", ((npc, o) -> npc.setCity(Integer.parseInt(o))));
+        add("Comercia", ((npc, o) -> npc.setCommerce(Boolean.parseBoolean(o))));
+        add("DEF", ((npc, o) -> npc.setDef(Integer.parseInt(o))));
+        add("DEFm", ((npc, o) -> npc.setDefM(Integer.parseInt(o))));
+        add("Desc", NPC::setDesc);
+        add("AtacaDoble", ((npc, o) -> npc.setDobleAttack(Boolean.parseBoolean(o))));
+        add("Domable", ((npc, o) -> npc.setDomable(Boolean.parseBoolean(o))));
+        add("PoderEvasion", ((npc, o) -> npc.setEvasionPower(Integer.parseInt(o))));
+        add("Faccion", ((npc, o) -> npc.setFaction(Boolean.parseBoolean(o))));
+        add("GiveEXP", ((npc, o) -> npc.setGiveEXP(Integer.parseInt(o))));
+        add("GiveGLD", ((npc, o) -> npc.setGiveGLD(Integer.parseInt(o))));
+        add("Head", ((npc, o) -> npc.setHead(Integer.parseInt(o))));
         add("Heading", ((npc, o) -> npc.setHeading(Integer.parseInt(o))));
-//        add("Hostile", NPC::setHostile);
-//        add("InvReSpawn", NPC::setInvReSpawn);
-//        add("TierraInValida", NPC::setInvalidEarth);
-//        add("TipoItems", NPC::setItemTypes);
-//        add("MaxHIT", NPC::setMaxHit);
-//        add("MinHIT", NPC::setMinHit);
-//        add("MaxHP", NPC::setMaxHP);
-//        add("MinHP", NPC::setMinHP);
-//        add("Movement", NPC::setMovement);
+        add("Hostile", ((npc, o) -> npc.setHostile(Boolean.parseBoolean(o))));
+        add("InvReSpawn", ((npc, o) -> npc.setInvReSpawn(Boolean.parseBoolean(o))));
+        add("TierraInValida", ((npc, o) -> npc.setInvalidEarth(Boolean.parseBoolean(o))));
+        add("TipoItems", ((npc, o) -> npc.setItemTypes(Integer.parseInt(o))));
+        add("MaxHIT", ((npc, o) -> npc.setMaxHit(Integer.parseInt(o))));
+        add("MinHIT", ((npc, o) -> npc.setMinHit(Integer.parseInt(o))));
+        add("MaxHP", ((npc, o) -> npc.setMaxHP(Integer.parseInt(o))));
+        add("MinHP", ((npc, o) -> npc.setMinHP(Integer.parseInt(o))));
+        add("Movement", ((npc, o) -> npc.setMovement(Boolean.parseBoolean(o))));
         add("Name", NPC::setName);
-//        add("NpcType", NPC::setNpcType);
-//        add("Veneno", NPC::setPoison);
-//        add("ReSpawn", NPC::setRespawn);
-//        add("AguaValida", NPC::setValidWater);
-//        add("Snd1", NPC::addSound);
-//        add("Snd2", NPC::addSound);
-//        add("Snd3", NPC::addSound);
+        add("NpcType", ((npc, o) -> npc.setNpcType(Integer.parseInt(o))));
+        add("Veneno", ((npc, o) -> npc.setPoison(Boolean.parseBoolean(o))));
+        add("ReSpawn", ((npc, o) -> npc.setRespawn(Boolean.parseBoolean(o))));
+        add("AguaValida", ((npc, o) -> npc.setValidWater(Boolean.parseBoolean(o))));
+        add("Snd1", ((npc, o) -> npc.addSound(Integer.parseInt(o))));
+        add("Snd2", ((npc, o) -> npc.addSound(Integer.parseInt(o))));
+        add("Snd3", ((npc, o) -> npc.addSound(Integer.parseInt(o))));
     }
 
     private static void add(String field, BiConsumer<NPC, String> setter) {

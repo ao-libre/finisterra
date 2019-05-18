@@ -14,7 +14,6 @@ import server.utils.WorldUtils;
 import shared.model.map.Map;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
-import shared.util.MapHelper;
 
 import java.util.*;
 

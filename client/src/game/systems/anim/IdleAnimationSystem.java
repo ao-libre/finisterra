@@ -9,7 +9,6 @@ import entity.character.equipment.Weapon;
 import entity.character.parts.Body;
 import entity.character.states.Heading;
 import entity.character.status.Health;
-import entity.character.status.Stamina;
 import game.handlers.AnimationHandler;
 import model.textures.BundledAnimation;
 import movement.Moving;

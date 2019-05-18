@@ -2,8 +2,10 @@ package game.systems.Sound;
 
 import Sound.AOSound;
 import com.artemis.Aspect;
-import com.artemis.E;
+
 import static com.artemis.E.E;
+
+import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
 import game.handlers.SoundsHandler;

@@ -13,6 +13,9 @@ import entity.character.parts.Body;
 import entity.character.parts.Head;
 import entity.character.states.*;
 import entity.character.status.*;
+import entity.combat.AttackPower;
+import entity.combat.EvasionPower;
+import entity.npc.NPC;
 import entity.world.*;
 import entity.world.Object;
 import graphics.FX;
@@ -219,6 +222,9 @@ public class NetworkDictionary extends MarshalDictionary {
                 WoodObj.class,
 
                 // Components
+                EvasionPower.class,
+                AttackPower.class,
+                NPC.class,
                 SpellBook.class,
                 Map.class,
                 Cave.class,

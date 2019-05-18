@@ -2,13 +2,10 @@ package game.systems.render.world;
 
 import com.artemis.Aspect;
 import com.artemis.E;
-import com.artemis.FluidIteratingSystem;
 import com.artemis.annotations.Wire;
-import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entity.world.Object;
 import game.handlers.ObjectHandler;
-import game.systems.camera.CameraSystem;
 import position.Pos2D;
 import position.WorldPos;
 import shared.objects.types.Obj;

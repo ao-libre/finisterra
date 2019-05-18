@@ -13,7 +13,6 @@ import entity.world.Dialog;
 import physics.AttackAnimation;
 import position.WorldPos;
 import server.core.Server;
-import server.systems.manager.IManager;
 import server.systems.manager.WorldManager;
 import shared.model.Spell;
 import shared.network.combat.SpellCastRequest;
@@ -203,11 +202,13 @@ public class MagicCombatSystem extends BaseSystem {
         int spellTarget = spell.getTarget();
         switch (spellTarget) {
             case 1:
-                return targetEntity.isCharacter();
-            //            case 2:
-            //                return targetEntity.isNPC();
+                return targetEntity.isCharacter() || targetEntity.isNPC();
+            case 2:
+                return targetEntity.isNPC();
             case 3:
-                return targetEntity.isCharacter();
+                return targetEntity.isCharacter() || targetEntity.isNPC();
+            case 4:
+                return targetEntity == null;
         }
 
         return false;
@@ -232,5 +233,6 @@ public class MagicCombatSystem extends BaseSystem {
     }
 
     @Override
-    protected void processSystem() {}
+    protected void processSystem() {
+    }
 }

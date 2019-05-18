@@ -4,7 +4,6 @@ import camera.Focused;
 import com.artemis.Component;
 import com.artemis.E;
 import com.esotericsoftware.minlog.Log;
-import entity.character.Character;
 import entity.character.states.CanWrite;
 import entity.character.states.Heading;
 import entity.character.status.Hit;
@@ -53,11 +52,15 @@ public class WorldManager extends DefaultManager {
         int npcId = world.create();
         E npcEntity = E(npcId);
         npcEntity
-                .aOPhysics()
+                .nPC()
+                .aOPhysics().aOPhysicsVelocity(100f)
+                .hit().hitMax(npc.getMaxHit()).hitMin(npc.getMinHit())
+                .evasionPowerValue(npc.getEvasionPower())
+                .attackPowerValue(npc.getAttackPower())
+                .health().healthMin(npc.getMinHP()).healthMax(npc.getMaxHP())
                 .bodyIndex(npc.getBody())
                 .headingCurrent(npc.getHeading())
                 .nameText(npc.getName());
-        npcEntity.getAOPhysics().velocity = 70f;
         setEntityPosition(npcEntity);
         registerItem(npcId);
     }
@@ -613,13 +616,16 @@ public class WorldManager extends DefaultManager {
         // RESET USER. TODO implement ghost
         final E e = E(entityId);
         setEntityPosition(e);
-
         // reset health
         e.getHealth().min = e.getHealth().max;
         // reset mana
-        e.getMana().min = e.getMana().max;
-
-        sendEntityUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(e.getHealth(), e.getMana()).build());
+        EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(entityId);
+        resetUpdate.withComponents(e.getHealth());
+        if (e.hasMana()) {
+            e.getMana().min = e.getMana().max;
+            resetUpdate.withComponents(e.getMana());
+        }
+        sendEntityUpdate(entityId, resetUpdate.build());
         notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(e.getWorldPos()).build());
     }
 

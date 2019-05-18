@@ -3,23 +3,14 @@ package game.systems.render.world;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import com.artemis.systems.IteratingSystem;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import entity.character.Character;
-import game.systems.camera.CameraSystem;
-import game.ui.GUI;
-import game.ui.Slot;
-import game.utils.Colors;
 import game.utils.Fonts;
-import game.utils.WorldUtils;
 import position.Pos2D;
 import position.WorldPos;
 import shared.model.map.Tile;
 import shared.util.Util;
-
-import java.util.Optional;
 
 import static com.artemis.E.E;
 

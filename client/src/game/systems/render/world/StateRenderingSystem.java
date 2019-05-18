@@ -2,20 +2,15 @@ package game.systems.render.world;
 
 import com.artemis.Aspect;
 import com.artemis.E;
-import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entity.character.states.Immobile;
 import game.screens.GameScreen;
-import game.systems.OrderedEntityProcessingSystem;
-import game.systems.camera.CameraSystem;
 import game.utils.Fonts;
 import position.Pos2D;
 import position.WorldPos;
 import shared.model.map.Tile;
 import shared.util.Util;
-
-import java.util.Comparator;
 
 import static com.artemis.E.E;
 

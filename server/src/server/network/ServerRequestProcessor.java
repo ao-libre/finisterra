@@ -33,7 +33,6 @@ import shared.network.movement.MovementResponse;
 import shared.network.notifications.EntityUpdate;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
-import shared.util.MapHelper;
 
 import java.util.ArrayList;
 import java.util.List;
