@@ -39,7 +39,7 @@ public class MapHelper {
             boolean isObject = E(entity).hasObject();
             boolean isFootPrint = E(entity).hasFootprint();
             boolean samePos = E(entity).hasWorldPos() && pos.equals(E(entity).getWorldPos());
-            boolean hasSameDestination = E(entity).hasMovement() && E(entity).getMovement().destinations.stream().anyMatch(destination -> destination.equals(pos));
+            boolean hasSameDestination = E(entity).hasMovement() && E(entity).getMovement().destinations.stream().anyMatch(destination -> destination.worldPos.equals(pos));
             return !isObject && !isFootPrint && (samePos || hasSameDestination);
         });
     }

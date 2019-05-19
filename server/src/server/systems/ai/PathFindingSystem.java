@@ -6,6 +6,7 @@ import com.artemis.E;
 import com.artemis.EBag;
 import com.esotericsoftware.minlog.Log;
 import entity.character.Character;
+import entity.character.states.Immobile;
 import entity.world.Footprint;
 import movement.Destination;
 import physics.AOPhysics;
@@ -33,7 +34,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
     private HashMap<Integer, AStarMap> maps = new HashMap<>();
 
     public PathFindingSystem(float interval) {
-        super(Aspect.all(WorldPos.class).exclude(Character.class, Footprint.class), interval);
+        super(Aspect.all(WorldPos.class).exclude(Character.class, Footprint.class, Immobile.class), interval);
     }
 
     private MapManager getMapManager() {
@@ -67,12 +68,16 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
             Log.info("Target:" + targetPos);
 
             AStarMap map = maps.get(origin.map);
+            boolean originWasWall = map.getNodeAt(origin.x, origin.y).isWall;
+            boolean targetWasWall = map.getNodeAt(targetPos.x, targetPos.y).isWall;
             map.getNodeAt(origin.x, origin.y).isWall = false;
             map.getNodeAt(targetPos.x, targetPos.y).isWall = false;
             AStartPathFinding aStartPathFinding = new AStartPathFinding(map);
             Node from = aStartPathFinding.map.getNodeAt(origin.x, origin.y);
             Node nextNode = aStartPathFinding.findNextNode(origin, targetPos);
             move(e, from, nextNode);
+            map.getNodeAt(origin.x, origin.y).isWall = originWasWall;
+            map.getNodeAt(targetPos.x, targetPos.y).isWall = targetWasWall;
         });
 
 

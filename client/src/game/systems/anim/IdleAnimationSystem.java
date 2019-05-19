@@ -23,7 +23,7 @@ import static com.artemis.E.E;
 public class IdleAnimationSystem extends IteratingSystem {
 
     public IdleAnimationSystem() {
-        super(Aspect.all(Character.class, Heading.class).exclude(Moving.class, AttackAnimation.class));
+        super(Aspect.all(Heading.class).exclude(Moving.class, AttackAnimation.class));
     }
 
     @Override

@@ -35,12 +35,13 @@ public class FXsRenderingSystem extends RenderingSystem {
     public FXsRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(FX.class, WorldPos.class).exclude(Ground.class), batch, CameraKind.WORLD);
     }
+
     @Override
     protected void doBegin() {
         srcFunc = getBatch().getBlendSrcFunc();
         dstFunc = getBatch().getBlendDstFunc();
         getBatch().enableBlending();
-        getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
+        getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
     }
 
     @Override
