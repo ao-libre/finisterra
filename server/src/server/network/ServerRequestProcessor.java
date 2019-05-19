@@ -240,7 +240,6 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
                         update.add(index, player.getInventory().items[index]);
                         getNetworkManager().sendTo(connectionId, update);
                         getWorldManager().unregisterEntity(objectEntityId);
-                        getMapManager().removeEntity(objectEntityId);
                     } else {
                         Log.info("Could not put item in inventory (FULL?)");
                     }

@@ -35,7 +35,6 @@ public class FXsRenderingSystem extends RenderingSystem {
     public FXsRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(FX.class, WorldPos.class).exclude(Ground.class), batch, CameraKind.WORLD);
     }
-
     @Override
     protected void doBegin() {
         srcFunc = getBatch().getBlendSrcFunc();

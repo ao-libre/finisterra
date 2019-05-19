@@ -584,8 +584,9 @@ public class WorldManager extends DefaultManager {
         getServer().getMapManager().updateEntity(id);
     }
 
-    public void unregisterEntity(int playerToDisconnect) {
-        getWorld().delete(playerToDisconnect);
+    public void unregisterEntity(int entityId) {
+        getServer().getMapManager().removeEntity(entityId);
+        getWorld().delete(entityId);
     }
 
     void sendEntityRemove(int user, int entity) {

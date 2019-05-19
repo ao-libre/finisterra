@@ -6,6 +6,7 @@ import com.esotericsoftware.minlog.Log;
 import entity.character.states.Heading;
 import entity.character.status.Health;
 import entity.world.CombatMessage;
+import graphics.Effect;
 import physics.AttackAnimation;
 import position.WorldPos;
 import server.core.Server;
@@ -17,6 +18,7 @@ import shared.interfaces.FXs;
 import shared.interfaces.Race;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
+import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.notifications.FXNotification;
 import shared.network.sound.SoundNotification;
 import shared.objects.types.*;
@@ -311,9 +313,13 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
      * @param victim entity id
      */
     private void update(int victim) {
-        EntityUpdate update = new EntityUpdate(victim, new Component[]{E(victim).getHealth()}, new Class[0]);
+        EntityUpdate update = EntityUpdateBuilder.of(victim).withComponents(E(victim).getHealth()).build();
         getServer().getWorldManager().sendEntityUpdate(victim, update);
-        getServer().getWorldManager().notifyUpdate(victim, new FXNotification(victim, FXs.FX_BLOOD));
+        int fxE = world.create();
+        Effect effect = new Effect.EffectBuilder().attachTo(victim).withFX(FXs.FX_BLOOD).build();
+        EntityUpdate fxUpdate = EntityUpdateBuilder.of(fxE).withComponents(effect).build();
+        getServer().getWorldManager().notifyUpdate(victim, fxUpdate);
+        world.delete(fxE);
     }
 
     private enum AttackKind {
