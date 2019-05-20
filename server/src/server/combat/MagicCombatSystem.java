@@ -89,17 +89,16 @@ public class MagicCombatSystem extends BaseSystem {
         EntityUpdateBuilder victimUpdateBuilder = EntityUpdateBuilder.of(target);
         EntityUpdateBuilder victimUpdateToAllBuilder = EntityUpdateBuilder.of(target);
 
-        if (stamina.min < requiredStamina) {
-            notifyInfo(playerId, NOT_ENOUGH_ENERGY);
-            return;
-        } else {
-            stamina.min -= requiredStamina;
-            playerUpdateBuilder.withComponents(stamina);
-        }
+
 
         if (mana.min > requiredMana) {
             if (!isValid(target, spell)) {
                 notifyInfo(playerId, INVALID_TARGET);
+                return;
+            }
+
+            if (stamina.min < requiredStamina) {
+                notifyInfo(playerId, NOT_ENOUGH_ENERGY);
                 return;
             }
 
@@ -158,6 +157,9 @@ public class MagicCombatSystem extends BaseSystem {
                 getWorldManager().unregisterEntity(fxE);
             }
 
+            stamina.min -= requiredStamina;
+            playerUpdateBuilder.withComponents(stamina);
+
             updateMana(playerId, requiredMana, mana);
             Dialog magicWords = new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS);
 
@@ -199,7 +201,8 @@ public class MagicCombatSystem extends BaseSystem {
     private void updateMana(int playerId, int requiredMana, Mana mana) {
         mana.min -= requiredMana;
         // update mana
-        getWorldManager().sendEntityUpdate(playerId, new EntityUpdate(playerId, new Component[]{mana}, new Class[0]));
+        EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(mana).build();
+        getWorldManager().sendEntityUpdate(playerId, update);
     }
 
     private boolean isValid(int target, Spell spell) {

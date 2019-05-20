@@ -10,6 +10,7 @@ import entity.character.status.Mana;
 import server.core.Server;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.notifications.EntityUpdate;
+import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.objects.types.Obj;
 import shared.objects.types.ObjWithClasses;
 import shared.objects.types.PotionObj;
@@ -88,7 +89,8 @@ public class ItemManager extends DefaultManager {
                         break;
                 }
                 // Notify update to user
-                getServer().getWorldManager().sendEntityUpdate(player, new EntityUpdate(player, components.toArray(new Component[0]), new Class[0]));
+                EntityUpdate update = EntityUpdateBuilder.of(player).withComponents(components.toArray(new Component[0])).build();
+                getServer().getWorldManager().sendEntityUpdate(player, update);
                 // TODO remove from inventory
             }
         });

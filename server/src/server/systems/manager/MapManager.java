@@ -8,6 +8,7 @@ import position.WorldPos;
 import server.core.Server;
 import server.map.CaveGenerator;
 import shared.network.notifications.EntityUpdate;
+import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.util.MapHelper;
 
 import java.util.*;
@@ -221,7 +222,7 @@ public class MapManager extends DefaultManager {
     private void linkEntities(int entity1, int entity2) {
         Set<Integer> near = nearEntities.computeIfAbsent(entity1, (i) -> new HashSet<>());
         if (near.add(entity2)) {
-            EntityUpdate update = new EntityUpdate(entity2, WorldUtils(getServer().getWorld()).getComponents(entity2), new Class[0]);
+            EntityUpdate update = EntityUpdateBuilder.of(entity2).withComponents(WorldUtils(getServer().getWorld()).getComponents(entity2)).build();
             getServer().getWorldManager().sendEntityUpdate(entity1, update);
         }
     }

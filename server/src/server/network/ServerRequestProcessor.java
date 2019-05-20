@@ -31,6 +31,7 @@ import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
 import shared.network.notifications.EntityUpdate;
+import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
 
@@ -142,7 +143,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         if (!nextPos.equals(oldPos)) {
             getWorldManager().notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement)));
         } else {
-            getWorldManager().notifyToNearEntities(playerId, new EntityUpdate(playerId, new Component[]{player.getHeading()}, new Class[0])); // is necessary?
+            getWorldManager().notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(player.getHeading()).build()); // is necessary?
         }
 
         // notify user
@@ -210,7 +211,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(TalkRequest talkRequest, int connectionId) {
         int playerId = getNetworkManager().getPlayerByConnection(connectionId);
-        getWorldManager().notifyUpdate(playerId, new EntityUpdate(playerId, new Component[]{new Dialog(talkRequest.getMessage())}, new Class[0]));
+        getWorldManager().notifyUpdate(playerId, EntityUpdateBuilder.of(playerId).withComponents(new Dialog(talkRequest.getMessage())).build());
     }
 
     /**

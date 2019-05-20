@@ -14,6 +14,7 @@ import server.utils.WorldUtils;
 import shared.model.map.Map;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
+import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 
 import java.util.*;
 
@@ -75,7 +76,8 @@ public class RandomMovementSystem extends IteratingSystem {
         getServer().getMapManager().movePlayer(entityId, Optional.of(oldPos));
 
         // notify near users
-        getServer().getWorldManager().notifyUpdate(entityId, new EntityUpdate(entityId, new Component[]{player.getHeading()}, new Class[0])); // is necessary?
+
+        getServer().getWorldManager().notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build()); // is necessary?
         if (nextPos != oldPos) {
             getServer().getWorldManager().notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov)));
         }

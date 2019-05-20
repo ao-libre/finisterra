@@ -54,7 +54,7 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
         if (mana.min >= mana.max) {
             e.removeFX();
             e.removeMeditating();
-            notify.remove(FX.class,Meditating.class);
+            notify.remove(FX.class, Meditating.class);
             ConsoleMessage consoleMessage = ConsoleMessage.info(MEDITATE_STOP);
             server.getWorldManager().sendEntityUpdate(e.id(), consoleMessage);
         }

@@ -197,8 +197,9 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         notifyCombat(userId, result.userMessage);
         notifyCombat(entityId, result.victimMessage);
 
+
         getWorldManager()
-                .notifyUpdate(userId, new EntityUpdate(userId, new Component[]{new AttackAnimation()}, new Class[0]));
+                .notifyUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(new AttackAnimation()).build());
         notify(entityId, userStab ? CombatMessage.stab("" + result.damage) : CombatMessage.physic("" + result.damage));
 
         final E target = E(entityId);
@@ -301,9 +302,8 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
      * @param combatMessage message
      */
     private void notify(int victim, CombatMessage combatMessage) {
-        EntityUpdate update = new EntityUpdate(victim, new Component[]{combatMessage}, new Class[0]);
-        getServer().getWorldManager().sendEntityUpdate(victim, update);
-        getServer().getWorldManager().notifyToNearEntities(victim, update);
+        getServer().getWorldManager()
+                .notifyUpdate(victim, EntityUpdateBuilder.of(victim).withComponents(combatMessage).build());
     }
 
     /**

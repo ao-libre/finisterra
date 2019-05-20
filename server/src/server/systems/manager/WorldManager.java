@@ -631,13 +631,12 @@ public class WorldManager extends DefaultManager {
     }
 
     public void login(int connectionId, Player player) {
-
         final int entity = createEntity(player.getPlayerName(), player.getHero(), player.getTeam());
         List<Component> components = WorldUtils(getWorld()).getComponents(getWorld().getEntity(entity));
         components.add(new Focused());
         components.add(new AOPhysics());
         components.add(new CanWrite());
-        getServer().getNetworkManager().sendTo(connectionId, new EntityUpdate(entity, components.toArray(new Component[0]), new Class[0]));
+        getServer().getNetworkManager().sendTo(connectionId, EntityUpdateBuilder.of(entity).withComponents(components.toArray(new Component[0])).build());
         registerEntity(connectionId, entity);
     }
 }

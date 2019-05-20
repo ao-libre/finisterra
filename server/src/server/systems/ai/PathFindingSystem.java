@@ -28,6 +28,7 @@ import java.util.Set;
 
 import static physics.AOPhysics.Movement.*;
 import static server.utils.WorldUtils.WorldUtils;
+import static shared.network.notifications.EntityUpdate.EntityUpdateBuilder.*;
 
 public class PathFindingSystem extends IntervalFluidIteratingSystem {
 
@@ -135,7 +136,8 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
 
         WorldManager worldManager = world.getSystem(WorldManager.class);
         // notify near users
-        worldManager.notifyUpdate(entityId, new EntityUpdate(entityId, new Component[]{player.getHeading()}, new Class[0])); // is necessary?
+        EntityUpdate update = of(entityId).withComponents(player.getHeading()).build();
+        worldManager.notifyUpdate(entityId, update); // is necessary?
         if (nextPos != oldPos) {
             worldManager.notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov)));
         }
