@@ -48,6 +48,10 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
     public boolean canAttack(int userId, Optional<Integer> targetId) {
         // estas muerto
         final E e = E(userId);
+        if (e != null && e.hasStamina() && e.getStamina().min < e.getStamina().max * STAMINA_REQUIRED_PERCENT / 100) {
+            notifyCombat(userId, NOT_ENOUGH_ENERGY);
+            return false;
+        }
         if (e != null && e.hasHealth() && e.getHealth().min == 0) {
             notifyCombat(userId, DEAD_CANT_ATTACK);
             return false;

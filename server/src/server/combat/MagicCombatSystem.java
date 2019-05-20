@@ -7,6 +7,7 @@ import com.esotericsoftware.minlog.Log;
 import entity.character.states.Immobile;
 import entity.character.status.Health;
 import entity.character.status.Mana;
+import entity.character.status.Stamina;
 import entity.world.CombatMessage;
 import entity.world.Dialog;
 import physics.AttackAnimation;
@@ -82,10 +83,19 @@ public class MagicCombatSystem extends BaseSystem {
         int requiredMana = spell.getRequiredMana();
         int requiredStamina = spell.getRequiredStamina(); // TODO check stamina
         Mana mana = E(playerId).getMana();
+        Stamina stamina = E(playerId).getStamina();
 
         EntityUpdateBuilder playerUpdateBuilder = EntityUpdateBuilder.of(playerId);
         EntityUpdateBuilder victimUpdateBuilder = EntityUpdateBuilder.of(target);
         EntityUpdateBuilder victimUpdateToAllBuilder = EntityUpdateBuilder.of(target);
+
+        if (stamina.min < requiredStamina) {
+            notifyInfo(playerId, NOT_ENOUGH_ENERGY);
+            return;
+        } else {
+            stamina.min -= requiredStamina;
+            playerUpdateBuilder.withComponents(stamina);
+        }
 
         if (mana.min > requiredMana) {
             if (!isValid(target, spell)) {

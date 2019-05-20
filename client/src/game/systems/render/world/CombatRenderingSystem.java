@@ -56,6 +56,9 @@ public class CombatRenderingSystem extends RenderingSystem {
                 case MAGIC:
                     font = combatMessage.text.startsWith("+") ? Fonts.GM_NAME_FONT : Fonts.MAGIC_COMBAT_FONT;
                     break;
+                case ENERGY:
+                    font = Fonts.ENERGY_FONT;
+                    break;
                 default:
                     font = Fonts.COMBAT_FONT;
             }
