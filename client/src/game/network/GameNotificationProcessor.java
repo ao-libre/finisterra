@@ -33,7 +33,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     @Override
     public void processNotification(EntityUpdate entityUpdate) {
         if (!WorldManager.entityExsists(entityUpdate.entityId)) {
-            Log.info("Network entity doesn't exists: " + entityUpdate.entityId + ". So we create it");
+            Log.info("Network entity doesn't exist: " + entityUpdate.entityId + ". So we create it");
             Entity newEntity = GameScreen.getWorld().createEntity();
             WorldManager.registerEntity(entityUpdate.entityId, newEntity.getId());
             addComponentsToEntity(newEntity, entityUpdate);

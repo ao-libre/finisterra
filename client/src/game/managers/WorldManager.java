@@ -3,10 +3,7 @@ package game.managers;
 import com.artemis.World;
 import game.screens.GameScreen;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.artemis.E.E;
 
@@ -43,5 +40,14 @@ public class WorldManager {
 
     public static World getWorld() {
         return GameScreen.getWorld();
+    }
+
+    public static Optional<Integer> getNetworkedId(int id) {
+        return networkedEntities
+                .entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() == id)
+                .map(Map.Entry::getKey)
+                .findFirst();
     }
 }

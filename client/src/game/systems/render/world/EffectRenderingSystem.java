@@ -151,7 +151,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                 if (fxs.containsKey(id)) {
                     BundledAnimation anim = fxs.get(id);
                     if (anim.isAnimationFinished()) {
-                        e.deleteFromWorld();
+                        WorldManager.getNetworkedId(id).ifPresent(WorldManager::unregisterEntity);
                     } else {
                         anim.setAnimationTime(anim.getAnimationTime() + getWorld().getDelta() * (anim.getFrames().size * 0.33f));
                     }
