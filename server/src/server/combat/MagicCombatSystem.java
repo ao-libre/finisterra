@@ -15,14 +15,12 @@ import graphics.Effect.EffectBuilder;
 import physics.AttackAnimation;
 import position.WorldPos;
 import server.core.Server;
-import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
 import shared.model.Spell;
 import shared.network.combat.SpellCastRequest;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
-import shared.network.notifications.FXNotification;
 import shared.objects.types.HelmetObj;
 import shared.objects.types.Obj;
 

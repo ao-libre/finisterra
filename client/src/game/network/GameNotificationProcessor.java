@@ -22,7 +22,6 @@ import shared.network.lobby.NewRoomNotification;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.FXNotification;
 import shared.network.notifications.RemoveEntity;
 import shared.network.sound.SoundNotification;
 
@@ -75,14 +74,6 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
             int playerId = WorldManager.getNetworkedEntity(movementNotification.getPlayerId());
             E(playerId).aOPhysics();
             E(playerId).movementAdd(movementNotification.getDestination());
-        }
-    }
-
-    @Override
-    public void processNotification(FXNotification fxNotification) {
-        if (WorldManager.hasNetworkedEntity(fxNotification.getTarget())) {
-            int target = WorldManager.getNetworkedEntity(fxNotification.getTarget());
-            E(target).fXAddFx(fxNotification.getFxGrh());
         }
     }
 

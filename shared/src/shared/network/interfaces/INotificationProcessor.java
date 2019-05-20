@@ -10,7 +10,6 @@ import shared.network.lobby.player.ReadyNotification;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.FXNotification;
 import shared.network.notifications.RemoveEntity;
 import shared.network.sound.SoundNotification;
 
@@ -27,8 +26,6 @@ public interface INotificationProcessor {
     void processNotification(DropItem dropItem);
 
     void processNotification(MovementNotification movementNotification);
-
-    void processNotification(FXNotification fxNotification);
 
     void processNotification(JoinRoomNotification joinRoomNotification);
 

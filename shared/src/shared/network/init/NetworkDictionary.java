@@ -73,7 +73,6 @@ import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.FXNotification;
 import shared.network.notifications.RemoveEntity;
 import shared.network.sound.SoundNotification;
 import shared.network.time.TimeSyncRequest;
@@ -117,7 +116,6 @@ public class NetworkDictionary extends MarshalDictionary {
                 INotificationProcessor.class,
                 DefaultNotificationProcessor.class,
                 DropItem.class,
-                FXNotification.class,
                 ConsoleMessage.class,
                 ConsoleMessage.Kind.class,
 

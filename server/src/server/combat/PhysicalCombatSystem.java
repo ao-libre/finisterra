@@ -19,7 +19,6 @@ import shared.interfaces.Race;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
-import shared.network.notifications.FXNotification;
 import shared.network.sound.SoundNotification;
 import shared.objects.types.*;
 
