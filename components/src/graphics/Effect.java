@@ -10,6 +10,7 @@ public class Effect extends Component implements Serializable {
 
     public int entityReference = NO_REF;
     public int effectId;
+    public int loops;
     public Type type;
 
     public Effect() {}
@@ -29,6 +30,11 @@ public class Effect extends Component implements Serializable {
         public EffectBuilder withFX(int fx) {
             effect.type = Type.FX;
             effect.effectId = fx;
+            return this;
+        }
+
+        public EffectBuilder withLoops(int loops) {
+            effect.loops = loops;
             return this;
         }
 

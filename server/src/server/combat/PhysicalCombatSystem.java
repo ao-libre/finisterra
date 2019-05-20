@@ -315,7 +315,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         EntityUpdate update = EntityUpdateBuilder.of(victim).withComponents(E(victim).getHealth()).build();
         getServer().getWorldManager().sendEntityUpdate(victim, update);
         int fxE = world.create();
-        Effect effect = new Effect.EffectBuilder().attachTo(victim).withFX(FXs.FX_BLOOD).build();
+        Effect effect = new Effect.EffectBuilder().attachTo(victim).withLoops(1).withFX(FXs.FX_BLOOD).build();
         EntityUpdate fxUpdate = EntityUpdateBuilder.of(fxE).withComponents(effect).build();
         getServer().getWorldManager().notifyUpdate(victim, fxUpdate);
         world.delete(fxE);

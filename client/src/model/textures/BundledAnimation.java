@@ -33,9 +33,10 @@ public class BundledAnimation {
     private float animationTime;
     private boolean animated = false;
     private int times;
+    private int loops;
 
-
-    public BundledAnimation(Graphic graphic, boolean pingpong) {
+    public BundledAnimation(Graphic graphic, boolean pingpong, int loops) {
+        this.loops = loops;
 
         int numFrames = graphic.getFrames().length;
         Array<TextureRegion> tmpRegions = new Array<>();
@@ -56,13 +57,20 @@ public class BundledAnimation {
                 index++;
             }
 
-//            Animation<TextureRegion> animation = new Animation<>(graphic.getSpeed() / (1000.0f * 3.334f), Array.with(textures), Animation.PlayMode.NORMAL);
             Animation<TextureRegion> animation = new Animation<>(graphic.getSpeed() / (1000.0f * 3.334f), Array.with(textures), pingpong ? Animation.PlayMode.LOOP_PINGPONG : Animation.PlayMode.NORMAL);
             this.setAnimation(animation);
             this.animated = true;
         } else {
             this.frames.add(new GameTexture(graphic));
         }
+    }
+
+    public BundledAnimation(Graphic graphic, boolean pingpong) {
+        this(graphic, pingpong, 1);
+    }
+
+    public BundledAnimation(Graphic graphic, int loops) {
+        this(graphic, false, loops);
     }
 
     /**
@@ -166,7 +174,7 @@ public class BundledAnimation {
     }
 
     public boolean isAnimationFinished() {
-        return times > 0;
+        return times >= loops;
     }
 
     public int getCurrentFrameIndex() {

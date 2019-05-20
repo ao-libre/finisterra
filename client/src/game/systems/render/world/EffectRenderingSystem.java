@@ -63,7 +63,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                     break;
                 case FX:
                     FXDescriptor fxDescriptor = DescriptorHandler.getFX(effectId);
-                    BundledAnimation bundledAnimation = new BundledAnimation(DescriptorHandler.getGraphic(fxDescriptor.getIndexs()[0]), false);
+                    BundledAnimation bundledAnimation = new BundledAnimation(DescriptorHandler.getGraphic(fxDescriptor.getIndexs()[0]), effect.loops);
                     fxs.put(entityId, bundledAnimation);
                     break;
             }

@@ -152,7 +152,7 @@ public class MagicCombatSystem extends BaseSystem {
 
             if (fxGrh > 0) {
                 int fxE = world.create();
-                Effect effect = new EffectBuilder().attachTo(target).withFX(fxGrh - 1).build();
+                Effect effect = new EffectBuilder().attachTo(target).withLoops(Math.max(1, spell.getLoops())).withFX(fxGrh - 1).build();
                 EntityUpdate fxUpdate = EntityUpdateBuilder.of(fxE).withComponents(effect).build();
                 getWorldManager().notifyUpdate(target, fxUpdate);
                 getWorldManager().unregisterEntity(fxE);
