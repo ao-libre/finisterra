@@ -9,11 +9,8 @@ import com.badlogic.gdx.math.MathUtils;
 import server.combat.CombatSystem;
 import server.combat.MagicCombatSystem;
 import server.combat.PhysicalCombatSystem;
+import server.systems.*;
 import server.systems.manager.*;
-import server.systems.FootprintSystem;
-import server.systems.MeditateSystem;
-import server.systems.RandomMovementSystem;
-import server.systems.ServerSystem;
 import shared.model.lobby.Player;
 
 import java.util.HashMap;
@@ -77,6 +74,7 @@ public class Server {
                 .with(new WorldManager(this))
                 .with(new PhysicalCombatSystem(this))
                 .with(new MagicCombatSystem(this))
+                .with(new EnergyRegenerationSystem(1f))
                 .with(new MeditateSystem(this, 0.4f))
                 .with(new FootprintSystem(this, 500))
                 .with(new RandomMovementSystem(this));

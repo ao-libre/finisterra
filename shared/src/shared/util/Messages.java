@@ -7,6 +7,7 @@ public class Messages {
     public final static String CANT_ATTACK_DEAD = "No puedes atacar a un muerto!";
 
     public final static String CANT_ATTACK_CITIZEN = "No puedes atacar a otro ciudadano, a menos que te quites el seguro";
+    public final static String NOT_ENOUGH_ENERGY = "No tienes suficiente energia";
 
     public final static String ATTACK_FAILED = "Has fallado!!";
     public final static String ATTACKED_AND_FAILED = "%s ha intentado atacarte pero fallo!!";

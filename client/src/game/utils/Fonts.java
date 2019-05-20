@@ -19,6 +19,7 @@ public class Fonts {
     public static final BitmapFont CRIMINAL_NAME_FONT;
     public static final BitmapFont DIALOG_FONT;
     public static final BitmapFont MAGIC_FONT;
+    public static final BitmapFont ENERGY_FONT;
     public static final BitmapFont WRITING_FONT;
     public static final BitmapFont STAB_FONT;
     public static final BitmapFont COMBAT_FONT;
@@ -41,6 +42,7 @@ public class Fonts {
         CLAN_FONT = generate(Colors.GREY, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
         DIALOG_FONT = generate(Color.WHITE, 10, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
         MAGIC_FONT = generate(Colors.MANA, 10, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
+        ENERGY_FONT = generate(Colors.YELLOW, 10, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
         WRITING_FONT = generate(Color.BLACK, 6, Color.WHITE, 1, 0, -2, COMMODORE_FONT);
         COMBAT_FONT = generate(Colors.COMBAT, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
         STAB_FONT = generate(Color.WHITE, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);

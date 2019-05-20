@@ -2,9 +2,13 @@ package server.combat;
 
 import com.artemis.BaseSystem;
 import com.artemis.E;
+import entity.character.status.Stamina;
 import server.core.Server;
 import server.database.model.modifiers.Modifiers;
+import server.systems.manager.WorldManager;
 import shared.interfaces.CharClass;
+import shared.network.notifications.EntityUpdate;
+import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 
 import java.util.Optional;
 
@@ -12,6 +16,7 @@ import static com.artemis.E.E;
 
 public abstract class AbstractCombatSystem extends BaseSystem implements CombatSystem {
 
+    public static final int STAMINA_REQUIRED_PERCENT = 15;
     private final Server server;
 
     public AbstractCombatSystem(Server server) {
@@ -60,6 +65,13 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
             hit(userId, realTargetId.get());
         } else {
             failed(userId, realTargetId);
+        }
+        E e = E(userId);
+        if (e.hasStamina()) {
+            Stamina stamina = e.getStamina();
+            stamina.min = Math.max(0, stamina.min - stamina.max * STAMINA_REQUIRED_PERCENT / 100);
+            EntityUpdate update = EntityUpdateBuilder.of(userId).withComponents(stamina).build();
+            getWorld().getSystem(WorldManager.class).sendEntityUpdate(userId, update);
         }
     }
 

@@ -38,9 +38,12 @@ public class CombatMessage extends Component implements Serializable {
         return new CombatMessage(text, Kind.PHYSICAL);
     }
 
+    public static CombatMessage energy(String text) { return new CombatMessage(text, Kind.ENERGY);}
+
     public enum Kind {
         MAGIC,
         PHYSICAL,
+        ENERGY,
         STAB
     }
 }
