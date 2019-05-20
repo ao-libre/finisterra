@@ -16,7 +16,6 @@ import position.WorldPos;
 import shared.model.map.Map;
 import shared.network.interaction.MeditateRequest;
 import shared.network.movement.MovementRequest;
-import shared.util.MapHelper;
 import shared.util.Util;
 
 import java.util.Optional;

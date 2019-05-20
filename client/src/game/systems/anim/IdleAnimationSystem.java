@@ -9,7 +9,6 @@ import entity.character.equipment.Weapon;
 import entity.character.parts.Body;
 import entity.character.states.Heading;
 import entity.character.status.Health;
-import entity.character.status.Stamina;
 import game.handlers.AnimationHandler;
 import model.textures.BundledAnimation;
 import movement.Moving;
@@ -24,7 +23,7 @@ import static com.artemis.E.E;
 public class IdleAnimationSystem extends IteratingSystem {
 
     public IdleAnimationSystem() {
-        super(Aspect.all(Character.class, Heading.class).exclude(Moving.class, AttackAnimation.class));
+        super(Aspect.all(Heading.class).exclude(Moving.class, AttackAnimation.class));
     }
 
     @Override

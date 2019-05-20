@@ -2,7 +2,6 @@ package game.systems.render.world;
 
 import com.artemis.Aspect;
 import com.artemis.E;
-import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,15 +10,11 @@ import com.badlogic.gdx.utils.Align;
 import entity.character.parts.Body;
 import entity.world.Dialog;
 import game.handlers.DescriptorHandler;
-import game.systems.OrderedEntityProcessingSystem;
-import game.systems.camera.CameraSystem;
 import game.utils.Fonts;
 import position.Pos2D;
 import position.WorldPos;
 import shared.model.map.Tile;
 import shared.util.Util;
-
-import java.util.Comparator;
 
 @Wire(injectInherited=true)
 public class DialogRenderingSystem extends RenderingSystem {

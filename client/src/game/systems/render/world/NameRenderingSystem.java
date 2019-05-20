@@ -2,22 +2,17 @@ package game.systems.render.world;
 
 import com.artemis.Aspect;
 import com.artemis.E;
-import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entity.character.Character;
 import entity.character.info.Name;
-import game.systems.OrderedEntityProcessingSystem;
-import game.systems.camera.CameraSystem;
 import game.utils.Fonts;
 import position.Pos2D;
 import position.WorldPos;
 import shared.interfaces.Hero;
 import shared.model.map.Tile;
 import shared.util.Util;
-
-import java.util.Comparator;
 
 import static com.artemis.E.E;
 
@@ -50,9 +45,14 @@ public class NameRenderingSystem extends RenderingSystem {
     }
 
     private void drawClanName(E player, Pos2D screenPos, float nameY) {
-        String clanOrHero = Hero.values()[player.getCharHero().heroId].name();
+        String clanOrHero = null;
         if (player.hasClan() && !player.getClan().name.isEmpty()) {
             clanOrHero = player.getClan().name;
+        } else if (player.hasCharHero()){
+             clanOrHero = Hero.values()[player.getCharHero().heroId].name();
+        }
+        if (clanOrHero == null) {
+            return;
         }
         Fonts.layout.setText(Fonts.CLAN_FONT, "<" + clanOrHero + ">");
         final float fontX = screenPos.x + ((Tile.TILE_PIXEL_WIDTH - Fonts.layout.width) / 2);

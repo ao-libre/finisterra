@@ -146,7 +146,7 @@ public class BundledAnimation {
         } else if (animationTime == 0) {
             times = 0;
         }
-        this.animationTime = animationTime > animation.getAnimationDuration() ? 0 : animationTime;
+        this.animationTime = animationTime > animation.getAnimationDuration() ? animationTime - animation.getAnimationDuration() : animationTime;
     }
 
     public float getIdleTime() {

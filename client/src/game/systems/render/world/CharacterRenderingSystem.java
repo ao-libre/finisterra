@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
-import entity.character.Character;
 import entity.character.equipment.Helmet;
 import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
@@ -19,8 +18,6 @@ import entity.character.parts.Head;
 import entity.character.states.Heading;
 import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
-import game.systems.OrderedEntityProcessingSystem;
-import game.systems.camera.CameraSystem;
 import model.descriptors.BodyDescriptor;
 import model.textures.BundledAnimation;
 import position.Pos2D;
@@ -36,7 +33,7 @@ import static com.artemis.E.E;
 public class CharacterRenderingSystem extends RenderingSystem {
 
     public static final float SHADOW_ALPHA = 0.15f;
-    public static final Aspect.Builder CHAR_ASPECT = Aspect.all(Character.class, WorldPos.class, Body.class, Heading.class);
+    public static final Aspect.Builder CHAR_ASPECT = Aspect.all(WorldPos.class, Body.class, Heading.class);
     private static Texture shadow = new Texture(Gdx.files.local("data/ui/images/shadow22.png"));
 
     public CharacterRenderingSystem(SpriteBatch batch) {

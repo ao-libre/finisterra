@@ -18,6 +18,7 @@ import shared.interfaces.Race;
 import shared.model.Spell;
 import shared.model.lobby.Player;
 import shared.model.lobby.Team;
+import shared.model.npcs.NPC;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.notifications.RemoveEntity;
@@ -41,10 +42,34 @@ public class WorldManager extends DefaultManager {
         super(server);
     }
 
+    @Override
+    protected void initialize() {
+
+    }
+
+    public void addNPC() {
+        NPC npc = getWorld().getSystem(NPCManager.class).getNpcs().get(510);
+        int npcId = world.create();
+        E npcEntity = E(npcId);
+        npcEntity
+                .nPC()
+                .aOPhysics().aOPhysicsVelocity(100f)
+                .hit().hitMax(npc.getMaxHit()).hitMin(npc.getMinHit())
+                .evasionPowerValue(npc.getEvasionPower())
+                .attackPowerValue(npc.getAttackPower())
+                .health().healthMin(npc.getMinHP()).healthMax(npc.getMaxHP())
+                .bodyIndex(npc.getBody())
+                .headingCurrent(npc.getHeading())
+                .nameText(npc.getName());
+        setEntityPosition(npcEntity);
+        registerItem(npcId);
+    }
+
     public int createEntity(String name, Hero hero, Team team) {
         int player = getWorld().create();
 
         E entity = E(player);
+        entity.character();
         switch (team) {
             case NO_TEAM:
                 entity.gM();
@@ -591,17 +616,21 @@ public class WorldManager extends DefaultManager {
         // RESET USER. TODO implement ghost
         final E e = E(entityId);
         setEntityPosition(e);
-
         // reset health
         e.getHealth().min = e.getHealth().max;
         // reset mana
-        e.getMana().min = e.getMana().max;
-
-        sendEntityUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(e.getHealth(), e.getMana()).build());
+        EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(entityId);
+        resetUpdate.withComponents(e.getHealth());
+        if (e.hasMana()) {
+            e.getMana().min = e.getMana().max;
+            resetUpdate.withComponents(e.getMana());
+        }
+        sendEntityUpdate(entityId, resetUpdate.build());
         notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(e.getWorldPos()).build());
     }
 
     public void login(int connectionId, Player player) {
+
         final int entity = createEntity(player.getPlayerName(), player.getHero(), player.getTeam());
         List<Component> components = WorldUtils(getWorld()).getComponents(getWorld().getEntity(entity));
         components.add(new Focused());

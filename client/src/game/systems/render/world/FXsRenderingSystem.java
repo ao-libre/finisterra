@@ -3,14 +3,12 @@ package game.systems.render.world;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entity.character.parts.Body;
 import entity.world.Ground;
 import game.handlers.DescriptorHandler;
-import game.systems.camera.CameraSystem;
 import graphics.FX;
 import model.descriptors.BodyDescriptor;
 import model.descriptors.FXDescriptor;
@@ -37,12 +35,13 @@ public class FXsRenderingSystem extends RenderingSystem {
     public FXsRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(FX.class, WorldPos.class).exclude(Ground.class), batch, CameraKind.WORLD);
     }
+
     @Override
     protected void doBegin() {
         srcFunc = getBatch().getBlendSrcFunc();
         dstFunc = getBatch().getBlendDstFunc();
         getBatch().enableBlending();
-        getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
+        getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
     }
 
     @Override

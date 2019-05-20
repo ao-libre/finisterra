@@ -7,6 +7,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import server.systems.manager.LobbyNetworkManager;
+import server.systems.manager.NPCManager;
 import server.systems.manager.ObjectManager;
 import server.systems.manager.SpellManager;
 import server.systems.FinisterraSystem;
@@ -60,6 +61,8 @@ public class Finisterra implements ApplicationListener {
     private void init() {
         objectManager = new ObjectManager();
         spellManager = new SpellManager();
+        NPCManager npcManager = new NPCManager();
+        npcManager.init();
     }
 
     public void startGame(Room room) {

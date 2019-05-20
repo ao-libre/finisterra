@@ -22,7 +22,7 @@ import static server.utils.WorldUtils.WorldUtils;
 public class MapManager extends DefaultManager {
 
     public static final int MAX_DISTANCE = 15;
-    private static HashMap<Integer, shared.model.map.Map> maps = new HashMap<>();
+    private HashMap<Integer, shared.model.map.Map> maps = new HashMap<>();
     private final MapHelper helper;
     //    public int mapEntity;
     private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
@@ -32,6 +32,10 @@ public class MapManager extends DefaultManager {
     public MapManager(Server server) {
         super(server);
         helper = MapHelper.instance();
+    }
+
+    public Set<Integer> getMaps() {
+        return maps.keySet();
     }
 
     @Override
@@ -161,9 +165,7 @@ public class MapManager extends DefaultManager {
         entities.add(player);
         entities.stream()
                 .filter(entity -> entity != player)
-                .forEach(entity -> {
-                    addNearEntities(player, entity);
-                });
+                .forEach(entity -> addNearEntities(player, entity));
     }
 
 

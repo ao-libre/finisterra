@@ -4,16 +4,16 @@ package server.systems.manager;
 import server.core.KryonetServerMarshalStrategy;
 import server.core.Server;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Contains relation between connections and players. Communicate and send packets to users
  */
 public class NetworkManager extends DefaultManager {
 
-    private Map<Integer, Integer> playerByConnection = new HashMap<>();
-    private Map<Integer, Integer> connectionByPlayer = new HashMap<>();
+    private Map<Integer, Integer> playerByConnection = new ConcurrentHashMap<>();
+    private Map<Integer, Integer> connectionByPlayer = new ConcurrentHashMap<>();
 
     private KryonetServerMarshalStrategy strategy;
 

@@ -54,7 +54,8 @@ public class MovementSystem extends IteratingSystem {
 
     private boolean movePlayer(E player) {
         Destination destination = player.movementCurrent();
-        float delta = world.getDelta() * AOPhysics.WALKING_VELOCITY / Tile.TILE_PIXEL_HEIGHT;
+        float velocity = player.getAOPhysics().getVelocity();
+        float delta = world.getDelta() * velocity / Tile.TILE_PIXEL_HEIGHT;
         switch (destination.dir) {
             default:
             case DOWN:

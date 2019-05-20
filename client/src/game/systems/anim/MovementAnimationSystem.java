@@ -4,7 +4,6 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
-import entity.character.Character;
 import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
 import entity.character.parts.Body;
@@ -20,7 +19,7 @@ import static com.artemis.E.E;
 public class MovementAnimationSystem extends IteratingSystem {
 
     public MovementAnimationSystem() {
-        super(Aspect.all(Character.class, Heading.class).one(
+        super(Aspect.all(Heading.class).one(
                 Moving.class, AttackAnimation.class));
     }
 

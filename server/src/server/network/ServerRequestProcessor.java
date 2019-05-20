@@ -33,7 +33,6 @@ import shared.network.movement.MovementResponse;
 import shared.network.notifications.EntityUpdate;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
-import shared.util.MapHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +103,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     public void processRequest(PlayerLoginRequest playerLoginRequest, int connectionId) {
         Player player = playerLoginRequest.getPlayer();
         getServer().getWorldManager().login(connectionId, player);
+        getServer().getWorldManager().addNPC();
     }
 
     /**

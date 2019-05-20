@@ -26,16 +26,21 @@ public class MapHelper {
     }
 
     public boolean isBlocked(Map map, WorldPos pos) {
-        Tile tile = map.getTile(pos.x, pos.y);
+        return isBlocked(map, pos.x, pos.y);
+    }
+
+    public boolean isBlocked(Map map, int x, int y) {
+        Tile tile = map.getTile(x, y);
         return tile.isBlocked();
     }
 
     public boolean hasEntity(Set<Integer> entities, WorldPos pos) {
         return entities.stream().anyMatch(entity -> {
             boolean isObject = E(entity).hasObject();
+            boolean isFootPrint = E(entity).hasFootprint();
             boolean samePos = E(entity).hasWorldPos() && pos.equals(E(entity).getWorldPos());
-            boolean hasSameDestination = E(entity).hasMovement() && E(entity).getMovement().destinations.stream().anyMatch(destination -> destination.equals(pos));
-            return !isObject && (samePos || hasSameDestination);
+            boolean hasSameDestination = E(entity).hasMovement() && E(entity).getMovement().destinations.stream().anyMatch(destination -> destination.worldPos.equals(pos));
+            return !isObject && !isFootPrint && (samePos || hasSameDestination);
         });
     }
 
