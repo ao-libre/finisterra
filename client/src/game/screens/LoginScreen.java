@@ -80,7 +80,7 @@ public class LoginScreen extends AbstractScreen {
         getMainTable().row();
         getMainTable().add(heroSelect).width(200);
         getMainTable().row();
-        getMainTable().add(loginButton).padTop(20).expandX();
+        getMainTable().add(loginButton).padTop(20).expandX().row();
 
         connectionTable.add(ipLabel);
         connectionTable.add(ipText).width(500);
@@ -88,7 +88,7 @@ public class LoginScreen extends AbstractScreen {
         connectionTable.add(portText);
         connectionTable.setPosition(420, 30); //Hardcoded
 
-        getStage().addActor(connectionTable);
+        getMainTable().add(connectionTable);
         getStage().setKeyboardFocus(username);
     }
 

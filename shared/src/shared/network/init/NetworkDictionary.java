@@ -18,7 +18,9 @@ import entity.combat.EvasionPower;
 import entity.npc.NPC;
 import entity.world.*;
 import entity.world.Object;
+import graphics.Effect;
 import graphics.FX;
+import graphics.RenderBefore;
 import map.Cave;
 import map.Map;
 import movement.Destination;
@@ -222,6 +224,10 @@ public class NetworkDictionary extends MarshalDictionary {
                 WoodObj.class,
 
                 // Components
+                Effect.class,
+                Effect.EffectBuilder.class,
+                RenderBefore.class,
+                Effect.Type.class,
                 EvasionPower.class,
                 AttackPower.class,
                 NPC.class,

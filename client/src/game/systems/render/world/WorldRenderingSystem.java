@@ -1,5 +1,6 @@
 package game.systems.render.world;
 
+import com.artemis.Aspect;
 import com.artemis.BaseSystem;
 import com.artemis.E;
 import com.artemis.EBag;
@@ -10,14 +11,22 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import game.handlers.AnimationHandler;
 import game.handlers.MapHandler;
+import game.managers.WorldManager;
 import game.systems.camera.CameraSystem;
 import game.systems.map.TiledMapSystem;
+import graphics.Effect;
+import graphics.RenderBefore;
 import model.textures.BundledAnimation;
 import position.WorldPos;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static graphics.Effect.NO_REF;
 
 @Wire
 public class WorldRenderingSystem extends BaseSystem {
@@ -26,6 +35,7 @@ public class WorldRenderingSystem extends BaseSystem {
     private CameraSystem cameraSystem;
     private TiledMapSystem tiledMapSystem;
     private CharacterRenderingSystem characterRenderingSystem;
+    private EffectRenderingSystem effectRenderingSystem;
 
     public WorldRenderingSystem(SpriteBatch batch) {
         this.batch = batch;
@@ -58,13 +68,47 @@ public class WorldRenderingSystem extends BaseSystem {
             getRange().forEachTile((x, y) -> {
                 WorldPos pos = new WorldPos(x, y, mapNumber);
                 getMapElement(pos).ifPresent(element -> drawTile(batch, world.getDelta(), element, x, y));
-                getPlayer(pos).ifPresent(characterRenderingSystem::drawPlayer);
+                getBeforeEffect(pos).forEach(effectRenderingSystem::drawEffect);
+                getPlayer(pos).ifPresent(player -> characterRenderingSystem.drawPlayer(player));
+                getAfterEffect(pos).forEach(effectRenderingSystem::drawEffect);
             });
         }
     }
 
+    private Set<E> getBeforeEffect(WorldPos pos) {
+        EBag effects = E.withAspect(Aspect.all(Effect.class, RenderBefore.class));
+        return getEffect(effects, pos);
+    }
 
-    public UserRange getRange() {
+    private Set<E> getEffect(EBag effects, WorldPos pos) {
+        Set<E> result = new HashSet<>();
+        effects.forEach(result::add);
+        return result
+                .stream()
+                .filter(e -> {
+                    if (e.hasWorldPos()) {
+                        return e.getWorldPos().equals(pos);
+                    } else if (e.getEffect().entityReference != NO_REF) {
+                        int entityReference = e.getEffect().entityReference;
+                        if (WorldManager.hasNetworkedEntity(entityReference)) {
+                            int entityId = WorldManager.getNetworkedEntity(entityReference);
+                            E entity = E.E(entityId);
+                            if (entity != null && entity.hasWorldPos()) {
+                                return entity.getWorldPos().equals(pos);
+                            }
+                        }
+                    }
+                    return false;
+                })
+                .collect(Collectors.toSet());
+    }
+
+    private Set<E> getAfterEffect(WorldPos player) {
+        EBag effects = E.withAspect(Aspect.all(Effect.class).exclude(RenderBefore.class));
+        return getEffect(effects, player);
+    }
+
+    UserRange getRange() {
         UserRange range = new UserRange();
 
         // Calculate visible part of the map

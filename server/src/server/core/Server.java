@@ -10,11 +10,10 @@ import server.combat.CombatSystem;
 import server.combat.MagicCombatSystem;
 import server.combat.PhysicalCombatSystem;
 import server.systems.*;
+import server.systems.ai.PathFindingSystem;
 import server.systems.manager.*;
 import shared.model.lobby.Player;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 public class Server {

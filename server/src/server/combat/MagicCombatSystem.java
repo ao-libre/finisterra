@@ -10,9 +10,12 @@ import entity.character.status.Mana;
 import entity.character.status.Stamina;
 import entity.world.CombatMessage;
 import entity.world.Dialog;
+import graphics.Effect;
+import graphics.Effect.EffectBuilder;
 import physics.AttackAnimation;
 import position.WorldPos;
 import server.core.Server;
+import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
 import shared.model.Spell;
 import shared.network.combat.SpellCastRequest;
@@ -150,7 +153,11 @@ public class MagicCombatSystem extends BaseSystem {
             }
 
             if (fxGrh > 0) {
-                getWorldManager().notifyUpdate(target, new FXNotification(target, fxGrh - 1));
+                int fxE = world.create();
+                Effect effect = new EffectBuilder().attachTo(target).withFX(fxGrh - 1).build();
+                EntityUpdate fxUpdate = EntityUpdateBuilder.of(fxE).withComponents(effect).build();
+                getWorldManager().notifyUpdate(target, fxUpdate);
+                getWorldManager().unregisterEntity(fxE);
             }
 
             updateMana(playerId, requiredMana, mana);
@@ -229,7 +236,7 @@ public class MagicCombatSystem extends BaseSystem {
     }
 
     private WorldManager getWorldManager() {
-        return getServer().getWorldManager();
+        return world.getSystem(WorldManager.class);
     }
 
     @Override
