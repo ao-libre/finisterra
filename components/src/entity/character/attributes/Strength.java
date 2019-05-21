@@ -5,20 +5,22 @@ import com.artemis.Component;
 import java.io.Serializable;
 
 public class Strength extends Component implements Serializable {
-    private int value;
+    private int baseValue;
+    private int currentValue;
 
     public Strength() {
     }
 
     public Strength(int value) {
-        this.value = value;
+        this.baseValue = value;
+        this.currentValue = value;
     }
 
-    public int getValue() {
-        return value;
+    public int getBaseValue() {
+        return baseValue;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public void setBaseValue(int value) {
+        this.baseValue = value;
     }
 }
