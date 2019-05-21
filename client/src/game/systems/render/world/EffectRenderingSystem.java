@@ -126,6 +126,8 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                 break;
             case PARTICLE:
                 ParticleEffect particleEffect = particleEffects.get(entityId);
+                float x = particleEffect.getBoundingBox().getWidth();
+                particleEffect.setPosition(screenPos.x + Tile.TILE_PIXEL_WIDTH / 2, screenPos.y);
                 particleEffect.draw(getBatch(), world.getDelta());
                 break;
         }
