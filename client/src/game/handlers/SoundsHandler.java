@@ -75,11 +75,15 @@ public class SoundsHandler {
     }
 
     public static void updateVolume(Integer soundId, long soundIndex, float volume) {
-        soundsMap.get(soundId).setVolume(soundIndex, volume);
+        if (soundsMap.containsKey(soundId)) {
+            soundsMap.get(soundId).setVolume(soundIndex, volume);
+        }
     }
 
     public static void updatePan(Integer soundId, long soundIndex, float pan, float volume) {
-        soundsMap.get(soundId).setPan(soundIndex, pan, volume);
+        if (soundsMap.containsKey(soundId)) {
+            soundsMap.get(soundId).setPan(soundIndex, pan, volume);
+        }
     }
 
     public static void stopSound(Integer soundID) {
