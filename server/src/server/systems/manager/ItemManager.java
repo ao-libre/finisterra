@@ -3,6 +3,7 @@ package server.systems.manager;
 import com.artemis.Component;
 import com.artemis.E;
 import entity.character.attributes.Agility;
+import entity.character.attributes.Attribute;
 import entity.character.attributes.Strength;
 import entity.character.info.Inventory;
 import entity.character.status.Health;
@@ -81,18 +82,19 @@ public class ItemManager extends DefaultManager {
                         break;
                     case AGILITY:
                         Agility agility = E(player).getAgility();
-                        //TODO: set a max and min values
+                        //TODO: set max and min values
                         agility.setCurrentValue(agility.getBaseValue() + random);
-                        EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(agility).build();
-                        getServer().getWorldManager().sendEntityUpdate(player, updateAGI);
+                        E(player).buff().buffAttribute(agility).buffTime(potion.getEffecTime());
+                        SendAttributeUpdate(player, agility);
                         break;
                     case POISON:
                     case STRENGTH:
                         Strength strength = E(player).getStrength();
-                        //TODO: set a max and min values
+                        //TODO: set max and min values
                         strength.setCurrentValue(strength.getBaseValue() + random);
-                        EntityUpdate updateSTR = EntityUpdateBuilder.of(E(player).id()).withComponents(strength).build();
-                        getServer().getWorldManager().sendEntityUpdate(player, updateSTR);
+                        E(player).buff().buffAttribute(strength).buffTime(potion.getEffecTime());
+                        E(player).getBuff();
+                        SendAttributeUpdate(player, strength);
                         break;
                 }
                 // Notify update to user
@@ -101,6 +103,11 @@ public class ItemManager extends DefaultManager {
                 // TODO remove from inventory
             }
         });
+    }
+
+    protected void SendAttributeUpdate(int player, Attribute attribute) {
+        EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(attribute).build();
+        getServer().getWorldManager().sendEntityUpdate(player, updateAGI);
     }
 
     public void equip(int player, int index, Inventory.Item item) {

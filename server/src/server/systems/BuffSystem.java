@@ -24,8 +24,9 @@ public class BuffSystem extends FluidIteratingSystem {
 
         if (buff.getTime() <= 0)
         {
-           Attribute attribute = buff.getAttribute();
+            Attribute attribute = buff.getAttribute();
             attribute.setCurrentValue(attribute.getBaseValue());
+            e.removeBuff();
         }
     }
 }

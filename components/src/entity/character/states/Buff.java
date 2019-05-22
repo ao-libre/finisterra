@@ -10,6 +10,11 @@ public class Buff extends Component {
 
     public Buff() {}
 
+    public Buff(Attribute attrib, float timeDuration)
+    {
+        attribute = attrib;
+        time = timeDuration;
+    }
 
     public Attribute getAttribute() {
         return attribute;

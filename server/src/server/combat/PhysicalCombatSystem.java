@@ -149,7 +149,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
 
     private int getBaseDamage(E entity, Optional<WeaponObj> weapon) {
         CharClass clazz = CharClass.get(entity);
-        Race race = Race.of(entity);
+        Race race = Race.of(entity);//TODO: check if we need this
         AttackKind kind = AttackKind.getKind(entity);
         ThreadLocalRandom random = ThreadLocalRandom.current();
         float modifier = kind == AttackKind.PROJECTILE ?
