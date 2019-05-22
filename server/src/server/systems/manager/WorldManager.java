@@ -143,12 +143,12 @@ public class WorldManager extends DefaultManager {
     private void setAttributesAndStats(E entity, CharClass charClass, Race race) {
         // set attributes
         //        entity.agilityValue(ATTR_BASE_VALUE + Attributes.AGILITY.of(race));
-        entity.agilityValue(38);
-        entity.charismaValue(ATTR_BASE_VALUE + Attributes.CHARISMA.of(race));
-        entity.constitutionValue(ATTR_BASE_VALUE + Attributes.CONSTITUTION.of(race));
-        entity.intelligenceValue(ATTR_BASE_VALUE + Attributes.INTELLIGENCE.of(race));
+        entity.agilityBaseValue(38);
+        entity.charismaBaseValue(ATTR_BASE_VALUE + Attributes.CHARISMA.of(race));
+        entity.constitutionBaseValue(ATTR_BASE_VALUE + Attributes.CONSTITUTION.of(race));
+        entity.intelligenceBaseValue(ATTR_BASE_VALUE + Attributes.INTELLIGENCE.of(race));
         //        entity.strengthValue(ATTR_BASE_VALUE + Attributes.STRENGTH.of(race));
-        entity.strengthValue(38);
+        entity.strengthBaseValue(38);
 
         // set stats
         setLevel(entity);
@@ -278,7 +278,7 @@ public class WorldManager extends DefaultManager {
                 manaPerLvlFactor = 0;
                 break;
         }
-        float manaPerLvl = entity.intelligenceValue() * manaPerLvlFactor;
+        float manaPerLvl = entity.intelligenceBaseValue() * manaPerLvlFactor;
         int maxMana = (int) (manaPerLvl * (entity.levelLevel() - 1) + manaBase);
         maxMana = maxMana == manaBase ? 0 : maxMana;
         entity.manaMax(maxMana);

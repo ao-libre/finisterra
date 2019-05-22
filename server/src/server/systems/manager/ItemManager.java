@@ -81,11 +81,18 @@ public class ItemManager extends DefaultManager {
                         break;
                     case AGILITY:
                         Agility agility = E(player).getAgility();
-                        // TODO
+                        //TODO: set a max and min values
+                        agility.setCurrentValue(agility.getBaseValue() + random);
+                        EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(agility).build();
+                        getServer().getWorldManager().sendEntityUpdate(player, updateAGI);
+                        break;
                     case POISON:
                     case STRENGTH:
                         Strength strength = E(player).getStrength();
-                        // TODO
+                        //TODO: set a max and min values
+                        strength.setCurrentValue(strength.getBaseValue() + random);
+                        EntityUpdate updateSTR = EntityUpdateBuilder.of(E(player).id()).withComponents(strength).build();
+                        getServer().getWorldManager().sendEntityUpdate(player, updateSTR);
                         break;
                 }
                 // Notify update to user
