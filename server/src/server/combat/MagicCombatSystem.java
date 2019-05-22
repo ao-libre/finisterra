@@ -68,14 +68,16 @@ public class MagicCombatSystem extends BaseSystem {
                 .map(E::E)
                 .filter(Objects::nonNull)
                 .filter(E::hasWorldPos)
-                .filter(entity -> entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos))
+                .filter(entity -> entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos, timestamp))
                 .map(E::id)
                 .findFirst();
     }
 
-    private boolean footprintOf(Integer entity, WorldPos worldPos) {
+    private boolean footprintOf(Integer entity, WorldPos worldPos, long timestamp) {
         final Set<Integer> footprints = getServer().getMapManager().getEntitiesFootprints().get(entity);
-        return footprints != null && footprints.stream().anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()));
+        return footprints != null && footprints
+                .stream()
+                .anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()) && E(footprint).getFootprint().timestamp >= timestamp);
     }
 
     // TODO refactor what elements/components to send
@@ -88,8 +90,6 @@ public class MagicCombatSystem extends BaseSystem {
         EntityUpdateBuilder playerUpdateBuilder = EntityUpdateBuilder.of(playerId);
         EntityUpdateBuilder victimUpdateBuilder = EntityUpdateBuilder.of(target);
         EntityUpdateBuilder victimUpdateToAllBuilder = EntityUpdateBuilder.of(target);
-
-
 
         if (mana.min > requiredMana) {
             if (!isValid(target, spell)) {

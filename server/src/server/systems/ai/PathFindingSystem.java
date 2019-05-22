@@ -7,6 +7,7 @@ import com.artemis.EBag;
 import com.esotericsoftware.minlog.Log;
 import entity.character.Character;
 import entity.character.states.Immobile;
+import entity.npc.NPC;
 import entity.world.Footprint;
 import movement.Destination;
 import physics.AOPhysics;
@@ -35,7 +36,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
     private HashMap<Integer, AStarMap> maps = new HashMap<>();
 
     public PathFindingSystem(float interval) {
-        super(Aspect.all(WorldPos.class).exclude(Character.class, Footprint.class, Immobile.class), interval);
+        super(Aspect.all(NPC.class, WorldPos.class).exclude(Character.class, Footprint.class, Immobile.class), interval);
     }
 
     private MapManager getMapManager() {

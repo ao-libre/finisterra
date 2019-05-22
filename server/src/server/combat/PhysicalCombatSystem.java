@@ -292,7 +292,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
 
     @Override
     boolean isAttackable(int entityId) {
-        return E(entityId).hasWorldPos();
+        return E(entityId).hasWorldPos() && (E(entityId).isNPC() || E(entityId).isCharacter());
     }
 
     /**
