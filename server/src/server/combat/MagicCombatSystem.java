@@ -24,10 +24,7 @@ import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.objects.types.HelmetObj;
 import shared.objects.types.Obj;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
@@ -147,6 +144,19 @@ public class MagicCombatSystem extends BaseSystem {
                     notifyInfo(playerId, NOT_PARALYSIS);
                     return;
                 }
+            }
+            //TODO: we need to check if max strength/Agility is reached
+            //TODO: spell need a effect time duration
+            if (spell.isSumStrength()){
+                int random = new Random().nextInt(spell.getMaxStrength() - spell.getMinStrength() + 1) + spell.getMinStrength();
+                targetEntity.strengthCurrentValue(targetEntity.strengthCurrentValue() + random);
+                targetEntity.buff().buffAddAttribute(targetEntity.getStrength(),1000.f);
+            }
+
+            if (spell.isSumAgility()){
+                int random = new Random().nextInt(spell.getMaxAgility() - spell.getMinAgility() + 1) + spell.getMinAgility();
+                targetEntity.agilityCurrentValue(targetEntity.agilityCurrentValue() + random);
+                targetEntity.buff().buffAddAttribute(targetEntity.getAgility(),1000.f);
             }
 
             if (fxGrh > 0) {

@@ -17,6 +17,10 @@ public abstract class Attribute extends Component implements Serializable {
         this.currentValue = value;
     }
 
+    public void resetCurrentValue(){
+        currentValue = baseValue;
+    }
+
     public int getBaseValue() {
         return baseValue;
     }

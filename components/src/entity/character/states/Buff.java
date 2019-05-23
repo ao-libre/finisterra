@@ -3,32 +3,21 @@ package entity.character.states;
 import com.artemis.Component;
 import entity.character.attributes.Attribute;
 
-public class Buff extends Component {
-    private Attribute attribute;
+import java.util.HashMap;
+import java.util.Map;
 
-    private float time;
+public class Buff extends Component {
+    private Map<Attribute,Float> buffedAttributes = new HashMap<>();;
 
     public Buff() {}
 
-    public Buff(Attribute attrib, float timeDuration)
-    {
-        attribute = attrib;
-        time = timeDuration;
+    public void addAttribute(Attribute attribute, float duration) {
+
+        buffedAttributes.put(attribute, duration);
+
     }
 
-    public Attribute getAttribute() {
-        return attribute;
-    }
-
-    public void setAttribute(Attribute attribute) {
-        this.attribute = attribute;
-    }
-
-    public float getTime() {
-        return time;
-    }
-
-    public void setTime(float time) {
-        this.time = time;
+    public Map<Attribute,Float> getBuffedAtributes() {
+        return buffedAttributes;
     }
 }
