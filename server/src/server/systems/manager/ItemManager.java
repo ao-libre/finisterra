@@ -82,7 +82,6 @@ public class ItemManager extends DefaultManager {
                         break;
                     case AGILITY:
                         Agility agility = E(player).getAgility();
-                        //TODO: set max and min values
                         agility.setCurrentValue(agility.getBaseValue() + random);
                         E(player).buff().getBuff().addAttribute(agility, potion.getEffecTime());
                         SendAttributeUpdate(player, agility);
@@ -90,7 +89,6 @@ public class ItemManager extends DefaultManager {
                     case POISON:
                     case STRENGTH:
                         Strength strength = E(player).getStrength();
-                        //TODO: set max and min values
                         strength.setCurrentValue(strength.getBaseValue() + random);
                         E(player).buff().getBuff().addAttribute(strength, potion.getEffecTime());
                         E(player).getBuff();

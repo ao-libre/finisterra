@@ -4,6 +4,7 @@ import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.E;
 import com.esotericsoftware.minlog.Log;
+import entity.character.attributes.Attribute;
 import entity.character.states.Immobile;
 import entity.character.status.Health;
 import entity.character.status.Mana;
@@ -145,18 +146,20 @@ public class MagicCombatSystem extends BaseSystem {
                     return;
                 }
             }
-            //TODO: we need to check if max strength/Agility is reached
+
             //TODO: spell need a effect time duration
             if (spell.isSumStrength()){
                 int random = new Random().nextInt(spell.getMaxStrength() - spell.getMinStrength() + 1) + spell.getMinStrength();
                 targetEntity.strengthCurrentValue(targetEntity.strengthCurrentValue() + random);
                 targetEntity.buff().buffAddAttribute(targetEntity.getStrength(),1000.f);
+                SendAttributeUpdate(target,targetEntity.getStrength());
             }
 
             if (spell.isSumAgility()){
                 int random = new Random().nextInt(spell.getMaxAgility() - spell.getMinAgility() + 1) + spell.getMinAgility();
                 targetEntity.agilityCurrentValue(targetEntity.agilityCurrentValue() + random);
                 targetEntity.buff().buffAddAttribute(targetEntity.getAgility(),1000.f);
+                SendAttributeUpdate(target,targetEntity.getAgility());
             }
 
             if (fxGrh > 0) {
@@ -213,6 +216,11 @@ public class MagicCombatSystem extends BaseSystem {
         // update mana
         EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(mana).build();
         getWorldManager().sendEntityUpdate(playerId, update);
+    }
+
+    protected void SendAttributeUpdate(int player, Attribute attribute) {
+        EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(attribute).build();
+        getServer().getWorldManager().sendEntityUpdate(player, updateAGI);
     }
 
     private boolean isValid(int target, Spell spell) {
