@@ -6,6 +6,7 @@ import entity.character.attributes.Agility;
 import entity.character.attributes.Attribute;
 import entity.character.attributes.Strength;
 import entity.character.info.Inventory;
+import entity.character.states.Buff;
 import entity.character.status.Health;
 import entity.character.status.Mana;
 import server.core.Server;
@@ -84,15 +85,14 @@ public class ItemManager extends DefaultManager {
                         Agility agility = E(player).getAgility();
                         agility.setCurrentValue(agility.getBaseValue() + random);
                         E(player).buff().getBuff().addAttribute(agility, potion.getEffecTime());
-                        SendAttributeUpdate(player, agility);
+                        SendAttributeUpdate(player, agility, E(player).getBuff());
                         break;
                     case POISON:
                     case STRENGTH:
                         Strength strength = E(player).getStrength();
                         strength.setCurrentValue(strength.getBaseValue() + random);
                         E(player).buff().getBuff().addAttribute(strength, potion.getEffecTime());
-                        E(player).getBuff();
-                        SendAttributeUpdate(player, strength);
+                        SendAttributeUpdate(player, strength, E(player).getBuff());
                         break;
                 }
                 // Notify update to user
@@ -103,8 +103,8 @@ public class ItemManager extends DefaultManager {
         });
     }
 
-    protected void SendAttributeUpdate(int player, Attribute attribute) {
-        EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(attribute).build();
+    protected void SendAttributeUpdate(int player, Attribute attribute, Buff buff) {
+        EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(attribute, buff).build();
         getServer().getWorldManager().sendEntityUpdate(player, updateAGI);
     }
 
