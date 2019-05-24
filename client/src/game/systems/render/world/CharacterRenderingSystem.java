@@ -138,15 +138,19 @@ public class CharacterRenderingSystem extends RenderingSystem {
             final Body body = player.getBody();
             BodyDescriptor bodyDescriptor = DescriptorHandler.getBodies().get(body.index);
             bodyAnimation = AnimationHandler.getBodyAnimation(body, heading.current);
+
             headOffsetY = bodyDescriptor.getHeadOffsetY() - getMovementOffsetY();
+            headOffsetY *= SCALE;
+
             bodyRegion = player.isMoving() ? bodyAnimation.getGraphic() : bodyAnimation.getGraphic(0);
             idle = !player.isMoving() ? bodyAnimation.getIdleTime() : 0;
-            bodyPixelOffsetX = bodyPixelOffsetX + ((32.0f - bodyRegion.getRegionWidth()) / 2);
-            bodyPixelOffsetY = screenPos.y - (bodyRegion.getRegionHeight() - 32.0f) - 32.0f;
+            idle *= SCALE;
+            bodyPixelOffsetX = bodyPixelOffsetX + ((Tile.TILE_PIXEL_WIDTH - bodyRegion.getRegionWidth()) / 2);
+            bodyPixelOffsetY = screenPos.y - (bodyRegion.getRegionHeight() - Tile.TILE_PIXEL_HEIGHT) - Tile.TILE_PIXEL_HEIGHT;
         }
 
         void drawBody() {
-            float offsetY = -getMovementOffsetY();
+            float offsetY = -getMovementOffsetY() * SCALE;
             batch.draw(bodyRegion, bodyPixelOffsetX + idle / 4, (bodyPixelOffsetY + offsetY) + idle * 1.2f, bodyRegion.getRegionWidth() - idle / 2, bodyRegion.getRegionHeight() - idle * 1.2f);
         }
 
@@ -156,8 +160,8 @@ public class CharacterRenderingSystem extends RenderingSystem {
                 BundledAnimation animation = AnimationHandler.getHeadAnimation(head, heading.current);
                 if (animation != null) {
                     TextureRegion headRegion = animation.getGraphic();
-                    float offsetY = headOffsetY - 4;
-                    drawTexture(headRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, offsetY + (idle / 2));
+                    float offsetY = headOffsetY - 4 * SCALE;
+                    drawTexture(headRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f * SCALE, offsetY + (idle / 2));
                 }
             }
         }
@@ -173,8 +177,8 @@ public class CharacterRenderingSystem extends RenderingSystem {
                 BundledAnimation animation = AnimationHandler.getHelmetsAnimation(helmet, heading.current);
                 if (animation != null) {
                     TextureRegion helmetRegion = animation.getGraphic();
-                    float offsetY = headOffsetY - 4;
-                    drawTexture(helmetRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f, offsetY + (idle / 2));
+                    float offsetY = headOffsetY - 4 * SCALE;
+                    drawTexture(helmetRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f * SCALE, offsetY + (idle / 2));
                 }
             }
         }
@@ -214,5 +218,3 @@ public class CharacterRenderingSystem extends RenderingSystem {
     }
 
 }
-
-

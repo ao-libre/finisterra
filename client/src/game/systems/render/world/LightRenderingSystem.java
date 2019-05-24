@@ -84,11 +84,11 @@ public class LightRenderingSystem extends RenderingSystem {
         getBatch().setColor(0.8f, 0.8f, 0.8f, 1f);
         float tx = playerPosition.x;
         float ty = playerPosition.y;
-        int lightWidth = (int) (light.getWidth() * 2.5f);
-        int lightHeight = (int) (light.getHeight() * 1.5f);
+        int lightWidth = (int) Tile.TILE_PIXEL_WIDTH * 8;
+        int lightHeight = (int) Tile.TILE_PIXEL_HEIGHT * 7;
         getBatch().enableBlending();
         getBatch().setBlendFunction(GL20.GL_ZERO, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        getBatch().draw(light, tx - lightWidth / 2, ty - lightHeight / 2, lightWidth, lightHeight);
+        getBatch().draw(light, tx - (lightWidth >> 1), ty - (lightHeight >> 1), lightWidth, lightHeight);
         getBatch().end();
         lightBuffer.end();
 

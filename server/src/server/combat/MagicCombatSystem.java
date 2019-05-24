@@ -61,12 +61,12 @@ public class MagicCombatSystem extends BaseSystem {
     private Optional<Integer> getTarget(int userId, WorldPos worldPos, long timestamp) {
         Set<Integer> entities = new HashSet<>(getServer().getMapManager().getNearEntities(userId));
         entities.add(userId);
-        // TODO check timestamp?
         return entities
                 .stream()
                 .map(E::E)
                 .filter(Objects::nonNull)
                 .filter(E::hasWorldPos)
+                .filter(E::hasObject)
                 .filter(entity -> entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos, timestamp))
                 .map(E::id)
                 .findFirst();
@@ -208,7 +208,7 @@ public class MagicCombatSystem extends BaseSystem {
             // TODO anillos
             damage = -damage;
         }
-        return (int) (damage * 1.65f);
+        return (int) (damage * 1.65f); // TODO super custom
     }
 
     private void updateMana(int playerId, int requiredMana, Mana mana) {
