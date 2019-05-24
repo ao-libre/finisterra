@@ -5,6 +5,7 @@ import com.artemis.Component;
 import com.artemis.E;
 import com.esotericsoftware.minlog.Log;
 import entity.character.attributes.Attribute;
+import entity.character.states.Buff;
 import entity.character.states.Immobile;
 import entity.character.status.Health;
 import entity.character.status.Mana;
@@ -152,14 +153,14 @@ public class MagicCombatSystem extends BaseSystem {
                 int random = new Random().nextInt(spell.getMaxStrength() - spell.getMinStrength() + 1) + spell.getMinStrength();
                 targetEntity.strengthCurrentValue(targetEntity.strengthCurrentValue() + random);
                 targetEntity.buff().buffAddAttribute(targetEntity.getStrength(),1000.f);
-                SendAttributeUpdate(target,targetEntity.getStrength());
+                SendAttributeUpdate(target,targetEntity.getStrength(),targetEntity.getBuff());
             }
 
             if (spell.isSumAgility()){
                 int random = new Random().nextInt(spell.getMaxAgility() - spell.getMinAgility() + 1) + spell.getMinAgility();
                 targetEntity.agilityCurrentValue(targetEntity.agilityCurrentValue() + random);
                 targetEntity.buff().buffAddAttribute(targetEntity.getAgility(),1000.f);
-                SendAttributeUpdate(target,targetEntity.getAgility());
+                SendAttributeUpdate(target,targetEntity.getAgility(),targetEntity.getBuff());
             }
 
             if (fxGrh > 0) {
@@ -218,8 +219,8 @@ public class MagicCombatSystem extends BaseSystem {
         getWorldManager().sendEntityUpdate(playerId, update);
     }
 
-    protected void SendAttributeUpdate(int player, Attribute attribute) {
-        EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(attribute).build();
+    protected void SendAttributeUpdate(int player, Attribute attribute, Buff buff) {
+        EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(attribute, buff).build();
         getServer().getWorldManager().sendEntityUpdate(player, updateAGI);
     }
 
