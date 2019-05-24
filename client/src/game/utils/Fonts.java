@@ -34,8 +34,8 @@ public class Fonts {
     private static final String FIRA_FONT = "FuraMono-Bold Powerline.otf";
 
     static {
-        WHITE_FONT = gui(Color.WHITE, 10, Color.BLACK, 0, 0, 0, COMMODORE_FONT);
-        WHITE_FONT_WITH_BORDER = gui(Color.WHITE, 11, Color.BLACK, 0, 1, 0, COMMODORE_FONT);
+        WHITE_FONT = gui(Color.WHITE, 5, Color.BLACK, 0, 0, 0, COMMODORE_FONT);
+        WHITE_FONT_WITH_BORDER = gui(Color.WHITE, 6, Color.BLACK, 0, 1, 0, COMMODORE_FONT);
         CONSOLE_FONT = gui(Color.WHITE, 8, Color.BLACK, 0, 0, 0, COMMODORE_FONT);
         GM_NAME_FONT = generate(Colors.GM, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
         NEWBIE_NAME_FONT = generate(Colors.NEWBIE, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);

@@ -53,7 +53,7 @@ public class Slot extends Actor {
         if (item.isPresent()) {
             drawItem(batch);
             if (item.get().equipped) {
-                batch.draw(equip, getX(), getY());
+                batch.draw(equip, getX(), getY(), SIZE, SIZE);
             }
         }
         if (selected) {

@@ -81,7 +81,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
         srcFunc = getBatch().getBlendSrcFunc();
         dstFunc = getBatch().getBlendDstFunc();
         getBatch().enableBlending();
-        getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
     }
 
     private OrthographicCamera getCamera() {

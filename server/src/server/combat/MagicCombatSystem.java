@@ -66,7 +66,7 @@ public class MagicCombatSystem extends BaseSystem {
                 .map(E::E)
                 .filter(Objects::nonNull)
                 .filter(E::hasWorldPos)
-                .filter(E::hasObject)
+                .filter(e -> !e.hasObject())
                 .filter(entity -> entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos, timestamp))
                 .map(E::id)
                 .findFirst();
