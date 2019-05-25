@@ -78,7 +78,8 @@ public class Server {
                 .with(new EnergyRegenerationSystem(1f))
                 .with(new MeditateSystem(this, 0.4f))
                 .with(new FootprintSystem(this, 500))
-                .with(new RandomMovementSystem(this));
+                .with(new RandomMovementSystem(this))
+                .with(new BuffSystem());
         world = new World(builder.build());
         System.out.println("WORLD CREATED");
     }
