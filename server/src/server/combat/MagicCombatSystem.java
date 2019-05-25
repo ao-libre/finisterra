@@ -148,18 +148,17 @@ public class MagicCombatSystem extends BaseSystem {
                 }
             }
 
-            //TODO: spell need a effect time duration
             if (spell.isSumStrength()){
                 int random = new Random().nextInt(spell.getMaxStrength() - spell.getMinStrength() + 1) + spell.getMinStrength();
                 targetEntity.strengthCurrentValue(targetEntity.strengthCurrentValue() + random);
-                targetEntity.buff().buffAddAttribute(targetEntity.getStrength(),1000.f);
+                targetEntity.buff().buffAddAttribute(targetEntity.getStrength(),spell.getStrengthDuration());
                 SendAttributeUpdate(target,targetEntity.getStrength(),targetEntity.getBuff());
             }
 
             if (spell.isSumAgility()){
                 int random = new Random().nextInt(spell.getMaxAgility() - spell.getMinAgility() + 1) + spell.getMinAgility();
                 targetEntity.agilityCurrentValue(targetEntity.agilityCurrentValue() + random);
-                targetEntity.buff().buffAddAttribute(targetEntity.getAgility(),1000.f);
+                targetEntity.buff().buffAddAttribute(targetEntity.getAgility(),spell.getAgilityDuration());
                 SendAttributeUpdate(target,targetEntity.getAgility(),targetEntity.getBuff());
             }
 

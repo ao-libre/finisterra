@@ -20,7 +20,7 @@ public class BuffRenderingSystem extends RenderingSystem {
 
     @Override
     protected void process(E e) {
-        BitmapFont font = Fonts.DIALOG_FONT;
+        /*BitmapFont font = Fonts.DIALOG_FONT;
 
         TimeSync timeSyncSystem = GameScreen.getWorld().getSystem(TimeSync.class);
         long rtt = timeSyncSystem.getRtt();
@@ -39,7 +39,7 @@ public class BuffRenderingSystem extends RenderingSystem {
         else
         {
             e.removeBuff();
-        }
+        }*/
 
     }
 }
