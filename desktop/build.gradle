@@ -1,6 +1,6 @@
 apply plugin: 'application'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 12
 sourceSets.main.java.srcDirs = ["src/"]
 sourceSets.main.resources.srcDirs = ["assets/"]
 
