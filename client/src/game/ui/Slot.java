@@ -14,7 +14,7 @@ import static entity.character.info.Inventory.Item;
 
 public class Slot extends Actor {
 
-    static final int SIZE = 34;
+    static final int SIZE = 64;
 
     public static Texture selection = new Texture(Gdx.files.local("data/ui/images/slot-selection.png"));
     public static Texture background = new Texture(Gdx.files.local("data/ui/images/table-background.png"));
@@ -53,11 +53,11 @@ public class Slot extends Actor {
         if (item.isPresent()) {
             drawItem(batch);
             if (item.get().equipped) {
-                batch.draw(equip, getX(), getY());
+                batch.draw(equip, getX(), getY(), SIZE, SIZE);
             }
         }
         if (selected) {
-            batch.draw(selection, getX(), getY());
+            batch.draw(selection, getX(), getY(), SIZE, SIZE);
         }
     }
 

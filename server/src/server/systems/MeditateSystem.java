@@ -58,11 +58,10 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
         }
 
         if (mana.min >= mana.max) {
-            e.removeFX();
-            e.removeMeditating();
-            notify.remove(FX.class, Meditating.class);
+            notify.remove(Meditating.class);
             ConsoleMessage consoleMessage = ConsoleMessage.info(MEDITATE_STOP);
             server.getWorldManager().sendEntityUpdate(e.id(), consoleMessage);
+            stopMeditationEffect(e.id());
         }
 
         if (!update.isEmpty()) {
@@ -82,11 +81,7 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
         EntityUpdateBuilder update = EntityUpdateBuilder.of(userId);
 
         if (meditating) {
-            Integer e = userMeditations.get(userId);
-            server.getWorldManager().notifyUpdate(userId, new RemoveEntity(e));
-            userMeditations.remove(userId);
-            E(e).deleteFromWorld();
-            player.removeMeditating();
+            stopMeditationEffect(userId);
             consoleMessage = ConsoleMessage.info(MEDITATE_STOP);
             update.remove(Meditating.class);
         } else {
@@ -106,6 +101,14 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
         }
         server.getWorldManager().sendEntityUpdate(userId, consoleMessage);
         server.getWorldManager().notifyUpdate(userId, update.build());
+    }
+
+    private void stopMeditationEffect(int userId) {
+        Integer e = userMeditations.get(userId);
+        server.getWorldManager().notifyUpdate(userId, new RemoveEntity(e));
+        userMeditations.remove(userId);
+        E(e).deleteFromWorld();
+        E(userId).removeMeditating();
     }
 
 }

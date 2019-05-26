@@ -81,7 +81,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
         srcFunc = getBatch().getBlendSrcFunc();
         dstFunc = getBatch().getBlendDstFunc();
         getBatch().enableBlending();
-        getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
     }
 
     private OrthographicCamera getCamera() {
@@ -121,8 +121,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                 int effectId = effect.effectId;
                 FXDescriptor fxDescriptor = DescriptorHandler.getFX(effectId);
                 TextureRegion graphic = anim.getGraphic(false);
-                float bodyOffset = ref.map(this::getBodyOffset).orElse(0);
-                getBatch().draw(graphic, screenPos.x + (Tile.TILE_PIXEL_WIDTH - graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX(), screenPos.y - graphic.getRegionHeight() + fxDescriptor.getOffsetY() + bodyOffset);
+                getBatch().draw(graphic, screenPos.x + (Tile.TILE_PIXEL_WIDTH - graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX(), screenPos.y - graphic.getRegionHeight() + 20 + fxDescriptor.getOffsetY());
                 break;
             case PARTICLE:
                 ParticleEffect particleEffect = particleEffects.get(entityId);

@@ -22,10 +22,8 @@ import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
 import shared.util.MapHelper;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static physics.AOPhysics.Movement.*;
 import static server.utils.WorldUtils.WorldUtils;
@@ -137,10 +135,10 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
 
         WorldManager worldManager = world.getSystem(WorldManager.class);
         // notify near users
-        EntityUpdate update = of(entityId).withComponents(player.getHeading()).build();
-        worldManager.notifyUpdate(entityId, update); // is necessary?
         if (nextPos != oldPos) {
             worldManager.notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov)));
+        } else {
+            worldManager.notifyUpdate(entityId, EntityUpdate.EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build());
         }
     }
 
@@ -152,9 +150,9 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
                 .filter(E::hasWorldPos)
                 .filter(e -> {
                     int distance = WorldUtils(world).distance(e.getWorldPos(), worldPos);
-                    return distance < 15 && distance > 0;
+                    return distance < 15 && distance >= 0;
                 })
-                .findFirst();
+                .min(Comparator.comparingInt(e -> WorldUtils(world).distance(e.getWorldPos(), worldPos)));
     }
 
     private AStarMap createStarMap(int map) {

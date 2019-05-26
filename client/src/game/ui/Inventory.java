@@ -4,10 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import entity.character.info.Inventory.Item;
 import game.handlers.ObjectHandler;
 import game.screens.GameScreen;
@@ -159,7 +161,10 @@ public class Inventory extends Window {
             Optional<Obj> object = ObjectHandler.getObject(item.objId);
             object.ifPresent(obj -> {
                 TextureRegion graphic = ObjectHandler.getGraphic(obj);
-                batch.draw(graphic, Gdx.input.getX() - (graphic.getRegionWidth() / 2) - 4, Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2));
+                int x1 = Gdx.input.getX() - (graphic.getRegionWidth() / 2) - 4;
+                int y1 = Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2);
+                Vector2 tempPosition = stageToLocalCoordinates(new Vector2(x1, y1));
+                batch.draw(graphic, tempPosition.x, tempPosition.y);
             });
         }));
     }

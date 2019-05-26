@@ -2,6 +2,7 @@ package shared.model;
 
 import shared.model.map.Tile;
 
+// TODO move to client?
 public class Graphic {
 
     private int x;
@@ -29,7 +30,7 @@ public class Graphic {
     }
 
     public int getX() {
-        return x;
+        return x * 2;
     }
 
     public void setX(int x) {
@@ -37,7 +38,7 @@ public class Graphic {
     }
 
     public int getY() {
-        return y;
+        return y * 2;
     }
 
     public void setY(int y) {
@@ -53,7 +54,7 @@ public class Graphic {
     }
 
     public int getWidth() {
-        return width;
+        return width * 2;
     }
 
     public void setWidth(int width) {
@@ -61,7 +62,7 @@ public class Graphic {
     }
 
     public int getHeight() {
-        return height;
+        return height * 2;
     }
 
     public void setHeight(int height) {

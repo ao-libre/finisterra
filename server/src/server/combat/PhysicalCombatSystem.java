@@ -35,6 +35,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
     private static final String MISS = "MISS";
     private static final float ASSASIN_STAB_FACTOR = 1.5f;
     private static final float NORMAL_STAB_FACTOR = 1.4f;
+    public static final int TIME_TO_MOVE_1_TILE = 250;
 
     public PhysicalCombatSystem(Server server) {
         super(server);
@@ -105,7 +106,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
     @Override
     public int damageCalculation(int userId, int entityId) {
         E entity = E(userId);
-        final Optional<Obj> obj = getServer().getObjectManager().getObject(entity.getWeapon().index);
+        final Optional<Obj> obj = entity.hasWeapon() ? getServer().getObjectManager().getObject(entity.getWeapon().index) : Optional.empty();
         final Optional<WeaponObj> weapon =
                 obj.isPresent() && Type.WEAPON.equals(obj.get().getType()) ? Optional.of((WeaponObj) obj.get()) : Optional.empty();
 
@@ -179,8 +180,19 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
                 .getNearEntities(userId)
                 .stream()
                 .filter(
-                        targetId -> E(targetId).hasWorldPos() && E(targetId).getWorldPos().equals(targetPos) && isAttackable(targetId))
+                        targetId -> isEffectiveTarget(targetPos, targetId))
                 .findFirst();
+    }
+
+    private boolean isEffectiveTarget(WorldPos targetPos, Integer targetId) {
+        return E(targetId).hasWorldPos() && isAttackable(targetId) && (E(targetId).getWorldPos().equals(targetPos) || footprintOf(targetId, targetPos, System.currentTimeMillis()));
+    }
+
+    private boolean footprintOf(Integer entity, WorldPos worldPos, long timestamp) {
+        final Set<Integer> footprints = getServer().getMapManager().getEntitiesFootprints().get(entity);
+        return footprints != null && footprints
+                .stream()
+                .anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()) && timestamp - E(footprint).getFootprint().timestamp < TIME_TO_MOVE_1_TILE);
     }
 
     @Override
