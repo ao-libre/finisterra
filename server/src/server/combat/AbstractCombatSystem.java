@@ -37,21 +37,25 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
     @Override
     public int evasionPower(int userId) {
         E e = E(userId);
+        int power = 0;
         if (e.hasCharHero()) {
             float temp = 100 + 100 / 33 * e.getAgility().getBaseValue() * Modifiers.EVASION.of(CharClass.get(e));
-            return (int) (temp + 2.5f * Math.max(e.getLevel().level - 12, 0));
-        } else {
-            if (e.hasEvasionPower()) {
-                return e.getEvasionPower().value;
-            }
+            power = (int) (temp + 2.5f * Math.max(e.getLevel().level - 12, 0));
+        } else if (e.hasEvasionPower()) {
+            power = e.getEvasionPower().value;
         }
-        return 0;
+        return power;
     }
 
     @Override
     public int weaponAttackPower(int userId) {
         E e = E(userId);
-        int power = (int) (100 + 3 * e.getAgility().getBaseValue() * Modifiers.WEAPON.of(CharClass.get(e)));
+        int power = 0;
+        if (e.hasCharHero()) {
+            power = (int) (100 + 3 * e.getAgility().getBaseValue() * Modifiers.WEAPON.of(CharClass.get(e)));
+        } else if (e.hasAttackPower()){
+            power = e.getAttackPower().value;
+        }
         return power;
     }
 
@@ -66,19 +70,19 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
     }
 
     @Override
-    public void userAttack(int userId, Optional<Integer> targetId) {
-        Optional<Integer> realTargetId = targetId.isPresent() ? targetId : getTarget(userId);
-        if (canAttack(userId, realTargetId)) {
-            hit(userId, realTargetId.get());
+    public void entityAttack(int entityId, Optional<Integer> targetId) {
+        Optional<Integer> realTargetId = targetId.isPresent() ? targetId : getTarget(entityId);
+        if (canAttack(entityId, realTargetId)) {
+            hit(entityId, realTargetId.get());
         } else {
-            failed(userId, realTargetId);
+            failed(entityId, realTargetId);
         }
-        E e = E(userId);
+        E e = E(entityId);
         if (e.hasStamina()) {
             Stamina stamina = e.getStamina();
             stamina.min = Math.max(0, stamina.min - stamina.max * STAMINA_REQUIRED_PERCENT / 100);
-            EntityUpdate update = EntityUpdateBuilder.of(userId).withComponents(stamina).build();
-            getWorld().getSystem(WorldManager.class).sendEntityUpdate(userId, update);
+            EntityUpdate update = EntityUpdateBuilder.of(entityId).withComponents(stamina).build();
+            getWorld().getSystem(WorldManager.class).sendEntityUpdate(entityId, update);
         }
     }
 

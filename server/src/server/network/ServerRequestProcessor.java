@@ -157,7 +157,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(AttackRequest attackRequest, int connectionId) {
         int playerId = getNetworkManager().getPlayerByConnection(connectionId);
-        getCombatSystem(AttackType.PHYSICAL).userAttack(playerId, Optional.empty());
+        getCombatSystem(AttackType.PHYSICAL).entityAttack(playerId, Optional.empty());
     }
 
     /**
