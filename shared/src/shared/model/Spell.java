@@ -45,11 +45,13 @@ public class Spell {
     boolean sumAgility;
     int minAgility;
     int maxAgility;
+    float agilityDuration;
 
     // STRENGTH
     boolean sumStrength;
     int minStrength;
     int maxStrength;
+    float strengthDuration;
 
     // CA?
     boolean sumCA;
@@ -545,6 +547,18 @@ public class Spell {
 
     public void setResis(String resis) {
         this.resis = resis.equals("1");
+    }
+
+    public float getAgilityDuration() { return agilityDuration; }
+
+    public void setAgilityDuration(String agDur) {
+        this.agilityDuration = Float.parseFloat(agDur);
+    }
+
+    public float getStrengthDuration() { return strengthDuration; }
+
+    public void setStrengthDuration(String strDur) {
+        this.strengthDuration = Float.parseFloat(strDur);
     }
 
     @Override

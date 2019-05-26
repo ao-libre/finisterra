@@ -3,8 +3,10 @@ package server.systems.manager;
 import com.artemis.Component;
 import com.artemis.E;
 import entity.character.attributes.Agility;
+import entity.character.attributes.Attribute;
 import entity.character.attributes.Strength;
 import entity.character.info.Inventory;
+import entity.character.states.Buff;
 import entity.character.status.Health;
 import entity.character.status.Mana;
 import server.core.Server;
@@ -81,11 +83,16 @@ public class ItemManager extends DefaultManager {
                         break;
                     case AGILITY:
                         Agility agility = E(player).getAgility();
-                        // TODO
+                        agility.setCurrentValue(agility.getBaseValue() + random);
+                        E(player).buff().getBuff().addAttribute(agility, potion.getEffecTime());
+                        SendAttributeUpdate(player, agility, E(player).getBuff());
+                        break;
                     case POISON:
                     case STRENGTH:
                         Strength strength = E(player).getStrength();
-                        // TODO
+                        strength.setCurrentValue(strength.getBaseValue() + random);
+                        E(player).buff().getBuff().addAttribute(strength, potion.getEffecTime());
+                        SendAttributeUpdate(player, strength, E(player).getBuff());
                         break;
                 }
                 // Notify update to user
@@ -94,6 +101,11 @@ public class ItemManager extends DefaultManager {
                 // TODO remove from inventory
             }
         });
+    }
+
+    protected void SendAttributeUpdate(int player, Attribute attribute, Buff buff) {
+        EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(attribute, buff).build();
+        getServer().getWorldManager().sendEntityUpdate(player, updateAGI);
     }
 
     public void equip(int player, int index, Inventory.Item item) {

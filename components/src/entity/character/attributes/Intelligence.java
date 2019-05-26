@@ -4,21 +4,13 @@ import com.artemis.Component;
 
 import java.io.Serializable;
 
-public class Intelligence extends Component implements Serializable {
-    private int value;
+public class Intelligence extends Attribute {
 
     public Intelligence() {
     }
 
     public Intelligence(int value) {
-        this.value = value;
+        super(value);
     }
 
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
 }
