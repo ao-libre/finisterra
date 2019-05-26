@@ -106,7 +106,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
     @Override
     public int damageCalculation(int userId, int entityId) {
         E entity = E(userId);
-        final Optional<Obj> obj = getServer().getObjectManager().getObject(entity.getWeapon().index);
+        final Optional<Obj> obj = entity.hasWeapon() ? getServer().getObjectManager().getObject(entity.getWeapon().index) : Optional.empty();
         final Optional<WeaponObj> weapon =
                 obj.isPresent() && Type.WEAPON.equals(obj.get().getType()) ? Optional.of((WeaponObj) obj.get()) : Optional.empty();
 
@@ -192,7 +192,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         final Set<Integer> footprints = getServer().getMapManager().getEntitiesFootprints().get(entity);
         return footprints != null && footprints
                 .stream()
-                .anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()) || timestamp - E(footprint).getFootprint().timestamp < TIME_TO_MOVE_1_TILE);
+                .anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()) && timestamp - E(footprint).getFootprint().timestamp < TIME_TO_MOVE_1_TILE);
     }
 
     @Override

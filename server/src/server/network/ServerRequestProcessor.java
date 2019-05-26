@@ -143,7 +143,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         if (!nextPos.equals(oldPos)) {
             getWorldManager().notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement)));
         } else {
-            getWorldManager().notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(player.getHeading()).build()); // is necessary?
+            getWorldManager().notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(player.getHeading()).build());
         }
 
         // notify user

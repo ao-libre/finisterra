@@ -91,7 +91,6 @@ public class CharacterRenderingSystem extends RenderingSystem {
         }
 
         public void draw() {
-            drawShadow();
             int current = player.getHeading().current;
             switch (current) {
                 case Heading.HEADING_NORTH:
