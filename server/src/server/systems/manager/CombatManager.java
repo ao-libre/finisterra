@@ -123,7 +123,7 @@ public class CombatManager extends DefaultManager {
                 weaponDamage = ThreadLocalRandom.current().nextInt(weapon.getMinHit(), weapon.getMaxHit() + 1);
             }
         }
-        return entity.strengthValue() * weaponDamage;
+        return entity.strengthCurrentValue() * weaponDamage;
     }
 
     /**

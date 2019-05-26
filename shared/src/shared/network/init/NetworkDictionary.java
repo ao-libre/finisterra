@@ -290,7 +290,8 @@ public class NetworkDictionary extends MarshalDictionary {
                 Hit.class,
                 Armor.class,
                 Footprint.class,
-                AttackAnimation.class
+                AttackAnimation.class,
+                Buff.class
         );
     }
 

@@ -286,7 +286,8 @@
     "target": 1,
     "sumAgility": true,
     "minAgility": 2,
-    "maxAgility": 5
+    "maxAgility": 5,
+    "agilityDuration":300
   },
   "19": {
     "name": "Torpeza",
@@ -301,7 +302,8 @@
     "requiredStamina": 2,
     "target": 1,
     "minAgility": 2,
-    "maxAgility": 5
+    "maxAgility": 5,
+    "agilityDuration":300
   },
   "20": {
     "name": "Fuerza",
@@ -318,7 +320,8 @@
     "target": 1,
     "sumStrength": true,
     "minStrength": 2,
-    "maxStrength": 5
+    "maxStrength": 5,
+    "strengthDuration": 300
   },
   "21": {
     "name": "Debilidad",
@@ -333,7 +336,8 @@
     "requiredStamina": 6,
     "target": 1,
     "minStrength": 2,
-    "maxStrength": 5
+    "maxStrength": 5,
+    "strengthDuration": 300
   },
   "22": {
     "name": "Llamado a Uhkrul",

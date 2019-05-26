@@ -148,7 +148,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
 
     private int getBaseDamage(E entity, Optional<WeaponObj> weapon) {
         CharClass clazz = CharClass.get(entity);
-        Race race = Race.of(entity);
+        Race race = Race.of(entity);//TODO: check if we need this
         AttackKind kind = AttackKind.getKind(entity);
         ThreadLocalRandom random = ThreadLocalRandom.current();
         float modifier = kind == AttackKind.PROJECTILE ?
@@ -163,7 +163,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         Log.info("Max Weapon Damage: " + maxWeaponDamage);
         int userDamage = random.nextInt(entity.getHit().getMin() - 10, entity.getHit().getMax() + 1);
         Log.info("User damage: " + userDamage);
-        return (int) ((3 * weaponDamage + ((maxWeaponDamage) / 5) * Math.max(0, entity.strengthValue() - 15) + userDamage)
+        return (int) ((3 * weaponDamage + ((maxWeaponDamage) / 5) * Math.max(0, entity.strengthCurrentValue() - 15) + userDamage)
                 * modifier);
     }
 

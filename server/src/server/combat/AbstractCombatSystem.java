@@ -38,7 +38,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
     public int evasionPower(int userId) {
         E e = E(userId);
         if (e.hasCharHero()) {
-            float temp = 100 + 100 / 33 * e.getAgility().getValue() * Modifiers.EVASION.of(CharClass.get(e));
+            float temp = 100 + 100 / 33 * e.getAgility().getBaseValue() * Modifiers.EVASION.of(CharClass.get(e));
             return (int) (temp + 2.5f * Math.max(e.getLevel().level - 12, 0));
         } else {
             if (e.hasEvasionPower()) {
@@ -51,7 +51,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
     @Override
     public int weaponAttackPower(int userId) {
         E e = E(userId);
-        int power = (int) (100 + 3 * e.getAgility().getValue() * Modifiers.WEAPON.of(CharClass.get(e)));
+        int power = (int) (100 + 3 * e.getAgility().getBaseValue() * Modifiers.WEAPON.of(CharClass.get(e)));
         return power;
     }
 
