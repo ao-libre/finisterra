@@ -1,6 +1,5 @@
 package server.network;
 
-import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.World;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -30,7 +29,6 @@ import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
-import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
@@ -159,7 +157,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(AttackRequest attackRequest, int connectionId) {
         int playerId = getNetworkManager().getPlayerByConnection(connectionId);
-        getCombatSystem(AttackType.PHYSICAL).userAttack(playerId, Optional.empty());
+        getCombatSystem(AttackType.PHYSICAL).entityAttack(playerId, Optional.empty());
     }
 
     /**

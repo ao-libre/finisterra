@@ -152,18 +152,18 @@ public class MagicCombatSystem extends BaseSystem {
                 }
             }
 
-            if (spell.isSumStrength()){
+            if (spell.isSumStrength()) {
                 int random = new Random().nextInt(spell.getMaxStrength() - spell.getMinStrength() + 1) + spell.getMinStrength();
                 targetEntity.strengthCurrentValue(targetEntity.strengthCurrentValue() + random);
-                targetEntity.buff().buffAddAttribute(targetEntity.getStrength(),spell.getStrengthDuration());
-                SendAttributeUpdate(target,targetEntity.getStrength(),targetEntity.getBuff());
+                targetEntity.buff().buffAddAttribute(targetEntity.getStrength(), spell.getStrengthDuration());
+                SendAttributeUpdate(target, targetEntity.getStrength(), targetEntity.getBuff());
             }
 
-            if (spell.isSumAgility()){
+            if (spell.isSumAgility()) {
                 int random = new Random().nextInt(spell.getMaxAgility() - spell.getMinAgility() + 1) + spell.getMinAgility();
                 targetEntity.agilityCurrentValue(targetEntity.agilityCurrentValue() + random);
-                targetEntity.buff().buffAddAttribute(targetEntity.getAgility(),spell.getAgilityDuration());
-                SendAttributeUpdate(target,targetEntity.getAgility(),targetEntity.getBuff());
+                targetEntity.buff().buffAddAttribute(targetEntity.getAgility(), spell.getAgilityDuration());
+                SendAttributeUpdate(target, targetEntity.getAgility(), targetEntity.getBuff());
             }
 
             if (fxGrh > 0) {

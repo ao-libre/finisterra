@@ -10,11 +10,14 @@ import server.combat.CombatSystem;
 import server.combat.MagicCombatSystem;
 import server.combat.PhysicalCombatSystem;
 import server.systems.*;
+import server.systems.ai.NPCAttackSystem;
 import server.systems.ai.PathFindingSystem;
 import server.systems.manager.*;
 import shared.model.lobby.Player;
 
 import java.util.Set;
+
+import static server.systems.Intervals.*;
 
 public class Server {
 
@@ -71,13 +74,14 @@ public class Server {
                 .with(spellManager)
                 .with(objectManager)
                 .with(new NPCManager())
-                .with(new PathFindingSystem(0.4f))
+                .with(new PathFindingSystem(PATH_FINDING_INTERVAL))
+                .with(new NPCAttackSystem(NPC_ATTACK_INTERVAL))
                 .with(new WorldManager(this))
                 .with(new PhysicalCombatSystem(this))
                 .with(new MagicCombatSystem(this))
-                .with(new EnergyRegenerationSystem(1f))
-                .with(new MeditateSystem(this, 0.4f))
-                .with(new FootprintSystem(this, 500))
+                .with(new EnergyRegenerationSystem(ENERGY_REGENERATION_INTERVAL))
+                .with(new MeditateSystem(this, MEDITATE_INTERVAL))
+                .with(new FootprintSystem(this, FOOTPRINT_LIVE_TIME))
                 .with(new RandomMovementSystem(this))
                 .with(new BuffSystem());
         world = new World(builder.build());

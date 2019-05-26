@@ -49,7 +49,7 @@ public interface CombatSystem {
         Intervalos
         hit
      */
-    void userAttack(int userId, Optional<Integer> targetId);
+    void entityAttack(int userId, Optional<Integer> targetId);
 
 
     /*
