@@ -1,7 +1,6 @@
 package server.combat;
 
 import com.artemis.BaseSystem;
-import com.artemis.Component;
 import com.artemis.E;
 import com.esotericsoftware.minlog.Log;
 import entity.character.states.Immobile;

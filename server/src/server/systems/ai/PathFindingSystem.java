@@ -1,7 +1,6 @@
 package server.systems.ai;
 
 import com.artemis.Aspect;
-import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.EBag;
 import com.esotericsoftware.minlog.Log;
@@ -29,7 +28,7 @@ import java.util.Set;
 
 import static physics.AOPhysics.Movement.*;
 import static server.utils.WorldUtils.WorldUtils;
-import static shared.network.notifications.EntityUpdate.EntityUpdateBuilder.*;
+import static shared.network.notifications.EntityUpdate.EntityUpdateBuilder.of;
 
 public class PathFindingSystem extends IntervalFluidIteratingSystem {
 

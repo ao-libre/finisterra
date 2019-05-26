@@ -3,7 +3,6 @@ package game.systems.anim;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
-import entity.character.Character;
 import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
 import entity.character.parts.Body;

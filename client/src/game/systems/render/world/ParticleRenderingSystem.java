@@ -18,8 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.artemis.E.E;
-
 @Wire(injectInherited=true)
 public class ParticleRenderingSystem extends RenderingSystem {
 

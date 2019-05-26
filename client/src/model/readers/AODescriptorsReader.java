@@ -1,8 +1,8 @@
 package model.readers;
 
 import game.utils.Resources;
-import shared.model.loaders.MapLoader;
 import shared.model.Spell;
+import shared.model.loaders.MapLoader;
 import shared.model.loaders.ObjectLoader;
 import shared.model.loaders.SpellLoader;
 import shared.model.map.Map;

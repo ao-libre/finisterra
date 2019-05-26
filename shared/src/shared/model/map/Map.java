@@ -1,7 +1,5 @@
 package shared.model.map;
 
-import java.util.List;
-
 public class Map {
 
     public static final int MAX_MAP_SIZE_WIDTH = 100;

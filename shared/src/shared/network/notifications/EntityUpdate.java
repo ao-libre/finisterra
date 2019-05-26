@@ -5,7 +5,6 @@ import shared.network.interfaces.INotification;
 import shared.network.interfaces.INotificationProcessor;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 public class EntityUpdate implements INotification {

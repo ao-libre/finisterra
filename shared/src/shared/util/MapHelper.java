@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Set;
 
 import static com.artemis.E.E;
-import static java.lang.String.format;
 
 public class MapHelper {
 

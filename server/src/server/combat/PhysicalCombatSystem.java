@@ -1,6 +1,5 @@
 package server.combat;
 
-import com.artemis.Component;
 import com.artemis.E;
 import com.esotericsoftware.minlog.Log;
 import entity.character.states.Heading;

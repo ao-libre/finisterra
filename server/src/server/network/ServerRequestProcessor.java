@@ -1,6 +1,5 @@
 package server.network;
 
-import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.World;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -12,8 +11,8 @@ import movement.Destination;
 import position.WorldPos;
 import server.combat.CombatSystem;
 import server.core.Server;
-import server.systems.manager.*;
 import server.systems.MeditateSystem;
+import server.systems.manager.*;
 import server.utils.WorldUtils;
 import shared.model.AttackType;
 import shared.model.lobby.Player;
@@ -30,7 +29,6 @@ import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
-import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;

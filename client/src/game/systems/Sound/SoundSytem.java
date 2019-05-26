@@ -2,9 +2,6 @@ package game.systems.Sound;
 
 import Sound.AOSound;
 import com.artemis.Aspect;
-
-import static com.artemis.E.E;
-
 import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
@@ -15,6 +12,8 @@ import position.WorldPos;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.artemis.E.E;
 
 
 class SoundIndexPair {

@@ -19,7 +19,6 @@ import shared.model.Spell;
 import shared.model.lobby.Player;
 import shared.model.lobby.Team;
 import shared.model.npcs.NPC;
-import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.notifications.RemoveEntity;
 import shared.objects.types.*;

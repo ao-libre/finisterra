@@ -6,17 +6,16 @@ import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import server.systems.FinisterraSystem;
 import server.systems.manager.LobbyNetworkManager;
 import server.systems.manager.NPCManager;
 import server.systems.manager.ObjectManager;
 import server.systems.manager.SpellManager;
-import server.systems.FinisterraSystem;
 import server.utils.IpChecker;
 import shared.model.lobby.Lobby;
 import shared.model.lobby.Room;
 import shared.model.map.Map;
 import shared.network.lobby.StartGameResponse;
-import shared.util.MapHelper;
 
 import java.net.UnknownHostException;
 import java.util.HashMap;

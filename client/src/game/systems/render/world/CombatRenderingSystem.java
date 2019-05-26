@@ -18,8 +18,6 @@ import position.WorldPos;
 import shared.model.map.Tile;
 import shared.util.Util;
 
-import static com.artemis.E.E;
-
 @Wire(injectInherited=true)
 public class CombatRenderingSystem extends RenderingSystem {
 

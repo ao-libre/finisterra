@@ -7,7 +7,6 @@ import game.managers.MapManager;
 import game.systems.camera.CameraSystem;
 import game.systems.map.TiledMapSystem;
 import shared.model.map.Map;
-import shared.model.map.Tile;
 
 @Wire
 public class MapUpperLayerRenderingSystem extends BaseSystem {

@@ -3,7 +3,6 @@ package server.systems;
 import com.artemis.Aspect;
 import com.artemis.E;
 import entity.character.status.Stamina;
-import entity.world.CombatMessage;
 import server.systems.manager.WorldManager;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
