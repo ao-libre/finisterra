@@ -166,8 +166,8 @@ public class WorldManager extends DefaultManager {
 
     private void setStamina(E entity) {
         // set stamina
-        entity.staminaMax(300);
-        entity.staminaMin(300);
+        entity.staminaMax(500);
+        entity.staminaMin(500);
     }
 
     private void setHit(E entity, CharClass charClass) {

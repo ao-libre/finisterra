@@ -1,7 +1,6 @@
 package server.combat;
 
 import com.artemis.BaseSystem;
-import com.artemis.Component;
 import com.artemis.E;
 import com.esotericsoftware.minlog.Log;
 import entity.character.attributes.Attribute;
@@ -36,6 +35,7 @@ import static shared.util.Messages.*;
 public class MagicCombatSystem extends BaseSystem {
 
     public static final String SPACE = " ";
+    public static final int TIME_TO_MOVE_1_TILE = 200;
     private Server server;
 
     public MagicCombatSystem(Server server) {
@@ -67,16 +67,20 @@ public class MagicCombatSystem extends BaseSystem {
                 .filter(Objects::nonNull)
                 .filter(E::hasWorldPos)
                 .filter(e -> !e.hasObject())
-                .filter(entity -> entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos, timestamp))
+                .filter(entity -> isValidTarget(worldPos, timestamp, entity))
                 .map(E::id)
                 .findFirst();
+    }
+
+    private boolean isValidTarget(WorldPos worldPos, long timestamp, E entity) {
+        return entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos, timestamp);
     }
 
     private boolean footprintOf(Integer entity, WorldPos worldPos, long timestamp) {
         final Set<Integer> footprints = getServer().getMapManager().getEntitiesFootprints().get(entity);
         return footprints != null && footprints
                 .stream()
-                .anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()) && E(footprint).getFootprint().timestamp >= timestamp);
+                .anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()) && (timestamp - E(footprint).getFootprint().timestamp <= TIME_TO_MOVE_1_TILE));
     }
 
     // TODO refactor what elements/components to send
