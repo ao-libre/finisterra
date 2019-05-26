@@ -19,7 +19,7 @@ public class AOPhysics extends Component implements Serializable {
     }
 
     public float getVelocity() {
-        return velocity;
+        return velocity * 2;
     }
 
     public void setVelocity(float velocity) {

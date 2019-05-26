@@ -67,4 +67,8 @@ public class WorldUtils {
     public int getHeading(AOPhysics.Movement movement) {
         return movement == AOPhysics.Movement.UP ? Heading.HEADING_NORTH : movement == AOPhysics.Movement.DOWN ? Heading.HEADING_SOUTH : movement == AOPhysics.Movement.LEFT ? Heading.HEADING_WEST : Heading.HEADING_EAST;
     }
+
+    public int getHeading(WorldPos pos1, WorldPos pos2) {
+        return pos1.y > pos2.y ? Heading.HEADING_NORTH : pos1.y < pos2.y ? Heading.HEADING_SOUTH : pos1.x > pos2.x ? Heading.HEADING_WEST : Heading.HEADING_EAST;
+    }
 }

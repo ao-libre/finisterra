@@ -1,6 +1,5 @@
 package server.combat;
 
-import com.artemis.Component;
 import com.artemis.E;
 import com.esotericsoftware.minlog.Log;
 import entity.character.states.Heading;
@@ -35,6 +34,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
     private static final String MISS = "MISS";
     private static final float ASSASIN_STAB_FACTOR = 1.5f;
     private static final float NORMAL_STAB_FACTOR = 1.4f;
+    public static final int TIME_TO_MOVE_1_TILE = 250;
 
     public PhysicalCombatSystem(Server server) {
         super(server);
@@ -46,27 +46,27 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
     }
 
     @Override
-    public boolean canAttack(int userId, Optional<Integer> targetId) {
-        // estas muerto
-        final E e = E(userId);
+    public boolean canAttack(int entityId, Optional<Integer> target) {
+        final E e = E(entityId);
         if (e != null && e.hasStamina() && e.getStamina().min < e.getStamina().max * STAMINA_REQUIRED_PERCENT / 100) {
-            notifyCombat(userId, NOT_ENOUGH_ENERGY);
+            notifyCombat(entityId, NOT_ENOUGH_ENERGY);
             return false;
         }
         if (e != null && e.hasHealth() && e.getHealth().min == 0) {
-            notifyCombat(userId, DEAD_CANT_ATTACK);
+            notifyCombat(entityId, DEAD_CANT_ATTACK);
             return false;
         }
 
-        if (targetId.isPresent()) {
-            // no podes atacar un muerto
-            E t = E(targetId.get());
+        if (target.isPresent()) {
+            Integer targetId = target.get();
+            E t = E(targetId);
             if (t == null) {
                 Log.info("Can't find target");
                 return false;
             }
             if (t.hasHealth() && t.getHealth().min == 0) {
-                notifyCombat(userId, CANT_ATTACK_DEAD);
+                // no podes atacar un muerto
+                notifyCombat(entityId, CANT_ATTACK_DEAD);
                 return false;
             }
 
@@ -78,8 +78,8 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
 
             // TODO attack power can be bow
 
-            int evasionPower = evasionPower(targetId.get()) + (E(targetId.get()).hasShield() ? shieldEvasionPower(targetId.get()) : 0);
-            double prob = Math.max(10, Math.min(90, 50 + (weaponAttackPower(userId) - evasionPower) * 0.4));
+            int evasionPower = evasionPower(targetId) + (E(targetId).hasShield() ? shieldEvasionPower(targetId) : 0);
+            double prob = Math.max(10, Math.min(90, 50 + (weaponAttackPower(entityId) - evasionPower) * 0.4));
             if (ThreadLocalRandom.current().nextInt(101) <= prob) {
                 return true;
             } else {
@@ -87,14 +87,14 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
                 prob = Math.max(10, Math.min(90, 100 * 100 / skills));
 
                 // shield evasion
-                if (E(targetId.get()).hasShield() && ThreadLocalRandom.current().nextInt(101) <= prob) {
-                    notifyCombat(targetId.get(), SHIELD_DEFENSE);
-                    notifyCombat(userId, format(DEFENDED_WITH_SHIELD, getName(targetId.get())));
+                if (E(targetId).hasShield() && ThreadLocalRandom.current().nextInt(101) <= prob) {
+                    notifyCombat(targetId, SHIELD_DEFENSE);
+                    notifyCombat(entityId, format(DEFENDED_WITH_SHIELD, getName(targetId)));
                     // TODO shield animation
-                    getWorldManager().notifyUpdate(targetId.get(), new SoundNotification(37));
+                    getWorldManager().notifyUpdate(targetId, new SoundNotification(37));
                 } else {
-                    notifyCombat(userId, ATTACK_FAILED);
-                    notifyCombat(targetId.get(), format(ATTACKED_AND_FAILED, getName(userId)));
+                    notifyCombat(entityId, ATTACK_FAILED);
+                    notifyCombat(targetId, format(ATTACKED_AND_FAILED, getName(entityId)));
 
                 }
             }
@@ -105,7 +105,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
     @Override
     public int damageCalculation(int userId, int entityId) {
         E entity = E(userId);
-        final Optional<Obj> obj = getServer().getObjectManager().getObject(entity.getWeapon().index);
+        final Optional<Obj> obj = entity.hasWeapon() ? getServer().getObjectManager().getObject(entity.getWeapon().index) : Optional.empty();
         final Optional<WeaponObj> weapon =
                 obj.isPresent() && Type.WEAPON.equals(obj.get().getType()) ? Optional.of((WeaponObj) obj.get()) : Optional.empty();
 
@@ -148,24 +148,29 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
     }
 
     private int getBaseDamage(E entity, Optional<WeaponObj> weapon) {
-        CharClass clazz = CharClass.get(entity);
-        Race race = Race.of(entity);//TODO: check if we need this
-        AttackKind kind = AttackKind.getKind(entity);
-        ThreadLocalRandom random = ThreadLocalRandom.current();
-        float modifier = kind == AttackKind.PROJECTILE ?
-                Modifiers.PROJECTILE_DAMAGE.of(clazz) :
-                kind == AttackKind.WEAPON ? Modifiers.WEAPON_DAMAGE.of(clazz) : Modifiers.WRESTLING_DAMAGE.of(clazz);
-        Log.info("Modifier: " + modifier);
-        int weaponDamage =
-                weapon.map(weaponObj -> random.nextInt(weaponObj.getMinHit(), weaponObj.getMaxHit() + 1))
-                        .orElseGet(() -> random.nextInt(4, 9));
-        Log.info("Weapon Damage: " + weaponDamage);
-        int maxWeaponDamage = weapon.map(WeaponObj::getMaxHit).orElse(9);
-        Log.info("Max Weapon Damage: " + maxWeaponDamage);
-        int userDamage = random.nextInt(entity.getHit().getMin() - 10, entity.getHit().getMax() + 1);
-        Log.info("User damage: " + userDamage);
-        return (int) ((3 * weaponDamage + ((maxWeaponDamage) / 5) * Math.max(0, entity.strengthCurrentValue() - 15) + userDamage)
-                * modifier);
+        int baseDamage = 0;
+        if (entity.hasCharHero()) {
+            CharClass clazz = CharClass.get(entity);
+            AttackKind kind = AttackKind.getKind(entity);
+            ThreadLocalRandom random = ThreadLocalRandom.current();
+            float modifier = kind == AttackKind.PROJECTILE ?
+                    Modifiers.PROJECTILE_DAMAGE.of(clazz) :
+                    kind == AttackKind.WEAPON ? Modifiers.WEAPON_DAMAGE.of(clazz) : Modifiers.WRESTLING_DAMAGE.of(clazz);
+            Log.info("Modifier: " + modifier);
+            int weaponDamage =
+                    weapon.map(weaponObj -> random.nextInt(weaponObj.getMinHit(), weaponObj.getMaxHit() + 1))
+                            .orElseGet(() -> random.nextInt(4, 9));
+            Log.info("Weapon Damage: " + weaponDamage);
+            int maxWeaponDamage = weapon.map(WeaponObj::getMaxHit).orElse(9);
+            Log.info("Max Weapon Damage: " + maxWeaponDamage);
+            int userDamage = random.nextInt(entity.getHit().getMin() - 10, entity.getHit().getMax() + 1);
+            Log.info("User damage: " + userDamage);
+            baseDamage = (int) ((3 * weaponDamage + ((maxWeaponDamage) / 5) * Math.max(0, entity.strengthCurrentValue() - 15) + userDamage)
+                    * modifier);
+        } else if (entity.hasHit()) {
+            baseDamage = ThreadLocalRandom.current().nextInt(entity.getHit().getMin(), entity.getHit().getMax());
+        }
+        return baseDamage;
     }
 
     @Override
@@ -179,8 +184,19 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
                 .getNearEntities(userId)
                 .stream()
                 .filter(
-                        targetId -> E(targetId).hasWorldPos() && E(targetId).getWorldPos().equals(targetPos) && isAttackable(targetId))
+                        targetId -> isEffectiveTarget(targetPos, targetId))
                 .findFirst();
+    }
+
+    private boolean isEffectiveTarget(WorldPos targetPos, Integer targetId) {
+        return E(targetId).hasWorldPos() && isAttackable(targetId) && (E(targetId).getWorldPos().equals(targetPos) || footprintOf(targetId, targetPos, System.currentTimeMillis()));
+    }
+
+    private boolean footprintOf(Integer entity, WorldPos worldPos, long timestamp) {
+        final Set<Integer> footprints = getServer().getMapManager().getEntitiesFootprints().get(entity);
+        return footprints != null && footprints
+                .stream()
+                .anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()) && timestamp - E(footprint).getFootprint().timestamp < TIME_TO_MOVE_1_TILE);
     }
 
     @Override

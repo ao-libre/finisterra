@@ -10,7 +10,7 @@ public class CombatMessage extends Component implements Serializable {
 
     public static float DEFAULT_TIME = 1.7f;
     public static float START_ALPHA = 1.7f;
-    public static float DEFAULT_OFFSET = 30;
+    public static float DEFAULT_OFFSET = 30 * 2;
     public Kind kind;
 
     public String text;

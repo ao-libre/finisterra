@@ -13,6 +13,8 @@ import game.managers.AOInputProcessor;
 import game.screens.GameScreen;
 import game.ui.user.UserInformation;
 
+import static game.systems.render.world.RenderingSystem.SCALE;
+
 
 public class GUI {
 
@@ -124,7 +126,7 @@ public class GUI {
         inventoryContainer.setWidth(width);
         inventory = new Inventory();
         final float zoom = width / inventory.getWidth();
-        inventoryContainer.setScale(zoom);
+        inventoryContainer.setScale(zoom / SCALE);
         inventoryContainer.setPosition((getWidth() * 98f / 100f) - width, 1, Align.right | Align.bottom);
         inventoryContainer.setActor(inventory);
         inventoryContainer.setTransform(true);

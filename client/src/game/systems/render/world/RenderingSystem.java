@@ -17,6 +17,8 @@ import static game.systems.render.world.RenderingSystem.CameraKind.GUI;
 @Wire
 public abstract class RenderingSystem extends OrderedEntityProcessingSystem {
 
+    public static final float SCALE = 2;
+
     private SpriteBatch batch;
     private CameraKind kind;
     @Wire
@@ -71,7 +73,7 @@ public abstract class RenderingSystem extends OrderedEntityProcessingSystem {
 
     protected abstract void process(E e);
 
-    enum CameraKind {
+    public enum CameraKind {
         GUI,
         WORLD
     }

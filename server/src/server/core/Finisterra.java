@@ -18,6 +18,7 @@ import shared.model.map.Map;
 import shared.network.lobby.StartGameResponse;
 import shared.util.MapHelper;
 
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -81,7 +82,9 @@ public class Finisterra implements ApplicationListener {
                 String property = System.getProperty("server.useLocalhost");
                 System.out.println(property);
                 boolean shouldUseLocalHost = Boolean.parseBoolean(property);
-                getNetworkManager().sendTo(connectionId, new StartGameResponse(shouldUseLocalHost ? "localhost" : ip, roomServer.getTcpPort(), roomServer.getUdpPort()));
+                InetAddress inetAddress = InetAddress.getLocalHost();
+
+                getNetworkManager().sendTo(connectionId, new StartGameResponse(shouldUseLocalHost ? inetAddress.getHostAddress() : ip, roomServer.getTcpPort(), roomServer.getUdpPort()));
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             } catch (Exception e) {

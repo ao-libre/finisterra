@@ -30,7 +30,7 @@ public class MovementAnimationSystem extends IteratingSystem {
         E entity = E(entityId);
         final Heading heading = entity.getHeading();
         if (!entity.movementHasMovements()) {
-            updateAnimationTime(entity, heading, true);
+//            updateAnimationTime(entity, heading, true);
         }
     }
 

@@ -20,8 +20,8 @@ import shared.util.Util;
 public class DialogRenderingSystem extends RenderingSystem {
 
     private static final int ALPHA_TIME = 2;
-    private static final int MAX_LENGTH = 120;
-    private static final int DISTANCE_TO_TOP = 5;
+    private static final int MAX_LENGTH = (int) (120 * SCALE);
+    private static final int DISTANCE_TO_TOP = (int) (5 * SCALE);
     private static final float TIME = 0.3f;
     private static final float VELOCITY = DISTANCE_TO_TOP / TIME;
 
@@ -43,13 +43,12 @@ public class DialogRenderingSystem extends RenderingSystem {
             }
 
             Fonts.dialogLayout.setText(font, dialog.text);
-            int lines = Math.max(1, (int) Fonts.dialogLayout.width / MAX_LENGTH);
             float width = Math.min(Fonts.dialogLayout.width, MAX_LENGTH);
             Fonts.dialogLayout.setText(font, dialog.text, font.getColor(), width, Align.center | Align.top, true);
             final float fontX = playerPos.x + (Tile.TILE_PIXEL_WIDTH - width) / 2;
             float up = Dialog.DEFAULT_TIME - dialog.time <= TIME ? (Dialog.DEFAULT_TIME - dialog.time) * VELOCITY : DISTANCE_TO_TOP;
-            float offsetY = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
-            final float fontY = playerPos.y - 65 + offsetY - up + Fonts.dialogLayout.height;
+            float offsetY = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY() * SCALE;
+            final float fontY = playerPos.y - 60 * SCALE + offsetY - up + Fonts.dialogLayout.height;
             font.draw(getBatch(), Fonts.dialogLayout, fontX, fontY);
             font.setColor(copy);
         } else {

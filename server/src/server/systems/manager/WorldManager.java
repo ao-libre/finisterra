@@ -43,17 +43,15 @@ public class WorldManager extends DefaultManager {
     }
 
     @Override
-    protected void initialize() {
-
-    }
+    protected void initialize() {}
 
     public void addNPC() {
-        NPC npc = getWorld().getSystem(NPCManager.class).getNpcs().get(510);
+        NPC npc = getWorld().getSystem(NPCManager.class).getNpcs().get(583);
         int npcId = world.create();
         E npcEntity = E(npcId);
         npcEntity
                 .nPC()
-                .aOPhysics().aOPhysicsVelocity(100f)
+                .aOPhysics().aOPhysicsVelocity(85f)
                 .hit().hitMax(npc.getMaxHit()).hitMin(npc.getMinHit())
                 .evasionPowerValue(npc.getEvasionPower())
                 .attackPowerValue(npc.getAttackPower())
@@ -166,8 +164,8 @@ public class WorldManager extends DefaultManager {
 
     private void setStamina(E entity) {
         // set stamina
-        entity.staminaMax(300);
-        entity.staminaMin(300);
+        entity.staminaMax(500);
+        entity.staminaMin(500);
     }
 
     private void setHit(E entity, CharClass charClass) {

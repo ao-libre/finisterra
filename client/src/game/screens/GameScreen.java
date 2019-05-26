@@ -106,9 +106,9 @@ public class GameScreen extends ScreenAdapter {
                 .with(new TiledMapSystem())
                 // Rendering
                 .with(RENDER_PRE_ENTITIES, new MapGroundRenderingSystem(spriteBatch))
+                .with(RENDER_PRE_ENTITIES, new ObjectRenderingSystem(spriteBatch))
                 .with(RENDER_PRE_ENTITIES, new GroundFXsRenderingSystem(spriteBatch))
                 .with(RENDER_PRE_ENTITIES, new TargetRenderingSystem(spriteBatch))
-                .with(RENDER_POST_ENTITIES, new ObjectRenderingSystem(spriteBatch))
                 .with(RENDER_PRE_ENTITIES, new NameRenderingSystem(spriteBatch))
                 .with(RENDER_ENTITIES, new EffectRenderingSystem(spriteBatch))
                 .with(RENDER_ENTITIES, new CharacterRenderingSystem(spriteBatch))

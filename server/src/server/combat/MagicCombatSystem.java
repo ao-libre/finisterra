@@ -1,7 +1,6 @@
 package server.combat;
 
 import com.artemis.BaseSystem;
-import com.artemis.Component;
 import com.artemis.E;
 import com.esotericsoftware.minlog.Log;
 import entity.character.attributes.Attribute;
@@ -36,6 +35,7 @@ import static shared.util.Messages.*;
 public class MagicCombatSystem extends BaseSystem {
 
     public static final String SPACE = " ";
+    public static final int TIME_TO_MOVE_1_TILE = 200;
     private Server server;
 
     public MagicCombatSystem(Server server) {
@@ -61,22 +61,26 @@ public class MagicCombatSystem extends BaseSystem {
     private Optional<Integer> getTarget(int userId, WorldPos worldPos, long timestamp) {
         Set<Integer> entities = new HashSet<>(getServer().getMapManager().getNearEntities(userId));
         entities.add(userId);
-        // TODO check timestamp?
         return entities
                 .stream()
                 .map(E::E)
                 .filter(Objects::nonNull)
                 .filter(E::hasWorldPos)
-                .filter(entity -> entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos, timestamp))
+                .filter(e -> !e.hasObject())
+                .filter(entity -> isValidTarget(worldPos, timestamp, entity))
                 .map(E::id)
                 .findFirst();
+    }
+
+    private boolean isValidTarget(WorldPos worldPos, long timestamp, E entity) {
+        return entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos, timestamp);
     }
 
     private boolean footprintOf(Integer entity, WorldPos worldPos, long timestamp) {
         final Set<Integer> footprints = getServer().getMapManager().getEntitiesFootprints().get(entity);
         return footprints != null && footprints
                 .stream()
-                .anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()) && E(footprint).getFootprint().timestamp >= timestamp);
+                .anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()) && (timestamp - E(footprint).getFootprint().timestamp <= TIME_TO_MOVE_1_TILE));
     }
 
     // TODO refactor what elements/components to send
@@ -148,18 +152,18 @@ public class MagicCombatSystem extends BaseSystem {
                 }
             }
 
-            if (spell.isSumStrength()){
+            if (spell.isSumStrength()) {
                 int random = new Random().nextInt(spell.getMaxStrength() - spell.getMinStrength() + 1) + spell.getMinStrength();
                 targetEntity.strengthCurrentValue(targetEntity.strengthCurrentValue() + random);
-                targetEntity.buff().buffAddAttribute(targetEntity.getStrength(),spell.getStrengthDuration());
-                SendAttributeUpdate(target,targetEntity.getStrength(),targetEntity.getBuff());
+                targetEntity.buff().buffAddAttribute(targetEntity.getStrength(), spell.getStrengthDuration());
+                SendAttributeUpdate(target, targetEntity.getStrength(), targetEntity.getBuff());
             }
 
-            if (spell.isSumAgility()){
+            if (spell.isSumAgility()) {
                 int random = new Random().nextInt(spell.getMaxAgility() - spell.getMinAgility() + 1) + spell.getMinAgility();
                 targetEntity.agilityCurrentValue(targetEntity.agilityCurrentValue() + random);
-                targetEntity.buff().buffAddAttribute(targetEntity.getAgility(),spell.getAgilityDuration());
-                SendAttributeUpdate(target,targetEntity.getAgility(),targetEntity.getBuff());
+                targetEntity.buff().buffAddAttribute(targetEntity.getAgility(), spell.getAgilityDuration());
+                SendAttributeUpdate(target, targetEntity.getAgility(), targetEntity.getBuff());
             }
 
             if (fxGrh > 0) {
@@ -208,7 +212,7 @@ public class MagicCombatSystem extends BaseSystem {
             // TODO anillos
             damage = -damage;
         }
-        return (int) (damage * 1.65f);
+        return (int) (damage * 1.65f); // TODO super custom
     }
 
     private void updateMana(int playerId, int requiredMana, Mana mana) {
