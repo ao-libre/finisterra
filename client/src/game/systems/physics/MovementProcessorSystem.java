@@ -27,7 +27,7 @@ import static com.artemis.E.E;
 @Wire
 public class MovementProcessorSystem extends IteratingSystem {
 
-    public static java.util.Map<Integer, MovementRequest> requests = new ConcurrentHashMap<>();
+    private static java.util.Map<Integer, MovementRequest> requests = new ConcurrentHashMap<>();
     private static int requestNumber;
 
     public MovementProcessorSystem() {
@@ -105,7 +105,6 @@ public class MovementProcessorSystem extends IteratingSystem {
                 requests.put(requestNumber, request);
                 GameScreen.getClient().sendToAll(request);
                 if (valid) { // Prediction
-                    // ClientMapUtils.updateTile(Tile.EMPTY_INDEX, pos); // not used. TODO clean?
                     Destination destination = new Destination(expectedPos, movement);
                     player.movementAdd(destination);
                     if (player.isMeditating()) {

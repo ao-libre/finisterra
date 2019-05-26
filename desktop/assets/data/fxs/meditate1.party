@@ -56,30 +56,30 @@ shape: ellipse
 edges: true
 side: both
 - Spawn Width - 
-lowMin: 25.0
-lowMax: 25.0
-highMin: 25.0
-highMax: 25.0
+lowMin: 50.0
+lowMax: 50.0
+highMin: 50.0
+highMax: 50.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
 - Spawn Height - 
-lowMin: 10.0
-lowMax: 10.0
-highMin: 10.0
-highMax: 10.0
+lowMin: 20.0
+lowMax: 20.0
+highMin: 20.0
+highMax: 20.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
 timelineCount: 1
 timeline0: 0.0
 - X Scale - 
-lowMin: 3.0
-lowMax: 3.0
-highMin: 3.0
-highMax: 3.0
+lowMin: 6.0
+lowMax: 6.0
+highMin: 6.0
+highMax: 6.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -91,8 +91,8 @@ active: false
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: -40.0
-highMax: -40.0
+highMin: -80.0
+highMax: -80.0
 relative: false
 scalingCount: 3
 scaling0: 0.0
@@ -110,10 +110,10 @@ active: false
 active: false
 - Gravity - 
 active: true
-lowMin: -50.0
-lowMax: -50.0
-highMin: -70.0
-highMax: -70.0
+lowMin: -100.0
+lowMax: -100.0
+highMin: -140.0
+highMax: -140.0
 relative: false
 scalingCount: 3
 scaling0: 1.0

@@ -7,6 +7,7 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.systems.OrderedEntityProcessingSystem;
 import game.systems.camera.CameraSystem;
@@ -48,21 +49,23 @@ public class CoordinatesRenderingSystem extends OrderedEntityProcessingSystem {
         E player = E(e);
         WorldPos worldPos = player.getWorldPos();
 
-        drawCoordinates(50, Gdx.graphics.getHeight() - 50, worldPos);
+        drawCoordinates(50, 50, worldPos);
     }
 
     private void drawCoordinates(int offsetX, int offsetY, WorldPos worldPos) {
         String worldPosString = "[" + worldPos.map + "-" + worldPos.x + "-" + worldPos.y + "]";
-        Fonts.layout.setText(Fonts.WHITE_FONT, worldPosString);
-        float fontX = cameraSystem.guiCamera.viewportWidth - Fonts.layout.width;
+        BitmapFont font = Fonts.CONSOLE_FONT;
+        Fonts.layout.setText(font, worldPosString);
+        float fontX = cameraSystem.guiCamera.viewportWidth - Fonts.layout.width - offsetX;
+        float fontY = cameraSystem.guiCamera.viewportHeight - offsetY;
         //background
         Color oldColor = batch.getColor();
         Color black = Color.BLACK.cpy();
         batch.setColor(black.r, black.g, black.b, ALPHA);
-        batch.draw(TextureUtils.white, fontX - (BORDER / 2) - offsetX, offsetY - (BORDER / 2), Fonts.layout.width + BORDER, Fonts.layout.height + BORDER);
+        batch.draw(TextureUtils.white, fontX - (BORDER >> 1), fontY - (BORDER >> 1), Fonts.layout.width + BORDER, Fonts.layout.height + BORDER);
         //text
         batch.setColor(Color.WHITE.cpy());
-        Fonts.WHITE_FONT.draw(batch, Fonts.layout, fontX - offsetX, offsetY + Fonts.layout.height);
+        font.draw(batch, Fonts.layout, fontX, fontY + Fonts.layout.height);
         batch.setColor(oldColor);
     }
 

@@ -5,8 +5,7 @@ private/
 build/
 **/build/
 out/
-**/out/
-desktop/assets/data/graficos2x/
+**/out/		
 desktop/build*
 desktop/finisterra*
 desktop/java*

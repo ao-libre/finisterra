@@ -66,8 +66,7 @@ public class UserImage extends Image {
         if (getHead() != null) {
             int headW = head.getRegionWidth();
             int headH = head.getRegionHeight();
-            float scale = 2f;
-            batch.draw(head, getX() + headW, getY() - 50, headW * scale, headH * scale);
+            batch.draw(head, getX() + headW, getY() - 50, headW, headH);
         }
         batch.setColor(color);
     }
