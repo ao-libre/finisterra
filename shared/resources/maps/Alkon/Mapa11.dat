@@ -1,0 +1,10 @@
+[MAPA11]
+Name=Bosque este de Ullathorpe
+MusicNum=3
+MagiaSinefecto=0
+NoEncriptarMP=0
+Terreno=BOSQUE
+Zona=CAMPO
+Restringir=No
+BackUp= 1
+Pk=0

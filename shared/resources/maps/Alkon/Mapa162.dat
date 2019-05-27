@@ -1,0 +1,10 @@
+[MAPA162]
+Name=Laberinto Oscuro.
+MusicNum=15
+MagiaSinefecto=0
+NoEncriptarMP=0
+Terreno=NIEVE
+Zona=DUNGEON
+Restringir=No
+BackUp= 1
+Pk=0

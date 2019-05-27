@@ -1,0 +1,10 @@
+[MAPA273]
+Name=Mapa de GMs. (rings de Clanes)
+MusicNum=28
+MagiaSinefecto=0
+NoEncriptarMP=0
+Terreno=DESIERTO
+Zona=DUNGEON
+Restringir=GM
+BackUp= 1
+Pk=1

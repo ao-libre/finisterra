@@ -1,0 +1,10 @@
+[MAPA58]
+Name=Suburbios de Banderbill.
+MusicNum=11
+MagiaSinefecto=0
+NoEncriptarMP=0
+Terreno=CIUDAD
+Zona=CAMPO
+Restringir=No
+BackUp= 1
+Pk=1

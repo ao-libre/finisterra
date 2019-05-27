@@ -1,0 +1,10 @@
+[MAPA28]
+Name=Cementerio
+MusicNum=105
+MagiaSinefecto=0
+NoEncriptarMP=0
+Terreno=BOSQUE
+Zona=CAMPO
+Restringir=No
+BackUp= 0
+Pk=0

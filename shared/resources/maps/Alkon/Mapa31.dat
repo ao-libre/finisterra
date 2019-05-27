@@ -1,0 +1,10 @@
+[MAPA31]
+Name=Bosque al sureste de Nix.
+MusicNum=3
+MagiaSinefecto=0
+NoEncriptarMP=0
+Terreno=BOSQUE
+Zona=CAMPO
+Restringir=No
+BackUp= 0
+Pk=0

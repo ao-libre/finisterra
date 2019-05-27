@@ -1,0 +1,12 @@
+[MAPA86]
+Name=Bosque central.
+MusicNum=98
+MagiaSinefecto=0
+InviSinEfecto=0
+ResuSinEfecto=0
+NoEncriptarMP=0
+Terreno=BOSQUE
+Zona=CAMPO
+Restringir=No
+BackUp= 1
+Pk=0
