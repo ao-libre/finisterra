@@ -22,7 +22,6 @@ public class BuffSystem extends FluidIteratingSystem {
         float delta = getWorld().getDelta();
 
         buff.getBuffedAtributes().forEach((attribute, time) -> {
-
             time -= delta;
             if (time <= 0){
                 attribute.resetCurrentValue();

@@ -63,7 +63,7 @@ public class ServerNotificationProcessor extends DefaultNotificationProcessor {
                 .worldPosY(dropItem.getPosition().y);
         E(object).objectIndex(item.objId);
         E(object).objectCount(dropItem.getCount());
-        getServer().getWorldManager().registerItem(object);
+        getServer().getWorldManager().registerEntity(object);
     }
 
 }

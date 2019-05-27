@@ -14,8 +14,10 @@ import movement.Destination;
 import physics.AOPhysics;
 import position.WorldPos;
 import shared.model.map.Map;
+import shared.model.map.WorldPosition;
 import shared.network.interaction.MeditateRequest;
 import shared.network.movement.MovementRequest;
+import shared.util.MapHelper;
 import shared.util.Util;
 
 import java.util.Optional;
@@ -97,6 +99,11 @@ public class MovementProcessorSystem extends IteratingSystem {
                 boolean valid = !(blocked ||
                         occupied ||
                         player.hasImmobile());
+                boolean tileExit = MapHandler.getHelper().hasTileExit(map, expectedPos);
+                if (tileExit) {
+                    WorldPosition tileExitPos = map.getTile(expectedPos.x, expectedPos.y).getTileExit();
+                    expectedPos = new WorldPos(tileExitPos.getX(), tileExitPos.getY(), tileExitPos.getMap());
+                }
                 MovementRequest request = new MovementRequest(++requestNumber, valid ? expectedPos : pos, movement, valid);
                 if (requests.containsValue(request)) {
                     // ignore multiple requests with same direction & prediction

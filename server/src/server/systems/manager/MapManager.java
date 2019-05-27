@@ -1,12 +1,11 @@
 package server.systems.manager;
 
 import com.artemis.E;
-import com.artemis.Entity;
 import com.badlogic.gdx.utils.TimeUtils;
-import map.Cave;
 import position.WorldPos;
 import server.core.Server;
-import server.map.CaveGenerator;
+import shared.model.map.Tile;
+import shared.model.map.WorldPosition;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.util.MapHelper;
@@ -23,66 +22,70 @@ import static server.utils.WorldUtils.WorldUtils;
 public class MapManager extends DefaultManager {
 
     public static final int MAX_DISTANCE = 15;
-    private HashMap<Integer, shared.model.map.Map> maps = new HashMap<>();
+    private HashMap<Integer, shared.model.map.Map> maps;
     private final MapHelper helper;
     //    public int mapEntity;
     private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesFootprints = new ConcurrentHashMap<>();
 
-    public MapManager(Server server) {
+    public MapManager(Server server, HashMap<Integer, shared.model.map.Map> maps) {
         super(server);
         helper = MapHelper.instance();
+        this.maps = maps;
     }
 
     public Set<Integer> getMaps() {
         return maps.keySet();
     }
 
+    public shared.model.map.Map getMap(int map) {
+        return maps.get(map);
+    }
+
     @Override
     protected void initialize() {
-//        initCave();
-        helper.initializeMaps(maps);
+        super.initialize();
+    }
+
+    public void postInitialize() {
+        // create NPCs
+        maps.forEach((num, map) -> {
+            initTiles(num, map);
+        });
+    }
+
+    private void initTiles(int num, shared.model.map.Map map) {
+        Tile[][] mapTiles = map.getTiles();
+        for (int x = 0; x < mapTiles.length; x++) {
+            for (int y = 0; y < mapTiles[x].length; y++) {
+                if (mapTiles[x][y] != null) {
+                    int npcIndex = mapTiles[x][y].getNpcIndex();
+                    WorldPos pos = new WorldPos(x, y, num);
+                    if (npcIndex > 0) {
+                        createNPC(npcIndex, pos);
+                    }
+                    int objIndex = mapTiles[x][y].getObjIndex();
+                    if (objIndex > 0) {
+                        int objCount = mapTiles[x][y].getObjCount();
+                        createObject(objIndex, objCount, pos);
+                    }
+                }
+            }
+        }
+    }
+
+    private void createObject(int objIndex, int objCount, WorldPos pos) {
+        world.getSystem(WorldManager.class).createObject(objIndex, objCount, pos);
+    }
+
+    private void createNPC(int npcIndex, WorldPos pos) {
+        world.getSystem(WorldManager.class).createNPC(npcIndex, pos);
     }
 
     public MapHelper getHelper() {
         return helper;
     }
-
-    private void initCave() {
-        CaveGenerator caveGenerator = CaveGenerator.Builder
-                .create()
-                .height(60)
-                .width(60)
-                .chanceAlive(0.35f)
-                .steps(3)
-                .build();
-        boolean[][] tiles = caveGenerator.generateMap();
-
-        for (boolean[] row : tiles) {
-            String[] s = new String[row.length];
-            for (int i = 0; i < row.length; i++) {
-                s[i] = row[i] ? "X" : "-";
-            }
-            System.out.println(Arrays.toString(s));
-        }
-
-        Cave cave = new Cave(tiles, 60, 60);
-        Entity map = world.createEntity();
-        map.edit().add(cave);
-//        mapEntity = map.getId();
-    }
-
-//    public void generateMapEntity(MapDescriptor descriptor, String path) {
-//        int[][] tiles = MapGenerator.generateMap(descriptor);
-//        mapEntity = getServer().getWorld().create();
-//
-//        E map = E(mapEntity).map();
-//        map.mapTiles(tiles);
-//        map.mapPath(path);
-//        map.mapHeight(descriptor.getMapHeight());
-//        map.mapWidth(descriptor.getMapWidth());
-//    }
 
     /**
      * @param entityId
@@ -97,7 +100,7 @@ public class MapManager extends DefaultManager {
      * @return a set of entities in current map
      */
     public Set<Integer> getEntitiesInMap(int map) {
-        return entitiesByMap.get(map);
+        return entitiesByMap.computeIfAbsent(map, i -> new HashSet<>());
     }
 
 

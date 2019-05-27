@@ -6,6 +6,7 @@ import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -58,6 +59,7 @@ public class GameScreen extends ScreenAdapter {
         clientSystem.start();
         initWorld();
         clientSystem.getKryonetClient().sendToAll(new PlayerLoginRequest(player));
+
     }
 
     public static int getPlayer() {
@@ -135,8 +137,12 @@ public class GameScreen extends ScreenAdapter {
                 .pos2D();
         world.getSystem(TagManager.class).register("camera", cameraEntity);
 
+        // for testing
+        world.getSystem(SoundSytem.class).setVolume(0);
+        MusicHandler.setVolume(0);
+
         MusicHandler.FadeOutMusic(101, 0.02f);
-        MusicHandler.playMIDI(1);
+//        MusicHandler.playMIDI(1);
     }
 
     protected void update(float deltaTime) {

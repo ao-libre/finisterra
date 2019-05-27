@@ -11,11 +11,10 @@ import shared.model.readers.Reader;
 import shared.objects.types.Obj;
 
 public class AODescriptorsReader implements DescriptorsReader {
+
     @Override
     public Map loadMap(String map) {
-        Reader<Map> reader = new Reader<>();
-        MapLoader loader = new MapLoader();
-        return reader.read(Resources.GAME_MAPS_PATH + "Mapa" + map + ".map", loader);
+        return null;
     }
 
     @Override

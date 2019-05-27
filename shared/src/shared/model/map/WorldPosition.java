@@ -28,6 +28,8 @@
  */
 package shared.model.map;
 
+import java.util.Objects;
+
 public class WorldPosition {
 
     private int map;
@@ -91,4 +93,23 @@ public class WorldPosition {
         this.y = y;
     }
 
+    @Override
+    public String toString() {
+        return String.format("[Map: %d - X: %d - Y: %d", map, x, y);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WorldPosition that = (WorldPosition) o;
+        return map == that.map &&
+                x == that.x &&
+                y == that.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(map, x, y);
+    }
 }

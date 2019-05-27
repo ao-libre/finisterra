@@ -29,9 +29,15 @@ class SoundIndexPair {
 
 public class SoundSytem extends IteratingSystem {
 
+    public static float volume = 1.0f;
+
     public SoundSytem() {super(Aspect.all(AOSound.class));}
 
     private Map<Integer, SoundIndexPair> sounds = new HashMap<>();
+
+    public void setVolume(float volume) {
+        SoundSytem.volume = volume;
+    }
 
     @Override
     protected void inserted(int entityId) {

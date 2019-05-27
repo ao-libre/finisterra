@@ -3,6 +3,7 @@ package shared.network.init;
 import camera.Focused;
 import com.artemis.Component;
 import com.artemis.FluidIteratingSystem;
+import entity.Description;
 import entity.character.attributes.*;
 import entity.character.equipment.Armor;
 import entity.character.equipment.Helmet;
@@ -15,7 +16,7 @@ import entity.character.states.*;
 import entity.character.status.*;
 import entity.combat.AttackPower;
 import entity.combat.EvasionPower;
-import entity.npc.NPC;
+import entity.npc.*;
 import entity.world.*;
 import entity.world.Object;
 import graphics.Effect;
@@ -291,7 +292,13 @@ public class NetworkDictionary extends MarshalDictionary {
                 Armor.class,
                 Footprint.class,
                 AttackAnimation.class,
-                Buff.class
+                Buff.class,
+                AIMovement.class,
+                Attackable.class,
+                Commerce.class,
+                Domable.class,
+                Hostile.class,
+                Respawn.class
         );
     }
 

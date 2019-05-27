@@ -232,11 +232,11 @@ public class MagicCombatSystem extends BaseSystem {
         int spellTarget = spell.getTarget();
         switch (spellTarget) {
             case 1:
-                return targetEntity.isCharacter() || targetEntity.isNPC();
+                return targetEntity.isCharacter() || targetEntity.hasNPC();
             case 2:
-                return targetEntity.isNPC();
+                return targetEntity.hasNPC();
             case 3:
-                return targetEntity.isCharacter() || targetEntity.isNPC();
+                return targetEntity.isCharacter() || targetEntity.hasNPC();
             case 4:
                 return targetEntity == null;
         }

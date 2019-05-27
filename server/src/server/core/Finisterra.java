@@ -35,6 +35,7 @@ public class Finisterra implements ApplicationListener {
     private LobbyNetworkManager networkManager;
     private ObjectManager objectManager;
     private SpellManager spellManager;
+    private HashMap<Integer, Map> maps = new HashMap<>();
 
     public Finisterra(int tcpPort, int udpPort) {
         this.tcpPort = tcpPort;
@@ -47,7 +48,7 @@ public class Finisterra implements ApplicationListener {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         init();
         Gdx.app.log("Server initialization", "Finisterra...");
-        HashMap<Integer, Map> maps = new HashMap<>();
+        MapHelper.instance().initializeMaps(maps);
         lobby = new Lobby();
         WorldConfigurationBuilder worldConfigurationBuilder = new WorldConfigurationBuilder();
         KryonetServerMarshalStrategy strategy = new KryonetServerMarshalStrategy(tcpPort, udpPort);
@@ -62,15 +63,13 @@ public class Finisterra implements ApplicationListener {
     private void init() {
         objectManager = new ObjectManager();
         spellManager = new SpellManager();
-        NPCManager npcManager = new NPCManager();
-        npcManager.init();
     }
 
     public void startGame(Room room) {
         Server roomServer = servers.stream().filter(server -> server.getRoomId() == room.getId()).findFirst().orElseGet(() -> {
             int tcpPort = getNextPort();
             int udpPort = getNextPort();
-            Server server = new Server(room.getId(), tcpPort, udpPort, objectManager, spellManager);
+            Server server = new Server(room.getId(), tcpPort, udpPort, objectManager, spellManager, maps);
             server.addPlayers(room.getPlayers());
             servers.add(server);
             return server;

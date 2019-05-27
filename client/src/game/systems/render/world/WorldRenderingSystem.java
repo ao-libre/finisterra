@@ -166,9 +166,11 @@ public class WorldRenderingSystem extends BaseSystem {
     private Optional<Integer> getMapElement(WorldPos pos) {
         Optional<Integer> result = Optional.empty();
         Tile tile = MapHandler.get(pos.map).getTile(pos.x, pos.y);
-        int element = tile.getGraphic(2);
-        if (element != 0) {
-            result = Optional.of(element);
+        if (tile != null) {
+            int element = tile.getGraphic(2);
+            if (element != 0) {
+                result = Optional.of(element);
+            }
         }
         return result;
     }
