@@ -1,0 +1,10 @@
+[MAPA290]
+Name=Ruinas de Kalëoli
+MusicNum=94
+MagiaSinefecto=0
+NoEncriptarMP=0
+Terreno=DESIERTO
+Zona=DUNGEON
+Restringir=NEWBIE
+BackUp= 0
+Pk=0

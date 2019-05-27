@@ -1,0 +1,10 @@
+[MAPA169]
+Name=Mapa de GMs.
+MusicNum=10
+MagiaSinefecto=0
+NoEncriptarMP=0
+Terreno=BOSQUE
+Zona=DUNGEON
+Restringir=GM
+BackUp= 1
+Pk=1

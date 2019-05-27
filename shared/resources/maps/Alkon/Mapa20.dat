@@ -1,0 +1,10 @@
+[MAPA20]
+Name=Desierto
+MusicNum=10
+MagiaSinefecto=0
+NoEncriptarMP=0
+Terreno=DESIERTO
+Zona=CAMPO
+Restringir=No
+BackUp= 0
+Pk=0

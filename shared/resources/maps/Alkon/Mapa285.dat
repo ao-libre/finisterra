@@ -1,0 +1,12 @@
+[MAPA285]
+Name=Cueva del Kraken Ruinas de Ëarost
+MagiaSinefecto=0
+NoEncriptarMP=0
+Terreno=BOSQUE
+Zona=DUNGEON
+Restringir=No
+BackUp= 1
+Pk=0
+MusicNum=97
+InviSinEfecto=0
+ResuSinEfecto=0

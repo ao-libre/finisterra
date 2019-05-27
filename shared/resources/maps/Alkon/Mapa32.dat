@@ -1,0 +1,10 @@
+[MAPA32]
+Name=Bosque al este de Nix.
+MusicNum=3
+MagiaSinefecto=0
+NoEncriptarMP=0
+Terreno=BOSQUE
+Zona=CAMPO
+Restringir=No
+BackUp= 1
+Pk=0
