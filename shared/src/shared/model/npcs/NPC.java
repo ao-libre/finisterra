@@ -29,7 +29,7 @@ public class NPC {
     private boolean invReSpawn;
 
     //
-    private boolean movement;
+    private int movement;
     private boolean attackable;
     private boolean respawn;
     private boolean hostile;
@@ -191,11 +191,11 @@ public class NPC {
         this.invReSpawn = invReSpawn;
     }
 
-    public boolean isMovement() {
+    public int getMovement() {
         return movement;
     }
 
-    public void setMovement(boolean movement) {
+    public void setMovement(int movement) {
         this.movement = movement;
     }
 

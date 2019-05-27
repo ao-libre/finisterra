@@ -48,7 +48,7 @@ public class NPCLoader extends Loader<Map<Integer, NPC>> {
         add("MinHIT", ((npc, o) -> npc.setMinHit(Integer.parseInt(o))));
         add("MaxHP", ((npc, o) -> npc.setMaxHP(Integer.parseInt(o))));
         add("MinHP", ((npc, o) -> npc.setMinHP(Integer.parseInt(o))));
-        add("Movement", ((npc, o) -> npc.setMovement(Boolean.parseBoolean(o))));
+        add("Movement", ((npc, o) -> npc.setMovement(Integer.parseInt(o))));
         add("Name", NPC::setName);
         add("NpcType", ((npc, o) -> npc.setNpcType(Integer.parseInt(o))));
         add("Veneno", ((npc, o) -> npc.setPoison(Boolean.parseBoolean(o))));

@@ -14,7 +14,9 @@ import server.systems.ai.NPCAttackSystem;
 import server.systems.ai.PathFindingSystem;
 import server.systems.manager.*;
 import shared.model.lobby.Player;
+import shared.model.map.Map;
 
+import java.util.HashMap;
 import java.util.Set;
 
 import static server.systems.Intervals.*;
@@ -26,16 +28,18 @@ public class Server {
     private int roomId;
     private ObjectManager objectManager;
     private SpellManager spellManager;
+    private HashMap<Integer, Map> maps;
     private World world;
     private KryonetServerMarshalStrategy strategy;
     private Set<Player> players;
 
-    public Server(int roomId, int tcpPort, int udpPort, ObjectManager objectManager, SpellManager spellManager) {
+    public Server(int roomId, int tcpPort, int udpPort, ObjectManager objectManager, SpellManager spellManager, HashMap<Integer, Map> maps) {
         this.roomId = roomId;
         this.tcpPort = tcpPort;
         this.udpPort = udpPort;
         this.objectManager = objectManager;
         this.spellManager = spellManager;
+        this.maps = maps;
         create();
     }
 
@@ -70,10 +74,10 @@ public class Server {
                 .with(new ServerSystem(this, strategy))
                 .with(new NetworkManager(this, strategy))
                 .with(new ItemManager(this))
-                .with(new MapManager(this))
+                .with(new NPCManager())
+                .with(new MapManager(this, maps))
                 .with(spellManager)
                 .with(objectManager)
-                .with(new NPCManager())
                 .with(new PathFindingSystem(PATH_FINDING_INTERVAL))
                 .with(new NPCAttackSystem(NPC_ATTACK_INTERVAL))
                 .with(new WorldManager(this))
@@ -85,6 +89,7 @@ public class Server {
                 .with(new RandomMovementSystem(this))
                 .with(new BuffSystem());
         world = new World(builder.build());
+        world.getSystem(MapManager.class).postInitialize();
         System.out.println("WORLD CREATED");
     }
 

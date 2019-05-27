@@ -11,12 +11,14 @@ import movement.Destination;
 import position.WorldPos;
 import server.combat.CombatSystem;
 import server.core.Server;
-import server.systems.manager.*;
 import server.systems.MeditateSystem;
+import server.systems.manager.*;
 import server.utils.WorldUtils;
 import shared.model.AttackType;
 import shared.model.lobby.Player;
 import shared.model.map.Map;
+import shared.model.map.Tile;
+import shared.model.map.WorldPosition;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.MeditateRequest;
@@ -102,7 +104,6 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     public void processRequest(PlayerLoginRequest playerLoginRequest, int connectionId) {
         Player player = playerLoginRequest.getPlayer();
         getServer().getWorldManager().login(connectionId, player);
-        getServer().getWorldManager().addNPC();
     }
 
     /**
@@ -128,9 +129,16 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
         boolean occupied = mapManager.getHelper().hasEntity(getMapManager().getNearEntities(playerId), nextPos);
         if (!(player.hasImmobile() || blocked || occupied)) {
-            player.worldPosMap(nextPos.map);
-            player.worldPosX(nextPos.x);
-            player.worldPosY(nextPos.y);
+            Tile tile = mapManager.getMap(nextPos.map).getTile(nextPos.x, nextPos.y);
+            WorldPosition tileExit = tile.getTileExit();
+            if (tileExit.getMap() > 0 && tileExit.getX() > 0 && tileExit.getY() > 0) {
+                Log.info("Moving to exit tile: " + tileExit);
+                nextPos = new WorldPos(tileExit.getX(), tileExit.getY(), tileExit.getMap());
+            }
+            player
+                    .worldPosMap(nextPos.map)
+                    .worldPosX(nextPos.x)
+                    .worldPosY(nextPos.y);
         } else {
             nextPos = oldPos;
         }
@@ -139,7 +147,11 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
 
         // notify near users
         if (!nextPos.equals(oldPos)) {
-            getWorldManager().notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement)));
+            if (nextPos.map != oldPos.map) {
+                getWorldManager().notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(E(playerId).getWorldPos()).build());
+            } else {
+                getWorldManager().notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement)));
+            }
         } else {
             getWorldManager().notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(player.getHeading()).build());
         }
