@@ -19,7 +19,6 @@ import static com.artemis.E.E;
 public class SpellHandler {
 
     public static Map<Integer, Spell> spells = new HashMap<>();
-    private static DescriptorsReader reader = new AODescriptorsReader();
 
     public static void load() {
         SpellJson.load(spells, Gdx.files.internal(SharedResources.SPELLS_JSON_FILE));

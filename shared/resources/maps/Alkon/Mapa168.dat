@@ -1,0 +1,10 @@
+[MAPA168]
+Name=Dungeon Newbie.
+MusicNum=7
+MagiaSinefecto=0
+NoEncriptarMP=0
+Terreno=BOSQUE
+Zona=DUNGEON
+Restringir=NEWBIE
+BackUp= 1
+Pk=1

@@ -1,0 +1,12 @@
+[Mapa184]
+Name=Dungeon Inferno.
+MusicNum=58
+MagiaSinefecto=0
+InviSinEfecto=1
+ResuSinEfecto=0
+Terreno=NIEVE
+Zona=DUNGEON
+Restringir=No
+BackUp= 1
+Pk=0
+NoEncriptarMP=0

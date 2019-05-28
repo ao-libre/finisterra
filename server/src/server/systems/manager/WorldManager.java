@@ -44,22 +44,57 @@ public class WorldManager extends DefaultManager {
     @Override
     protected void initialize() {}
 
-    public void addNPC() {
-        NPC npc = getWorld().getSystem(NPCManager.class).getNpcs().get(583);
+    public void createObject(int objIndex, int objCount, WorldPos pos) {
+        int objId = world.create();
+        E(objId).worldPosMap(pos.map)
+                .worldPosX(pos.x)
+                .worldPosY(pos.y)
+                .objectIndex(objIndex)
+                .objectCount(objCount);
+        registerEntity(objId);
+    }
+
+    public void createNPC(int npcIndex, WorldPos pos) {
+        NPC npc = world.getSystem(NPCManager.class).getNpcs().get(npcIndex);
         int npcId = world.create();
+
         E npcEntity = E(npcId);
         npcEntity
                 .nPC()
-                .aOPhysics().aOPhysicsVelocity(85f)
-                .hit().hitMax(npc.getMaxHit()).hitMin(npc.getMinHit())
-                .evasionPowerValue(npc.getEvasionPower())
-                .attackPowerValue(npc.getAttackPower())
-                .health().healthMin(npc.getMinHP()).healthMax(npc.getMaxHP())
                 .bodyIndex(npc.getBody())
-                .headingCurrent(npc.getHeading())
+                .headingCurrent(Heading.HEADING_SOUTH)
                 .nameText(npc.getName());
-        setEntityPosition(npcEntity);
-        registerItem(npcId);
+        if (npc.getMovement() == 3) {
+            npcEntity.aOPhysics().aOPhysicsVelocity(85f);
+            npcEntity.aIMovement();
+        }
+        if (npc.getHead() > 0) {
+            npcEntity.headIndex(npc.getHead());
+        }
+        if (npc.isCommerce()) {
+            npcEntity.commerce();
+        }
+        if (npc.isHostile()) {
+            npcEntity.hostile();
+        }
+        if (npc.getMaxHit() > 0) {
+            npcEntity.hit().hitMax(npc.getMaxHit()).hitMin(npc.getMinHit());
+        }
+        if (npc.getEvasionPower() > 0) {
+            npcEntity.evasionPowerValue(npc.getEvasionPower());
+        }
+        if (npc.getAttackPower() > 0) {
+            npcEntity.attackPowerValue(npc.getAttackPower());
+        }
+        if (npc.getMaxHP() > 0) {
+            npcEntity.health().healthMin(npc.getMinHP()).healthMax(npc.getMaxHP());
+        }
+        if (npc.isAttackable()) {
+            npcEntity.attackable();
+        }
+
+        npcEntity.worldPosMap(pos.map).worldPosX(pos.x).worldPosY(pos.y);
+        registerEntity(npcId);
     }
 
     public int createEntity(String name, Hero hero, Team team) {
@@ -580,7 +615,7 @@ public class WorldManager extends DefaultManager {
         return obj1.getName().compareTo(obj2.getName());
     }
 
-    public void registerItem(int id) {
+    public void registerEntity(int id) {
         getServer().getMapManager().updateEntity(id);
     }
 

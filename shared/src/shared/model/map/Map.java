@@ -1,5 +1,7 @@
 package shared.model.map;
 
+import java.util.List;
+
 public class Map {
 
     public static final int MAX_MAP_SIZE_WIDTH = 100;
@@ -13,6 +15,10 @@ public class Map {
 
     public Map() {
         this.tiles = new Tile[MAX_MAP_SIZE_WIDTH + 1][MAX_MAP_SIZE_HEIGHT + 1];
+    }
+
+    public Tile[][] getTiles() {
+        return tiles;
     }
 
     public Tile getTile(int x, int y) {

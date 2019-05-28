@@ -6,6 +6,7 @@ import com.artemis.EBag;
 import com.esotericsoftware.minlog.Log;
 import entity.character.Character;
 import entity.character.states.Immobile;
+import entity.npc.AIMovement;
 import entity.npc.NPC;
 import entity.world.Footprint;
 import movement.Destination;
@@ -33,7 +34,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
     private HashMap<Integer, AStarMap> maps = new HashMap<>();
 
     public PathFindingSystem(float interval) {
-        super(Aspect.all(NPC.class, WorldPos.class).exclude(Character.class, Footprint.class, Immobile.class), interval);
+        super(Aspect.all(NPC.class, WorldPos.class, AIMovement.class).exclude(Character.class, Footprint.class, Immobile.class), interval);
     }
 
     private MapManager getMapManager() {
@@ -41,7 +42,8 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
     }
 
     private void updateMap(Integer map) {
-        if (getMapManager().getEntitiesInMap(map).size() == 0) {
+        Set<Integer> entitiesInMap = getMapManager().getEntitiesInMap(map);
+        if (entitiesInMap.stream().noneMatch(e -> E.E(e).isCharacter())) {
             return;
         }
         maps.put(map, createStarMap(map));
@@ -49,7 +51,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
 
     @Override
     protected void begin() {
-        getMapManager().getMaps().forEach(map -> updateMap(map));
+        getMapManager().getMaps().forEach(this::updateMap);
     }
 
     @Override
@@ -58,14 +60,14 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         if (!maps.containsKey(origin.map)) {
             return;
         }
+        Set<Integer> entitiesInMap = getMapManager().getEntitiesInMap(origin.map);
+        if (entitiesInMap.stream().noneMatch(id -> E.E(id).isCharacter())) {
+            return;
+        }
+
         Optional<E> target1 = findTarget(origin);
-        Log.info("Path finding has target: " + target1.isPresent());
         target1.ifPresent(target -> {
             WorldPos targetPos = target.getWorldPos();
-            Log.info("Looking for target " + target.id() + (target.hasName() ? target.getName().text : ""));
-            Log.info("Origin:" + origin);
-            Log.info("Target:" + targetPos);
-
             AStarMap map = maps.get(origin.map);
             boolean originWasWall = map.getNodeAt(origin.x, origin.y).isWall;
             boolean targetWasWall = map.getNodeAt(targetPos.x, targetPos.y).isWall;

@@ -73,7 +73,9 @@ public class MapManager {
         }
         for (int y = minY; y <= maxY; y++) {
             for (int x = minX; x <= maxX; x++) {
-                drawTile(map, batch, delta, layer, y, x);
+                if (map.getTile(x,y) != null) {
+                    drawTile(map, batch, delta, layer, y, x);
+                }
             }
         }
     }

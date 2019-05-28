@@ -58,12 +58,17 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         }
 
         if (target.isPresent()) {
-            Integer targetId = target.get();
+            int targetId = target.get();
             E t = E(targetId);
             if (t == null) {
                 Log.info("Can't find target");
                 return false;
             }
+            if (!isValidTarget(entityId, targetId)) {
+
+                return false;
+            }
+
             if (t.hasHealth() && t.getHealth().min == 0) {
                 // no podes atacar un muerto
                 notifyCombat(entityId, CANT_ATTACK_DEAD);
@@ -100,6 +105,10 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
             }
         }
         return false;
+    }
+
+    private boolean isValidTarget(int entityId, int targetId) {
+        return E(targetId).isCharacter() || (E(targetId).hasNPC() && E(targetId).isAttackable());
     }
 
     @Override
@@ -168,7 +177,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
             baseDamage = (int) ((3 * weaponDamage + ((maxWeaponDamage) / 5) * Math.max(0, entity.strengthCurrentValue() - 15) + userDamage)
                     * modifier);
         } else if (entity.hasHit()) {
-            baseDamage = ThreadLocalRandom.current().nextInt(entity.getHit().getMin(), entity.getHit().getMax());
+            baseDamage = ThreadLocalRandom.current().nextInt(Math.max(0, entity.getHit().getMin()), entity.getHit().getMax() + 1);
         }
         return baseDamage;
     }
@@ -308,7 +317,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
 
     @Override
     boolean isAttackable(int entityId) {
-        return E(entityId).hasWorldPos() && (E(entityId).isNPC() || E(entityId).isCharacter());
+        return E(entityId).hasWorldPos() && (E(entityId).hasNPC() || E(entityId).isCharacter());
     }
 
     /**

@@ -12,6 +12,7 @@ public class Tile {
 
     private int charIndex = EMPTY_INDEX;
     private int objIndex = EMPTY_INDEX;
+    private int objCount = EMPTY_INDEX;
     private int npcIndex = EMPTY_INDEX;
 
     private WorldPosition tileExit = new WorldPosition();
@@ -22,7 +23,7 @@ public class Tile {
     public Tile() {
     }
 
-    public Tile(int[] graphic, int charIndex, int objIndex,
+    public Tile(int[] graphic, int charIndex, int objCount, int objIndex,
                 int npcIndex, WorldPosition tileExit, boolean blocked,
                 int trigger) {
         this.setGraphic(graphic);
@@ -32,6 +33,15 @@ public class Tile {
         this.setTileExit(Optional.ofNullable(tileExit).orElse(new WorldPosition(0, 0, 0)));
         this.setBlocked(blocked);
         this.setTrigger(trigger);
+        this.setObjCount(objCount);
+    }
+
+    public void setObjCount(int objCount) {
+        this.objCount = objCount;
+    }
+
+    public int getObjCount() {
+        return objCount;
     }
 
     public int getGraphic(int index) {

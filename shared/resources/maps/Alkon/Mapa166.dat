@@ -1,0 +1,12 @@
+[Mapa166]
+Name=Dungeon Dragon.
+MusicNum=14
+MagiaSinefecto=0
+InviSinEfecto=0
+ResuSinEfecto=0
+Zona=DUNGEON
+Terreno=NIEVE
+Restringir=No
+BackUp= 1
+Pk=0
+NoEncriptarMP=0

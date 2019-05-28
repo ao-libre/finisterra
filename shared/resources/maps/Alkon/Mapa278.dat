@@ -1,0 +1,11 @@
+[MAPA278]
+Name=Mapa para Casamientos. (Bosque)
+MusicNum=10
+MagiaSinefecto=0
+InviSinEfecto=0
+ResuSinEfecto=0
+Terreno=BOSQUE
+Zona=DUNGEON
+Restringir=No
+BackUp= 1
+Pk=1

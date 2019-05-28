@@ -4,6 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.esotericsoftware.minlog.Log;
+
+import game.systems.Sound.SoundSytem;
+import game.utils.Resources;
+
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
@@ -63,9 +67,9 @@ public class SoundsHandler {
         }
         //TODO: it should be played with a global configurable volume
         if (loop == false) {
-            return soundsMap.get(soundID).play();
+            return soundsMap.get(soundID).play(SoundSytem.volume);
         } else {
-            return soundsMap.get(soundID).loop();
+            return soundsMap.get(soundID).loop(SoundSytem.volume);
         }
     }
 
@@ -75,13 +79,13 @@ public class SoundsHandler {
 
     public static void updateVolume(Integer soundId, long soundIndex, float volume) {
         if (soundsMap.containsKey(soundId)) {
-            soundsMap.get(soundId).setVolume(soundIndex, volume);
+            soundsMap.get(soundId).setVolume(soundIndex, volume * SoundSytem.volume);
         }
     }
 
     public static void updatePan(Integer soundId, long soundIndex, float pan, float volume) {
         if (soundsMap.containsKey(soundId)) {
-            soundsMap.get(soundId).setPan(soundIndex, pan, volume);
+            soundsMap.get(soundId).setPan(soundIndex, pan, volume * SoundSytem.volume);
         }
     }
 

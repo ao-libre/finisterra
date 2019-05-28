@@ -9,10 +9,8 @@ import game.utils.Resources;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Sequencer;
+import javax.sound.midi.*;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +19,9 @@ import java.util.regex.Pattern;
 
 public class MusicHandler {
 
-    public static final float MUSIC_FADE_STEP = 0.01f;
+    private static final float MUSIC_FADE_STEP = 0.01f;
+
+    private static float volume = 1.0f;
 
     private static Map<Integer, Music> musicMap = new ConcurrentHashMap<>();
     private static Map<Integer, Sequencer> midiMap = new ConcurrentHashMap<>();
@@ -36,6 +36,18 @@ public class MusicHandler {
         fileNames.forEach(file -> {
             loadFile(file);
         });
+    }
+
+    public static void setVolume(float volume) {
+        MusicHandler.volume = volume;
+        try {
+            MidiChannel[] channels = MidiSystem.getSynthesizer().getChannels();
+            for (MidiChannel channel : channels) {
+                if (channel != null) channel.controlChange(7, (int) (volume * 127));
+            }
+        } catch (MidiUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void loadFile(String file) {
@@ -117,9 +129,11 @@ public class MusicHandler {
             Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play music index: " + musicID + ", but it was not loaded.");
             return;
         }
-        //TODO: it should be played with a global configurable volume
-        musicMap.get(musicID).play();
-        musicMap.get(musicID).setLooping(true);
+
+        Music music = musicMap.get(musicID);
+        music.setVolume(volume);
+        music.play();
+        music.setLooping(true);
     }
 
     public static void stopMusic(int musicID){
@@ -128,8 +142,8 @@ public class MusicHandler {
             Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not loaded.");
             return;
         }
-        //TODO: it should be played with a global configurable volume
-        musicMap.get(musicID).stop();
+        Music music = musicMap.get(musicID);
+        music.stop();
     }
 
     public static void FadeInMusic(int musicID, float fadeRate){
@@ -188,6 +202,7 @@ public class MusicHandler {
             Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
             return;
         }
+
         sequencer.start();
     }
 
