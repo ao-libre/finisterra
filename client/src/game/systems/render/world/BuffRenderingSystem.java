@@ -46,29 +46,6 @@ public class BuffRenderingSystem extends OrderedEntityProcessingSystem {
         batch.end();
     }
 
-        /*BitmapFont font = Fonts.DIALOG_FONT;
-
-        TimeSync timeSyncSystem = GameScreen.getWorld().getSystem(TimeSync.class);
-        long rtt = timeSyncSystem.getRtt();
-        long timeOffset = timeSyncSystem.getTimeOffset();
-
-        if (e.buffBuffedAtributes().isEmpty())
-        {
-            e.buffBuffedAtributes().forEach((attrib, time)->{
-                e.buffBuffedAtributes().put(attrib, e.buffBuffedAtributes().get(attrib) - getWorld().getDelta());
-                Fonts.dialogLayout.setText(font, time.toString());
-                Fonts.dialogLayout.setText(font, time.toString(), font.getColor(), 128.f, Align.center | Align.top, true);
-                font.draw(getBatch(), Fonts.dialogLayout, 200, 200);
-                if (time <= 0.f) e.buffBuffedAtributes().remove(attrib);
-            });
-        }
-        else
-        {
-            e.removeBuff();
-        }*/
-
-
-
     @Override
     protected void process(Entity e) {
         E player = E.E(e);
@@ -80,9 +57,6 @@ public class BuffRenderingSystem extends OrderedEntityProcessingSystem {
             drawCoordinates(50, yOffset, time, attrib);
 
             yOffset += 50;
-
-            if (time <= 0.f) player.buffBuffedAtributes().remove(attrib);
-
         });
 
         yOffset = 100;

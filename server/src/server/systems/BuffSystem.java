@@ -22,14 +22,16 @@ public class BuffSystem extends FluidIteratingSystem {
         float delta = getWorld().getDelta();
 
         buff.getBuffedAtributes().forEach((attribute, time) -> {
-            time -= delta;
+
+            buff.getBuffedAtributes().put(attribute, time -= delta);
+
             if (time <= 0){
                 attribute.resetCurrentValue();
                 EntityUpdateBuilder update = EntityUpdateBuilder.of(e.id()).withComponents(attribute);
                 buff.getBuffedAtributes().remove(attribute);
                 if (buff.getBuffedAtributes().isEmpty()) {
                     e.removeBuff();
-                    update.remove(buff.getClass());
+                    update.remove(Buff.class);
                 } else {
                     update.withComponents(buff);
                 }
