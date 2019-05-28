@@ -11,7 +11,7 @@
     "kind": "AGILITY",
     "min": 3,
     "max": 5,
-    "effecTime": 1000
+    "effecTime": 300
   },
   {
     "id": 37,
@@ -53,7 +53,7 @@
     "kind": "STRENGTH",
     "min": 2,
     "max": 6,
-    "effecTime": 1000
+    "effecTime": 300
   },
   {
     "id": 166,

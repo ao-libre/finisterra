@@ -29,6 +29,7 @@ public class BuffSystem extends FluidIteratingSystem {
                 buff.getBuffedAtributes().remove(attribute);
                 if (buff.getBuffedAtributes().isEmpty()) {
                     e.removeBuff();
+                    update.remove(buff.getClass());
                 } else {
                     update.withComponents(buff);
                 }
