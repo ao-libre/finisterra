@@ -63,8 +63,9 @@ public class BuffRenderingSystem extends OrderedEntityProcessingSystem {
 
     }
 
-    private void drawCoordinates(int offsetX, int offsetY, Float number, Attribute attrib) {
-        String worldPosString = "[" + attrib.getClass().getSimpleName() + ":" + attrib.getCurrentValue() + " Time Left:" + number.intValue() + "]";
+    private void drawCoordinates(int offsetX, int offsetY, Float time, Attribute attrib) {
+        Float timeleft = time + (time + world.getSystem(TimeSync.class).getTimeOffset());
+        String worldPosString = "[" + attrib.getClass().getSimpleName() + ":" + attrib.getCurrentValue() + " Time Left:" + timeleft.intValue() + "]";
         BitmapFont font = Fonts.CONSOLE_FONT;
         Fonts.layout.setText(font, worldPosString);
         float fontX = cameraSystem.guiCamera.viewportWidth - Fonts.layout.width - offsetX;
