@@ -15,6 +15,10 @@ public class Map {
         this.tiles = new Tile[MAX_MAP_SIZE_WIDTH + 1][MAX_MAP_SIZE_HEIGHT + 1];
     }
 
+    public Map(int width, int height) {
+        this.tiles = new Tile[width][height];
+    }
+
     public Tile[][] getTiles() {
         return tiles;
     }
@@ -25,6 +29,14 @@ public class Map {
 
     public void setTile(int x, int y, Tile tile) {
         this.tiles[x][y] = tile;
+    }
+
+    public int getWidth() {
+        return tiles.length;
+    }
+
+    public int getHeight() {
+        return tiles[0].length;
     }
 
     public boolean isSecureZone() {

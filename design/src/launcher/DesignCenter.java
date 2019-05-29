@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import design.Scale2x;
 import game.utils.Resources;
 import graphics.GraphicScalator;
+import map.MapsToWorld;
 
 import java.io.File;
 import java.util.Objects;
@@ -18,11 +19,7 @@ public class DesignCenter extends Game {
 
     @Override
     public void create() {
-//        SeparateObjByType.run(OUTPUT_FOLDER);
-//        SpellsToJson.run(OUTPUT_FOLDER);
-//        GraphicsToJson.run(OUTPUT_FOLDER);
-
-        GraphicScalator.scaleGraphics("animation");
+        MapsToWorld.createWorld();
     }
 
 

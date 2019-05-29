@@ -9,6 +9,8 @@ public class AssetHandler {
     public static void load() {
         // TODO: Needs refactoring
         // Load resources
+        Gdx.app.log("Loading", "Loading world...");
+        MapHandler.load();
         Gdx.app.log("Loading", "Loading descriptors...");
         DescriptorHandler.load();
         Gdx.app.log("Loading", "Loading animations...");

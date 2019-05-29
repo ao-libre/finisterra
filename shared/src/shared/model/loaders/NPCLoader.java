@@ -20,7 +20,6 @@ public class NPCLoader extends Loader<Map<Integer, NPC>> {
     private final static Set<NPCLoader.NPCSetter<?>> setters = new HashSet<>();
 
     static {
-
         add("AfectaParalisis", ((npc, o) -> npc.setAffectParalysis(Boolean.parseBoolean(o))));
         add("Alineacion", ((npc, o) -> npc.setAlignment(Boolean.parseBoolean(o))));
         add("Attackable", ((npc, o) -> npc.setAttackable(Boolean.parseBoolean(o))));

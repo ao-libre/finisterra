@@ -19,7 +19,7 @@ import static com.artemis.E.E;
 
 public class MapHelper {
 
-    public static final int MAP_COUNT = 290; // TODO set to 1 to load faster
+    public static final int MAP_COUNT = 1; // TODO set to 1 to load faster
     private static Json mapJson = new Json();
 
     private MapHelper() {
@@ -49,11 +49,19 @@ public class MapHelper {
     }
 
     /**
-     * Initialize maps. TODO refactor
+     * Initialize maps.
      */
     public void initializeMaps(HashMap<Integer, Map> maps) {
         Log.info("Loading maps...");
-        for (int i = 1; i <= MAP_COUNT; i++) {
+        for (int i = 1; i <= 1; i++) {
+            Map map = getFromJson(i);
+            maps.put(i, map);
+        }
+    }
+
+    public void getAlkonMaps(HashMap<Integer, Map> maps) {
+        Log.info("Loading maps...");
+        for (int i = 1; i <= 290; i++) {
             Map map = getMap(i);
             maps.put(i, map);
         }
@@ -73,8 +81,24 @@ public class MapHelper {
         }
     }
 
+    public Map getFromJson(int i) {
+        Json json = new Json();
+        Map map = json.fromJson(Map.class, Gdx.files.internal(SharedResources.MAPS_FOLDER + "world/" + i + ".json"));
+        return map;
+    }
+
     public boolean hasTileExit(Map map, WorldPos expectedPos) {
         Tile tile = map.getTile(expectedPos.x, expectedPos.y);
-        return tile != null && tile.getTileExit().getMap() > 0 && tile.getTileExit().getY() > 0 && tile.getTileExit().getX() > 0;
+        return tile != null && tile.getTileExit() != null;
+    }
+
+    public Tile getTile(WorldPos pos) {
+        Map map = getMap(pos.map);
+        if (pos.x > 0 && pos.x < map.getWidth()) {
+            if (pos.y > 0 && pos.y < map.getHeight()) {
+                return map.getTile(pos.x, pos.y);
+            }
+        }
+        return null;
     }
 }

@@ -93,6 +93,10 @@ public class MapManager {
             animation.setAnimationTime(animation.getAnimationTime() + delta);
         }
 
+        doTileDraw(batch, y, x, tileRegion);
+    }
+
+    public static void doTileDraw(SpriteBatch batch, int y, int x, TextureRegion tileRegion) {
         if (tileRegion != null) {
             final float mapPosX = (x * Tile.TILE_PIXEL_WIDTH);
             final float mapPosY = (y * Tile.TILE_PIXEL_HEIGHT);
