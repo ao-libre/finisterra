@@ -116,6 +116,9 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(MovementRequest request, int connectionId) {
         NetworkManager networkManager = getWorld().getSystem(NetworkManager.class);
+        if (!networkManager.connectionHasPlayer(connectionId)){
+            return;
+        }
         int playerId = networkManager.getPlayerByConnection(connectionId);
         E player = E(playerId);
         WorldUtils worldUtils = WorldUtils(getServer().getWorld());

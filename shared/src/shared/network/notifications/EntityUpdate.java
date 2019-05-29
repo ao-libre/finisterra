@@ -4,6 +4,7 @@ import com.artemis.Component;
 import shared.network.interfaces.INotification;
 import shared.network.interfaces.INotificationProcessor;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -42,16 +43,12 @@ public class EntityUpdate implements INotification {
         }
 
         public EntityUpdateBuilder withComponents(Component... components) {
-            for (Component component : components) {
-                this.components.add(component);
-            }
+            this.components.addAll(Arrays.asList(components));
             return this;
         }
 
         public EntityUpdateBuilder remove(Class... toRemove) {
-            for (Class clazz : toRemove) {
-                this.toRemove.add(clazz);
-            }
+            this.toRemove.addAll(Arrays.asList(toRemove));
             return this;
         }
 
