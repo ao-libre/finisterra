@@ -108,6 +108,9 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
     }
 
     private boolean isValidTarget(int entityId, int targetId) {
+        if (E(entityId).hasNPC()) {
+            return E(targetId).isCharacter();
+        }
         return E(targetId).isCharacter() || (E(targetId).hasNPC() && E(targetId).isAttackable());
     }
 
@@ -218,7 +221,6 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
                                 doCrititAttack(userId, entityId, damage) :
                                 doNormalAttack(userId, entityId, damage);
 
-        // TODO send console messages
         notifyCombat(userId, result.userMessage);
         notifyCombat(entityId, result.victimMessage);
 
@@ -317,7 +319,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
 
     @Override
     boolean isAttackable(int entityId) {
-        return E(entityId).hasWorldPos() && (E(entityId).hasNPC() || E(entityId).isCharacter());
+        return E(entityId).hasNPC() || E(entityId).isCharacter();
     }
 
     /**

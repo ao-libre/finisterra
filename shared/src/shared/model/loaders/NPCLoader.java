@@ -23,7 +23,7 @@ public class NPCLoader extends Loader<Map<Integer, NPC>> {
 
         add("AfectaParalisis", ((npc, o) -> npc.setAffectParalysis(Boolean.parseBoolean(o))));
         add("Alineacion", ((npc, o) -> npc.setAlignment(Boolean.parseBoolean(o))));
-        add("Attackable", ((npc, o) -> npc.setAttackable(Boolean.parseBoolean(o))));
+        add("Attackable", ((npc, o) -> npc.setAttackable(Integer.parseInt(o) == 1)));
         add("PoderAtaque", ((npc, o) -> npc.setAttackPower(Integer.parseInt(o))));
         add("BackUp", ((npc, o) -> npc.setBackup(Boolean.parseBoolean(o))));
         add("Body", ((npc, o) -> npc.setBody(Integer.parseInt(o))));
@@ -40,7 +40,7 @@ public class NPCLoader extends Loader<Map<Integer, NPC>> {
         add("GiveGLD", ((npc, o) -> npc.setGiveGLD(Integer.parseInt(o))));
         add("Head", ((npc, o) -> npc.setHead(Integer.parseInt(o))));
         add("Heading", ((npc, o) -> npc.setHeading(Integer.parseInt(o))));
-        add("Hostile", ((npc, o) -> npc.setHostile(Boolean.parseBoolean(o))));
+        add("Hostile", ((npc, o) -> npc.setHostile(Integer.parseInt(o) == 1)));
         add("InvReSpawn", ((npc, o) -> npc.setInvReSpawn(Boolean.parseBoolean(o))));
         add("TierraInValida", ((npc, o) -> npc.setInvalidEarth(Boolean.parseBoolean(o))));
         add("TipoItems", ((npc, o) -> npc.setItemTypes(Integer.parseInt(o))));
