@@ -5,13 +5,12 @@ import com.artemis.E;
 import com.artemis.FluidIteratingSystem;
 import entity.character.states.Buff;
 import server.systems.manager.WorldManager;
-import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 
 public class BuffSystem extends FluidIteratingSystem {
 
     public BuffSystem() {
-        super(Aspect.all(Buff.class));;
+        super(Aspect.all(Buff.class));
     }
 
     @Override
@@ -35,9 +34,8 @@ public class BuffSystem extends FluidIteratingSystem {
                 } else {
                     update.withComponents(buff);
                 }
-                world.getSystem(WorldManager.class).sendEntityUpdate(e.id(), update);
+                world.getSystem(WorldManager.class).sendEntityUpdate(e.id(), update.build());
             }
-
         });
 
     }
