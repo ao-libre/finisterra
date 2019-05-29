@@ -225,7 +225,7 @@ public class MapManager extends DefaultManager {
     private void linkEntities(int entity1, int entity2) {
         Set<Integer> near = nearEntities.computeIfAbsent(entity1, (i) -> new HashSet<>());
         if (near.add(entity2)) {
-            EntityUpdate update = EntityUpdateBuilder.of(entity2).withComponents(WorldUtils(getServer().getWorld()).getComponents(entity2)).build();
+            EntityUpdate update = EntityUpdateBuilder.of(entity2).withComponents(WorldUtils(world).getComponents(entity2)).build();
             getServer().getWorldManager().sendEntityUpdate(entity1, update);
         }
     }

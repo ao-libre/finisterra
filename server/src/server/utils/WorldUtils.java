@@ -61,7 +61,7 @@ public class WorldUtils {
 
     public Component[] getComponents(int playerId) {
         List<Component> components = getComponents(world.getEntity(playerId));
-        return components.toArray(new Component[components.size()]);
+        return components.toArray(new Component[0]);
     }
 
     public int getHeading(AOPhysics.Movement movement) {
