@@ -43,45 +43,43 @@ All stuff shared between client and server, like network requests and responses,
 ## Images 
 ![alt text](https://github.com/guidotamb/ao-java/blob/master/src/main/resources/readme-example.png)
 
-### Key Config to play
+# Key Config to play
 ## Default
 
-# Combat
-ATTACK_1 = Input.Keys.CONTROL_LEFT;
-ATTACK_2 = Input.Keys.CONTROL_RIGHT;
-MEDITATE = Input.Keys.M;
-USE = Input.Keys.U;
-HIDE = Input.Keys.O;
-INVENTORY = Input.Keys.I;
-SPELLS = Input.Keys.K;
-TALK = Input.Keys.ENTER;
-DROP = Input.Keys.T;
-TAKE = Input.Keys.A;
-EQUIP = Input.Keys.E;
+### Combat
+ATTACK_1 = CONTROL_LEFT
+ATTACK_2 = CONTROL_RIGHT
+MEDITATE = M
+USE = U
+HIDE = O
+INVENTORY = I
+SPELLS = K
+TALK = ENTER
+DROP = T
+TAKE = A
+EQUIP = E
 
-# Move
-MOVE_LEFT = Input.Keys.LEFT;
-MOVE_RIGHT = Input.Keys.RIGHT;
-MOVE_UP = Input.Keys.UP;
-MOVE_DOWN = Input.Keys.DOWN;
+### Move
+MOVE_LEFT = LEFT
+MOVE_RIGHT = RIGHT
+MOVE_UP = UP
+MOVE_DOWN = DOWN
 
 ## Alternative wasd
-# Combat
-ATTACK_1 = Input.Keys.SPACE;
-ATTACK_2 = Input.Keys.SHIFT_RIGHT;
-MEDITATE = Input.Keys.M;
-USE = Input.Keys.SHIFT_LEFT;
-HIDE = Input.Keys.O;
-INVENTORY = Input.Keys.I;
-SPELLS = Input.Keys.K;
-TALK = Input.Keys.ENTER;
-DROP = Input.Keys.T;
-TAKE = Input.Keys.L;
-EQUIP = Input.Keys.E;
-# MOVE
-MOVE_LEFT = Input.Keys.A;
-MOVE_RIGHT = Input.Keys.D;
-MOVE_UP = Input.Keys.W;
-MOVE_DOWN = Input.Keys.S;
-
-
+### Combat
+ATTACK_1 = SPACE
+ATTACK_2 = SHIFT_RIGHT
+MEDITATE = M
+USE = SHIFT_LEFT
+HIDE = O
+INVENTORY = I
+SPELLS = K
+TALK = ENTER
+DROP = T
+TAKE = L
+EQUIP = E
+### MOVE
+MOVE_LEFT = A
+MOVE_RIGHT = D
+MOVE_UP = W
+MOVE_DOWN = S
