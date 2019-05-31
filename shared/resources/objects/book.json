@@ -3,50 +3,32 @@
     "id": 40,
     "name": "Atlas Argentum",
     "grhIndex": 538,
-    "collectable": false,
-    "value": 0,
-    "crucial": false,
-    "newbie": false,
-    "notDrop": false
+    "crucial": false
   },
   {
     "id": 41,
     "name": "Libro Antiguo",
     "grhIndex": 539,
-    "collectable": false,
-    "value": 0,
-    "crucial": false,
-    "newbie": false,
-    "notDrop": false
+    "crucial": false
   },
   {
     "id": 236,
     "name": "Atlas Argentum",
     "grhIndex": 538,
-    "collectable": false,
-    "value": 0,
-    "crucial": false,
-    "newbie": false,
-    "notDrop": false
+    "crucial": false
   },
   {
     "id": 626,
     "name": "No ves nada interesante.",
     "grhIndex": 145,
     "collectable": true,
-    "value": 0,
-    "crucial": false,
-    "newbie": false,
-    "notDrop": false
+    "crucial": false
   },
   {
     "id": 627,
     "name": "No ves nada interesante.",
     "grhIndex": 275,
     "collectable": true,
-    "value": 0,
-    "crucial": false,
-    "newbie": false,
-    "notDrop": false
+    "crucial": false
   }
 ]

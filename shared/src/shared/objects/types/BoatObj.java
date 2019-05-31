@@ -1,5 +1,8 @@
 package shared.objects.types;
 
+import org.ini4j.Profile;
+import shared.objects.factory.ObjectFactory;
+
 public class BoatObj extends Obj {
 
     private int bodyIndex;
@@ -7,6 +10,12 @@ public class BoatObj extends Obj {
     private int minHit, maxHit;
 
     public BoatObj() {
+    }
+
+    @Override
+    public void fillObject(Profile.Section section) {
+        super.fillObject(section);
+        ObjectFactory.fill(this, section);
     }
 
     public BoatObj(int id, String name, int grhIndex) {

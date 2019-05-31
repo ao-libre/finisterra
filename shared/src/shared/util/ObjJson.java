@@ -3,12 +3,12 @@ package shared.util;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
+import model.readers.AODescriptorsReader;
 import shared.objects.types.*;
 import shared.objects.types.common.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ObjJson extends Json {
 
@@ -87,6 +87,10 @@ public class ObjJson extends Json {
                 return FurnitureObj.class;
             case BOTTLE:
                 return DrinkObj.class;
+            case METAL:
+                return MineralObj.class;
+            case RING:
+                return MagicObj.class;
         }
         return null;
     }
@@ -101,5 +105,20 @@ public class ObjJson extends Json {
                 listObjs.forEach(obj -> objects.put(obj.getId(), obj));
             }
         });
+    }
+
+    public static void saveObjectsByType(Map<Integer, Obj> objects, FileHandle output) {
+        ObjJson json = new ObjJson();
+        Arrays.stream(Type.values()).forEach(type -> {
+            final Class classForType = getClassForType(type);
+            List<Obj> objs = objects.values().stream().filter(obj -> obj.getType().equals(type)).collect(Collectors.toList());
+            objs.sort(Comparator.comparingInt(Obj::getId));
+            json.toJson(objs, ArrayList.class, classForType, output.child(type.name().toLowerCase() + ".json"));
+        });
+    }
+
+    public static Map<Integer, Obj> loadFromDat(String fileName) {
+        AODescriptorsReader reader = new AODescriptorsReader();
+        return reader.loadObjects(fileName);
     }
 }

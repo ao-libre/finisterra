@@ -1,17 +1,26 @@
 package shared.objects.types;
 
+import org.ini4j.Profile;
+import shared.objects.factory.ObjectFactory;
+
 public class DoorObj extends Obj {
-    private boolean openDoor;
-    private boolean hasKey;
-    private int openIndex;
-    private int closeIndex;
-    private int closeKeyIndex;
+    private boolean openDoor = false;
+    private boolean hasKey = false;
+    private int openIndex = 0;
+    private int closeIndex = 0;
+    private int closeKeyIndex = 0;
 
     public DoorObj() {
     }
 
     public DoorObj(int id, String name, int grhIndex) {
         super(id, name, grhIndex);
+    }
+
+    @Override
+    public void fillObject(Profile.Section section) {
+        super.fillObject(section);
+        ObjectFactory.fill(this, section);
     }
 
     @Override

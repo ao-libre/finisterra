@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import design.Scale2x;
 import game.utils.Resources;
 import graphics.GraphicScalator;
+import json.DoorsToJson;
+import json.SeparateObjByType;
 
 import java.io.File;
 import java.util.Objects;
@@ -12,18 +14,21 @@ import java.util.stream.Stream;
 
 public class DesignCenter extends Game {
 
-    public static final String OUTPUT_FOLDER = "/output/";
+    public static final String OUTPUT_FOLDER = "output/";
     public static final String DATA_GRAFICOS = Resources.GAME_GRAPHICS_PATH;
     public static final String DATA_GRAFICOS_2_X = Resources.GAME_DATA_PATH + "graficos2x/";
 
     @Override
     public void create() {
 //        SeparateObjByType.run(OUTPUT_FOLDER);
+        SeparateObjByType.run2(OUTPUT_FOLDER);
 //        SpellsToJson.run(OUTPUT_FOLDER);
 //        GraphicsToJson.run(OUTPUT_FOLDER);
 
-        GraphicScalator.scaleGraphics("animation");
+//        GraphicScalator.scaleGraphics("animation");
+//        DoorsToJson.doYourMagic();
     }
+
 
 
 }

@@ -3,15 +3,11 @@
     "id": 480,
     "name": "Flecha",
     "grhIndex": 752,
-    "collectable": false,
     "value": 6,
-    "crucial": true,
-    "newbie": false,
-    "notDrop": false,
     "forbiddenClasses": {
       "CP": [
-        "DRUID",
-        "MAGICIAN"
+        "MAGICIAN",
+        "DRUID"
       ]
     },
     "minHit": 1,
@@ -21,23 +17,20 @@
     "id": 551,
     "name": "Flecha +1",
     "grhIndex": 755,
-    "collectable": false,
     "value": 10,
     "crucial": false,
-    "newbie": false,
-    "notDrop": false,
     "forbiddenClasses": {
       "CP": [
-        "PIRATE",
-        "DRUID",
+        "MAGICIAN",
+        "THIEF",
         "ASSASSIN",
-        "WARRIOR",
         "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
         "CLERIC",
         "ROGUE",
-        "PALADIN",
-        "THIEF",
-        "MAGICIAN"
+        "WARRIOR"
       ]
     },
     "minHit": 1,
@@ -47,23 +40,20 @@
     "id": 552,
     "name": "Flecha +2",
     "grhIndex": 754,
-    "collectable": false,
     "value": 16,
     "crucial": false,
-    "newbie": false,
-    "notDrop": false,
     "forbiddenClasses": {
       "CP": [
-        "PIRATE",
-        "DRUID",
+        "MAGICIAN",
+        "THIEF",
         "ASSASSIN",
-        "WARRIOR",
         "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
         "CLERIC",
         "ROGUE",
-        "PALADIN",
-        "THIEF",
-        "MAGICIAN"
+        "WARRIOR"
       ]
     },
     "minHit": 1,
@@ -73,23 +63,20 @@
     "id": 553,
     "name": "Flecha +3",
     "grhIndex": 753,
-    "collectable": false,
     "value": 23,
     "crucial": false,
-    "newbie": false,
-    "notDrop": false,
     "forbiddenClasses": {
       "CP": [
-        "PIRATE",
-        "DRUID",
+        "MAGICIAN",
+        "THIEF",
         "ASSASSIN",
-        "WARRIOR",
         "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
         "CLERIC",
         "ROGUE",
-        "PALADIN",
-        "THIEF",
-        "MAGICIAN"
+        "WARRIOR"
       ]
     },
     "minHit": 1,
@@ -99,15 +86,12 @@
     "id": 860,
     "name": "Flecha (Newbie)",
     "grhIndex": 752,
-    "collectable": false,
     "value": 2,
-    "crucial": true,
     "newbie": true,
-    "notDrop": false,
     "forbiddenClasses": {
       "CP": [
-        "DRUID",
-        "MAGICIAN"
+        "MAGICIAN",
+        "DRUID"
       ]
     },
     "minHit": 1,
