@@ -87,6 +87,7 @@ import shared.util.MapHelper;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 
@@ -157,6 +158,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 int[][].class,
                 int[].class,
                 Integer[].class,
+                ConcurrentHashMap.class,
                 HashMap.class,
                 HashSet.class,
                 MapHelper.class,

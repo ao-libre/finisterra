@@ -13,6 +13,11 @@ import java.util.stream.Collectors;
 
 public class SeparateObjByType {
 
+    public static void run2(String output) {
+        Map<Integer, Obj> obj = ObjJson.loadFromDat("obj");
+        ObjJson.saveObjectsByType(obj, Gdx.files.local(SharedResources.OBJECTS_FOLDER + output));
+    }
+
     public static void run(String output) {
         // load
         Map<Integer, Obj> objects = new HashMap<>();

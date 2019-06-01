@@ -15,7 +15,8 @@ public class MapLoader {
         file.skipBytes(Constants.GAME_FILE_HEADER_SIZE + (2 * 5)); // Skip complete map header
 
         inf.readFloat();
-        inf.readInt();
+        inf.readFloat();
+        inf.readShort();
 
         Map map = new Map();
 
