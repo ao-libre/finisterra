@@ -36,13 +36,14 @@ import shared.model.map.Tile;
 import shared.network.lobby.player.PlayerLoginRequest;
 
 import static com.artemis.E.E;
+import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
 
 public class GameScreen extends ScreenAdapter {
 
-    private static final int DECORATIONS = WorldConfigurationBuilder.Priority.NORMAL - 1;
     public static final int RENDER_PRE_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 3;
-    public static final int RENDER_POST_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 1;
     public static final int RENDER_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 2;
+    public static final int RENDER_POST_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 1;
+    private static final int DECORATIONS = WorldConfigurationBuilder.Priority.NORMAL - 1;
     public static World world;
     public static int player = -1;
     private static GUI gui = new GUI();
@@ -90,22 +91,22 @@ public class GameScreen extends ScreenAdapter {
         cameraSystem = new CameraSystem(AOGame.GAME_SCREEN_ZOOM);
         worldConfigBuilder.with(new SuperMapper())
                 .with(clientSystem)
-                .with(new TimeSync())
+                .with(HIGH, new TimeSync())
                 // Player movement
-                .with(new PlayerInputSystem())
-                .with(new MovementProcessorSystem())
-                .with(new MovementAnimationSystem())
-                .with(new IdleAnimationSystem())
-                .with(new MovementSystem())
+                .with(HIGH, new PlayerInputSystem())
+                .with(HIGH, new MovementProcessorSystem())
+                .with(HIGH, new MovementAnimationSystem())
+                .with(HIGH, new IdleAnimationSystem())
+                .with(HIGH, new MovementSystem())
                 // Camera
-                .with(cameraSystem)
-                .with(new CameraFocusSystem())
-                .with(new CameraMovementSystem())
+                .with(HIGH, cameraSystem)
+                .with(HIGH, new CameraFocusSystem())
+                .with(HIGH, new CameraMovementSystem())
                 // Logic systems
-                .with(new PhysicsAttackSystem())
+                .with(HIGH, new PhysicsAttackSystem())
                 // Sound systems
-                .with(new SoundSytem())
-                .with(new TiledMapSystem())
+                .with(HIGH, new SoundSytem())
+                .with(HIGH, new TiledMapSystem())
                 // Rendering
                 .with(RENDER_PRE_ENTITIES, new MapGroundRenderingSystem(spriteBatch))
                 .with(RENDER_PRE_ENTITIES, new ObjectRenderingSystem(spriteBatch))

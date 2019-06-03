@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.managers.MapManager;
 import game.systems.camera.CameraSystem;
 import game.systems.map.TiledMapSystem;
+import game.systems.render.world.WorldRenderingSystem.UserRange;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 
@@ -15,6 +16,7 @@ public class MapGroundRenderingSystem extends BaseSystem {
     public SpriteBatch batch;
     private TiledMapSystem mapSystem;
     private CameraSystem cameraSystem;
+    private WorldRenderingSystem worldRenderingSystem;
 
     public MapGroundRenderingSystem(SpriteBatch spriteBatch) {
         this.batch = spriteBatch;
@@ -30,30 +32,12 @@ public class MapGroundRenderingSystem extends BaseSystem {
     private void renderWorld() {
         Map map = this.mapSystem.map;
         if (map == null) return;
-        // Variable Declarations
-        int screenMinX, screenMaxX, screenMinY, screenMaxY, minAreaX, minAreaY, maxAreaX, maxAreaY;
+        UserRange range = worldRenderingSystem.getRange(mapSystem.mapNumber);
 
-        // Calculate visible part of the map
-        int cameraPosX = (int) (this.cameraSystem.camera.position.x / Tile.TILE_PIXEL_WIDTH);
-        int cameraPosY = (int) (this.cameraSystem.camera.position.y / Tile.TILE_PIXEL_HEIGHT);
-        int halfWindowTileWidth = (int) ((this.cameraSystem.camera.viewportWidth / Tile.TILE_PIXEL_WIDTH) / 2f);
-        int halfWindowTileHeight = (int) ((this.cameraSystem.camera.viewportHeight / Tile.TILE_PIXEL_HEIGHT) / 2f);
+        // LAYERS 1 & 2
+        MapManager.renderLayer(map, this.batch, world.getDelta(), 0, range.minAreaX, range.maxAreaX, range.minAreaY, range.maxAreaY);
+        MapManager.renderLayer(map, this.batch, world.getDelta(), 1, range.minAreaX, range.maxAreaX, range.minAreaY, range.maxAreaY);
 
-        screenMinX = cameraPosX - halfWindowTileWidth - 2;
-        screenMaxX = cameraPosX + halfWindowTileWidth + 2;
-        screenMinY = cameraPosY - halfWindowTileHeight - 2;
-        screenMaxY = cameraPosY + halfWindowTileHeight + 2;
-
-        if (screenMinX < Map.MIN_MAP_SIZE_WIDTH) screenMinX = Map.MIN_MAP_SIZE_WIDTH;
-        if (screenMaxX > Map.MAX_MAP_SIZE_WIDTH) screenMaxX = Map.MAX_MAP_SIZE_WIDTH;
-        if (screenMinY < Map.MIN_MAP_SIZE_HEIGHT) screenMinY = Map.MIN_MAP_SIZE_HEIGHT;
-        if (screenMaxY > Map.MAX_MAP_SIZE_HEIGHT) screenMaxY = Map.MAX_MAP_SIZE_HEIGHT;
-
-        // LAYER 1 - ANIMATED
-        MapManager.renderLayer(map, this.batch, world.getDelta(), 0, screenMinX, screenMaxX, screenMinY, screenMaxY);
-
-        // LAYER 2 - STATIC - FRAMEBUFFERED
-        this.batch.draw(MapManager.getBufferedLayer(map), 0, 0);
     }
 
     @Override

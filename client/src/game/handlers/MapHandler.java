@@ -1,8 +1,8 @@
 package game.handlers;
 
-import com.esotericsoftware.minlog.Log;
-import game.managers.MapManager;
+import position.WorldPos;
 import shared.model.map.Map;
+import shared.model.map.Tile;
 import shared.util.MapHelper;
 
 import java.util.HashMap;
@@ -13,10 +13,9 @@ public class MapHandler {
 
     private static MapHelper helper = MapHelper.instance();
 
-    static {
-        load(1);
+    public static void load() {
+        helper.initializeMaps(maps);
     }
-
     public static Map get(int map) {
         if (!has(map)) {
             return load(map);
@@ -29,15 +28,17 @@ public class MapHandler {
     }
 
     public static Map load(int mapNumber) {
-        long start = System.currentTimeMillis();
         Map map = helper.getMap(mapNumber);
-        Log.debug("Map " + mapNumber + ".json successfully loaded in " + (System.currentTimeMillis() - start) + "ms");
-        MapManager.initialize(map);
         maps.put(mapNumber, map);
         return map;
     }
 
     public static MapHelper getHelper() {
         return helper;
+    }
+
+    public static Tile getTile(WorldPos pos) {
+        Map map = get(pos.map);
+        return helper.getTile(map, pos);
     }
 }
