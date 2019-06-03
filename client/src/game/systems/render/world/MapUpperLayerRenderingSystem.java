@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.managers.MapManager;
 import game.systems.camera.CameraSystem;
 import game.systems.map.TiledMapSystem;
+import game.systems.render.world.WorldRenderingSystem.UserRange;
 import shared.model.map.Map;
 
 @Wire
@@ -24,7 +25,7 @@ public class MapUpperLayerRenderingSystem extends BaseSystem {
         // Variable Declarations
         Map map = this.mapSystem.map;
         if (map == null) return;
-        WorldRenderingSystem.UserRange range = worldRenderingSystem.getRange();
+        UserRange range = worldRenderingSystem.getRange(this.mapSystem.mapNumber);
         // LAYER 4 - ANIMATED (POSSIBLY?)
         MapManager.renderLayer(map, this.batch, world.getDelta(), 3, range.minAreaX, range.maxAreaX, range.minAreaY, range.maxAreaY);
     }

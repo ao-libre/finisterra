@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import design.Scale2x;
 import game.utils.Resources;
 import graphics.GraphicScalator;
+import map.MapsToWorld;
 import json.DoorsToJson;
 import json.SeparateObjByType;
 
@@ -20,13 +21,6 @@ public class DesignCenter extends Game {
 
     @Override
     public void create() {
-//        SeparateObjByType.run(OUTPUT_FOLDER);
-        SeparateObjByType.run2(OUTPUT_FOLDER);
-//        SpellsToJson.run(OUTPUT_FOLDER);
-//        GraphicsToJson.run(OUTPUT_FOLDER);
-
-//        GraphicScalator.scaleGraphics("animation");
-//        DoorsToJson.doYourMagic();
     }
 
 

@@ -134,7 +134,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         if (!(player.hasImmobile() || blocked || occupied)) {
             Tile tile = mapManager.getMap(nextPos.map).getTile(nextPos.x, nextPos.y);
             WorldPosition tileExit = tile.getTileExit();
-            if (tileExit.getMap() > 0 && tileExit.getX() > 0 && tileExit.getY() > 0) {
+            if (tileExit != null) {
                 Log.info("Moving to exit tile: " + tileExit);
                 nextPos = new WorldPos(tileExit.getX(), tileExit.getY(), tileExit.getMap());
             }

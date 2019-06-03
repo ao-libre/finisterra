@@ -24,9 +24,9 @@ public class MapLoader {
         for (int y = Map.MIN_MAP_SIZE_WIDTH; y <= Map.MAX_MAP_SIZE_WIDTH; y++) {
             for (int x = Map.MIN_MAP_SIZE_HEIGHT; x <= Map.MAX_MAP_SIZE_HEIGHT; x++) {
                 int charIndex = 0, objCount = 0, objIndex = 0, npcIndex = 0, trigger = 0, graphic[] = new int[4];
-                WorldPosition tileExit = new WorldPosition(0, 0, 0);
-                boolean blocked = false;
-                byte byFlags = 0;
+                WorldPosition tileExit = null;
+                boolean blocked;
+                byte byFlags;
 
                 byFlags = file.readByte();
                 blocked = (1 == (byFlags & 1));
@@ -57,9 +57,7 @@ public class MapLoader {
 
                 byFlags = inf.readByte();
                 if ((1 == (byFlags & 1))) {
-                    tileExit.setMap(Util.leShort(inf.readShort()));
-                    tileExit.setX(Util.leShort(inf.readShort()));
-                    tileExit.setY(Util.leShort(inf.readShort()));
+                    tileExit = new WorldPosition(Util.leShort(inf.readShort()), Util.leShort(inf.readShort()), Util.leShort(inf.readShort()));
                 }
                 if ((byFlags & 2) == 2) {
                     npcIndex = Util.leShort(inf.readShort());

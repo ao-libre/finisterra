@@ -1,7 +1,5 @@
 package shared.model.map;
 
-import java.util.Optional;
-
 public class Tile {
 
     public static final int EMPTY_INDEX = -1;
@@ -10,12 +8,12 @@ public class Tile {
 
     private int[] graphic;
 
-    private int charIndex = EMPTY_INDEX;
-    private int objIndex = EMPTY_INDEX;
-    private int objCount = EMPTY_INDEX;
-    private int npcIndex = EMPTY_INDEX;
+    private int charIndex;
+    private int objIndex;
+    private int objCount;
+    private int npcIndex;
 
-    private WorldPosition tileExit = new WorldPosition();
+    private WorldPosition tileExit;
     private boolean blocked;
 
     private int trigger;
@@ -30,7 +28,7 @@ public class Tile {
         this.setCharIndex(charIndex);
         this.setObjIndex(objIndex);
         this.setNpcIndex(npcIndex);
-        this.setTileExit(Optional.ofNullable(tileExit).orElse(new WorldPosition(0, 0, 0)));
+        this.setTileExit(tileExit);
         this.setBlocked(blocked);
         this.setTrigger(trigger);
         this.setObjCount(objCount);

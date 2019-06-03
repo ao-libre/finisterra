@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import game.handlers.AnimationHandler;
 import game.handlers.MapHandler;
+import game.managers.MapManager;
 import game.managers.WorldManager;
 import game.systems.camera.CameraSystem;
 import game.systems.map.TiledMapSystem;
@@ -65,7 +66,7 @@ public class WorldRenderingSystem extends BaseSystem {
     protected void processSystem() {
         int mapNumber = tiledMapSystem.mapNumber;
         if (mapNumber > 0) {
-            getRange().forEachTile((x, y) -> {
+            getRange(mapNumber).forEachTile((x, y) -> {
                 WorldPos pos = new WorldPos(x, y, mapNumber);
                 getMapElement(pos).ifPresent(element -> drawTile(batch, world.getDelta(), element, x, y));
                 getBeforeEffect(pos).forEach(effectRenderingSystem::drawEffect);
@@ -108,8 +109,9 @@ public class WorldRenderingSystem extends BaseSystem {
         return getEffect(effects, player);
     }
 
-    UserRange getRange() {
+    UserRange getRange(int mapNumber) {
         UserRange range = new UserRange();
+        Map map = MapHandler.get(mapNumber);
 
         // Calculate visible part of the map
         int cameraPosX = (int) (this.cameraSystem.camera.position.x / Tile.TILE_PIXEL_WIDTH);
@@ -122,10 +124,10 @@ public class WorldRenderingSystem extends BaseSystem {
         int screenMinY = cameraPosY - halfWindowTileHeight - 1;
         int screenMaxY = cameraPosY + halfWindowTileHeight + 1;
 
-        range.minAreaX = MathUtils.clamp(screenMinX - Map.TILE_BUFFER_SIZE, Map.MIN_MAP_SIZE_WIDTH, Map.MAX_MAP_SIZE_WIDTH);
-        range.maxAreaX = MathUtils.clamp(screenMaxX + Map.TILE_BUFFER_SIZE, Map.MIN_MAP_SIZE_WIDTH, Map.MAX_MAP_SIZE_WIDTH);
-        range.minAreaY = MathUtils.clamp(screenMinY - Map.TILE_BUFFER_SIZE,  Map.MIN_MAP_SIZE_HEIGHT, Map.MAX_MAP_SIZE_HEIGHT);
-        range.maxAreaY = MathUtils.clamp(screenMaxY + Map.TILE_BUFFER_SIZE,  Map.MIN_MAP_SIZE_HEIGHT, Map.MAX_MAP_SIZE_HEIGHT);
+        range.minAreaX = MathUtils.clamp(screenMinX - Map.TILE_BUFFER_SIZE, Map.MIN_MAP_SIZE_WIDTH, map.getWidth());
+        range.maxAreaX = MathUtils.clamp(screenMaxX + Map.TILE_BUFFER_SIZE, Map.MIN_MAP_SIZE_WIDTH, map.getWidth());
+        range.minAreaY = MathUtils.clamp(screenMinY - Map.TILE_BUFFER_SIZE,  Map.MIN_MAP_SIZE_HEIGHT, map.getHeight());
+        range.maxAreaY = MathUtils.clamp(screenMaxY + Map.TILE_BUFFER_SIZE,  Map.MIN_MAP_SIZE_HEIGHT, map.getHeight());
 
         return range;
     }
@@ -138,13 +140,7 @@ public class WorldRenderingSystem extends BaseSystem {
             animation.setAnimationTime(animation.getAnimationTime() + delta);
         }
 
-        if (tileRegion != null) {
-            final float mapPosX = (x * Tile.TILE_PIXEL_WIDTH);
-            final float mapPosY = (y * Tile.TILE_PIXEL_HEIGHT);
-            final float tileOffsetX = mapPosX + (Tile.TILE_PIXEL_WIDTH - tileRegion.getRegionWidth()) / 2;
-            final float tileOffsetY = mapPosY - tileRegion.getRegionHeight() + Tile.TILE_PIXEL_HEIGHT;
-            batch.draw(tileRegion, tileOffsetX, tileOffsetY);
-        }
+        MapManager.doTileDraw(batch, y, x, tileRegion);
     }
 
     public static class UserRange {
@@ -165,7 +161,8 @@ public class WorldRenderingSystem extends BaseSystem {
 
     private Optional<Integer> getMapElement(WorldPos pos) {
         Optional<Integer> result = Optional.empty();
-        Tile tile = MapHandler.get(pos.map).getTile(pos.x, pos.y);
+
+        Tile tile = MapHandler.getTile(pos);
         if (tile != null) {
             int element = tile.getGraphic(2);
             if (element != 0) {
