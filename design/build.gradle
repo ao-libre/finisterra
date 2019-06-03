@@ -10,7 +10,7 @@ apply plugin: "kotlin"
 dependencies {
     compile project(":desktop")
     compile "com.soywiz:kaifu2x:0.4.0"
-    compile "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.2.1"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1"
 }
 
 run.dependsOn classes
