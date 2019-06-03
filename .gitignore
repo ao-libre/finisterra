@@ -5,7 +5,8 @@ private/
 build/
 **/build/
 out/
-**/out/		
+**/out/
+design/resources*
 desktop/build*
 desktop/finisterra*
 desktop/java*

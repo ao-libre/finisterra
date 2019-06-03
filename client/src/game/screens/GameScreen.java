@@ -121,9 +121,9 @@ public class GameScreen extends ScreenAdapter {
                 .with(DECORATIONS, new StateRenderingSystem(spriteBatch))
                 .with(DECORATIONS, new CombatRenderingSystem(spriteBatch))
                 .with(DECORATIONS, new DialogRenderingSystem(spriteBatch))
-                .with(DECORATIONS, new BuffRenderingSystem(spriteBatch))
                 .with(DECORATIONS, new CharacterStatesRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(spriteBatch))
+                .with(WorldConfigurationBuilder.Priority.NORMAL, new BuffRenderingSystem(spriteBatch))
                 // Other
                 .with(new TagManager())
                 .with(new UuidEntityManager()); // why?

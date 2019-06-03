@@ -10,7 +10,7 @@ public abstract class Obj implements IFillObject {
     private int grhIndex;
     private boolean collectable = false;
     private int value = 0;
-    private boolean crucial = false;
+    private boolean crucial = true;
     private boolean newbie = false;
     private boolean notDrop = false;
 
