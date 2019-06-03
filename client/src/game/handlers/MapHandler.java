@@ -1,6 +1,8 @@
 package game.handlers;
 
+import position.WorldPos;
 import shared.model.map.Map;
+import shared.model.map.Tile;
 import shared.util.MapHelper;
 
 import java.util.HashMap;
@@ -33,5 +35,10 @@ public class MapHandler {
 
     public static MapHelper getHelper() {
         return helper;
+    }
+
+    public static Tile getTile(WorldPos pos) {
+        Map map = get(pos.map);
+        return helper.getTile(map, pos);
     }
 }

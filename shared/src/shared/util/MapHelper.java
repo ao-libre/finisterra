@@ -53,10 +53,11 @@ public class MapHelper {
      */
     public void initializeMaps(HashMap<Integer, Map> maps) {
         Log.info("Loading maps...");
-        for (int i = 1; i <= 1; i++) {
-            Map map = getFromJson(i);
-            maps.put(i, map);
-        }
+//        for (int i = 1; i <= 1; i++) {
+//            Map map = getFromJson(i);
+//            maps.put(i, map);
+//        }
+        getAlkonMaps(maps);
     }
 
     public void getAlkonMaps(HashMap<Integer, Map> maps) {
@@ -92,8 +93,7 @@ public class MapHelper {
         return tile != null && tile.getTileExit() != null;
     }
 
-    public Tile getTile(WorldPos pos) {
-        Map map = getMap(pos.map);
+    public Tile getTile(Map map, WorldPos pos) {
         if (pos.x > 0 && pos.x < map.getWidth()) {
             if (pos.y > 0 && pos.y < map.getHeight()) {
                 return map.getTile(pos.x, pos.y);

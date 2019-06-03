@@ -71,8 +71,8 @@ public class MapManager {
         if (layer >= 2) {
             batch.setColor(color.r, color.g, color.b, 0.7f);
         }
-        for (int y = minY; y <= maxY; y++) {
-            for (int x = minX; x <= maxX; x++) {
+        for (int y = minY; y < maxY; y++) {
+            for (int x = minX; x < maxX; x++) {
                 if (map.getTile(x,y) != null) {
                     drawTile(map, batch, delta, layer, y, x);
                 }
