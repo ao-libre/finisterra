@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.sun.javafx.text.GlyphLayout;
+import com.badlogic.gdx.utils.Align;
 import game.screens.GameScreen;
 import game.utils.Colors;
 import game.utils.Fonts;
@@ -91,7 +91,7 @@ public class Bar extends Actor {
 
     private void drawText(Batch batch, int min, int max, float barX, float barY) {
         BitmapFont font = Fonts.WHITE_FONT_WITH_BORDER;
-        Fonts.layout.setText(font, min + "/" + max, Color.WHITE, BAR_WIDTH - 4, GlyphLayout.LAYOUT_RIGHT_TO_LEFT, false);
+        Fonts.layout.setText(font, min + "/" + max, Color.WHITE, BAR_WIDTH - 4, Align.right, false);
         font.draw(batch, Fonts.layout, barX, barY + BAR_HEIGHT);
     }
 

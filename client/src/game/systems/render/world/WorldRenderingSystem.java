@@ -70,7 +70,7 @@ public class WorldRenderingSystem extends BaseSystem {
                 WorldPos pos = new WorldPos(x, y, mapNumber);
                 getMapElement(pos).ifPresent(element -> drawTile(batch, world.getDelta(), element, x, y));
                 getBeforeEffect(pos).forEach(effectRenderingSystem::drawEffect);
-                getPlayer(pos).ifPresent(player -> characterRenderingSystem.drawPlayer(player));
+                getPlayer(pos).ifPresent(characterRenderingSystem::drawPlayer);
                 getAfterEffect(pos).forEach(effectRenderingSystem::drawEffect);
             });
         }

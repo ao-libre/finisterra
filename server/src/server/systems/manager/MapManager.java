@@ -65,11 +65,6 @@ public class MapManager extends DefaultManager {
                     if (npcIndex > 0) {
                         createNPC(npcIndex, pos);
                     }
-                    int objIndex = mapTiles[x][y].getObjIndex();
-                    if (objIndex > 0) {
-                        int objCount = mapTiles[x][y].getObjCount();
-                        createObject(objIndex, objCount, pos);
-                    }
                 }
             }
         }

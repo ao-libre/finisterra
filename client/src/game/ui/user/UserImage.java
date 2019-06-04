@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.sun.javafx.text.GlyphLayout;
+import com.badlogic.gdx.utils.Align;
 import entity.character.states.Heading;
 import game.handlers.AnimationHandler;
 import game.screens.GameScreen;
@@ -43,7 +43,7 @@ public class UserImage extends Image {
         String userName = getUserName();
         if (!"".equals(userName)) {
             BitmapFont font = Fonts.WHITE_FONT;
-            Fonts.layout.setText(font, userName, Colors.GREY, getWidth() - 2, GlyphLayout.LAYOUT_LEFT_TO_RIGHT, false);
+            Fonts.layout.setText(font, userName, Colors.GREY, getWidth() - 2, Align.left, false);
             font.draw(batch, Fonts.layout, getX(), getY() + getHeight() - Fonts.layout.height);
         }
     }

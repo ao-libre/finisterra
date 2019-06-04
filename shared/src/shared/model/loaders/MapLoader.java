@@ -67,7 +67,7 @@ public class MapLoader {
                     objCount = Util.leShort(inf.readShort());
                 }
 
-                Tile tile = new Tile(graphic, charIndex, objIndex, objCount, npcIndex, tileExit, blocked, trigger);
+                Tile tile = new Tile(graphic, charIndex, objCount, objIndex, npcIndex, tileExit, blocked, trigger);
                 map.setTile(x, y, tile);
             }
         }
