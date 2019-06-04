@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import com.esotericsoftware.minlog.Log;
-import org.json.*
+import org.json.*;
 
 public class ServerConfiguration {
     private static final String serverConfigfile = "C:\\Users\\katerina\\Desktop\\Server.json";
@@ -41,7 +41,7 @@ public class ServerConfiguration {
 
     }
 
-    public string getServerPort(<netPortType> portType) {
+    public string getServerPort(netPortType portType) {
 
         switch(portType) {
             case netPortType.port_TCP:
