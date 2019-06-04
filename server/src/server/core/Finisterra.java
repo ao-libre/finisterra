@@ -35,10 +35,11 @@ public class Finisterra implements ApplicationListener {
     private LobbyNetworkManager networkManager;
     private ObjectManager objectManager;
     private SpellManager spellManager;
+    private ServerConfiguration serverConfig;
     private HashMap<Integer, Map> maps = new HashMap<>();
 
-    public Finisterra(ServerConfiguration config) {
-        this.lastPort = config.getTcpPort();
+    public Finisterra() {
+        this.lastPort = serverConfig.getTcpPort();
     }
 
     @Override
@@ -59,10 +60,10 @@ public class Finisterra implements ApplicationListener {
 
     private void initServerListener() {
 
-        Log.info("Loading network listener in ports TCP: " + tcpPort + ", UDP: " + udpPort + " and applying Marshall strategy.");
+        Log.info("Loading network listener in ports TCP: " + serverConfig.getTcpPort() + ", UDP: " + serverConfig.getUdpPort() + " and applying Marshall strategy.");
 
         WorldConfigurationBuilder worldConfigurationBuilder = new WorldConfigurationBuilder();
-        KryonetServerMarshalStrategy strategy = new KryonetServerMarshalStrategy(tcpPort, udpPort);
+        KryonetServerMarshalStrategy strategy = new KryonetServerMarshalStrategy(serverConfig.getTcpPort(),serverConfig.getUdpPort());
         networkManager = new LobbyNetworkManager(strategy);
         world = new World(worldConfigurationBuilder
                 .with(new FluidEntityPlugin())

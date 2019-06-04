@@ -30,6 +30,7 @@ public class Server {
     private SpellManager spellManager;
     private HashMap<Integer, Map> maps;
     private World world;
+    private ServerConfiguration serverConfig;
     private KryonetServerMarshalStrategy strategy;
     private Set<Player> players;
 
@@ -68,7 +69,7 @@ public class Server {
     private void initWorld() {
         System.out.println("Initializing systems...");
         final WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
-        strategy = new KryonetServerMarshalStrategy(ServerConfiguration);
+        strategy = new KryonetServerMarshalStrategy(serverConfig.getTcpPort(),serverConfig.getUdpPort());
         builder
                 .with(new FluidEntityPlugin())
                 .with(new ServerSystem(this, strategy))
@@ -91,7 +92,6 @@ public class Server {
                 .with(new BuffSystem());
         world = new World(builder.build());
         world.getSystem(MapManager.class).postInitialize();
-        world.getSystem(ServerConfiguration.class);
         System.out.println("WORLD CREATED");
     }
 

@@ -12,9 +12,9 @@ public class KryonetServerMarshalStrategy extends KryonetMarshalStrategy {
     private final int tcpPort;
     private final int udpPort;
 
-    public KryonetServerMarshalStrategy(ServerConfiguration config) {
-        this.tcpPort = config.getTcpPort();
-        this.udpPort = config.getUdpPort();
+    public KryonetServerMarshalStrategy(int tcpPort, int udpPort) {
+        this.tcpPort = tcpPort;
+        this.udpPort = udpPort;
         endpoint = new Server();
     }
 

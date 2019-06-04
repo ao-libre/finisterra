@@ -1,21 +1,20 @@
 package server;
 
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
-import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import server.core.Finisterra;
 
 import server.core.ServerConfiguration;
 
 public class ServerLauncher {
 
-    public static void main(String[] arg) {
-        ServerConfiguration config = new ServerConfiguration();
+    private static final String CONFIG_FILE = "resources/server.json";
 
+    public static void main(String[] arg) {
         ServerConfiguration.createDefaultJson();
 
         // Opens Server.json to load config.
-        ServerConfiguration.loadConfig("resources/server.json");
-        new HeadlessApplication(new Finisterra(config));
+        ServerConfiguration config = ServerConfiguration.loadConfig(CONFIG_FILE);
+        new HeadlessApplication(new Finisterra());
 
     }
 
