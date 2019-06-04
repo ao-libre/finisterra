@@ -72,6 +72,7 @@ public class Server {
         builder
                 .with(new FluidEntityPlugin())
                 .with(new ServerSystem(this, strategy))
+                .with(new ServerConfiguration)
                 .with(new NetworkManager(this, strategy))
                 .with(new ItemManager(this))
                 .with(new NPCManager())
@@ -90,6 +91,7 @@ public class Server {
                 .with(new BuffSystem());
         world = new World(builder.build());
         world.getSystem(MapManager.class).postInitialize();
+        world.getSystem(ServerConfiguration.class);
         System.out.println("WORLD CREATED");
     }
 

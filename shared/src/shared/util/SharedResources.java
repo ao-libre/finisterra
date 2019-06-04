@@ -9,5 +9,5 @@ public class SharedResources {
     public static final String SPELLS_FILE = "spells";
     public static final String JSON_EXT = ".json";
     public static final String SPELLS_JSON_FILE = SPELLS_FOLDER + SPELLS_FILE + JSON_EXT;
-
+    public static final String SERVER_CONFIGURATION_SILE =  "resources/Server" + JSON_EXT;
 }

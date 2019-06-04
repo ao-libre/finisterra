@@ -1,6 +1,7 @@
 apply plugin: 'application'
 
 sourceSets.main.java.srcDirs = ["src/"]
+sourceSets.main.resources.srcDirs = ["resources/"]
 
 mainClassName = "server.ServerLauncher"
 
@@ -9,7 +10,6 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-ai:$gdxAIVersion"
-    compile "org.json:json:20180813"
 }
 
 task dist(type: Jar) {

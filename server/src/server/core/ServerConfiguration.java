@@ -1,14 +1,14 @@
 package server.core;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Iterator;
+import com.artemis.BaseSystem;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonWriter;
 
 import com.esotericsoftware.minlog.Log;
-import org.json.*;
 
-public class ServerConfiguration {
+public class ServerConfiguration extends BaseSystem {
     private static final String serverConfigfile = "C:\\Users\\katerina\\Desktop\\Server.json";
 
     public enum netPortType {
@@ -16,7 +16,12 @@ public class ServerConfiguration {
         port_UDP
     }
 
-    public static void main(String[] args) {
+    public ServerConfiguration() {
+        setOutputType(JsonWriter.OutputType.json);
+        setIgnoreUnknownFields(true);
+    }
+
+    public static void load(String[] args) {
 
         try {
             // read the json file
