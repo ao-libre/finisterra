@@ -15,8 +15,13 @@ It allows us to create application game logic, create screens and render all tha
 ## Getting Started
 ### Clone repo
 ```
-git clone https://github.com/guidotamb/ao-java.git
+git clone https://github.com/ao-libre/ao-java.git
 ```
+## Requirements
+
+Important: you need to use Java SE Development Kit (JDK) 8 (Java 1.8) to make it run
+
+Download link: https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 
 ### Run
 * Go to folder and use following commands to run client ```./gradlew desktop:run``` or server ```./gradlew server:run```
@@ -25,7 +30,22 @@ git clone https://github.com/guidotamb/ao-java.git
 ### Import in IntelliJ
 * Select 'Import Project'
 * Find and select ```build.gradle``` file
-* Create run configurations using gradle tasks (desktop:run/dist, server:run/dist)
+* Create run configurations using gradle tasks (desktop:run, server:run)
+
+Here is an image showing how it should look like:
+![imagen](https://media.discordapp.net/attachments/573645939663699988/585399360037322777/Screen_Shot_2019-06-04_at_9.25.56_PM.png)
+
+
+#### How to change Java Version?
+If you have another version of Java already installed, please change: 
+https://kodejava.org/how-do-i-set-the-default-java-jdk-version-on-mac-os-x/
+
+If you use IntelliJ, use the JDK that comes with the project if is not working change it by yourself like in the picture below:
+
+`IntelliJ IDEA -> Preferences -> Build, Execution, Deployment -> Build Tools -> Gradle `
+
+![imagenintellij](https://media.discordapp.net/attachments/519531620064296971/543934316233883669/Screen_Shot_2019-02-10_at_12.20.01_PM.png)
+
 
 ## Modules
 
