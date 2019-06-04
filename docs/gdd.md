@@ -12,6 +12,12 @@
 - **Principios:** Comunidad - Diversión - Respeto - Open Source - Aprendizaje - Cooperación.
 (basados en la [Encuesta](https://docs.google.com/forms/d/e/1FAIpQLSemp4axFF6y5mitrH0bZjeKE64xMC0pIvhT7UELsmuTIqfXpg/viewform?usp=sf_link) incial del proyecto).
 
+# Manejo de Idiomas en la documentación y/o información del proyecto
+- **Diseño del juego:** Español
+- **Programación:** Inglés
+- **Documentación de programación:** Inglés
+- **Documentación para usuarios:** Español - Inglés
+
 # Breve descripción del Diseño del Juego
     Los usuarios adoptan un rol.
     Existen clases y razas
