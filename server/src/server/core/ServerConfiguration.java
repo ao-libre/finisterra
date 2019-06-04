@@ -24,11 +24,11 @@ public class ServerConfiguration extends BaseSystem {
     // S  E  T
     // -------------------------------------------------------------------
 
-    public void setPort_UDP(short port_UDP) {
+    public void setPort_UDP(int port_UDP) {
         this.port_UDP = port_UDP;
     }
 
-    public void setPort_TCP(short port_TCP) {
+    public void setPort_TCP(int port_TCP) {
         this.port_TCP = port_TCP;
     }
 
