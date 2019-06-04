@@ -61,7 +61,6 @@ public class MapHelper {
     }
 
     public void getAlkonMaps(HashMap<Integer, Map> maps) {
-        Log.info("Loading maps...");
         for (int i = 1; i <= 290; i++) {
             Map map = getMap(i);
             maps.put(i, map);

@@ -1,6 +1,7 @@
 package server.core;
 
 import com.esotericsoftware.kryonet.Server;
+import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import net.mostlyoriginal.api.network.marshal.kryonet.KryonetMarshalStrategy;
 
@@ -20,13 +21,13 @@ public class KryonetServerMarshalStrategy extends KryonetMarshalStrategy {
     @Override
     protected void connectEndpoint() {
         try {
-            System.out.print("Starting server... ");
+            Log.info("Starting server...");
             ((Server) endpoint).bind(tcpPort, udpPort);
-            System.out.println("Server UP and listening");
             state = MarshalState.STARTED;
+            Log.info("Server UP and LISTENING on ports TCP: " + tcpPort + " and UDP: " + udpPort);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("FAILED!");
+            Log.info("Error while connecting to the endpoint...");
             state = MarshalState.FAILED_TO_START;
         }
     }

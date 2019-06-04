@@ -9,6 +9,7 @@ dependencies {
     implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
     implementation "com.badlogicgames.gdx:gdx-ai:$gdxAIVersion"
+    compile "org.json:json:2018081"
 }
 
 task dist(type: Jar) {

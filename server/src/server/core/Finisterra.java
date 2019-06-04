@@ -6,6 +6,7 @@ import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.esotericsoftware.minlog.Log;
 import server.systems.manager.LobbyNetworkManager;
 import server.systems.manager.NPCManager;
 import server.systems.manager.ObjectManager;
@@ -46,10 +47,23 @@ public class Finisterra implements ApplicationListener {
     @Override
     public void create() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        Gdx.app.log("SERVER", "Initializing...");
         init();
-        Gdx.app.log("Server initialization", "Finisterra...");
+        initServerListener();
+        Gdx.app.log("SERVER", "Server initialization: Completed successfully!");
+    }
+
+    private void init() {
+        objectManager = new ObjectManager();
+        spellManager = new SpellManager();
         MapHelper.instance().initializeMaps(maps);
         lobby = new Lobby();
+    }
+
+    private void initServerListener() {
+
+        Log.info("Loading network listener in ports TCP: " + tcpPort + ", UDP: " + udpPort + " and applying Marshall strategy.");
+
         WorldConfigurationBuilder worldConfigurationBuilder = new WorldConfigurationBuilder();
         KryonetServerMarshalStrategy strategy = new KryonetServerMarshalStrategy(tcpPort, udpPort);
         networkManager = new LobbyNetworkManager(strategy);
@@ -57,12 +71,6 @@ public class Finisterra implements ApplicationListener {
                 .with(new FluidEntityPlugin())
                 .with(new FinisterraSystem(this, strategy))
                 .build());
-        Gdx.app.log("Server initialization", "Finisterra OK");
-    }
-
-    private void init() {
-        objectManager = new ObjectManager();
-        spellManager = new SpellManager();
     }
 
     public void startGame(Room room) {
