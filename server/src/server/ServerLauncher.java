@@ -14,7 +14,7 @@ public class ServerLauncher {
         ServerConfiguration.createDefaultJson();
 
         // Opens Server.json to load config.
-        ServerConfiguration.loadConfig();
+        ServerConfiguration.loadConfig("resources/server.json");
         new HeadlessApplication(new Finisterra(ServerConfiguration.getTcpPort(), ServerConfiguration.getUdpPort()));
 
     }
