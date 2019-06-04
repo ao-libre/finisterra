@@ -19,7 +19,7 @@ git clone https://github.com/ao-libre/ao-java.git
 ```
 ## Requirements
 
-Important: you need to use Java 1.8 to make it run
+Important: you need to use Java SE Development Kit (JDK) 8 (Java 1.8) to make it run
 
 Download link: https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
 
