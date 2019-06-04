@@ -18,6 +18,7 @@ import shared.model.lobby.Room;
 import shared.model.map.Map;
 import shared.network.lobby.StartGameResponse;
 import shared.util.MapHelper;
+import shared.util.SharedResources;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -69,6 +70,7 @@ public class Finisterra implements ApplicationListener {
         networkManager = new LobbyNetworkManager(strategy);
         world = new World(worldConfigurationBuilder
                 .with(new FluidEntityPlugin())
+                .with(new ServerConfiguration.loadConfig(SharedResources.SERVER_CONFIGURATION_FILE))
                 .with(new FinisterraSystem(this, strategy))
                 .build());
     }

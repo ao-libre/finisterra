@@ -1,60 +1,47 @@
 package server.core;
 
 import com.artemis.BaseSystem;
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonWriter;
-
-import com.esotericsoftware.minlog.Log;
+import shared.util.SharedResources;
 
 public class ServerConfiguration extends BaseSystem {
-    private static final String serverConfigfile = "C:\\Users\\katerina\\Desktop\\Server.json";
 
-    public enum netPortType {
-        port_TCP,
-        port_UDP
-    }
+    public int port_TCP;
+    public int port_UDP;
 
-    public ServerConfiguration() {
-        setOutputType(JsonWriter.OutputType.json);
-        setIgnoreUnknownFields(true);
-    }
+    public static ServerConfiguration loadConfig(String path) {
+        Json configObject = new Json();
 
-    public static void load(String[] args) {
+        setOutputType(JsonWriter.OutputType.json);// esto hace que cuando escribas con el toJson lo guarde en formato json)
+        setIgnoreUnknownFields(true); // hace que si no conoce un campo, lo ignore
 
-        try {
-            // read the json file
-            FileReader reader = new FileReader(serverConfigfile);
-
-            JSONParser jsonParser = new JSONParser();
-            JSONObject structNetwork = (JSONObject) jsonParser.parse(reader);
-
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-            Log.info("No se ha encontrado el archivo de configuracion en: " + serverConfigfile);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            Log.info("No se ha podido acceder al archivo de configuracion en: " + serverConfigfile);
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-            Log.info("No se ha podido parsear el archivo de configuracion en: " + serverConfigfile);
-        } catch (NullPointerException ex) {
-            ex.printStackTrace();
-            Log.info("Un hermoso error de puntero nulo al tratar de leer la configuracion del servidor... :'(");
-        }
+        return configObject.fromJson(Gdx.files.internal(SharedResources.SERVER_CONFIGURATION_FILE), ServerConfiguration.class)
 
     }
 
-    public string getServerPort(netPortType portType) {
+    // -------------------------------------------------------------------
+    // S  E  T
+    // -------------------------------------------------------------------
 
-        switch(portType) {
-            case netPortType.port_TCP:
-                return structNetwork.get("TCP");
-
-            case netPortType.port_UDP:
-                return structNetwork.get("UDP");
-        }
-
+    public void setPort_UDP(short port_UDP) {
+        this.port_UDP = port_UDP;
     }
+
+    public void setPort_TCP(short port_TCP) {
+        this.port_TCP = port_TCP;
+    }
+
+    // -------------------------------------------------------------------
+    // G  E  T
+    // -------------------------------------------------------------------
+    public int getPort_TCP() {
+        return port_TCP;
+    }
+
+    public int getPort_UDP() {
+        return port_UDP;
+    }
+
+
 }
