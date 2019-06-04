@@ -28,7 +28,7 @@ public class ServerConfiguration extends BaseSystem {
 
         // Valores por Default del JSON
         serverConfig.network.ports = new Ports(7666, 7667);
-        configObject.toJson(serverConfig, Gdx.files.internal("resources/server.json"));
+        configObject.toJson(serverConfig, Gdx.files.internal("resources/server-gen.json"));
     }
 
     // ---------------------------------------------------------------
@@ -59,6 +59,18 @@ public class ServerConfiguration extends BaseSystem {
 
     private static class Network {
         private Ports ports;
+
+        public Network(Ports ports) {
+            this.ports = ports;
+        }
+
+        public Ports getPorts() {
+            return ports;
+        }
+
+        public void setPorts(Ports ports) {
+            this.ports = ports;
+        }
 
         /*
             "network": {

@@ -9,13 +9,13 @@ import server.core.ServerConfiguration;
 public class ServerLauncher {
 
     public static void main(String[] arg) {
-        HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
+        ServerConfiguration config = new ServerConfiguration();
 
         ServerConfiguration.createDefaultJson();
 
         // Opens Server.json to load config.
         ServerConfiguration.loadConfig("resources/server.json");
-        new HeadlessApplication(new Finisterra(ServerConfiguration.getTcpPort(), ServerConfiguration.getUdpPort()));
+        new HeadlessApplication(new Finisterra(config));
 
     }
 

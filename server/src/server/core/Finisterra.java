@@ -28,8 +28,6 @@ import java.util.Set;
 
 public class Finisterra implements ApplicationListener {
 
-    private final int tcpPort;
-    private final int udpPort;
     private Set<Server> servers = new HashSet<>();
     private int lastPort;
     private Lobby lobby;
@@ -39,10 +37,8 @@ public class Finisterra implements ApplicationListener {
     private SpellManager spellManager;
     private HashMap<Integer, Map> maps = new HashMap<>();
 
-    public Finisterra(int tcpPort, int udpPort) {
-        this.tcpPort = tcpPort;
-        this.udpPort = udpPort;
-        this.lastPort = udpPort;
+    public Finisterra(ServerConfiguration config) {
+        this.lastPort = config.getTcpPort();
     }
 
     @Override
@@ -70,7 +66,7 @@ public class Finisterra implements ApplicationListener {
         networkManager = new LobbyNetworkManager(strategy);
         world = new World(worldConfigurationBuilder
                 .with(new FluidEntityPlugin())
-                .with(new ServerConfiguration.loadConfig("resources/Server.json"))
+                .with(ServerConfiguration.loadConfig("resources/Server.json"))
                 .with(new FinisterraSystem(this, strategy))
                 .build());
     }

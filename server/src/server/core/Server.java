@@ -68,7 +68,7 @@ public class Server {
     private void initWorld() {
         System.out.println("Initializing systems...");
         final WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
-        strategy = new KryonetServerMarshalStrategy(tcpPort, udpPort);
+        strategy = new KryonetServerMarshalStrategy(ServerConfiguration);
         builder
                 .with(new FluidEntityPlugin())
                 .with(new ServerSystem(this, strategy))
