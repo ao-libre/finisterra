@@ -72,7 +72,7 @@ public class Server {
         builder
                 .with(new FluidEntityPlugin())
                 .with(new ServerSystem(this, strategy))
-                .with(new ServerConfiguration)
+                .with(new ServerConfiguration())
                 .with(new NetworkManager(this, strategy))
                 .with(new ItemManager(this))
                 .with(new NPCManager())

@@ -70,7 +70,7 @@ public class Finisterra implements ApplicationListener {
         networkManager = new LobbyNetworkManager(strategy);
         world = new World(worldConfigurationBuilder
                 .with(new FluidEntityPlugin())
-                .with(new ServerConfiguration.loadConfig(SharedResources.SERVER_CONFIGURATION_FILE))
+                .with(new ServerConfiguration.loadConfig("resources/Server.json"))
                 .with(new FinisterraSystem(this, strategy))
                 .build());
     }

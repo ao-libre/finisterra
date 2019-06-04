@@ -15,7 +15,20 @@ public class ServerConfiguration extends BaseSystem {
         configObject.setOutputType(JsonWriter.OutputType.json);// esto hace que cuando escribas con el toJson lo guarde en formato json)
         configObject.setIgnoreUnknownFields(true); // hace que si no conoce un campo, lo ignore
 
-        return configObject.fromJson(ServerConfiguration.class, Gdx.files.internal(""));
+        return configObject.fromJson(ServerConfiguration.class, Gdx.files.internal(path));
+    }
+
+    public static void createDefaultJson() {
+        Json configObject = new Json();
+
+        configObject.setOutputType(JsonWriter.OutputType.json);// esto hace que cuando escribas con el toJson lo guarde en formato json)
+        configObject.setIgnoreUnknownFields(true); // hace que si no conoce un campo, lo ignore
+
+        ServerConfiguration serverConfig = new ServerConfiguration();
+
+        // Valores por Default del JSON
+        serverConfig.network.ports = new Ports(7666, 7667);
+        configObject.toJson(serverConfig, Gdx.files.internal("resources/server.json"));
     }
 
     // ---------------------------------------------------------------
