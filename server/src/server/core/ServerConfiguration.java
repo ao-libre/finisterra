@@ -3,45 +3,82 @@ package server.core;
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
-import shared.util.SharedResources;
+import com.badlogic.gdx.utils.JsonWriter;
 
 public class ServerConfiguration extends BaseSystem {
 
-    public int port_TCP;
-    public int port_UDP;
+    private Network network;
 
     public static ServerConfiguration loadConfig(String path) {
         Json configObject = new Json();
 
-        setOutputType(JsonWriter.OutputType.json);// esto hace que cuando escribas con el toJson lo guarde en formato json)
-        setIgnoreUnknownFields(true); // hace que si no conoce un campo, lo ignore
+        configObject.setOutputType(JsonWriter.OutputType.json);// esto hace que cuando escribas con el toJson lo guarde en formato json)
+        configObject.setIgnoreUnknownFields(true); // hace que si no conoce un campo, lo ignore
 
-        return configObject.fromJson(Gdx.files.internal(SharedResources.SERVER_CONFIGURATION_FILE), ServerConfiguration.class)
-
+        return configObject.fromJson(ServerConfiguration.class, Gdx.files.internal(""));
     }
 
-    // -------------------------------------------------------------------
-    // S  E  T
-    // -------------------------------------------------------------------
+    // ---------------------------------------------------------------
+    // Aca obtenes los valores de las propiedades en el Server.json
+    // ---------------------------------------------------------------
 
-    public void setPort_UDP(int port_UDP) {
-        this.port_UDP = port_UDP;
+    public int getTcpPort() {
+        return network.ports.tcp;
     }
 
-    public void setPort_TCP(int port_TCP) {
-        this.port_TCP = port_TCP;
+    public int getUdpPort() {
+        return network.ports.udp;
     }
 
-    // -------------------------------------------------------------------
-    // G  E  T
-    // -------------------------------------------------------------------
-    public int getPort_TCP() {
-        return port_TCP;
+    // ---------------------------------------------------------------
+    // Esto no lo toques...
+    // ---------------------------------------------------------------
+    @Override
+    protected void processSystem() {
+        // DO NOTHING
     }
 
-    public int getPort_UDP() {
-        return port_UDP;
+    // ---------------------------------------------------------------------------
+    // Aca se auto-setean los valores de las propiedades leidos de el Server.json
+    // ---------------------------------------------------------------------------
+    // Cada 'Class' es un objeto en el JSON
+    // ---------------------------------------------------------------------------
+
+    private static class Network {
+        private Ports ports;
+
+        /*
+            "network": {
+                // Estas acá.
+            }
+         */
     }
 
+    private static class Ports {
+        private final int tcp;
+        private final int udp;
 
+        /*
+            "network": {
+                "ports": {
+                    // Estás acá.
+                    "TCP": tcp,
+                    "UDP": udp
+                }
+            }
+         */
+
+        public Ports(int tcp, int udp) {
+            this.tcp = tcp;
+            this.udp = udp;
+        }
+
+        public int getTcp() {
+            return tcp;
+        }
+
+        public int getUdp() {
+            return udp;
+        }
+    }
 }
