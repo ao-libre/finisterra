@@ -7,6 +7,7 @@ import com.esotericsoftware.minlog.Log;
 import entity.character.states.CanWrite;
 import entity.character.states.Heading;
 import entity.character.status.Hit;
+import entity.npc.OriginPos;
 import physics.AOPhysics;
 import position.WorldPos;
 import server.core.Server;
@@ -42,7 +43,8 @@ public class WorldManager extends DefaultManager {
     }
 
     @Override
-    protected void initialize() {}
+    protected void initialize() {
+    }
 
     public void createObject(int objIndex, int objCount, WorldPos pos) {
         int objId = world.create();
@@ -60,7 +62,7 @@ public class WorldManager extends DefaultManager {
 
         E npcEntity = E(npcId);
         npcEntity
-                .nPC()
+                .nPCId(npcIndex)
                 .bodyIndex(npc.getBody())
                 .headingCurrent(Heading.HEADING_SOUTH)
                 .nameText(npc.getName());
@@ -93,6 +95,7 @@ public class WorldManager extends DefaultManager {
             npcEntity.attackable();
         }
 
+        npcEntity.originPosMap(pos.map).originPosX(pos.x).originPosY(pos.y);
         npcEntity.worldPosMap(pos.map).worldPosX(pos.x).worldPosY(pos.y);
         registerEntity(npcId);
     }
@@ -333,9 +336,7 @@ public class WorldManager extends DefaultManager {
 
         if (E(player).manaMax() > 0) {
             addPotion(player, PotionKind.MANA);
-        }
-        else
-        {
+        } else {
             addPotion(player, PotionKind.STRENGTH);
         }
 
@@ -653,21 +654,36 @@ public class WorldManager extends DefaultManager {
         notifyToNearEntities(entityId, update);
     }
 
-    public void userDie(int entityId) {
+    public void entityDie(int entityId) {
         // RESET USER. TODO implement ghost
         final E e = E(entityId);
-        setEntityPosition(e);
-        // reset health
-        e.getHealth().min = e.getHealth().max;
-        // reset mana
-        EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(entityId);
-        resetUpdate.withComponents(e.getHealth());
-        if (e.hasMana()) {
-            e.getMana().min = e.getMana().max;
-            resetUpdate.withComponents(e.getMana());
+        if (e.hasNPC()) {
+            int npcId = e.nPCId();
+            NPC npc = world.getSystem(NPCManager.class).getNpcs().get(npcId);
+            // TODO check if should respawn
+
+            OriginPos originPos = e.getOriginPos();
+            int npcRespawn = world.create();
+            E(npcRespawn)
+                    .respawnTime(5)
+                    .respawnNpcId(npcId)
+                    .respawnPos(originPos);
+
+            unregisterEntity(e.id());
+        } else {
+            setEntityPosition(e);
+            // reset health
+            e.getHealth().min = e.getHealth().max;
+            // reset mana
+            EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(entityId);
+            resetUpdate.withComponents(e.getHealth());
+            if (e.hasMana()) {
+                e.getMana().min = e.getMana().max;
+                resetUpdate.withComponents(e.getMana());
+            }
+            sendEntityUpdate(entityId, resetUpdate.build());
+            notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(e.getWorldPos()).build());
         }
-        sendEntityUpdate(entityId, resetUpdate.build());
-        notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(e.getWorldPos()).build());
     }
 
     public void login(int connectionId, Player player) {
