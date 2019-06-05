@@ -17,6 +17,7 @@ public class Resources {
     public static final String GAME_SOUNDS_PATH = GAME_DATA_PATH + "sounds/";
     public static final String GAME_MUSIC_PATH = GAME_DATA_PATH + "music/";
     public static final String GAME_MIDI_PATH = GAME_DATA_PATH + "midi/";
+    public static final String GAME_LANGUAGES_PATH = GAME_DATA_PATH + "languages/";
 
 
     public static final String GAME_SHADERS_PATH = GAME_DATA_PATH + "shaders/";

@@ -1,49 +1,64 @@
 package shared.util;
 
+import java.io.FileReader;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 public class Messages {
 
+    private void init() {
+        JSONParser parser = new JSONParser();
+        Object JsonLanguage = parser.parse(new FileReader("./resources/english.json"));
+
+    }
+
     // PHYSICAL COMBAT
-    public final static String DEAD_CANT_ATTACK = "Estas muerto, no puedes atacar!";
-    public final static String CANT_ATTACK_DEAD = "No puedes atacar a un muerto!";
+    public final static String DEAD_CANT_ATTACK = JsonLanguage.get("DEAD_CANT_ATTACK");
+    public final static String CANT_ATTACK_DEAD = JsonLanguage.get("CANT_ATTACK_DEAD");
 
-    public final static String CANT_ATTACK_CITIZEN = "No puedes atacar a otro ciudadano, a menos que te quites el seguro";
-    public final static String NOT_ENOUGH_ENERGY = "No tienes suficiente energia";
+    public final static String CANT_ATTACK_CITIZEN = JsonLanguage.get("CANT_ATTACK_CITIZEN");
+    public final static String NOT_ENOUGH_ENERGY = JsonLanguage.get("NOT_ENOUGH_ENERGY");
 
-    public final static String ATTACK_FAILED = "Has fallado!!";
-    public final static String ATTACKED_AND_FAILED = "%s ha intentado atacarte pero fallo!!";
+    public final static String ATTACK_FAILED = JsonLanguage.get("ATTACK_FAILED");
+    public final static String ATTACKED_AND_FAILED = JsonLanguage.get("ATTACKED_AND_FAILED");
 
-    public final static String SHIELD_DEFENSE = "Has rechazado con el escudo!!";
-    public final static String DEFENDED_WITH_SHIELD = "%s te ha rechazado el ataque con el escudo!!";
+    public final static String SHIELD_DEFENSE = JsonLanguage.get("SHIELD_DEFENSE");
+    public final static String DEFENDED_WITH_SHIELD = JsonLanguage.get("DEFENDED_WITH_SHIELD");
 
-    public final static String KILL = "Has matado a %s !!";
-    public final static String KILLED = "Has sido matado por %s. Estas muerto!!";
+    public final static String KILL = JsonLanguage.get("KILL");
+    public final static String KILLED = JsonLanguage.get("KILLED");
 
-    public static final String USER_CRITIC_HIT = "Has golpeado criticamente a %s por %d";
-    public static final String VICTIM_CRITIC_HIT = "%s te ha golpeado criticamente por por %d";
+    public static final String USER_CRITIC_HIT = JsonLanguage.get("USER_CRITIC_HIT");
+    public static final String VICTIM_CRITIC_HIT = JsonLanguage.get("VICTIM_CRITIC_HIT");
 
-    public static final String USER_STAB_HIT = "Has apuñalado a %s por %d";
-    public static final String VICTIM_STAB_HIT = "%s te ha apuñalado por %d";
+    public static final String USER_STAB_HIT = JsonLanguage.get("USER_STAB_HIT");
+    public static final String VICTIM_STAB_HIT = JsonLanguage.get("VICTIM_STAB_HIT");
 
-    public static final String USER_NORMAL_HIT = "Has golpeado a %s por %d";
-    public static final String VICTIM_NORMAL_HIT = "%s te ha golpeado por %d";
+    public static final String USER_NORMAL_HIT = JsonLanguage.get("USER_NORMAL_HIT");
+    public static final String VICTIM_NORMAL_HIT = JsonLanguage.get("VICTIM_NORMAL_HIT");
 
     // MAGIC COMBAT
-    public static final String DAMAGE_TO = "Le has quitado %d puntos de vida a %s";
-    public static final String DAMAGED_BY = "%s te ha quitado %d puntos de vida";
+    public static final String DAMAGE_TO = JsonLanguage.get("DAMAGE_TO");
+    public static final String DAMAGED_BY = JsonLanguage.get("DAMAGED_BY");
 
-    public final static String HEAL_TO = "Has curado a %s por %d puntos de vida !!";
-    public final static String HEAL_BY = "Has sido curado por %s, recuperaste %d puntos de vida!!";
+    public final static String HEAL_TO = JsonLanguage.get("HEAL_TO");
+    public final static String HEAL_BY = JsonLanguage.get("HEAL_BY");
 
-    public static final String INVALID_TARGET = "No es un target valido!";
-    public static final String NOT_ENOUGHT_MANA = "No tienes mana suficiente.";
+    public static final String INVALID_TARGET = JsonLanguage.get("INVALID_TARGET");
+    public static final String NOT_ENOUGHT_MANA = JsonLanguage.get("NOT_ENOUGHT_MANA");
 
-    public static final String NOT_PARALYSIS = "No esta paralizado!";
-    public static final String CANT_ATTACK_YOURSELF = "No puedes atacarte a vos mismo";
+    public static final String NOT_PARALYSIS = JsonLanguage.get("NOT_PARALYSIS");
+    public static final String CANT_ATTACK_YOURSELF = JsonLanguage.get("CANT_ATTACK_YOURSELF");
 
     // MANA
-    public static final String MANA_RECOVERED = "Has recuperado %d puntos de mana!";
-    public static final String MEDITATE_STOP = "Has terminado de meditar.";
-    public static final String MEDITATE_START = "Comienzas a meditar.";
-    public static final String MANA_FULL = "Ya tienes toda la mana.";
+    public static final String MANA_RECOVERED = JsonLanguage.get("MANA_RECOVERED");
+    public static final String MEDITATE_STOP = JsonLanguage.get("MEDITATE_STOP");
+    public static final String MEDITATE_START = JsonLanguage.get("MEDITATE_START");
+    public static final String MANA_FULL = JsonLanguage.get("MANA_FULL");
+
+
+    // OTHERS
+    public static final String SEE_NOTHING_INTEREST = JsonLanguage.get("SEE_NOTHING_INTEREST");
+    public static final String SEE_SOMEONE = JsonLanguage.get("SEE_SOMEONE");
 
 }
