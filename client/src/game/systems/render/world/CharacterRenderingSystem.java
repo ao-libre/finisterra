@@ -26,6 +26,7 @@ import shared.model.map.Tile;
 import shared.util.Util;
 
 import java.util.Comparator;
+import java.util.Optional;
 
 import static com.artemis.E.E;
 
@@ -54,8 +55,9 @@ public class CharacterRenderingSystem extends RenderingSystem {
         return CHAR_ASPECT;
     }
 
-    public void drawPlayer(E player) {
-        Pos2D currentPos = player.worldPosPos2D();
+    public void drawPlayer(E player, Optional<WorldPos> forcedPos) {
+        WorldPos pos = forcedPos.orElse(player.getWorldPos());
+        Pos2D currentPos = pos.getPos2D();
         Pos2D screenPos = Util.toScreen(currentPos);
         final Heading heading = player.getHeading();
         CharacterDrawer.createDrawer(getBatch(), player, heading, screenPos).draw();

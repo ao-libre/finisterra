@@ -48,7 +48,7 @@ public class Finisterra implements ApplicationListener {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         init();
         Gdx.app.log("Server initialization", "Finisterra...");
-        MapHelper.instance().initializeMaps(maps);
+        MapHelper.instance();
         lobby = new Lobby();
         WorldConfigurationBuilder worldConfigurationBuilder = new WorldConfigurationBuilder();
         KryonetServerMarshalStrategy strategy = new KryonetServerMarshalStrategy(tcpPort, udpPort);

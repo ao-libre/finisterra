@@ -8,7 +8,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
+import com.esotericsoftware.minlog.Log;
 import game.handlers.AnimationHandler;
 import game.handlers.MapHandler;
 import game.managers.MapManager;
@@ -19,7 +19,6 @@ import graphics.Effect;
 import graphics.RenderBefore;
 import model.textures.BundledAnimation;
 import position.WorldPos;
-import shared.model.map.Map;
 import shared.model.map.Tile;
 
 import java.util.HashSet;
@@ -66,14 +65,28 @@ public class WorldRenderingSystem extends BaseSystem {
     protected void processSystem() {
         int mapNumber = tiledMapSystem.mapNumber;
         if (mapNumber > 0) {
-            getRange(mapNumber).forEachTile((x, y) -> {
-                WorldPos pos = new WorldPos(x, y, mapNumber);
+            getRange().forEachTile((x, y) -> {
+                WorldPos pos = MapHandler.getHelper().getEffectivePosition(mapNumber, x, y);
                 getMapElement(pos).ifPresent(element -> drawTile(batch, world.getDelta(), element, x, y));
-                getBeforeEffect(pos).forEach(effectRenderingSystem::drawEffect);
-                getPlayer(pos).ifPresent(characterRenderingSystem::drawPlayer);
-                getAfterEffect(pos).forEach(effectRenderingSystem::drawEffect);
+                getBeforeEffect(pos).forEach(e -> effectRenderingSystem.drawEffect(e, e.hasWorldPos() ? translatePos(e.getWorldPos(), x, y) : Optional.empty()));
+                getPlayer(pos).ifPresent(e -> characterRenderingSystem.drawPlayer(e, translatePos(e.getWorldPos(), x, y)));
+                getAfterEffect(pos).forEach(e -> effectRenderingSystem.drawEffect(e, e.hasWorldPos() ? translatePos(e.getWorldPos(), x, y) : Optional.empty()));
             });
         }
+    }
+
+    private Optional<WorldPos> translatePos(WorldPos pos, int x, int y) {
+        Optional<WorldPos> result = Optional.empty();
+        if (pos.x != x || pos.y != y) {
+            WorldPos newPos = new WorldPos(x, y, pos.map);
+            newPos.offsetX = pos.offsetX;
+            newPos.offsetY = pos.offsetY;
+            result = Optional.of(newPos);
+            if (newPos.offsetY > 0 || newPos.offsetX > 0) {
+                Log.info("Translating pos " + pos + " to " + newPos);
+            }
+        }
+        return result;
     }
 
     private Set<E> getBeforeEffect(WorldPos pos) {
@@ -109,25 +122,18 @@ public class WorldRenderingSystem extends BaseSystem {
         return getEffect(effects, player);
     }
 
-    UserRange getRange(int mapNumber) {
+    UserRange getRange() {
         UserRange range = new UserRange();
-        Map map = MapHandler.get(mapNumber);
-
         // Calculate visible part of the map
         int cameraPosX = (int) (this.cameraSystem.camera.position.x / Tile.TILE_PIXEL_WIDTH);
         int cameraPosY = (int) (this.cameraSystem.camera.position.y / Tile.TILE_PIXEL_HEIGHT);
         int halfWindowTileWidth = (int) ((this.cameraSystem.camera.viewportWidth / Tile.TILE_PIXEL_WIDTH) / 2f);
         int halfWindowTileHeight = (int) ((this.cameraSystem.camera.viewportHeight / Tile.TILE_PIXEL_HEIGHT) / 2f);
 
-        int screenMinX = cameraPosX - halfWindowTileWidth - 1;
-        int screenMaxX = cameraPosX + halfWindowTileWidth + 1;
-        int screenMinY = cameraPosY - halfWindowTileHeight - 1;
-        int screenMaxY = cameraPosY + halfWindowTileHeight + 1;
-
-        range.minAreaX = MathUtils.clamp(screenMinX - Map.TILE_BUFFER_SIZE, Map.MIN_MAP_SIZE_WIDTH, map.getWidth());
-        range.maxAreaX = MathUtils.clamp(screenMaxX + Map.TILE_BUFFER_SIZE, Map.MIN_MAP_SIZE_WIDTH, map.getWidth());
-        range.minAreaY = MathUtils.clamp(screenMinY - Map.TILE_BUFFER_SIZE,  Map.MIN_MAP_SIZE_HEIGHT, map.getHeight());
-        range.maxAreaY = MathUtils.clamp(screenMaxY + Map.TILE_BUFFER_SIZE,  Map.MIN_MAP_SIZE_HEIGHT, map.getHeight());
+        range.minAreaX = cameraPosX - halfWindowTileWidth - 7;
+        range.maxAreaX = cameraPosX + halfWindowTileWidth + 7;
+        range.minAreaY = cameraPosY - halfWindowTileHeight - 7;
+        range.maxAreaY = cameraPosY + halfWindowTileHeight + 7;
 
         return range;
     }
@@ -149,7 +155,7 @@ public class WorldRenderingSystem extends BaseSystem {
         void forEachTile(TileDraw tile) {
             for (int y = minAreaY; y <= maxAreaY; y++) {
                 for (int x = minAreaX; x <= maxAreaX; x++) {
-                    tile.doDraw(x,y);
+                    tile.doDraw(x, y);
                 }
             }
         }
