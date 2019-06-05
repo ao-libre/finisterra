@@ -62,7 +62,7 @@ public class RandomMovementSystem extends IteratingSystem {
         WorldPos nextPos = worldUtils.getNextPos(worldPos, mov);
 
         MapManager mapManager = world.getSystem(MapManager.class);
-        Map map = mapManager.get(nextPos.map);
+        Map map = mapManager.getMap(nextPos.map);
         boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
         boolean occupied = mapManager.getHelper().hasEntity(getServer().getMapManager().getNearEntities(entityId), nextPos);
         if (player.hasImmobile() || blocked || occupied) {

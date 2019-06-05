@@ -122,10 +122,11 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         WorldPos nextPos = worldUtils.getNextPos(worldPos, mov);
 
         MapManager mapManager = getMapManager();
-        Map map = mapManager.get(nextPos.map);
+        Map map = mapManager.getMap(nextPos.map);
         boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
         boolean occupied = mapManager.getHelper().hasEntity(mapManager.getNearEntities(entityId), nextPos);
-        if (player.hasImmobile() || blocked || occupied) {
+        Tile tile = mapManager.getHelper().getTile(map, nextPos);
+        if (player.hasImmobile() || blocked || occupied || (tile != null && tile.getTileExit() != null)) {
             nextPos = oldPos;
         }
 
@@ -152,14 +153,14 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
                 .filter(E::hasWorldPos)
                 .filter(e -> {
                     int distance = WorldUtils(world).distance(e.getWorldPos(), worldPos);
-                    return distance < 15 && distance >= 0;
+                    return distance < 20 && distance >= 0;
                 })
                 .min(Comparator.comparingInt(e -> WorldUtils(world).distance(e.getWorldPos(), worldPos)));
     }
 
     private AStarMap createStarMap(int map) {
         MapManager mapManager = getMapManager();
-        Map realMap = mapManager.get(map);
+        Map realMap = mapManager.getMap(map);
         int height = realMap.MAX_MAP_SIZE_HEIGHT;
         int width = realMap.MAX_MAP_SIZE_WIDTH;
 

@@ -37,7 +37,7 @@ public class ServerDescriptorReader implements DescriptorsReader {
     public java.util.Map<Integer, NPC> loadNPCs(String npcs) {
         Reader<java.util.Map<Integer, NPC>> reader = new Reader<>();
         NPCLoader loader = new NPCLoader();
-        InputStream objectsStream = ServerDescriptorReader.class.getClassLoader().getResourceAsStream("init/NPCs.dat");
+        InputStream objectsStream = ServerDescriptorReader.class.getClassLoader().getResourceAsStream("NPCs.dat");
         return reader.read(objectsStream, loader);
     }
 

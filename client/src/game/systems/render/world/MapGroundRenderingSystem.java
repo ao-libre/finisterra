@@ -3,12 +3,13 @@ package game.systems.render.world;
 import com.artemis.BaseSystem;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import game.handlers.MapHandler;
 import game.managers.MapManager;
 import game.systems.camera.CameraSystem;
 import game.systems.map.TiledMapSystem;
 import game.systems.render.world.WorldRenderingSystem.UserRange;
+import position.WorldPos;
 import shared.model.map.Map;
-import shared.model.map.Tile;
 
 @Wire
 public class MapGroundRenderingSystem extends BaseSystem {
@@ -30,14 +31,32 @@ public class MapGroundRenderingSystem extends BaseSystem {
     }
 
     private void renderWorld() {
-        Map map = this.mapSystem.map;
+        final Map map = this.mapSystem.map;
         if (map == null) return;
-        UserRange range = worldRenderingSystem.getRange(mapSystem.mapNumber);
+        UserRange range = worldRenderingSystem.getRange();
 
         // LAYERS 1 & 2
-        MapManager.renderLayer(map, this.batch, world.getDelta(), 0, range.minAreaX, range.maxAreaX, range.minAreaY, range.maxAreaY);
-        MapManager.renderLayer(map, this.batch, world.getDelta(), 1, range.minAreaX, range.maxAreaX, range.minAreaY, range.maxAreaY);
+        drawRange(map, range);
+    }
 
+    private void drawRange(Map map, UserRange range) {
+        range.forEachTile((x, y) -> {
+            Map effectiveMap = map;
+            WorldPos pos = MapHandler.getHelper().getEffectivePosition(mapSystem.mapNumber, x, y);
+            if (pos.map != mapSystem.mapNumber) {
+                effectiveMap = MapHandler.get(pos.map);
+            }
+            drawGraphicInLayer(0, x, y, effectiveMap, pos);
+            drawGraphicInLayer(1, x, y, effectiveMap, pos);
+        });
+    }
+
+    private void drawGraphicInLayer(int layer, int x, int y, Map effectiveMap, WorldPos pos) {
+        int graphic = effectiveMap.getTile(pos.x, pos.y).getGraphic(layer);
+        if (graphic == 0) {
+            return;
+        }
+        MapManager.doTileDraw(this.batch, world.getDelta(), y, x, graphic);
     }
 
     @Override

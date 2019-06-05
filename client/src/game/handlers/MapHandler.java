@@ -9,32 +9,28 @@ import java.util.HashMap;
 
 public class MapHandler {
 
-    private static HashMap<Integer, Map> maps = new HashMap();
+    private static MapHelper helper;
 
-    private static MapHelper helper = MapHelper.instance();
-
-    public static void load() {
-        helper.initializeMaps(maps);
+    public static MapHelper getHelper() {
+        if (helper == null) {
+            helper = MapHelper.instance();
+        }
+        return helper;
     }
+
+    public static boolean has(int map) {
+        return helper.hasMap(map);
+    }
+
     public static Map get(int map) {
         if (!has(map)) {
             return load(map);
         }
-        return maps.get(map);
-    }
-
-    public static boolean has(int map) {
-        return maps.containsKey(map);
+        return helper.getMap(map);
     }
 
     public static Map load(int mapNumber) {
-        Map map = helper.getMap(mapNumber);
-        maps.put(mapNumber, map);
-        return map;
-    }
-
-    public static MapHelper getHelper() {
-        return helper;
+        return helper.getMap(mapNumber);
     }
 
     public static Tile getTile(WorldPos pos) {
