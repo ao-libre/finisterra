@@ -27,6 +27,14 @@ Download link: https://www.oracle.com/technetwork/java/javase/downloads/jdk8-dow
 * Go to folder and use following commands to run client ```./gradlew desktop:run``` or server ```./gradlew server:run```
 * Or generate distribution jars ``` ./gradlew desktop:dist ``` ``` ./gradlew server:dist ```
 
+### Server
+If you want to run server in local machine and don't want to open ports, add following property to VM Options:
+* ```-Dserver.useLocalhost=true```
+
+### Conflicts running Client and Server in same machine
+To avoid recompiling shared module and regeneration of .class files, which will probably bring some execution errors like ClassNotFoundException, you can add this argument to skip `fluid` task in both client and server run configurations:
+* ```-x :shared:fluid```
+
 ### Import in IntelliJ
 * Select 'Import Project'
 * Find and select ```build.gradle``` file
