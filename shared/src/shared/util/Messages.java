@@ -1,14 +1,18 @@
 package shared.util;
 
 import java.io.FileReader;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import com.google.gson.Gson;
+//import game.utils.Resources;
 
 public class Messages {
 
     private void init() {
-        JSONParser parser = new JSONParser();
-        Object JsonLanguage = parser.parse(new FileReader("./resources/english.json"));
+        Gson gson = new Gson();
+
+        // 1. JSON file to Java object
+        Object JsonLanguage = gson.fromJson(new FileReader("C:\\resources\\english.json"), Object.class);
+
+        System.out.println(JsonLanguage);
 
     }
 
