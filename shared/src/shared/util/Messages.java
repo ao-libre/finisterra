@@ -2,10 +2,15 @@ package shared.util;
 
 import java.io.FileReader;
 import java.io.FileNotFoundException;
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
 //import game.utils.Resources;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Json;
+
 public class Messages {
+    private static final String GAME_LANGUAGES_PATH =  "resources/languages/";
 
     private class JsonMessages {
         public String DEAD_CANT_ATTACK;
@@ -43,41 +48,48 @@ public class Messages {
     private void init() {
         try
         {
-            Gson gson = new Gson();
-            JsonMessages JsonLanguageObject = gson.fromJson(new FileReader("C:\\resources\\languages\\english.json"), JsonMessages.class);
+            final FileHandle file = Gdx.files.local(GAME_LANGUAGES_PATH + "english.json");
 
-            this.DEAD_CANT_ATTACK = JsonLanguageObject.DEAD_CANT_ATTACK;
-            this.CANT_ATTACK_DEAD = JsonLanguageObject.CANT_ATTACK_DEAD;
-            this.CANT_ATTACK_CITIZEN = JsonLanguageObject.CANT_ATTACK_CITIZEN;
-            this.NOT_ENOUGH_ENERGY = JsonLanguageObject.NOT_ENOUGH_ENERGY;
-            this.ATTACK_FAILED = JsonLanguageObject.ATTACK_FAILED;
-            this.ATTACKED_AND_FAILED = JsonLanguageObject.ATTACKED_AND_FAILED;
-            this.SHIELD_DEFENSE = JsonLanguageObject.SHIELD_DEFENSE;
-            this.DEFENDED_WITH_SHIELD = JsonLanguageObject.DEFENDED_WITH_SHIELD;
-            this.KILL = JsonLanguageObject.KILL;
-            this.KILLED = JsonLanguageObject.KILLED;
-            this.USER_CRITIC_HIT = JsonLanguageObject.USER_CRITIC_HIT;
-            this.VICTIM_CRITIC_HIT = JsonLanguageObject.VICTIM_CRITIC_HIT;
-            this.USER_STAB_HIT = JsonLanguageObject.USER_STAB_HIT;
-            this.VICTIM_STAB_HIT = JsonLanguageObject.VICTIM_STAB_HIT;
-            this.USER_NORMAL_HIT = JsonLanguageObject.USER_NORMAL_HIT;
-            this.VICTIM_NORMAL_HIT = JsonLanguageObject.VICTIM_NORMAL_HIT;
-            this.DAMAGE_TO = JsonLanguageObject.DAMAGE_TO;
-            this.DAMAGED_BY = JsonLanguageObject.DAMAGED_BY;
-            this.HEAL_TO = JsonLanguageObject.HEAL_TO;
-            this.HEAL_BY = JsonLanguageObject.HEAL_BY;
-            this.INVALID_TARGET = JsonLanguageObject.INVALID_TARGET;
-            this.NOT_ENOUGHT_MANA = JsonLanguageObject.NOT_ENOUGHT_MANA;
-            this.NOT_PARALYSIS = JsonLanguageObject.NOT_PARALYSIS;
-            this.CANT_ATTACK_YOURSELF = JsonLanguageObject.CANT_ATTACK_YOURSELF;
-            this.MANA_RECOVERED = JsonLanguageObject.MANA_RECOVERED;
-            this.MEDITATE_STOP = JsonLanguageObject.MEDITATE_STOP;
-            this.MEDITATE_START = JsonLanguageObject.MEDITATE_START;
-            this.MANA_FULL = JsonLanguageObject.MANA_FULL;
-            this.SEE_NOTHING_INTEREST = JsonLanguageObject.SEE_NOTHING_INTEREST;
-            this.SEE_SOMEONE = JsonLanguageObject.SEE_SOMEONE;
+            Json jsonLanguageObject = new Json();
+            System.out.println("it's me, Wombat!");
+
+            jsonLanguageObject.fromJson(JsonMessages.class, file);
+
+        //            Gson gson = new Gson();
+//            JsonMessages JsonLanguageObject = gson.fromJson(new FileReader("C:\\resources\\languages\\english.json"), JsonMessages.class);
+//
+//            this.DEAD_CANT_ATTACK = JsonLanguageObject.DEAD_CANT_ATTACK;
+//            this.CANT_ATTACK_DEAD = JsonLanguageObject.CANT_ATTACK_DEAD;
+//            this.CANT_ATTACK_CITIZEN = JsonLanguageObject.CANT_ATTACK_CITIZEN;
+//            this.NOT_ENOUGH_ENERGY = JsonLanguageObject.NOT_ENOUGH_ENERGY;
+//            this.ATTACK_FAILED = JsonLanguageObject.ATTACK_FAILED;
+//            this.ATTACKED_AND_FAILED = JsonLanguageObject.ATTACKED_AND_FAILED;
+//            this.SHIELD_DEFENSE = JsonLanguageObject.SHIELD_DEFENSE;
+//            this.DEFENDED_WITH_SHIELD = JsonLanguageObject.DEFENDED_WITH_SHIELD;
+//            this.KILL = JsonLanguageObject.KILL;
+//            this.KILLED = JsonLanguageObject.KILLED;
+//            this.USER_CRITIC_HIT = JsonLanguageObject.USER_CRITIC_HIT;
+//            this.VICTIM_CRITIC_HIT = JsonLanguageObject.VICTIM_CRITIC_HIT;
+//            this.USER_STAB_HIT = JsonLanguageObject.USER_STAB_HIT;
+//            this.VICTIM_STAB_HIT = JsonLanguageObject.VICTIM_STAB_HIT;
+//            this.USER_NORMAL_HIT = JsonLanguageObject.USER_NORMAL_HIT;
+//            this.VICTIM_NORMAL_HIT = JsonLanguageObject.VICTIM_NORMAL_HIT;
+//            this.DAMAGE_TO = JsonLanguageObject.DAMAGE_TO;
+//            this.DAMAGED_BY = JsonLanguageObject.DAMAGED_BY;
+//            this.HEAL_TO = JsonLanguageObject.HEAL_TO;
+//            this.HEAL_BY = JsonLanguageObject.HEAL_BY;
+//            this.INVALID_TARGET = JsonLanguageObject.INVALID_TARGET;
+//            this.NOT_ENOUGHT_MANA = JsonLanguageObject.NOT_ENOUGHT_MANA;
+//            this.NOT_PARALYSIS = JsonLanguageObject.NOT_PARALYSIS;
+//            this.CANT_ATTACK_YOURSELF = JsonLanguageObject.CANT_ATTACK_YOURSELF;
+//            this.MANA_RECOVERED = JsonLanguageObject.MANA_RECOVERED;
+//            this.MEDITATE_STOP = JsonLanguageObject.MEDITATE_STOP;
+//            this.MEDITATE_START = JsonLanguageObject.MEDITATE_START;
+//            this.MANA_FULL = JsonLanguageObject.MANA_FULL;
+//            this.SEE_NOTHING_INTEREST = JsonLanguageObject.SEE_NOTHING_INTEREST;
+//            this.SEE_SOMEONE = JsonLanguageObject.SEE_SOMEONE;
         }
-        catch (FileNotFoundException ex)
+        catch (Throwable ex)
         {
             System.out.println("ERROR: No language file found");
             System.exit(0);
