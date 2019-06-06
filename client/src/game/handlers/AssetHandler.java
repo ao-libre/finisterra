@@ -1,6 +1,7 @@
 package game.handlers;
 
 import com.badlogic.gdx.Gdx;
+import org.lwjgl.openal.AL;
 
 public class AssetHandler {
 
@@ -31,7 +32,9 @@ public class AssetHandler {
     }
 
     public static void unload() {
-        // TODO: Implement this
+        MusicHandler.unload();
+        SoundsHandler.unload();
+        AL.destroy();
     }
 
     public static StateHandler getState() {
