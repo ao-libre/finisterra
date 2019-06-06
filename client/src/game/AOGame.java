@@ -4,8 +4,8 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.esotericsoftware.minlog.Log;
 import game.handlers.AssetHandler;
-import game.handlers.MapHandler;
 import game.handlers.StateHandler;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
@@ -61,4 +61,11 @@ public class AOGame extends Game {
         ScreenManager.getInstance().showScreen(ScreenEnum.ROOM, params);
     }
 
+    public void dispose() {
+        Log.info("Closing client...");
+        AssetHandler.unload();
+        Gdx.app.exit();
+        Log.info("Thank you for playing! See you soon...");
+        System.exit(0);
+    }
 }
