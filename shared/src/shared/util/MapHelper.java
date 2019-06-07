@@ -72,7 +72,6 @@ public class MapHelper {
      * Initialize maps.
      */
     public void initializeMaps(HashMap<Integer, Map> maps) {
-        Log.info("Loading maps...");
         getAlkonMaps(maps);
     }
 
