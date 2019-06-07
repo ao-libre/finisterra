@@ -1,11 +1,17 @@
 package launcher;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.files.FileHandleStream;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.esotericsoftware.minlog.Log;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 
 public class ClientConfiguration {
@@ -31,6 +37,24 @@ public class ClientConfiguration {
         return null;
     }
 
+    public static void createConfig() {
+
+            Json configObject = new Json();
+            ClientConfiguration configOutput = new ClientConfiguration();
+
+            // Default values of `Init`
+            configOutput.initConfig.video.width = 1280;
+            configOutput.initConfig.video.height = 720;
+
+            // Default values of `Init`
+            configOutput.net.defaultServer.hostname = "45.235.98.116";
+            configOutput.net.defaultServer.port = 9000;
+
+            FileHandle outputFile = Gdx.files.local("output/Config.json");
+
+            configObject.toJson(configObject,outputFile));
+    }
+
     // ---------------------------------------------------------------
     // Aca obtenes los valores de las propiedades en el Server.json
     // ---------------------------------------------------------------
@@ -53,6 +77,10 @@ public class ClientConfiguration {
         return net.defaultServer.port;
     }
 
+    // ---------------------------------------------------------------
+    // Aca asignas los valores de las propiedades en el Server.json
+    // ---------------------------------------------------------------
+
     //----------------------------------------------------------------------------
     private static class Init {
         private Video video;
@@ -68,13 +96,14 @@ public class ClientConfiguration {
         }
 
         private static class Video {
-            private final int width;
-            private final int height;
+            private int width;
+            private int height;
 
             public Video(int width, int height) {
                 this.width = width;
                 this.height = height;
             }
+
         }
     }
 
@@ -93,8 +122,8 @@ public class ClientConfiguration {
         }
 
         private static class DefaultServer {
-            private final String hostname;
-            private final int port;
+            private String hostname;
+            private int port;
 
             /*
                 "network": {

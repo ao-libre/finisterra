@@ -27,6 +27,8 @@ public class AOGame extends Game {
     public void create() {
         Gdx.app.debug("AOGame", "Creating AOGame...");
 
+        ClientConfiguration.createConfig();
+
         // Load resources & stuff.
         AssetHandler.load();
         if (AssetHandler.getState() == StateHandler.LOADED)
