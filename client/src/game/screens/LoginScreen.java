@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import game.ClientConfiguration;
 import game.handlers.MusicHandler;
 import game.systems.network.ClientSystem;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
@@ -14,8 +15,8 @@ import shared.network.lobby.JoinLobbyRequest;
 
 public class LoginScreen extends AbstractScreen {
 
-    private static final String SERVER_IP = "ec2-18-231-116-111.sa-east-1.compute.amazonaws.com";
-    private static final int SERVER_PORT = 7666;
+    private static final String SERVER_IP = "45.235.98.116";
+    private static final int SERVER_PORT = 9000;
     private ClientSystem clientSystem;
     private World world;
 

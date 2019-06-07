@@ -31,9 +31,16 @@ public class ClientConfiguration {
         return network;
     }
 
-    // Configuration values getters...
-    public int getClientWidth() { return getInitConfig().getVideo().getWidth(); }
-    public int getClientHeight() { return getInitConfig().getVideo().getHeight(); }
+    // ¡USE THIS GETTERS TO RETRIEVE THE CONFIG.JSON VALUES!
+    public int client_Width() { return getInitConfig().getVideo().getWidth(); }
+    public int client_Height() { return getInitConfig().getVideo().getHeight(); }
+    public boolean client_VSync() { return getInitConfig().getVideo().getVsync(); }
+    public boolean client_Resizeable() { return getInitConfig().getResizeable();}
+    public boolean client_noAudio() { return getInitConfig().getDisableAudio(); }
+    public boolean client_startMaximized() { return getInitConfig().getStartMaximized(); }
+    public String client_HiDPI_Mode() { return getInitConfig().getVideo().getHiDPI_Mode(); }
+    public String client_defaultHost() { return getNetwork().getDefaultServer().getHostname(); }
+    public int client_defaultPort() { return getNetwork().getDefaultServer().getPort(); }
 
     public static ClientConfiguration loadConfig(String path) {
         Json configObject = new Json();
@@ -42,7 +49,7 @@ public class ClientConfiguration {
         configObject.setIgnoreUnknownFields(true); // hace que si no conoce un campo, lo ignore
 
         try {
-            // DO NOT USE 'Gdx.Files' !!!
+            // DO NOT USE 'Gdx.Files' , because 'Gdx.Files' in the launcher is always NULL!
             InputStream configFile = new FileInputStream(path);
 
             return configObject.fromJson(ClientConfiguration.class, configFile);
@@ -61,15 +68,21 @@ public class ClientConfiguration {
             configObject.setOutputType(JsonWriter.OutputType.json);// esto hace que cuando escribas con el toJson lo guarde en formato json)
             configObject.setIgnoreUnknownFields(true); // hace que si no conoce un campo, lo ignore
 
+            // WARNING: Set ALL BOOLEAN parameters to TRUE in this method, else, it won't write (the FALSE value in Config.json).
             ClientConfiguration configOutput = new ClientConfiguration();
 
             // Default values of `Init`
             configOutput.setInitConfig(new Init());
+                configOutput.getInitConfig().setResizeable(true);
+                configOutput.getInitConfig().setDisableAudio(true);
+                configOutput.getInitConfig().setStartMaximized(true);
 
                 // Default values of `Init.Video`
                 Init.Video video = new Init.Video();
                     video.setWidth(1280);
                     video.setHeight(720);
+                    video.setVsync(true);
+                    video.setHiDPI_Mode("Logical");
                     configOutput.getInitConfig().setVideo(video);
 
             // Default values of `Network`
@@ -93,6 +106,9 @@ public class ClientConfiguration {
     //----------------------------------------------------------------------------
     private static class Init {
         private Video video;
+        private boolean resizeable;
+        private boolean disableAudio;
+        private boolean startMaximized;
 
         /*
            "Init": {
@@ -103,11 +119,20 @@ public class ClientConfiguration {
         private void setVideo(Video video) {
             this.video = video;
         }
-        public Video getVideo() { return video; }
+        private void setResizeable(boolean resizeable) { this.resizeable = resizeable; }
+        private void setDisableAudio(boolean disableAudio) { this.disableAudio = disableAudio; }
+        private void setStartMaximized(boolean startMaximized) { this.startMaximized = startMaximized; }
+
+        private Video getVideo() { return video; }
+        private boolean getResizeable() { return resizeable; }
+        private boolean getDisableAudio() { return disableAudio; }
+        private boolean getStartMaximized() { return startMaximized; }
 
         private static class Video {
             private int width;
             private int height;
+            private boolean vSync;
+            private String HiDPI_Mode;
 
             public void setHeight(int height) {
                 this.height = height;
@@ -115,9 +140,13 @@ public class ClientConfiguration {
             public void setWidth(int width) {
                 this.width = width;
             }
+            public void setVsync(boolean vSync) { this.vSync = vSync; }
+            public void setHiDPI_Mode(String HiDPI_Mode) { this.HiDPI_Mode = HiDPI_Mode; }
 
-            public int getWidth() { return width; }
-            public int getHeight() { return height; }
+            private int getWidth() { return width; }
+            private int getHeight() { return height; }
+            private boolean getVsync() { return vSync; }
+            private String getHiDPI_Mode() { return HiDPI_Mode; }
         }
     }
 
@@ -160,6 +189,9 @@ public class ClientConfiguration {
             private void setPort(int port) {
                 this.port = port;
             }
+
+            public String getHostname() { return hostname; }
+            public int getPort() { return port; }
         }
     }
 
