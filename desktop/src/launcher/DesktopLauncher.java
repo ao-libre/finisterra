@@ -13,8 +13,6 @@ public class DesktopLauncher {
 
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
 
-        ClientConfiguration.loadConfig("assets/Config.json");
-        ClientConfiguration config = new ClientConfiguration();
 
         cfg.setTitle("Finisterra");
         //cfg.setWindowedMode(1280,720);
@@ -22,6 +20,7 @@ public class DesktopLauncher {
         cfg.useVsync(true);
         cfg.setIdleFPS(60);
         cfg.setResizable(true);
+        ClientConfiguration config = ClientConfiguration.loadConfig("assets/Config.json");
 
         new Lwjgl3Application(new AOGame(), cfg);
     }
