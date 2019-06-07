@@ -1,6 +1,7 @@
 package game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
@@ -15,9 +16,24 @@ import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 
 public class ClientConfiguration {
-
     private Init initConfig;
-    private Network net;
+    private Network network;
+
+    public void setInitConfig(Init initConfig) {
+        this.initConfig = initConfig;
+    }
+
+    public void setNetwork(Network net) {
+        this.network = network;
+    }
+
+    public Init getInitConfig() {
+        return initConfig;
+    }
+
+    public Network getNetwork() {
+        return network;
+    }
 
     public static ClientConfiguration loadConfig(String path) {
         Json configObject = new Json();
@@ -43,38 +59,26 @@ public class ClientConfiguration {
             ClientConfiguration configOutput = new ClientConfiguration();
 
             // Default values of `Init`
-            configOutput.initConfig.video.width = 1280;
-            configOutput.initConfig.video.height = 720;
+            configOutput.setInitConfig(new Init());
 
-            // Default values of `Init`
-            configOutput.net.defaultServer.hostname = "45.235.98.116";
-            configOutput.net.defaultServer.port = 9000;
+                // Default values of `Init.Video`
+                Init.Video video = new Init.Video();
+                    video.setWidth(1280);
+                    video.setHeight(720);
+                    configOutput.getInitConfig().setVideo(video);
+
+            // Default values of `Network`
+            configOutput.setNetwork(new Network());
+
+                // Default values of `Network.defaultServer`
+                Network.DefaultServer defServer = new Network.DefaultServer();
+                    defServer.setHostname("45.235.98.116");
+                    defServer.setPort(9000);
+                configOutput.getNetwork().setDefaultServer(defServer);
 
             FileHandle outputFile = Gdx.files.local("output/Config.json");
 
             configObject.toJson(configObject,outputFile);
-    }
-
-    // ---------------------------------------------------------------
-    // Aca obtenes los valores de las propiedades en el Server.json
-    // ---------------------------------------------------------------
-
-    // Init
-    public int getWidth() {
-        return initConfig.video.width;
-    }
-
-    public int getHeight() {
-        return initConfig.video.height;
-    }
-
-    // Network
-    public String getHostname() {
-        return net.defaultServer.hostname;
-    }
-
-    public int getPort() {
-        return net.defaultServer.port;
     }
 
     // ---------------------------------------------------------------
@@ -91,7 +95,7 @@ public class ClientConfiguration {
             }
         */
 
-        public Init(Video video) {
+        private void setVideo(Video video) {
             this.video = video;
         }
 
@@ -99,9 +103,12 @@ public class ClientConfiguration {
             private int width;
             private int height;
 
-            public Video(int width, int height) {
-                this.width = width;
+            public void setHeight(int height) {
                 this.height = height;
+            }
+
+            public void setWidth(int width) {
+                this.width = width;
             }
 
         }
@@ -117,8 +124,12 @@ public class ClientConfiguration {
             }
         */
 
-        public Network(DefaultServer defaultServer) {
+        private void setDefaultServer(DefaultServer defaultServer) {
             this.defaultServer = defaultServer;
+        }
+
+        public DefaultServer getDefaultServer() {
+            return defaultServer;
         }
 
         private static class DefaultServer {
@@ -136,8 +147,11 @@ public class ClientConfiguration {
                 }
              */
 
-            public DefaultServer(String hostname, int port) {
+            private void setHostname(String hostname) {
                 this.hostname = hostname;
+            }
+
+            private void setPort(int port) {
                 this.port = port;
             }
         }
