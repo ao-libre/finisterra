@@ -20,13 +20,13 @@ public class ClientConfiguration {
     private Network network;
 
     // Objeto 'Init'
-    public void setInitConfig(Init initConfig) {
+    private void setInitConfig(Init initConfig) {
         this.initConfig = initConfig;
     }
     public void setNetwork(Network network) { this.network = network; }
 
     // Objeto 'Network'
-    public Init getInitConfig() { return initConfig; }
+    private Init getInitConfig() { return initConfig; }
     public Network getNetwork() {
         return network;
     }
@@ -39,8 +39,6 @@ public class ClientConfiguration {
     public boolean client_noAudio() { return getInitConfig().getDisableAudio(); }
     public boolean client_startMaximized() { return getInitConfig().getStartMaximized(); }
     public String client_HiDPI_Mode() { return getInitConfig().getVideo().getHiDPI_Mode(); }
-    public String client_defaultHost() { return getNetwork().getDefaultServer().getHostname(); }
-    public int client_defaultPort() { return getNetwork().getDefaultServer().getPort(); }
 
     public static ClientConfiguration loadConfig(String path) {
         Json configObject = new Json();
@@ -59,6 +57,18 @@ public class ClientConfiguration {
         }
 
         return null;
+    }
+
+    public static String client_getDefaultHost() {
+        ClientConfiguration config = ClientConfiguration.loadConfig("assets/Config.json");
+
+        return config.getNetwork().getDefaultServer().getHostname();
+    }
+
+    public static int client_getDefaultPort() {
+        ClientConfiguration config = ClientConfiguration.loadConfig("assets/Config.json");
+
+        return config.getNetwork().getDefaultServer().getPort();
     }
 
     public static void createConfig() {
