@@ -1,10 +1,10 @@
-package launcher;
+package game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.files.FileHandleStream;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
+import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;
 
 import java.io.IOException;
@@ -52,7 +52,7 @@ public class ClientConfiguration {
 
             FileHandle outputFile = Gdx.files.local("output/Config.json");
 
-            configObject.toJson(configObject,outputFile));
+            configObject.toJson(configObject,outputFile);
     }
 
     // ---------------------------------------------------------------
