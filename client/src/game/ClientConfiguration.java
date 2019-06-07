@@ -19,21 +19,21 @@ public class ClientConfiguration {
     private Init initConfig;
     private Network network;
 
+    // Objeto 'Init'
     public void setInitConfig(Init initConfig) {
         this.initConfig = initConfig;
     }
+    public void setNetwork(Network network) { this.network = network; }
 
-    public void setNetwork(Network net) {
-        this.network = network;
-    }
-
-    public Init getInitConfig() {
-        return initConfig;
-    }
-
+    // Objeto 'Network'
+    public Init getInitConfig() { return initConfig; }
     public Network getNetwork() {
         return network;
     }
+
+    // Configuration values getters...
+    public int getClientWidth() { return getInitConfig().getVideo().getWidth(); }
+    public int getClientHeight() { return getInitConfig().getVideo().getHeight(); }
 
     public static ClientConfiguration loadConfig(String path) {
         Json configObject = new Json();
@@ -42,7 +42,8 @@ public class ClientConfiguration {
         configObject.setIgnoreUnknownFields(true); // hace que si no conoce un campo, lo ignore
 
         try {
-            InputStream configFile = new FileInputStream("assets/Config.json");
+            // DO NOT USE 'Gdx.Files' !!!
+            InputStream configFile = new FileInputStream(path);
 
             return configObject.fromJson(ClientConfiguration.class, configFile);
 
@@ -56,6 +57,10 @@ public class ClientConfiguration {
     public static void createConfig() {
 
             Json configObject = new Json();
+
+            configObject.setOutputType(JsonWriter.OutputType.json);// esto hace que cuando escribas con el toJson lo guarde en formato json)
+            configObject.setIgnoreUnknownFields(true); // hace que si no conoce un campo, lo ignore
+
             ClientConfiguration configOutput = new ClientConfiguration();
 
             // Default values of `Init`
@@ -78,7 +83,7 @@ public class ClientConfiguration {
 
             FileHandle outputFile = Gdx.files.local("output/Config.json");
 
-            configObject.toJson(configObject,outputFile);
+            configObject.toJson(configOutput,outputFile);
     }
 
     // ---------------------------------------------------------------
@@ -98,6 +103,7 @@ public class ClientConfiguration {
         private void setVideo(Video video) {
             this.video = video;
         }
+        public Video getVideo() { return video; }
 
         private static class Video {
             private int width;
@@ -106,11 +112,12 @@ public class ClientConfiguration {
             public void setHeight(int height) {
                 this.height = height;
             }
-
             public void setWidth(int width) {
                 this.width = width;
             }
 
+            public int getWidth() { return width; }
+            public int getHeight() { return height; }
         }
     }
 
@@ -150,7 +157,6 @@ public class ClientConfiguration {
             private void setHostname(String hostname) {
                 this.hostname = hostname;
             }
-
             private void setPort(int port) {
                 this.port = port;
             }

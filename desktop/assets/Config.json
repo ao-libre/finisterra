@@ -1,14 +1,1 @@
-{
-	"Init": {
-        "Video": {
-			"width":1280,
-			"height":720
-		}
-    },
-	"network": {
-        "DefaultServer": {
-            "hostname":"45.235.98.116",
-            "port":9000 
-        }
-    }	
-}
+{"initConfig":{"video":{"width":1280,"height":720}},"network":{"defaultServer":{"hostname":"45.235.98.116","port":9000}}}
