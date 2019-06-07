@@ -1,21 +1,34 @@
 package launcher;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
+import com.esotericsoftware.minlog.Log;
+
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class ClientConfiguration {
 
     private Init initConfig;
     private Network net;
 
-    public static ClientConfiguration loadConfig() {
+    public static ClientConfiguration loadConfig(String path) {
         Json configObject = new Json();
 
         configObject.setOutputType(JsonWriter.OutputType.json);// esto hace que cuando escribas con el toJson lo guarde en formato json)
         configObject.setIgnoreUnknownFields(true); // hace que si no conoce un campo, lo ignore
 
-        return configObject.fromJson(ClientConfiguration.class, Gdx.files.internal("assets/Config.json"));
+        try {
+            InputStream configFile = new FileInputStream("assets/Config.json");
+
+            return configObject.fromJson(ClientConfiguration.class, configFile);
+
+        } catch (FileNotFoundException ex) {
+            Log.debug("Client configuration file not found!");
+        }
+
+        return null;
     }
 
     // ---------------------------------------------------------------
