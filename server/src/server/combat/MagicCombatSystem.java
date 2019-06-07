@@ -134,7 +134,7 @@ public class MagicCombatSystem extends BaseSystem {
                     notifyMagic(target, format(DAMAGED_BY, getName(playerId), Math.abs(damage)));
                 }
                 if (health.min <= 0) {
-                    getWorldManager().userDie(target);
+                    getWorldManager().entityDie(target);
                     notifyMagic(playerId, format(KILL, getName(target)));
                     notifyMagic(target, format(KILLED, getName(playerId)));
                 }

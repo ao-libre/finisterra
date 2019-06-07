@@ -14,7 +14,6 @@ import server.systems.manager.IManager;
 import server.systems.manager.WorldManager;
 import shared.interfaces.CharClass;
 import shared.interfaces.FXs;
-import shared.interfaces.Race;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
@@ -238,7 +237,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
             // TODO die
             notifyCombat(userId, format(KILL, getName(entityId)));
             notifyCombat(entityId, format(KILLED, getName(userId)));
-            getWorldManager().userDie(entityId);
+            getWorldManager().entityDie(entityId);
         }
     }
 

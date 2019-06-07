@@ -1,7 +1,6 @@
 package server.systems.ai;
 
 import com.artemis.Aspect;
-import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.EBag;
 import com.esotericsoftware.minlog.Log;
@@ -24,11 +23,9 @@ import shared.network.notifications.EntityUpdate;
 import shared.util.MapHelper;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static physics.AOPhysics.Movement.*;
 import static server.utils.WorldUtils.WorldUtils;
-import static shared.network.notifications.EntityUpdate.EntityUpdateBuilder.*;
 
 public class PathFindingSystem extends IntervalFluidIteratingSystem {
 
@@ -61,27 +58,24 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         if (!maps.containsKey(origin.map)) {
             return;
         }
-        Set<Integer> entitiesInMap = getMapManager().getEntitiesInMap(origin.map);
-        if (entitiesInMap.stream().noneMatch(id -> E.E(id).isCharacter())) {
+
+        Optional<E> target1 = findTarget(origin);
+        WorldPos targetPos = target1.map(E::getWorldPos).orElse(e.getOriginPos().toWorldPos());
+        if (targetPos.equals(e.getWorldPos())) {
             return;
         }
 
-        Optional<E> target1 = findTarget(origin);
-        target1.ifPresent(target -> {
-            WorldPos targetPos = target.getWorldPos();
-            AStarMap map = maps.get(origin.map);
-            boolean originWasWall = map.getNodeAt(origin.x, origin.y).isWall;
-            boolean targetWasWall = map.getNodeAt(targetPos.x, targetPos.y).isWall;
-            map.getNodeAt(origin.x, origin.y).isWall = false;
-            map.getNodeAt(targetPos.x, targetPos.y).isWall = false;
-            AStartPathFinding aStartPathFinding = new AStartPathFinding(map);
-            Node from = aStartPathFinding.map.getNodeAt(origin.x, origin.y);
-            Node nextNode = aStartPathFinding.findNextNode(origin, targetPos);
-            move(e, from, nextNode);
-            map.getNodeAt(origin.x, origin.y).isWall = originWasWall;
-            map.getNodeAt(targetPos.x, targetPos.y).isWall = targetWasWall;
-        });
-
+        AStarMap map = maps.get(origin.map);
+        boolean originWasWall = map.getNodeAt(origin.x, origin.y).isWall;
+        boolean targetWasWall = map.getNodeAt(targetPos.x, targetPos.y).isWall;
+        map.getNodeAt(origin.x, origin.y).isWall = false;
+        map.getNodeAt(targetPos.x, targetPos.y).isWall = false;
+        AStartPathFinding aStartPathFinding = new AStartPathFinding(map);
+        Node from = aStartPathFinding.map.getNodeAt(origin.x, origin.y);
+        Node nextNode = aStartPathFinding.findNextNode(origin, targetPos);
+        move(e, from, nextNode);
+        map.getNodeAt(origin.x, origin.y).isWall = originWasWall;
+        map.getNodeAt(targetPos.x, targetPos.y).isWall = targetWasWall;
 
     }
 
