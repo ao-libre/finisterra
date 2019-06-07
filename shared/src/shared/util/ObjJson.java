@@ -10,11 +10,9 @@ import shared.objects.types.common.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ObjJson extends Json {
+public class ObjJson extends AOJson {
 
     public ObjJson() {
-        setOutputType(JsonWriter.OutputType.json);
-        setIgnoreUnknownFields(true);
         Arrays.stream(Type.values()).forEach(type -> {
             final Class clazz = getClassForType(type);
             if (clazz != null) {

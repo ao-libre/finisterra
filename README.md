@@ -93,7 +93,7 @@ MOVE_RIGHT = RIGHT
 MOVE_UP = UP
 MOVE_DOWN = DOWN
 
-## Alternative wasd
+## Alternative wasd - Active activate with F1
 ### Combat
 ATTACK_1 = SPACE
 ATTACK_2 = SHIFT_RIGHT

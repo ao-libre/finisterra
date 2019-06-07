@@ -82,9 +82,6 @@ public class WorldRenderingSystem extends BaseSystem {
             newPos.offsetX = pos.offsetX;
             newPos.offsetY = pos.offsetY;
             result = Optional.of(newPos);
-            if (newPos.offsetY > 0 || newPos.offsetX > 0) {
-                Log.info("Translating pos " + pos + " to " + newPos);
-            }
         }
         return result;
     }

@@ -225,6 +225,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 WoodObj.class,
 
                 // Components
+                OriginPos.class,
                 Effect.class,
                 Effect.EffectBuilder.class,
                 RenderBefore.class,
