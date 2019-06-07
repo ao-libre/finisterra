@@ -92,25 +92,27 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
         getBatch().setBlendFunction(srcFunc, dstFunc);
     }
 
-    void drawEffect(E e) {
+    void drawEffect(E e, Optional<WorldPos> forcePos) {
         if (e.hasEffect()) {
             Effect effect = e.getEffect();
-            if (e.hasWorldPos()) {
-                drawEffect(e, e.getWorldPos(), Optional.empty());
+            if (forcePos.isPresent()) {
+                drawEffect(e, forcePos.get());
+            } else if (e.hasWorldPos()) {
+                drawEffect(e, e.getWorldPos());
             } else {
                 int networkedEntity = effect.entityReference;
                 if (WorldManager.hasNetworkedEntity(networkedEntity)) {
                     int entityId = WorldManager.getNetworkedEntity(networkedEntity);
                     E entity = E(entityId);
                     if (entity != null && entity.hasWorldPos()) {
-                        drawEffect(e, entity.getWorldPos(), Optional.of(entityId));
+                        drawEffect(e, entity.getWorldPos());
                     }
                 }
             }
         }
     }
 
-    private void drawEffect(E e, WorldPos pos, Optional<Integer> ref) {
+    private void drawEffect(E e, WorldPos pos) {
         doBegin();
         Pos2D screenPos = Util.toScreen(pos.getPos2D());
         Effect effect = e.getEffect();

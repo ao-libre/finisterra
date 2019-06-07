@@ -80,12 +80,16 @@ public class MapManager {
         }
     }
 
-    private static void drawTile(Map map, SpriteBatch batch, float delta, int layer, int y, int x) {
+    public static void drawTile(Map map, SpriteBatch batch, float delta, int layer, int y, int x) {
         int graphic = map.getTile(x, y).getGraphic(layer);
         if (graphic == 0) {
             return;
         }
 
+        doTileDraw(batch, delta, y, x, graphic);
+    }
+
+    public static void doTileDraw(SpriteBatch batch, float delta, int y, int x, int graphic) {
         BundledAnimation animation = AnimationHandler.getGraphicAnimation(graphic);
         TextureRegion tileRegion = animation.isAnimated() ? animation.getAnimatedGraphic(true) : animation.getGraphic();
 

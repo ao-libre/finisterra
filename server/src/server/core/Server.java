@@ -12,6 +12,7 @@ import server.combat.PhysicalCombatSystem;
 import server.systems.*;
 import server.systems.ai.NPCAttackSystem;
 import server.systems.ai.PathFindingSystem;
+import server.systems.ai.RespawnSystem;
 import server.systems.manager.*;
 import shared.model.lobby.Player;
 import shared.model.map.Map;
@@ -89,6 +90,7 @@ public class Server {
                 .with(new MeditateSystem(this, MEDITATE_INTERVAL))
                 .with(new FootprintSystem(this, FOOTPRINT_LIVE_TIME))
                 .with(new RandomMovementSystem(this))
+                .with(new RespawnSystem())
                 .with(new BuffSystem());
         world = new World(builder.build());
         world.getSystem(MapManager.class).postInitialize();

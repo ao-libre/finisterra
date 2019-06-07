@@ -22,6 +22,7 @@ public class DesktopLauncher {
         cfg.vSyncEnabled = GAME_VSYNC_ENABLED;
         cfg.foregroundFPS = 0;
         cfg.resizable = true;
+        cfg.forceExit = false;
         new LwjglApplication(new AOGame(), cfg);
     }
 }

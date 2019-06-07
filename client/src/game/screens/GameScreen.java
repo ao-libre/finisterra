@@ -217,6 +217,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         gui.dispose();
+        world.dispose();
     }
 
     private void updateRunning(float deltaTime) {

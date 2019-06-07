@@ -128,7 +128,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         WorldPos oldPos = new WorldPos(worldPos);
         WorldPos nextPos = worldUtils.getNextPos(worldPos, request.movement);
         MapManager mapManager = getServer().getMapManager();
-        Map map = mapManager.get(nextPos.map);
+        Map map = mapManager.getMap(nextPos.map);
         boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
         boolean occupied = mapManager.getHelper().hasEntity(getMapManager().getNearEntities(playerId), nextPos);
         if (!(player.hasImmobile() || blocked || occupied)) {

@@ -5,7 +5,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 import position.WorldPos;
 import server.core.Server;
 import shared.model.map.Tile;
-import shared.model.map.WorldPosition;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.util.MapHelper;
@@ -21,10 +20,8 @@ import static server.utils.WorldUtils.WorldUtils;
  */
 public class MapManager extends DefaultManager {
 
-    public static final int MAX_DISTANCE = 15;
-    private HashMap<Integer, shared.model.map.Map> maps;
+    public static final int MAX_DISTANCE = 20;
     private final MapHelper helper;
-    //    public int mapEntity;
     private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesFootprints = new ConcurrentHashMap<>();
@@ -32,15 +29,14 @@ public class MapManager extends DefaultManager {
     public MapManager(Server server, HashMap<Integer, shared.model.map.Map> maps) {
         super(server);
         helper = MapHelper.instance();
-        this.maps = maps;
     }
 
     public Set<Integer> getMaps() {
-        return maps.keySet();
+        return helper.getMaps().keySet();
     }
 
     public shared.model.map.Map getMap(int map) {
-        return maps.get(map);
+        return helper.getMap(map);
     }
 
     @Override
@@ -50,9 +46,7 @@ public class MapManager extends DefaultManager {
 
     public void postInitialize() {
         // create NPCs
-        maps.forEach((num, map) -> {
-            initTiles(num, map);
-        });
+        helper.getMaps().forEach(this::initTiles);
     }
 
     private void initTiles(int num, shared.model.map.Map map) {
@@ -145,9 +139,7 @@ public class MapManager extends DefaultManager {
         int map = worldPos.map;
         // remove from near entities
         nearEntities.computeIfPresent(entity, (player, removeFrom) -> {
-            removeFrom.forEach(nearEntity -> {
-                unlinkEntities(nearEntity, entity);
-            });
+            removeFrom.forEach(nearEntity -> unlinkEntities(nearEntity, entity));
             return null;
         });
         entitiesByMap.get(map).remove(entity);
@@ -159,12 +151,54 @@ public class MapManager extends DefaultManager {
      * @param player
      */
     public void updateEntity(int player) {
-        int map = E(player).getWorldPos().map;
+        WorldPos pos = E(player).getWorldPos();
+        int map = pos.map;
         Set<Integer> entities = entitiesByMap.computeIfAbsent(map, (it) -> new HashSet<>());
+        Set<Integer> candidates = new HashSet<>(entities);
+        candidates.addAll(getNearMapsEntities(pos));
         entities.add(player);
-        entities.stream()
+        candidates.stream()
                 .filter(entity -> entity != player)
                 .forEach(entity -> addNearEntities(player, entity));
+    }
+
+    // TODO improve performance
+    private Collection<? extends Integer> getNearMapsEntities(WorldPos pos) {
+        Set<Integer> result = new HashSet<>();
+        shared.model.map.Map map = helper.getMap(pos.map);
+        if (pos.x > map.getWidth() / 2) {
+            int rightMap = helper.getMap(MapHelper.Dir.RIGHT, map);
+            result.addAll(getEntitiesInMap(rightMap));
+            addNearCorners(pos, result, rightMap);
+        } else {
+            int leftMap = helper.getMap(MapHelper.Dir.LEFT, map);
+            result.addAll(getEntitiesInMap(leftMap));
+            addNearCorners(pos, result, leftMap);
+        }
+        addNearUpOrDown(pos, result, map);
+        return result;
+    }
+
+    private void addNearUpOrDown(WorldPos pos, Set<Integer> result, shared.model.map.Map map) {
+        if (pos.y > map.getHeight() / 2) {
+            int bottom = helper.getMap(MapHelper.Dir.DOWN, map);
+            if (bottom > 0) {
+                result.addAll(getEntitiesInMap(bottom));
+            }
+        } else {
+            int top = helper.getMap(MapHelper.Dir.UP, map);
+            if (top > 0) {
+                result.addAll(getEntitiesInMap(top));
+            }
+        }
+    }
+
+    private void addNearCorners(WorldPos pos, Set<Integer> result, int mapNumber) {
+        if (mapNumber <= 0) {
+            return;
+        }
+        shared.model.map.Map map = helper.getMap(mapNumber);
+        addNearUpOrDown(pos, result, map);
     }
 
 
@@ -175,8 +209,9 @@ public class MapManager extends DefaultManager {
      * @param entity2
      */
     private void addNearEntities(int entity1, int entity2) {
-        int distance = WorldUtils(getServer().getWorld()).distance(E(entity2).getWorldPos(), E(entity1).getWorldPos());
-        if (distance >= 0 && distance <= MAX_DISTANCE) {
+        WorldPos worldPos1 = E(entity2).getWorldPos();
+        WorldPos worldPos2 = E(entity1).getWorldPos();
+        if (helper.isNear(worldPos1, worldPos2)) {
             linkEntities(entity1, entity2);
             linkEntities(entity2, entity1);
         }
@@ -189,8 +224,7 @@ public class MapManager extends DefaultManager {
      * @param player2
      */
     private void removeNearEntity(int player1, int player2) {
-        int distance = WorldUtils(getServer().getWorld()).distance(E(player2).getWorldPos(), E(player1).getWorldPos());
-        if (distance < 0 || distance > MAX_DISTANCE) {
+        if (!helper.isNear(E(player2).getWorldPos(), E(player1).getWorldPos())) {
             unlinkEntities(player1, player2);
             unlinkEntities(player2, player1);
         }
@@ -223,14 +257,6 @@ public class MapManager extends DefaultManager {
             EntityUpdate update = EntityUpdateBuilder.of(entity2).withComponents(WorldUtils(world).getComponents(entity2)).build();
             getServer().getWorldManager().sendEntityUpdate(entity1, update);
         }
-    }
-
-    /**
-     * @param mapNumber
-     * @return corresponding Map
-     */
-    public shared.model.map.Map get(int mapNumber) {
-        return maps.get(mapNumber);
     }
 
     public Map<Integer, Set<Integer>> getEntitiesFootprints() {

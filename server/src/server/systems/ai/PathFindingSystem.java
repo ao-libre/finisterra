@@ -1,7 +1,6 @@
 package server.systems.ai;
 
 import com.artemis.Aspect;
-import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.EBag;
 import com.esotericsoftware.minlog.Log;
@@ -24,11 +23,9 @@ import shared.network.notifications.EntityUpdate;
 import shared.util.MapHelper;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static physics.AOPhysics.Movement.*;
 import static server.utils.WorldUtils.WorldUtils;
-import static shared.network.notifications.EntityUpdate.EntityUpdateBuilder.*;
 
 public class PathFindingSystem extends IntervalFluidIteratingSystem {
 
@@ -61,27 +58,24 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         if (!maps.containsKey(origin.map)) {
             return;
         }
-        Set<Integer> entitiesInMap = getMapManager().getEntitiesInMap(origin.map);
-        if (entitiesInMap.stream().noneMatch(id -> E.E(id).isCharacter())) {
+
+        Optional<E> target1 = findTarget(origin);
+        WorldPos targetPos = target1.map(E::getWorldPos).orElse(e.getOriginPos().toWorldPos());
+        if (targetPos.equals(e.getWorldPos())) {
             return;
         }
 
-        Optional<E> target1 = findTarget(origin);
-        target1.ifPresent(target -> {
-            WorldPos targetPos = target.getWorldPos();
-            AStarMap map = maps.get(origin.map);
-            boolean originWasWall = map.getNodeAt(origin.x, origin.y).isWall;
-            boolean targetWasWall = map.getNodeAt(targetPos.x, targetPos.y).isWall;
-            map.getNodeAt(origin.x, origin.y).isWall = false;
-            map.getNodeAt(targetPos.x, targetPos.y).isWall = false;
-            AStartPathFinding aStartPathFinding = new AStartPathFinding(map);
-            Node from = aStartPathFinding.map.getNodeAt(origin.x, origin.y);
-            Node nextNode = aStartPathFinding.findNextNode(origin, targetPos);
-            move(e, from, nextNode);
-            map.getNodeAt(origin.x, origin.y).isWall = originWasWall;
-            map.getNodeAt(targetPos.x, targetPos.y).isWall = targetWasWall;
-        });
-
+        AStarMap map = maps.get(origin.map);
+        boolean originWasWall = map.getNodeAt(origin.x, origin.y).isWall;
+        boolean targetWasWall = map.getNodeAt(targetPos.x, targetPos.y).isWall;
+        map.getNodeAt(origin.x, origin.y).isWall = false;
+        map.getNodeAt(targetPos.x, targetPos.y).isWall = false;
+        AStartPathFinding aStartPathFinding = new AStartPathFinding(map);
+        Node from = aStartPathFinding.map.getNodeAt(origin.x, origin.y);
+        Node nextNode = aStartPathFinding.findNextNode(origin, targetPos);
+        move(e, from, nextNode);
+        map.getNodeAt(origin.x, origin.y).isWall = originWasWall;
+        map.getNodeAt(targetPos.x, targetPos.y).isWall = targetWasWall;
 
     }
 
@@ -122,10 +116,11 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         WorldPos nextPos = worldUtils.getNextPos(worldPos, mov);
 
         MapManager mapManager = getMapManager();
-        Map map = mapManager.get(nextPos.map);
+        Map map = mapManager.getMap(nextPos.map);
         boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
         boolean occupied = mapManager.getHelper().hasEntity(mapManager.getNearEntities(entityId), nextPos);
-        if (player.hasImmobile() || blocked || occupied) {
+        Tile tile = mapManager.getHelper().getTile(map, nextPos);
+        if (player.hasImmobile() || blocked || occupied || (tile != null && tile.getTileExit() != null)) {
             nextPos = oldPos;
         }
 
@@ -152,14 +147,14 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
                 .filter(E::hasWorldPos)
                 .filter(e -> {
                     int distance = WorldUtils(world).distance(e.getWorldPos(), worldPos);
-                    return distance < 15 && distance >= 0;
+                    return distance < 20 && distance >= 0;
                 })
                 .min(Comparator.comparingInt(e -> WorldUtils(world).distance(e.getWorldPos(), worldPos)));
     }
 
     private AStarMap createStarMap(int map) {
         MapManager mapManager = getMapManager();
-        Map realMap = mapManager.get(map);
+        Map realMap = mapManager.getMap(map);
         int height = realMap.MAX_MAP_SIZE_HEIGHT;
         int width = realMap.MAX_MAP_SIZE_WIDTH;
 
