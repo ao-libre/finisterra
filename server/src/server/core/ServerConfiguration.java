@@ -1,13 +1,35 @@
-package server.core;
+package game;
 
-import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Net;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
+import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.minlog.Log;
 
-public class ServerConfiguration extends BaseSystem {
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 
+public class ServerConfiguration {
     private Network network;
+
+    // Objeto 'Init'
+    public void setNetwork(Network network) { this.network = network; }
+
+    // Objeto 'Network'
+    public Network getNetwork() {
+        return network;
+    }
+
+    // ¡USE THIS GETTERS TO RETRIEVE THE CONFIG.JSON VALUES!
+    public int portTCP() { return getNetwork().getPorts().getTcp(); }
+    public int portUDP() { return getNetwork().getPorts().getUdp(); }
+    public boolean useLocalhost() { return getNetwork().getUseLocalhost(); }
 
     public static ServerConfiguration loadConfig(String path) {
         Json configObject = new Json();
@@ -15,95 +37,90 @@ public class ServerConfiguration extends BaseSystem {
         configObject.setOutputType(JsonWriter.OutputType.json);// esto hace que cuando escribas con el toJson lo guarde en formato json)
         configObject.setIgnoreUnknownFields(true); // hace que si no conoce un campo, lo ignore
 
-        return configObject.fromJson(ServerConfiguration.class, Gdx.files.internal(path));
+        try {
+            // DO NOT USE 'Gdx.Files' , because 'Gdx.Files' in the launcher is always NULL!
+            InputStream configFile = new FileInputStream(path);
+
+            return configObject.fromJson(ServerConfiguration.class, configFile);
+
+        } catch (FileNotFoundException ex) {
+            Log.debug("Server configuration file not found!");
+        }
+
+        return null;
     }
 
-    public static void createDefaultJson() {
+    public static void createConfig() {
+
         Json configObject = new Json();
 
         configObject.setOutputType(JsonWriter.OutputType.json);// esto hace que cuando escribas con el toJson lo guarde en formato json)
         configObject.setIgnoreUnknownFields(true); // hace que si no conoce un campo, lo ignore
 
-        ServerConfiguration serverConfig = new ServerConfiguration();
+        // WARNING: Set ALL BOOLEAN parameters to TRUE in this method, else, it won't write (the FALSE value in Config.json).
+        ServerConfiguration configOutput = new ServerConfiguration();
 
-        // Valores por Default del JSON
-        serverConfig.network.ports = new Ports(7666, 7667);
-        configObject.toJson(serverConfig, Gdx.files.internal("resources/server-gen.json"));
+        // Default values of `Network`
+        configOutput.setNetwork(new Network());
+
+            configOutput.getNetwork().setUseLocalhost(true);
+
+            Network.Ports netConfig = new Network.Ports();
+                netConfig.setTcp(9000);
+                netConfig.setUdp(9001);
+            configOutput.getNetwork().setPorts(netConfig);
+
+        FileHandle outputFile = Gdx.files.local("output/Server.json");
+
+        configObject.toJson(configOutput,outputFile);
     }
 
     // ---------------------------------------------------------------
-    // Aca obtenes los valores de las propiedades en el Server.json
+    // Aca asignas los valores de las propiedades en el Server.json
     // ---------------------------------------------------------------
 
-    public int getTcpPort() {
-        return network.ports.tcp;
-    }
-
-    public int getUdpPort() {
-        return network.ports.udp;
-    }
-
-    // ---------------------------------------------------------------
-    // Esto no lo toques...
-    // ---------------------------------------------------------------
-    @Override
-    protected void processSystem() {
-        // DO NOTHING
-    }
-
-    // ---------------------------------------------------------------------------
-    // Aca se auto-setean los valores de las propiedades leidos de el Server.json
-    // ---------------------------------------------------------------------------
-    // Cada 'Class' es un objeto en el JSON
-    // ---------------------------------------------------------------------------
-
+    //-------------------------------------------------------------------------
     private static class Network {
+        private boolean useLocalhost;
         private Ports ports;
 
-        public Network(Ports ports) {
-            this.ports = ports;
-        }
-
-        public Ports getPorts() {
-            return ports;
-        }
-
-        public void setPorts(Ports ports) {
-            this.ports = ports;
-        }
-
         /*
-            "network": {
-                // Estas acá.
+           "network": {
+                //Estás acá.
+                "useLocalhost": useLocalhost
             }
-         */
-    }
+        */
 
-    private static class Ports {
-        private final int tcp;
-        private final int udp;
+        private void setUseLocalhost(boolean useLocalhost) {
+            this.useLocalhost = useLocalhost;
+        }
+        private void setPorts(Ports ports) { this.ports = ports; }
 
-        /*
-            "network": {
-                "ports": {
-                    // Estás acá.
-                    "TCP": tcp,
-                    "UDP": udp
+        private Ports getPorts() { return ports; }
+        public boolean getUseLocalhost() { return useLocalhost; }
+
+        private static class Ports {
+            private int tcp;
+            private int udp;
+
+            /*
+                "network": {
+                    "useLocalhost": useLocalhost,
+                    "ports": {
+                        // Estás acá.
+                        "tcp": tcp,
+                        "udp": udp
+
+                    }
                 }
-            }
-         */
+             */
 
-        public Ports(int tcp, int udp) {
-            this.tcp = tcp;
-            this.udp = udp;
-        }
+           private void setTcp(int tcp) { this.tcp = tcp; }
+           private void setUdp(int udp) { this.udp = udp; }
 
-        public int getTcp() {
-            return tcp;
-        }
-
-        public int getUdp() {
-            return udp;
+           private int getTcp() { return tcp; }
+           private int getUdp() { return udp;  }
         }
     }
+
 }

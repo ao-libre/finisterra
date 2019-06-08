@@ -7,6 +7,7 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
+import game.ServerConfiguration;
 import server.systems.manager.LobbyNetworkManager;
 import server.systems.manager.NPCManager;
 import server.systems.manager.ObjectManager;
@@ -39,7 +40,7 @@ public class Finisterra implements ApplicationListener {
     private HashMap<Integer, Map> maps = new HashMap<>();
 
     public Finisterra() {
-        this.lastPort = serverConfig.getTcpPort();
+        this.lastPort = serverConfig.portTCP();
     }
 
     @Override
@@ -47,6 +48,7 @@ public class Finisterra implements ApplicationListener {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         Gdx.app.log("SERVER", "Initializing...");
         init();
+        ServerConfiguration.createConfig();
         initServerListener();
         Gdx.app.log("SERVER", "Server initialization: Completed successfully!");
     }
@@ -60,10 +62,10 @@ public class Finisterra implements ApplicationListener {
 
     private void initServerListener() {
 
-        Log.info("Loading network listener in ports TCP: " + serverConfig.getTcpPort() + ", UDP: " + serverConfig.getUdpPort() + " and applying Marshall strategy.");
+        Log.info("Loading network listener in ports TCP: " + serverConfig.portTCP() + ", UDP: " + serverConfig.portUDP() + " and applying Marshall strategy.");
 
         WorldConfigurationBuilder worldConfigurationBuilder = new WorldConfigurationBuilder();
-        KryonetServerMarshalStrategy strategy = new KryonetServerMarshalStrategy(serverConfig.getTcpPort(),serverConfig.getUdpPort());
+        KryonetServerMarshalStrategy strategy = new KryonetServerMarshalStrategy(serverConfig.portTCP(),serverConfig.portUDP());
         networkManager = new LobbyNetworkManager(strategy);
         world = new World(worldConfigurationBuilder
                 .with(new FluidEntityPlugin())
@@ -85,9 +87,7 @@ public class Finisterra implements ApplicationListener {
             int connectionId = getNetworkManager().getConnectionByPlayer(player);
             try {
                 final String ip = IpChecker.getIp();
-                String property = System.getProperty("server.useLocalhost");
-                System.out.println(property);
-                boolean shouldUseLocalHost = Boolean.parseBoolean(property);
+                boolean shouldUseLocalHost = serverConfig.useLocalhost();
                 InetAddress inetAddress = InetAddress.getLocalHost();
 
                 getNetworkManager().sendTo(connectionId, new StartGameResponse(shouldUseLocalHost ? inetAddress.getHostAddress() : ip, roomServer.getTcpPort(), roomServer.getUdpPort()));

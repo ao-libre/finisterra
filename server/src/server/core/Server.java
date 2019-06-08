@@ -6,6 +6,7 @@ import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import game.ServerConfiguration;
 import server.combat.CombatSystem;
 import server.combat.MagicCombatSystem;
 import server.combat.PhysicalCombatSystem;
@@ -31,8 +32,8 @@ public class Server {
     private SpellManager spellManager;
     private HashMap<Integer, Map> maps;
     private World world;
-    private ServerConfiguration serverConfig;
     private KryonetServerMarshalStrategy strategy;
+    private ServerConfiguration serverConfig;
     private Set<Player> players;
 
     public Server(int roomId, int tcpPort, int udpPort, ObjectManager objectManager, SpellManager spellManager, HashMap<Integer, Map> maps) {
@@ -70,11 +71,11 @@ public class Server {
     private void initWorld() {
         System.out.println("Initializing systems...");
         final WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
-        strategy = new KryonetServerMarshalStrategy(serverConfig.getTcpPort(),serverConfig.getUdpPort());
+        strategy = new KryonetServerMarshalStrategy(serverConfig.portTCP(),serverConfig.portUDP());
         builder
                 .with(new FluidEntityPlugin())
                 .with(new ServerSystem(this, strategy))
-                .with(new ServerConfiguration())
+                .with(serverConfig)
                 .with(new NetworkManager(this, strategy))
                 .with(new ItemManager(this))
                 .with(new NPCManager())
