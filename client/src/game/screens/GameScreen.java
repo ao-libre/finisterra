@@ -216,6 +216,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
+        clientSystem.getKryonetClient().stop();
         gui.dispose();
         world.dispose();
     }
