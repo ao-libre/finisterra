@@ -3,6 +3,7 @@ package shared.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
 import position.WorldPos;
 import shared.model.loaders.MapLoader;
@@ -78,9 +79,15 @@ public class MapHelper {
 
     public void getAlkonMaps(HashMap<Integer, Map> maps) {
         for (int i = 1; i <= 290; i++) {
-            Map map = getMap(i);
+            Map map = getMapFromJson(i);
             maps.put(i, map);
         }
+    }
+
+    public Map getMapFromJson(int i) {
+        FileHandle mapPath = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Map" + i + SharedResources.JSON_EXT);
+        Json json = new AOJson();
+        return json.fromJson(Map.class, mapPath);
     }
 
     public Map getMap(int i) {
@@ -124,16 +131,48 @@ public class MapHelper {
         // get distance from pos1 to pos2
         int distance = getDistanceBetweenMaps(pos1, pos2);
 
-        return distance >= 0 &&  distance < NEAR_MAX_DISTNACE;
+        return distance >= 0 && distance < NEAR_MAX_DISTNACE;
     }
 
     private int getDistanceBetweenMaps(WorldPos pos, WorldPos target) {
         int mapTarget = target.map;
         int mapNumber = pos.map;
         Map map = getMap(mapNumber);
-        // TODO implement distance when 3 maps are involved
         Optional<Dir> dirTo = Arrays.stream(Dir.values()).filter(dir -> getMap(dir, map) == mapTarget).findFirst();
-        return dirTo.map(dir -> getDistanceToTarget(pos, dir, target)).orElse(-1);
+        return dirTo.map(dir -> getDistanceToTarget(pos, dir, target)).orElse(getDistanceBetweenThreeMaps(pos, target));
+    }
+
+    private Integer getDistanceBetweenThreeMaps(WorldPos pos, WorldPos target) {
+        if (hasMap(target.map) && hasMap(pos.map)) {
+            Map map = getMap(pos.map);
+            int mapTarget = target.map;
+            Dir horizontalDir = null;
+            Map targetMap = getMap(mapTarget);
+            int leftMap = getMap(Dir.LEFT, map);
+            int rightMap = getMap(Dir.RIGHT, map);
+            if (leftMap > 0) {
+                if (leftMap == getMap(Dir.DOWN, targetMap)) {
+                    horizontalDir = Dir.LEFT;
+                } else if (leftMap == getMap(Dir.UP, targetMap)) {
+                    horizontalDir = Dir.LEFT;
+                }
+            } else if (rightMap > 0) {
+                if (rightMap == getMap(Dir.DOWN, targetMap)) {
+                    horizontalDir = Dir.RIGHT;
+                } else if (rightMap == getMap(Dir.UP, targetMap)) {
+                    horizontalDir = Dir.RIGHT;
+                }
+            }
+            if (horizontalDir != null) {
+                WorldPos intermediatePos = getIntermediatePos(pos, getMap(horizontalDir, map), target);
+                return getDistanceBetweenMaps(pos, intermediatePos) + getDistanceBetweenMaps(intermediatePos, target);
+            }
+        }
+        return -1;
+    }
+
+    private WorldPos getIntermediatePos(WorldPos pos, int map, WorldPos target) {
+        return new WorldPos(target.x, pos.y, map);
     }
 
     private int getDistanceToTarget(WorldPos pos, Dir dir, WorldPos target) {
@@ -151,76 +190,7 @@ public class MapHelper {
     }
 
     public int getMap(Dir dir, Map map) {
-        if (surroundingMaps.containsKey(map)) {
-            if (surroundingMaps.get(map).containsKey(dir)) {
-                return surroundingMaps.get(map).get(dir);
-            }
-        }
-        for (int x = 1; x < map.MAX_MAP_SIZE_WIDTH; x++) {
-            for (int y = 1; y < map.MAX_MAP_SIZE_HEIGHT; y++) {
-                Tile tile = map.getTile(x, y);
-                if (tile != null && tile.getTileExit() != null) {
-                    switch (dir) {
-                        case DOWN:
-                            if (y > map.MAX_MAP_SIZE_HEIGHT / 2) {
-                                Optional<Tile> right = getTileWithExit(Dir.RIGHT, x, y, map);
-                                Optional<Tile> left = getTileWithExit(Dir.LEFT, x, y, map);
-                                Tile tileWithExit = right.orElse(left.orElse(null));
-                                if (tileWithExit != null && tileWithExit.getTileExit().getMap() == tile.getTileExit().getMap()) {
-                                    surroundingMaps.computeIfAbsent(map, m -> new HashMap<>()).put(dir, tile.getTileExit().getMap());
-                                    return tile.getTileExit().getMap();
-                                }
-                            }
-                            break;
-                        case RIGHT:
-                            if (x > map.MAX_MAP_SIZE_WIDTH / 2) {
-                                Optional<Tile> up = getTileWithExit(Dir.UP, x, y, map);
-                                Optional<Tile> down = getTileWithExit(Dir.DOWN, x, y, map);
-                                Tile tileWithExit = up.orElse(down.orElse(null));
-                                if (tileWithExit != null && tileWithExit.getTileExit().getMap() == tile.getTileExit().getMap()) {
-                                    surroundingMaps.computeIfAbsent(map, m -> new HashMap<>()).put(dir, tile.getTileExit().getMap());
-                                    return tile.getTileExit().getMap();
-                                }
-                            }
-                            break;
-                        case LEFT:
-                            if (x < map.MAX_MAP_SIZE_WIDTH / 2) {
-                                Optional<Tile> up = getTileWithExit(Dir.UP, x, y, map);
-                                Optional<Tile> down = getTileWithExit(Dir.DOWN, x, y, map);
-                                Tile tileWithExit = up.orElse(down.orElse(null));
-                                if (tileWithExit != null && tileWithExit.getTileExit().getMap() == tile.getTileExit().getMap()) {
-                                    surroundingMaps.computeIfAbsent(map, m -> new HashMap<>()).put(dir, tile.getTileExit().getMap());
-                                    return tile.getTileExit().getMap();
-                                }
-                            }
-                            break;
-                        case UP:
-                            if (y < map.MAX_MAP_SIZE_HEIGHT / 2) {
-                                Optional<Tile> right = getTileWithExit(Dir.RIGHT, x, y, map);
-                                Optional<Tile> left = getTileWithExit(Dir.LEFT, x, y, map);
-                                Tile tileWithExit = right.orElse(left.orElse(null));
-                                if (tileWithExit != null && tileWithExit.getTileExit().getMap() == tile.getTileExit().getMap()) {
-                                    surroundingMaps.computeIfAbsent(map, m -> new HashMap<>()).put(dir, tile.getTileExit().getMap());
-                                    return tile.getTileExit().getMap();
-                                }
-                            }
-                            break;
-                    }
-                }
-            }
-        }
-        surroundingMaps.computeIfAbsent(map, m -> new HashMap<>()).put(dir, -1);
-        return -1;
-    }
-
-    private Optional<Tile> getTileWithExit(Dir dir, int x, int y, Map map) {
-        int x2 = dir.equals(Dir.LEFT) ? x - 1 : dir.equals(Dir.RIGHT) ? x + 1 : x;
-        int y2 = dir.equals(Dir.UP) ? y - 1 : dir.equals(Dir.DOWN) ? y + 1 : y;
-        if (x2 < 0 || y2 < 0 || x2 >= Map.MAX_MAP_SIZE_WIDTH || y2 >= Map.MAX_MAP_SIZE_HEIGHT) {
-            return Optional.empty();
-        }
-        Tile tile = map.getTile(x2, y2);
-        return tile != null && tile.getTileExit() != null ? Optional.ofNullable(tile) : Optional.empty();
+        return map.getNeighbour(dir);
     }
 
     public WorldPos getEffectivePosition(int mapNumber, int x, int y) {

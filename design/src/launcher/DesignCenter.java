@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import design.Scale2x;
 import game.utils.Resources;
 import graphics.GraphicScalator;
+import json.MapsToJson;
 import map.MapsToWorld;
 import json.DoorsToJson;
 import json.SeparateObjByType;
@@ -21,6 +22,7 @@ public class DesignCenter extends Game {
 
     @Override
     public void create() {
+        MapsToJson.transformToJson();
     }
 
 
