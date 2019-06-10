@@ -29,7 +29,6 @@ public class LoginScreen extends AbstractScreen {
         WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
         clientSystem = new ClientSystem(SERVER_IP, SERVER_PORT);
         world = new World(builder.with(clientSystem).build());
-        clientSystem.start();
         MusicHandler.playMusic(101);
     }
 
@@ -42,9 +41,7 @@ public class LoginScreen extends AbstractScreen {
         Label heroLabel = new Label("Hero", getSkin());
         SelectBox<Hero> heroSelect = new SelectBox<>(getSkin());
         final Array<Hero> heroes = new Array<>();
-        Hero.getHeroes().forEach(hero -> {
-            heroes.add(hero);
-        });
+        Hero.getHeroes().forEach(hero -> heroes.add(hero));
         heroSelect.setItems(heroes);
 
         Table connectionTable = new Table((getSkin()));
