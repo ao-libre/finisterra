@@ -15,7 +15,7 @@ import shared.interfaces.Hero;
 import shared.network.lobby.JoinLobbyRequest;
 
 public class LoginScreen extends AbstractScreen {
-
+    
     private ClientSystem clientSystem;
     private World world;
     private ClientConfiguration config = ClientConfiguration.loadConfig("");

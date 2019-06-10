@@ -5,8 +5,6 @@ import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.util.MapHelper;
 
-import java.util.HashMap;
-
 public class MapHandler {
 
     private static MapHelper helper;
@@ -18,19 +16,8 @@ public class MapHandler {
         return helper;
     }
 
-    public static boolean has(int map) {
-        return helper.hasMap(map);
-    }
-
     public static Map get(int map) {
-        if (!has(map)) {
-            return load(map);
-        }
         return helper.getMap(map);
-    }
-
-    public static Map load(int mapNumber) {
-        return helper.getMap(mapNumber);
     }
 
     public static Tile getTile(WorldPos pos) {

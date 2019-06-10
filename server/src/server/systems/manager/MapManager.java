@@ -26,10 +26,11 @@ public class MapManager extends DefaultManager {
     private Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesFootprints = new ConcurrentHashMap<>();
 
-    public MapManager(Server server, HashMap<Integer, shared.model.map.Map> maps) {
+    public MapManager(Server server) {
         super(server);
-        new Thread(() -> helper = MapHelper.instance()).start();
+        helper = MapHelper.instance();
     }
+
 
     public Set<Integer> getMaps() {
         return helper.getMaps().keySet();

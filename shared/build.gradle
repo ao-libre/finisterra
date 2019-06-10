@@ -8,6 +8,7 @@ dependencies {
     compile "net.mostlyoriginal.artemis-odb:contrib-eventbus:$artemisContribVersion"
     compile "net.mostlyoriginal.artemis-odb:contrib-network:$artemisContribVersion"
     compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    compile 'com.google.guava:guava:27.1-jre'
 }
 
 // FLUID

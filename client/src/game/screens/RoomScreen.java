@@ -53,4 +53,9 @@ public class RoomScreen extends AbstractScreen {
         getMainTable().add(start);
     }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        clientSystem.stop();
+    }
 }

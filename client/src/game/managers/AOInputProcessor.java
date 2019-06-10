@@ -35,9 +35,8 @@ public class AOInputProcessor extends Stage {
 
     @Override
     public boolean scrolled(int amount) {
-        System.out.println("Scrolled: " + amount);
         CameraSystem system = GameScreen.getWorld().getSystem(CameraSystem.class);
-        system.zoom(amount, system.ZOOM_TIME);
+        system.zoom(amount, CameraSystem.ZOOM_TIME);
         return super.scrolled(amount);
     }
 
