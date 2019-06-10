@@ -63,8 +63,11 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         WorldPos targetPos = target1.map(E::getWorldPos).orElse(e.getOriginPos().toWorldPos());
         if (targetPos.equals(e.getWorldPos())) {
             return;
+        } else if (!target1.isPresent() && WorldUtils.WorldUtils(world).distance(origin, e.getOriginPos().toWorldPos()) < 10) {
+            return;
         }
 
+        target1.ifPresent(targetE -> Log.info(targetE.id() + " " + targetE.getWorldPos() + " " + (targetE.hasName() ? targetE.getName().text : "")));
         AStarMap map = maps.get(origin.map);
         boolean originWasWall = map.getNodeAt(origin.x, origin.y).isWall;
         boolean targetWasWall = map.getNodeAt(targetPos.x, targetPos.y).isWall;
@@ -85,23 +88,27 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
             return;
         }
         int entityId = e.id();
-        String text = e.hasName() ? e.getName().text : "NO NAME: " + entityId;
+        String text = entityId + " " + (e.hasName() ? e.getName().text : "NO NAME: " + entityId);
         if (nextNode.x - from.x > 0) {
             // move right
             moveEntity(entityId, RIGHT);
             Log.info(text + " AI MOVE RIGHT");
+            Log.info(e.getWorldPos() + " ");
         } else if (nextNode.x - from.x < 0) {
             // move left
             moveEntity(entityId, LEFT);
             Log.info(text + " AI MOVE LEFT");
+            Log.info(e.getWorldPos() + " ");
         } else if (nextNode.y - from.y > 0) {
             // move south
             moveEntity(entityId, DOWN);
             Log.info(text + " AI MOVE DOWN");
+            Log.info(e.getWorldPos() + " ");
         } else {
             // move north
             moveEntity(entityId, UP);
-            Log.info("AI MOVE UP");
+            Log.info(text + "AI MOVE UP");
+            Log.info(e.getWorldPos() + " ");
         }
     }
 
