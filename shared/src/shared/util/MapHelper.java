@@ -206,15 +206,19 @@ public class MapHelper {
             effectiveMap = getMap(Dir.RIGHT, map);
             x = x - RIGHT_BORDER_TILE + LEFT_BORDER_TILE - 1;
         }
-        if (y < TOP_BORDER_TILE) {
-            Map map = getMap(effectiveMap);
-            effectiveMap = getMap(Dir.UP, map);
-            y = BOTTOM_BORDER_TILE + y - TOP_BORDER_TILE + 1;
-        } else if (y > BOTTOM_BORDER_TILE) {
-            Map map = getMap(effectiveMap);
-            effectiveMap = getMap(Dir.DOWN, map);
-            y = y - BOTTOM_BORDER_TILE + TOP_BORDER_TILE - 1;
+
+        if (effectiveMap > 0) {
+            if (y < TOP_BORDER_TILE) {
+                Map map = getMap(effectiveMap);
+                effectiveMap = getMap(Dir.UP, map);
+                y = BOTTOM_BORDER_TILE + y - TOP_BORDER_TILE + 1;
+            } else if (y > BOTTOM_BORDER_TILE) {
+                Map map = getMap(effectiveMap);
+                effectiveMap = getMap(Dir.DOWN, map);
+                y = y - BOTTOM_BORDER_TILE + TOP_BORDER_TILE - 1;
+            }
         }
+
         if (effectiveMap == -1) {
             return originalPos;
         }

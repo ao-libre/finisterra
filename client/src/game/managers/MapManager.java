@@ -10,9 +10,15 @@ import model.textures.BundledAnimation;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class MapManager {
+
+    public static final List<Integer> LOWER_LAYERS = Arrays.asList(0, 1);
+    public static final List<Integer> UPPER_LAYERS = Collections.singletonList(3);
 
     public static final int TILE_BUFFER_SIZE = 7;
 
@@ -73,7 +79,7 @@ public class MapManager {
         }
         for (int y = minY; y < maxY; y++) {
             for (int x = minX; x < maxX; x++) {
-                if (map.getTile(x,y) != null) {
+                if (map.getTile(x, y) != null) {
                     drawTile(map, batch, delta, layer, y, x);
                 }
             }

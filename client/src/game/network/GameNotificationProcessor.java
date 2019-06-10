@@ -80,7 +80,6 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     private void addComponentsToEntity(Entity newEntity, EntityUpdate entityUpdate) {
         EntityEdit edit = newEntity.edit();
         for (Component component : entityUpdate.components) {
-            Log.info("Adding component: " + component);
             edit.add(component);
         }
     }
@@ -95,10 +94,8 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         for (Component component : entityUpdate.components) {
             // this should replace if already exists
             edit.add(component);
-            Log.info("Adding component: " + component.toString());
         }
         for (Class remove : entityUpdate.toRemove) {
-            Log.info("Removing component: " + remove.getSimpleName());
             edit.remove(remove);
         }
     }

@@ -5,9 +5,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.managers.MapManager;
 
 @Wire(injectInherited = true)
-public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
+public class MapLastLayerRenderingSystem extends MapLayerRenderingSystem {
 
-    public MapGroundRenderingSystem(SpriteBatch spriteBatch) {
-        super(spriteBatch, MapManager.LOWER_LAYERS);
+    public MapLastLayerRenderingSystem(SpriteBatch spriteBatch) {
+        super(spriteBatch, MapManager.UPPER_LAYERS);
     }
 }
