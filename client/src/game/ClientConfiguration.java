@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 
 public class ClientConfiguration {
+    private static ClientConfiguration loadedConfiguration;
     private Init initConfig;
     private Network network;
 
@@ -50,7 +51,9 @@ public class ClientConfiguration {
             // DO NOT USE 'Gdx.Files' , because 'Gdx.Files' in the launcher is always NULL!
             InputStream configFile = new FileInputStream(path);
 
-            return configObject.fromJson(ClientConfiguration.class, configFile);
+            loadedConfiguration = configObject.fromJson(ClientConfiguration.class, configFile);
+
+            return loadedConfiguration;
 
         } catch (FileNotFoundException ex) {
             Log.debug("Client configuration file not found!");
@@ -60,15 +63,11 @@ public class ClientConfiguration {
     }
 
     public static String client_getDefaultHost() {
-        ClientConfiguration config = ClientConfiguration.loadConfig("assets/Config.json");
-
-        return config.getNetwork().getDefaultServer().getHostname();
+        return loadedConfiguration.getNetwork().getDefaultServer().getHostname();
     }
 
     public static int client_getDefaultPort() {
-        ClientConfiguration config = ClientConfiguration.loadConfig("assets/Config.json");
-
-        return config.getNetwork().getDefaultServer().getPort();
+        return loadedConfiguration.getNetwork().getDefaultServer().getPort();
     }
 
     public static void createConfig() {
