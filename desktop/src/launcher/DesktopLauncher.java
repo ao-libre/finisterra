@@ -7,9 +7,8 @@ import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.ClientConfiguration;
 
-
 public class DesktopLauncher {
-
+	
     public static void main(String[] arg) {
         System.setProperty("org.lwjgl.opengl.Display.enableOSXFullscreenModeAPI", "true");
 

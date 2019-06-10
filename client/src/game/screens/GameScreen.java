@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
 import game.handlers.MusicHandler;
+import game.managers.MapManager;
 import game.systems.Sound.SoundSytem;
 import game.systems.anim.IdleAnimationSystem;
 import game.systems.anim.MovementAnimationSystem;
@@ -40,16 +41,16 @@ import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
 
 public class GameScreen extends ScreenAdapter {
 
-    public static final int RENDER_PRE_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 3;
-    public static final int RENDER_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 2;
-    public static final int RENDER_POST_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 1;
+    private static final int RENDER_PRE_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 3;
+    private static final int RENDER_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 2;
+    private static final int RENDER_POST_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 1;
     private static final int DECORATIONS = WorldConfigurationBuilder.Priority.NORMAL - 1;
     public static World world;
     public static int player = -1;
     private static GUI gui = new GUI();
     private static ClientSystem clientSystem;
-    protected FPSLogger logger;
-    protected GameState state;
+    private FPSLogger logger;
+    private GameState state;
     private SpriteBatch spriteBatch;
     private CameraSystem cameraSystem;
 
@@ -57,10 +58,12 @@ public class GameScreen extends ScreenAdapter {
         this.clientSystem = new ClientSystem(host, port);
         this.spriteBatch = new SpriteBatch();
         this.logger = new FPSLogger();
+        long start = System.currentTimeMillis();
         clientSystem.start();
         initWorld();
         clientSystem.getKryonetClient().sendToAll(new PlayerLoginRequest(player));
-
+        gui.initialize(); // TODO: gui.init() perhaps should on constructor but it has methods that shall execute on screen.show()
+        Gdx.app.log("Game screen initialization", "Elapsed time: " + (System.currentTimeMillis() - start)) ;
     }
 
     public static int getPlayer() {
@@ -116,7 +119,7 @@ public class GameScreen extends ScreenAdapter {
                 .with(RENDER_ENTITIES, new EffectRenderingSystem(spriteBatch))
                 .with(RENDER_ENTITIES, new CharacterRenderingSystem(spriteBatch))
                 .with(RENDER_ENTITIES, new WorldRenderingSystem(spriteBatch))
-                .with(RENDER_POST_ENTITIES, new MapUpperLayerRenderingSystem(spriteBatch))
+                .with(RENDER_POST_ENTITIES, new MapLastLayerRenderingSystem(spriteBatch))
                 .with(RENDER_POST_ENTITIES, new LightRenderingSystem(spriteBatch))
                 .with(DECORATIONS, new StateRenderingSystem(spriteBatch))
                 .with(DECORATIONS, new CombatRenderingSystem(spriteBatch))
@@ -171,7 +174,6 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         this.postWorldInit();
-        gui.initialize(); // TODO: gui.init() perhaps should on constructor but it has methods that shall execute on screen.show()
         this.state = GameState.RUNNING;
     }
 

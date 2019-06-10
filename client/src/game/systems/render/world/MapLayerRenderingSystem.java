@@ -1,6 +1,8 @@
 package game.systems.render.world;
 
-import com.artemis.BaseSystem;
+import camera.Focused;
+import com.artemis.Aspect;
+import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.handlers.MapHandler;
@@ -11,16 +13,20 @@ import game.systems.render.world.WorldRenderingSystem.UserRange;
 import position.WorldPos;
 import shared.model.map.Map;
 
-@Wire
-public class MapUpperLayerRenderingSystem extends BaseSystem {
+import java.util.List;
+import java.util.Optional;
 
-    public SpriteBatch batch;
+@Wire(injectInherited = true)
+public class MapLayerRenderingSystem extends RenderingSystem {
+
     private TiledMapSystem mapSystem;
     private CameraSystem cameraSystem;
     private WorldRenderingSystem worldRenderingSystem;
+    private List<Integer> layers;
 
-    public MapUpperLayerRenderingSystem(SpriteBatch spriteBatch) {
-        this.batch = spriteBatch;
+    public MapLayerRenderingSystem(SpriteBatch spriteBatch, List<Integer> layers) {
+        super(Aspect.all(Focused.class), spriteBatch, CameraKind.WORLD);
+        this.layers = layers;
     }
 
     private void renderWorld() {
@@ -38,32 +44,23 @@ public class MapUpperLayerRenderingSystem extends BaseSystem {
             if (pos.map != mapSystem.mapNumber) {
                 effectiveMap = MapHandler.get(pos.map);
             }
-            drawGraphicInLayer(3, x, y, effectiveMap, pos);
+            Map finalEffectiveMap = effectiveMap;
+            layers.forEach(layer -> drawGraphicInLayer(layer, x, y, finalEffectiveMap, pos));
         });
     }
 
-    private void drawGraphicInLayer(int layer, int x, int y, Map effectiveMap, WorldPos pos) {
-        int graphic = effectiveMap.getTile(pos.x, pos.y).getGraphic(layer);
-        if (graphic == 0) {
-            return;
-        }
-        MapManager.doTileDraw(this.batch, world.getDelta(), y, x, graphic);
+    private void drawGraphicInLayer(int layer, int x, int y, Map map, WorldPos pos) {
+        Optional.ofNullable(MapHandler.getHelper().getTile(map, pos)).ifPresent(tile -> {
+            int graphic = tile.getGraphic(layer);
+            if (graphic == 0) {
+                return;
+            }
+            MapManager.doTileDraw(getBatch(), world.getDelta(), y, x, graphic);
+        });
     }
 
     @Override
-    protected void begin() {
-        cameraSystem.camera.update();
-        batch.setProjectionMatrix(this.cameraSystem.camera.combined);
-        batch.begin();
-    }
-
-    @Override
-    protected void processSystem() {
-        renderWorld();
-    }
-
-    @Override
-    protected void end() {
-        batch.end();
+    protected void process(E e) {
+        this.renderWorld();
     }
 }

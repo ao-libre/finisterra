@@ -49,6 +49,7 @@ public class WorldUtils {
     }
 
     public List<Component> getComponents(Entity player) {
+        // TODO implement filter (non relevant components for clients)
         Bag<Component> components = player.getComponents(new Bag<>());
         List<Component> componentsToSend = new ArrayList<>();
         components.forEach(component -> {
