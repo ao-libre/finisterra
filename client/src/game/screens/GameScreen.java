@@ -57,10 +57,11 @@ public class GameScreen extends ScreenAdapter {
         this.clientSystem = new ClientSystem(host, port);
         this.spriteBatch = new SpriteBatch();
         this.logger = new FPSLogger();
+        long start = System.currentTimeMillis();
         clientSystem.start();
         initWorld();
         clientSystem.getKryonetClient().sendToAll(new PlayerLoginRequest(player));
-
+        Gdx.app.log("Game screen initialization", "Elapsed time: " + (System.currentTimeMillis() - start)) ;
     }
 
     public static int getPlayer() {

@@ -194,6 +194,7 @@ public class MapHelper {
     }
 
     public WorldPos getEffectivePosition(int mapNumber, int x, int y) {
+        WorldPos originalPos = new WorldPos(x, y, mapNumber);
 
         int effectiveMap = mapNumber;
         if (x < LEFT_BORDER_TILE) {
@@ -214,8 +215,10 @@ public class MapHelper {
             effectiveMap = getMap(Dir.DOWN, map);
             y = y - BOTTOM_BORDER_TILE + TOP_BORDER_TILE - 1;
         }
-        WorldPos effectivePos = new WorldPos(x, y, effectiveMap);
-        return effectivePos;
+        if (effectiveMap == -1) {
+            return originalPos;
+        }
+        return new WorldPos(x, y, effectiveMap);
     }
 
     public enum Dir {

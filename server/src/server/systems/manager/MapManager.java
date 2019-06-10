@@ -21,14 +21,14 @@ import static server.utils.WorldUtils.WorldUtils;
 public class MapManager extends DefaultManager {
 
     public static final int MAX_DISTANCE = 20;
-    private final MapHelper helper;
+    private MapHelper helper;
     private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesFootprints = new ConcurrentHashMap<>();
 
     public MapManager(Server server, HashMap<Integer, shared.model.map.Map> maps) {
         super(server);
-        helper = MapHelper.instance();
+        new Thread(() -> helper = MapHelper.instance()).start();
     }
 
     public Set<Integer> getMaps() {

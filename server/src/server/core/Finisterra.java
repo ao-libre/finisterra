@@ -6,11 +6,10 @@ import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import server.systems.FinisterraSystem;
 import server.systems.manager.LobbyNetworkManager;
-import server.systems.manager.NPCManager;
 import server.systems.manager.ObjectManager;
 import server.systems.manager.SpellManager;
-import server.systems.FinisterraSystem;
 import server.utils.IpChecker;
 import shared.model.lobby.Lobby;
 import shared.model.lobby.Room;
@@ -45,6 +44,7 @@ public class Finisterra implements ApplicationListener {
 
     @Override
     public void create() {
+        long start = System.currentTimeMillis();
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
         init();
         Gdx.app.log("Server initialization", "Finisterra...");
@@ -57,7 +57,9 @@ public class Finisterra implements ApplicationListener {
                 .with(new FluidEntityPlugin())
                 .with(new FinisterraSystem(this, strategy))
                 .build());
+        Gdx.app.log("Server initialization", "Elapsed time: " + (start - System.currentTimeMillis()));
         Gdx.app.log("Server initialization", "Finisterra OK");
+
     }
 
     private void init() {
