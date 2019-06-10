@@ -57,9 +57,11 @@ public class Server {
     }
 
     public void create() {
+        long start = System.currentTimeMillis();
         initWorld();
         createMap();
         createWorld();
+        Gdx.app.log("Server initialization", "Elapsed time: " + (start - System.currentTimeMillis()));
     }
 
     public World getWorld() {

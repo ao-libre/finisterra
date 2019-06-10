@@ -29,7 +29,6 @@ public class MapManager extends DefaultManager {
     public MapManager(Server server, HashMap<Integer, shared.model.map.Map> maps) {
         super(server);
         new Thread(() -> helper = MapHelper.instance()).start();
-
     }
 
     public Set<Integer> getMaps() {
