@@ -3,8 +3,10 @@ package shared.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import position.WorldPos;
 import shared.model.loaders.MapLoader;
 import shared.model.map.Map;
@@ -13,22 +15,32 @@ import shared.model.map.Tile;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 import static com.artemis.E.E;
 
 public class MapHelper {
 
-    public static final int NEAR_MAX_DISTNACE = 20;
-    public static final int BOTTOM_BORDER_TILE = 93;
-    public static final int TOP_BORDER_TILE = 8;
-    public static final int LEFT_BORDER_TILE = 10;
-    public static final int RIGHT_BORDER_TILE = 91;
+    private static final int NEAR_MAX_DISTNACE = 20;
+    private static final int BOTTOM_BORDER_TILE = 93;
+    private static final int TOP_BORDER_TILE = 8;
+    private static final int LEFT_BORDER_TILE = 10;
+    private static final int RIGHT_BORDER_TILE = 91;
     private static MapHelper instance;
-    private HashMap<Integer, Map> maps;
-    private HashMap<Map, HashMap<Dir, Integer>> surroundingMaps = new HashMap<>();
+    private LoadingCache<Integer, Map> maps = CacheBuilder
+            .newBuilder()
+            .maximumSize(10)
+            .expireAfterAccess(5, TimeUnit.MINUTES)
+            .build(new CacheLoader<Integer, Map>() {
+                public Map load(Integer key) {
+                    return getMapFromJson(key);
+                }
+            });
+
+    private AOJson json = new AOJson();
 
     private MapHelper() {
     }
@@ -36,18 +48,20 @@ public class MapHelper {
     public static MapHelper instance() {
         if (instance == null) {
             instance = new MapHelper();
-            instance.maps = new HashMap<>();
-            instance.initializeMaps(instance.maps);
         }
         return instance;
     }
 
-    public HashMap<Integer, Map> getMaps() {
-        return maps;
+    public Map getMap(int i) {
+        return maps.getUnchecked(i);
+    }
+
+    public ConcurrentMap<Integer, Map> getMaps() {
+        return maps.asMap();
     }
 
     public boolean hasMap(int mapNumber) {
-        return maps.containsKey(mapNumber);
+        return maps.asMap().containsKey(mapNumber);
     }
 
     public boolean isBlocked(Map map, WorldPos pos) {
@@ -72,28 +86,20 @@ public class MapHelper {
     /**
      * Initialize maps.
      */
-    public void initializeMaps(HashMap<Integer, Map> maps) {
+    public void loadAll() {
         Log.info("Loading maps...");
-        getAlkonMaps(maps);
-    }
-
-    public void getAlkonMaps(HashMap<Integer, Map> maps) {
         for (int i = 1; i <= 290; i++) {
-            Map map = getMapFromJson(i);
-            maps.put(i, map);
+            maps.getUnchecked(i);
         }
     }
 
-    public Map getMapFromJson(int i) {
+    private Map getMapFromJson(int i) {
         FileHandle mapPath = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Map" + i + SharedResources.JSON_EXT);
-        Json json = new AOJson();
         return json.fromJson(Map.class, mapPath);
     }
 
-    public Map getMap(int i) {
-        if (hasMap(i)) {
-            return maps.get(i);
-        }
+    @Deprecated
+    private Map getMap_old(int i) {
         FileHandle mapPath = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Alkon/Mapa" + i + ".map");
         FileHandle infPath = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Alkon/Mapa" + i + ".inf");
         MapLoader loader = new MapLoader();
@@ -137,17 +143,17 @@ public class MapHelper {
     private int getDistanceBetweenMaps(WorldPos pos, WorldPos target) {
         int mapTarget = target.map;
         int mapNumber = pos.map;
-        Map map = getMap(mapNumber);
+        Map map = maps.getIfPresent(mapNumber);
         Optional<Dir> dirTo = Arrays.stream(Dir.values()).filter(dir -> getMap(dir, map) == mapTarget).findFirst();
         return dirTo.map(dir -> getDistanceToTarget(pos, dir, target)).orElse(getDistanceBetweenThreeMaps(pos, target));
     }
 
     private Integer getDistanceBetweenThreeMaps(WorldPos pos, WorldPos target) {
         if (hasMap(target.map) && hasMap(pos.map)) {
-            Map map = getMap(pos.map);
+            Map map = maps.getUnchecked(pos.map);
             int mapTarget = target.map;
             Dir horizontalDir = null;
-            Map targetMap = getMap(mapTarget);
+            Map targetMap = maps.getUnchecked(mapTarget);
             int leftMap = getMap(Dir.LEFT, map);
             int rightMap = getMap(Dir.RIGHT, map);
             if (leftMap > 0) {
@@ -198,22 +204,22 @@ public class MapHelper {
 
         int effectiveMap = mapNumber;
         if (x < LEFT_BORDER_TILE) {
-            Map map = getMap(effectiveMap);
+            Map map = maps.getUnchecked(effectiveMap);
             effectiveMap = getMap(Dir.LEFT, map);
             x = RIGHT_BORDER_TILE + x - LEFT_BORDER_TILE + 1;
         } else if (x > RIGHT_BORDER_TILE) {
-            Map map = getMap(effectiveMap);
+            Map map = maps.getUnchecked(effectiveMap);
             effectiveMap = getMap(Dir.RIGHT, map);
             x = x - RIGHT_BORDER_TILE + LEFT_BORDER_TILE - 1;
         }
 
         if (effectiveMap > 0) {
             if (y < TOP_BORDER_TILE) {
-                Map map = getMap(effectiveMap);
+                Map map = maps.getUnchecked(effectiveMap);
                 effectiveMap = getMap(Dir.UP, map);
                 y = BOTTOM_BORDER_TILE + y - TOP_BORDER_TILE + 1;
             } else if (y > BOTTOM_BORDER_TILE) {
-                Map map = getMap(effectiveMap);
+                Map map = maps.getUnchecked(effectiveMap);
                 effectiveMap = getMap(Dir.DOWN, map);
                 y = y - BOTTOM_BORDER_TILE + TOP_BORDER_TILE - 1;
             }

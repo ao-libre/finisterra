@@ -29,7 +29,6 @@ public class Server {
     private int roomId;
     private ObjectManager objectManager;
     private SpellManager spellManager;
-    private HashMap<Integer, Map> maps;
     private World world;
     private KryonetServerMarshalStrategy strategy;
     private Set<Player> players;
@@ -40,7 +39,6 @@ public class Server {
         this.udpPort = udpPort;
         this.objectManager = objectManager;
         this.spellManager = spellManager;
-        this.maps = maps;
         create();
     }
 
@@ -59,8 +57,6 @@ public class Server {
     public void create() {
         long start = System.currentTimeMillis();
         initWorld();
-        createMap();
-        createWorld();
         Gdx.app.log("Server initialization", "Elapsed time: " + (start - System.currentTimeMillis()));
     }
 
@@ -78,7 +74,7 @@ public class Server {
                 .with(new NetworkManager(this, strategy))
                 .with(new ItemManager(this))
                 .with(new NPCManager())
-                .with(new MapManager(this, maps))
+                .with(new MapManager(this))
                 .with(spellManager)
                 .with(objectManager)
                 .with(new PathFindingSystem(PATH_FINDING_INTERVAL))
@@ -93,17 +89,7 @@ public class Server {
                 .with(new RespawnSystem())
                 .with(new BuffSystem());
         world = new World(builder.build());
-        world.getSystem(MapManager.class).postInitialize();
         System.out.println("WORLD CREATED");
-    }
-
-
-    private void createWorld() {
-        // testing
-    }
-
-    private void createMap() {
-
     }
 
     public void update() {
