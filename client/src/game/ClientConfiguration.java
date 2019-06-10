@@ -40,6 +40,8 @@ public class ClientConfiguration {
     public boolean client_noAudio() { return getInitConfig().getDisableAudio(); }
     public boolean client_startMaximized() { return getInitConfig().getStartMaximized(); }
     public String client_HiDPI_Mode() { return getInitConfig().getVideo().getHiDPI_Mode(); }
+    public static String client_getDefaultHost() { return loadedConfiguration.getNetwork().getDefaultServer().getHostname(); }
+    public static int client_getDefaultPort() { return loadedConfiguration.getNetwork().getDefaultServer().getPort(); }
 
     public static ClientConfiguration loadConfig(String path) {
         Json configObject = new Json();
@@ -60,14 +62,6 @@ public class ClientConfiguration {
         }
 
         return null;
-    }
-
-    public static String client_getDefaultHost() {
-        return loadedConfiguration.getNetwork().getDefaultServer().getHostname();
-    }
-
-    public static int client_getDefaultPort() {
-        return loadedConfiguration.getNetwork().getDefaultServer().getPort();
     }
 
     public static void createConfig() {
@@ -149,8 +143,8 @@ public class ClientConfiguration {
             public void setWidth(int width) {
                 this.width = width;
             }
-            public void setVsync(boolean vSync) { this.vSync = vSync; }
-            public void setHiDPI_Mode(String HiDPI_Mode) { this.HiDPI_Mode = HiDPI_Mode; }
+            private void setVsync(boolean vSync) { this.vSync = vSync; }
+            private void setHiDPI_Mode(String HiDPI_Mode) { this.HiDPI_Mode = HiDPI_Mode; }
 
             private int getWidth() { return width; }
             private int getHeight() { return height; }
@@ -173,7 +167,7 @@ public class ClientConfiguration {
             this.defaultServer = defaultServer;
         }
 
-        public DefaultServer getDefaultServer() {
+        private DefaultServer getDefaultServer() {
             return defaultServer;
         }
 
@@ -199,8 +193,8 @@ public class ClientConfiguration {
                 this.port = port;
             }
 
-            public String getHostname() { return hostname; }
-            public int getPort() { return port; }
+            private String getHostname() { return hostname; }
+            private int getPort() { return port; }
         }
     }
 
