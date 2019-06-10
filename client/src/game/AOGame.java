@@ -27,6 +27,9 @@ public class AOGame extends Game {
     public void create() {
         Gdx.app.debug("AOGame", "Creating AOGame...");
 
+        // Un-comment this if you want to retrieve default version of the Config.json file.
+        //ClientConfiguration.createConfig();
+
         // Load resources & stuff.
         long start = System.currentTimeMillis();
         AssetHandler.load();

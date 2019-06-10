@@ -38,7 +38,6 @@ public class AssetHandler {
     public static void unload() {
         MusicHandler.unload();
         SoundsHandler.unload();
-        AL.destroy();
     }
 
     public static StateHandler getState() {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import game.ClientConfiguration;
 import game.handlers.MusicHandler;
 import game.systems.network.ClientSystem;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
@@ -14,8 +15,6 @@ import shared.network.lobby.JoinLobbyRequest;
 
 public class LoginScreen extends AbstractScreen {
 
-    private static final String SERVER_IP = "ec2-18-231-116-111.sa-east-1.compute.amazonaws.com";
-    private static final int SERVER_PORT = 7666;
     private ClientSystem clientSystem;
     private World world;
 
@@ -27,7 +26,7 @@ public class LoginScreen extends AbstractScreen {
 
     private void init() {
         WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
-        clientSystem = new ClientSystem(SERVER_IP, SERVER_PORT);
+        clientSystem = new ClientSystem(ClientConfiguration.client_getDefaultHost(), ClientConfiguration.client_getDefaultPort());
         world = new World(builder.with(clientSystem).build());
         MusicHandler.playMusic(101);
     }
@@ -47,10 +46,10 @@ public class LoginScreen extends AbstractScreen {
         Table connectionTable = new Table((getSkin()));
 
         Label ipLabel = new Label("IP: ", getSkin());
-        TextField ipText = new TextField(SERVER_IP, getSkin());
+        TextField ipText = new TextField(ClientConfiguration.client_getDefaultHost(), getSkin());
 
         Label portLabel = new Label("Port: ", getSkin());
-        TextField portText = new TextField("" + SERVER_PORT, getSkin());
+        TextField portText = new TextField("" + ClientConfiguration.client_getDefaultPort(), getSkin());
         portText.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
 
         TextButton loginButton = new TextButton("Connect", getSkin());

@@ -1,0 +1,19 @@
+{
+	"initConfig":{
+		"video":{
+			"width":1280,
+			"height":720,
+			"vSync":true,
+			"HiDPI_Mode":"Logical"
+		},
+		"resizeable":true,
+		"disableAudio":false,
+		"startMaximized":false
+	},
+	"network":{
+		"defaultServer":{
+			"hostname":"45.235.98.116",
+			"port":9000
+		}
+	}
+}
