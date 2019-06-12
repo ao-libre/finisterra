@@ -1,14 +1,18 @@
 apply plugin: 'application'
 
 sourceCompatibility = 1.8
-sourceSets.main.java.srcDirs = ["src/"]
-sourceSets.main.resources.srcDirs = ["assets/"]
+
+sourceSets {
+    main.java.srcDirs = ["src/"]
+    main.resources.srcDirs = ["assets/"]
+}
+
 
 mainClassName = "launcher.DesktopLauncher"
 
 dependencies {
     compile project(":client")
-    compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 }

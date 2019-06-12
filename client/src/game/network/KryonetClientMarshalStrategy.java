@@ -56,8 +56,7 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
     @Override
     public void stop() {
         super.stop();
-        if (state == MarshalState.STOPPED)
-            Log.debug("Disconnected!");
+        if (state == MarshalState.STOPPED) Log.debug("Disconnected!");
     }
 
     @Override

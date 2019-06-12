@@ -1,14 +1,13 @@
 apply plugin: "java"
 
 sourceCompatibility = 1.8
-sourceSets {
-    main.java.srcDirs = ["src/"]
-}
+
+sourceSets.main.java.srcDirs = ["src/"]
 
 dependencies {
     compile project(":shared")
     compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-    compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+    compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     compile "org.reflections:reflections:0.9.11"
 }

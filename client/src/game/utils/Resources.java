@@ -27,4 +27,6 @@ public class Resources {
     public static final String GAME_SHADERS_LIGHT = "light.png";
     public static final String GAME_SPELLS_PATH = "spells/";
 
+    public static final String CLIENT_CONFIG = "client.json";
+
 }
