@@ -75,39 +75,40 @@ All stuff shared between client and server, like network requests and responses,
 ## Default
 
 ### Combat
-ATTACK_1 = CONTROL_LEFT
-ATTACK_2 = CONTROL_RIGHT
-MEDITATE = M
-USE = U
-HIDE = O
-INVENTORY = I
-SPELLS = K
-TALK = ENTER
-DROP = T
-TAKE = A
-EQUIP = E
+* ATTACK_1 = CONTROL_LEFT
+* ATTACK_2 = CONTROL_RIGHT
+* MEDITATE = M
+* USE = U
+* HIDE = O
+* INVENTORY = I
+* SPELLS = K
+* TALK = ENTER
+* DROP = T
+* TAKE = A
+* EQUIP = E
 
 ### Move
-MOVE_LEFT = LEFT
-MOVE_RIGHT = RIGHT
-MOVE_UP = UP
-MOVE_DOWN = DOWN
+* MOVE_LEFT = LEFT
+* MOVE_RIGHT = RIGHT
+* MOVE_UP = UP
+* MOVE_DOWN = DOWN
 
 ## Alternative wasd - Active activate with F1
 ### Combat
-ATTACK_1 = SPACE
-ATTACK_2 = SHIFT_RIGHT
-MEDITATE = M
-USE = SHIFT_LEFT
-HIDE = O
-INVENTORY = I
-SPELLS = K
-TALK = ENTER
-DROP = T
-TAKE = L
-EQUIP = E
+* ATTACK_1 = SPACE
+* ATTACK_2 = SHIFT_RIGHT
+* MEDITATE = M
+* USE = SHIFT_LEFT
+* HIDE = O
+* INVENTORY = I
+* SPELLS = K
+* TALK = ENTER
+* DROP = T
+* TAKE = L
+* EQUIP = E
+
 ### MOVE
-MOVE_LEFT = A
-MOVE_RIGHT = D
-MOVE_UP = W
-MOVE_DOWN = S
+* MOVE_LEFT = A
+* MOVE_RIGHT = D
+* MOVE_UP = W
+* MOVE_DOWN = S
