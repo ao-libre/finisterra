@@ -2,7 +2,6 @@ package game.utils;
 
 public class Resources {
 
-    // TODO: Class to handle resources?
     public static final String GAME_DATA_PATH = "data/";
     public static final String GAME_GRAPHICS_PATH = GAME_DATA_PATH + "graficos2x/";
     public static final String GAME_FXS_PATH = GAME_DATA_PATH + "fxs/";

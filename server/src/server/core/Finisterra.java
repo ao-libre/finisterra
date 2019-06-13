@@ -16,12 +16,15 @@ import shared.model.lobby.Room;
 import shared.model.map.Map;
 import shared.network.lobby.StartGameResponse;
 import shared.util.MapHelper;
+import shared.util.MapHelper.CacheStrategy;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+
+import static shared.util.MapHelper.CacheStrategy.*;
 
 public class Finisterra implements ApplicationListener {
 
@@ -49,7 +52,7 @@ public class Finisterra implements ApplicationListener {
         init();
         Gdx.app.log("Server initialization", "Finisterra...");
         new Thread(() -> {
-            MapHelper helper = MapHelper.instance();
+            MapHelper helper = MapHelper.instance(NEVER_EXPIRE);
             helper.loadAll();
         }).start();
         lobby = new Lobby();

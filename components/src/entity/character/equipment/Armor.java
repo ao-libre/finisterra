@@ -1,9 +1,11 @@
 package entity.character.equipment;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 
 import java.io.Serializable;
 
+@PooledWeaver
 public class Armor extends Component implements Serializable {
     private int index;
 

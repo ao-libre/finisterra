@@ -3,6 +3,7 @@ package server.systems;
 import com.artemis.Aspect;
 import com.artemis.Component;
 import com.artemis.E;
+import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import movement.Destination;
 import movement.RandomMovement;
@@ -21,7 +22,10 @@ import java.util.*;
 import static com.artemis.E.E;
 import static server.utils.WorldUtils.WorldUtils;
 
+@Wire
 public class RandomMovementSystem extends IteratingSystem {
+
+    private MapManager mapManager;
     private static final List<AOPhysics.Movement> VALUES =
             Collections.unmodifiableList(Arrays.asList(AOPhysics.Movement.values()));
     private static final int SIZE = VALUES.size();
@@ -61,10 +65,9 @@ public class RandomMovementSystem extends IteratingSystem {
         WorldPos oldPos = new WorldPos(worldPos);
         WorldPos nextPos = worldUtils.getNextPos(worldPos, mov);
 
-        MapManager mapManager = world.getSystem(MapManager.class);
         Map map = mapManager.getMap(nextPos.map);
         boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
-        boolean occupied = mapManager.getHelper().hasEntity(getServer().getMapManager().getNearEntities(entityId), nextPos);
+        boolean occupied = mapManager.getHelper().hasEntity(mapManager.getNearEntities(entityId), nextPos);
         if (player.hasImmobile() || blocked || occupied) {
             nextPos = oldPos;
         }
@@ -73,7 +76,7 @@ public class RandomMovementSystem extends IteratingSystem {
         player.worldPosX(nextPos.x);
         player.worldPosY(nextPos.y);
 
-        getServer().getMapManager().movePlayer(entityId, Optional.of(oldPos));
+        mapManager.movePlayer(entityId, Optional.of(oldPos));
 
         // notify near users
 

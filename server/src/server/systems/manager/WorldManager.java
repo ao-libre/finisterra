@@ -3,6 +3,7 @@ package server.systems.manager;
 import camera.Focused;
 import com.artemis.Component;
 import com.artemis.E;
+import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
 import entity.character.states.CanWrite;
 import entity.character.states.Heading;
@@ -31,7 +32,11 @@ import java.util.stream.Collectors;
 import static com.artemis.E.E;
 import static server.utils.WorldUtils.WorldUtils;
 
+@Wire
 public class WorldManager extends DefaultManager {
+
+    private MapManager mapManager;
+    private NetworkManager networkManager;
 
     private static final int ATTR_BASE_VALUE = 18;
     private static int MAX_LEVEL = 45;
@@ -383,17 +388,6 @@ public class WorldManager extends DefaultManager {
     }
 
     private WorldPos getValidPosition(int map) {
-//        final E entity = E(getServer().getMapManager().mapEntity);
-//        if (entity.hasCave()) {
-//            final Cave cave = entity.getCave();
-//            final int midHeight = cave.height / 2;
-//            final int midWidth = cave.width / 2;
-//            WorldPos validPos = getRandomPos(midWidth, midHeight, map);
-//            while (cave.isBlocked(validPos.x, validPos.y)) {
-//                validPos = getRandomPos(cave.width, cave.height, map);
-//            }
-//            return validPos;
-//        }
         return new WorldPos(50, 50, map);
     }
 
@@ -617,34 +611,34 @@ public class WorldManager extends DefaultManager {
     }
 
     public void registerEntity(int id) {
-        getServer().getMapManager().updateEntity(id);
+        mapManager.updateEntity(id);
     }
 
     public void registerEntity(int connectionId, int id) {
-        getServer().getNetworkManager().registerUserConnection(id, connectionId);
-        getServer().getMapManager().updateEntity(id);
+        networkManager.registerUserConnection(id, connectionId);
+        mapManager.updateEntity(id);
     }
 
     public void unregisterEntity(int entityId) {
-        getServer().getMapManager().removeEntity(entityId);
+        mapManager.removeEntity(entityId);
         getWorld().delete(entityId);
     }
 
     void sendEntityRemove(int user, int entity) {
-        if (getServer().getNetworkManager().playerHasConnection(user)) {
-            getServer().getNetworkManager()
-                    .sendTo(getServer().getNetworkManager().getConnectionByPlayer(user), new RemoveEntity(entity));
+        if (networkManager.playerHasConnection(user)) {
+            networkManager
+                    .sendTo(networkManager.getConnectionByPlayer(user), new RemoveEntity(entity));
         }
     }
 
     public void sendEntityUpdate(int user, Object update) {
-        if (getServer().getNetworkManager().playerHasConnection(user)) {
-            getServer().getNetworkManager().sendTo(getServer().getNetworkManager().getConnectionByPlayer(user), update);
+        if (networkManager.playerHasConnection(user)) {
+            networkManager.sendTo(networkManager.getConnectionByPlayer(user), update);
         }
     }
 
     public void notifyToNearEntities(int entityId, Object update) {
-        getServer().getMapManager().getNearEntities(entityId).forEach(nearPlayer -> {
+        mapManager.getNearEntities(entityId).forEach(nearPlayer -> {
             sendEntityUpdate(nearPlayer, update);
         });
     }
@@ -692,7 +686,7 @@ public class WorldManager extends DefaultManager {
         components.add(new Focused());
         components.add(new AOPhysics());
         components.add(new CanWrite());
-        getServer().getNetworkManager().sendTo(connectionId, EntityUpdateBuilder.of(entity).withComponents(components.toArray(new Component[0])).build());
+        networkManager.sendTo(connectionId, EntityUpdateBuilder.of(entity).withComponents(components.toArray(new Component[0])).build());
         registerEntity(connectionId, entity);
     }
 }

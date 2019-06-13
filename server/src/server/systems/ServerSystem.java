@@ -1,10 +1,12 @@
 package server.systems;
 
+import com.artemis.annotations.Wire;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import server.core.Server;
 import server.network.ServerNotificationProcessor;
 import server.network.ServerRequestProcessor;
+import server.systems.manager.MapManager;
 import shared.network.init.NetworkDictionary;
 import shared.network.interfaces.INotification;
 import shared.network.interfaces.INotificationProcessor;
@@ -15,7 +17,10 @@ import java.util.Deque;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+@Wire
 public class ServerSystem extends MarshalSystem {
+
+    private MapManager mapManager;
 
     private IRequestProcessor requestProcessor;
     private INotificationProcessor notificationProcessor;
@@ -67,7 +72,7 @@ public class ServerSystem extends MarshalSystem {
                 return;
             }
             int playerToDisconnect = server.getNetworkManager().getPlayerByConnection(connectionId);
-            server.getMapManager().removeEntity(playerToDisconnect);
+            mapManager.removeEntity(playerToDisconnect);
             server.getNetworkManager().unregisterUserConnection(playerToDisconnect, connectionId);
             server.getWorldManager().unregisterEntity(playerToDisconnect);
 

@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentMap;
 public class MapsToJson {
 
     public static void transformToJson() {
-        MapHelper helper = MapHelper.instance();
+        MapHelper helper = MapHelper.instance(MapHelper.CacheStrategy.NEVER_EXPIRE);
         helper.getMaps().forEach((id, map) -> {
             map.setNeighbours(
                     helper.getMap(MapHelper.Dir.LEFT, map),

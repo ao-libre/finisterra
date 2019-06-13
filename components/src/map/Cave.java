@@ -1,7 +1,9 @@
 package map;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 
+@PooledWeaver
 public class Cave extends Component {
 
     public boolean[][] tiles;

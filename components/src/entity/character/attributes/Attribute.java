@@ -1,12 +1,14 @@
 package entity.character.attributes;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 
 import java.io.Serializable;
 
+@PooledWeaver
 public abstract class Attribute extends Component implements Serializable {
 
-    private int maxAttributeValue = 50; //TODO: change this to the correct value!!!
+    private int maxAttributeValue = 40;
     private int baseValue;
     private int currentValue;
 

@@ -30,24 +30,37 @@ public class MapHelper {
     private static final int LEFT_BORDER_TILE = 10;
     private static final int RIGHT_BORDER_TILE = 91;
     private static MapHelper instance;
-    private LoadingCache<Integer, Map> maps = CacheBuilder
-            .newBuilder()
-            .maximumSize(10)
-            .expireAfterAccess(5, TimeUnit.MINUTES)
-            .build(new CacheLoader<Integer, Map>() {
-                public Map load(Integer key) {
-                    return getMapFromJson(key);
-                }
-            });
+    private LoadingCache<Integer, Map> maps;
 
-    private AOJson json = new AOJson();
+    private static LoadingCache<Integer, Map> createCache(CacheStrategy cacheStrategy) {
+        CacheBuilder<Object, Object> cacheBuilder = CacheBuilder
+                .newBuilder();
+        switch (cacheStrategy) {
+            case NEVER_EXPIRE:
+                cacheBuilder.maximumSize(300);
+                break;
+            case FIVE_MIN_EXPIRE:
+                cacheBuilder.maximumSize(10);
+                cacheBuilder.expireAfterAccess(5, TimeUnit.MINUTES);
+                break;
+        }
+        return cacheBuilder
+                .build(new CacheLoader<Integer, Map>() {
+                    public Map load(Integer key) {
+                        return getMapFromJson(key);
+                    }
+                });
+    }
+
+    private static final AOJson JSON = new AOJson();
 
     private MapHelper() {
     }
 
-    public static MapHelper instance() {
+    public static MapHelper instance(CacheStrategy strategy) {
         if (instance == null) {
             instance = new MapHelper();
+            instance.maps = createCache(strategy);
         }
         return instance;
     }
@@ -93,9 +106,9 @@ public class MapHelper {
         }
     }
 
-    private Map getMapFromJson(int i) {
+    private static Map getMapFromJson(int i) {
         FileHandle mapPath = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Map" + i + SharedResources.JSON_EXT);
-        return json.fromJson(Map.class, mapPath);
+        return JSON.fromJson(Map.class, mapPath);
     }
 
     @Deprecated
@@ -236,5 +249,10 @@ public class MapHelper {
         DOWN,
         LEFT,
         RIGHT
+    }
+
+    public enum CacheStrategy {
+        NEVER_EXPIRE,
+        FIVE_MIN_EXPIRE
     }
 }

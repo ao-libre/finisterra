@@ -1,6 +1,7 @@
 package server.systems.manager;
 
 import com.artemis.E;
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
 import position.WorldPos;
 import server.core.Server;
@@ -14,11 +15,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.artemis.E.E;
 import static server.utils.WorldUtils.WorldUtils;
+import static shared.util.MapHelper.CacheStrategy.NEVER_EXPIRE;
 
 /**
  * Logic regarding maps, contains information about entities in each map, and how are they related.
  */
+@Wire
 public class MapManager extends DefaultManager {
+
+    private WorldManager worldManager;
 
     public static final int MAX_DISTANCE = 20;
     private MapHelper helper;
@@ -28,9 +33,8 @@ public class MapManager extends DefaultManager {
 
     public MapManager(Server server) {
         super(server);
-        helper = MapHelper.instance();
+        helper = MapHelper.instance(NEVER_EXPIRE);
     }
-
 
     public Set<Integer> getMaps() {
         return helper.getMaps().keySet();
@@ -41,11 +45,8 @@ public class MapManager extends DefaultManager {
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         super.initialize();
-    }
-
-    public void postInitialize() {
         // create NPCs
         helper.getMaps().forEach(this::initTiles);
     }
@@ -66,11 +67,11 @@ public class MapManager extends DefaultManager {
     }
 
     private void createObject(int objIndex, int objCount, WorldPos pos) {
-        world.getSystem(WorldManager.class).createObject(objIndex, objCount, pos);
+        worldManager.createObject(objIndex, objCount, pos);
     }
 
     private void createNPC(int npcIndex, WorldPos pos) {
-        world.getSystem(WorldManager.class).createNPC(npcIndex, pos);
+        worldManager.createNPC(npcIndex, pos);
     }
 
     public MapHelper getHelper() {
@@ -242,7 +243,7 @@ public class MapManager extends DefaultManager {
             nearEntities.get(entity1).remove(entity2);
         }
         // always notify that this entity is not longer in range
-        getServer().getWorldManager().sendEntityRemove(entity1, entity2);
+        worldManager.sendEntityRemove(entity1, entity2);
     }
 
 
@@ -256,7 +257,7 @@ public class MapManager extends DefaultManager {
         Set<Integer> near = nearEntities.computeIfAbsent(entity1, (i) -> new HashSet<>());
         if (near.add(entity2)) {
             EntityUpdate update = EntityUpdateBuilder.of(entity2).withComponents(WorldUtils(world).getComponents(entity2)).build();
-            getServer().getWorldManager().sendEntityUpdate(entity1, update);
+            worldManager.sendEntityUpdate(entity1, update);
         }
     }
 
