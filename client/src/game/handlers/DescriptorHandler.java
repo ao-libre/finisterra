@@ -32,8 +32,7 @@ public class DescriptorHandler {
     private static List<WeaponDescriptor> weapons;
     private static List<ShieldDescriptor> shields;
     private static List<FXDescriptor> fxs;
-
-
+    
     public static void load() {
         graphics = new GenericReader<Graphic>().read(GRAPHICS, Graphic.class, new GraphicsSerializer(), Graphic::getGrhIndex);
         bodies = new GenericReader<BodyDescriptor>().read(BODIES, BodyDescriptor.class, new BodyDescriptorSerializer(), Descriptor::getId);

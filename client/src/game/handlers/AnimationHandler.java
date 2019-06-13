@@ -1,5 +1,6 @@
 package game.handlers;
 
+import com.esotericsoftware.minlog.Log;
 import entity.character.equipment.Helmet;
 import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
@@ -27,6 +28,10 @@ public class AnimationHandler {
 
     private static Map<Integer, BundledAnimation> animations = new ConcurrentHashMap<>();
 
+    public static void loadGraphics() {
+        DescriptorHandler.getGraphics().forEach(AnimationHandler::saveGraphic);
+    }
+
     @Deprecated
     private static Map<Integer, List<BundledAnimation>> loadDescriptors(List<?> descriptors) {
         Map<Integer, List<BundledAnimation>> result = new HashMap<>();
@@ -43,6 +48,7 @@ public class AnimationHandler {
     }
 
     private static List<BundledAnimation> createAnimations(IDescriptor descriptor, boolean pingpong) {
+        Log.info("Animation created");
         List<BundledAnimation> animations = new ArrayList<>();
         int[] indexs = descriptor.getIndexs();
         for (int i = 0; i < indexs.length; i++) {
@@ -97,7 +103,14 @@ public class AnimationHandler {
     }
 
     public static BundledAnimation saveBundledAnimation(int grhIndex) {
-        BundledAnimation bundledAnimation = new BundledAnimation(DescriptorHandler.getGraphic(grhIndex), false);
+        Log.info("BundledAnimation created");
+        Graphic graphic = DescriptorHandler.getGraphic(grhIndex);
+        BundledAnimation bundledAnimation = saveGraphic(grhIndex, graphic);
+        return bundledAnimation;
+    }
+
+    private static BundledAnimation saveGraphic(int grhIndex, Graphic graphic) {
+        BundledAnimation bundledAnimation = new BundledAnimation(graphic, false);
         animations.put(grhIndex, bundledAnimation);
         return bundledAnimation;
     }

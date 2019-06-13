@@ -12,15 +12,17 @@ public class AssetHandler {
         new Thread(() -> {
             Gdx.app.log("Loading", "Loading world...");
             MapHandler.getHelper();
-            Gdx.app.log("Loading", "Loading descriptors...");
-            DescriptorHandler.load();
             Gdx.app.log("Loading", "Loading objects...");
             ObjectHandler.load();
             Gdx.app.log("Loading", "Loading spells...");
             SpellHandler.load();
         }).start();
+        Gdx.app.log("Loading", "Loading descriptors...");
+        DescriptorHandler.load();
         Gdx.app.log("Loading", "Loading graphics...");
         SurfaceHandler.loadAllTextures();
+        Gdx.app.log("Loading", "Loading animations...");
+        AnimationHandler.loadGraphics();
         Gdx.app.log("Loading", "Loading particles...");
         ParticlesHandler.load();
         Gdx.app.log("Loading", "Loading Sounds...");
