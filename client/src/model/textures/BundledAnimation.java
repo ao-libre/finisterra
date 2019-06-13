@@ -49,7 +49,6 @@ public class BundledAnimation {
                 tmpRegions.add(this.frames.peek().getGraphic());
             }
 
-            // TODO : Manual array conversion por error en toArray de gdxArray
             TextureRegion[] textures = new TextureRegion[tmpRegions.size];
             int index = 0;
             for (TextureRegion tmpTex : tmpRegions) {

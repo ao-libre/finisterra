@@ -2,6 +2,7 @@ package server.combat;
 
 import com.artemis.BaseSystem;
 import com.artemis.E;
+import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
 import entity.character.attributes.Attribute;
 import entity.character.states.Buff;
@@ -16,6 +17,7 @@ import graphics.Effect.EffectBuilder;
 import physics.AttackAnimation;
 import position.WorldPos;
 import server.core.Server;
+import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
 import shared.model.Spell;
 import shared.network.combat.SpellCastRequest;
@@ -32,8 +34,10 @@ import static com.artemis.E.E;
 import static java.lang.String.format;
 import static shared.util.Messages.*;
 
+@Wire
 public class MagicCombatSystem extends BaseSystem {
 
+    private MapManager mapManager;
     public static final String SPACE = " ";
     public static final int TIME_TO_MOVE_1_TILE = 200;
     private Server server;
@@ -59,7 +63,7 @@ public class MagicCombatSystem extends BaseSystem {
     }
 
     private Optional<Integer> getTarget(int userId, WorldPos worldPos, long timestamp) {
-        Set<Integer> entities = new HashSet<>(getServer().getMapManager().getNearEntities(userId));
+        Set<Integer> entities = new HashSet<>(mapManager.getNearEntities(userId));
         entities.add(userId);
         return entities
                 .stream()
@@ -77,7 +81,7 @@ public class MagicCombatSystem extends BaseSystem {
     }
 
     private boolean footprintOf(Integer entity, WorldPos worldPos, long timestamp) {
-        final Set<Integer> footprints = getServer().getMapManager().getEntitiesFootprints().get(entity);
+        final Set<Integer> footprints = mapManager.getEntitiesFootprints().get(entity);
         return footprints != null && footprints
                 .stream()
                 .anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()) && (timestamp - E(footprint).getFootprint().timestamp <= TIME_TO_MOVE_1_TILE));

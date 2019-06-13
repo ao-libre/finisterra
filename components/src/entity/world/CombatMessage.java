@@ -2,9 +2,11 @@ package entity.world;
 
 import com.artemis.Component;
 import com.artemis.annotations.DelayedComponentRemoval;
+import com.artemis.annotations.PooledWeaver;
 
 import java.io.Serializable;
 
+@PooledWeaver
 @DelayedComponentRemoval
 public class CombatMessage extends Component implements Serializable {
 

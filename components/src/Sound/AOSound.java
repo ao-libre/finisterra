@@ -1,7 +1,9 @@
 package Sound;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 
+@PooledWeaver
 public class AOSound extends Component {
 
     public int soundID = -1;

@@ -1,6 +1,7 @@
 package server.systems.manager;
 
 
+import com.artemis.annotations.Wire;
 import server.core.KryonetServerMarshalStrategy;
 import server.core.Server;
 
@@ -10,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Contains relation between connections and players. Communicate and send packets to users
  */
+@Wire
 public class NetworkManager extends DefaultManager {
 
     private Map<Integer, Integer> playerByConnection = new ConcurrentHashMap<>();

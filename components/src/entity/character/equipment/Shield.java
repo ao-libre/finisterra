@@ -2,9 +2,11 @@ package entity.character.equipment;
 
 import com.artemis.Component;
 import com.artemis.annotations.DelayedComponentRemoval;
+import com.artemis.annotations.PooledWeaver;
 
 import java.io.Serializable;
 
+@PooledWeaver
 @DelayedComponentRemoval
 public class Shield extends Component implements Serializable {
 

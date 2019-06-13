@@ -18,39 +18,27 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class AnimationHandler {
 
-    // TODO check
+    // TODO change maps to caches
     private static Map<Body, List<BundledAnimation>> bodyAnimations = new WeakHashMap<>();
     private static Map<Head, List<BundledAnimation>> headAnimations = new WeakHashMap<>();
     private static Map<Helmet, List<BundledAnimation>> helmetAnimations = new WeakHashMap<>();
     private static Map<Weapon, List<BundledAnimation>> weaponAnimations = new WeakHashMap<>();
     private static Map<Shield, List<BundledAnimation>> shieldAnimations = new WeakHashMap<>();
-    private static Map<FX, List<BundledAnimation>> fxAnimations = new WeakHashMap<>();
 
     private static Map<Integer, BundledAnimation> animations = new ConcurrentHashMap<>();
 
-    public static void load() {
-//        bodyAnimations = loadDescriptors(DescriptorHandler.getBodies());
-//        headAnimations = loadDescriptors(DescriptorHandler.getHeads());
-//        helmetAnimations = loadDescriptors(DescriptorHandler.getHelmets());
-//        weaponAnimations = loadDescriptors(DescriptorHandler.getWeapons());
-//        shieldAnimations = loadDescriptors(DescriptorHandler.getShields());
-//        fxAnimations = loadDescriptors(DescriptorHandler.getFxs());
-    }
-
+    @Deprecated
     private static Map<Integer, List<BundledAnimation>> loadDescriptors(List<?> descriptors) {
         Map<Integer, List<BundledAnimation>> result = new HashMap<>();
         int[] idx = {1};
-        descriptors.forEach(descriptor -> {
-            result.put(idx[0]++, createAnimations((IDescriptor) descriptor, true));
-        });
+        descriptors.forEach(descriptor -> result.put(idx[0]++, createAnimations((IDescriptor) descriptor, true)));
         return result;
     }
 
+    @Deprecated
     private static Map<Integer, List<BundledAnimation>> loadDescriptors(Map<Integer, ?> descriptors) {
         Map<Integer, List<BundledAnimation>> result = new HashMap<>();
-        descriptors.forEach((id, descriptor) -> {
-            result.put(id, createAnimations((IDescriptor) descriptor, true));
-        });
+        descriptors.forEach((id, descriptor) -> result.put(id, createAnimations((IDescriptor) descriptor, true)));
         return result;
     }
 
@@ -102,34 +90,6 @@ public class AnimationHandler {
             ShieldDescriptor descriptor = DescriptorHandler.getShield(Math.max(shieldObj.getAnimationId() - 1, 0));
             return createAnimations(descriptor, true);
         }).get(current);
-    }
-
-    public static BundledAnimation getFXAnimation(int index, int current) {
-        return fxAnimations.get(index).get(current);
-    }
-
-    public static Map<Body, List<BundledAnimation>> getBodyAnimations() {
-        return bodyAnimations;
-    }
-
-    public static Map<FX, List<BundledAnimation>> getFxAnimations() {
-        return fxAnimations;
-    }
-
-    public static Map<Head, List<BundledAnimation>> getHeadAnimations() {
-        return headAnimations;
-    }
-
-    public static Map<Helmet, List<BundledAnimation>> getHelmetAnimations() {
-        return helmetAnimations;
-    }
-
-    public static Map<Shield, List<BundledAnimation>> getShieldAnimations() {
-        return shieldAnimations;
-    }
-
-    public static Map<Weapon, List<BundledAnimation>> getWeaponAnimations() {
-        return weaponAnimations;
     }
 
     public static BundledAnimation getGraphicAnimation(int grhIndex) {

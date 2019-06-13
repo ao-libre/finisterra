@@ -1,10 +1,12 @@
 package entity.world;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.io.Serializable;
 
+@PooledWeaver
 public class Footprint extends Component implements Serializable {
 
     public long timestamp;

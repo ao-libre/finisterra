@@ -77,7 +77,6 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         if (type.equals(AttackType.PHYSICAL)) {
             return getServer().getCombatManager();
         }
-        // TODO
         return getServer().getCombatManager();
     }
 

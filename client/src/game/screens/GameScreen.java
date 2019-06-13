@@ -62,7 +62,7 @@ public class GameScreen extends ScreenAdapter {
         clientSystem.start();
         initWorld();
         clientSystem.getKryonetClient().sendToAll(new PlayerLoginRequest(player));
-        gui.initialize(); // TODO: gui.init() perhaps should on constructor but it has methods that shall execute on screen.show()
+        gui.initialize();
         Gdx.app.log("Game screen initialization", "Elapsed time: " + (System.currentTimeMillis() - start)) ;
     }
 
@@ -113,7 +113,6 @@ public class GameScreen extends ScreenAdapter {
                 // Rendering
                 .with(RENDER_PRE_ENTITIES, new MapGroundRenderingSystem(spriteBatch))
                 .with(RENDER_PRE_ENTITIES, new ObjectRenderingSystem(spriteBatch))
-                .with(RENDER_PRE_ENTITIES, new GroundFXsRenderingSystem(spriteBatch))
                 .with(RENDER_PRE_ENTITIES, new TargetRenderingSystem(spriteBatch))
                 .with(RENDER_PRE_ENTITIES, new NameRenderingSystem(spriteBatch))
                 .with(RENDER_ENTITIES, new EffectRenderingSystem(spriteBatch))

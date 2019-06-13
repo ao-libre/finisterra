@@ -2,16 +2,20 @@ package server.systems;
 
 import com.artemis.Aspect;
 import com.artemis.E;
+import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.utils.TimeUtils;
 import entity.world.Footprint;
 import position.WorldPos;
 import server.core.Server;
+import server.systems.manager.MapManager;
 
 import java.util.Set;
 
+@Wire
 public class FootprintSystem extends IteratingSystem {
 
+    private MapManager mapManager;
     private Server server;
     private float liveTime;
 
@@ -25,7 +29,7 @@ public class FootprintSystem extends IteratingSystem {
     protected void process(int entityId) {
         final E footprint = E.E(entityId);
         if (TimeUtils.millis() - footprint.footprintTimestamp() >= liveTime) {
-            final Set<Integer> footprints = server.getMapManager().getEntitiesFootprints().get(footprint.footprintEntityId());
+            final Set<Integer> footprints = mapManager.getEntitiesFootprints().get(footprint.footprintEntityId());
             if (footprints != null) {
                 footprints.remove(footprint.id());
             }

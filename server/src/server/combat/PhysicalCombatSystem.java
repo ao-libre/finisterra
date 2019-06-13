@@ -1,6 +1,7 @@
 package server.combat;
 
 import com.artemis.E;
+import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
 import entity.character.states.Heading;
 import entity.character.status.Health;
@@ -11,6 +12,7 @@ import position.WorldPos;
 import server.core.Server;
 import server.database.model.modifiers.Modifiers;
 import server.systems.manager.IManager;
+import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
 import shared.interfaces.CharClass;
 import shared.interfaces.FXs;
@@ -28,8 +30,10 @@ import static java.lang.String.format;
 import static server.utils.WorldUtils.WorldUtils;
 import static shared.util.Messages.*;
 
+@Wire
 public class PhysicalCombatSystem extends AbstractCombatSystem implements IManager {
 
+    private MapManager mapManager;
     private static final String MISS = "MISS";
     private static final float ASSASIN_STAB_FACTOR = 1.5f;
     private static final float NORMAL_STAB_FACTOR = 1.4f;
@@ -190,8 +194,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
         Heading headingTo = entity.getHeading();
         WorldPos worldPos = entity.getWorldPos();
         WorldPos targetPos = WorldUtils(getServer().getWorld()).getFacingPos(worldPos, headingTo);
-        return getServer()
-                .getMapManager()
+        return mapManager
                 .getNearEntities(userId)
                 .stream()
                 .filter(
@@ -204,7 +207,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem implements IManag
     }
 
     private boolean footprintOf(Integer entity, WorldPos worldPos, long timestamp) {
-        final Set<Integer> footprints = getServer().getMapManager().getEntitiesFootprints().get(entity);
+        final Set<Integer> footprints = mapManager.getEntitiesFootprints().get(entity);
         return footprints != null && footprints
                 .stream()
                 .anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()) && timestamp - E(footprint).getFootprint().timestamp < TIME_TO_MOVE_1_TILE);

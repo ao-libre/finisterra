@@ -1,9 +1,11 @@
 package entity.character.status;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 
 import java.io.Serializable;
 
+@PooledWeaver
 public class Hit extends Component implements Serializable {
 
     private int min;

@@ -2,7 +2,9 @@ package entity.world;
 
 import com.artemis.Component;
 import com.artemis.annotations.DelayedComponentRemoval;
+import com.artemis.annotations.PooledWeaver;
 
+@PooledWeaver
 @DelayedComponentRemoval
 public class Dialog extends Component {
 

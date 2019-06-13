@@ -1,12 +1,14 @@
 package physics;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 
 import java.io.Serializable;
 import java.util.Deque;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+@PooledWeaver
 public class AOPhysics extends Component implements Serializable {
 
     public final static float MAX_VELOCITY = Float.MAX_VALUE;

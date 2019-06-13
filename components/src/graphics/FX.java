@@ -2,10 +2,12 @@ package graphics;
 
 import com.artemis.Component;
 import com.artemis.annotations.DelayedComponentRemoval;
+import com.artemis.annotations.PooledWeaver;
 
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+@PooledWeaver
 @DelayedComponentRemoval
 public class FX extends Component {
 
