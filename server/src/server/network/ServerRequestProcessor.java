@@ -1,7 +1,7 @@
 package server.network;
 
 import com.artemis.E;
-import com.artemis.World;
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
@@ -9,12 +9,15 @@ import entity.world.Dialog;
 import entity.world.Object;
 import movement.Destination;
 import position.WorldPos;
-import server.combat.CombatSystem;
-import server.core.Server;
+import server.combat.MagicCombatSystem;
+import server.combat.PhysicalCombatSystem;
 import server.systems.MeditateSystem;
-import server.systems.manager.*;
+import server.systems.ServerSystem;
+import server.systems.manager.ItemManager;
+import server.systems.manager.MapManager;
+import server.systems.manager.SpellManager;
+import server.systems.manager.WorldManager;
 import server.utils.WorldUtils;
-import shared.model.AttackType;
 import shared.model.lobby.Player;
 import shared.model.map.Map;
 import shared.model.map.Tile;
@@ -45,48 +48,19 @@ import static server.utils.WorldUtils.WorldUtils;
 /**
  * Every packet received from users will be processed here
  */
+@Wire
 public class ServerRequestProcessor extends DefaultRequestProcessor {
 
-    private Server server;
+    // Injected Systems
+    private ServerSystem networkManager;
+    private MapManager mapManager;
+    private WorldManager worldManager;
+    private PhysicalCombatSystem physicalCombatSystem;
+    private MagicCombatSystem magicCombatSystem;
+    private ItemManager itemManager;
+    private SpellManager spellManager;
+    private MeditateSystem meditateSystem;
 
-    public ServerRequestProcessor(Server server) {
-        this.server = server;
-    }
-
-    private World getWorld() {
-        return server.getWorld();
-    }
-
-    public Server getServer() {
-        return server;
-    }
-
-    private NetworkManager getNetworkManager() {
-        return getServer().getNetworkManager();
-    }
-
-    private MapManager getMapManager() {
-        return getServer().getMapManager();
-    }
-
-    private WorldManager getWorldManager() {
-        return getServer().getWorldManager();
-    }
-
-    private CombatSystem getCombatSystem(AttackType type) {
-        if (type.equals(AttackType.PHYSICAL)) {
-            return getServer().getCombatManager();
-        }
-        return getServer().getCombatManager();
-    }
-
-    private ItemManager getItemManager() {
-        return getServer().getItemManager();
-    }
-
-    private SpellManager getSpellManager() {
-        return getServer().getSpellManager();
-    }
 
     private List<WorldPos> getArea(WorldPos worldPos, int range /*impar*/) {
         List<WorldPos> positions = new ArrayList<>();
@@ -102,34 +76,32 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(PlayerLoginRequest playerLoginRequest, int connectionId) {
         Player player = playerLoginRequest.getPlayer();
-        getServer().getWorldManager().login(connectionId, player);
+        worldManager.login(connectionId, player);
     }
 
     /**
      * Process {@link MovementRequest}. If it is valid, move player and notify.
      *
-     * @param request
-     * @param connectionId
+     * @param request movement request
+     * @param connectionId id
      * @see MovementRequest
      */
     @Override
     public void processRequest(MovementRequest request, int connectionId) {
-        NetworkManager networkManager = getWorld().getSystem(NetworkManager.class);
-        if (!networkManager.connectionHasPlayer(connectionId)){
+        if (networkManager.connectionHasNoPlayer(connectionId)) {
             return;
         }
         int playerId = networkManager.getPlayerByConnection(connectionId);
         E player = E(playerId);
-        WorldUtils worldUtils = WorldUtils(getServer().getWorld());
+        WorldUtils worldUtils = WorldUtils(world);
         player.headingCurrent(worldUtils.getHeading(request.movement));
 
         WorldPos worldPos = player.getWorldPos();
         WorldPos oldPos = new WorldPos(worldPos);
         WorldPos nextPos = worldUtils.getNextPos(worldPos, request.movement);
-        MapManager mapManager = getServer().getMapManager();
         Map map = mapManager.getMap(nextPos.map);
         boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
-        boolean occupied = mapManager.getHelper().hasEntity(getMapManager().getNearEntities(playerId), nextPos);
+        boolean occupied = mapManager.getHelper().hasEntity(mapManager.getNearEntities(playerId), nextPos);
         if (!(player.hasImmobile() || blocked || occupied)) {
             Tile tile = mapManager.getMap(nextPos.map).getTile(nextPos.x, nextPos.y);
             WorldPosition tileExit = tile.getTileExit();
@@ -145,17 +117,17 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
             nextPos = oldPos;
         }
 
-        getMapManager().movePlayer(playerId, Optional.of(oldPos));
+        mapManager.movePlayer(playerId, Optional.of(oldPos));
 
         // notify near users
         if (!nextPos.equals(oldPos)) {
             if (nextPos.map != oldPos.map) {
-                getWorldManager().notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(E(playerId).getWorldPos()).build());
+                worldManager.notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(E(playerId).getWorldPos()).build());
             } else {
-                getWorldManager().notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement)));
+                worldManager.notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement)));
             }
         } else {
-            getWorldManager().notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(player.getHeading()).build());
+            worldManager.notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(player.getHeading()).build());
         }
 
         // notify user
@@ -170,8 +142,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      */
     @Override
     public void processRequest(AttackRequest attackRequest, int connectionId) {
-        int playerId = getNetworkManager().getPlayerByConnection(connectionId);
-        getCombatSystem(AttackType.PHYSICAL).entityAttack(playerId, Optional.empty());
+        int playerId = networkManager.getPlayerByConnection(connectionId);
+        physicalCombatSystem.entityAttack(playerId, Optional.empty());
     }
 
     /**
@@ -182,7 +154,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      */
     @Override
     public void processRequest(ItemActionRequest itemAction, int connectionId) {
-        int playerId = getNetworkManager().getPlayerByConnection(connectionId);
+        int playerId = networkManager.getPlayerByConnection(connectionId);
         E player = E(playerId);
         Inventory.Item[] userItems = player.getInventory().items;
         int itemIndex = itemAction.getSlot();
@@ -192,11 +164,11 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
             if (item == null) {
                 return;
             }
-            if (getItemManager().isEquippable(item)) {
+            if (itemManager.isEquippable(item)) {
                 // modify user equipment
-                getItemManager().equip(playerId, itemIndex, item);
-            } else if (getItemManager().isUsable(item)) {
-                getItemManager().use(playerId, item);
+                itemManager.equip(playerId, itemIndex, item);
+            } else if (itemManager.isUsable(item)) {
+                itemManager.use(playerId, item);
             }
         }
     }
@@ -209,8 +181,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      */
     @Override
     public void processRequest(MeditateRequest meditateRequest, int connectionId) {
-        int playerId = getNetworkManager().getPlayerByConnection(connectionId);
-        MeditateSystem meditateSystem = server.getWorld().getSystem(MeditateSystem.class);
+        int playerId = networkManager.getPlayerByConnection(connectionId);
         meditateSystem.toggle(playerId);
     }
 
@@ -222,8 +193,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      */
     @Override
     public void processRequest(TalkRequest talkRequest, int connectionId) {
-        int playerId = getNetworkManager().getPlayerByConnection(connectionId);
-        getWorldManager().notifyUpdate(playerId, EntityUpdateBuilder.of(playerId).withComponents(new Dialog(talkRequest.getMessage())).build());
+        int playerId = networkManager.getPlayerByConnection(connectionId);
+        worldManager.notifyUpdate(playerId, EntityUpdateBuilder.of(playerId).withComponents(new Dialog(talkRequest.getMessage())).build());
     }
 
     /**
@@ -234,10 +205,10 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      */
     @Override
     public void processRequest(TakeItemRequest takeItemRequest, int connectionId) {
-        int playerId = getNetworkManager().getPlayerByConnection(connectionId);
+        int playerId = networkManager.getPlayerByConnection(connectionId);
         E player = E(playerId);
         WorldPos playerPos = player.getWorldPos();
-        getMapManager().getNearEntities(playerId)
+        mapManager.getNearEntities(playerId)
                 .stream()
                 .filter(entityId -> {
                     WorldPos entityPos = E(entityId).getWorldPos();
@@ -251,8 +222,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
                         Log.info("Adding item to index: " + index);
                         InventoryUpdate update = new InventoryUpdate();
                         update.add(index, player.getInventory().items[index]);
-                        getNetworkManager().sendTo(connectionId, update);
-                        getWorldManager().unregisterEntity(objectEntityId);
+                        networkManager.sendTo(connectionId, update);
+                        worldManager.unregisterEntity(objectEntityId);
                     } else {
                         Log.info("Could not put item in inventory (FULL?)");
                     }
@@ -261,8 +232,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
 
     @Override
     public void processRequest(SpellCastRequest spellCastRequest, int connectionId) {
-        int playerId = getNetworkManager().getPlayerByConnection(connectionId);
-        getServer().getMagicCombatManager().spell(playerId, spellCastRequest);
+        int playerId = networkManager.getPlayerByConnection(connectionId);
+        magicCombatSystem.spell(playerId, spellCastRequest);
     }
 
     @Override
@@ -272,7 +243,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         response.receiveTime = receiveTime;
         response.requestId = request.requestId;
         response.sendTime = TimeUtils.millis();
-        getNetworkManager().sendTo(connectionId, response);
+        networkManager.sendTo(connectionId, response);
     }
 
 }

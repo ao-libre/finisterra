@@ -16,8 +16,8 @@ import graphics.Effect;
 import graphics.Effect.EffectBuilder;
 import physics.AttackAnimation;
 import position.WorldPos;
-import server.core.Server;
 import server.systems.manager.MapManager;
+import server.systems.manager.ObjectManager;
 import server.systems.manager.WorldManager;
 import shared.model.Spell;
 import shared.network.combat.SpellCastRequest;
@@ -37,18 +37,13 @@ import static shared.util.Messages.*;
 @Wire
 public class MagicCombatSystem extends BaseSystem {
 
+    // Injected Systems
     private MapManager mapManager;
-    public static final String SPACE = " ";
-    public static final int TIME_TO_MOVE_1_TILE = 200;
-    private Server server;
+    private WorldManager worldManager;
+    private ObjectManager objectManager;
 
-    public MagicCombatSystem(Server server) {
-        this.server = server;
-    }
-
-    public Server getServer() {
-        return server;
-    }
+    private static final String SPACE = " ";
+    private static final int TIME_TO_MOVE_1_TILE = 200;
 
     public void spell(int userId, SpellCastRequest spellCastRequest) {
         final Spell spell = spellCastRequest.getSpell();
@@ -56,7 +51,7 @@ public class MagicCombatSystem extends BaseSystem {
         final long timestamp = spellCastRequest.getTimestamp();
         Optional<Integer> target = getTarget(userId, targetPos, timestamp);
         if (target.isPresent()) {
-            getServer().getWorldManager()
+            worldManager
                     .notifyUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(new AttackAnimation()).build());
             castSpell(userId, target.get(), spell);
         }
@@ -160,14 +155,14 @@ public class MagicCombatSystem extends BaseSystem {
                 int random = new Random().nextInt(spell.getMaxStrength() - spell.getMinStrength() + 1) + spell.getMinStrength();
                 targetEntity.strengthCurrentValue(targetEntity.strengthCurrentValue() + random);
                 targetEntity.buff().buffAddAttribute(targetEntity.getStrength(), spell.getStrengthDuration());
-                SendAttributeUpdate(target, targetEntity.getStrength(), targetEntity.getBuff());
+                sendAttributeUpdate(target, targetEntity.getStrength(), targetEntity.getBuff());
             }
 
             if (spell.isSumAgility()) {
                 int random = new Random().nextInt(spell.getMaxAgility() - spell.getMinAgility() + 1) + spell.getMinAgility();
                 targetEntity.agilityCurrentValue(targetEntity.agilityCurrentValue() + random);
                 targetEntity.buff().buffAddAttribute(targetEntity.getAgility(), spell.getAgilityDuration());
-                SendAttributeUpdate(target, targetEntity.getAgility(), targetEntity.getBuff());
+                sendAttributeUpdate(target, targetEntity.getAgility(), targetEntity.getBuff());
             }
 
             if (fxGrh > 0) {
@@ -205,7 +200,7 @@ public class MagicCombatSystem extends BaseSystem {
         } else if (spell.getSumHP() == 2) {
             int magicDefense;
             if (E(target).hasHelmet()) {
-                final Optional<Obj> obj = getServer().getObjectManager().getObject(E(target).getHelmet().index);
+                final Optional<Obj> obj = objectManager.getObject(E(target).getHelmet().index);
                 obj
                         .filter(HelmetObj.class::isInstance)
                         .map(HelmetObj.class::cast)
@@ -226,9 +221,9 @@ public class MagicCombatSystem extends BaseSystem {
         getWorldManager().sendEntityUpdate(playerId, update);
     }
 
-    protected void SendAttributeUpdate(int player, Attribute attribute, Buff buff) {
+    private void sendAttributeUpdate(int player, Attribute attribute, Buff buff) {
         EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(attribute, buff).build();
-        getServer().getWorldManager().sendEntityUpdate(player, updateAGI);
+        worldManager.sendEntityUpdate(player, updateAGI);
     }
 
     private boolean isValid(int target, Spell spell) {
@@ -268,5 +263,6 @@ public class MagicCombatSystem extends BaseSystem {
 
     @Override
     protected void processSystem() {
+
     }
 }

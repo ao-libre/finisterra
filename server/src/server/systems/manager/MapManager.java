@@ -4,7 +4,6 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
 import position.WorldPos;
-import server.core.Server;
 import shared.model.map.Tile;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
@@ -31,8 +30,7 @@ public class MapManager extends DefaultManager {
     private Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesFootprints = new ConcurrentHashMap<>();
 
-    public MapManager(Server server) {
-        super(server);
+    public MapManager() {
         helper = MapHelper.instance(NEVER_EXPIRE);
     }
 
@@ -108,7 +106,7 @@ public class MapManager extends DefaultManager {
                 return;
             }
             //create footprint
-            final int footprintId = getServer().getWorld().create();
+            final int footprintId = world.create();
             E(footprintId).footprintEntityId(player);
             E(footprintId).worldPosMap(it.map);
             E(footprintId).worldPosX(it.x);
@@ -130,7 +128,7 @@ public class MapManager extends DefaultManager {
     /**
      * Remove entity from map and unlink near entities
      *
-     * @param entity
+     * @param entity id
      */
     public void removeEntity(int entity) {
         final E e = E(entity);
@@ -150,9 +148,9 @@ public class MapManager extends DefaultManager {
     /**
      * Add entity to map and calculate near entities
      *
-     * @param player
+     * @param player id
      */
-    public void updateEntity(int player) {
+    void updateEntity(int player) {
         WorldPos pos = E(player).getWorldPos();
         int map = pos.map;
         Set<Integer> entities = entitiesByMap.computeIfAbsent(map, (it) -> new HashSet<>());
@@ -250,8 +248,8 @@ public class MapManager extends DefaultManager {
     /**
      * Link entities
      *
-     * @param entity1
-     * @param entity2
+     * @param entity1 id
+     * @param entity2 id
      */
     private void linkEntities(int entity1, int entity2) {
         Set<Integer> near = nearEntities.computeIfAbsent(entity1, (i) -> new HashSet<>());

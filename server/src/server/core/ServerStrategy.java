@@ -6,12 +6,12 @@ import net.mostlyoriginal.api.network.marshal.kryonet.KryonetMarshalStrategy;
 
 import java.io.IOException;
 
-public class KryonetServerMarshalStrategy extends KryonetMarshalStrategy {
+public class ServerStrategy extends KryonetMarshalStrategy {
 
     private final int tcpPort;
     private final int udpPort;
 
-    public KryonetServerMarshalStrategy(int tcpPort, int udpPort) {
+    public ServerStrategy(int tcpPort, int udpPort) {
         this.tcpPort = tcpPort;
         this.udpPort = udpPort;
         endpoint = new Server();

@@ -16,12 +16,10 @@ import java.util.Set;
 public class FootprintSystem extends IteratingSystem {
 
     private MapManager mapManager;
-    private Server server;
     private float liveTime;
 
-    public FootprintSystem(Server server, float liveTime) {
+    public FootprintSystem(float liveTime) {
         super(Aspect.all(Footprint.class, WorldPos.class));
-        this.server = server;
         this.liveTime = liveTime;
     }
 

@@ -6,8 +6,8 @@ import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import server.network.FinisterraRequestProcessor;
 import server.systems.FinisterraSystem;
-import server.systems.manager.LobbyNetworkManager;
 import server.systems.manager.ObjectManager;
 import server.systems.manager.SpellManager;
 import server.utils.IpChecker;
@@ -16,15 +16,13 @@ import shared.model.lobby.Room;
 import shared.model.map.Map;
 import shared.network.lobby.StartGameResponse;
 import shared.util.MapHelper;
-import shared.util.MapHelper.CacheStrategy;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import static shared.util.MapHelper.CacheStrategy.*;
+import static shared.util.MapHelper.CacheStrategy.NEVER_EXPIRE;
 
 public class Finisterra implements ApplicationListener {
 
@@ -34,7 +32,6 @@ public class Finisterra implements ApplicationListener {
     private int lastPort;
     private Lobby lobby;
     private World world;
-    private LobbyNetworkManager networkManager;
     private ObjectManager objectManager;
     private SpellManager spellManager;
     private HashMap<Integer, Map> maps = new HashMap<>();
@@ -57,11 +54,11 @@ public class Finisterra implements ApplicationListener {
         }).start();
         lobby = new Lobby();
         WorldConfigurationBuilder worldConfigurationBuilder = new WorldConfigurationBuilder();
-        KryonetServerMarshalStrategy strategy = new KryonetServerMarshalStrategy(tcpPort, udpPort);
-        networkManager = new LobbyNetworkManager(strategy);
+        ServerStrategy strategy = new ServerStrategy(tcpPort, udpPort);
         world = new World(worldConfigurationBuilder
                 .with(new FluidEntityPlugin())
-                .with(new FinisterraSystem(this, strategy))
+                .with(new FinisterraSystem(strategy))
+                .with(new FinisterraRequestProcessor())
                 .build());
         Gdx.app.log("Server initialization", "Elapsed time: " + (start - System.currentTimeMillis()));
         Gdx.app.log("Server initialization", "Finisterra OK");
@@ -82,8 +79,7 @@ public class Finisterra implements ApplicationListener {
             servers.add(server);
             return server;
         });
-        room.getPlayers().forEach(player -> {
-            int connectionId = getNetworkManager().getConnectionByPlayer(player);
+        room.getPlayers().stream().mapToInt(player -> getNetworkManager().getConnectionByPlayer(player)).forEach(connectionId -> {
             try {
                 final String ip = IpChecker.getIp();
                 String property = System.getProperty("server.useLocalhost");
@@ -92,8 +88,6 @@ public class Finisterra implements ApplicationListener {
                 InetAddress inetAddress = InetAddress.getLocalHost();
 
                 getNetworkManager().sendTo(connectionId, new StartGameResponse(shouldUseLocalHost ? inetAddress.getHostAddress() : ip, roomServer.getTcpPort(), roomServer.getUdpPort()));
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -108,8 +102,8 @@ public class Finisterra implements ApplicationListener {
         return lobby;
     }
 
-    public LobbyNetworkManager getNetworkManager() {
-        return networkManager;
+    private FinisterraSystem getNetworkManager() {
+        return world.getSystem(FinisterraSystem.class);
     }
 
     @Override

@@ -2,6 +2,7 @@ package server.systems.manager;
 
 import com.artemis.Component;
 import com.artemis.E;
+import com.artemis.annotations.Wire;
 import entity.character.attributes.Agility;
 import entity.character.attributes.Attribute;
 import entity.character.attributes.Strength;
@@ -28,17 +29,18 @@ import static com.artemis.E.E;
 /**
  * It keeps logic regarding items, how to use, to know if they are 'usable' or 'equipable'
  */
+@Wire
 public class ItemManager extends DefaultManager {
 
     private ItemConsumers itemConsumers;
+    private ObjectManager objectManager;
+    private WorldManager worldManager;
 
-    public ItemManager(Server server) {
-        super(server);
+    public ItemManager() {
     }
 
     @Override
     public void initialize() {
-        itemConsumers = new ItemConsumers(getServer());
     }
 
     public ItemConsumers getItemConsumers() {
@@ -46,7 +48,7 @@ public class ItemManager extends DefaultManager {
     }
 
     public boolean isEquippable(Inventory.Item item) {
-        Optional<Obj> object = getServer().getObjectManager().getObject(item.objId);
+        Optional<Obj> object = objectManager.getObject(item.objId);
         if (object.isPresent()) {
             Obj obj = object.get();
             return obj instanceof ObjWithClasses;
@@ -55,12 +57,12 @@ public class ItemManager extends DefaultManager {
     }
 
     public boolean isUsable(Inventory.Item item) {
-        Optional<Obj> object = getServer().getObjectManager().getObject(item.objId);
+        Optional<Obj> object = objectManager.getObject(item.objId);
         return object.map(obj -> obj.getType().equals(Type.POTION)).orElse(false);
     }
 
     public void use(int player, Inventory.Item item) {
-        Optional<Obj> object = getServer().getObjectManager().getObject(item.objId);
+        Optional<Obj> object = objectManager.getObject(item.objId);
         object.ifPresent(obj -> {
             if (obj.getType().equals(Type.POTION)) {
                 PotionObj potion = (PotionObj) obj;
@@ -77,7 +79,7 @@ public class ItemManager extends DefaultManager {
                     case MANA:
                         Mana mana = E(player).getMana();
                         final int level = E(player).levelLevel();
-                        mana.min += mana.max * 0.04f + level / 2 + 40 / level;
+                        mana.min += mana.max * 0.04f + (level >> 1) + 40 / level;
                         mana.min = Math.min(mana.min, mana.max);
                         components.add(mana);
                         break;
@@ -97,7 +99,7 @@ public class ItemManager extends DefaultManager {
                 }
                 // Notify update to user
                 EntityUpdate update = EntityUpdateBuilder.of(player).withComponents(components.toArray(new Component[0])).build();
-                getServer().getWorldManager().sendEntityUpdate(player, update);
+                worldManager.sendEntityUpdate(player, update);
                 // TODO remove from inventory
             }
         });
@@ -105,17 +107,17 @@ public class ItemManager extends DefaultManager {
 
     protected void SendAttributeUpdate(int player, Attribute attribute, Buff buff) {
         EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(attribute, buff).build();
-        getServer().getWorldManager().sendEntityUpdate(player, updateAGI);
+        worldManager.sendEntityUpdate(player, updateAGI);
     }
 
     public void equip(int player, int index, Inventory.Item item) {
         InventoryUpdate update = new InventoryUpdate();
         modifyUserEquip(player, item, index, update);
-        getServer().getWorldManager().sendEntityUpdate(player, update);
+        worldManager.sendEntityUpdate(player, update);
     }
 
     private void modifyUserEquip(int player, Inventory.Item item, int index, InventoryUpdate update) {
-        Optional<Obj> object = getServer().getObjectManager().getObject(item.objId);
+        Optional<Obj> object = objectManager.getObject(item.objId);
         object.ifPresent(obj -> {
             item.equipped = !item.equipped;
             update.add(index, item);
@@ -135,7 +137,7 @@ public class ItemManager extends DefaultManager {
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null && index != i) {
                 int inventoryIndex = i;
-                getServer().getObjectManager().getObject(items[i].objId).ifPresent(obj -> {
+                objectManager.getObject(items[i].objId).ifPresent(obj -> {
                     if (items[inventoryIndex].equipped && obj.getType().equals(type)) {
                         items[inventoryIndex].equipped = false;
                         update.add(inventoryIndex, items[inventoryIndex]);

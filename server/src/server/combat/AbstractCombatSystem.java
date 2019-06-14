@@ -17,15 +17,6 @@ import static com.artemis.E.E;
 public abstract class AbstractCombatSystem extends BaseSystem implements CombatSystem {
 
     public static final int STAMINA_REQUIRED_PERCENT = 15;
-    private final Server server;
-
-    public AbstractCombatSystem(Server server) {
-        this.server = server;
-    }
-
-    public Server getServer() {
-        return server;
-    }
 
     @Override
     public int shieldEvasionPower(int userId) {
