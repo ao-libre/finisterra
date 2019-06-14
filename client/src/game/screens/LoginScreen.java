@@ -14,12 +14,13 @@ import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.interfaces.Hero;
 import shared.network.lobby.JoinLobbyRequest;
 
+import static game.utils.Resources.CLIENT_CONFIG;
+
 public class LoginScreen extends AbstractScreen {
 
     private ClientSystem clientSystem;
     private World world;
-    private ClientConfiguration config = ClientConfiguration.loadConfig("");
-
+    private ClientConfiguration config;
 
     public LoginScreen() {
         super();
@@ -36,6 +37,8 @@ public class LoginScreen extends AbstractScreen {
 
     @Override
     void createContent() {
+        config = ClientConfiguration.loadConfig(CLIENT_CONFIG); // @todo hotfix
+
         Label userLabel = new Label("User", getSkin());
         TextField username = new TextField("", getSkin());
         username.setMessageText("username");

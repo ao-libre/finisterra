@@ -2,6 +2,7 @@ package launcher;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.ClientConfiguration;
@@ -17,12 +18,23 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
         System.setProperty("org.lwjgl.opengl.Display.enableOSXFullscreenModeAPI", "true");
 
-        Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
-
+        /**
+         * Load desktop config.json or create default.
+         */
         ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG_JSON);
-        cfg.setTitle("Finisterra - Argentum Online Java");
+        if (config == null) {
+            Log.info("DesktopLauncher", "Desktop config.json not found, creating default.");
+            config = ClientConfiguration.createConfig();
+            config.save();
+        }
         Init initConfig = config.getInitConfig();
         Video video = initConfig.getVideo();
+
+        /**
+         * Build LWJGL configuration
+         */
+        Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
+        cfg.setTitle("Finisterra - Argentum Online Java");
         cfg.setWindowedMode(video.getWidth(), video.getHeight());
         cfg.useVsync(video.getVsync());
         cfg.setIdleFPS(60);
@@ -47,6 +59,9 @@ public class DesktopLauncher {
 //        Log.info("[Parameters - Graphics] HiDPI Mode: " + config.client_HiDPI_Mode());
 //        Log.info("[Parameters - Audio] Disabled: " + config.client_noAudio());
 
+        /**
+         * Launch application
+         */
         new Lwjgl3Application(new AOGame(), cfg);
     }
 }

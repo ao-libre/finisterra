@@ -27,6 +27,8 @@ public class AOGame extends Game {
     public void create() {
         Gdx.app.debug("AOGame", "Creating AOGame...");
 
+        // @todo load platform-independent configuration (network, etc.)
+
         // Load resources & stuff.
         long start = System.currentTimeMillis();
         AssetHandler.load();
