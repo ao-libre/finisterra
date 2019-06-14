@@ -134,7 +134,7 @@ public class AOInputProcessor extends Stage {
             case Input.Keys.ESCAPE:
                 // Disconnect & go back to LoginScreen
                 AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                // TODO implement
+                game.toLogin();
         }
     }
 
@@ -170,7 +170,7 @@ public class AOInputProcessor extends Stage {
             case Input.Keys.ESCAPE:
                 // Disconnect & go back to LoginScreen
                 AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                // TODO implement
+                game.toLogin();
         }
     }
 

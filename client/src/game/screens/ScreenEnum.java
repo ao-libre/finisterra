@@ -21,14 +21,13 @@ public enum ScreenEnum {
         }
     },
     ROOM {
-        @Override
         public Screen getScreen(Object... params) {
             return new RoomScreen((ClientSystem) params[0], (Room) params[1], (Player) params[2]);
         }
     },
     GAME {
         public Screen getScreen(Object... params) {
-            return new GameScreen((String) params[0], (int) params[1], (Player) params[2]);
+            return new GameScreen();
         }
     };
 

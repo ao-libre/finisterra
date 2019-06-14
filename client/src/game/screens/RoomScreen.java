@@ -55,7 +55,7 @@ public class RoomScreen extends AbstractScreen {
 
     @Override
     public void dispose() {
-        super.dispose();
         clientSystem.stop();
+        super.dispose();
     }
 }

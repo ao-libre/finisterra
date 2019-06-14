@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
 import game.handlers.MusicHandler;
-import game.managers.MapManager;
+import game.network.KryonetClientMarshalStrategy;
 import game.systems.Sound.SoundSytem;
 import game.systems.anim.IdleAnimationSystem;
 import game.systems.anim.MovementAnimationSystem;
@@ -31,39 +31,32 @@ import game.systems.physics.PlayerInputSystem;
 import game.systems.render.ui.CoordinatesRenderingSystem;
 import game.systems.render.world.*;
 import game.ui.GUI;
-import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
-import shared.model.lobby.Player;
 import shared.model.map.Tile;
-import shared.network.lobby.player.PlayerLoginRequest;
 
 import static com.artemis.E.E;
 import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
 
 public class GameScreen extends ScreenAdapter {
 
-    private static final int RENDER_PRE_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 3;
     private static final int RENDER_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 2;
-    private static final int RENDER_POST_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 1;
-    private static final int DECORATIONS = WorldConfigurationBuilder.Priority.NORMAL - 1;
+    private static final int RENDER_PRE_ENTITIES = RENDER_ENTITIES + 1;
+    private static final int RENDER_POST_ENTITIES = RENDER_ENTITIES - 1;
+    private static final int DECORATIONS = RENDER_ENTITIES - 2;
     public static World world;
     public static int player = -1;
     private static GUI gui = new GUI();
-    private static ClientSystem clientSystem;
     private FPSLogger logger;
     private GameState state;
     private SpriteBatch spriteBatch;
-    private CameraSystem cameraSystem;
+    private WorldConfigurationBuilder worldConfigBuilder;
 
-    public GameScreen(String host, int port, Player player) {
-        this.clientSystem = new ClientSystem(host, port);
+    public GameScreen() {
         this.spriteBatch = new SpriteBatch();
         this.logger = new FPSLogger();
         long start = System.currentTimeMillis();
-        clientSystem.start();
-        initWorld();
-        clientSystem.getKryonetClient().sendToAll(new PlayerLoginRequest(player));
+        initWorldConfiguration();
         gui.initialize();
-        Gdx.app.log("Game screen initialization", "Elapsed time: " + (System.currentTimeMillis() - start)) ;
+        Gdx.app.log("Game screen initialization", "Elapsed time: " + (System.currentTimeMillis() - start));
     }
 
     public static int getPlayer() {
@@ -77,10 +70,6 @@ public class GameScreen extends ScreenAdapter {
         GUI.getUserTable().refresh();
     }
 
-    public static MarshalStrategy getClient() {
-        return clientSystem.getKryonetClient();
-    }
-
     public static GUI getGui() {
         return gui;
     }
@@ -89,11 +78,9 @@ public class GameScreen extends ScreenAdapter {
         return world;
     }
 
-    private void initWorld() {
-        WorldConfigurationBuilder worldConfigBuilder = new WorldConfigurationBuilder();
-        cameraSystem = new CameraSystem(AOGame.GAME_SCREEN_ZOOM);
+    private void initWorldConfiguration() {
+        worldConfigBuilder = new WorldConfigurationBuilder();
         worldConfigBuilder.with(new SuperMapper())
-                .with(clientSystem)
                 .with(HIGH, new TimeSync())
                 // Player movement
                 .with(HIGH, new PlayerInputSystem())
@@ -102,7 +89,7 @@ public class GameScreen extends ScreenAdapter {
                 .with(HIGH, new IdleAnimationSystem())
                 .with(HIGH, new MovementSystem())
                 // Camera
-                .with(HIGH, cameraSystem)
+                .with(HIGH, new CameraSystem(AOGame.GAME_SCREEN_ZOOM))
                 .with(HIGH, new CameraFocusSystem())
                 .with(HIGH, new CameraMovementSystem())
                 // Logic systems
@@ -129,11 +116,18 @@ public class GameScreen extends ScreenAdapter {
                 // Other
                 .with(new TagManager())
                 .with(new UuidEntityManager()); // why?
+    }
 
+    public void initWorld(ClientSystem clientSystem) {
+        worldConfigBuilder.with(HIGH + 1, clientSystem);
         world = new World(worldConfigBuilder.build()); // preload Artemis world
     }
 
-    protected void postWorldInit() {
+    public static KryonetClientMarshalStrategy getClient() {
+        return world.getSystem(ClientSystem.class).getKryonetClient();
+    }
+
+    private void postWorldInit() {
         Entity cameraEntity = world.createEntity();
         E(cameraEntity)
                 .aOCamera(true)
@@ -142,6 +136,7 @@ public class GameScreen extends ScreenAdapter {
 
         // for testing
         world.getSystem(SoundSytem.class).setVolume(0);
+
         MusicHandler.setVolume(0);
 
         MusicHandler.FadeOutMusic(101, 0.02f);
@@ -167,7 +162,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public OrthographicCamera getGUICamera() {
-        return cameraSystem.guiCamera;
+        return world.getSystem(CameraSystem.class).guiCamera;
     }
 
     @Override
@@ -202,6 +197,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
+        CameraSystem cameraSystem = world.getSystem(CameraSystem.class);
         cameraSystem.camera.viewportWidth = Tile.TILE_PIXEL_WIDTH * 24f;  //We will see width/32f units!
         cameraSystem.camera.viewportHeight = cameraSystem.camera.viewportWidth * height / width;
         cameraSystem.camera.update();
@@ -217,7 +213,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
-        clientSystem.getKryonetClient().stop();
+        world.getSystem(ClientSystem.class).stop();
         gui.dispose();
         world.dispose();
     }
