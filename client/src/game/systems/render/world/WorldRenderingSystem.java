@@ -36,6 +36,7 @@ public class WorldRenderingSystem extends BaseSystem {
     private TiledMapSystem tiledMapSystem;
     private CharacterRenderingSystem characterRenderingSystem;
     private EffectRenderingSystem effectRenderingSystem;
+    private WorldManager worldManager;
 
     public WorldRenderingSystem(SpriteBatch batch) {
         this.batch = batch;
@@ -101,8 +102,8 @@ public class WorldRenderingSystem extends BaseSystem {
                         return e.getWorldPos().equals(pos);
                     } else if (e.getEffect().entityReference != NO_REF) {
                         int entityReference = e.getEffect().entityReference;
-                        if (WorldManager.hasNetworkedEntity(entityReference)) {
-                            int entityId = WorldManager.getNetworkedEntity(entityReference);
+                        if (worldManager.hasNetworkedEntity(entityReference)) {
+                            int entityId = worldManager.getNetworkedEntity(entityReference);
                             E entity = E.E(entityId);
                             if (entity != null && entity.hasWorldPos()) {
                                 return entity.getWorldPos().equals(pos);
