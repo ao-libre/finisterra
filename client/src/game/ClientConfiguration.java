@@ -1,15 +1,14 @@
 package game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
 import shared.util.AOJson;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-
+/**
+ * @todo distinguish between Desktop-specific configuration (LWJGL configuration) and platform-independent configuration (Client, Network, etc.).
+ * @see {@link AOGame}
+ */
 public class ClientConfiguration {
 
     private Init initConfig;
@@ -36,10 +35,9 @@ public class ClientConfiguration {
         try {
             // Before GDX initialization
             // DO NOT USE 'Gdx.Files', because 'Gdx.Files' in the launcher is always NULL!
-            InputStream configFile = new FileInputStream(path);
-            return configObject.fromJson(ClientConfiguration.class, configFile);
+            return configObject.fromJson(ClientConfiguration.class, new FileHandle(path));
 
-        } catch (FileNotFoundException ex) {
+        } catch (Exception ex) {
             Log.debug("Client configuration file not found!");
         }
 
@@ -47,9 +45,7 @@ public class ClientConfiguration {
     }
 
     // useful for client json sample creation
-    public static void createConfig() {
-
-        Json configObject = new AOJson();
+    public static ClientConfiguration createConfig() {
         // Default values will not be written down
         ClientConfiguration configOutput = new ClientConfiguration();
 
@@ -77,12 +73,15 @@ public class ClientConfiguration {
         defServer.setPort(9000);
         configOutput.getNetwork().setDefaultServer(defServer);
 
-        FileHandle outputFile = Gdx.files.local("output/Config.json");
+        return configOutput;
+    }
 
-        configObject.toJson(configOutput, outputFile);
+    public void save() {
+        Json json = new AOJson();
+        json.toJson(this, new FileHandle("assets/config.json"));
     }
     
-    public final static class Init {
+    public static class Init {
         private Video video;
         private boolean resizeable;
         private boolean disableAudio;
@@ -120,7 +119,7 @@ public class ClientConfiguration {
             return startMaximized;
         }
 
-        public final static class Video {
+        public static class Video {
             private int width;
             private int height;
             private boolean vSync;
@@ -160,7 +159,7 @@ public class ClientConfiguration {
         }
     }
 
-    public final static class Network {
+    public static class Network {
         private DefaultServer defaultServer;
 
         void setDefaultServer(DefaultServer defaultServer) {
@@ -171,7 +170,7 @@ public class ClientConfiguration {
             return defaultServer;
         }
 
-        public final static class DefaultServer {
+        public static class DefaultServer {
             private String hostname;
             private int port;
 
@@ -192,5 +191,4 @@ public class ClientConfiguration {
             }
         }
     }
-
 }
