@@ -1,7 +1,9 @@
 package server.network;
 
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
 import server.core.Finisterra;
-import server.systems.manager.LobbyNetworkManager;
+import server.systems.FinisterraSystem;
 import shared.model.lobby.Lobby;
 import shared.model.lobby.Player;
 import shared.model.lobby.Room;
@@ -18,77 +20,77 @@ import java.util.Optional;
  */
 public class FinisterraRequestProcessor extends DefaultRequestProcessor {
 
-    private Finisterra finisterra;
-
-    public FinisterraRequestProcessor(Finisterra finisterra) {
-        this.finisterra = finisterra;
-    }
+    private FinisterraSystem networkManager;
 
     @Override
     public void processRequest(JoinLobbyRequest joinLobbyRequest, int connectionId) {
         String playerName = joinLobbyRequest.getPlayerName();
         Player player = new Player(connectionId, playerName, joinLobbyRequest.getHero());
-        Lobby lobby = finisterra.getLobby();
+        Lobby lobby = getLobby();
         lobby.addWaitingPlayer(player);
-        finisterra.getNetworkManager().registerUserConnection(player, connectionId);
-        finisterra.getNetworkManager().sendTo(connectionId, new JoinLobbyResponse(player, lobby.getRooms().toArray(new Room[0])));
+        networkManager.registerUserConnection(player, connectionId);
+        networkManager.sendTo(connectionId, new JoinLobbyResponse(player, lobby.getRooms().toArray(new Room[0])));
+    }
+
+    private Lobby getLobby() {
+        ApplicationListener applicationListener = Gdx.app.getApplicationListener();
+        Finisterra finisterra = (Finisterra) applicationListener;
+        return finisterra.getLobby();
     }
 
     @Override
     public void processRequest(CreateRoomRequest createRoomRequest, int connectionId) {
-        Lobby lobby = finisterra.getLobby();
-        LobbyNetworkManager networkManager = finisterra.getNetworkManager();
+        Lobby lobby = getLobby();
         Room room = lobby.createRoom(createRoomRequest);
-        Player player = finisterra.getNetworkManager().getPlayerByConnection(connectionId);
-        finisterra.getLobby().joinRoom(room.getId(), player);
+        Player player = networkManager.getPlayerByConnection(connectionId);
+        lobby.joinRoom(room.getId(), player);
         networkManager.sendTo(connectionId,
                 new CreateRoomResponse(room, player));
         lobby.getWaitingPlayers()
                 .stream()
                 .filter(waitingPlayer -> !player.equals(waitingPlayer))
                 .filter(waitingPlayer -> networkManager.playerHasConnection(waitingPlayer))
-                .forEach(waitingPlayer -> {
-                    networkManager.sendTo(networkManager.getConnectionByPlayer(waitingPlayer), new NewRoomNotification(room));
-                });
+                .forEach(waitingPlayer -> networkManager.sendTo(networkManager.getConnectionByPlayer(waitingPlayer), new NewRoomNotification(room)));
     }
 
     @Override
     public void processRequest(JoinRoomRequest joinRoomRequest, int connectionId) {
-        Optional<Room> room = finisterra.getLobby().getRoom(joinRoomRequest.getId());
+        Lobby lobby = getLobby();
+        Optional<Room> room = lobby.getRoom(joinRoomRequest.getId());
         room.ifPresent(room1 -> {
-            Player player = finisterra.getNetworkManager().getPlayerByConnection(connectionId);
+            Player player = networkManager.getPlayerByConnection(connectionId);
             player.setTeam(Team.NO_TEAM);
             room1.getPlayers().forEach(roomPlayer -> {
-                int roomPlayerConnection = finisterra.getNetworkManager().getConnectionByPlayer(roomPlayer);
-                finisterra.getNetworkManager().sendTo(roomPlayerConnection, new JoinRoomNotification(player, true));
+                int roomPlayerConnection = networkManager.getConnectionByPlayer(roomPlayer);
+                networkManager.sendTo(roomPlayerConnection, new JoinRoomNotification(player, true));
             });
-            finisterra.getLobby().joinRoom(joinRoomRequest.getId(), player);
-            finisterra.getNetworkManager().sendTo(connectionId, new JoinRoomResponse(room1, player));
+            lobby.joinRoom(joinRoomRequest.getId(), player);
+            networkManager.sendTo(connectionId, new JoinRoomResponse(room1, player));
         });
     }
 
     @Override
     public void processRequest(ExitRoomRequest exitRoomRequest, int connectionId) {
-        Player player = finisterra.getNetworkManager().getPlayerByConnection(connectionId);
-        finisterra
-                .getLobby()
+        Player player = networkManager.getPlayerByConnection(connectionId);
+        Lobby lobby = getLobby();
+        lobby
                 .getRooms()
                 .stream()
                 .filter(room -> room.has(player))
                 .findFirst()
-                .ifPresent(room -> {
-                    room.getPlayers().forEach(roomPlayer -> {
-                        int roomPlayerConnection = finisterra.getNetworkManager().getConnectionByPlayer(roomPlayer);
-                        finisterra.getNetworkManager().sendTo(roomPlayerConnection, new JoinRoomNotification(player, false));
-                    });
-                });
-        finisterra.getLobby().exitRoom(player);
+                .ifPresent(room -> room.getPlayers().forEach(roomPlayer -> {
+                    int roomPlayerConnection = networkManager.getConnectionByPlayer(roomPlayer);
+                    networkManager.sendTo(roomPlayerConnection, new JoinRoomNotification(player, false));
+                }));
+        lobby.exitRoom(player);
     }
 
     @Override
     public void processRequest(StartGameRequest startGameRequest, int connectionId) {
+        ApplicationListener applicationListener = Gdx.app.getApplicationListener();
+        Finisterra finisterra = (Finisterra) applicationListener;
         Optional<Room> room = finisterra.getLobby().getRoom(startGameRequest.getRoomId());
-        room.ifPresent(room1 -> finisterra.startGame(room1));
+        room.ifPresent(finisterra::startGame);
     }
 
     @Override
@@ -98,6 +100,6 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         response.receiveTime = receiveTime;
         response.requestId = request.requestId;
         response.sendTime = System.nanoTime();
-        finisterra.getNetworkManager().sendTo(connectionId, response);
+        networkManager.sendTo(connectionId, response);
     }
 }

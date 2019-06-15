@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import entity.character.info.Inventory.Item;
 import game.handlers.ObjectHandler;
 import game.screens.GameScreen;
@@ -173,13 +172,13 @@ public class Inventory extends Window {
         return selected;
     }
 
-    // selected shouldn't be empty
     public int selectedIndex() {
+        assert(selected.isPresent());
         return slots.indexOf(selected.get());
     }
 
-    // selected shouldn't be empty
-    public int draggingIndex() {
+    private int draggingIndex() {
+        assert(dragging.isPresent());
         return slots.indexOf(dragging.get());
     }
 

@@ -43,7 +43,7 @@ public class LoginScreen extends AbstractScreen {
         Label heroLabel = new Label("Hero", getSkin());
         SelectBox<Hero> heroSelect = new SelectBox<>(getSkin());
         final Array<Hero> heroes = new Array<>();
-        Hero.getHeroes().forEach(hero -> heroes.add(hero));
+        Hero.getHeroes().forEach(heroes::add);
         heroSelect.setItems(heroes);
 
         Table connectionTable = new Table((getSkin()));

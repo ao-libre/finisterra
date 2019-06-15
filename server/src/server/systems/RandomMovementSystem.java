@@ -11,6 +11,7 @@ import physics.AOPhysics;
 import position.WorldPos;
 import server.core.Server;
 import server.systems.manager.MapManager;
+import server.systems.manager.WorldManager;
 import server.utils.WorldUtils;
 import shared.model.map.Map;
 import shared.network.movement.MovementNotification;
@@ -26,24 +27,19 @@ import static server.utils.WorldUtils.WorldUtils;
 public class RandomMovementSystem extends IteratingSystem {
 
     private MapManager mapManager;
+    private WorldManager worldManager;
     private static final List<AOPhysics.Movement> VALUES =
             Collections.unmodifiableList(Arrays.asList(AOPhysics.Movement.values()));
     private static final int SIZE = VALUES.size();
     private static final Random RANDOM = new Random();
-    private Server server;
 
-    public RandomMovementSystem(Server server) {
+    public RandomMovementSystem() {
         super(Aspect.all(RandomMovement.class));
-        this.server = server;
     }
 
-    public static Optional<AOPhysics.Movement> randomMovement() {
+    private static Optional<AOPhysics.Movement> randomMovement() {
         int index = RANDOM.nextInt(SIZE * 50);
         return Optional.ofNullable(VALUES.size() > index ? VALUES.get(index) : null);
-    }
-
-    public Server getServer() {
-        return server;
     }
 
     @Override
@@ -55,10 +51,10 @@ public class RandomMovementSystem extends IteratingSystem {
         });
     }
 
-    public void moveEntity(int entityId, AOPhysics.Movement mov) {
+    private void moveEntity(int entityId, AOPhysics.Movement mov) {
         E player = E(entityId);
 
-        WorldUtils worldUtils = WorldUtils(getServer().getWorld());
+        WorldUtils worldUtils = WorldUtils(world);
         player.headingCurrent(worldUtils.getHeading(mov));
 
         WorldPos worldPos = player.getWorldPos();
@@ -80,9 +76,9 @@ public class RandomMovementSystem extends IteratingSystem {
 
         // notify near users
 
-        getServer().getWorldManager().notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build()); // is necessary?
+        worldManager.notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build()); // is necessary?
         if (nextPos != oldPos) {
-            getServer().getWorldManager().notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov)));
+            worldManager.notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov)));
         }
     }
 
@@ -91,8 +87,7 @@ public class RandomMovementSystem extends IteratingSystem {
     }
 
     private List<AOPhysics.Movement> getOther(AOPhysics.Movement movement) {
-        List<AOPhysics.Movement> result = new ArrayList<>();
-        result.addAll(VALUES);
+        List<AOPhysics.Movement> result = new ArrayList<>(VALUES);
         result.remove(movement);
         return result;
     }

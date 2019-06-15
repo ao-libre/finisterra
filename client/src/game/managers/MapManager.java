@@ -1,5 +1,6 @@
 package game.managers;
 
+import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,7 +16,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapManager {
+public class MapManager extends BaseSystem {
 
     public static final List<Integer> LOWER_LAYERS = Arrays.asList(0, 1);
     public static final List<Integer> UPPER_LAYERS = Collections.singletonList(3);
@@ -128,4 +129,6 @@ public class MapManager {
         renderLayerToBuffer(map);
     }
 
+    @Override
+    protected void processSystem() {}
 }

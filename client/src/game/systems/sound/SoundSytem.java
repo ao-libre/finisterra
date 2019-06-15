@@ -1,4 +1,4 @@
-package game.systems.Sound;
+package game.systems.sound;
 
 import Sound.AOSound;
 import com.artemis.Aspect;

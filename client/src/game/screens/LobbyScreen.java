@@ -27,7 +27,7 @@ public class LobbyScreen extends AbstractScreen {
         super();
         this.clientSystem = clientSystem;
         this.player = player;
-        this.rooms = new HashSet<>(Arrays.stream(rooms).collect(Collectors.toSet()));
+        this.rooms = Arrays.stream(rooms).collect(Collectors.toSet());
         updateRooms();
     }
 

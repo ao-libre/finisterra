@@ -1,5 +1,6 @@
 package shared.network.interfaces;
 
+import com.artemis.BaseSystem;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.MeditateRequest;
@@ -11,7 +12,7 @@ import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.movement.MovementRequest;
 import shared.network.time.TimeSyncRequest;
 
-public class DefaultRequestProcessor implements IRequestProcessor {
+public class DefaultRequestProcessor extends BaseSystem implements IRequestProcessor {
 
     @Override
     public void processRequest(MovementRequest request, int connectionId) {
@@ -82,4 +83,7 @@ public class DefaultRequestProcessor implements IRequestProcessor {
     public void processRequest(TimeSyncRequest timeSyncRequest, int connectionId) {
 
     }
+
+    @Override
+    protected void processSystem() {}
 }
