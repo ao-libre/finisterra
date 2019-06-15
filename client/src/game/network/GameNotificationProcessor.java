@@ -4,6 +4,7 @@ import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.EntityEdit;
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
@@ -27,14 +28,17 @@ import shared.network.sound.SoundNotification;
 
 import static com.artemis.E.E;
 
+@Wire
 public class GameNotificationProcessor extends DefaultNotificationProcessor {
+
+    private WorldManager worldManager;
 
     @Override
     public void processNotification(EntityUpdate entityUpdate) {
-        if (!WorldManager.entityExsists(entityUpdate.entityId)) {
+        if (!worldManager.entityExsists(entityUpdate.entityId)) {
             Log.info("Network entity doesn't exist: " + entityUpdate.entityId + ". So we create it");
             Entity newEntity = GameScreen.getWorld().createEntity();
-            WorldManager.registerEntity(entityUpdate.entityId, newEntity.getId());
+            worldManager.registerEntity(entityUpdate.entityId, newEntity.getId());
             addComponentsToEntity(newEntity, entityUpdate);
             if (E(newEntity).hasFocused()) {
                 Log.info("New focused player: " + newEntity.getId());
@@ -49,7 +53,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     @Override
     public void processNotification(RemoveEntity removeEntity) {
         Log.info("Unregistering entity: " + removeEntity.entityId);
-        WorldManager.unregisterEntity(removeEntity.entityId);
+        worldManager.unregisterEntity(removeEntity.entityId);
     }
 
     @Override
@@ -70,8 +74,8 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     @Override
     public void processNotification(MovementNotification movementNotification) {
-        if (WorldManager.hasNetworkedEntity(movementNotification.getPlayerId())) {
-            int playerId = WorldManager.getNetworkedEntity(movementNotification.getPlayerId());
+        if (worldManager.hasNetworkedEntity(movementNotification.getPlayerId())) {
+            int playerId = worldManager.getNetworkedEntity(movementNotification.getPlayerId());
             E(playerId).aOPhysics();
             E(playerId).movementAdd(movementNotification.getDestination());
         }
@@ -85,11 +89,11 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     }
 
     private void updateEntity(EntityUpdate entityUpdate) {
-        if (!WorldManager.hasNetworkedEntity(entityUpdate.entityId)) {
+        if (!worldManager.hasNetworkedEntity(entityUpdate.entityId)) {
             return;
         }
-        int entityId = WorldManager.getNetworkedEntity(entityUpdate.entityId);
-        Entity entity = WorldManager.getWorld().getEntity(entityId);
+        int entityId = worldManager.getNetworkedEntity(entityUpdate.entityId);
+        Entity entity = world.getEntity(entityId);
         EntityEdit edit = entity.edit();
         for (Component component : entityUpdate.components) {
             // this should replace if already exists

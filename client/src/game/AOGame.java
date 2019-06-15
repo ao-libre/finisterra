@@ -32,8 +32,6 @@ public class AOGame extends Game {
         // Load resources & stuff.
         long start = System.currentTimeMillis();
         AssetHandler.load();
-        if (AssetHandler.getState() == StateHandler.LOADED)
-            Gdx.app.debug("AOGame", "Handler loaded!");
         Gdx.app.log("Client initialization", "Elapsed time: " + (System.currentTimeMillis() - start));
         Cursors.setCursor("hand");
         ScreenManager.getInstance().initialize(this);
@@ -66,6 +64,7 @@ public class AOGame extends Game {
 
     public void dispose() {
         Log.info("Closing client...");
+        screen.dispose();
         AssetHandler.unload();
         Gdx.app.exit();
         Log.info("Thank you for playing! See you soon...");

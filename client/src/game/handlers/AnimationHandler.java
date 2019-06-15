@@ -1,5 +1,6 @@
 package game.handlers;
 
+import com.esotericsoftware.minlog.Log;
 import entity.character.equipment.Helmet;
 import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
@@ -18,43 +19,36 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class AnimationHandler {
 
-    // TODO check
+    // TODO change maps to caches
     private static Map<Body, List<BundledAnimation>> bodyAnimations = new WeakHashMap<>();
     private static Map<Head, List<BundledAnimation>> headAnimations = new WeakHashMap<>();
     private static Map<Helmet, List<BundledAnimation>> helmetAnimations = new WeakHashMap<>();
     private static Map<Weapon, List<BundledAnimation>> weaponAnimations = new WeakHashMap<>();
     private static Map<Shield, List<BundledAnimation>> shieldAnimations = new WeakHashMap<>();
-    private static Map<FX, List<BundledAnimation>> fxAnimations = new WeakHashMap<>();
 
     private static Map<Integer, BundledAnimation> animations = new ConcurrentHashMap<>();
 
-    public static void load() {
-//        bodyAnimations = loadDescriptors(DescriptorHandler.getBodies());
-//        headAnimations = loadDescriptors(DescriptorHandler.getHeads());
-//        helmetAnimations = loadDescriptors(DescriptorHandler.getHelmets());
-//        weaponAnimations = loadDescriptors(DescriptorHandler.getWeapons());
-//        shieldAnimations = loadDescriptors(DescriptorHandler.getShields());
-//        fxAnimations = loadDescriptors(DescriptorHandler.getFxs());
+    public static void loadGraphics() {
+        DescriptorHandler.getGraphics().forEach(AnimationHandler::saveGraphic);
     }
 
+    @Deprecated
     private static Map<Integer, List<BundledAnimation>> loadDescriptors(List<?> descriptors) {
         Map<Integer, List<BundledAnimation>> result = new HashMap<>();
         int[] idx = {1};
-        descriptors.forEach(descriptor -> {
-            result.put(idx[0]++, createAnimations((IDescriptor) descriptor, true));
-        });
+        descriptors.forEach(descriptor -> result.put(idx[0]++, createAnimations((IDescriptor) descriptor, true)));
         return result;
     }
 
+    @Deprecated
     private static Map<Integer, List<BundledAnimation>> loadDescriptors(Map<Integer, ?> descriptors) {
         Map<Integer, List<BundledAnimation>> result = new HashMap<>();
-        descriptors.forEach((id, descriptor) -> {
-            result.put(id, createAnimations((IDescriptor) descriptor, true));
-        });
+        descriptors.forEach((id, descriptor) -> result.put(id, createAnimations((IDescriptor) descriptor, true)));
         return result;
     }
 
     private static List<BundledAnimation> createAnimations(IDescriptor descriptor, boolean pingpong) {
+        Log.info("Animation created");
         List<BundledAnimation> animations = new ArrayList<>();
         int[] indexs = descriptor.getIndexs();
         for (int i = 0; i < indexs.length; i++) {
@@ -104,40 +98,19 @@ public class AnimationHandler {
         }).get(current);
     }
 
-    public static BundledAnimation getFXAnimation(int index, int current) {
-        return fxAnimations.get(index).get(current);
-    }
-
-    public static Map<Body, List<BundledAnimation>> getBodyAnimations() {
-        return bodyAnimations;
-    }
-
-    public static Map<FX, List<BundledAnimation>> getFxAnimations() {
-        return fxAnimations;
-    }
-
-    public static Map<Head, List<BundledAnimation>> getHeadAnimations() {
-        return headAnimations;
-    }
-
-    public static Map<Helmet, List<BundledAnimation>> getHelmetAnimations() {
-        return helmetAnimations;
-    }
-
-    public static Map<Shield, List<BundledAnimation>> getShieldAnimations() {
-        return shieldAnimations;
-    }
-
-    public static Map<Weapon, List<BundledAnimation>> getWeaponAnimations() {
-        return weaponAnimations;
-    }
-
     public static BundledAnimation getGraphicAnimation(int grhIndex) {
         return Optional.ofNullable(animations.get(grhIndex)).orElseGet(() -> saveBundledAnimation(grhIndex));
     }
 
     public static BundledAnimation saveBundledAnimation(int grhIndex) {
-        BundledAnimation bundledAnimation = new BundledAnimation(DescriptorHandler.getGraphic(grhIndex), false);
+        Log.info("BundledAnimation created");
+        Graphic graphic = DescriptorHandler.getGraphic(grhIndex);
+        BundledAnimation bundledAnimation = saveGraphic(grhIndex, graphic);
+        return bundledAnimation;
+    }
+
+    private static BundledAnimation saveGraphic(int grhIndex, Graphic graphic) {
+        BundledAnimation bundledAnimation = new BundledAnimation(graphic, false);
         animations.put(grhIndex, bundledAnimation);
         return bundledAnimation;
     }

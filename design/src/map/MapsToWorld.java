@@ -23,7 +23,7 @@ public class MapsToWorld {
         excluded.add(162);
         // load maps
         HashMap<Integer, Map> maps = new HashMap<>();
-        MapHelper.instance().getAlkonMaps(maps);
+//        MapHelper.instance().getAlkonMaps(maps);
         WorldMap world = new WorldMap();
         // visit maps
         visitMap(maps, 1,  0, 0, world, new HashSet<>());

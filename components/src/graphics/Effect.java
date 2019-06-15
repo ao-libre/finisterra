@@ -1,9 +1,11 @@
 package graphics;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 
 import java.io.Serializable;
 
+@PooledWeaver
 public class Effect extends Component implements Serializable {
 
     public static final int NO_REF = -1;

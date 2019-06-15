@@ -1,9 +1,11 @@
 package map;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 
 import java.io.Serializable;
 
+@PooledWeaver
 public class Map extends Component implements Serializable {
 
     public int[][] tiles;

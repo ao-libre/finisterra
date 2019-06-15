@@ -23,6 +23,7 @@ import com.artemis.systems.IteratingSystem;
 import game.handlers.MapHandler;
 import position.WorldPos;
 import shared.model.map.Map;
+import shared.util.MapHelper;
 
 import static com.artemis.E.E;
 
@@ -51,10 +52,21 @@ public class TiledMapSystem extends IteratingSystem {
         this.mapNumber = number;
         this.map = MapHandler.get(number);
 
-//        new Thread(() -> {
-//            List<Integer> lindants = map.getLindants();
-//            lindants.forEach(mapNumber -> MapHandler.getObject(mapNumber));
-//        });
+        new Thread(() -> {
+            Map left = MapHandler.get(map.getNeighbour(MapHelper.Dir.LEFT));
+            if (left != null) {
+                MapHandler.get(left.getNeighbour(MapHelper.Dir.UP));
+                MapHandler.get(left.getNeighbour(MapHelper.Dir.DOWN));
+            }
+            Map right = MapHandler.get(map.getNeighbour(MapHelper.Dir.RIGHT));
+            if (right != null) {
+                MapHandler.get(right.getNeighbour(MapHelper.Dir.UP));
+                MapHandler.get(right.getNeighbour(MapHelper.Dir.DOWN));
+            }
+            MapHandler.get(map.getNeighbour(MapHelper.Dir.UP));
+            MapHandler.get(map.getNeighbour(MapHelper.Dir.DOWN));
+
+        });
     }
 
     @Override

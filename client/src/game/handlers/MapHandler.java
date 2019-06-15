@@ -5,7 +5,7 @@ import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.util.MapHelper;
 
-import java.util.HashMap;
+import static shared.util.MapHelper.CacheStrategy.FIVE_MIN_EXPIRE;
 
 public class MapHandler {
 
@@ -13,24 +13,13 @@ public class MapHandler {
 
     public static MapHelper getHelper() {
         if (helper == null) {
-            helper = MapHelper.instance();
+            helper = MapHelper.instance(FIVE_MIN_EXPIRE);
         }
         return helper;
     }
 
-    public static boolean has(int map) {
-        return helper.hasMap(map);
-    }
-
     public static Map get(int map) {
-        if (!has(map)) {
-            return load(map);
-        }
         return helper.getMap(map);
-    }
-
-    public static Map load(int mapNumber) {
-        return helper.getMap(mapNumber);
     }
 
     public static Tile getTile(WorldPos pos) {

@@ -1,6 +1,7 @@
 package entity.npc;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 import entity.character.states.Heading;
 import position.Pos2D;
 import position.WorldPos;
@@ -9,6 +10,7 @@ import java.util.Objects;
 
 import static entity.character.states.Heading.*;
 
+@PooledWeaver
 public class OriginPos extends Component {
 
     public int map;

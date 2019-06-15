@@ -1,3 +1,6 @@
+apply plugin: "artemis-fluid"
+apply plugin: "artemis"
+
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 dependencies {
@@ -8,10 +11,8 @@ dependencies {
     compile "net.mostlyoriginal.artemis-odb:contrib-eventbus:$artemisContribVersion"
     compile "net.mostlyoriginal.artemis-odb:contrib-network:$artemisContribVersion"
     compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    compile 'com.google.guava:guava:27.1-jre'
 }
-
-// FLUID
-apply plugin: "artemis-fluid"
 
 ext {
     fluidOutputDir = file("$buildDir/generated-sources/fluid/")
@@ -35,11 +36,21 @@ fluid {
     // preferences.swallowGettersWithParameters = false // global setting. overridden by @Fluid annotation.
 }
 
+weave {
+    classesDir = new File(buildDir, "classes/java/main")
+    enableArtemisPlugin = true
+    enablePooledWeaving = true
+    generateLinkMutators = true
+    optimizeEntitySystems = true
+}
+
 compileJava.dependsOn fluid
+classes.finalizedBy weave
 
 // Help intellIJ pick up the generated classes.
 idea {
     module {
+        generatedSourceDirs += fluidOutputDir
         excludeDirs -= file("$buildDir")
         excludeDirs -= file("$buildDir/src")
         excludeDirs += file("$buildDir/dependency-cache")

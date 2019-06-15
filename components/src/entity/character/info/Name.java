@@ -1,9 +1,11 @@
 package entity.character.info;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 
 import java.io.Serializable;
 
+@PooledWeaver
 public class Name extends Component implements Serializable {
 
     public String text;

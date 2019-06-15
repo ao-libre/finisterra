@@ -1,9 +1,11 @@
 package entity.combat;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 
 import java.io.Serializable;
 
+@PooledWeaver
 public class AttackPower extends Component implements Serializable {
 
     public int value;

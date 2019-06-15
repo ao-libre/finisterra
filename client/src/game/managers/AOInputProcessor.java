@@ -35,9 +35,8 @@ public class AOInputProcessor extends Stage {
 
     @Override
     public boolean scrolled(int amount) {
-        System.out.println("Scrolled: " + amount);
         CameraSystem system = GameScreen.getWorld().getSystem(CameraSystem.class);
-        system.zoom(amount, system.ZOOM_TIME);
+        system.zoom(amount, CameraSystem.ZOOM_TIME);
         return super.scrolled(amount);
     }
 
@@ -64,7 +63,8 @@ public class AOInputProcessor extends Stage {
                 Cursors.setCursor("hand");
                 GUI.getSpellView().toCast = Optional.empty();
             } else {
-                Optional<String> name = WorldManager.getEntities()
+                WorldManager worldManager = GameScreen.getWorld().getSystem(WorldManager.class);
+                Optional<String> name = worldManager.getEntities()
                         .stream()
                         .filter(entity -> E(entity).hasWorldPos() && E(entity).getWorldPos().equals(worldPos))
                         .filter(entity -> E(entity).hasName())
@@ -135,7 +135,7 @@ public class AOInputProcessor extends Stage {
             case Input.Keys.ESCAPE:
                 // Disconnect & go back to LoginScreen
                 AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                // TODO implement
+                game.toLogin();
         }
     }
 
@@ -171,14 +171,14 @@ public class AOInputProcessor extends Stage {
             case Input.Keys.ESCAPE:
                 // Disconnect & go back to LoginScreen
                 AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                // TODO implement
+                game.toLogin();
         }
     }
 
     private void use() {
-        GUI.getInventory().getSelected().ifPresent(slot -> {
-            GameScreen.getClient().sendToAll(new ItemActionRequest(GUI.getInventory().selectedIndex()));
-        });
+        GUI.getInventory()
+                .getSelected()
+                .ifPresent(slot -> GameScreen.getClient().sendToAll(new ItemActionRequest(GUI.getInventory().selectedIndex())));
     }
 
     private void attack() {
@@ -190,9 +190,9 @@ public class AOInputProcessor extends Stage {
     }
 
     private void equip() {
-        GUI.getInventory().getSelected().ifPresent(slot -> {
-            GameScreen.getClient().sendToAll(new ItemActionRequest(GUI.getInventory().selectedIndex()));
-        });
+        GUI.getInventory()
+                .getSelected()
+                .ifPresent(slot -> GameScreen.getClient().sendToAll(new ItemActionRequest(GUI.getInventory().selectedIndex())));
     }
 
     private void takeItem() {
@@ -203,7 +203,9 @@ public class AOInputProcessor extends Stage {
     private void dropItem() {
         GUI.getInventory().getSelected().ifPresent(selected -> {
             int player = GameScreen.getPlayer();
-            GameScreen.getClient().sendToAll(new DropItem(E(player).getNetwork().id, GUI.getInventory().selectedIndex(), E(player).getWorldPos()));
+            GameScreen
+                    .getClient()
+                    .sendToAll(new DropItem(E(player).getNetwork().id, GUI.getInventory().selectedIndex(), E(player).getWorldPos()));
         });
     }
 

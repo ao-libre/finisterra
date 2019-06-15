@@ -3,6 +3,7 @@ package server.systems.ai;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.EBag;
+import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
 import entity.character.Character;
 import entity.character.states.Immobile;
@@ -27,29 +28,29 @@ import java.util.*;
 import static physics.AOPhysics.Movement.*;
 import static server.utils.WorldUtils.WorldUtils;
 
+@Wire
 public class PathFindingSystem extends IntervalFluidIteratingSystem {
 
+    private static final int MAX_DISTANCE_TARGET = 10;
+    private MapManager mapManager;
     private HashMap<Integer, AStarMap> maps = new HashMap<>();
 
     public PathFindingSystem(float interval) {
         super(Aspect.all(NPC.class, WorldPos.class, AIMovement.class).exclude(Character.class, Footprint.class, Immobile.class), interval);
     }
 
-    private MapManager getMapManager() {
-        return world.getSystem(MapManager.class);
-    }
-
     private void updateMap(Integer map) {
-        Set<Integer> entitiesInMap = getMapManager().getEntitiesInMap(map);
+        Set<Integer> entitiesInMap = mapManager.getEntitiesInMap(map);
         if (entitiesInMap.stream().noneMatch(e -> E.E(e).isCharacter())) {
             return;
         }
+        // TODO can we update on each move instead of create all again?
         maps.put(map, createStarMap(map));
     }
 
     @Override
     protected void begin() {
-        getMapManager().getMaps().forEach(this::updateMap);
+        mapManager.getMaps().forEach(this::updateMap);
     }
 
     @Override
@@ -122,7 +123,6 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         WorldPos oldPos = new WorldPos(worldPos);
         WorldPos nextPos = worldUtils.getNextPos(worldPos, mov);
 
-        MapManager mapManager = getMapManager();
         Map map = mapManager.getMap(nextPos.map);
         boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
         boolean occupied = mapManager.getHelper().hasEntity(mapManager.getNearEntities(entityId), nextPos);
@@ -154,16 +154,15 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
                 .filter(E::hasWorldPos)
                 .filter(e -> {
                     int distance = WorldUtils(world).distance(e.getWorldPos(), worldPos);
-                    return distance < 20 && distance >= 0;
+                    return distance < MAX_DISTANCE_TARGET && distance >= 0;
                 })
                 .min(Comparator.comparingInt(e -> WorldUtils(world).distance(e.getWorldPos(), worldPos)));
     }
 
     private AStarMap createStarMap(int map) {
-        MapManager mapManager = getMapManager();
         Map realMap = mapManager.getMap(map);
-        int height = realMap.MAX_MAP_SIZE_HEIGHT;
-        int width = realMap.MAX_MAP_SIZE_WIDTH;
+        int height = realMap.getHeight();
+        int width = realMap.getWidth();
 
         AStarMap aMap = new AStarMap(width, height);
         MapHelper helper = mapManager.getHelper();

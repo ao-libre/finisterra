@@ -1,9 +1,9 @@
 package server.systems.manager;
 
 import com.artemis.E;
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
 import position.WorldPos;
-import server.core.Server;
 import shared.model.map.Tile;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
@@ -14,11 +14,15 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.artemis.E.E;
 import static server.utils.WorldUtils.WorldUtils;
+import static shared.util.MapHelper.CacheStrategy.NEVER_EXPIRE;
 
 /**
  * Logic regarding maps, contains information about entities in each map, and how are they related.
  */
+@Wire
 public class MapManager extends DefaultManager {
+
+    private WorldManager worldManager;
 
     public static final int MAX_DISTANCE = 20;
     private MapHelper helper;
@@ -26,9 +30,8 @@ public class MapManager extends DefaultManager {
     private Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesFootprints = new ConcurrentHashMap<>();
 
-    public MapManager(Server server, HashMap<Integer, shared.model.map.Map> maps) {
-        super(server);
-        new Thread(() -> helper = MapHelper.instance()).start();
+    public MapManager() {
+        helper = MapHelper.instance(NEVER_EXPIRE);
     }
 
     public Set<Integer> getMaps() {
@@ -40,11 +43,8 @@ public class MapManager extends DefaultManager {
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         super.initialize();
-    }
-
-    public void postInitialize() {
         // create NPCs
         helper.getMaps().forEach(this::initTiles);
     }
@@ -65,11 +65,11 @@ public class MapManager extends DefaultManager {
     }
 
     private void createObject(int objIndex, int objCount, WorldPos pos) {
-        world.getSystem(WorldManager.class).createObject(objIndex, objCount, pos);
+        worldManager.createObject(objIndex, objCount, pos);
     }
 
     private void createNPC(int npcIndex, WorldPos pos) {
-        world.getSystem(WorldManager.class).createNPC(npcIndex, pos);
+        worldManager.createNPC(npcIndex, pos);
     }
 
     public MapHelper getHelper() {
@@ -106,7 +106,7 @@ public class MapManager extends DefaultManager {
                 return;
             }
             //create footprint
-            final int footprintId = getServer().getWorld().create();
+            final int footprintId = world.create();
             E(footprintId).footprintEntityId(player);
             E(footprintId).worldPosMap(it.map);
             E(footprintId).worldPosX(it.x);
@@ -128,7 +128,7 @@ public class MapManager extends DefaultManager {
     /**
      * Remove entity from map and unlink near entities
      *
-     * @param entity
+     * @param entity id
      */
     public void removeEntity(int entity) {
         final E e = E(entity);
@@ -148,9 +148,9 @@ public class MapManager extends DefaultManager {
     /**
      * Add entity to map and calculate near entities
      *
-     * @param player
+     * @param player id
      */
-    public void updateEntity(int player) {
+    void updateEntity(int player) {
         WorldPos pos = E(player).getWorldPos();
         int map = pos.map;
         Set<Integer> entities = entitiesByMap.computeIfAbsent(map, (it) -> new HashSet<>());
@@ -241,21 +241,21 @@ public class MapManager extends DefaultManager {
             nearEntities.get(entity1).remove(entity2);
         }
         // always notify that this entity is not longer in range
-        getServer().getWorldManager().sendEntityRemove(entity1, entity2);
+        worldManager.sendEntityRemove(entity1, entity2);
     }
 
 
     /**
      * Link entities
      *
-     * @param entity1
-     * @param entity2
+     * @param entity1 id
+     * @param entity2 id
      */
     private void linkEntities(int entity1, int entity2) {
         Set<Integer> near = nearEntities.computeIfAbsent(entity1, (i) -> new HashSet<>());
         if (near.add(entity2)) {
             EntityUpdate update = EntityUpdateBuilder.of(entity2).withComponents(WorldUtils(world).getComponents(entity2)).build();
-            getServer().getWorldManager().sendEntityUpdate(entity1, update);
+            worldManager.sendEntityUpdate(entity1, update);
         }
     }
 

@@ -1,5 +1,6 @@
 package shared.network.interfaces;
 
+import com.artemis.BaseSystem;
 import shared.network.interaction.DropItem;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.lobby.JoinRoomNotification;
@@ -13,7 +14,7 @@ import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
 import shared.network.sound.SoundNotification;
 
-public class DefaultNotificationProcessor implements INotificationProcessor {
+public class DefaultNotificationProcessor extends BaseSystem implements INotificationProcessor {
 
     @Override
     public void defaultProcess(INotification notification) {
@@ -77,6 +78,11 @@ public class DefaultNotificationProcessor implements INotificationProcessor {
 
     @Override
     public void processNotification(SoundNotification soundNotification) {
+
+    }
+
+    @Override
+    protected void processSystem() {
 
     }
 }

@@ -1,12 +1,14 @@
 package position;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 import entity.character.states.Heading;
 
 import java.util.Objects;
 
 import static entity.character.states.Heading.*;
 
+@PooledWeaver
 public class WorldPos extends Component {
 
     public int map;

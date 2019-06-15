@@ -1,10 +1,12 @@
 package entity.character.info;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
+@PooledWeaver
 public class Inventory extends Component {
     private final static int SIZE = 6;
     public Item[] items = new Item[SIZE];

@@ -1,11 +1,13 @@
 package movement;
 
 import com.artemis.Component;
+import com.artemis.annotations.PooledWeaver;
 
 import java.io.Serializable;
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+@PooledWeaver
 public class Movement extends Component implements Serializable {
 
     public Deque<Destination> destinations = new ConcurrentLinkedDeque<>();

@@ -1,5 +1,6 @@
 package game.managers;
 
+import com.artemis.BaseSystem;
 import com.artemis.World;
 import game.screens.GameScreen;
 
@@ -7,42 +8,41 @@ import java.util.*;
 
 import static com.artemis.E.E;
 
-public class WorldManager {
+public class WorldManager extends BaseSystem {
 
-    private static Map<Integer, Integer> networkedEntities = new HashMap<>();
+    private Map<Integer, Integer> networkedEntities = new HashMap<>();
 
-    public static boolean entityExsists(int networkId) {
+    public boolean entityExsists(int networkId) {
         return networkedEntities.containsKey(networkId);
     }
 
-    public static int getNetworkedEntity(int networkId) {
+    public int getNetworkedEntity(int networkId) {
         return networkedEntities.get(networkId);
     }
 
-    public static boolean hasNetworkedEntity(int networkId) {
+    public boolean hasNetworkedEntity(int networkId) {
         return networkedEntities.containsKey(networkId);
     }
 
-    public static Set<Integer> getEntities() {
+    public Set<Integer> getEntities() {
         return new HashSet<>(networkedEntities.values());
     }
 
-    public static void registerEntity(int networkId, int entityId) {
+    public void registerEntity(int networkId, int entityId) {
         E(entityId).network().getNetwork().id = networkId;
         networkedEntities.put(networkId, entityId);
     }
 
-    public static void unregisterEntity(int networkId) {
+    public void unregisterEntity(int networkId) {
         int entityId = networkedEntities.get(networkId);
-        getWorld().delete(entityId);
+        world.delete(entityId);
         networkedEntities.remove(networkId);
     }
 
-    public static World getWorld() {
-        return GameScreen.getWorld();
-    }
+    @Override
+    protected void processSystem() {}
 
-    public static Optional<Integer> getNetworkedId(int id) {
+    public Optional<Integer> getNetworkedId(int id) {
         return networkedEntities
                 .entrySet()
                 .stream()

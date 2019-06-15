@@ -8,11 +8,12 @@ import shared.util.AOJson;
 import shared.util.MapHelper;
 
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class MapsToJson {
 
     public static void transformToJson() {
-        MapHelper helper = MapHelper.instance();
+        MapHelper helper = MapHelper.instance(MapHelper.CacheStrategy.NEVER_EXPIRE);
         helper.getMaps().forEach((id, map) -> {
             map.setNeighbours(
                     helper.getMap(MapHelper.Dir.LEFT, map),
@@ -24,7 +25,7 @@ public class MapsToJson {
         saveMaps(helper.getMaps());
     }
 
-    private static void saveMaps(HashMap<Integer, Map> maps) {
+    private static void saveMaps(ConcurrentMap<Integer, Map> maps) {
         Json json = new AOJson();
         FileHandle folder = Gdx.files.local("output/maps/");
         maps.forEach((id, map) -> {

@@ -34,7 +34,6 @@ public class CombatRenderingSystem extends RenderingSystem {
         Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
 
         if (!player.hasCombatMessage()) {
-            // TODO bug here, sometimes getter return null
             return;
         }
         CombatMessage combatMessage = player.getCombatMessage();

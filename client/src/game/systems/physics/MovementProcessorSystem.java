@@ -29,6 +29,8 @@ import static com.artemis.E.E;
 @Wire
 public class MovementProcessorSystem extends IteratingSystem {
 
+    private WorldManager worldManager;
+
     private static java.util.Map<Integer, MovementRequest> requests = new ConcurrentHashMap<>();
     private static int requestNumber;
 
@@ -90,9 +92,8 @@ public class MovementProcessorSystem extends IteratingSystem {
                 AOPhysics.Movement movement = movementIntention.get();
                 player.headingCurrent(getHeading(movement));
                 WorldPos expectedPos = Util.getNextPos(pos, movement);
-                Set<Integer> nearEntities = WorldManager.getEntities();
+                Set<Integer> nearEntities = worldManager.getEntities();
                 nearEntities.remove(entity);
-                nearEntities.forEach(near -> Log.debug("Validating entity: " + near + " is not occuping the position"));
                 Map map = MapHandler.get(expectedPos.map);
                 boolean blocked = MapHandler.getHelper().isBlocked(map, expectedPos);
                 boolean occupied = MapHandler.getHelper().hasEntity(nearEntities, expectedPos);

@@ -3,6 +3,7 @@ package server.systems.manager;
 import camera.Focused;
 import com.artemis.Component;
 import com.artemis.E;
+import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
 import entity.character.states.CanWrite;
 import entity.character.states.Heading;
@@ -13,6 +14,7 @@ import position.WorldPos;
 import server.core.Server;
 import server.database.model.attributes.Attributes;
 import server.database.model.modifiers.Modifiers;
+import server.systems.ServerSystem;
 import shared.interfaces.CharClass;
 import shared.interfaces.Hero;
 import shared.interfaces.Race;
@@ -31,20 +33,18 @@ import java.util.stream.Collectors;
 import static com.artemis.E.E;
 import static server.utils.WorldUtils.WorldUtils;
 
+@Wire
 public class WorldManager extends DefaultManager {
+
+    private MapManager mapManager;
+    private ServerSystem networkManager;
+    private SpellManager spellManager;
+    private ObjectManager objectManager;
 
     private static final int ATTR_BASE_VALUE = 18;
     private static int MAX_LEVEL = 45;
     private static int STAT_MAXHIT_UNDER36 = 99;
     private static int STAT_MAXHIT_OVER36 = 999;
-
-    public WorldManager(Server server) {
-        super(server);
-    }
-
-    @Override
-    protected void initialize() {
-    }
 
     public void createObject(int objIndex, int objCount, WorldPos pos) {
         int objId = world.create();
@@ -129,16 +129,15 @@ public class WorldManager extends DefaultManager {
 
     private void setSpells(int player, Hero hero) {
         Set<Spell> spells = getSpells(hero);
-        final List<Integer> ids = spells
+        final Integer[] spellIds = spells
                 .stream()
-                .map(spell -> getServer().getSpellManager().getId(spell))
-                .collect(Collectors.toList());
-        final Integer[] spellIds = ids.toArray(new Integer[0]);
+                .map(spell -> spellManager.getId(spell))
+                .toArray(Integer[]::new);
         E(player).spellBookSpells(spellIds);
     }
 
     private Set<Spell> getSpells(Hero hero) {
-        final Map<Integer, Spell> spells = getServer().getSpellManager().getSpells();
+        final Map<Integer, Spell> spells = spellManager.getSpells();
         Set<Spell> result = new HashSet<>();
         Spell apoca = spells.get(25);
         Spell desca = spells.get(23);
@@ -297,7 +296,7 @@ public class WorldManager extends DefaultManager {
         float manaPerLvlFactor;
         switch (heroClass) {
             case ROGUE:
-                manaPerLvlFactor = 1 / 3 * 2;
+                manaPerLvlFactor = (float) (1 / 3) * 2;
                 break;
             case PALADIN:
             case ASSASSIN:
@@ -383,17 +382,6 @@ public class WorldManager extends DefaultManager {
     }
 
     private WorldPos getValidPosition(int map) {
-//        final E entity = E(getServer().getMapManager().mapEntity);
-//        if (entity.hasCave()) {
-//            final Cave cave = entity.getCave();
-//            final int midHeight = cave.height / 2;
-//            final int midWidth = cave.width / 2;
-//            WorldPos validPos = getRandomPos(midWidth, midHeight, map);
-//            while (cave.isBlocked(validPos.x, validPos.y)) {
-//                validPos = getRandomPos(cave.width, cave.height, map);
-//            }
-//            return validPos;
-//        }
         return new WorldPos(50, 50, map);
     }
 
@@ -404,7 +392,7 @@ public class WorldManager extends DefaultManager {
     }
 
     private void addPotion(int player, PotionKind kind) {
-        Set<Obj> objs = getServer().getObjectManager().getTypeObjects(Type.POTION);
+        Set<Obj> objs = objectManager.getTypeObjects(Type.POTION);
         objs.stream() //
                 .map(PotionObj.class::cast) //
                 .filter(potion -> {
@@ -418,7 +406,6 @@ public class WorldManager extends DefaultManager {
     private Optional<Obj> getArmor(Hero hero, Team team) {
         final Random random = new Random();
         Optional<Obj> result = Optional.empty();
-        final ObjectManager objectManager = getServer().getObjectManager();
         List<Integer> noTeam;
         List<Integer> real;
         List<Integer> chaos;
@@ -486,7 +473,6 @@ public class WorldManager extends DefaultManager {
 
     private Optional<Obj> getHelmet(Hero hero, Team team) {
         Optional<Obj> result = Optional.empty();
-        final ObjectManager objectManager = getServer().getObjectManager();
         switch (hero) {
             case PALADIN:
             case GUERRERO:
@@ -512,7 +498,6 @@ public class WorldManager extends DefaultManager {
 
     private Optional<Obj> getShield(Hero hero, Team team) {
         Optional<Obj> result = Optional.empty();
-        final ObjectManager objectManager = getServer().getObjectManager();
         switch (hero) {
             case PALADIN:
             case CLERIGO:
@@ -531,7 +516,6 @@ public class WorldManager extends DefaultManager {
 
     private Set<Obj> getWeapon(Hero hero, Team type) {
         Set<Obj> result = new HashSet<>();
-        final ObjectManager objectManager = getServer().getObjectManager();
         switch (hero) {
             case PALADIN:
             case GUERRERO:
@@ -561,7 +545,7 @@ public class WorldManager extends DefaultManager {
 
 
     private Optional<Obj> addItem(int player, Type type) {
-        Set<Obj> objs = getServer().getObjectManager().getTypeObjects(type);
+        Set<Obj> objs = objectManager.getTypeObjects(type);
         Optional<Obj> result = objs.stream()
                 .filter(obj -> {
                     if (obj instanceof ObjWithClasses) {
@@ -617,34 +601,34 @@ public class WorldManager extends DefaultManager {
     }
 
     public void registerEntity(int id) {
-        getServer().getMapManager().updateEntity(id);
+        mapManager.updateEntity(id);
     }
 
     public void registerEntity(int connectionId, int id) {
-        getServer().getNetworkManager().registerUserConnection(id, connectionId);
-        getServer().getMapManager().updateEntity(id);
+        networkManager.registerUserConnection(id, connectionId);
+        mapManager.updateEntity(id);
     }
 
     public void unregisterEntity(int entityId) {
-        getServer().getMapManager().removeEntity(entityId);
+        mapManager.removeEntity(entityId);
         getWorld().delete(entityId);
     }
 
     void sendEntityRemove(int user, int entity) {
-        if (getServer().getNetworkManager().playerHasConnection(user)) {
-            getServer().getNetworkManager()
-                    .sendTo(getServer().getNetworkManager().getConnectionByPlayer(user), new RemoveEntity(entity));
+        if (networkManager.playerHasConnection(user)) {
+            networkManager
+                    .sendTo(networkManager.getConnectionByPlayer(user), new RemoveEntity(entity));
         }
     }
 
     public void sendEntityUpdate(int user, Object update) {
-        if (getServer().getNetworkManager().playerHasConnection(user)) {
-            getServer().getNetworkManager().sendTo(getServer().getNetworkManager().getConnectionByPlayer(user), update);
+        if (networkManager.playerHasConnection(user)) {
+            networkManager.sendTo(networkManager.getConnectionByPlayer(user), update);
         }
     }
 
     public void notifyToNearEntities(int entityId, Object update) {
-        getServer().getMapManager().getNearEntities(entityId).forEach(nearPlayer -> {
+        mapManager.getNearEntities(entityId).forEach(nearPlayer -> {
             sendEntityUpdate(nearPlayer, update);
         });
     }
@@ -692,7 +676,7 @@ public class WorldManager extends DefaultManager {
         components.add(new Focused());
         components.add(new AOPhysics());
         components.add(new CanWrite());
-        getServer().getNetworkManager().sendTo(connectionId, EntityUpdateBuilder.of(entity).withComponents(components.toArray(new Component[0])).build());
+        networkManager.sendTo(connectionId, EntityUpdateBuilder.of(entity).withComponents(components.toArray(new Component[0])).build());
         registerEntity(connectionId, entity);
     }
 }

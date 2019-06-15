@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.esotericsoftware.minlog.Log;
-import game.systems.Sound.SoundSytem;
-import game.utils.Resources;
+import game.systems.sound.SoundSytem;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
 

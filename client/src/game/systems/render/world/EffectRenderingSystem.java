@@ -33,6 +33,7 @@ import static com.artemis.E.E;
 public class EffectRenderingSystem extends FluidIteratingSystem {
 
     private CameraSystem cameraSystem;
+    private WorldManager worldManager;
 
     private int srcFunc;
     private int dstFunc;
@@ -84,10 +85,6 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
         getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
     }
 
-    private OrthographicCamera getCamera() {
-        return cameraSystem.camera;
-    }
-
     private void doEnd() {
         getBatch().setBlendFunction(srcFunc, dstFunc);
     }
@@ -101,8 +98,8 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                 drawEffect(e, e.getWorldPos());
             } else {
                 int networkedEntity = effect.entityReference;
-                if (WorldManager.hasNetworkedEntity(networkedEntity)) {
-                    int entityId = WorldManager.getNetworkedEntity(networkedEntity);
+                if (worldManager.hasNetworkedEntity(networkedEntity)) {
+                    int entityId = worldManager.getNetworkedEntity(networkedEntity);
                     E entity = E(entityId);
                     if (entity != null && entity.hasWorldPos()) {
                         drawEffect(e, entity.getWorldPos());
@@ -154,7 +151,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                 if (fxs.containsKey(id)) {
                     BundledAnimation anim = fxs.get(id);
                     if (anim.isAnimationFinished()) {
-                        WorldManager.getNetworkedId(id).ifPresent(WorldManager::unregisterEntity);
+                        worldManager.getNetworkedId(id).ifPresent(worldManager::unregisterEntity);
                     } else {
                         anim.setAnimationTime(anim.getAnimationTime() + getWorld().getDelta() * (anim.getFrames().size * 0.33f));
                     }
