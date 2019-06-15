@@ -14,8 +14,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
 import game.handlers.MusicHandler;
+import game.managers.MapManager;
+import game.network.ClientResponseProcessor;
+import game.network.GameNotificationProcessor;
 import game.network.KryonetClientMarshalStrategy;
-import game.systems.Sound.SoundSytem;
+import game.systems.sound.SoundSytem;
 import game.systems.anim.IdleAnimationSystem;
 import game.systems.anim.MovementAnimationSystem;
 import game.systems.camera.CameraFocusSystem;
@@ -114,6 +117,9 @@ public class GameScreen extends ScreenAdapter {
                 .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL, new BuffRenderingSystem(spriteBatch))
                 // Other
+                .with(new GameNotificationProcessor())
+                .with(new ClientResponseProcessor())
+                .with(new MapManager())
                 .with(new TagManager())
                 .with(new UuidEntityManager()); // why?
     }
@@ -132,11 +138,9 @@ public class GameScreen extends ScreenAdapter {
         E(cameraEntity)
                 .aOCamera(true)
                 .pos2D();
-        world.getSystem(TagManager.class).register("camera", cameraEntity);
 
         // for testing
         world.getSystem(SoundSytem.class).setVolume(0);
-
         MusicHandler.setVolume(0);
 
         MusicHandler.FadeOutMusic(101, 0.02f);

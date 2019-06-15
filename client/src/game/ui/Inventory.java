@@ -172,13 +172,13 @@ public class Inventory extends Window {
         return selected;
     }
 
-    // selected shouldn't be empty
     public int selectedIndex() {
+        assert(selected.isPresent());
         return slots.indexOf(selected.get());
     }
 
-    // selected shouldn't be empty
-    public int draggingIndex() {
+    private int draggingIndex() {
+        assert(dragging.isPresent());
         return slots.indexOf(dragging.get());
     }
 

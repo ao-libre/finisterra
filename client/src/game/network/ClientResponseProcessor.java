@@ -1,11 +1,12 @@
 package game.network;
 
+import com.artemis.BaseSystem;
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
-import game.managers.WorldManager;
 import game.screens.*;
 import game.systems.network.ClientSystem;
 import game.systems.network.TimeSync;
@@ -19,7 +20,10 @@ import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.movement.MovementResponse;
 import shared.network.time.TimeSyncResponse;
 
-public class ClientResponseProcessor implements IResponseProcessor {
+@Wire
+public class ClientResponseProcessor extends BaseSystem implements IResponseProcessor {
+
+    private TimeSync timeSync;
 
     @Override
     public void processResponse(MovementResponse movementResponse) {
@@ -65,11 +69,14 @@ public class ClientResponseProcessor implements IResponseProcessor {
 
     @Override
     public void processResponse(TimeSyncResponse timeSyncResponse) {
-        TimeSync system = WorldManager.getWorld().getSystem(TimeSync.class);
-        system.receive(timeSyncResponse);
+        timeSync.receive(timeSyncResponse);
         Log.info("Local timestamp: " + TimeUtils.millis() / 1000);
-        Log.info("RTT: " + system.getRtt() / 1000);
-        Log.info("Time offset: " + system.getTimeOffset() / 1000);
+        Log.info("RTT: " + timeSync.getRtt() / 1000);
+        Log.info("Time offset: " + timeSync.getTimeOffset() / 1000);
     }
 
+    @Override
+    protected void processSystem() {
+
+    }
 }

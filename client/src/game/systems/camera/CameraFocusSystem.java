@@ -1,7 +1,10 @@
 package game.systems.camera;
 
+import camera.AOCamera;
 import camera.Focused;
 import com.artemis.Aspect;
+import com.artemis.E;
+import com.artemis.EBag;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
@@ -21,11 +24,15 @@ public class CameraFocusSystem extends IteratingSystem {
 
     @Override
     protected void process(int player) {
-        Entity camera = world.getSystem(TagManager.class).getEntity("camera");
-        Pos2D cameraPos = camera.getComponent(Pos2D.class);
-        Pos2D pos = Util.toScreen(E(player).worldPosPos2D());
-        cameraPos.x = pos.x;
-        cameraPos.y = pos.y;
+
+        EBag cameras = E.withComponent(AOCamera.class);
+        if (cameras.iterator().hasNext()) {
+            E camera = cameras.iterator().next();
+            Pos2D cameraPos = camera.getPos2D();
+            Pos2D pos = Util.toScreen(E(player).worldPosPos2D());
+            cameraPos.x = pos.x;
+            cameraPos.y = pos.y;
+        }
     }
 
 }
