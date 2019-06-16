@@ -18,8 +18,17 @@ ext {
     fluidOutputDir = file("$buildDir/generated-sources/fluid/")
 }
 
-sourceSets.main.java.srcDirs = ["src/", fluidOutputDir]
-sourceSets.main.resources.srcDirs = ["resources/"]
+sourceSets {
+	main.java.srcDirs = ["src/", fluidOutputDir]
+	main.resources.srcDirs = ["resources/"]
+}
+
+def osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
+if (osName.contains('mac')) {
+	run {
+		jvmArgs += '-XstartOnFirstThread'
+	}
+}
 
 fluid {
     generatedSourcesDirectory = fluidOutputDir
