@@ -7,6 +7,9 @@ sourceSets {
     main.resources.srcDirs = ["assets/"]
 }
 
+run {
+    jvmArgs += '-XstartOnFirstThread'
+}
 
 mainClassName = "launcher.DesktopLauncher"
 

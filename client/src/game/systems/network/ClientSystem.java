@@ -1,5 +1,6 @@
 package game.systems.network;
 
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import game.network.ClientResponseProcessor;
@@ -12,10 +13,11 @@ import shared.network.interfaces.INotificationProcessor;
 import shared.network.interfaces.IResponse;
 import shared.network.interfaces.IResponseProcessor;
 
+@Wire
 public class ClientSystem extends MarshalSystem {
 
-    public static IResponseProcessor responseProcessor = new ClientResponseProcessor();
-    public static INotificationProcessor notificationProcessor = new GameNotificationProcessor();
+    private ClientResponseProcessor responseProcessor;
+    private GameNotificationProcessor notificationProcessor;
 
     public ClientSystem(String host, int port) {
         super(new NetworkDictionary(), new KryonetClientMarshalStrategy(host, port));

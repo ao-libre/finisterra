@@ -9,7 +9,11 @@ import com.badlogic.gdx.utils.Array;
 import game.ClientConfiguration;
 import game.ClientConfiguration.Network.DefaultServer;
 import game.handlers.MusicHandler;
+import game.managers.WorldManager;
+import game.network.ClientResponseProcessor;
+import game.network.GameNotificationProcessor;
 import game.systems.network.ClientSystem;
+import game.systems.network.TimeSync;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.interfaces.Hero;
 import shared.network.lobby.JoinLobbyRequest;
@@ -31,7 +35,13 @@ public class LoginScreen extends AbstractScreen {
         WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
         DefaultServer defaultServer = config.getNetwork().getDefaultServer();
         clientSystem = new ClientSystem(defaultServer.getHostname(), defaultServer.getPort());
-        world = new World(builder.with(clientSystem).build());
+        world = new World(builder
+                .with(new TimeSync())
+                .with(new WorldManager())
+                .with(new GameNotificationProcessor())
+                .with(new ClientResponseProcessor())
+                .with(clientSystem)
+                .build());
         MusicHandler.playMusic(101);
     }
 

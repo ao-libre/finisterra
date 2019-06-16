@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
 import game.handlers.MusicHandler;
 import game.managers.MapManager;
+import game.managers.WorldManager;
 import game.network.ClientResponseProcessor;
 import game.network.GameNotificationProcessor;
 import game.network.KryonetClientMarshalStrategy;
@@ -96,6 +97,7 @@ public class GameScreen extends ScreenAdapter {
                 .with(HIGH, new CameraFocusSystem())
                 .with(HIGH, new CameraMovementSystem())
                 // Logic systems
+                .with(HIGH, new WorldManager())
                 .with(HIGH, new PhysicsAttackSystem())
                 // Sound systems
                 .with(HIGH, new SoundSytem())
@@ -117,15 +119,16 @@ public class GameScreen extends ScreenAdapter {
                 .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL, new BuffRenderingSystem(spriteBatch))
                 // Other
-                .with(new GameNotificationProcessor())
-                .with(new ClientResponseProcessor())
                 .with(new MapManager())
                 .with(new TagManager())
                 .with(new UuidEntityManager()); // why?
     }
 
     public void initWorld(ClientSystem clientSystem) {
-        worldConfigBuilder.with(HIGH + 1, clientSystem);
+        worldConfigBuilder
+                .with(HIGH + 1, new ClientResponseProcessor())
+                .with(HIGH + 1, new GameNotificationProcessor())
+                .with(HIGH + 1, clientSystem);
         world = new World(worldConfigBuilder.build()); // preload Artemis world
     }
 
