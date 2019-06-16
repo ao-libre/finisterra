@@ -37,15 +37,15 @@ fluid {
 }
 
 weave {
-    classesDir = new File(buildDir, "classes/java/main")
-    enableArtemisPlugin = true
+	classesDir = new File(buildDir, "classes/java/main")
+    dependsOn build
+	enableArtemisPlugin = true
     enablePooledWeaving = true
     generateLinkMutators = true
     optimizeEntitySystems = true
 }
 
 compileJava.dependsOn fluid
-classes.finalizedBy weave
 
 // Help intellIJ pick up the generated classes.
 idea {

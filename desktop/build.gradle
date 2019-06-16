@@ -1,14 +1,10 @@
 apply plugin: 'application'
 
-sourceCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_12
 
 sourceSets {
     main.java.srcDirs = ["src/"]
     main.resources.srcDirs = ["assets/"]
-}
-
-run {
-    jvmArgs += '-XstartOnFirstThread'
 }
 
 mainClassName = "launcher.DesktopLauncher"
