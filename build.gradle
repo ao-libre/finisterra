@@ -7,7 +7,6 @@ buildscript {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
-        flatDir { dirs: project(':desktop') + '/packing/' }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -16,7 +15,6 @@ buildscript {
         classpath 'de.undercouch:gradle-download-task:3.1.1'
         classpath 'org.mini2Dx:butler:1.0.1'
         classpath 'de.undercouch:gradle-download-task:3.4.3'
-        classpath ':proguard:'
     }
 }
 
