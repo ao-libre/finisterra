@@ -4,6 +4,9 @@
 private/
 build/
 **/build/
+**/build/packing/*.zip
+**/build/packing/*.jar
+**/build/packing/download
 out/
 **/out/
 design/resources*
