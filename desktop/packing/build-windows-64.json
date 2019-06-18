@@ -1,0 +1,19 @@
+{
+  "executable": "Finisterra",
+  "classpath": [
+    "desktop-0.1-SNAPSHOT.jar",
+    "assets/"
+  ],
+  "removelibs": [
+    "desktop-0.1-SNAPSHOT.jar"
+  ],
+  "mainclass": "launcher.DesktopLauncher",
+  "vmargs": [
+    "Xmx512M"
+  ],
+  "resources": [
+    "assets/"
+  ],
+  "icon": "assets/ao.ico",
+  "output": "build/releases/finisterra-win-64"
+}

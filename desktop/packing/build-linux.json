@@ -1,0 +1,18 @@
+{
+  "executable": "Finisterra",
+  "classpath": [
+    "desktop-0.1-SNAPSHOT.jar",
+    "assets/"
+  ],
+  "removelibs": [
+    "desktop-0.1-SNAPSHOT.jar"
+  ],
+  "mainclass": "launcher.DesktopLauncher",
+  "vmargs": [
+    "Xmx512M"
+  ],
+  "resources": [
+    "assets/"
+  ],
+  "output": "build/releases/finisterra-linux-64"
+}

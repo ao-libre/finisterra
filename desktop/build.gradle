@@ -52,16 +52,30 @@ run.dependsOn classes
     def desktopReleaseDir() { 'build/releases/' }
     def releaseDir(platform) { desktopReleaseDir().concat(platform) }
     def packingDir() { 'packing/' }
+    def switchConfig(platform) {
+        def config
+        switch (platform) {
+            case "windows32":
+                config = "packing/build-windows32.json"
+                break
+            case "windows64":
+                config = "packing/build-windows64.json"
+                break
+            case "mac":
+                config = "packing/build-mac.json"
+                break
+            case "linux64":
+                config = "packing/build-linux.json"
+                break
+        }   
+        config
+    }   
     def packArgs(platform, jre) {
         [
             "${projectDir}/packing/packr.jar",
             "--platform", platform,
             "--jdk", packingDir().concat(jre),
-            "--executable", "AO-Java",
-            "--classpath", "build/libs/desktop-0.1-SNAPSHOT.jar",
-            "--mainclass", "launcher.DesktopLauncher",
-            "--vmargs", "Xmx1G",
-            "--output", releaseDir(platform)
+            switchConfig(platform)
         ]
     }
 
@@ -80,11 +94,6 @@ run.dependsOn classes
         args = packArgs("mac", "OpenJDK8U-jdk_x64_mac_hotspot_8u212b04.tar.gz")
     }
 
-    task packLinux32(type: JavaExec) {
-        main = "-jar"
-        args = packArgs("linux32", "openjdk-1.7.0-u80-unofficial-linux-i586-image")
-    }
-
     task packLinux64(type: JavaExec) {
         main = "-jar"
         args = packArgs("linux64", "jdk-8u212-ojdkbuild-linux-x64.zip")
@@ -95,10 +104,8 @@ run.dependsOn classes
         dependsOn 'packWindows32'
         dependsOn 'packWindows64'
         //dependsOn 'packMac'
-        //dependsOn 'packLinux32'
         dependsOn 'packLinux64'
         tasks.findByName('packWindows64').mustRunAfter 'packWindows32'
         tasks.findByName('packMac').mustRunAfter 'packWindows64'
-        tasks.findByName('packLinux32').mustRunAfter 'packMac'
-        tasks.findByName('packLinux64').mustRunAfter 'packLinux32'
+        //tasks.findByName('packLinux64').mustRunAfter 'packMac'
     }
