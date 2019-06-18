@@ -1,4 +1,6 @@
 apply plugin: 'application'
+apply plugin: "org.mini2Dx.butler"
+apply plugin: 'de.undercouch.download'
 
 sourceCompatibility = 1.8
 
@@ -22,7 +24,8 @@ dependencies {
 
 task dist(type: Jar) {
     from files(sourceSets.main.output.classesDirs)
-    from { configurations.compile.collect { zipTree(it) } }
+    from files(sourceSets.main.output.resourcesDir)
+    from { configurations.compile.collect { zipTree(it) }
 
     manifest {
         attributes 'Main-Class': project.mainClassName
@@ -31,3 +34,206 @@ task dist(type: Jar) {
 
 dist.dependsOn classes
 run.dependsOn classes
+
+butler {
+    user = "jopi"
+    game = "ao-java"
+}
+
+def desktopWorkingDir() { projectDir }
+def utilsDir() { desktopWorkingDir() + "/packing/" }
+def desktopReleaseDir() { desktopWorkingDir() + "build/releases" }
+def releaseDir(platform) { desktopReleaseDir() + "/" + platform }
+
+    task downloadReleaseUtils(type: Download) {
+        download {
+            src 'https://libgdx.badlogicgames.com/ci/packr/packr.jar'
+            dest utilsDir()
+            overwrite true
+        }
+        download {
+            src 'http://www.angusj.com/resourcehacker/resource_hacker.zip'
+            dest utilsDir()
+            from zipTree('resource_hacker.zip')
+            into utilsDir()
+            delete 'resource_hacker.zip'
+        }
+
+        download {
+            src 'https://sourceforge.net/projects/proguard/files/latest/download'
+            dest utilsDir()
+            from zipTree('proguard6.1.1.zip')
+            into utilsDir()
+            delete 'proguard6.1.1.zip'
+        }
+
+    }
+}
+
+    task obfuscate(type: proguard.gradle.ProGuardTask) {
+        dependsOn 'dist'
+        configuration files("/packing/proguard.txt")
+        libraryjars files(System.properties['JAVA_HOME'] + "/lib/rt.jar",System.properties['JAVA_HOME'] + "/lib/jce.jar")
+        injars files("build/libs/desktop-1.0.jar")
+        outjars files("build/libs/AO-Java.jar")
+    }
+
+    def packArgs(platform, jre) {
+        [
+                utilsDir() + "packing/packr.jar",
+                "--platform", platform,
+                "--jdk", utilsDir() + "/jre/" + jre + ".zip",
+                "--executable", "AO-Java",
+                "--classpath", "build/libs/desktop-0.1-SNAPSHOT.jar",
+                "--mainclass", "desktop.launcher.DesktopLauncher",
+                "--vmargs", "Xmx1G",
+                "--minimizejre", "config/packr-minimize.json",
+                "--output", releaseDir(platform) + (platform == "mac" ? "/AO-Java.app" : "")
+        ]
+    }
+
+    task packWindows32(type: JavaExec) {
+        main = "-jar"
+        args = packArgs("windows32", "openjdk-1.7.0-u80-unofficial-windows-i586-image")
+    }
+
+    task packWindows64(type: JavaExec) {
+        main = "-jar"
+        args = packArgs("windows64", "openjdk-1.7.0-u80-unofficial-windows-amd64-image")
+    }
+
+    task packMac(type: JavaExec) {
+        main = "-jar"
+        args = packArgs("mac", "openjdk-1.7.0-u45-unofficial-macosx-x86_64-image")
+    }
+
+    task packLinux32(type: JavaExec) {
+        main = "-jar"
+        args = packArgs("linux32", "openjdk-1.7.0-u80-unofficial-linux-i586-image")
+    }
+
+    task packLinux64(type: JavaExec) {
+        main = "-jar"
+        args = packArgs("linux64", "openjdk-1.7.0-u80-unofficial-linux-amd64-image")
+    }
+
+    task pack {
+        dependsOn 'obfuscate'
+        dependsOn 'packWindows32'
+        dependsOn 'packWindows64'
+        dependsOn 'packMac'
+        dependsOn 'packLinux32'
+        dependsOn 'packLinux64'
+        tasks.findByName('packWindows32').mustRunAfter 'obfuscate'
+        tasks.findByName('packWindows64').mustRunAfter 'packWindows32'
+        tasks.findByName('packMac').mustRunAfter 'packWindows64'
+        tasks.findByName('packLinux32').mustRunAfter 'packMac'
+        tasks.findByName('packLinux64').mustRunAfter 'packLinux32'
+    }
+
+    def setIconArgs(platform) {
+        [
+                "-addoverwrite",
+                releaseDir(platform) + "/AO-Java.exe, " + releaseDir(platform) + "/AO-Java.exe, assets/ao.ico, ICONGROUP, ICON_MAINFRAME,"
+        ]
+    }
+
+    task setIconWindows32(type: Exec) {
+        workingDir = desktopWorkingDir()
+        executable = utilsDir() + "/ResourceHacker.exe"
+        args = setIconArgs("windows32")
+    }
+
+    task setIconWindows64(type: Exec) {
+        workingDir = desktopWorkingDir()
+        executable = utilsDir() + "/ResourceHacker.exe"
+        args = setIconArgs("windows64")
+    }
+
+    task setIcon {
+        dependsOn 'pack'
+        dependsOn 'setIconWindows32'
+        dependsOn 'setIconWindows64'
+        tasks.findByName('setIconWindows32').mustRunAfter 'pack'
+        tasks.findByName('setIconWindows64').mustRunAfter 'setIconWindows32'
+    }
+
+    task release {
+        dependsOn 'dist'
+        dependsOn 'obfuscate'
+        dependsOn 'pack'
+        dependsOn 'setIcon'
+        tasks.findByName('obfuscate').mustRunAfter 'dist'
+        tasks.findByName('pack').mustRunAfter 'obfuscate'
+        tasks.findByName('setIcon').mustRunAfter 'pack'
+    }
+
+        def getPushCommandLine(platform, channel) {
+        def osBinDir = desktopWorkingDir() + "/" + releaseDir(platform);
+        if(osBinDir == null) {
+            throw new Exception("No steward binary directory set for " + channel)
+        }
+
+        if(project.getExtensions().findByName('butler').alphaChannel) {
+            channel += "-alpha"
+        } else if(project.getExtensions().findByName('butler').betaChannel) {
+            channel += "-beta"
+        }
+
+        String user = project.getExtensions().findByName('butler').user
+        if(user == null) {
+            throw new Exception("user not set in steward configuration")
+        }
+        String game = project.getExtensions().findByName('butler').game
+        if(game == null) {
+            throw new Exception("game not set in steward configuration")
+        }
+        String deployDetails = user + "/" + game + ":" + channel;
+
+        def args = [ButlerUtils.getButlerBinary(project).getAbsolutePath(), 'push']
+        if(project.getExtensions().findByName('butler').userVersion != null) {
+            args += [releaseDir(platform), deployDetails, "--userversion", project.getExtensions().findByName('butler').userVersion]
+        } else {
+            args += [releaseDir(platform), deployDetails]
+        }
+        return args
+    }
+
+    task pushWindows32(type: Exec) {
+        dependsOn('butlerUpdate')
+        commandLine getPushCommandLine("windows32", "windows32")
+    }
+
+    task pushWindows64(type: Exec) {
+        dependsOn('butlerUpdate')
+        commandLine getPushCommandLine("windows64", "windows64")
+    }
+
+    task pushMac(type: Exec) {
+        dependsOn('butlerUpdate')
+        commandLine getPushCommandLine("mac", "osx")
+    }
+
+    task pushLinux32(type: Exec) {
+        dependsOn('butlerUpdate')
+        commandLine getPushCommandLine("linux32", "linux32")
+    }
+
+    task pushLinux64(type: Exec) {
+        dependsOn('butlerUpdate')
+        commandLine getPushCommandLine("linux64", "linux64")
+    }
+
+    task push {
+        dependsOn 'release'
+        dependsOn 'pushWindows32'
+        dependsOn 'pushWindows64'
+        dependsOn 'pushMac'
+        dependsOn 'pushLinux32'
+        dependsOn 'pushLinux64'
+        tasks.findByName('pushWindows32').mustRunAfter 'release'
+        tasks.findByName('pushWindows64').mustRunAfter 'pushWindows32'
+        tasks.findByName('pushMac').mustRunAfter 'pushWindows64'
+        tasks.findByName('pushLinux32').mustRunAfter 'pushMac'
+        tasks.findByName('pushLinux64').mustRunAfter 'pushLinux32'
+    }
