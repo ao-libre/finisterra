@@ -42,9 +42,9 @@ run.dependsOn classes
     def releaseDir(platform) { file(desktopReleaseDir() + "/" + platform) }
     def packArgs(platform, jre) {
         [
-                projectDir + "packing/packr.jar",
+                file('packing/packr.jar'),
                 "--platform", platform,
-                "--jdk", projectDir + "/packing/" + jre + ".zip",
+                "--jdk", file('packing/' + jre + '.zip'),
                 "--executable", "AO-Java",
                 "--classpath", "build/libs/desktop-0.1-SNAPSHOT.jar",
                 "--mainclass", "desktop.launcher.DesktopLauncher",
