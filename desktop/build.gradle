@@ -36,22 +36,9 @@ task dist(type: Jar) {
 
 dist.dependsOn classes
 run.dependsOn classes
-
-    //task downloadReleaseUtils() {
-
-    //    download {
-    //        src(['https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u212-b04/OpenJDK8U-jdk_x64_windows_hotspot_8u212b04.zip',
-    //                'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u212-b04/OpenJDK8U-jdk_x86-32_windows_hotspot_8u212b04.zip',
-    //                'https://github.com/ojdkbuild/contrib_jdk8u-ci/releases/download/jdk8u212-b04/jdk-8u212-ojdkbuild-linux-x64.zip',
-    //                'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u212-b04/OpenJDK8U-jdk_x64_mac_hotspot_8u212b04.tar.gz',
-    //                'https://libgdx.badlogicgames.com/ci/packr/packr.jar'])
-    //        dest file('packing')
-    //    }
-    //}
-
-    def desktopReleaseDir() { 'build/releases/' }
-    def releaseDir(platform) { desktopReleaseDir().concat(platform) }
+    
     def packingDir() { 'packing/' }
+    
     def switchConfig(platform) {
         def config
         switch (platform) {
@@ -70,6 +57,7 @@ run.dependsOn classes
         }   
         config
     }   
+
     def packArgs(platform) {
         [
             "${projectDir}/packing/packr.jar",
@@ -78,24 +66,34 @@ run.dependsOn classes
         ]
     }
 
+    task downloadBinaries(type: JavaExec) {
+        def binJson = file(packingDir().concat("binaries.json")) 
+        def json = new groovy.json.JsonSlurper().parseText(binJson.text)
+
+        download {
+            src ([json.packr, json.windows32, json.windows64, json.linux64, json.mac])
+            dest packingDir().concat("jdks")
+        }  
+    }
+
     task packWindows32(type: JavaExec) {
         main = "-jar"
-        args = packArgs("windows32")
+        args = packArgs("windows32")  
     }
 
     task packWindows64(type: JavaExec) {
         main = "-jar"
-        args = packArgs("windows64")
+        args = packArgs("windows64")  
     }
 
     task packMac(type: JavaExec) {
         main = "-jar"
-        args = packArgs("mac")
+        args = packArgs("mac") 
     }
 
     task packLinux64(type: JavaExec) {
         main = "-jar"
-        args = packArgs("linux64")
+        args = packArgs("linux64") 
     }
 
     task pack {

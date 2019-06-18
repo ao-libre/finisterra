@@ -1,5 +1,5 @@
 {
-	"jdk": "packing/OpenJDK8U-jdk_x86-32_windows_hotspot_8u212b04.zip",
+	"jdk": "packing/jdks/OpenJDK8U-jdk_x86-32_windows_hotspot_8u212b04.zip",
 	"executable": "Finisterra",
 	"classpath": ["build/libs/desktop-0.1-SNAPSHOT.jar"],
 	"removelibs": ["desktop-0.1-SNAPSHOT.jar"],
