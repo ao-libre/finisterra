@@ -37,47 +37,47 @@ task dist(type: Jar) {
 dist.dependsOn classes
 run.dependsOn classes
 
+    //task downloadReleaseUtils() {
 
-    def desktopReleaseDir() { file('build/releases') }
-    def releaseDir(platform) { file(desktopReleaseDir() + "/" + platform) }
+    //    download {
+    //        src(['https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u212-b04/OpenJDK8U-jdk_x64_windows_hotspot_8u212b04.zip',
+    //                'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u212-b04/OpenJDK8U-jdk_x86-32_windows_hotspot_8u212b04.zip',
+    //                'https://github.com/ojdkbuild/contrib_jdk8u-ci/releases/download/jdk8u212-b04/jdk-8u212-ojdkbuild-linux-x64.zip',
+    //                'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u212-b04/OpenJDK8U-jdk_x64_mac_hotspot_8u212b04.tar.gz',
+    //                'https://libgdx.badlogicgames.com/ci/packr/packr.jar'])
+    //        dest file('packing')
+    //    }
+    //}
+
+    def desktopReleaseDir() { 'build/releases/' }
+    def releaseDir(platform) { desktopReleaseDir().concat(platform) }
+    def packingDir() { 'packing/' }
     def packArgs(platform, jre) {
         [
-                file('packing/packr.jar'),
-                "--platform", platform,
-                "--jdk", file('packing/' + jre + '.zip'),
-                "--executable", "AO-Java",
-                "--classpath", "build/libs/desktop-0.1-SNAPSHOT.jar",
-                "--mainclass", "desktop.launcher.DesktopLauncher",
-                "--vmargs", "Xmx1G",
-                "--output", releaseDir(platform) + (platform == "mac" ? "/AO-Java.app" : "")
+            "${projectDir}/packing/packr.jar",
+            "--platform", platform,
+            "--jdk", packingDir().concat(jre),
+            "--executable", "AO-Java",
+            "--classpath", "build/libs/desktop-0.1-SNAPSHOT.jar",
+            "--mainclass", "launcher.DesktopLauncher",
+            "--vmargs", "Xmx1G",
+            "--output", releaseDir(platform)
         ]
-    }
-
-    task downloadReleaseUtils(type: Download) {
-
-        download {
-            src(['https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u212-b04/OpenJDK8U-jdk_x64_windows_hotspot_8u212b04.zip',
-                    'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u212-b04/OpenJDK8U-jdk_x86-32_windows_hotspot_8u212b04.zip',
-                    'https://github.com/ojdkbuild/contrib_jdk8u-ci/releases/download/jdk8u212-b04/jdk-8u212-ojdkbuild-linux-x64.zip',
-                    'https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u212-b04/OpenJDK8U-jdk_x64_mac_hotspot_8u212b04.tar.gz',
-                    'https://libgdx.badlogicgames.com/ci/packr/packr.jar'])
-            dest file('packing')
-        }
     }
 
     task packWindows32(type: JavaExec) {
         main = "-jar"
-        args = packArgs("windows32", "OpenJDK8U-jdk_x86-32_windows_hotspot_8u212b04")
+        args = packArgs("windows32", "OpenJDK8U-jdk_x86-32_windows_hotspot_8u212b04.zip")
     }
 
     task packWindows64(type: JavaExec) {
         main = "-jar"
-        args = packArgs("windows64", "OpenJDK8U-jdk_x64_windows_hotspot_8u212b04")
+        args = packArgs("windows64", "OpenJDK8U-jdk_x64_windows_hotspot_8u212b04.zip")
     }
 
     task packMac(type: JavaExec) {
         main = "-jar"
-        args = packArgs("mac", "OpenJDK8U-jdk_x64_mac_hotspot_8u212b04")
+        args = packArgs("mac", "OpenJDK8U-jdk_x64_mac_hotspot_8u212b04.tar.gz")
     }
 
     task packLinux32(type: JavaExec) {
@@ -87,14 +87,15 @@ run.dependsOn classes
 
     task packLinux64(type: JavaExec) {
         main = "-jar"
-        args = packArgs("linux64", "jdk-8u212-ojdkbuild-linux-x64")
+        args = packArgs("linux64", "jdk-8u212-ojdkbuild-linux-x64.zip")
     }
 
     task pack {
+        //dependsOn 'build'
         dependsOn 'packWindows32'
         dependsOn 'packWindows64'
-        dependsOn 'packMac'
-        dependsOn 'packLinux32'
+        //dependsOn 'packMac'
+        //dependsOn 'packLinux32'
         dependsOn 'packLinux64'
         tasks.findByName('packWindows64').mustRunAfter 'packWindows32'
         tasks.findByName('packMac').mustRunAfter 'packWindows64'
