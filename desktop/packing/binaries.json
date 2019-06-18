@@ -1,0 +1,7 @@
+{
+	"packr": "https://libgdx.badlogicgames.com/ci/packr/packr.jar",
+	"windows32": "https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u212-b04/OpenJDK8U-jdk_x86-32_windows_hotspot_8u212b04.zip",
+	"windows64": "https://github.com/AdoptOpenJDK/openjdk8-binaries/releases/download/jdk8u212-b04/OpenJDK8U-jdk_x64_windows_hotspot_8u212b04.zip",
+	"linux64": "https://github.com/ojdkbuild/contrib_jdk8u-ci/releases/download/jdk8u212-b04/jdk-8u212-ojdkbuild-linux-x64.zip",
+	"mac": "https://cdn.azul.com/zulu/bin/zulu8.38.0.13-ca-jdk8.0.212-macosx_x64.zip"
+}

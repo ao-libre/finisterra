@@ -12,6 +12,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'net.onedaybeard.artemis:artemis-odb-gradle-plugin:2.2.0'
         classpath "net.onedaybeard.artemis:artemis-fluid-gradle-plugin:2.2.0"
+        classpath 'de.undercouch:gradle-download-task:3.4.3'
     }
 }
 

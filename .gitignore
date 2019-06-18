@@ -4,6 +4,7 @@
 private/
 build/
 **/build/
+**/build/jdks/**
 out/
 **/out/
 design/resources*
