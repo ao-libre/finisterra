@@ -9,11 +9,6 @@ import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
 import shared.model.map.Tile;
 
-/**
- * Setup and manages basic orthographic camera.
- *
- * @author Daan van Yperen
- */
 @Wire
 public class CameraSystem extends BaseSystem {
 

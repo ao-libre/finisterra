@@ -35,6 +35,14 @@ public class ClientSystem extends MarshalSystem {
         });
     }
 
+    public void setNotificationProcessor(GameNotificationProcessor notificationProcessor) {
+        this.notificationProcessor = notificationProcessor;
+    }
+
+    public void setResponseProcessor(ClientResponseProcessor responseProcessor) {
+        this.responseProcessor = responseProcessor;
+    }
+
     public KryonetClientMarshalStrategy getKryonetClient() {
         return (KryonetClientMarshalStrategy) getMarshal();
     }

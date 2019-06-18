@@ -19,6 +19,7 @@ import game.managers.WorldManager;
 import game.network.ClientResponseProcessor;
 import game.network.GameNotificationProcessor;
 import game.network.KryonetClientMarshalStrategy;
+import game.systems.camera.CameraShakeSystem;
 import game.systems.sound.SoundSytem;
 import game.systems.anim.IdleAnimationSystem;
 import game.systems.anim.MovementAnimationSystem;
@@ -96,6 +97,7 @@ public class GameScreen extends ScreenAdapter {
                 .with(HIGH, new CameraSystem(AOGame.GAME_SCREEN_ZOOM))
                 .with(HIGH, new CameraFocusSystem())
                 .with(HIGH, new CameraMovementSystem())
+                .with(HIGH, new CameraShakeSystem())
                 // Logic systems
                 .with(HIGH, new WorldManager())
                 .with(HIGH, new PhysicsAttackSystem())

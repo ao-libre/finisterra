@@ -32,16 +32,18 @@ public class LoginScreen extends AbstractScreen {
     }
 
     private void init() {
-        WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
+//        WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
         DefaultServer defaultServer = config.getNetwork().getDefaultServer();
         clientSystem = new ClientSystem(defaultServer.getHostname(), defaultServer.getPort());
-        world = new World(builder
-                .with(new TimeSync())
-                .with(new WorldManager())
-                .with(new GameNotificationProcessor())
-                .with(new ClientResponseProcessor())
-                .with(clientSystem)
-                .build());
+        clientSystem.setNotificationProcessor(new GameNotificationProcessor());
+        clientSystem.setResponseProcessor(new ClientResponseProcessor());
+//        world = new World(builder
+//                .with(new TimeSync())
+//                .with(new WorldManager())
+//                .with(new GameNotificationProcessor())
+//                .with(new ClientResponseProcessor())
+//                .with(clientSystem)
+//                .build());
         MusicHandler.playMusic(101);
     }
 
@@ -107,7 +109,7 @@ public class LoginScreen extends AbstractScreen {
 
     @Override
     public void render(float delta) {
-        world.process();
+//        world.process();
         super.render(delta);
     }
 

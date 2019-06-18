@@ -14,6 +14,7 @@ import game.managers.WorldManager;
 import game.screens.GameScreen;
 import game.screens.LobbyScreen;
 import game.screens.RoomScreen;
+import game.systems.camera.CameraShakeSystem;
 import game.ui.AOConsole;
 import game.ui.GUI;
 import shared.network.interfaces.DefaultNotificationProcessor;
@@ -32,6 +33,7 @@ import static com.artemis.E.E;
 public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     private WorldManager worldManager;
+    private CameraShakeSystem cameraShakeSystem;
 
     @Override
     public void processNotification(EntityUpdate entityUpdate) {
@@ -46,7 +48,31 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
             }
         } else {
             Log.info("Network entity exists: " + entityUpdate.entityId + ". Updating");
-            updateEntity(entityUpdate);
+            updateActions(entityUpdate.entityId, () -> updateEntity(entityUpdate));
+
+        }
+    }
+
+    private void updateActions(int id, Runnable update) {
+        if (worldManager.hasNetworkedEntity(id)) {
+            int networkedEntity = worldManager.getNetworkedEntity(id);
+            if (networkedEntity == GameScreen.getPlayer()) {
+                E e = E(networkedEntity);
+                int preHealth = e.getHealth().min;
+                update.run();
+                onDamage(networkedEntity, preHealth);
+            } else {
+                update.run();
+            }
+        }
+    }
+
+    private void onDamage(int id, int preHealth) {
+        int postHealth = E(id).getHealth().min;
+        if (postHealth < preHealth) {
+            Log.info("Shake camera by " + (preHealth - postHealth));
+            cameraShakeSystem.shake((preHealth - postHealth) / 10f);
+            cameraShakeSystem.push(5, 5);
         }
     }
 
@@ -89,9 +115,6 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     }
 
     private void updateEntity(EntityUpdate entityUpdate) {
-        if (!worldManager.hasNetworkedEntity(entityUpdate.entityId)) {
-            return;
-        }
         int entityId = worldManager.getNetworkedEntity(entityUpdate.entityId);
         Entity entity = world.getEntity(entityId);
         EntityEdit edit = entity.edit();
