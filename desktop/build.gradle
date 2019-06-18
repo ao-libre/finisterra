@@ -60,20 +60,10 @@ run.dependsOn classes
 
     def packArgs(platform) {
         [
-            "${projectDir}/packing/packr.jar",
+            "${projectDir}/packing/jdks/packr.jar",
             "--platform", platform,
             switchConfig(platform)
         ]
-    }
-
-    task downloadBinaries(type: JavaExec) {
-        def binJson = file(packingDir().concat("binaries.json")) 
-        def json = new groovy.json.JsonSlurper().parseText(binJson.text)
-
-        download {
-            src ([json.packr, json.windows32, json.windows64, json.linux64, json.mac])
-            dest packingDir().concat("jdks")
-        }  
     }
 
     task packWindows32(type: JavaExec) {
@@ -100,9 +90,19 @@ run.dependsOn classes
         //dependsOn 'build'
         dependsOn 'packWindows32'
         dependsOn 'packWindows64'
-        //dependsOn 'packMac'
+        dependsOn 'packMac'
         dependsOn 'packLinux64'
         tasks.findByName('packWindows64').mustRunAfter 'packWindows32'
         tasks.findByName('packMac').mustRunAfter 'packWindows64'
-        //tasks.findByName('packLinux64').mustRunAfter 'packMac'
+        tasks.findByName('packLinux64').mustRunAfter 'packMac'
+    }
+	
+	task downloadBinaries(type: JavaExec) {
+        def binJson = file(packingDir().concat("binaries.json")) 
+        def json = new groovy.json.JsonSlurper().parseText(binJson.text)
+
+        download {
+            src ([json.packr, json.windows32, json.windows64, json.linux64, json.mac])
+            dest packingDir().concat("jdks")
+        }  
     }
