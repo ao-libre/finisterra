@@ -56,47 +56,46 @@ run.dependsOn classes
         def config
         switch (platform) {
             case "windows32":
-                config = "packing/build-windows32.json"
+                config = packingDir().concat("build-windows-32.json")
                 break
             case "windows64":
-                config = "packing/build-windows64.json"
+                config = packingDir().concat("build-windows-64.json")
                 break
             case "mac":
-                config = "packing/build-mac.json"
+                config = packingDir().concat("build-mac.json")
                 break
             case "linux64":
-                config = "packing/build-linux.json"
+                config = packingDir().concat("build-linux.json")
                 break
         }   
         config
     }   
-    def packArgs(platform, jre) {
+    def packArgs(platform) {
         [
             "${projectDir}/packing/packr.jar",
             "--platform", platform,
-            "--jdk", packingDir().concat(jre),
             switchConfig(platform)
         ]
     }
 
     task packWindows32(type: JavaExec) {
         main = "-jar"
-        args = packArgs("windows32", "OpenJDK8U-jdk_x86-32_windows_hotspot_8u212b04.zip")
+        args = packArgs("windows32")
     }
 
     task packWindows64(type: JavaExec) {
         main = "-jar"
-        args = packArgs("windows64", "OpenJDK8U-jdk_x64_windows_hotspot_8u212b04.zip")
+        args = packArgs("windows64")
     }
 
     task packMac(type: JavaExec) {
         main = "-jar"
-        args = packArgs("mac", "OpenJDK8U-jdk_x64_mac_hotspot_8u212b04.tar.gz")
+        args = packArgs("mac")
     }
 
     task packLinux64(type: JavaExec) {
         main = "-jar"
-        args = packArgs("linux64", "jdk-8u212-ojdkbuild-linux-x64.zip")
+        args = packArgs("linux64")
     }
 
     task pack {
