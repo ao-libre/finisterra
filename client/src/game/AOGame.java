@@ -1,14 +1,16 @@
 package game;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Interpolation;
 import com.esotericsoftware.minlog.Log;
 import game.handlers.AssetHandler;
-import game.handlers.StateHandler;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
+import game.screens.transitions.ColorFadeTransition;
+import game.screens.transitions.FadingGame;
+import game.screens.transitions.SlidingTransition;
 import game.utils.Cursors;
 import shared.model.lobby.Player;
 
@@ -18,14 +20,17 @@ import shared.model.lobby.Player;
  * <p>
  * This should be the primary instance of the app.
  */
-public class AOGame extends Game {
+public class AOGame extends FadingGame {
 
     public static final float GAME_SCREEN_ZOOM = 1f;
     public static final float GAME_SCREEN_MAX_ZOOM = 1.3f;
 
     @Override
     public void create() {
+        super.create();
         Gdx.app.debug("AOGame", "Creating AOGame...");
+        setTransition(new ColorFadeTransition(Color.BLACK, Interpolation.exp10), 1.0f);
+
 
         // @todo load platform-independent configuration (network, etc.)
 
@@ -36,14 +41,6 @@ public class AOGame extends Game {
         Cursors.setCursor("hand");
         ScreenManager.getInstance().initialize(this);
         toLogin();
-    }
-
-    @Override
-    public void render() {
-        GL20 gl = Gdx.gl;
-        gl.glClearColor(0.0f, 0.0f, 0.0f, 1f);
-        gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        super.render();
     }
 
     public void toGame(String host, int port, Player player) {
