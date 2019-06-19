@@ -10,8 +10,11 @@ sourceSets {
     main.resources.srcDirs = ["assets/"]
 }
 
-run {
-    jvmArgs += '-XstartOnFirstThread'
+def osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
+if (osName.contains('mac')) {
+	run {
+		jvmArgs += '-XstartOnFirstThread'
+	}
 }
 
 mainClassName = "launcher.DesktopLauncher"
