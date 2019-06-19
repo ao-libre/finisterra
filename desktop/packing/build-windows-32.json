@@ -1,14 +1,11 @@
 {
 	"jdk": "packing/jdks/OpenJDK8U-jdk_x86-32_windows_hotspot_8u212b04.zip",
 	"executable": "Finisterra",
-	"classpath": ["build/libs/desktop-0.1-SNAPSHOT.jar"],
+	"classpath": ["build/libs/desktop-0.1-SNAPSHOT.jar", "assets/"],
 	"removelibs": ["desktop-0.1-SNAPSHOT.jar"],
 	"mainclass": "launcher.DesktopLauncher",
 	"vmargs": [
 		"Xmx512M"
-	],
-	"resources": [
-		"assets/"
 	],
 	"icon": "assets/ao.ico",
 	"output": "build/releases/finisterra-win-32"

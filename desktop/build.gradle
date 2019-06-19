@@ -1,5 +1,6 @@
+import groovy.json.JsonSlurper
+
 apply plugin: 'application'
-apply plugin: "org.mini2Dx.butler"
 apply plugin: 'de.undercouch.download'
 
 sourceCompatibility = 1.8
@@ -27,7 +28,6 @@ task dist(type: Jar) {
     from files(sourceSets.main.output.resourcesDir)
     from {
         configurations.compile.collect { zipTree(it) }
-
         manifest {
             attributes 'Main-Class': project.mainClassName
         }
@@ -36,73 +36,74 @@ task dist(type: Jar) {
 
 dist.dependsOn classes
 run.dependsOn classes
-    
-    def packingDir() { 'packing/' }
-    
-    def switchConfig(platform) {
-        def config
-        switch (platform) {
-            case "windows32":
-                config = packingDir().concat("build-windows-32.json")
-                break
-            case "windows64":
-                config = packingDir().concat("build-windows-64.json")
-                break
-            case "mac":
-                config = packingDir().concat("build-mac.json")
-                break
-            case "linux64":
-                config = packingDir().concat("build-linux.json")
-                break
-        }   
-        config
-    }   
 
-    def packArgs(platform) {
-        [
+static def packingDir() { 'packing/' }
+
+static def switchConfig(platform) {
+    def config
+    switch (platform) {
+        case "windows32":
+            config = packingDir().concat("build-windows-32.json")
+            break
+        case "windows64":
+            config = packingDir().concat("build-windows-64.json")
+            break
+        case "mac":
+            config = packingDir().concat("build-mac.json")
+            break
+        case "linux64":
+            config = packingDir().concat("build-linux.json")
+            break
+    }
+    config
+}
+
+def packArgs(platform) {
+    [
             "${projectDir}/packing/jdks/packr.jar",
             "--platform", platform,
             switchConfig(platform)
-        ]
-    }
+    ]
+}
 
-    task packWindows32(type: JavaExec) {
-        main = "-jar"
-        args = packArgs("windows32")  
-    }
+task packWindows32(type: JavaExec) {
+    main = "-jar"
+    args = packArgs("windows32")
+}
 
-    task packWindows64(type: JavaExec) {
-        main = "-jar"
-        args = packArgs("windows64")  
-    }
+task packWindows64(type: JavaExec) {
+    main = "-jar"
+    args = packArgs("windows64")
+}
 
-    task packMac(type: JavaExec) {
-        main = "-jar"
-        args = packArgs("mac") 
-    }
+task packMac(type: JavaExec) {
+    main = "-jar"
+    args = packArgs("mac")
+}
 
-    task packLinux64(type: JavaExec) {
-        main = "-jar"
-        args = packArgs("linux64") 
-    }
+task packLinux64(type: JavaExec) {
+    main = "-jar"
+    args = packArgs("linux64")
+}
 
-    task pack {
-        //dependsOn 'build'
-        dependsOn 'packWindows32'
-        dependsOn 'packWindows64'
-        dependsOn 'packMac'
-        dependsOn 'packLinux64'
-        tasks.findByName('packWindows64').mustRunAfter 'packWindows32'
-        tasks.findByName('packMac').mustRunAfter 'packWindows64'
-        tasks.findByName('packLinux64').mustRunAfter 'packMac'
-    }
-	
-	task downloadBinaries(type: JavaExec) {
-        def binJson = file(packingDir().concat("binaries.json")) 
-        def json = new groovy.json.JsonSlurper().parseText(binJson.text)
+task pack {
+    dependsOn 'downloadBinaries'
+    dependsOn 'packWindows32'
+    dependsOn 'packWindows64'
+    dependsOn 'packMac'
+    dependsOn 'packLinux64'
+    tasks.findByName('packWindows64').mustRunAfter 'packWindows32'
+    tasks.findByName('packMac').mustRunAfter 'packWindows64'
+    tasks.findByName('packLinux64').mustRunAfter 'packMac'
+}
 
-        download {
-            src ([json.packr, json.windows32, json.windows64, json.linux64, json.mac])
-            dest packingDir().concat("jdks")
-        }  
+task downloadBinaries() {
+    def binJson = file(packingDir().concat("binaries.json"))
+    def json = new JsonSlurper().parseText(binJson.text)
+
+    download {
+        src([json.packr, json.windows32, json.windows64, json.linux64, json.mac])
+        dest packingDir().concat("jdks")
+        overwrite false
     }
+}

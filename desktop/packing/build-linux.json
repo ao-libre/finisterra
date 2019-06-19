@@ -1,14 +1,11 @@
 {
 	"jdk": "packing/jdks/jdk-8u212-ojdkbuild-linux-x64.zip",
 	"executable": "Finisterra",
-	"classpath": ["build/libs/desktop-0.1-SNAPSHOT.jar"],
+	"classpath": ["build/libs/desktop-0.1-SNAPSHOT.jar", "assets/"],
 	"removelibs": ["desktop-0.1-SNAPSHOT.jar"],
 	"mainclass": "launcher.DesktopLauncher",
 	"vmargs": [
 		"Xmx512M"
-	],
-	"resources": [
-		"assets/"
 	],
 	"output": "build/releases/finisterra-linux-64"
 }
