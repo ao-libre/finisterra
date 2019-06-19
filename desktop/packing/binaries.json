@@ -1,0 +1,7 @@
+{
+	"packr": "https://libgdx.badlogicgames.com/ci/packr/packr.jar",
+	"windows32": "https://github.com/ao-libre/ao-java/releases/download/v0.1/java-1.8.0-openjdk.windows.x86.zip",
+	"windows64": "https://github.com/ao-libre/ao-java/releases/download/v0.1/java-1.8.0-openjdk.windows.x86_64.zip",
+	"linux64": "https://github.com/ao-libre/ao-java/releases/download/v0.1/java-1.8.0-openjdk.linux.x86_64.zip",
+	"mac": "https://github.com/ao-libre/ao-java/releases/download/v0.1/java-1.8.0-openjdk.macos.x86_64.zip"
+}

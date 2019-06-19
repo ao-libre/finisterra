@@ -3,12 +3,16 @@
 .gradle/
 private/
 build/
+old/
+**/gradle.properties
 **/build/
+**/build/jdks/**
 out/
 **/out/
 design/resources*
 desktop/build*
 desktop/finisterra*
 desktop/java*
-desktop/packaging*
+desktop/packing*
+desktop/jdk*
 desktop/desktop*
