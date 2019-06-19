@@ -5,7 +5,8 @@
 	"removelibs": ["desktop-0.1-SNAPSHOT.jar"],
 	"mainclass": "launcher.DesktopLauncher",
 	"vmargs": [
-		"Xmx512M"
+		"Xmx512M",
+		"XstartOnFirstThread"
 	],
 	"output": "build/releases/finisterra-linux-64"
 }
