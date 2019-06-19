@@ -1,5 +1,5 @@
 {
-	"jdk": "packing/jdks/zulu8.38.0.13-ca-jdk8.0.212-macosx_x64.zip",
+	"jdk": "packing/jdks/java-1.8.0-openjdk.macos.x86_64.zip",
 	"executable": "Finisterra",
 	"classpath": ["build/libs/desktop-0.1-SNAPSHOT.jar", "assets/"],
 	"removelibs": ["desktop-0.1-SNAPSHOT.jar"],
