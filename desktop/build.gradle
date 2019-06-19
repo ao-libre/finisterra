@@ -1,7 +1,9 @@
 import groovy.json.JsonSlurper
 
+apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'de.undercouch.download'
+apply plugin: 'com.github.breadmoirai.github-release'
 
 sourceCompatibility = 1.8
 
@@ -37,6 +39,10 @@ task dist(type: Jar) {
 
 dist.dependsOn classes
 run.dependsOn classes
+
+static def releasesDir() { 'build/releases/' }
+
+static def zipDir() { './build/zip/' }
 
 static def packingDir() { 'packing/' }
 
@@ -94,10 +100,25 @@ task pack {
     dependsOn 'packWindows64'
     dependsOn 'packMac'
     dependsOn 'packLinux64'
+    tasks.findByName('dist').mustRunAfter('downloadBinaries')
+    tasks.findByName('packWindows32').mustRunAfter('dist')
     tasks.findByName('packWindows64').mustRunAfter 'packWindows32'
     tasks.findByName('packMac').mustRunAfter 'packWindows64'
     tasks.findByName('packLinux64').mustRunAfter 'packMac'
 }
+
+
+task zipAll
+project.file(releasesDir()).eachDir() { folder ->
+    def taskName =  "zip${folder.name.capitalize()}"
+    task "$taskName"(type: Zip) {
+        from folder
+        archiveFile.set(project.file(zipDir() + folder.name + ".zip"))
+    }
+    zipAll.dependsOn taskName
+}
+
+
 
 task downloadBinaries() {
     def binJson = file(packingDir().concat("binaries.json"))
@@ -108,4 +129,25 @@ task downloadBinaries() {
         dest packingDir().concat("jdks")
         overwrite false
     }
+}
+
+task release() {
+    dependsOn 'dist'
+    dependsOn 'pack'
+    dependsOn 'zipAll'
+    dependsOn 'githubRelease'
+    tasks.findByName('pack').mustRunAfter('dist')
+    tasks.findByName("zipAll").mustRunAfter('pack')
+    tasks.findByName("githubRelease").mustRunAfter('zipAll')
+}
+
+githubRelease {
+    token project.property('github.token')
+    owner "ao-libre"
+    repo "ao-java"
+    targetCommitish "master"
+    draft false
+    prerelease true
+    releaseAssets project.file('build/zip/').listFiles()
+    apiEndpoint "https://api.github.com"
 }

@@ -6,6 +6,9 @@ buildscript {
     repositories {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
         jcenter()
     }
     dependencies {
@@ -13,6 +16,7 @@ buildscript {
         classpath 'net.onedaybeard.artemis:artemis-odb-gradle-plugin:2.2.0'
         classpath "net.onedaybeard.artemis:artemis-fluid-gradle-plugin:2.2.0"
         classpath 'de.undercouch:gradle-download-task:3.4.3'
+        classpath "gradle.plugin.com.github.breadmoirai:github-release:2.2.9"
     }
 }
 
@@ -20,7 +24,7 @@ allprojects {
     apply plugin: "idea"
 
     group 'ao-java'
-    version = '0.1-SNAPSHOT'
+    version = '0.1.10'
 
     ext {
         appName = 'ao-java'

@@ -4,6 +4,7 @@
 private/
 build/
 old/
+**/gradle.properties
 **/build/
 **/build/jdks/**
 out/
