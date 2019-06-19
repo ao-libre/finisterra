@@ -1,0 +1,14 @@
+{
+	"jdk": "packing/jdks/java-1.8.0-openjdk.macos.x86_64.zip",
+	"executable": "Finisterra",
+	"classpath": ["build/libs/desktop-0.1-SNAPSHOT.jar", "assets/"],
+	"removelibs": ["desktop-0.1-SNAPSHOT.jar"],
+	"mainclass": "launcher.DesktopLauncher",
+	"vmargs": [
+		"Xmx512M",
+		"XstartOnFirstThread"
+	],
+	"icon": "assets/ao.icns",
+	"bundle": "ao.java",
+	"output": "build/releases/finisterra-mac.app"
+}
