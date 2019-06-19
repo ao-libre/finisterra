@@ -3,6 +3,7 @@
 .gradle/
 private/
 build/
+old/
 **/build/
 **/build/jdks/**
 out/

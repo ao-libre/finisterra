@@ -85,6 +85,7 @@ task packLinux64(type: JavaExec) {
 }
 
 task pack {
+    dependsOn 'dist'
     dependsOn 'downloadBinaries'
     dependsOn 'packWindows32'
     dependsOn 'packWindows64'
