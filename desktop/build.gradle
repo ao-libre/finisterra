@@ -107,18 +107,16 @@ task pack {
     tasks.findByName('packLinux64').mustRunAfter 'packMac'
 }
 
-
-task zipAll
-project.file(releasesDir()).eachDir() { folder ->
-    def taskName =  "zip${folder.name.capitalize()}"
-    task "$taskName"(type: Zip) {
-        from folder
-        archiveFile.set(project.file(zipDir() + folder.name + ".zip"))
+task zipAll() {
+    file(releasesDir()).eachDir() { folder ->
+        def taskName = "zip${folder.name.capitalize()}"
+        task "$taskName"(type: Zip) {
+            from folder
+            archiveFile.set(project.file(zipDir() + folder.name + ".zip"))
+        }
+        zipAll.dependsOn taskName
     }
-    zipAll.dependsOn taskName
 }
-
-
 
 task downloadBinaries() {
     def binJson = file(packingDir().concat("binaries.json"))
@@ -142,7 +140,7 @@ task release() {
 }
 
 githubRelease {
-    token project.property('github.token')
+    //token project.property('github.token')
     owner "ao-libre"
     repo "ao-java"
     targetCommitish "master"

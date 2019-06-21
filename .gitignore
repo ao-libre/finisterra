@@ -5,12 +5,11 @@ private/
 build/
 old/
 **/gradle.properties
-**/build/
-**/build/jdks/**
 out/
 **/out/
 design/resources*
-desktop/build*
+desktop/build/releases/*.zip
+desktop/build/jdks/**
 desktop/finisterra*
 desktop/java*
 desktop/packing*
