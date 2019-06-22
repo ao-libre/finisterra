@@ -46,4 +46,6 @@ public class Messages {
     public static final String MEDITATE_START = "Comienzas a meditar.";
     public static final String MANA_FULL = "Ya tienes toda la mana.";
 
+    // ENTRENAMIENTO
+    public static final String EXP_GAIN = "Has ganado %d puntos de experiencia!";
 }

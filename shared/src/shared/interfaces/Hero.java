@@ -16,8 +16,7 @@ public enum Hero {
     ARQUERO(CharClass.ARCHER.ordinal(), Race.DWARF.ordinal()),
     CLERIGO(CharClass.CLERIC.ordinal(), Race.HUMAN.ordinal());
 
-    private static final List<Hero> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
-    ;
+    public static final List<Hero> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
     private static final int SIZE = VALUES.size();
     private static final Random RANDOM = new Random();
     private final int classId;

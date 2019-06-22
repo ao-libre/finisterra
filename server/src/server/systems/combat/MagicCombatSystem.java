@@ -1,4 +1,4 @@
-package server.combat;
+package server.systems.combat;
 
 import com.artemis.BaseSystem;
 import com.artemis.E;

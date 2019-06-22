@@ -51,9 +51,10 @@ public enum CharClass {
         return null;
     }
 
-    public static CharClass get(E entity) {
+    public static CharClass of(E entity) {
         int heroId = entity.getCharHero().heroId;
         Hero hero = Hero.values()[heroId];
         return VALUES.get(hero.getClassId());
     }
+
 }

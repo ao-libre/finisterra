@@ -22,7 +22,7 @@ public class ServerDescriptorReader implements DescriptorsReader {
     public java.util.Map<Integer, Obj> loadObjects(String objects) {
         Reader<java.util.Map<Integer, Obj>> reader = new Reader<>();
         ObjectLoader loader = new ObjectLoader();
-        InputStream objectsStream = ServerDescriptorReader.class.getClassLoader().getResourceAsStream("init/obj.dat");
+        InputStream objectsStream = ServerDescriptorReader.class.getClassLoader().getResourceAsStream("obj.dat");
         return reader.read(objectsStream, loader);
     }
 
@@ -30,7 +30,7 @@ public class ServerDescriptorReader implements DescriptorsReader {
     public java.util.Map<Integer, Spell> loadSpells(String spells) {
         Reader<java.util.Map<Integer, Spell>> reader = new Reader<>();
         SpellLoader loader = new SpellLoader();
-        InputStream objectsStream = ServerDescriptorReader.class.getClassLoader().getResourceAsStream("init/hechizos.dat");
+        InputStream objectsStream = ServerDescriptorReader.class.getClassLoader().getResourceAsStream("hechizos.dat");
         return reader.read(objectsStream, loader);
     }
 

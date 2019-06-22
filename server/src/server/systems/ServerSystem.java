@@ -64,10 +64,7 @@ public class ServerSystem extends MarshalSystem {
         if (connectionHasNoPlayer(connectionId)) {
             return;
         }
-        int playerToDisconnect = getPlayerByConnection(connectionId);
-        mapManager.removeEntity(playerToDisconnect);
-        unregisterUserConnection(playerToDisconnect, connectionId);
-        worldManager.unregisterEntity(playerToDisconnect);
+        worldManager.unregisterEntity(getPlayerByConnection(connectionId));
     }
 
     /**
@@ -86,9 +83,11 @@ public class ServerSystem extends MarshalSystem {
         connectionByPlayer.put(playerId, connectionId);
     }
 
-    private void unregisterUserConnection(int playerId, int connectionId) {
-        playerByConnection.remove(connectionId, playerId);
-        connectionByPlayer.put(playerId, connectionId);
+    public void unregisterUserConnection(int playerId) {
+        if (playerHasConnection(playerId)) {
+            playerByConnection.remove(getConnectionByPlayer(playerId));
+            connectionByPlayer.remove(playerId);
+        }
     }
 
     public boolean connectionHasNoPlayer(int connectionId) {

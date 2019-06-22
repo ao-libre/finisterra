@@ -4,6 +4,7 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
 import position.WorldPos;
+import server.systems.EntityFactorySystem;
 import shared.model.map.Tile;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
@@ -23,8 +24,8 @@ import static shared.util.MapHelper.CacheStrategy.NEVER_EXPIRE;
 public class MapManager extends DefaultManager {
 
     private WorldManager worldManager;
+    private EntityFactorySystem entityFactorySystem;
 
-    public static final int MAX_DISTANCE = 20;
     private MapHelper helper;
     private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
@@ -65,11 +66,11 @@ public class MapManager extends DefaultManager {
     }
 
     private void createObject(int objIndex, int objCount, WorldPos pos) {
-        worldManager.createObject(objIndex, objCount, pos);
+        entityFactorySystem.createObject(objIndex, objCount, pos);
     }
 
     private void createNPC(int npcIndex, WorldPos pos) {
-        worldManager.createNPC(npcIndex, pos);
+        entityFactorySystem.createNPC(npcIndex, pos);
     }
 
     public MapHelper getHelper() {
@@ -77,7 +78,7 @@ public class MapManager extends DefaultManager {
     }
 
     /**
-     * @param entityId
+     * @param entityId id
      * @return a set of near entities or empty
      */
     public Set<Integer> getNearEntities(int entityId) {
@@ -130,7 +131,7 @@ public class MapManager extends DefaultManager {
      *
      * @param entity id
      */
-    public void removeEntity(int entity) {
+    void removeEntity(int entity) {
         final E e = E(entity);
         if (e == null || !e.hasWorldPos()) {
             return;
@@ -205,8 +206,8 @@ public class MapManager extends DefaultManager {
     /**
      * Link entity1 and entity2 if they are in near range
      *
-     * @param entity1
-     * @param entity2
+     * @param entity1 id
+     * @param entity2 id
      */
     private void addNearEntities(int entity1, int entity2) {
         WorldPos worldPos1 = E(entity2).getWorldPos();
@@ -220,8 +221,8 @@ public class MapManager extends DefaultManager {
     /**
      * Unlink entities if they are out of range
      *
-     * @param player1
-     * @param player2
+     * @param player1 id
+     * @param player2 id
      */
     private void removeNearEntity(int player1, int player2) {
         if (!helper.isNear(E(player2).getWorldPos(), E(player1).getWorldPos())) {
@@ -233,8 +234,8 @@ public class MapManager extends DefaultManager {
     /**
      * Unlink entities
      *
-     * @param entity1
-     * @param entity2
+     * @param entity1 id
+     * @param entity2 id
      */
     private void unlinkEntities(int entity1, int entity2) {
         if (nearEntities.containsKey(entity1)) {

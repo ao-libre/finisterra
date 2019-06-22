@@ -1,4 +1,4 @@
-package server.combat;
+package server.systems.combat;
 
 import com.artemis.E;
 import com.artemis.annotations.Wire;
@@ -10,6 +10,7 @@ import graphics.Effect;
 import physics.AttackAnimation;
 import position.WorldPos;
 import server.database.model.modifiers.Modifiers;
+import server.systems.CharacterTrainingSystem;
 import server.systems.manager.MapManager;
 import server.systems.manager.ObjectManager;
 import server.systems.manager.WorldManager;
@@ -36,6 +37,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     private MapManager mapManager;
     private ObjectManager objectManager;
     private WorldManager worldManager;
+    private CharacterTrainingSystem characterTrainingSystem;
 
 
     private static final String MISS = "MISS";
@@ -165,7 +167,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     private int getBaseDamage(E entity, Optional<WeaponObj> weapon) {
         int baseDamage = 0;
         if (entity.hasCharHero()) {
-            CharClass clazz = CharClass.get(entity);
+            CharClass clazz = CharClass.of(entity);
             AttackKind kind = AttackKind.getKind(entity);
             ThreadLocalRandom random = ThreadLocalRandom.current();
             float modifier = kind == AttackKind.PROJECTILE ?
@@ -233,11 +235,14 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
 
         final E target = E(entityId);
         Health health = target.getHealth();
+        int effectiveDamage = Math.min(health.min, result.damage);
+        characterTrainingSystem.userTakeDamage(userId, entityId, effectiveDamage);
         health.min = Math.max(0, health.min - result.damage);
         if (health.min > 0) {
             update(entityId);
         } else {
             // TODO die
+            characterTrainingSystem.takeGold(userId, entityId);
             notifyCombat(userId, format(KILL, getName(entityId)));
             notifyCombat(entityId, format(KILLED, getName(userId)));
             worldManager.entityDie(entityId);
@@ -283,7 +288,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         float skill = 100;
         int lucky;
         E e = E(userId);
-        final CharClass clazz = CharClass.get(e);
+        final CharClass clazz = CharClass.of(e);
         switch (clazz) {
             case ASSASSIN:
                 lucky = (int) (((0.00003f * skill - 0.002) * skill + 0.098f) * skill + 4.25f);
@@ -305,7 +310,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     }
 
     private AttackResult doStab(int userId, int entityId, int damage) {
-        final CharClass clazz = CharClass.get(E(userId));
+        final CharClass clazz = CharClass.of(E(userId));
         damage += (int) (CharClass.ASSASSIN.equals(clazz) ? damage * ASSASIN_STAB_FACTOR : damage * NORMAL_STAB_FACTOR);
         return new AttackResult(damage, format(USER_STAB_HIT, getName(entityId), damage),
                 format(VICTIM_STAB_HIT, getName(userId), damage));

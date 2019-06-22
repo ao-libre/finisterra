@@ -7,6 +7,7 @@ import entity.character.equipment.Helmet;
 import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
 import server.core.Server;
+import server.systems.EntityFactorySystem;
 import shared.interfaces.Hero;
 import shared.interfaces.Race;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
@@ -23,6 +24,7 @@ import static com.artemis.E.E;
 public class ItemConsumers extends DefaultManager {
 
     private WorldManager worldManager;
+    private EntityFactorySystem entityFactorySystem;
 
     public final BiConsumer<Integer, Obj> WEAR = wear();
     public final BiConsumer<Integer, Obj> TAKE_OFF = takeOff();
@@ -38,7 +40,7 @@ public class ItemConsumers extends DefaultManager {
                 worldManager.notifyUpdate(player, EntityUpdateBuilder.of(player).remove(Weapon.class).build());
             } else if (obj instanceof ArmorObj) {
                 Hero hero = Hero.getHeroes().get(entity.getCharHero().heroId);
-                worldManager.setNakedBody(entity, Race.values()[hero.getRaceId()]);
+                entityFactorySystem.setNakedBody(entity, Race.values()[hero.getRaceId()]);
                 worldManager.notifyUpdate(player, EntityUpdateBuilder.of(player).withComponents(entity.getBody()).build());
             } else if (obj instanceof HelmetObj) {
                 entity.removeHelmet();
