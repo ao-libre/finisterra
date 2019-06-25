@@ -94,8 +94,6 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
             Effect effect = e.getEffect();
             if (forcePos.isPresent()) {
                 drawEffect(e, forcePos.get());
-            } else if (e.hasWorldPos()) {
-                drawEffect(e, e.getWorldPos());
             } else {
                 int networkedEntity = effect.entityReference;
                 if (worldManager.hasNetworkedEntity(networkedEntity)) {
@@ -104,6 +102,8 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                     if (entity != null && entity.hasWorldPos()) {
                         drawEffect(e, entity.getWorldPos());
                     }
+                } else if (e.hasWorldPos()) {
+                    drawEffect(e, e.getWorldPos());
                 }
             }
         }

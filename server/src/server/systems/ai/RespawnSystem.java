@@ -5,12 +5,13 @@ import com.artemis.E;
 import com.artemis.FluidIteratingSystem;
 import com.artemis.annotations.Wire;
 import entity.npc.Respawn;
+import server.systems.EntityFactorySystem;
 import server.systems.manager.WorldManager;
 
 @Wire
 public class RespawnSystem extends FluidIteratingSystem {
 
-    private WorldManager worldManager;
+    private EntityFactorySystem entityFactorySystem;
 
     public RespawnSystem () {
         super(Aspect.all(Respawn.class));
@@ -21,7 +22,7 @@ public class RespawnSystem extends FluidIteratingSystem {
         Respawn respawn = e.getRespawn();
         respawn.setTime(respawn.getTime() - world.getDelta());
         if (respawn.getTime() <= 0) {
-            worldManager.createNPC(respawn.getNpcId(), respawn.getPos().toWorldPos());
+            entityFactorySystem.createNPC(respawn.getNpcId(), respawn.getPos().toWorldPos());
             e.deleteFromWorld();
         }
     }

@@ -37,7 +37,7 @@ public class DesktopLauncher {
         cfg.setTitle("Finisterra - Argentum Online Java");
         cfg.setWindowedMode(video.getWidth(), video.getHeight());
         cfg.useVsync(video.getVsync());
-        cfg.setIdleFPS(60);
+        cfg.setIdleFPS(72);
         cfg.setResizable(initConfig.isResizeable());
         cfg.disableAudio(initConfig.isDisableAudio());
         cfg.setMaximized(initConfig.isStartMaximized());

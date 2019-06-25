@@ -1,4 +1,4 @@
-package server.combat;
+package server.systems.combat;
 
 import java.util.Optional;
 

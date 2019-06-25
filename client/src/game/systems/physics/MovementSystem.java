@@ -57,7 +57,6 @@ public class MovementSystem extends IteratingSystem {
         float velocity = player.getAOPhysics().getVelocity();
         float delta = world.getDelta() * velocity / Tile.TILE_PIXEL_HEIGHT;
         switch (destination.dir) {
-            default:
             case DOWN:
                 player.getWorldPos().offsetY += delta;
                 break;

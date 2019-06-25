@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 public class AOPhysics extends Component implements Serializable {
 
     public final static float MAX_VELOCITY = Float.MAX_VALUE;
-    public final static float WALKING_VELOCITY = 170.0f;
+    public final static float WALKING_VELOCITY = 165.0f;
 
     public Deque<Movement> intentions = new ConcurrentLinkedDeque<Movement>();
     public float velocity = WALKING_VELOCITY;

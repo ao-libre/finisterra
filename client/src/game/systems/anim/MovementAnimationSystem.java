@@ -12,6 +12,9 @@ import game.handlers.AnimationHandler;
 import model.textures.BundledAnimation;
 import movement.Moving;
 import physics.AttackAnimation;
+import shared.model.map.Tile;
+
+import java.util.Optional;
 
 import static com.artemis.E.E;
 
@@ -42,10 +45,15 @@ public class MovementAnimationSystem extends IteratingSystem {
     }
 
     private void updateAnimationTime(E entity, Heading heading, boolean reset) {
+        Optional<Float> velocity = Optional.empty();
+        if (entity.hasAOPhysics()) {
+            velocity = Optional.of(entity.getAOPhysics().velocity);
+        }
         if (entity.hasBody()) {
             final Body body = entity.getBody();
             BundledAnimation animation = AnimationHandler.getBodyAnimation(body, heading.current);
             if (animation != null) {
+                velocity.ifPresent(v -> animation.setFrameDuration(v / Tile.TILE_PIXEL_WIDTH));
                 animation.setAnimationTime(!reset ? animation.getAnimationTime() + world.getDelta() : 0);
             }
         }
@@ -53,6 +61,7 @@ public class MovementAnimationSystem extends IteratingSystem {
             final Weapon weapon = entity.getWeapon();
             BundledAnimation animation = AnimationHandler.getWeaponAnimation(weapon, heading.current);
             if (animation != null) {
+                velocity.ifPresent(v -> animation.setFrameDuration(v / Tile.TILE_PIXEL_WIDTH));
                 animation.setAnimationTime(!reset ? animation.getAnimationTime() + world.getDelta() : 0);
             }
         }
@@ -60,6 +69,7 @@ public class MovementAnimationSystem extends IteratingSystem {
             final Shield weapon = entity.getShield();
             BundledAnimation animation = AnimationHandler.getShieldAnimation(weapon, heading.current);
             if (animation != null) {
+                velocity.ifPresent(v -> animation.setFrameDuration(v / Tile.TILE_PIXEL_WIDTH));
                 animation.setAnimationTime(!reset ? animation.getAnimationTime() + world.getDelta() : 0);
             }
         }

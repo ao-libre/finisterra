@@ -34,7 +34,7 @@ public class UserImage extends Image {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        drawHead(batch);
+//        drawHead(batch);
         drawName(batch);
         super.draw(batch, parentAlpha);
     }
@@ -43,9 +43,38 @@ public class UserImage extends Image {
         String userName = getUserName();
         if (!"".equals(userName)) {
             BitmapFont font = Fonts.WHITE_FONT;
-            Fonts.layout.setText(font, userName, Colors.GREY, getWidth() - 2, Align.left, false);
-            font.draw(batch, Fonts.layout, getX(), getY() + getHeight() - Fonts.layout.height);
+            Fonts.layout.setText(font, userName, Colors.GREY, getWidth() - 2, Align.left, true);
+            float y = Fonts.layout.height;
+            font.draw(batch, Fonts.layout, getX(), getY() + getHeight() - y);
+            Fonts.layout.setText(font, getLevel(), Colors.GREY, getWidth() - 2, Align.left, true);
+            y += Fonts.layout.height;
+            font.draw(batch, Fonts.layout, getX(), getY() + getHeight() - y);
+            Fonts.layout.setText(font, getExp(), Colors.GREY, getWidth() - 2, Align.left, true);
+            y += Fonts.layout.height;
+            font.draw(batch, Fonts.layout, getX(), getY() + getHeight() - y);
         }
+    }
+
+    private String getExp() {
+        int playerId = GameScreen.getPlayer();
+        if (playerId != -1) {
+            E player = E(playerId);
+            if (player.hasLevel()) {
+                return "Exp: " + player.getLevel().exp + "/" + player.getLevel().expToNextLevel;
+            }
+        }
+        return "";
+    }
+
+    private String getLevel() {
+        int playerId = GameScreen.getPlayer();
+        if (playerId != -1) {
+            E player = E(playerId);
+            if (player.hasLevel()) {
+                return "Lv. " + player.getLevel().level;
+            }
+        }
+        return "";
     }
 
     private String getUserName() {

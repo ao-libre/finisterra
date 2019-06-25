@@ -9,12 +9,30 @@ import java.io.Serializable;
 public class Level extends Component implements Serializable {
 
     public int level;
+    public int exp;
+    public int expToNextLevel;
 
     public Level() {
     }
 
     public int getLevel() {
         return level;
+    }
+
+    public int getExp() {
+        return exp;
+    }
+
+    public int getExpToNextLevel() {
+        return expToNextLevel;
+    }
+
+    public void setExp(int exp) {
+        this.exp = exp;
+    }
+
+    public void setExpToNextLevel(int expToNextLevel) {
+        this.expToNextLevel = expToNextLevel;
     }
 
     public void setLevel(int level) {

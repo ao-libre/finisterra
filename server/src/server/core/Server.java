@@ -5,8 +5,8 @@ import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
-import server.combat.MagicCombatSystem;
-import server.combat.PhysicalCombatSystem;
+import server.systems.combat.MagicCombatSystem;
+import server.systems.combat.PhysicalCombatSystem;
 import server.network.ServerNotificationProcessor;
 import server.network.ServerRequestProcessor;
 import server.systems.*;
@@ -72,6 +72,7 @@ public class Server {
                 .with(new ServerSystem(strategy))
                 .with(new ServerNotificationProcessor())
                 .with(new ServerRequestProcessor())
+                .with(new EntityFactorySystem())
                 .with(new ItemManager())
                 .with(new ItemConsumers())
                 .with(new NPCManager())
@@ -80,6 +81,7 @@ public class Server {
                 .with(objectManager)
                 .with(new WorldManager())
                 .with(new PhysicalCombatSystem())
+                .with(new CharacterTrainingSystem())
                 .with(new MagicCombatSystem())
                 .with(new PathFindingSystem(PATH_FINDING_INTERVAL))
                 .with(new NPCAttackSystem(NPC_ATTACK_INTERVAL))

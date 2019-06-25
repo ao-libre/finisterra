@@ -1,9 +1,8 @@
-package server.combat;
+package server.systems.combat;
 
 import com.artemis.BaseSystem;
 import com.artemis.E;
 import entity.character.status.Stamina;
-import server.core.Server;
 import server.database.model.modifiers.Modifiers;
 import server.systems.manager.WorldManager;
 import shared.interfaces.CharClass;
@@ -21,7 +20,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
     @Override
     public int shieldEvasionPower(int userId) {
         E e = E(userId);
-        float shieldModifier = Modifiers.SHIELD.of(CharClass.get(e));
+        float shieldModifier = Modifiers.SHIELD.of(CharClass.of(e));
         return (int) (100 * shieldModifier / 2);
     }
 
@@ -30,7 +29,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
         E e = E(userId);
         int power = 0;
         if (e.hasCharHero()) {
-            float temp = 100 + 100 / 33 * e.getAgility().getBaseValue() * Modifiers.EVASION.of(CharClass.get(e));
+            float temp = 100 + 100 / 33 * e.getAgility().getBaseValue() * Modifiers.EVASION.of(CharClass.of(e));
             power = (int) (temp + 2.5f * Math.max(e.getLevel().level - 12, 0));
         } else if (e.hasEvasionPower()) {
             power = e.getEvasionPower().value;
@@ -43,7 +42,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
         E e = E(userId);
         int power = 0;
         if (e.hasCharHero()) {
-            power = (int) (100 + 3 * e.getAgility().getBaseValue() * Modifiers.WEAPON.of(CharClass.get(e)));
+            power = (int) (100 + 3 * e.getAgility().getBaseValue() * Modifiers.WEAPON.of(CharClass.of(e)));
         } else if (e.hasAttackPower()){
             power = e.getAttackPower().value;
         }

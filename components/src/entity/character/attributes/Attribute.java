@@ -8,7 +8,7 @@ import java.io.Serializable;
 @PooledWeaver
 public abstract class Attribute extends Component implements Serializable {
 
-    private int maxAttributeValue = 40;
+    public static final int MAX_ATTRIBUTE_VALUE = 40;
     private int baseValue;
     private int currentValue;
 
@@ -17,7 +17,7 @@ public abstract class Attribute extends Component implements Serializable {
     }
 
     public Attribute(int value) {
-        this.baseValue = Math.min(value, maxAttributeValue);
+        this.baseValue = Math.min(value, MAX_ATTRIBUTE_VALUE);
         this.currentValue = baseValue;
     }
 
@@ -25,13 +25,12 @@ public abstract class Attribute extends Component implements Serializable {
         currentValue = baseValue;
     }
 
-    public void setMaxAttributeValue(int maxAttributeValue) { this.maxAttributeValue = maxAttributeValue; }
     public int getBaseValue() {
         return baseValue;
     }
 
     public void setBaseValue(int value) {
-        this.baseValue = Math.min(value, maxAttributeValue);
+        this.baseValue = Math.min(value, MAX_ATTRIBUTE_VALUE);
     }
 
     public int getCurrentValue() {
@@ -39,6 +38,6 @@ public abstract class Attribute extends Component implements Serializable {
     }
 
     public void setCurrentValue(int value) {
-        this.currentValue = Math.min(value, maxAttributeValue);
+        this.currentValue = Math.min(value, MAX_ATTRIBUTE_VALUE);
     }
 }

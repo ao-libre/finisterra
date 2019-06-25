@@ -262,7 +262,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Ground.class,
                 PotionKind.class,
                 Criminal.class,
-                Exp.class,
+                Gold.class,
                 GM.class,
                 Health.class,
                 Hungry.class,
