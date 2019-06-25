@@ -155,7 +155,7 @@ public class GameScreen extends ScreenAdapter {
     protected void update(float deltaTime) {
         this.logger.log();
 
-        world.setDelta(MathUtils.clamp(deltaTime, 0, 1 / 16f));
+        world.setDelta(MathUtils.clamp(deltaTime, 0, 1 / 14f));
         world.process();
 
         switch (state) {

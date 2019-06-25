@@ -110,7 +110,7 @@ public class AnimationHandler {
     }
 
     private static BundledAnimation saveGraphic(int grhIndex, Graphic graphic) {
-        BundledAnimation bundledAnimation = new BundledAnimation(graphic, false);
+        BundledAnimation bundledAnimation = new BundledAnimation(graphic, true);
         animations.put(grhIndex, bundledAnimation);
         return bundledAnimation;
     }

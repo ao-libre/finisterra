@@ -4,7 +4,7 @@
 			"width":1280,
 			"height":720,
 			"vSync":true,
-			"HiDPI_Mode":"Logical"
+			"HiDPI_Mode":"Pixels"
 		},
 		"resizeable":true,
 		"disableAudio":false,
@@ -12,8 +12,8 @@
 	},
 	"network":{
 		"defaultServer":{
-			"hostname":"45.235.98.116",
-			"port":9000
+			"hostname":"localhost",
+			"port":7666
 		}
 	}
 }

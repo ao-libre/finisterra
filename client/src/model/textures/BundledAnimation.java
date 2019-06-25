@@ -56,7 +56,7 @@ public class BundledAnimation {
                 index++;
             }
 
-            Animation<TextureRegion> animation = new Animation<>(graphic.getSpeed() / (1000.0f * 3.334f), Array.with(textures), pingpong ? Animation.PlayMode.LOOP_PINGPONG : Animation.PlayMode.NORMAL);
+            Animation<TextureRegion> animation = new Animation<>(graphic.getSpeed() / (2000.0f * 3.334f), Array.with(textures), pingpong ? Animation.PlayMode.LOOP_PINGPONG : Animation.PlayMode.NORMAL);
             this.setAnimation(animation);
             this.animated = true;
         } else {
@@ -178,6 +178,10 @@ public class BundledAnimation {
 
     public int getCurrentFrameIndex() {
         return animation.getKeyFrameIndex(animationTime % (animation.getFrameDuration() * frames.size));
+    }
+
+    public void setFrameDuration(float duration) {
+        animation.setFrameDuration(duration / frames.size * 2 / 10f);
     }
 
 }

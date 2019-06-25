@@ -238,6 +238,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         int effectiveDamage = Math.min(health.min, result.damage);
         characterTrainingSystem.userTakeDamage(userId, entityId, effectiveDamage);
         health.min = Math.max(0, health.min - result.damage);
+        sendFX(entityId);
         if (health.min > 0) {
             update(entityId);
         } else {
@@ -342,12 +343,22 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
      * @param victim entity id
      */
     private void update(int victim) {
-        EntityUpdate update = EntityUpdateBuilder.of(victim).withComponents(E(victim).getHealth()).build();
+        E v = E(victim);
+        EntityUpdate update = EntityUpdateBuilder.of(victim).withComponents(v.getHealth()).build();
         worldManager.sendEntityUpdate(victim, update);
+    }
+
+    private void sendFX(int victim) {
+        E v = E(victim);
         int fxE = world.create();
+        EntityUpdateBuilder fxUpdate = EntityUpdateBuilder.of(fxE);
         Effect effect = new Effect.EffectBuilder().attachTo(victim).withLoops(1).withFX(FXs.FX_BLOOD).build();
-        EntityUpdate fxUpdate = EntityUpdateBuilder.of(fxE).withComponents(effect).build();
-        worldManager.notifyUpdate(victim, fxUpdate);
+        fxUpdate.withComponents(effect);
+        if (v.hasWorldPos()) {
+            WorldPos worldPos = v.getWorldPos();
+            fxUpdate.withComponents(worldPos);
+        }
+        worldManager.notifyUpdate(victim, fxUpdate.build());
         world.delete(fxE);
     }
 
