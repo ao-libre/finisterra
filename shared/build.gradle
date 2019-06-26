@@ -14,9 +14,7 @@ dependencies {
     compile 'com.google.guava:guava:27.1-jre'
 }
 
-ext {
-    fluidOutputDir = file("$buildDir/generated-sources/fluid/")
-}
+ext.fluidOutputDir = file("$buildDir/generated-sources/fluid/")
 
 sourceSets {
 	main.java.srcDirs = ["src/", fluidOutputDir]
