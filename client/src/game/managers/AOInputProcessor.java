@@ -22,6 +22,8 @@ import shared.network.interaction.MeditateRequest;
 import shared.network.interaction.TakeItemRequest;
 import shared.network.interaction.TalkRequest;
 import shared.network.inventory.ItemActionRequest;
+import shared.network.notifications.ConsoleMessage;
+import shared.util.Messages;
 
 import java.util.Optional;
 import java.util.Random;
@@ -58,7 +60,7 @@ public class AOInputProcessor extends Stage {
                     GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos, rtt + timeOffset));
                     player.attack();
                 } else {
-                    // TODO can't attack because interval
+                    GUI.getConsole().addWarning(Messages.CANT_ATTACK);
                 }
                 Cursors.setCursor("hand");
                 GUI.getSpellView().toCast = Optional.empty();

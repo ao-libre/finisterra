@@ -48,8 +48,9 @@ public class AOConsole extends Actor {
     }
 
     private void setY() {
+        float v = getY() - messages.size() * 16;
         for (int i = 0; i < messages.size(); i++) {
-            messages.get(i).setY(getY() + i * 16);
+            messages.get(i).setY(v + i * 16);
         }
     }
 

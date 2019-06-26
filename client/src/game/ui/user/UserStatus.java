@@ -1,38 +1,20 @@
 package game.ui.user;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class UserStatus extends Table {
 
-    private final static Texture BACKGROUND_TEXTURE = new Texture(Gdx.files.local("data/ui/images/status-background.png"));
     private final static Bar hp = new Bar(Bar.Kind.HP);
     private final static Bar mana = new Bar(Bar.Kind.MANA);
     private final static Bar energy = new Bar(Bar.Kind.ENERGY);
-    private static Drawable background;
+
 
     public UserStatus() {
-        background = new TextureRegionDrawable(new TextureRegion(BACKGROUND_TEXTURE));
-        pad(2);
-        add(hp).width(Bar.TOTAL_WIDTH).height(Bar.TOTAL_HEIGHT).padLeft(2).padRight(2).expandX();
+        add(hp).width(300).height(24).padLeft(-30f).left();
         row();
-        add(mana).width(Bar.TOTAL_WIDTH).height(Bar.TOTAL_HEIGHT).padLeft(2).padRight(2).expandX();
+        add(mana).width(300).height(24).padLeft(-10f).padTop(-5f).left();
         row();
-        add(energy).width(Bar.TOTAL_WIDTH).height(Bar.TOTAL_HEIGHT).padLeft(2).padRight(2).expandX();
+        add(energy).width(150).height(24).padLeft(-30f).padTop(-5f).left();
     }
 
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        Color color = batch.getColor();
-        batch.setColor(Color.WHITE);
-        background.draw(batch, getX(), getY(), getWidth(), getHeight());
-        batch.setColor(color);
-        super.draw(batch, parentAlpha);
-    }
 }

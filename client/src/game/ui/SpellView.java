@@ -3,6 +3,7 @@ package game.ui;
 import com.artemis.E;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import game.handlers.SpellHandler;
 import game.screens.GameScreen;
@@ -24,10 +25,11 @@ public class SpellView extends Window {
     public Optional<Spell> toCast = Optional.empty();
 
     public SpellView() {
-        super("", Skins.COMODORE_SKIN, "no-background");
+        super("", Skins.COMODORE_SKIN, "inventory");
     }
 
     private void changeCursor() {
+        GUI.getConsole().addInfo("Haz click para lanzar el hechizo");
         Cursors.setCursor("select");
     }
 
@@ -35,7 +37,12 @@ public class SpellView extends Window {
         clear();
         final Spell[] spells = SpellHandler.getSpells();
         Arrays.sort(spells, getComparator());
-        Arrays.stream(spells).forEach(spell -> add(new SpellSlot(this, spell)).width(SpellSlot.SIZE).height(SpellSlot.SIZE).row());
+        Arrays.stream(spells).forEach(spell -> {
+            add(new SpellSlot(this, spell)).width(SpellSlot.SIZE).height(SpellSlot.SIZE).row();
+            if (!spells[spells.length - 1].equals(spell)) {
+                add(new Image(getSkin().getDrawable("separator"))).row();
+            }
+        });
         setVisible(E(GameScreen.getPlayer()).getMana().max > 0);
     }
 

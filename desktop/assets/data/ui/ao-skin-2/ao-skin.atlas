@@ -1,0 +1,173 @@
+
+ao-skin.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Inventory-Icon
+  rotate: false
+  xy: 355, 606
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+action-bar
+  rotate: false
+  xy: 1, 912
+  size: 541, 86
+  split: 10, 10, 10, 10
+  orig: 541, 86
+  offset: 0, 0
+  index: -1
+bar
+  rotate: false
+  xy: 758, 984
+  size: 193, 14
+  orig: 193, 14
+  offset: 0, 0
+  index: -1
+bar-frame
+  rotate: false
+  xy: 544, 966
+  size: 212, 32
+  split: 9, 9, 9, 9
+  orig: 212, 32
+  offset: 0, 0
+  index: -1
+big-disc
+  rotate: false
+  xy: 1, 1
+  size: 89, 88
+  orig: 89, 88
+  offset: 0, 0
+  index: -1
+button
+  rotate: false
+  xy: 544, 933
+  size: 200, 31
+  split: 9, 9, 3, 3
+  pad: 10, 10, 4, 4
+  orig: 200, 31
+  offset: 0, 0
+  index: -1
+cross-button
+  rotate: false
+  xy: 229, 295
+  size: 34, 35
+  orig: 34, 35
+  offset: 0, 0
+  index: -1
+disc
+  rotate: false
+  xy: 355, 640
+  size: 54, 54
+  orig: 54, 54
+  offset: 0, 0
+  index: -1
+disc-glow
+  rotate: false
+  xy: 355, 826
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+hover-button
+  rotate: false
+  xy: 1, 118
+  size: 206, 30
+  split: 10, 9, 2, 2
+  pad: 10, 10, 3, 3
+  orig: 206, 30
+  offset: 0, 0
+  index: -1
+icon-container
+  rotate: false
+  xy: 355, 760
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+inventory-spells-window
+  rotate: false
+  xy: 269, 330
+  size: 85, 52
+  orig: 85, 52
+  offset: 0, 0
+  index: -1
+menu-frame
+  rotate: false
+  xy: 1, 150
+  size: 226, 180
+  split: 12, 12, 12, 12
+  pad: 15, 15, 15, 15
+  orig: 226, 180
+  offset: 0, 0
+  index: -1
+scale_bar
+  rotate: false
+  xy: 1, 892
+  size: 425, 18
+  orig: 425, 18
+  offset: 0, 0
+  index: -1
+separator
+  rotate: false
+  xy: 428, 908
+  size: 64, 2
+  orig: 64, 2
+  offset: 0, 0
+  index: -1
+simple-window
+  rotate: false
+  xy: 1, 472
+  size: 352, 418
+  split: 12, 12, 12, 12
+  pad: 15, 15, 15, 15
+  orig: 352, 418
+  offset: 0, 0
+  index: -1
+slot-frame
+  rotate: false
+  xy: 269, 384
+  size: 86, 86
+  split: 11, 11, 11, 11
+  orig: 86, 86
+  offset: 0, 0
+  index: -1
+slot-selected
+  rotate: false
+  xy: 355, 696
+  size: 62, 62
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+spells-icon
+  rotate: false
+  xy: 229, 261
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+text-cursor
+  rotate: false
+  xy: 209, 126
+  size: 4, 22
+  orig: 4, 22
+  offset: 0, 0
+  index: -1
+tooltip
+  rotate: false
+  xy: 1, 332
+  size: 266, 138
+  split: 10, 10, 10, 10
+  pad: 12, 12, 12, 12
+  orig: 266, 138
+  offset: 0, 0
+  index: -1
+unit-counter
+  rotate: false
+  xy: 1, 91
+  size: 101, 25
+  orig: 101, 25
+  offset: 0, 0
+  index: -1

@@ -5,19 +5,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import game.handlers.ObjectHandler;
+import game.utils.Skins;
 import shared.objects.types.Obj;
 
 import java.util.Optional;
 
 import static entity.character.info.Inventory.Item;
 
-public class Slot extends Actor {
+public class Slot extends ImageButton {
 
     static final int SIZE = 64;
 
-    public static Texture selection = new Texture(Gdx.files.local("data/ui/images/slot-selection.png"));
-    public static Texture background = new Texture(Gdx.files.local("data/ui/images/table-background.png"));
+    private static Drawable selection = Skins.COMODORE_SKIN.getDrawable("slot-selected");
     private static Texture equip = new Texture(Gdx.files.local("data/ui/images/slot-equipped.png"));
 
     private Optional<Item> item = Optional.empty();
@@ -25,18 +27,20 @@ public class Slot extends Actor {
     private boolean selected;
 
     Slot() {
+        super(Skins.COMODORE_SKIN, "icon-container");
     }
 
     public Slot(Item item) {
+        this();
         this.item = Optional.of(item);
     }
 
     private int getObjId() {
-        return item.isPresent() ? item.get().objId : -1;
+        return item.map(item1 -> item1.objId).orElse(-1);
     }
 
     public int getCount() {
-        return item.isPresent() ? item.get().count : 0;
+        return item.map(item1 -> item1.count).orElse(0);
     }
 
     Optional<Item> getItem() {
@@ -49,15 +53,15 @@ public class Slot extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(background, getX(), getY(), SIZE, SIZE);
+        super.draw(batch,parentAlpha);
         if (item.isPresent()) {
             drawItem(batch);
             if (item.get().equipped) {
                 batch.draw(equip, getX(), getY(), SIZE, SIZE);
             }
-        }
-        if (selected) {
-            batch.draw(selection, getX(), getY(), SIZE, SIZE);
+            if (selected) {
+                selection.draw(batch, getX(), getY(), SIZE, SIZE);
+            }
         }
     }
 

@@ -2,10 +2,13 @@ package game.systems.network;
 
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.esotericsoftware.minlog.Log;
+import game.AOGame;
 import game.network.ClientResponseProcessor;
 import game.network.GameNotificationProcessor;
 import game.network.KryonetClientMarshalStrategy;
+import game.screens.GameScreen;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import shared.network.init.NetworkDictionary;
 import shared.network.interfaces.INotification;
@@ -33,6 +36,15 @@ public class ClientSystem extends MarshalSystem {
                 ((INotification) object).accept(notificationProcessor);
             }
         });
+    }
+
+    @Override
+    public void disconnected(int connectionId) {
+        super.disconnected(connectionId);
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        if (game.getScreen() instanceof GameScreen) {
+            game.toLogin();
+        }
     }
 
     public void setNotificationProcessor(GameNotificationProcessor notificationProcessor) {

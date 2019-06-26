@@ -14,44 +14,35 @@ import com.badlogic.gdx.utils.Align;
 import game.screens.GameScreen;
 import game.utils.Colors;
 import game.utils.Fonts;
+import game.utils.Skins;
 
 import static com.artemis.E.E;
 
 public class Bar extends Actor {
 
-    static final int TOTAL_WIDTH = 200;
-    static final int TOTAL_HEIGHT = 20;
-    private static final int ICON_SIZE = 16;
-    private static final int SPACE_WIDTH = 4;
-    private static final int INTER_SPACE = 4;
-    private static final int BAR_WIDTH = TOTAL_WIDTH - (SPACE_WIDTH * 2) - ICON_SIZE - INTER_SPACE;
-    private static final int BAR_HEIGHT = 8;
-    private final static Texture HEALTH = new Texture(Gdx.files.local("data/ui/images/heart.png"));
-    private final static Texture MAGIC = new Texture(Gdx.files.local("data/ui/images/magic.png"));
-    private final static Texture ENERGY = new Texture(Gdx.files.local("data/ui/images/energy.png"));
-    private static Texture backgroundTexture = new Texture(Gdx.files.local("data/ui/images/bar.png"));
-    private Drawable background;
-    private Drawable bar;
+    private static Drawable background = Skins.COMODORE_SKIN.getDrawable("bar-frame");
+    private Drawable bar = Skins.COMODORE_SKIN.getDrawable("bar");
     private Kind kind;
+
+    private static final int ORIGINAL_WIDTH = 212;
+    private static final int ORIGINAL_HEIGHT = 32;
+    private static final int ORIGINAL_BORDER = 9;
 
     public Bar(Kind kind) {
         this.kind = kind;
-        background = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
-        bar = new TextureRegionDrawable(new TextureRegion(backgroundTexture));
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        Color originalColor = batch.getColor();
-
-        float barX = getX() + SPACE_WIDTH + ICON_SIZE + INTER_SPACE;
-        float barY = getY() + (float) BAR_HEIGHT / 2;
         int player = GameScreen.getPlayer();
-        int min = 0, max = 0;
         final E entity = E(player);
         if (entity == null) {
             return;
         }
+        Color originalColor = batch.getColor();
+        float barX = getX();
+        float barY = getY();
+        int min = 0, max = 0;
         switch (kind) {
             case HP:
                 if (!entity.hasHealth()) {
@@ -81,39 +72,37 @@ public class Bar extends Actor {
     }
 
     private void drawBar(Batch batch, float barX, float barY, float min, int max) {
-        batch.setColor(Color.DARK_GRAY);
-        background.draw(batch, barX, barY, BAR_WIDTH, BAR_HEIGHT);
+        float yFactor = getHeight() / ORIGINAL_HEIGHT;
         batch.setColor(Color.WHITE);
-        kind.getIcon().draw(batch, getX() + SPACE_WIDTH, getY(), ICON_SIZE, ICON_SIZE);
+        background.draw(batch, barX, barY, getWidth(), getHeight());
         batch.setColor(kind.getColor());
-        bar.draw(batch, barX, barY, min / max * BAR_WIDTH, BAR_HEIGHT);
+        float percent = min / max;
+        int barWidth = (int) (percent * (getWidth() - ORIGINAL_BORDER * 2));
+        bar.draw(batch, barX + ORIGINAL_BORDER, barY + yFactor * ORIGINAL_BORDER, barWidth, yFactor * (ORIGINAL_HEIGHT - ORIGINAL_BORDER * 2));
     }
 
     private void drawText(Batch batch, int min, int max, float barX, float barY) {
+        float xFactor = getWidth() / ORIGINAL_WIDTH;
+        float yFactor = getHeight() / ORIGINAL_HEIGHT;
         BitmapFont font = Fonts.WHITE_FONT_WITH_BORDER;
-        Fonts.layout.setText(font, min + "/" + max, Color.WHITE, BAR_WIDTH - 4, Align.right, false);
-        font.draw(batch, Fonts.layout, barX, barY + BAR_HEIGHT);
+        Fonts.layout.setText(font, min + "/" + max, Color.WHITE, getWidth() - ORIGINAL_BORDER * 2 - 15, Align.right, false);
+        font.draw(batch, Fonts.layout, barX + ORIGINAL_BORDER, barY + ORIGINAL_BORDER + (getHeight() - Fonts.layout.height) / 2);
     }
 
     enum Kind {
-        HP(Colors.HEALTH, new TextureRegionDrawable(new TextureRegion(HEALTH))),
-        MANA(Colors.MANA, new TextureRegionDrawable(new TextureRegion(MAGIC))),
-        ENERGY(Color.YELLOW, new TextureRegionDrawable(new TextureRegion(Bar.ENERGY)));
+        HP(Colors.HEALTH),
+        MANA(Colors.MANA),
+        ENERGY(Colors.YELLOW);
 
         private Color color;
-        private Drawable icon;
 
-        Kind(Color color, Drawable icon) {
+        Kind(Color color) {
             this.color = color;
-            this.icon = icon;
         }
 
         public Color getColor() {
             return color;
         }
 
-        public Drawable getIcon() {
-            return icon;
-        }
     }
 }

@@ -95,7 +95,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
                 Log.info("Item equipped: " + item.equipped);
             }
         });
-        GUI.getInventory().updateUserInventory();
+        GUI.getInventory().updateUserInventory(0);
     }
 
     @Override

@@ -1,5 +1,5 @@
 {
-  com.badlogic.gdx.graphics.Color: {
+  Color: {
     green: {
       g: 1,
       a: 1
@@ -19,7 +19,7 @@
       a: 1
     }
   },
-  com.badlogic.gdx.graphics.g2d.BitmapFont: {
+  BitmapFont: {
     commodore-64: {
       file: commodore-64.fnt
     },
@@ -28,7 +28,7 @@
       scaledSize: 10
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+  TintedDrawable: {
     dialogDim: {
       name: white,
       color: { a: 1, b: 0.2, g: 0.2, r: 0.2 }
@@ -50,7 +50,7 @@
       color: transparentWhite
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
+  ProgressBarStyle: {
     default-horizontal: {
       background: progress-bar,
       knobBefore: progress-bar-knob
@@ -60,7 +60,7 @@
       knobBefore: progress-bar-knob
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+  TextButtonStyle: {
     default: {
       font: commodore-64,
       fontColor: { a: 1, b: 1, g: 0.64705884, r: 0.64705884 },
@@ -79,13 +79,13 @@
       checked: button-down
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+  ImageButtonStyle: {
     default: {
       up: button,
       down: button-down
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.SplitPane$SplitPaneStyle: {
+  SplitPaneStyle: {
     default-vertical: {
       handle: vertical-split-pane
     },
@@ -93,13 +93,13 @@
       handle: horizontal-split-pane
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
+  TouchpadStyle: {
     default: {
       background: touchpad,
       knob: touchpad-knob
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+  ButtonStyle: {
     default: {
       up: button,
       down: button-down
@@ -120,7 +120,7 @@
       checked: button-down
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+  WindowStyle: {
     default: {
       background: window,
       titleFont: commodore-64,
@@ -148,7 +148,7 @@
       titleFontColor: { a: 1, b: 1, g: 1, r: 1 }
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+  TextFieldStyle: {
     default: {
       font: commodore-64,
       fontColor: {
@@ -178,7 +178,7 @@
       messageFontColor: { a: 1, b: 0.8, g: 0.8, r: 0.8 }
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+  ScrollPaneStyle: {
     default: {
       background: transparentDialog,
       hScroll: scroll-bar,
@@ -187,9 +187,9 @@
       vScrollKnob: scroll-bar-vertical-knob
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+  LabelStyle: {
     optional: {
-      font: commodore-64,
+      font: commodore-64-small,
       fontColor: { a: 1, b: 1, g: 1, r: 1 }
     },
     default: {
@@ -206,7 +206,7 @@
       background: button
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
+  ListStyle: {
     default: {
       font: commodore-64,
       fontColorSelected: { a: 1, b: 0, g: 0, r: 0 },
@@ -228,7 +228,7 @@
       background: transparent
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+  CheckBoxStyle: {
     default: {
       checkboxOn: check-box,
       checkboxOff: check-box-off,
@@ -243,14 +243,14 @@
       checkedFontColor: { a: 1, b: 1, g: 1, r: 1 }
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle: {
+  TreeStyle: {
     default: {
       plus: plus,
       minus: minus,
       selection: progress-bar
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
+  SliderStyle: {
     default-vertical: {
       background: slider,
       knob: slider-knob
@@ -260,13 +260,21 @@
       knob: slider-knob
     }
   },
-  com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
+  SelectBoxStyle: {
     default: {
       font: commodore-64,
       fontColor: { a: 1, b: 1, g: 0.64705884, r: 0.64705884 },
       background: list,
       scrollStyle: default,
       listStyle: dimmed
+    }
+  }
+
+  TextTooltipStyle: {
+    default: {
+      label: optional,
+      background: transparentDialog,
+      wrapWidth: 150
     }
   }
 }

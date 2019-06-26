@@ -3,9 +3,11 @@ package game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import game.systems.network.ClientSystem;
+import game.utils.Skins;
 import shared.model.lobby.Player;
 import shared.model.lobby.Room;
 import shared.network.lobby.StartGameRequest;
@@ -37,7 +39,13 @@ public class RoomScreen extends AbstractScreen {
     }
 
     @Override
+    protected void keyPressed(int keyCode) {
+
+    }
+
+    @Override
     void createContent() {
+        Table container = new Table(getSkin());
         playerList = new List<>(getSkin());
         TextButton start = new TextButton("START GAME", getSkin());
         start.addListener(new ClickListener() {
@@ -48,9 +56,10 @@ public class RoomScreen extends AbstractScreen {
             }
         });
 
-        getMainTable().add(playerList).width(Gdx.graphics.getWidth() - (Gdx.graphics.getWidth() * 0.1f)).height(400);
-        getMainTable().row();
-        getMainTable().add(start);
+        container.add(playerList).row();
+        container.add(start);
+        container.getColor().a = 0.8f;
+        getMainTable().add(container).width(Gdx.graphics.getWidth() - (Gdx.graphics.getWidth() * 0.1f)).height(400);
     }
 
     @Override

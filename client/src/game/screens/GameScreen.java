@@ -70,9 +70,8 @@ public class GameScreen extends ScreenAdapter {
 
     public static void setPlayer(int player) {
         GameScreen.player = player;
-        GUI.getInventory().updateUserInventory();
+        GUI.getInventory().updateUserInventory(0);
         GUI.getSpellView().updateSpells();
-        GUI.getUserTable().refresh();
     }
 
     public static GUI getGui() {

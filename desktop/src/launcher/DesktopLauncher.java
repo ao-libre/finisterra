@@ -2,6 +2,7 @@ package launcher;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.graphics.glutils.HdpiMode;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
@@ -44,9 +45,9 @@ public class DesktopLauncher {
 
         // TODO use enum instead of strings
         if (video.getHiDPIMode() == "Pixels") {
-            cfg.setHdpiMode(Lwjgl3ApplicationConfiguration.HdpiMode.Pixels);
+            cfg.setHdpiMode(HdpiMode.Pixels);
         } else {
-            cfg.setHdpiMode(Lwjgl3ApplicationConfiguration.HdpiMode.Logical);
+            cfg.setHdpiMode(HdpiMode.Logical);
         }
 
         // Log in console.

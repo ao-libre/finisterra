@@ -1,7 +1,6 @@
 package game.screens;
 
-import com.artemis.World;
-import com.artemis.WorldConfigurationBuilder;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -9,11 +8,9 @@ import com.badlogic.gdx.utils.Array;
 import game.ClientConfiguration;
 import game.ClientConfiguration.Network.DefaultServer;
 import game.handlers.MusicHandler;
-import game.managers.WorldManager;
 import game.network.ClientResponseProcessor;
 import game.network.GameNotificationProcessor;
 import game.systems.network.ClientSystem;
-import game.systems.network.TimeSync;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.interfaces.Hero;
 import shared.network.lobby.JoinLobbyRequest;
@@ -21,29 +18,29 @@ import shared.network.lobby.JoinLobbyRequest;
 import static game.utils.Resources.CLIENT_CONFIG;
 
 public class LoginScreen extends AbstractScreen {
-    
+
     private ClientSystem clientSystem;
-    private World world;
     private ClientConfiguration config;
+    private Table connectionTable;
+    private TextField username;
 
     public LoginScreen() {
         super();
         init();
     }
 
+    @Override
+    protected void keyPressed(int keyCode) {
+        if (!getStage().getKeyboardFocus().equals(username) && keyCode == Input.Keys.I) {
+            connectionTable.setVisible(!connectionTable.isVisible());
+        }
+    }
+
     private void init() {
-//        WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
         DefaultServer defaultServer = config.getNetwork().getDefaultServer();
         clientSystem = new ClientSystem(defaultServer.getHostname(), defaultServer.getPort());
         clientSystem.setNotificationProcessor(new GameNotificationProcessor());
         clientSystem.setResponseProcessor(new ClientResponseProcessor());
-//        world = new World(builder
-//                .with(new TimeSync())
-//                .with(new WorldManager())
-//                .with(new GameNotificationProcessor())
-//                .with(new ClientResponseProcessor())
-//                .with(clientSystem)
-//                .build());
         MusicHandler.playMusic(101);
     }
 
@@ -51,8 +48,9 @@ public class LoginScreen extends AbstractScreen {
     void createContent() {
         config = ClientConfiguration.loadConfig(CLIENT_CONFIG); // @todo hotfix
 
+        Window loginWindow = new Window("", getSkin());
         Label userLabel = new Label("User", getSkin());
-        TextField username = new TextField("", getSkin());
+        username = new TextField("", getSkin());
         username.setMessageText("username");
 
         Label heroLabel = new Label("Hero", getSkin());
@@ -61,7 +59,7 @@ public class LoginScreen extends AbstractScreen {
         Hero.getHeroes().forEach(heroes::add);
         heroSelect.setItems(heroes);
 
-        Table connectionTable = new Table((getSkin()));
+        connectionTable = new Table((getSkin()));
 
         Label ipLabel = new Label("IP: ", getSkin());
         DefaultServer defaultServer = config.getNetwork().getDefaultServer();
@@ -87,29 +85,30 @@ public class LoginScreen extends AbstractScreen {
 
         });
 
-        getMainTable().add(userLabel);
-        getMainTable().row();
-        getMainTable().add(username).width(200);
-        getMainTable().row();
-        getMainTable().add(heroLabel).padTop(20);
-        getMainTable().row();
-        getMainTable().add(heroSelect).width(200);
-        getMainTable().row();
-        getMainTable().add(loginButton).padTop(20).expandX().row();
+        loginWindow.getColor().a = 0.8f;
+        loginWindow.add(userLabel);
+        loginWindow.row();
+        loginWindow.add(username).width(200);
+        loginWindow.row();
+        loginWindow.add(heroLabel).padTop(20);
+        loginWindow.row();
+        loginWindow.add(heroSelect).width(200);
+        loginWindow.row();
+        loginWindow.add(loginButton).padTop(20).expandX().row();
+        getMainTable().add(loginWindow).width(400).height(300).row();
 
         connectionTable.add(ipLabel);
         connectionTable.add(ipText).width(500);
         connectionTable.add(portLabel);
         connectionTable.add(portText);
         connectionTable.setPosition(420, 30); //Hardcoded
-
+        connectionTable.setVisible(false);
         getMainTable().add(connectionTable);
         getStage().setKeyboardFocus(username);
     }
 
     @Override
     public void render(float delta) {
-//        world.process();
         super.render(delta);
     }
 

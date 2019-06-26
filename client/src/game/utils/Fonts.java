@@ -46,9 +46,9 @@ public class Fonts {
         MAGIC_FONT = generate(Colors.MANA, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
         ENERGY_FONT = generate(Colors.YELLOW, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
         WRITING_FONT = generate(Color.BLACK, 6, Color.WHITE, 1, 0, -2, COMMODORE_FONT);
-        COMBAT_FONT = generate(Colors.COMBAT, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
-        STAB_FONT = generate(Color.WHITE, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
-        MAGIC_COMBAT_FONT = generate(Colors.MANA, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
+        COMBAT_FONT = generate(Colors.COMBAT, 10, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
+        STAB_FONT = generate(Color.WHITE, 11, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
+        MAGIC_COMBAT_FONT = generate(Colors.MANA, 10, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
     }
 
     private static BitmapFont generate(Color color, int size, Color borderColor, int borderWidth, int shadowOffset, int spaceX, String commodoreFont) {

@@ -8,12 +8,9 @@ public class UserInformation extends Table {
     private UserStatus status = new UserStatus();
 
     public UserInformation() {
-        add(head).prefHeight(64).prefWidth(64).left().bottom().pad(10);
-        add(status).right().bottom().pad(10);
-    }
-
-    public void refresh() {
-        head.refresh();
+        add(head).left().prefHeight(128).prefWidth(128);
+        add(status).pad(-10).right();
+        head.toFront();
     }
 
 }

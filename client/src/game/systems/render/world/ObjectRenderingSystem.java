@@ -31,7 +31,6 @@ public class ObjectRenderingSystem extends RenderingSystem {
         object.ifPresent(obj -> {
             WorldPos objectPos = e.getWorldPos();
             Pos2D screenPos = Util.toScreen(objectPos);
-            // TODO popup animation
             if (!e.hasScale()) {
                 e.scale(0f);
             } else if(e.getScale().scale >= 1.0f) {

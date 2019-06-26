@@ -28,7 +28,7 @@ allprojects {
 
     ext {
         appName = 'ao-java'
-        gdxVersion = '1.9.9'
+        gdxVersion = '1.9.10-SNAPSHOT'
         kryonetVersion = '2.22.0-RC1'
         roboVMVersion = '2.3.1'
         box2DLightsVersion = '1.4'
