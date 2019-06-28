@@ -96,13 +96,16 @@ public class ObjJson extends AOJson {
     public static void loadObjectsByType(Map<Integer, Obj> objects, FileHandle folder) {
         ObjJson json = new ObjJson();
         Arrays.stream(Type.values()).forEach(type -> {
-            final Class classForType = json.getClassForType(type);
-            final FileHandle jsonFile = folder.child(type.name().toLowerCase() + ".json");
-            if (jsonFile.exists() && !jsonFile.isDirectory()) {
-                final ArrayList<? extends Obj> listObjs = json.fromJson(ArrayList.class, classForType, jsonFile);
-                listObjs.forEach(obj -> objects.put(obj.getId(), obj));
-            }
+            loadObjs(objects, folder, type, json);
         });
+    }
+
+    public static void loadObjs(Map<Integer, Obj> objects, FileHandle file, Type type, ObjJson json) {
+        final Class classForType = getClassForType(type);
+        if (file.exists() && !file.isDirectory()) {
+            final ArrayList<? extends Obj> listObjs = json.fromJson(ArrayList.class, classForType, file);
+            listObjs.forEach(obj -> objects.put(obj.getId(), obj));
+        }
     }
 
     public static void saveObjectsByType(Map<Integer, Obj> objects, FileHandle output) {

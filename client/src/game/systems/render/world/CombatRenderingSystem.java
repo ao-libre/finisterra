@@ -23,6 +23,8 @@ import static com.artemis.E.E;
 @Wire(injectInherited=true)
 public class CombatRenderingSystem extends RenderingSystem {
 
+    private DescriptorHandler descriptorHandler;
+
     public static final float VELOCITY = 1f;
 
     public CombatRenderingSystem(SpriteBatch batch) {
@@ -73,7 +75,7 @@ public class CombatRenderingSystem extends RenderingSystem {
             float width = Fonts.dialogLayout.width;
             Fonts.dialogLayout.setText(font, combatMessage.text, font.getColor(), width, Align.center, true);
             final float fontX = playerPos.x + (Tile.TILE_PIXEL_WIDTH - Fonts.dialogLayout.width) / 2;
-            int bodyOffset = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
+            int bodyOffset = descriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
             final float fontY = playerPos.y + combatMessage.offset + bodyOffset - 60 * SCALE
                     + Fonts.dialogLayout.height;
             font.draw(getBatch(), Fonts.dialogLayout, fontX, fontY);

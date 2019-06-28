@@ -19,6 +19,8 @@ import shared.util.Util;
 @Wire(injectInherited=true)
 public class DialogRenderingSystem extends RenderingSystem {
 
+    private DescriptorHandler descriptorHandler;
+
     private static final int ALPHA_TIME = 2;
     private static final int MAX_LENGTH = (int) (120 * SCALE);
     private static final int DISTANCE_TO_TOP = (int) (5 * SCALE);
@@ -47,7 +49,7 @@ public class DialogRenderingSystem extends RenderingSystem {
             Fonts.dialogLayout.setText(font, dialog.text, font.getColor(), width, Align.center | Align.top, true);
             final float fontX = playerPos.x + (Tile.TILE_PIXEL_WIDTH - width) / 2;
             float up = Dialog.DEFAULT_TIME - dialog.time <= TIME ? (Dialog.DEFAULT_TIME - dialog.time) * VELOCITY : DISTANCE_TO_TOP;
-            float offsetY = DescriptorHandler.getBody(player.getBody().index).getHeadOffsetY() * SCALE;
+            float offsetY = descriptorHandler.getBody(player.getBody().index).getHeadOffsetY() * SCALE;
             final float fontY = playerPos.y - 60 * SCALE + offsetY - up + Fonts.dialogLayout.height;
             font.draw(getBatch(), Fonts.dialogLayout, fontX, fontY);
             font.setColor(copy);

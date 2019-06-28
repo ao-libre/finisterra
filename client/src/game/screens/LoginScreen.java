@@ -41,7 +41,7 @@ public class LoginScreen extends AbstractScreen {
         clientSystem = new ClientSystem(defaultServer.getHostname(), defaultServer.getPort());
         clientSystem.setNotificationProcessor(new GameNotificationProcessor());
         clientSystem.setResponseProcessor(new ClientResponseProcessor());
-        MusicHandler.playMusic(101);
+        // TODO MusicHandler.playMusic(101);
     }
 
     @Override

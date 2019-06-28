@@ -21,13 +21,15 @@ import static com.artemis.E.E;
 @Wire(injectInherited=true)
 public class ObjectRenderingSystem extends RenderingSystem {
 
+    private ObjectHandler objectHandler;
+
     public ObjectRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(Object.class, WorldPos.class), batch, RenderingSystem.CameraKind.WORLD);
     }
 
     @Override
     protected void process(E e) {
-        Optional<Obj> object = ObjectHandler.getObject(e.getObject().index);
+        Optional<Obj> object = objectHandler.getObject(e.getObject().index);
         object.ifPresent(obj -> {
             WorldPos objectPos = e.getWorldPos();
             Pos2D screenPos = Util.toScreen(objectPos);
@@ -39,7 +41,7 @@ public class ObjectRenderingSystem extends RenderingSystem {
                 e.getScale().scale += world.delta * 2;
             }
             float scale = Interpolation.swingOut.apply(e.getScale().scale);
-            TextureRegion texture = ObjectHandler.getIngameGraphic(obj);
+            TextureRegion texture = objectHandler.getIngameGraphic(obj);
             float width = scale * texture.getRegionWidth();
             float height = scale * texture.getRegionHeight();
             getBatch().draw(texture, screenPos.x + (Tile.TILE_PIXEL_WIDTH - width) / 2, screenPos.y + (Tile.TILE_PIXEL_HEIGHT - height) / 2, width, height);

@@ -162,9 +162,10 @@ public class Inventory extends Window {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         dragging.ifPresent(slot -> slot.getItem().ifPresent(item -> {
-            Optional<Obj> object = ObjectHandler.getObject(item.objId);
+            ObjectHandler objectHandler = GameScreen.getWorld().getSystem(ObjectHandler.class);
+            Optional<Obj> object = objectHandler.getObject(item.objId);
             object.ifPresent(obj -> {
-                TextureRegion graphic = ObjectHandler.getGraphic(obj);
+                TextureRegion graphic = objectHandler.getGraphic(obj);
                 int x1 = Gdx.input.getX() - (graphic.getRegionWidth() / 2);
                 int y1 = Gdx.input.getY() + (graphic.getRegionHeight() / 2);
                 Vector2 tempPosition = screenToLocalCoordinates(new Vector2(x1, y1));

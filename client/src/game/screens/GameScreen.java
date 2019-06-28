@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
-import game.handlers.MusicHandler;
+import game.handlers.*;
 import game.managers.MapManager;
 import game.managers.WorldManager;
 import game.network.ClientResponseProcessor;
@@ -43,10 +43,11 @@ import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
 
 public class GameScreen extends ScreenAdapter {
 
-    private static final int RENDER_ENTITIES = WorldConfigurationBuilder.Priority.NORMAL + 2;
-    private static final int RENDER_PRE_ENTITIES = RENDER_ENTITIES + 1;
-    private static final int RENDER_POST_ENTITIES = RENDER_ENTITIES - 1;
-    private static final int DECORATIONS = RENDER_ENTITIES - 2;
+    private static final int HANDLER_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL + 3;
+    private static final int ENTITY_RENDER_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL + 2;
+    private static final int PRE_ENTITY_RENDER_PRIORITY = ENTITY_RENDER_PRIORITY + 1;
+    private static final int POST_ENTITY_RENDER_PRIORITY = ENTITY_RENDER_PRIORITY - 1;
+    private static final int DECORATION_PRIORITY = ENTITY_RENDER_PRIORITY - 2;
     public static World world;
     public static int player = -1;
     private static GUI gui = new GUI();
@@ -103,20 +104,29 @@ public class GameScreen extends ScreenAdapter {
                 // Sound systems
                 .with(HIGH, new SoundSytem())
                 .with(HIGH, new TiledMapSystem())
+                // HANDLERS
+                .with(HANDLER_PRIORITY, new AnimationHandler())
+                .with(HANDLER_PRIORITY, new DescriptorHandler())
+                .with(HANDLER_PRIORITY, new MapHandler())
+                .with(HANDLER_PRIORITY, new MusicHandler())
+                .with(HANDLER_PRIORITY, new ObjectHandler())
+                .with(HANDLER_PRIORITY, new ParticlesHandler())
+                .with(HANDLER_PRIORITY, new SoundsHandler())
+                .with(HANDLER_PRIORITY, new SpellHandler())
                 // Rendering
-                .with(RENDER_PRE_ENTITIES, new MapGroundRenderingSystem(spriteBatch))
-                .with(RENDER_PRE_ENTITIES, new ObjectRenderingSystem(spriteBatch))
-                .with(RENDER_PRE_ENTITIES, new TargetRenderingSystem(spriteBatch))
-                .with(RENDER_PRE_ENTITIES, new NameRenderingSystem(spriteBatch))
-                .with(RENDER_ENTITIES, new EffectRenderingSystem(spriteBatch))
-                .with(RENDER_ENTITIES, new CharacterRenderingSystem(spriteBatch))
-                .with(RENDER_ENTITIES, new WorldRenderingSystem(spriteBatch))
-                .with(RENDER_POST_ENTITIES, new MapLastLayerRenderingSystem(spriteBatch))
-                .with(RENDER_POST_ENTITIES, new LightRenderingSystem(spriteBatch))
-                .with(DECORATIONS, new StateRenderingSystem(spriteBatch))
-                .with(DECORATIONS, new CombatRenderingSystem(spriteBatch))
-                .with(DECORATIONS, new DialogRenderingSystem(spriteBatch))
-                .with(DECORATIONS, new CharacterStatesRenderingSystem(spriteBatch))
+                .with(PRE_ENTITY_RENDER_PRIORITY, new MapGroundRenderingSystem(spriteBatch))
+                .with(PRE_ENTITY_RENDER_PRIORITY, new ObjectRenderingSystem(spriteBatch))
+                .with(PRE_ENTITY_RENDER_PRIORITY, new TargetRenderingSystem(spriteBatch))
+                .with(PRE_ENTITY_RENDER_PRIORITY, new NameRenderingSystem(spriteBatch))
+                .with(ENTITY_RENDER_PRIORITY, new EffectRenderingSystem(spriteBatch))
+                .with(ENTITY_RENDER_PRIORITY, new CharacterRenderingSystem(spriteBatch))
+                .with(ENTITY_RENDER_PRIORITY, new WorldRenderingSystem(spriteBatch))
+                .with(POST_ENTITY_RENDER_PRIORITY, new MapLastLayerRenderingSystem(spriteBatch))
+                .with(POST_ENTITY_RENDER_PRIORITY, new LightRenderingSystem(spriteBatch))
+                .with(DECORATION_PRIORITY, new StateRenderingSystem(spriteBatch))
+                .with(DECORATION_PRIORITY, new CombatRenderingSystem(spriteBatch))
+                .with(DECORATION_PRIORITY, new DialogRenderingSystem(spriteBatch))
+                .with(DECORATION_PRIORITY, new CharacterStatesRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL, new BuffRenderingSystem(spriteBatch))
                 // Other
@@ -145,10 +155,10 @@ public class GameScreen extends ScreenAdapter {
 
         // for testing
         world.getSystem(SoundSytem.class).setVolume(0);
-        MusicHandler.setVolume(0);
+        world.getSystem(MusicHandler.class).setVolume(0);
 
-        MusicHandler.FadeOutMusic(101, 0.02f);
-//        MusicHandler.playMIDI(1);
+        world.getSystem(MusicHandler.class).fadeOutMusic(101, 0.02f);
+        world.getSystem(MusicHandler.class).playMIDI(1);
     }
 
     protected void update(float deltaTime) {

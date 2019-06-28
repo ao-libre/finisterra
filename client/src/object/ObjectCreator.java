@@ -7,7 +7,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entity.character.Character;
-import game.handlers.AssetHandler;
 import game.handlers.StateHandler;
 import game.screens.CharacterScreen;
 import game.systems.anim.IdleAnimationSystem;
@@ -36,9 +35,9 @@ public class ObjectCreator extends Game {
     @Override
     public void create() {
         Gdx.app.debug("AOGame", "Opening Objects Creator...");
-        AssetHandler.load();
-        if (AssetHandler.getState() == StateHandler.LOADED)
-            Gdx.app.debug("AOGame", "Handler loaded!");
+//        AssetHandler.load(assetManager);
+//        if (AssetHandler.getState() == StateHandler.LOADED)
+//            Gdx.app.debug("AOGame", "Handler loaded!");
         this.spriteBatch = new SpriteBatch();
         initWorld();
         postWorldInit();

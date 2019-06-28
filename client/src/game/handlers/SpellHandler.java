@@ -2,8 +2,10 @@ package game.handlers;
 
 import com.badlogic.gdx.Gdx;
 import entity.character.info.SpellBook;
+import game.AOGame;
 import game.screens.GameScreen;
 import model.readers.AODescriptorsReader;
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.model.Spell;
 import shared.model.readers.DescriptorsReader;
 import shared.util.SharedResources;
@@ -16,23 +18,26 @@ import java.util.Optional;
 
 import static com.artemis.E.E;
 
-public class SpellHandler {
+public class SpellHandler extends PassiveSystem {
 
-    public static Map<Integer, Spell> spells = new HashMap<>();
+    private AOAssetManager assetManager;
 
-    public static void load() {
-        SpellJson.load(spells, Gdx.files.internal(SharedResources.SPELLS_JSON_FILE));
+    @Override
+    protected void initialize() {
+        super.initialize();
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        assetManager = game.getAssetManager();
     }
 
-    public static Optional<Spell> getSpell(int id) {
-        return Optional.ofNullable(spells.get(id));
+    public Optional<Spell> getSpell(int id) {
+        return Optional.ofNullable(assetManager.getSpells().get(id));
     }
 
-    public static Spell[] getSpells() {
+    public Spell[] getSpells() {
         final int player = GameScreen.getPlayer();
         final SpellBook spellBook = E(player).getSpellBook();
 
-        return Arrays.stream(spellBook.spells).map(SpellHandler::getSpell).filter(Optional::isPresent).map(Optional::get)
+        return Arrays.stream(spellBook.spells).map(this::getSpell).filter(Optional::isPresent).map(Optional::get)
                 .distinct().toArray(Spell[]::new);
     }
 

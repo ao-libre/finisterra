@@ -22,6 +22,8 @@ import static com.artemis.E.E;
 
 public class IdleAnimationSystem extends IteratingSystem {
 
+    private AnimationHandler animationHandler;
+
     public IdleAnimationSystem() {
         super(Aspect.all(Heading.class).exclude(Moving.class, AttackAnimation.class));
     }
@@ -48,15 +50,15 @@ public class IdleAnimationSystem extends IteratingSystem {
         List<BundledAnimation> animations = new ArrayList<>();
         if (entity.hasBody()) {
             final Body body = entity.getBody();
-            animations.add(AnimationHandler.getBodyAnimation(body, heading.current));
+            animations.add(animationHandler.getBodyAnimation(body, heading.current));
         }
         if (entity.hasWeapon()) {
             final Weapon weapon = entity.getWeapon();
-            animations.add(AnimationHandler.getWeaponAnimation(weapon, heading.current));
+            animations.add(animationHandler.getWeaponAnimation(weapon, heading.current));
         }
         if (entity.hasShield()) {
             final Shield weapon = entity.getShield();
-            animations.add(AnimationHandler.getShieldAnimation(weapon, heading.current));
+            animations.add(animationHandler.getShieldAnimation(weapon, heading.current));
         }
         animations.stream().filter(Objects::nonNull).forEach(animation -> {
             float delta = world.getDelta();

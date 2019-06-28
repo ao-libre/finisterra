@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import game.handlers.ObjectHandler;
+import game.screens.GameScreen;
 import game.utils.Skins;
 import shared.objects.types.Obj;
 
@@ -66,9 +67,10 @@ public class Slot extends ImageButton {
     }
 
     private void drawItem(Batch batch) {
-        Optional<Obj> object = ObjectHandler.getObject(getObjId());
+        ObjectHandler objectHandler = GameScreen.getWorld().getSystem(ObjectHandler.class);
+        Optional<Obj> object = objectHandler.getObject(getObjId());
         object.ifPresent(obj -> {
-            TextureRegion graphic = ObjectHandler.getGraphic(obj);
+            TextureRegion graphic = objectHandler.getGraphic(obj);
             batch.draw(graphic, getX() + 1, getY() + 1);
         });
     }
