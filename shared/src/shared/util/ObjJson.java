@@ -96,7 +96,7 @@ public class ObjJson extends AOJson {
     public static void loadObjectsByType(Map<Integer, Obj> objects, FileHandle folder) {
         ObjJson json = new ObjJson();
         Arrays.stream(Type.values()).forEach(type -> {
-            loadObjs(objects, folder, type, json);
+            loadObjs(objects, folder.child(type.name().toLowerCase() + ".json"), type, json);
         });
     }
 
@@ -112,8 +112,7 @@ public class ObjJson extends AOJson {
         ObjJson json = new ObjJson();
         Arrays.stream(Type.values()).forEach(type -> {
             final Class classForType = getClassForType(type);
-            List<Obj> objs = objects.values().stream().filter(obj -> obj.getType().equals(type)).collect(Collectors.toList());
-            objs.sort(Comparator.comparingInt(Obj::getId));
+            List<Obj> objs = objects.values().stream().filter(obj -> obj.getType().equals(type)).sorted(Comparator.comparingInt(Obj::getId)).collect(Collectors.toList());
             json.toJson(objs, ArrayList.class, classForType, output.child(type.name().toLowerCase() + ".json"));
         });
     }

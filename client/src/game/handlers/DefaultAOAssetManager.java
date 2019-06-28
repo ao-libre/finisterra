@@ -69,7 +69,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     @Override
     public void load() {
-        loadTextures();
+//        loadTextures();
         loadObjects();
         loadSpells();
         loadDescriptors();
@@ -100,7 +100,12 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     @Override
     public Texture getTexture(int key) {
-        return get(Resources.GAME_GRAPHICS_PATH + key + Resources.GAME_GRAPHICS_EXTENSION);
+        String fileName = Resources.GAME_GRAPHICS_PATH + key + Resources.GAME_GRAPHICS_EXTENSION;
+        if (!isLoaded(fileName)) {
+            loadTexture(fileName);
+            finishLoadingAsset(fileName);
+        }
+        return get(fileName);
     }
 
     @Override

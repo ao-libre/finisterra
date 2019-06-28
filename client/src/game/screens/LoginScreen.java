@@ -107,11 +107,6 @@ public class LoginScreen extends AbstractScreen {
         getStage().setKeyboardFocus(username);
     }
 
-    @Override
-    public void render(float delta) {
-        super.render(delta);
-    }
-
     private void connectThenLogin(String ip, int port, String user, Hero hero) {
         if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
             if (clientSystem.getState() != MarshalState.STOPPED)
