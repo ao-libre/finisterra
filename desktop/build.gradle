@@ -5,7 +5,8 @@ apply plugin: 'application'
 apply plugin: 'de.undercouch.download'
 apply plugin: 'com.github.breadmoirai.github-release'
 
-sourceCompatibility = 1.8
+sourceCompatibility = JavaVersion.VERSION_12
+targetCompatibility = JavaVersion.VERSION_12
 
 sourceSets {
     main.java.srcDirs = ["src/"]
