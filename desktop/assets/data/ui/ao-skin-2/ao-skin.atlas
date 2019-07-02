@@ -6,7 +6,7 @@ filter: Linear,Linear
 repeat: none
 Inventory-Icon
   rotate: false
-  xy: 355, 606
+  xy: 356, 350
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -59,7 +59,7 @@ cross-button
   index: -1
 disc
   rotate: false
-  xy: 355, 640
+  xy: 357, 384
   size: 54, 54
   orig: 54, 54
   offset: 0, 0
@@ -141,11 +141,50 @@ slot-selected
   orig: 62, 62
   offset: 0, 0
   index: -1
+slot-selected2
+  rotate: false
+  xy: 355, 632
+  size: 62, 62
+  split: 7, 7, 7, 7
+  pad: 0, 0, 0, 0
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+speech-bubble
+  rotate: false
+  xy: 229, 227
+  size: 32, 32
+  split: 4, 19, 3, 6
+  pad: 5, 19, 4, 6
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
 spells-icon
   rotate: false
   xy: 229, 261
   size: 32, 32
   orig: 32, 32
+  offset: 0, 0
+  index: -1
+staff-hover-icon
+  rotate: false
+  xy: 355, 568
+  size: 61, 62
+  orig: 61, 62
+  offset: 0, 0
+  index: -1
+staff-icon
+  rotate: false
+  xy: 355, 504
+  size: 61, 62
+  orig: 61, 62
+  offset: 0, 0
+  index: -1
+staff-selected-icon
+  rotate: false
+  xy: 357, 440
+  size: 61, 62
+  orig: 61, 62
   offset: 0, 0
   index: -1
 text-cursor

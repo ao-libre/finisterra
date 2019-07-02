@@ -30,12 +30,12 @@ public class Fonts {
 
     public static final GlyphLayout layout = new GlyphLayout();
     public static final GlyphLayout dialogLayout = new GlyphLayout();
-    private static final String COMMODORE_FONT = "Commodore Rounded v1.2.ttf";
+    private static final String COMMODORE_FONT = "alagard.ttf";
     private static final String FIRA_FONT = "FuraMono-Bold Powerline.otf";
 
     static {
         WHITE_FONT = gui(Color.WHITE, 5, Color.BLACK, 0, 0, 0, COMMODORE_FONT);
-        WHITE_FONT_WITH_BORDER = gui(Color.WHITE, 6, Color.BLACK, 0, 1, 0, COMMODORE_FONT);
+        WHITE_FONT_WITH_BORDER = gui(Color.WHITE, 6, Color.BLACK, 1, 1, 0, COMMODORE_FONT);
         CONSOLE_FONT = gui(Color.WHITE, 8, Color.BLACK, 0, 0, 0, COMMODORE_FONT);
         GM_NAME_FONT = generate(Colors.GM, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
         NEWBIE_NAME_FONT = generate(Colors.NEWBIE, 9, Color.BLACK, 0, 1, -1, COMMODORE_FONT);

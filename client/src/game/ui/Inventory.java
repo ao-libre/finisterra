@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -31,13 +32,13 @@ public class Inventory extends Window {
     static final int COLUMNS = 6;
     private static final int ROWS = 1;
     private static final int SIZE = COLUMNS * ROWS;
+    private final ClickListener mouseListener;
     private int base;
 
     private ArrayList<Slot> slots;
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
-    private boolean over;
 
     Inventory() {
         super("", Skins.COMODORE_SKIN, "inventory");
@@ -51,8 +52,19 @@ public class Inventory extends Window {
                 add(new Image(getSkin().getDrawable("separator"))).row();
             }
         }
+        mouseListener = getMouseListener();
+        addListener(mouseListener);
+    }
 
-        addListener(new ClickListener() {
+    private ClickListener getMouseListener() {
+        return new ClickListener() {
+
+            @Override
+            public boolean scrolled(InputEvent event, float x, float y, int amount) {
+                Inventory.this.scrolled(amount);
+                return false;
+            }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 selected.ifPresent(slot -> slot.setSelected(false));
@@ -136,18 +148,13 @@ public class Inventory extends Window {
                 a[j] = t;
             }
 
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                super.enter(event, x, y, pointer, fromActor);
-                over = isOver();
-            }
+        };
+    }
 
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                super.exit(event, x, y, pointer, toActor);
-                over = isOver();
-            }
-        });
+    public void scrolled(int amount) {
+        base += amount;
+        base = MathUtils.clamp(base, 0, entity.character.info.Inventory.SIZE - Inventory.SIZE);
+        updateUserInventory(base);
     }
 
     public void updateUserInventory(int base) {
@@ -167,9 +174,8 @@ public class Inventory extends Window {
             object.ifPresent(obj -> {
                 TextureRegion graphic = objectHandler.getGraphic(obj);
                 int x1 = Gdx.input.getX() - (graphic.getRegionWidth() / 2);
-                int y1 = Gdx.input.getY() + (graphic.getRegionHeight() / 2);
-                Vector2 tempPosition = screenToLocalCoordinates(new Vector2(x1, y1));
-                batch.draw(graphic, tempPosition.x, tempPosition.y);
+                int y1 = Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2);
+                batch.draw(graphic, x1, y1);
             });
         }));
     }
@@ -189,6 +195,7 @@ public class Inventory extends Window {
     }
 
     public boolean isOver() {
-        return over;
+        return mouseListener.isOver();
     }
+
 }

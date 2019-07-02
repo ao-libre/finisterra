@@ -27,6 +27,10 @@ public class GUI {
         this.stage = new AOInputProcessor();
     }
 
+    public static ActionBar getActionBar() {
+        return actionBar;
+    }
+
     public static Inventory getInventory() {
         return actionBar.getInventory();
     }

@@ -95,6 +95,8 @@ public class CharacterTrainingSystem extends PassiveSystem {
                 level.exp = 0;
                 level.expToNextLevel = 0;
             }
+        } else {
+            worldManager.sendEntityUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(E(userId).getLevel()).build());
         }
 
     }

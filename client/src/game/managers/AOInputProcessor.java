@@ -13,6 +13,7 @@ import game.utils.AOKeys;
 import game.utils.AlternativeKeys;
 import game.utils.Cursors;
 import game.utils.WorldUtils;
+import org.lwjgl.system.CallbackI;
 import shared.model.AttackType;
 import shared.model.Spell;
 import shared.network.combat.AttackRequest;
@@ -32,20 +33,23 @@ import static com.artemis.E.E;
 
 public class AOInputProcessor extends Stage {
 
-    private static final Random r = new Random();
     public static boolean alternativeKeys = false;
 
     @Override
     public boolean scrolled(int amount) {
-        CameraSystem system = GameScreen.getWorld().getSystem(CameraSystem.class);
-        system.zoom(amount, CameraSystem.ZOOM_TIME);
+        if (GUI.getActionBar().isOver()) {
+            GUI.getActionBar().scrolled(amount);
+        } else {
+            CameraSystem system = GameScreen.getWorld().getSystem(CameraSystem.class);
+            system.zoom(amount, CameraSystem.ZOOM_TIME);
+        }
         return super.scrolled(amount);
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         boolean result = super.touchUp(screenX, screenY, pointer, button);
-        if (GUI.getSpellView().isOver() || GUI.getInventory().isOver()) {
+        if (GUI.getActionBar().isOver()) {
             return result;
         }
         WorldUtils.mouseToWorldPos().ifPresent(worldPos -> {
@@ -63,7 +67,7 @@ public class AOInputProcessor extends Stage {
                     GUI.getConsole().addWarning(Messages.CANT_ATTACK);
                 }
                 Cursors.setCursor("hand");
-                GUI.getSpellView().toCast = Optional.empty();
+                GUI.getSpellView().cleanCast();
             } else {
                 WorldManager worldManager = GameScreen.getWorld().getSystem(WorldManager.class);
                 Optional<String> name = worldManager.getEntities()
@@ -133,6 +137,9 @@ public class AOInputProcessor extends Stage {
                 break;
             case AOKeys.ATTACK_2:
                 attack();
+                break;
+            case Input.Keys.L:
+                GUI.getActionBar().toggle();
                 break;
             case Input.Keys.ESCAPE:
                 // Disconnect & go back to LoginScreen

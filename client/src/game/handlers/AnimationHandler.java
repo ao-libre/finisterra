@@ -50,13 +50,12 @@ public class AnimationHandler extends PassiveSystem {
     }
 
     private List<BundledAnimation> createAnimations(IDescriptor descriptor, boolean pingpong) {
-        Log.info("Animation created");
+        Log.info("Animation created: " + Arrays.toString(descriptor.getIndexs()));
         List<BundledAnimation> animations = new ArrayList<>();
-        int[] indexs = descriptor.getIndexs();
-        for (int i = 0; i < indexs.length; i++) {
-            Graphic grh = descriptorHandler.getGraphic(indexs[i]);
-            if (grh != null) {
-                animations.add(new BundledAnimation(grh, pingpong));
+        int[] indexes = descriptor.getIndexs();
+        for (int grhIndex : indexes) {
+            if (grhIndex > 0) {
+                animations.add(saveBundledAnimation(grhIndex));
             }
         }
         return animations;
@@ -105,7 +104,7 @@ public class AnimationHandler extends PassiveSystem {
     }
 
     private BundledAnimation saveBundledAnimation(int grhIndex) {
-        Log.info("BundledAnimation created");
+        Log.info("BundledAnimation created:" + grhIndex);
         Graphic graphic = descriptorHandler.getGraphic(grhIndex);
         return saveGraphic(grhIndex, graphic);
     }

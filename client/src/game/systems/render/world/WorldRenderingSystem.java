@@ -149,7 +149,7 @@ public class WorldRenderingSystem extends BaseSystem {
         mapManager.doTileDraw(batch, y, x, tileRegion);
     }
 
-    public static class UserRange {
+    static class UserRange {
         int minAreaX, minAreaY, maxAreaX, maxAreaY;
 
         void forEachTile(TileDraw tile) {

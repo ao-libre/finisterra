@@ -98,6 +98,7 @@ public class FadingGame extends Game {
 
     }
 
+    @Override
     public void resize(int width, int height) {
         if (this.screen != null) {
             this.screen.resize(width, height);

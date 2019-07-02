@@ -20,7 +20,7 @@ public class Slot extends ImageButton {
 
     static final int SIZE = 64;
 
-    private static Drawable selection = Skins.COMODORE_SKIN.getDrawable("slot-selected");
+    private static Drawable selection = Skins.COMODORE_SKIN.getDrawable("slot-selected2");
     private static Texture equip = new Texture(Gdx.files.local("data/ui/images/slot-equipped.png"));
 
     private Optional<Item> item = Optional.empty();

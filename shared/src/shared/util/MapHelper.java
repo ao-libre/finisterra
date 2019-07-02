@@ -16,6 +16,7 @@ import shared.model.map.Tile;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
@@ -86,7 +87,8 @@ public class MapHelper {
     }
 
     public boolean hasEntity(Set<Integer> entities, WorldPos pos) {
-        return entities
+        Set<Integer> copy = new HashSet<>(entities);
+        return copy
                 .stream()
                 .map(E::E)
                 .filter(e -> !e.hasObject())

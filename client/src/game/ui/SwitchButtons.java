@@ -59,6 +59,18 @@ class SwitchButtons extends Table {
         listeners.forEach(listener -> listener.notify(this.state));
     }
 
+    public void toggle() {
+        switch (state) {
+            case INVENTORY:
+                toggle(State.SPELLS);
+                break;
+            case SPELLS:
+                toggle(State.INVENTORY);
+                break;
+        }
+
+    }
+
     public interface ActionSwitchListener {
         void notify(State state);
     }
