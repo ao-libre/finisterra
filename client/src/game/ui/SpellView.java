@@ -80,7 +80,7 @@ public class SpellView extends Table {
     }
 
     void selected(Spell spell) {
-        selected = Optional.of(spell);
+        selected = Optional.ofNullable(spell);
     }
 
     void preparedToCast(Spell spell) {
