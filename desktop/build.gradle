@@ -152,9 +152,7 @@ jlink {
     launcher{
         name = 'Finisterra Argentum Online Client'
         if (osName().contains('mac')) {
-		run {
-			jvmArgs += '-XstartOnFirstThread'
-		}
+		jvmArgs += '-XstartOnFirstThread'
 	}
     }
 
