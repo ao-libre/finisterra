@@ -9,9 +9,10 @@ out/
 **/out/
 design/resources*
 desktop/build/releases/*.zip
-desktop/build/jdks/**
+desktop/build/releases/ao-java
+desktop/build/jpackage/jdk-14
+desktop/build/jpackage/zip
 desktop/finisterra*
 desktop/java*
-desktop/packing*
 desktop/jdk*
 desktop/desktop*

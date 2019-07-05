@@ -13,7 +13,7 @@
 	"network":{
 		"defaultServer":{
 			"hostname":"localhost",
-			"port":7666
+			"port":9000
 		}
 	}
 }
