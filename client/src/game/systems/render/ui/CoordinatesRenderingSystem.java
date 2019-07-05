@@ -54,7 +54,7 @@ public class CoordinatesRenderingSystem extends OrderedEntityProcessingSystem {
     private void drawCoordinates(int offsetX, int offsetY, WorldPos worldPos) {
         String worldPosString = "[" + worldPos.map + "-" + worldPos.x + "-" + worldPos.y + "]";
         coordLabel.setText(worldPosString);
-        float fontX = cameraSystem.guiCamera.viewportWidth - coordLabel.getWidth() - offsetX;
+        float fontX = cameraSystem.guiCamera.viewportWidth - coordLabel.getPrefWidth() - offsetX;
         float fontY = cameraSystem.guiCamera.viewportHeight - offsetY;
         coordLabel.setPosition(fontX, fontY);
         coordLabel.draw(batch, 1);

@@ -41,6 +41,7 @@ dist.dependsOn classes
 run.dependsOn classes
 
 def releasesDir() { "${projectDir}/build/releases/" }
+def zipDir() { "${projectDir}/build/zip/" }
 static def packingDir() { "packing/" }
 
 static def switchConfig(platform) {
