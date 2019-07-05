@@ -26,4 +26,6 @@ public class Resources {
 
     public static final String CLIENT_CONFIG = "assets/Config.json";
 
+    public static final String SKIN_FILE_PATH = "ao-skin-2/ao-skin.json";
+    public static final String GAME_SKIN_FILE = GAME_UI_PATH + SKIN_FILE_PATH;
 }

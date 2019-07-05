@@ -2,13 +2,11 @@ package game.ui.user;
 
 import com.artemis.E;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import entity.character.status.Level;
 import game.screens.GameScreen;
-import game.utils.Colors;
-import game.utils.Fonts;
 import game.utils.Skins;
 import model.textures.RadialProgress;
 import model.textures.RadialSprite;
@@ -19,11 +17,14 @@ import static com.artemis.E.E;
 
 public class UserImage extends ImageButton {
 
+    private final Label lvlLabel;
     private final RadialProgress radialProgress;
     private final RadialSprite radialSprite;
 
     UserImage() {
         super(Skins.COMODORE_SKIN, "big-disc");
+        lvlLabel = new Label("", Skins.COMODORE_SKIN, "title-no-background");
+        lvlLabel.setAlignment(Align.center);
         radialSprite = new RadialSprite(Skins.COMODORE_SKIN.getRegion("disc-glow"));
         radialProgress = new RadialProgress(Skins.COMODORE_SKIN.getRegion("disc-glow"));
     }
@@ -42,9 +43,8 @@ public class UserImage extends ImageButton {
         float angle = 360 - (360 * percent % 360);
         radialSprite.setAngle(angle);
         radialSprite.setScale(0.8f, 0.8f);
-        radialSprite.draw(batch, getX() + 15, getY() + 15, getWidth() - 15, getHeight() - 15);
-//        radialProgress.setPercent((int) getPercent(level));
-//        radialProgress.draw((SpriteBatch) batch);
+//        radialSprite.draw(batch, getX() + 15, getY() + 15, getWidth() - 15, getHeight() - 15);
+
     }
 
     private float getPercent(Level level) {
@@ -52,9 +52,10 @@ public class UserImage extends ImageButton {
     }
 
     private void drawLevel(Batch batch, Level level) {
-        BitmapFont font = Fonts.WHITE_FONT_WITH_BORDER;
-        Fonts.layout.setText(font, getLevelLabel(level) + " - " + getExp(level), Colors.GREY, getWidth() - 2, Align.center, true);
-        font.draw(batch, Fonts.layout, getX(), getY() + getHeight() / 2);
+        lvlLabel.setText(getLevelLabel(level));
+        lvlLabel.setPosition(getX(), getY() + (getHeight() - lvlLabel.getHeight()) / 2);
+        lvlLabel.setWidth(getWidth());
+        lvlLabel.draw(batch, 1);
     }
 
     private String getExp(Level level) {

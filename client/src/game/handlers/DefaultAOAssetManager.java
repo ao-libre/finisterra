@@ -16,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import game.loaders.*;
 import game.loaders.ObjectsLoader.ObjectParameter;
 import game.utils.Resources;
+import game.utils.Skins;
+import game.utils.Skins.AOSkin;
 import model.descriptors.*;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
@@ -65,6 +67,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         setLoader(OBJS_CLASS, new ObjectsLoader());
         setLoader(SPELLS_CLASS, SharedResources.SPELLS_FILE + JSON_EXTENSION, new SpellsLoader());
         setLoader(DESCRIPTORS_CLASS, new DescriptorsLoader());
+        setLoader(AOSkin.class, new AOSkinLoader());
     }
 
     @Override
@@ -90,7 +93,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     }
 
     private void loadSkins() {
-        // TODO
+        load(Resources.GAME_SKIN_FILE, AOSkin.class);
     }
 
     @Override
@@ -119,8 +122,8 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     }
 
     @Override
-    public Skin getSkin(String key) {
-        return null;
+    public AOSkin getSkin() {
+        return get(Resources.GAME_SKIN_FILE);
     }
 
     @Override

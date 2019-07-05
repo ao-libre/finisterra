@@ -32,7 +32,7 @@ public interface AOAssetManager {
 
     TextureAtlas getTextureAtlas(String key);
 
-    Skin getSkin(String key);
+    Skin getSkin();
 
     Music getMusic(int key);
 

@@ -60,8 +60,8 @@ public class SpellSlot extends ImageButton {
         Table table = new Window("", Skins.COMODORE_SKIN);
         String name = spell.getName();
         int requiredMana = spell.getRequiredMana();
-        table.add(new Label(name, Skins.COMODORE_SKIN, "title-no-background")).prefWidth(200).row();
-        table.add(new Label("Mana: " + requiredMana, Skins.COMODORE_SKIN, "desc-no-background")).pad(20).left();
+//        table.add(new Label(name, Skins.COMODORE_SKIN, "title-no-background")).prefWidth(200).row();
+//        table.add(new Label("Mana: " + requiredMana, Skins.COMODORE_SKIN, "desc-no-background")).pad(20).left();
         table.setHeight(100);
         return table;
     }

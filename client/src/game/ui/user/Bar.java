@@ -1,25 +1,21 @@
 package game.ui.user;
 
 import com.artemis.E;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import game.screens.GameScreen;
 import game.utils.Colors;
-import game.utils.Fonts;
 import game.utils.Skins;
 
 import static com.artemis.E.E;
 
 public class Bar extends Actor {
 
+    private final Label points;
     private static Drawable background = Skins.COMODORE_SKIN.getDrawable("bar-frame");
     private Drawable bar = Skins.COMODORE_SKIN.getDrawable("bar");
     private Kind kind;
@@ -30,6 +26,9 @@ public class Bar extends Actor {
 
     public Bar(Kind kind) {
         this.kind = kind;
+        points = new Label("", Skins.COMODORE_SKIN, "title-no-background");
+        points.setAlignment(Align.right);
+        points.setFontScale(0.8f);
     }
 
     @Override
@@ -82,11 +81,10 @@ public class Bar extends Actor {
     }
 
     private void drawText(Batch batch, int min, int max, float barX, float barY) {
-        float xFactor = getWidth() / ORIGINAL_WIDTH;
-        float yFactor = getHeight() / ORIGINAL_HEIGHT;
-        BitmapFont font = Fonts.WHITE_FONT_WITH_BORDER;
-        Fonts.layout.setText(font, min + "/" + max, Color.WHITE, getWidth() - ORIGINAL_BORDER * 2 - 15, Align.right, false);
-        font.draw(batch, Fonts.layout, barX + ORIGINAL_BORDER, barY + ORIGINAL_BORDER + (getHeight() - Fonts.layout.height) / 2);
+        points.setText(min + "/" + max);
+        points.setWidth(getWidth() - ORIGINAL_BORDER * 2);
+        points.setPosition(barX, barY + ORIGINAL_BORDER + 3);
+        points.draw(batch, 1);
     }
 
     enum Kind {

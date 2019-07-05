@@ -104,7 +104,7 @@ public class GameScreen extends ScreenAdapter {
                 // Sound systems
                 .with(HIGH, new SoundSytem())
                 .with(HIGH, new TiledMapSystem())
-                // HANDLERS
+                // Handlers
                 .with(HANDLER_PRIORITY, new AnimationHandler())
                 .with(HANDLER_PRIORITY, new DescriptorHandler())
                 .with(HANDLER_PRIORITY, new MapHandler())
@@ -113,6 +113,7 @@ public class GameScreen extends ScreenAdapter {
                 .with(HANDLER_PRIORITY, new ParticlesHandler())
                 .with(HANDLER_PRIORITY, new SoundsHandler())
                 .with(HANDLER_PRIORITY, new SpellHandler())
+                .with(HANDLER_PRIORITY, new FontsHandler())
                 // Rendering
                 .with(PRE_ENTITY_RENDER_PRIORITY, new MapGroundRenderingSystem(spriteBatch))
                 .with(PRE_ENTITY_RENDER_PRIORITY, new ObjectRenderingSystem(spriteBatch))

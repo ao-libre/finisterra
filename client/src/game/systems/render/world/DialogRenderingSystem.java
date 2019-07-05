@@ -4,9 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -16,8 +14,10 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import entity.character.parts.Body;
 import entity.world.Dialog;
+import entity.world.Dialog.Kind;
 import game.handlers.DescriptorHandler;
-import game.utils.Fonts;
+import game.handlers.FontsHandler;
+import game.utils.Colors;
 import game.utils.Skins;
 import position.Pos2D;
 import position.WorldPos;
@@ -30,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 public class DialogRenderingSystem extends RenderingSystem {
 
     private DescriptorHandler descriptorHandler;
+    private FontsHandler fontsHandler;
 
     private static final int ALPHA_TIME = 2;
     private static final int MAX_LENGTH = (int) (120 * SCALE);
@@ -37,31 +38,34 @@ public class DialogRenderingSystem extends RenderingSystem {
     private static final float TIME = 0.3f;
     private static final float VELOCITY = DISTANCE_TO_TOP / TIME;
 
-    private LoadingCache<Dialog, Actor> labels = CacheBuilder
+    private LoadingCache<Dialog, Table> labels = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
-            .build(new CacheLoader<Dialog, Actor>() {
+            .build(new CacheLoader<Dialog, Table>() {
                 @Override
-                public Actor load(Dialog dialog) {
+                public Table load(Dialog dialog) {
                     Table table = new Table(Skins.COMODORE_SKIN);
                     String text = dialog.text;
-                    Label label = new Label(text, Skins.COMODORE_SKIN, "speech-bubble");
+                    Label label = new Label(text, Skins.COMODORE_SKIN, dialog.kind == Kind.MAGIC_WORDS ? "title-no-background" : "speech-bubble");
                     label.getGlyphLayout().setText(label.getStyle().font, text);
-                    label.getStyle().font.setUseIntegerPositions(false);
                     float prefWidth = label.getGlyphLayout().width;
-                    label.getStyle().font = Fonts.WHITE_FONT;
                     label.getColor().a = 0.8f;
                     label.setWrap(true);
                     label.setAlignment(Align.center);
                     Log.info("Width: " + prefWidth);
-                    table.add(label).width(Math.min(prefWidth + 10, 200));
+                    table.add(label).width(Math.min(prefWidth + 20, MAX_LENGTH));
                     return table;
                 }
-
             });
 
     public DialogRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(Dialog.class, Body.class, WorldPos.class), batch, CameraKind.WORLD);
+    }
+
+    private Color setColor(Dialog dialog, Label label) {
+        Color prev = label.getStyle().fontColor.cpy();
+        label.setColor(dialog.kind == Kind.MAGIC_WORDS ? Colors.MANA : Color.WHITE);
+        return prev;
     }
 
     @Override
@@ -71,11 +75,7 @@ public class DialogRenderingSystem extends RenderingSystem {
         dialog.time -= world.getDelta();
         if (dialog.time > 0) {
             if (dialog.text != null && dialog.text.length() > 0) {
-                if (dialog.kind.equals(Dialog.Kind.MAGIC_WORDS)) {
-                    drawFont(player, playerPos, dialog);
-                } else {
-                    drawBubble(player, playerPos, dialog);
-                }
+                drawBubble(player, playerPos, dialog);
             }
         } else {
             labels.invalidate(dialog);
@@ -84,7 +84,7 @@ public class DialogRenderingSystem extends RenderingSystem {
     }
 
     private void drawBubble(E player, Pos2D playerPos, Dialog dialog) {
-        Actor label = labels.getUnchecked(dialog);
+        Table label = labels.getUnchecked(dialog);
         final float x = playerPos.x + (Tile.TILE_PIXEL_WIDTH - label.getWidth()) / 2;
 
         float up = Dialog.DEFAULT_TIME - dialog.time <= TIME ? (Dialog.DEFAULT_TIME - dialog.time) * VELOCITY : DISTANCE_TO_TOP;
@@ -92,31 +92,13 @@ public class DialogRenderingSystem extends RenderingSystem {
         final float y = playerPos.y - 55 * SCALE + offsetY - up + label.getHeight();
 
         label.setPosition(x, y);
-
+        Label child = (Label) label.getChild(0);
+        Color color = setColor(dialog, child);
         if (dialog.time < ALPHA_TIME) {
             dialog.alpha = dialog.time / ALPHA_TIME;
         }
-        label.setRotation(180);
         label.draw(getBatch(), dialog.alpha);
-    }
-
-    private void drawFont(E player, Pos2D playerPos, Dialog dialog) {
-        BitmapFont font = dialog.kind.equals(Dialog.Kind.MAGIC_WORDS) ? Fonts.MAGIC_FONT : Fonts.DIALOG_FONT;
-        Color copy = font.getColor().cpy();
-        if (dialog.time < ALPHA_TIME) {
-            dialog.alpha = dialog.time / ALPHA_TIME;
-            font.getColor().a = dialog.alpha;
-        }
-
-        Fonts.dialogLayout.setText(font, dialog.text);
-        float width = Math.min(Fonts.dialogLayout.width, MAX_LENGTH);
-        Fonts.dialogLayout.setText(font, dialog.text, font.getColor(), width, Align.center | Align.top, true);
-        final float fontX = playerPos.x + (Tile.TILE_PIXEL_WIDTH - width) / 2;
-        float up = Dialog.DEFAULT_TIME - dialog.time <= TIME ? (Dialog.DEFAULT_TIME - dialog.time) * VELOCITY : DISTANCE_TO_TOP;
-        float offsetY = descriptorHandler.getBody(player.getBody().index).getHeadOffsetY() * SCALE;
-        final float fontY = playerPos.y - 70 * SCALE + offsetY - up + Fonts.dialogLayout.height;
-        font.draw(getBatch(), Fonts.dialogLayout, fontX, fontY);
-        font.setColor(copy);
+        child.getStyle().fontColor = color;
     }
 
 }

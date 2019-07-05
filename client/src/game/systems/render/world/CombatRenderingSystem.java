@@ -4,28 +4,59 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import com.esotericsoftware.minlog.Log;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import entity.character.parts.Body;
 import entity.world.CombatMessage;
 import game.handlers.DescriptorHandler;
-import game.utils.Fonts;
+import game.utils.Colors;
+import game.utils.Skins;
 import position.Pos2D;
 import position.WorldPos;
 import shared.model.map.Tile;
 import shared.util.Util;
 
-import static com.artemis.E.E;
+import java.util.concurrent.TimeUnit;
 
-@Wire(injectInherited=true)
+@Wire(injectInherited = true)
 public class CombatRenderingSystem extends RenderingSystem {
 
     private DescriptorHandler descriptorHandler;
 
     public static final float VELOCITY = 1f;
+
+    private LoadingCache<CombatMessage, Table> messages = CacheBuilder
+            .newBuilder()
+            .expireAfterAccess(5, TimeUnit.MINUTES)
+            .build(new CacheLoader<CombatMessage, Table>() {
+                @Override
+                public Table load(CombatMessage message) {
+                    Table table = new Table(Skins.COMODORE_SKIN);
+
+                    String text = message.text;
+                    LabelStyle labelStyle = new LabelStyle(Skins.COMODORE_SKIN.getFont("flipped-shadow"), getColor(message));
+                    Label label = new Label(text, labelStyle);
+                    label.setFontScale(message.kind == CombatMessage.Kind.STAB ? 1.3f : 1f);
+                    label.getGlyphLayout().setText(label.getStyle().font, text);
+                    float prefWidth = label.getGlyphLayout().width;
+
+                    label.setWrap(true);
+                    label.setAlignment(Align.center);
+                    Log.info("Width: " + prefWidth);
+                    table.add(label).width(Math.min(prefWidth + 10, 200));
+                    return table;
+                }
+
+            });
 
     public CombatRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(CombatMessage.class, Body.class, WorldPos.class), batch, CameraKind.WORLD);
@@ -39,6 +70,7 @@ public class CombatRenderingSystem extends RenderingSystem {
             return;
         }
         CombatMessage combatMessage = player.getCombatMessage();
+        Table label = messages.getUnchecked(combatMessage);
         combatMessage.offset = Interpolation.pow2OutInverse.apply(combatMessage.time / CombatMessage.DEFAULT_TIME) * CombatMessage.DEFAULT_OFFSET;
         if (combatMessage.offset < 0) {
             combatMessage.offset = 0;
@@ -46,43 +78,43 @@ public class CombatRenderingSystem extends RenderingSystem {
 
         combatMessage.time -= world.getDelta();
         if (combatMessage.time > 0) {
-            BitmapFont font;
-            switch (combatMessage.kind) {
-                case PHYSICAL:
-                    font = Fonts.COMBAT_FONT;
-                    break;
-                case STAB:
-                    font = Fonts.STAB_FONT;
-                    break;
-                case MAGIC:
-                    font = combatMessage.text.startsWith("+") ? Fonts.GM_NAME_FONT : Fonts.MAGIC_COMBAT_FONT;
-                    break;
-                case ENERGY:
-                    font = Fonts.ENERGY_FONT;
-                    break;
-                default:
-                    font = Fonts.COMBAT_FONT;
-            }
-
-            Color copy = font.getColor().cpy();
+            Label lbl = (Label) label.getChild(0);
             if (combatMessage.time < CombatMessage.START_ALPHA) {
                 combatMessage.alpha = MathUtils.clamp(combatMessage.time / CombatMessage.START_ALPHA, 0f, 1f);
-                font.getColor().a = combatMessage.alpha;
-                font.getColor().premultiplyAlpha();
+                lbl.getStyle().fontColor.a = combatMessage.alpha;
+                lbl.getStyle().fontColor.premultiplyAlpha();
             }
-
-            Fonts.dialogLayout.setText(font, combatMessage.text);
-            float width = Fonts.dialogLayout.width;
-            Fonts.dialogLayout.setText(font, combatMessage.text, font.getColor(), width, Align.center, true);
-            final float fontX = playerPos.x + (Tile.TILE_PIXEL_WIDTH - Fonts.dialogLayout.width) / 2;
+            float width = label.getWidth();
+            final float fontX = playerPos.x + (Tile.TILE_PIXEL_WIDTH - width) / 2;
             int bodyOffset = descriptorHandler.getBody(player.getBody().index).getHeadOffsetY();
             final float fontY = playerPos.y + combatMessage.offset + bodyOffset - 60 * SCALE
-                    + Fonts.dialogLayout.height;
-            font.draw(getBatch(), Fonts.dialogLayout, fontX, fontY);
-            font.setColor(copy);
+                    + label.getHeight();
+            label.setPosition(fontX, fontY);
+            label.draw(getBatch(), 1);
         } else {
+            messages.invalidate(player.getCombatMessage());
             player.removeCombatMessage();
         }
+    }
+
+    private Color getColor(CombatMessage message) {
+        Color color = Color.WHITE.cpy();
+        switch (message.kind) {
+            case MAGIC:
+                color = Colors.MANA.cpy();
+                break;
+            case STAB:
+                color = Color.WHITE.cpy();
+                break;
+            case ENERGY:
+                color = Colors.YELLOW.cpy();
+                break;
+            case PHYSICAL:
+                color = Colors.TRANSPARENT_RED.cpy();
+                break;
+        }
+
+        return color;
     }
 
 }

@@ -84,12 +84,8 @@ public class SpellView extends Table {
     }
 
     void preparedToCast(Spell spell) {
-        toCast = Optional.of(spell);
+        toCast = Optional.ofNullable(spell);
         changeCursor();
-    }
-
-    private Comparator<Spell> getComparator() {
-        return (s1, s2) -> s2.getFxGrh() - s1.getFxGrh();
     }
 
     public boolean isOver() {

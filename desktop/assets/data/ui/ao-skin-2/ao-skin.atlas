@@ -23,6 +23,8 @@ bar
   rotate: false
   xy: 758, 984
   size: 193, 14
+  split: 1, 1, 1, 1
+  pad: 3, 2, 2, 2
   orig: 193, 14
   offset: 0, 0
   index: -1
@@ -156,6 +158,15 @@ speech-bubble
   size: 32, 32
   split: 4, 19, 3, 6
   pad: 5, 19, 4, 6
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+speech-bubble-flipped
+  rotate: false
+  xy: 229, 193
+  size: 32, 32
+  split: 4, 19, 5, 3
+  pad: 4, 4, 5, 3
   orig: 32, 32
   offset: 0, 0
   index: -1

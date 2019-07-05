@@ -18,8 +18,7 @@ public class Skins {
     //    public static final Skin COMODORE_SKIN = new Skin(Gdx.files.internal("data/ui/commodore64-skin/skin/uiskin.json"));
     public static final Skin COMODORE_SKIN = AO_SKIN;
 
-
-    private static final class AOSkin extends Skin {
+    public static final class AOSkin extends Skin {
 
         public AOSkin(FileHandle fileHandle) {
             super(fileHandle);
