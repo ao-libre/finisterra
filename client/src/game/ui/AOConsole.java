@@ -1,20 +1,18 @@
 package game.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import game.utils.Colors;
-import game.utils.Fonts;
+import game.utils.Skins;
 
 import java.util.LinkedList;
 
 public class AOConsole extends Actor {
 
     static final float MAX_MESSAGES = 6;
-    private static Label.LabelStyle ERROR_STYLE = new Label.LabelStyle(Fonts.CONSOLE_FONT, Colors.TRANSPARENT_RED);
-    private static Label.LabelStyle INFO_STYLE = new Label.LabelStyle(Fonts.CONSOLE_FONT, Colors.GREY);
-    private static Label.LabelStyle WARNING_STYLE = new Label.LabelStyle(Fonts.CONSOLE_FONT, Colors.YELLOW);
-    private static Label.LabelStyle COMBAT_STYLE = new Label.LabelStyle(Fonts.CONSOLE_FONT, Colors.COMBAT);
     private LinkedList<Actor> messages = new LinkedList<>();
 
     AOConsole() {
@@ -22,23 +20,25 @@ public class AOConsole extends Actor {
     }
 
     public void addInfo(String message) {
-        addMessage(message, INFO_STYLE);
+        addMessage(message, Colors.GREY);
     }
 
     public void addError(String message) {
-        addMessage(message, ERROR_STYLE);
+        addMessage(message, Colors.TRANSPARENT_RED);
     }
 
     public void addWarning(String message) {
-        addMessage(message, WARNING_STYLE);
+        addMessage(message, Colors.YELLOW);
     }
 
     public void addCombat(String message) {
-        addMessage(message, COMBAT_STYLE);
+        addMessage(message, Colors.COMBAT);
     }
 
-    private void addMessage(String message, Label.LabelStyle style) {
-        Label label = new Label(message, style);
+    private void addMessage(String message, Color color) {
+        LabelStyle labelStyle = new LabelStyle(Skins.COMODORE_SKIN.getFont("big-shadow"), color);
+        Label label = new Label(message, labelStyle);
+        label.getStyle().fontColor = color;
         label.setX(getX());
         if (messages.size() >= MAX_MESSAGES) {
             messages.pollLast();
@@ -48,8 +48,9 @@ public class AOConsole extends Actor {
     }
 
     private void setY() {
+        float v = getY() - messages.size() * 16;
         for (int i = 0; i < messages.size(); i++) {
-            messages.get(i).setY(getY() + i * 16);
+            messages.get(i).setY(v + i * 16);
         }
     }
 
@@ -65,4 +66,6 @@ public class AOConsole extends Actor {
             message.draw(batch, parentAlpha * alpha);
         });
     }
+
+
 }

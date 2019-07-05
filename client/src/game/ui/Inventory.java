@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import entity.character.info.Inventory.Item;
@@ -30,24 +32,39 @@ public class Inventory extends Window {
     static final int COLUMNS = 6;
     private static final int ROWS = 1;
     private static final int SIZE = COLUMNS * ROWS;
+    private final ClickListener mouseListener;
+    private int base;
 
     private ArrayList<Slot> slots;
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
-    private boolean over;
 
     Inventory() {
-        super("", Skins.COMODORE_SKIN, "black");
+        super("", Skins.COMODORE_SKIN, "inventory");
         setMovable(false);
         slots = new ArrayList<>();
         for (int i = 0; i < SIZE; i++) {
             Slot newSlot = new Slot();
             slots.add(newSlot);
-            add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE);
+            add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
+            if (i < SIZE - 1) {
+                add(new Image(getSkin().getDrawable("separator"))).row();
+            }
         }
+        mouseListener = getMouseListener();
+        addListener(mouseListener);
+    }
 
-        addListener(new ClickListener() {
+    private ClickListener getMouseListener() {
+        return new ClickListener() {
+
+            @Override
+            public boolean scrolled(InputEvent event, float x, float y, int amount) {
+                Inventory.this.scrolled(amount);
+                return false;
+            }
+
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 selected.ifPresent(slot -> slot.setSelected(false));
@@ -103,8 +120,8 @@ public class Inventory extends Window {
                     if (slot.isPresent()) {
                         Slot target = slot.get();
                         InventoryUpdate update = new InventoryUpdate(E(GameScreen.getPlayer()).getNetwork().id);
-                        int targetIndex = slots.indexOf(target);
-                        int originIndex = slots.indexOf(dragging.get());
+                        int targetIndex = base + slots.indexOf(target);
+                        int originIndex = base + slots.indexOf(dragging.get());
                         Item originItem = userItems[originIndex];
                         if (userItems[targetIndex] != null) {
                             update.add(targetIndex, originItem);
@@ -117,7 +134,7 @@ public class Inventory extends Window {
                             userItems[originIndex] = null;
                         }
                         GameScreen.getClient().sendToAll(update);
-                        updateUserInventory();
+                        updateUserInventory(base);
                     } else {
                         WorldUtils.mouseToWorldPos().ifPresent(worldPos -> GameScreen.getClient().sendToAll(new DropItem(E(GameScreen.getPlayer()).getNetwork().id, draggingIndex(), worldPos)));
                     }
@@ -131,24 +148,19 @@ public class Inventory extends Window {
                 a[j] = t;
             }
 
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                super.enter(event, x, y, pointer, fromActor);
-                over = isOver();
-            }
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
-                super.exit(event, x, y, pointer, toActor);
-                over = isOver();
-            }
-        });
+        };
     }
 
-    public void updateUserInventory() {
+    public void scrolled(int amount) {
+        base += amount;
+        base = MathUtils.clamp(base, 0, entity.character.info.Inventory.SIZE - Inventory.SIZE);
+        updateUserInventory(base);
+    }
+
+    public void updateUserInventory(int base) {
         Item[] userItems = E(GameScreen.getPlayer()).getInventory().items;
         for (int i = 0; i < SIZE; i++) {
-            Item item = i < userItems.length ? userItems[i] : null;
+            Item item = base + i < userItems.length ? userItems[base + i] : null;
             slots.get(i).setItem(item);
         }
     }
@@ -157,13 +169,13 @@ public class Inventory extends Window {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         dragging.ifPresent(slot -> slot.getItem().ifPresent(item -> {
-            Optional<Obj> object = ObjectHandler.getObject(item.objId);
+            ObjectHandler objectHandler = GameScreen.getWorld().getSystem(ObjectHandler.class);
+            Optional<Obj> object = objectHandler.getObject(item.objId);
             object.ifPresent(obj -> {
-                TextureRegion graphic = ObjectHandler.getGraphic(obj);
-                int x1 = Gdx.input.getX() - (graphic.getRegionWidth() / 2) - 4;
+                TextureRegion graphic = objectHandler.getGraphic(obj);
+                int x1 = Gdx.input.getX() - (graphic.getRegionWidth() / 2);
                 int y1 = Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2);
-                Vector2 tempPosition = stageToLocalCoordinates(new Vector2(x1, y1));
-                batch.draw(graphic, tempPosition.x, tempPosition.y);
+                batch.draw(graphic, x1, y1);
             });
         }));
     }
@@ -173,16 +185,17 @@ public class Inventory extends Window {
     }
 
     public int selectedIndex() {
-        assert(selected.isPresent());
+        assert (selected.isPresent());
         return slots.indexOf(selected.get());
     }
 
     private int draggingIndex() {
-        assert(dragging.isPresent());
+        assert (dragging.isPresent());
         return slots.indexOf(dragging.get());
     }
 
     public boolean isOver() {
-        return over;
+        return mouseListener.isOver();
     }
+
 }

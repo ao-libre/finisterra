@@ -6,6 +6,7 @@ import com.artemis.Aspect;
 import static com.artemis.E.E;
 
 import com.artemis.E;
+import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
 import game.handlers.SoundsHandler;
@@ -27,7 +28,10 @@ class SoundIndexPair {
     }
 }
 
+@Wire
 public class SoundSytem extends IteratingSystem {
+
+    private SoundsHandler soundsHandler;
 
     public static float volume = 1.0f;
 
@@ -46,7 +50,7 @@ public class SoundSytem extends IteratingSystem {
         E entity = E(entityId);
         AOSound sound = entity.getAOSound();
 
-        long soundIndex = SoundsHandler.playSound(sound.soundID, sound.shouldLoop);
+        long soundIndex = soundsHandler.playSound(sound.soundID, sound.shouldLoop);
         sounds.put(entityId, new SoundIndexPair(sound.soundID, soundIndex));
     }
 
@@ -56,7 +60,7 @@ public class SoundSytem extends IteratingSystem {
 
         SoundIndexPair soundInstance = sounds.get(entityId);
         if (soundInstance != null) {
-            SoundsHandler.stopSound(soundInstance.soundID, soundInstance.soundIndex);
+            soundsHandler.stopSound(soundInstance.soundID, soundInstance.soundIndex);
         }
     }
 
@@ -73,7 +77,7 @@ public class SoundSytem extends IteratingSystem {
                 float distanceX = WorldUtils.getDistanceX(soundPos, playerPos);
                 if (sounds.containsKey(entityId)) {
                     SoundIndexPair soundIndexPair = sounds.get(entityId);
-                    SoundsHandler.updatePan(soundIndexPair.soundID, soundIndexPair.soundIndex, distanceX == 0 ? distanceX : MathUtils.clamp(1 / distanceX, -1, 1), MathUtils.clamp(1 / distance, -1, 1));
+                    soundsHandler.updatePan(soundIndexPair.soundID, soundIndexPair.soundIndex, distanceX == 0 ? distanceX : MathUtils.clamp(1 / distanceX, -1, 1), MathUtils.clamp(1 / distance, -1, 1));
                 }
             }
         }

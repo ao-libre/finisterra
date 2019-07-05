@@ -9,8 +9,6 @@ public class DialogText extends Table {
     private TextField textf;
 
     DialogText() {
-        row().colspan(1).expandX().fillX();
-        textf = new TextField("", Skins.COMODORE_SKIN, "transparent");
         setVisible(false);
     }
 
@@ -19,6 +17,9 @@ public class DialogText extends Table {
     }
 
     public void toggle() {
+        if (textf == null) {
+            textf = new TextField("", Skins.COMODORE_SKIN);
+        }
         setVisible(!isVisible());
         if (isVisible()) {
             add(textf).fillX();

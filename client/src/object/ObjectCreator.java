@@ -1,15 +1,12 @@
 package object;
 
-import com.artemis.Entity;
-import com.artemis.SuperMapper;
-import com.artemis.World;
-import com.artemis.WorldConfigurationBuilder;
+import com.artemis.*;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import game.handlers.AssetHandler;
+import entity.character.Character;
 import game.handlers.StateHandler;
 import game.screens.CharacterScreen;
 import game.systems.anim.IdleAnimationSystem;
@@ -21,11 +18,13 @@ import game.systems.physics.PlayerInputSystem;
 import game.systems.render.world.CharacterRenderingSystem;
 import object.systems.FaceChangerSystem;
 
+import java.util.Optional;
+
 import static com.artemis.E.E;
 
 public class ObjectCreator extends Game {
 
-    private static final float GAME_SCREEN_ZOOM = 2f;
+    private static final float GAME_SCREEN_ZOOM = 1f;
 
     private SpriteBatch spriteBatch; // This is only used in GameScreen
 
@@ -36,9 +35,9 @@ public class ObjectCreator extends Game {
     @Override
     public void create() {
         Gdx.app.debug("AOGame", "Opening Objects Creator...");
-        AssetHandler.load();
-        if (AssetHandler.getState() == StateHandler.LOADED)
-            Gdx.app.debug("AOGame", "Handler loaded!");
+//        AssetHandler.load(assetManager);
+//        if (AssetHandler.getState() == StateHandler.LOADED)
+//            Gdx.app.debug("AOGame", "Handler loaded!");
         this.spriteBatch = new SpriteBatch();
         initWorld();
         postWorldInit();
@@ -99,6 +98,13 @@ public class ObjectCreator extends Game {
         GL20 gl = Gdx.gl;
         gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        EBag es = E.withComponent(Character.class);
+        CharacterRenderingSystem system = world.getSystem(CharacterRenderingSystem.class);
+        system.getBatch().begin();
+        for (E e : es) {
+            system.drawPlayer(e, Optional.empty());
+        }
+        system.getBatch().end();
         super.render();
     }
 

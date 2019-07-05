@@ -19,6 +19,7 @@ import java.util.Optional;
 @Wire(injectInherited = true)
 public class MapLayerRenderingSystem extends RenderingSystem {
 
+    private MapManager mapManager;
     private TiledMapSystem mapSystem;
     private CameraSystem cameraSystem;
     private WorldRenderingSystem worldRenderingSystem;
@@ -55,7 +56,7 @@ public class MapLayerRenderingSystem extends RenderingSystem {
             if (graphic == 0) {
                 return;
             }
-            MapManager.doTileDraw(getBatch(), world.getDelta(), y, x, graphic);
+            mapManager.doTileDraw(getBatch(), world.getDelta(), y, x, graphic);
         });
     }
 

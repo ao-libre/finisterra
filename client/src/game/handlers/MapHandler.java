@@ -1,5 +1,6 @@
 package game.handlers;
 
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 import position.WorldPos;
 import shared.model.map.Map;
 import shared.model.map.Tile;
@@ -7,7 +8,7 @@ import shared.util.MapHelper;
 
 import static shared.util.MapHelper.CacheStrategy.FIVE_MIN_EXPIRE;
 
-public class MapHandler {
+public class MapHandler extends PassiveSystem {
 
     private static MapHelper helper;
 
@@ -19,11 +20,11 @@ public class MapHandler {
     }
 
     public static Map get(int map) {
-        return helper.getMap(map);
+        return getHelper().getMap(map);
     }
 
     public static Tile getTile(WorldPos pos) {
         Map map = get(pos.map);
-        return helper.getTile(map, pos);
+        return getHelper().getTile(map, pos);
     }
 }

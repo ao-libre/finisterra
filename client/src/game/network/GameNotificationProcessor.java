@@ -34,6 +34,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     private WorldManager worldManager;
     private CameraShakeSystem cameraShakeSystem;
+    private SoundsHandler soundsHandler;
 
     @Override
     public void processNotification(EntityUpdate entityUpdate) {
@@ -95,7 +96,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
                 Log.info("Item equipped: " + item.equipped);
             }
         });
-        GUI.getInventory().updateUserInventory();
+        GUI.getInventory().updateUserInventory(0);
     }
 
     @Override
@@ -180,6 +181,6 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     @Override
     public void processNotification(SoundNotification soundNotification) {
         int soundNumber = soundNotification.getSoundNumber();
-        SoundsHandler.playSound(soundNumber);
+        soundsHandler.playSound(soundNumber);
     }
 }

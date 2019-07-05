@@ -105,7 +105,7 @@ public class CharacterScreen extends ScreenAdapter {
     }
 
     private static class Chooser extends Window {
-
+        private ObjectHandler objectHandler;
         private final Stage stage;
 
         Chooser() {
@@ -143,13 +143,13 @@ public class CharacterScreen extends ScreenAdapter {
         private Set<Obj> getItems(Part part) {
             switch (part) {
                 case WEAPON:
-                    return ObjectHandler.getTypeObjects(Type.WEAPON).stream().map(WeaponObj.class::cast).collect(Collectors.toSet());
+                    return objectHandler.getTypeObjects(Type.WEAPON).stream().map(WeaponObj.class::cast).collect(Collectors.toSet());
                 case SHIELD:
-                    return ObjectHandler.getTypeObjects(Type.SHIELD).stream().map(ShieldObj.class::cast).collect(Collectors.toSet());
+                    return objectHandler.getTypeObjects(Type.SHIELD).stream().map(ShieldObj.class::cast).collect(Collectors.toSet());
                 case BODY:
-                    return ObjectHandler.getTypeObjects(Type.ARMOR).stream().map(ArmorObj.class::cast).collect(Collectors.toSet());
+                    return objectHandler.getTypeObjects(Type.ARMOR).stream().map(ArmorObj.class::cast).collect(Collectors.toSet());
                 case HELMET:
-                    return ObjectHandler.getTypeObjects(Type.HELMET).stream().map(HelmetObj.class::cast).collect(Collectors.toSet());
+                    return objectHandler.getTypeObjects(Type.HELMET).stream().map(HelmetObj.class::cast).collect(Collectors.toSet());
             }
             return Collections.emptySet();
         }

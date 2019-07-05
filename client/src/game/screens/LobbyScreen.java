@@ -2,10 +2,12 @@ package game.screens;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import game.systems.network.ClientSystem;
+import game.utils.Skins;
 import shared.model.lobby.Player;
 import shared.model.lobby.Room;
 import shared.network.lobby.CreateRoomRequest;
@@ -42,9 +44,15 @@ public class LobbyScreen extends AbstractScreen {
     }
 
     @Override
+    protected void keyPressed(int keyCode) {
+
+    }
+
+    @Override
     void createContent() {
         roomList = new List<>(getSkin());
 
+        Table container = new Table(getSkin());
         TextButton createRoomButton = new TextButton("CREATE ROOM", getSkin());
         createRoomButton.addListener(new ClickListener() {
             @Override
@@ -66,11 +74,13 @@ public class LobbyScreen extends AbstractScreen {
             }
         });
 
-        getMainTable().add(roomList).width(400).height(400);
-        getMainTable().row();
-        getMainTable().add(joinRoomButton);
-        getMainTable().row();
-        getMainTable().add(createRoomButton);
+        container.add(roomList).width(400).height(400);
+        container.row();
+        container.add(joinRoomButton);
+        container.row();
+        container.add(createRoomButton);
+        container.getColor().a = 0.8f;
+        getMainTable().add(container);
 
     }
 

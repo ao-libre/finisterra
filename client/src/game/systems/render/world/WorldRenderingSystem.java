@@ -31,6 +31,8 @@ import static graphics.Effect.NO_REF;
 @Wire
 public class WorldRenderingSystem extends BaseSystem {
 
+    private MapManager mapManager;
+    private AnimationHandler animationHandler;
     private SpriteBatch batch;
     private CameraSystem cameraSystem;
     private TiledMapSystem tiledMapSystem;
@@ -137,17 +139,17 @@ public class WorldRenderingSystem extends BaseSystem {
     }
 
     private void drawTile(SpriteBatch batch, float delta, int graphic, int x, int y) {
-        BundledAnimation animation = AnimationHandler.getGraphicAnimation(graphic);
+        BundledAnimation animation = animationHandler.getGraphicAnimation(graphic);
         TextureRegion tileRegion = animation.isAnimated() ? animation.getAnimatedGraphic(true) : animation.getGraphic();
 
         if (animation.isAnimated()) {
             animation.setAnimationTime(animation.getAnimationTime() + delta);
         }
 
-        MapManager.doTileDraw(batch, y, x, tileRegion);
+        mapManager.doTileDraw(batch, y, x, tileRegion);
     }
 
-    public static class UserRange {
+    static class UserRange {
         int minAreaX, minAreaY, maxAreaX, maxAreaY;
 
         void forEachTile(TileDraw tile) {

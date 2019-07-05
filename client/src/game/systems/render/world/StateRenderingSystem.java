@@ -25,10 +25,7 @@ public class StateRenderingSystem extends RenderingSystem {
         // search position
         Pos2D playerPos = Util.toScreen(E(entityId).worldPosPos2D());
         // draw [P] in cyan color
-        Fonts.layout.setText(Fonts.GM_NAME_FONT, "[P]");
-        final float fontX = playerPos.x - (Tile.TILE_PIXEL_WIDTH) / 2;
-        final float fontY = playerPos.y + (Fonts.layout.height) / 2 - 15;
-        Fonts.GM_NAME_FONT.draw(getBatch(), Fonts.layout, fontX, fontY);
+        // TODO
     }
 
     @Override

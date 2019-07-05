@@ -5,14 +5,11 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import game.systems.OrderedEntityProcessingSystem;
 import game.systems.camera.CameraSystem;
-import game.utils.Fonts;
-import model.textures.TextureUtils;
+import game.utils.Skins;
 import position.WorldPos;
 
 import java.util.Comparator;
@@ -26,10 +23,12 @@ public class CoordinatesRenderingSystem extends OrderedEntityProcessingSystem {
     private static final int BORDER = 6;
     private SpriteBatch batch;
     private CameraSystem cameraSystem;
+    private final Label coordLabel;
 
     public CoordinatesRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(Focused.class, WorldPos.class));
         this.batch = batch;
+        coordLabel = new Label("", Skins.COMODORE_SKIN);
     }
 
     @Override
@@ -54,19 +53,11 @@ public class CoordinatesRenderingSystem extends OrderedEntityProcessingSystem {
 
     private void drawCoordinates(int offsetX, int offsetY, WorldPos worldPos) {
         String worldPosString = "[" + worldPos.map + "-" + worldPos.x + "-" + worldPos.y + "]";
-        BitmapFont font = Fonts.CONSOLE_FONT;
-        Fonts.layout.setText(font, worldPosString);
-        float fontX = cameraSystem.guiCamera.viewportWidth - Fonts.layout.width - offsetX;
+        coordLabel.setText(worldPosString);
+        float fontX = cameraSystem.guiCamera.viewportWidth - coordLabel.getPrefWidth() - offsetX;
         float fontY = cameraSystem.guiCamera.viewportHeight - offsetY;
-        //background
-        Color oldColor = batch.getColor();
-        Color black = Color.BLACK.cpy();
-        batch.setColor(black.r, black.g, black.b, ALPHA);
-        batch.draw(TextureUtils.white, fontX - (BORDER >> 1), fontY - (BORDER >> 1), Fonts.layout.width + BORDER, Fonts.layout.height + BORDER);
-        //text
-        batch.setColor(Color.WHITE.cpy());
-        font.draw(batch, Fonts.layout, fontX, fontY + Fonts.layout.height);
-        batch.setColor(oldColor);
+        coordLabel.setPosition(fontX, fontY);
+        coordLabel.draw(batch, 1);
     }
 
     @Override

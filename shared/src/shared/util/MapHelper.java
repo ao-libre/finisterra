@@ -1,5 +1,6 @@
 package shared.util;
 
+import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -15,12 +16,11 @@ import shared.model.map.Tile;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
-
-import static com.artemis.E.E;
 
 public class MapHelper {
 
@@ -87,13 +87,17 @@ public class MapHelper {
     }
 
     public boolean hasEntity(Set<Integer> entities, WorldPos pos) {
-        return entities.stream().anyMatch(entity -> {
-            boolean isObject = E(entity).hasObject();
-            boolean isFootPrint = E(entity).hasFootprint();
-            boolean samePos = E(entity).hasWorldPos() && pos.equals(E(entity).getWorldPos());
-            boolean hasSameDestination = E(entity).hasMovement() && E(entity).getMovement().destinations.stream().anyMatch(destination -> destination.worldPos.equals(pos));
-            return !isObject && !isFootPrint && (samePos || hasSameDestination);
-        });
+        Set<Integer> copy = new HashSet<>(entities);
+        return copy
+                .stream()
+                .map(E::E)
+                .filter(e -> !e.hasObject())
+                .filter(e -> !e.hasFootprint())
+                .anyMatch(entity -> {
+                    boolean samePos = entity.hasWorldPos() && pos.equals(entity.getWorldPos());
+                    boolean hasSameDestination = entity.hasMovement() && entity.getMovement().destinations.stream().anyMatch(destination -> destination.worldPos.equals(pos));
+                    return (samePos || hasSameDestination);
+                });
     }
 
     /**

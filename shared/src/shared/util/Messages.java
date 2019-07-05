@@ -48,4 +48,6 @@ public class Messages {
 
     // ENTRENAMIENTO
     public static final String EXP_GAIN = "Has ganado %d puntos de experiencia!";
+
+    public static final String CANT_ATTACK = "No puedes atacar tan rápido";
 }

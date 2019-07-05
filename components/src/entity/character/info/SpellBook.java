@@ -8,7 +8,8 @@ import java.io.Serializable;
 @PooledWeaver
 public class SpellBook extends Component implements Serializable {
 
-    public Integer[] spells;
+    public final static int SIZE = 25;
+    public Integer[] spells = new Integer[SIZE];
 
     public SpellBook() {
     }
@@ -24,4 +25,9 @@ public class SpellBook extends Component implements Serializable {
     public void setSpells(Integer[] spells) {
         this.spells = spells;
     }
+
+    public void set(int i, Integer spellId) {
+        spells[i] = spellId;
+    }
+
 }

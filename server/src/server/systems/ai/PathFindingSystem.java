@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.EBag;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import entity.character.Character;
 import entity.character.states.Immobile;
@@ -24,6 +25,8 @@ import shared.network.notifications.EntityUpdate;
 import shared.util.MapHelper;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import static physics.AOPhysics.Movement.*;
 import static server.utils.WorldUtils.WorldUtils;
@@ -39,13 +42,15 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         super(Aspect.all(NPC.class, WorldPos.class, AIMovement.class).exclude(Character.class, Footprint.class, Immobile.class), interval);
     }
 
-    private void updateMap(Integer map) {
+    private AStarMap updateMap(Integer map) {
         Set<Integer> entitiesInMap = mapManager.getEntitiesInMap(map);
         if (entitiesInMap.stream().noneMatch(e -> E.E(e).isCharacter())) {
-            return;
+            return maps.get(map);
         }
         // TODO can we update on each move instead of create all again?
-        maps.put(map, createStarMap(map));
+        AStarMap starMap = createStarMap(map);
+        maps.put(map, starMap);
+        return starMap;
     }
 
     @Override
@@ -59,7 +64,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         if (!maps.containsKey(origin.map)) {
             return;
         }
-
+        AStarMap aStarMap = maps.get(origin.map);
         Optional<E> target1 = findTarget(origin);
         WorldPos targetPos = target1.map(E::getWorldPos).orElse(e.getOriginPos().toWorldPos());
         if (targetPos.equals(e.getWorldPos())) {
@@ -67,9 +72,10 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         } else if (!target1.isPresent() && WorldUtils.WorldUtils(world).distance(origin, e.getOriginPos().toWorldPos()) < 10) {
             return;
         }
+        makeYourMove(e, origin, targetPos, aStarMap);
+    }
 
-        target1.ifPresent(targetE -> Log.info(targetE.id() + " " + targetE.getWorldPos() + " " + (targetE.hasName() ? targetE.getName().text : "")));
-        AStarMap map = maps.get(origin.map);
+    private void makeYourMove(E e, WorldPos origin, WorldPos targetPos, AStarMap map) {
         boolean originWasWall = map.getNodeAt(origin.x, origin.y).isWall;
         boolean targetWasWall = map.getNodeAt(targetPos.x, targetPos.y).isWall;
         map.getNodeAt(origin.x, origin.y).isWall = false;
@@ -80,7 +86,6 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         move(e, from, nextNode);
         map.getNodeAt(origin.x, origin.y).isWall = originWasWall;
         map.getNodeAt(targetPos.x, targetPos.y).isWall = targetWasWall;
-
     }
 
     private void move(E e, Node from, Node nextNode) {

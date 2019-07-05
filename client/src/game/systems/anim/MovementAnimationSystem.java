@@ -21,6 +21,8 @@ import static com.artemis.E.E;
 @Wire
 public class MovementAnimationSystem extends IteratingSystem {
 
+    private AnimationHandler animationHandler;
+
     public MovementAnimationSystem() {
         super(Aspect.all(Heading.class).one(
                 Moving.class, AttackAnimation.class));
@@ -46,12 +48,12 @@ public class MovementAnimationSystem extends IteratingSystem {
 
     private void updateAnimationTime(E entity, Heading heading, boolean reset) {
         Optional<Float> velocity = Optional.empty();
-        if (entity.hasAOPhysics()) {
-            velocity = Optional.of(entity.getAOPhysics().velocity);
+        if (entity.hasAOPhysics() && entity.hasCharacter()) {
+            velocity =  Optional.of(entity.getAOPhysics().velocity);
         }
         if (entity.hasBody()) {
             final Body body = entity.getBody();
-            BundledAnimation animation = AnimationHandler.getBodyAnimation(body, heading.current);
+            BundledAnimation animation = animationHandler.getBodyAnimation(body, heading.current);
             if (animation != null) {
                 velocity.ifPresent(v -> animation.setFrameDuration(v / Tile.TILE_PIXEL_WIDTH));
                 animation.setAnimationTime(!reset ? animation.getAnimationTime() + world.getDelta() : 0);
@@ -59,7 +61,7 @@ public class MovementAnimationSystem extends IteratingSystem {
         }
         if (entity.hasWeapon()) {
             final Weapon weapon = entity.getWeapon();
-            BundledAnimation animation = AnimationHandler.getWeaponAnimation(weapon, heading.current);
+            BundledAnimation animation = animationHandler.getWeaponAnimation(weapon, heading.current);
             if (animation != null) {
                 velocity.ifPresent(v -> animation.setFrameDuration(v / Tile.TILE_PIXEL_WIDTH));
                 animation.setAnimationTime(!reset ? animation.getAnimationTime() + world.getDelta() : 0);
@@ -67,7 +69,7 @@ public class MovementAnimationSystem extends IteratingSystem {
         }
         if (entity.hasShield()) {
             final Shield weapon = entity.getShield();
-            BundledAnimation animation = AnimationHandler.getShieldAnimation(weapon, heading.current);
+            BundledAnimation animation = animationHandler.getShieldAnimation(weapon, heading.current);
             if (animation != null) {
                 velocity.ifPresent(v -> animation.setFrameDuration(v / Tile.TILE_PIXEL_WIDTH));
                 animation.setAnimationTime(!reset ? animation.getAnimationTime() + world.getDelta() : 0);

@@ -4,16 +4,16 @@ apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'de.undercouch.download'
 apply plugin: 'com.github.breadmoirai.github-release'
-
-sourceCompatibility = 1.8
+apply plugin: 'org.beryx.jlink'
 
 sourceSets {
     main.java.srcDirs = ["src/"]
     main.resources.srcDirs = ["assets/"]
 }
 
-def osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
-if (osName.contains('mac')) {
+def osName() { System.getProperty('os.name').toLowerCase(Locale.ROOT) }
+
+if (osName().contains('mac')) {
 	run {
 		jvmArgs += '-XstartOnFirstThread'
 	}
@@ -40,11 +40,9 @@ task dist(type: Jar) {
 dist.dependsOn classes
 run.dependsOn classes
 
-static def releasesDir() { 'build/releases/' }
-
-static def zipDir() { './build/zip/' }
-
-static def packingDir() { 'packing/' }
+def releasesDir() { "${projectDir}/build/releases/" }
+def zipDir() { "${projectDir}/build/zip/" }
+static def packingDir() { "packing/" }
 
 static def switchConfig(platform) {
     def config
@@ -148,4 +146,21 @@ githubRelease {
     prerelease true
     releaseAssets project.file('build/zip/').listFiles()
     apiEndpoint "https://api.github.com"
+}
+
+jlink {
+    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+    launcher{
+        name = 'Finisterra Argentum Online Client'
+        if (osName().contains('mac')) {
+		jvmArgs += '-XstartOnFirstThread'
+	}
+    }
+
+    jpackage {
+        jpackageHome = "${projectDir}/packing/jdks/jpack/bin"
+        outputDir = releasesDir()
+        imageName = 'FinisterraAO'
+        skipInstaller = true
+    }
 }

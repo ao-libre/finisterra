@@ -47,6 +47,7 @@ tasks.withType(JavaExec) {
     // Assign all Java system properties from
     // the command line to the JavaExec task.
     systemProperties System.properties
+    systemProperties.remove("java.endorsed.dirs")
 }
 
 dist.dependsOn classes

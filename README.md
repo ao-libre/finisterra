@@ -19,9 +19,7 @@ git clone https://github.com/ao-libre/ao-java.git
 ```
 ## Requirements
 
-Important: you need to use Java SE Development Kit (JDK) 8 (Java 1.8) to make it run
-
-Download link: https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+Important: you need to use [OpenJDK 12](http://jdk.java.net/12/) to make it run.
 
 ### Run
 * Go to folder and use following commands to run client ```./gradlew desktop:run``` or server ```./gradlew server:run```

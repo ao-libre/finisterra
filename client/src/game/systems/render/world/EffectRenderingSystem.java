@@ -34,6 +34,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
 
     private CameraSystem cameraSystem;
     private WorldManager worldManager;
+    private DescriptorHandler descriptorHandler;
 
     private int srcFunc;
     private int dstFunc;
@@ -63,8 +64,8 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                     particleEffects.put(entityId, particle);
                     break;
                 case FX:
-                    FXDescriptor fxDescriptor = DescriptorHandler.getFX(effectId);
-                    BundledAnimation bundledAnimation = new BundledAnimation(DescriptorHandler.getGraphic(fxDescriptor.getIndexs()[0]), effect.loops);
+                    FXDescriptor fxDescriptor = descriptorHandler.getFX(effectId);
+                    BundledAnimation bundledAnimation = new BundledAnimation(descriptorHandler.getGraphic(fxDescriptor.getIndexs()[0]), effect.loops);
                     fxs.put(entityId, bundledAnimation);
                     break;
             }
@@ -118,7 +119,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
             case FX:
                 BundledAnimation anim = fxs.get(entityId);
                 int effectId = effect.effectId;
-                FXDescriptor fxDescriptor = DescriptorHandler.getFX(effectId);
+                FXDescriptor fxDescriptor = descriptorHandler.getFX(effectId);
                 TextureRegion graphic = anim.getGraphic(false);
                 getBatch().draw(graphic, screenPos.x + (Tile.TILE_PIXEL_WIDTH - graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX(), screenPos.y - graphic.getRegionHeight() + 20 + fxDescriptor.getOffsetY());
                 break;
@@ -136,7 +137,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
         int headOffsetY = 0;
         if (E(entityId).hasBody()) {
             final Body body = E(entityId).getBody();
-            BodyDescriptor bodyDescriptor = DescriptorHandler.getBodies().get(body.index);
+            BodyDescriptor bodyDescriptor = descriptorHandler.getBodies().get(body.index);
             headOffsetY = Math.max(0, bodyDescriptor.getHeadOffsetY());
         }
         return headOffsetY;

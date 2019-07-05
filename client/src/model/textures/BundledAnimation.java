@@ -1,19 +1,3 @@
-/*******************************************************************************
- * Copyright (C) 2014  Rodrigo Troncoso
- *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Affero General Public License as
- *     published by the Free Software Foundation, either version 3 of the
- *     License, or (at your option) any later version.
- *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Affero General Public License for more details.
- *
- *     You should have received a copy of the GNU Affero General Public License
- *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *******************************************************************************/
 package model.textures;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -21,11 +5,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.Array;
 import game.handlers.DescriptorHandler;
+import game.screens.GameScreen;
 import shared.model.Graphic;
 
 public class BundledAnimation {
 
-    private Array<GameTexture> frames = new Array<GameTexture>();
+    private Array<GameTexture> frames = new Array<>();
     private Animation<TextureRegion> animation;
     private float idleTime;
     private float idleBounce;
@@ -45,7 +30,8 @@ public class BundledAnimation {
         if (numFrames > 0) {
 
             for (int frame : graphic.getFrames()) {
-                this.frames.add(new GameTexture(DescriptorHandler.getGraphic(frame)));
+                DescriptorHandler descriptorHandler = GameScreen.getWorld().getSystem(DescriptorHandler.class);
+                this.frames.add(new GameTexture(descriptorHandler.getGraphic(frame)));
                 tmpRegions.add(this.frames.peek().getGraphic());
             }
 
@@ -56,7 +42,7 @@ public class BundledAnimation {
                 index++;
             }
 
-            Animation<TextureRegion> animation = new Animation<>(graphic.getSpeed() / (2000.0f * 3.334f), Array.with(textures), pingpong ? Animation.PlayMode.LOOP_PINGPONG : Animation.PlayMode.NORMAL);
+            Animation<TextureRegion> animation = new Animation<>(graphic.getSpeed() / (1000.0f * 3.334f), Array.with(textures), pingpong ? Animation.PlayMode.LOOP_PINGPONG : Animation.PlayMode.NORMAL);
             this.setAnimation(animation);
             this.animated = true;
         } else {

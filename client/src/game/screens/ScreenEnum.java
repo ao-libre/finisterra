@@ -6,7 +6,11 @@ import shared.model.lobby.Player;
 import shared.model.lobby.Room;
 
 public enum ScreenEnum {
-
+    LOADING {
+        public Screen getScreen(Object... params) {
+            return new LoadingScreen();
+        }
+    },
     LOGIN {
         public Screen getScreen(Object... params) {
             return new LoginScreen();
@@ -30,6 +34,8 @@ public enum ScreenEnum {
             return new GameScreen();
         }
     };
+
+
 
     public abstract Screen getScreen(Object... params);
 }

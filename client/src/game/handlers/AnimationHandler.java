@@ -1,14 +1,15 @@
 package game.handlers;
 
+import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
 import entity.character.equipment.Helmet;
 import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
 import entity.character.parts.Body;
 import entity.character.parts.Head;
-import graphics.FX;
 import model.descriptors.*;
 import model.textures.BundledAnimation;
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.model.Graphic;
 import shared.objects.types.HelmetObj;
 import shared.objects.types.ShieldObj;
@@ -17,23 +18,24 @@ import shared.objects.types.WeaponObj;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class AnimationHandler {
+@Wire
+public class AnimationHandler extends PassiveSystem {
+
+    private DescriptorHandler descriptorHandler;
+    private ObjectHandler objectHandler;
 
     // TODO change maps to caches
-    private static Map<Body, List<BundledAnimation>> bodyAnimations = new WeakHashMap<>();
-    private static Map<Head, List<BundledAnimation>> headAnimations = new WeakHashMap<>();
-    private static Map<Helmet, List<BundledAnimation>> helmetAnimations = new WeakHashMap<>();
-    private static Map<Weapon, List<BundledAnimation>> weaponAnimations = new WeakHashMap<>();
-    private static Map<Shield, List<BundledAnimation>> shieldAnimations = new WeakHashMap<>();
+    private static Map<Body, List<BundledAnimation>> bodyAnimations = new HashMap<>();
+    private static Map<Head, List<BundledAnimation>> headAnimations = new HashMap<>();
+    private static Map<Helmet, List<BundledAnimation>> helmetAnimations = new HashMap<>();
+    private static Map<Weapon, List<BundledAnimation>> weaponAnimations = new HashMap<>();
+    private static Map<Shield, List<BundledAnimation>> shieldAnimations = new HashMap<>();
 
     private static Map<Integer, BundledAnimation> animations = new ConcurrentHashMap<>();
 
-    public static void loadGraphics() {
-        DescriptorHandler.getGraphics().forEach(AnimationHandler::saveGraphic);
-    }
 
     @Deprecated
-    private static Map<Integer, List<BundledAnimation>> loadDescriptors(List<?> descriptors) {
+    private Map<Integer, List<BundledAnimation>> loadDescriptors(List<?> descriptors) {
         Map<Integer, List<BundledAnimation>> result = new HashMap<>();
         int[] idx = {1};
         descriptors.forEach(descriptor -> result.put(idx[0]++, createAnimations((IDescriptor) descriptor, true)));
@@ -41,75 +43,73 @@ public class AnimationHandler {
     }
 
     @Deprecated
-    private static Map<Integer, List<BundledAnimation>> loadDescriptors(Map<Integer, ?> descriptors) {
+    private Map<Integer, List<BundledAnimation>> loadDescriptors(Map<Integer, ?> descriptors) {
         Map<Integer, List<BundledAnimation>> result = new HashMap<>();
         descriptors.forEach((id, descriptor) -> result.put(id, createAnimations((IDescriptor) descriptor, true)));
         return result;
     }
 
-    private static List<BundledAnimation> createAnimations(IDescriptor descriptor, boolean pingpong) {
-        Log.info("Animation created");
+    private List<BundledAnimation> createAnimations(IDescriptor descriptor, boolean pingpong) {
+        Log.info("Animation created: " + Arrays.toString(descriptor.getIndexs()));
         List<BundledAnimation> animations = new ArrayList<>();
-        int[] indexs = descriptor.getIndexs();
-        for (int i = 0; i < indexs.length; i++) {
-            Graphic grh = DescriptorHandler.getGraphic(indexs[i]);
-            if (grh != null) {
-                animations.add(new BundledAnimation(grh, pingpong));
+        int[] indexes = descriptor.getIndexs();
+        for (int grhIndex : indexes) {
+            if (grhIndex > 0) {
+                animations.add(saveBundledAnimation(grhIndex));
             }
         }
         return animations;
     }
 
-    public static BundledAnimation getHeadAnimation(Head head, int current) {
+    public BundledAnimation getHeadAnimation(Head head, int current) {
         return headAnimations.computeIfAbsent(head, h -> {
-            HeadDescriptor descriptor = DescriptorHandler.getHead(h.index - 1);
+            HeadDescriptor descriptor = descriptorHandler.getHead(h.index - 1);
             return createAnimations(descriptor, false);
         }).get(current);
     }
 
-    public static BundledAnimation getBodyAnimation(Body body, int current) {
+    public BundledAnimation getBodyAnimation(Body body, int current) {
         return bodyAnimations.computeIfAbsent(body, b -> {
-            BodyDescriptor descriptor = DescriptorHandler.getBody(b.index);
+            BodyDescriptor descriptor = descriptorHandler.getBody(b.index);
             return createAnimations(descriptor, true);
         }).get(current);
     }
 
-    public static BundledAnimation getWeaponAnimation(Weapon weapon, int current) {
+    public BundledAnimation getWeaponAnimation(Weapon weapon, int current) {
         return weaponAnimations.computeIfAbsent(weapon, w -> {
-            WeaponObj weaponObj = (WeaponObj) ObjectHandler.getObject(w.index).get();
-            WeaponDescriptor descriptor = DescriptorHandler.getWeapon(Math.max(weaponObj.getAnimationId() - 1, 0));
+            WeaponObj weaponObj = (WeaponObj) objectHandler.getObject(w.index).get();
+            WeaponDescriptor descriptor = descriptorHandler.getWeapon(Math.max(weaponObj.getAnimationId() - 1, 0));
             return createAnimations(descriptor, true);
         }).get(current);
     }
 
-    public static BundledAnimation getHelmetsAnimation(Helmet helmet, int current) {
+    public BundledAnimation getHelmetsAnimation(Helmet helmet, int current) {
         return helmetAnimations.computeIfAbsent(helmet, h -> {
-            HelmetObj helmetObj = (HelmetObj) ObjectHandler.getObject(h.index).get();
-            HelmetDescriptor descriptor = DescriptorHandler.getHelmet(Math.max(helmetObj.getAnimationId() - 1, 0));
+            HelmetObj helmetObj = (HelmetObj) objectHandler.getObject(h.index).get();
+            HelmetDescriptor descriptor = descriptorHandler.getHelmet(Math.max(helmetObj.getAnimationId() - 1, 0));
             return createAnimations(descriptor, true);
         }).get(current);
     }
 
-    public static BundledAnimation getShieldAnimation(Shield shield, int current) {
+    public BundledAnimation getShieldAnimation(Shield shield, int current) {
         return shieldAnimations.computeIfAbsent(shield, s -> {
-            ShieldObj shieldObj = (ShieldObj) ObjectHandler.getObject(s.index).get();
-            ShieldDescriptor descriptor = DescriptorHandler.getShield(Math.max(shieldObj.getAnimationId() - 1, 0));
+            ShieldObj shieldObj = (ShieldObj) objectHandler.getObject(s.index).get();
+            ShieldDescriptor descriptor = descriptorHandler.getShield(Math.max(shieldObj.getAnimationId() - 1, 0));
             return createAnimations(descriptor, true);
         }).get(current);
     }
 
-    public static BundledAnimation getGraphicAnimation(int grhIndex) {
+    public BundledAnimation getGraphicAnimation(int grhIndex) {
         return Optional.ofNullable(animations.get(grhIndex)).orElseGet(() -> saveBundledAnimation(grhIndex));
     }
 
-    public static BundledAnimation saveBundledAnimation(int grhIndex) {
-        Log.info("BundledAnimation created");
-        Graphic graphic = DescriptorHandler.getGraphic(grhIndex);
-        BundledAnimation bundledAnimation = saveGraphic(grhIndex, graphic);
-        return bundledAnimation;
+    private BundledAnimation saveBundledAnimation(int grhIndex) {
+        Log.info("BundledAnimation created:" + grhIndex);
+        Graphic graphic = descriptorHandler.getGraphic(grhIndex);
+        return saveGraphic(grhIndex, graphic);
     }
 
-    private static BundledAnimation saveGraphic(int grhIndex, Graphic graphic) {
+    public BundledAnimation saveGraphic(int grhIndex, Graphic graphic) {
         BundledAnimation bundledAnimation = new BundledAnimation(graphic, true);
         animations.put(grhIndex, bundledAnimation);
         return bundledAnimation;

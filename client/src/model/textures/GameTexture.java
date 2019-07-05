@@ -1,8 +1,11 @@
 package model.textures;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import game.AOGame;
 import game.handlers.DescriptorHandler;
-import game.handlers.SurfaceHandler;
+import game.screens.GameScreen;
 import shared.model.Graphic;
 
 public class GameTexture {
@@ -14,7 +17,7 @@ public class GameTexture {
     }
 
     public GameTexture(int grhIndex, boolean flipY) {
-        this(DescriptorHandler.getGraphic(grhIndex), flipY);
+        this(GameScreen.getWorld().getSystem(DescriptorHandler.class).getGraphic(grhIndex), flipY);
     }
 
     public GameTexture(Graphic graphic) {
@@ -22,7 +25,9 @@ public class GameTexture {
     }
 
     public GameTexture(Graphic graphic, boolean flipY) {
-        this.textureRegion = new TextureRegion(SurfaceHandler.get(String.valueOf(graphic.getFileNum())),
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        Texture texture = game.getAssetManager().getTexture(graphic.getFileNum());
+        this.textureRegion = new TextureRegion(texture,
                 graphic.getX(), graphic.getY(), graphic.getWidth(), graphic.getHeight());
         this.textureRegion.flip(false, flipY);
     }

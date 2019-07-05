@@ -1,0 +1,62 @@
+
+ao-finisterra-skin.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+button
+  rotate: false
+  xy: 250, 561
+  size: 22, 26
+  split: 4, 4, 4, 9
+  pad: 5, 4, 4, 9
+  orig: 22, 26
+  offset: 0, 0
+  index: -1
+window
+  rotate: false
+  xy: 1, 356
+  size: 247, 231
+  split: 45, 45, 45, 45
+  orig: 247, 231
+  offset: 0, 0
+  index: -1
+barra_cargando_llena
+  rotate: false
+  xy: 1, 589
+  size: 600, 37
+  orig: 600, 37
+  offset: 0, 0
+  index: -1
+barra_cargando_vacia
+  rotate: false
+  xy: 1, 628
+  size: 600, 37
+  orig: 600, 37
+  offset: 0, 0
+  index: -1
+border
+  rotate: false
+  xy: 603, 601
+  size: 64, 64
+  split: 3, 3, 3, 3
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+label
+  rotate: false
+  xy: 603, 601
+  size: 64, 64
+  split: 3, 3, 3, 3
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+label-background
+  rotate: false
+  xy: 1, 290
+  size: 64, 64
+  split: 3, 3, 3, 3
+  pad: 8, 8, 8, 8
+  orig: 64, 64
+  offset: 0, 0
+  index: -1

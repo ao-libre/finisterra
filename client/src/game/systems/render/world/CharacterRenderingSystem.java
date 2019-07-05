@@ -29,9 +29,13 @@ import java.util.Comparator;
 import java.util.Optional;
 
 import static com.artemis.E.E;
+import static game.systems.render.world.CharacterRenderingSystem.CharacterDrawer.createDrawer;
 
 @Wire(injectInherited=true)
 public class CharacterRenderingSystem extends RenderingSystem {
+
+    private DescriptorHandler descriptorHandler;
+    private AnimationHandler animationHandler;
 
     public static final float SHADOW_ALPHA = 0.15f;
     public static final Aspect.Builder CHAR_ASPECT = Aspect.all(WorldPos.class, Body.class, Heading.class);
@@ -60,7 +64,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
         Pos2D currentPos = pos.getPos2D();
         Pos2D screenPos = Util.toScreen(currentPos);
         final Heading heading = player.getHeading();
-        CharacterDrawer.createDrawer(getBatch(), player, heading, screenPos).draw();
+        createDrawer(getBatch(), player, heading, screenPos, descriptorHandler, animationHandler).draw();
     }
 
     public static class CharacterDrawer {
@@ -74,22 +78,26 @@ public class CharacterRenderingSystem extends RenderingSystem {
         // body
         private float bodyPixelOffsetX;
         private float bodyPixelOffsetY;
+        private DescriptorHandler descriptorHandler;
+        private AnimationHandler animationHandler;
         private TextureRegion bodyRegion;
         private BundledAnimation bodyAnimation;
         private float idle;
 
-        private CharacterDrawer(SpriteBatch batch, E player, Heading heading, Pos2D screenPos) {
+        private CharacterDrawer(SpriteBatch batch, E player, Heading heading, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler) {
             this.batch = batch;
             this.player = player;
             this.heading = heading;
             this.screenPos = screenPos;
             bodyPixelOffsetX = screenPos.x;
             bodyPixelOffsetY = screenPos.y;
+            this.descriptorHandler = descriptorHandler;
+            this.animationHandler = animationHandler;
             calculateOffsets();
         }
 
-        static CharacterDrawer createDrawer(SpriteBatch batch, E player, Heading heading, Pos2D screenPos) {
-            return new CharacterDrawer(batch, player, heading, screenPos);
+        static CharacterDrawer createDrawer(SpriteBatch batch, E player, Heading heading, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler) {
+            return new CharacterDrawer(batch, player, heading, screenPos, descriptorHandler, animationHandler);
         }
 
         public void draw() {
@@ -137,8 +145,8 @@ public class CharacterRenderingSystem extends RenderingSystem {
 
         private void calculateOffsets() {
             final Body body = player.getBody();
-            BodyDescriptor bodyDescriptor = DescriptorHandler.getBodies().get(body.index);
-            bodyAnimation = AnimationHandler.getBodyAnimation(body, heading.current);
+            BodyDescriptor bodyDescriptor = descriptorHandler.getBodies().get(body.index);
+            bodyAnimation = animationHandler.getBodyAnimation(body, heading.current);
 
             headOffsetY = bodyDescriptor.getHeadOffsetY() - getMovementOffsetY();
             headOffsetY *= SCALE;
@@ -158,7 +166,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
         void drawHead() {
             if (player.hasHead()) {
                 final Head head = player.getHead();
-                BundledAnimation animation = AnimationHandler.getHeadAnimation(head, heading.current);
+                BundledAnimation animation = animationHandler.getHeadAnimation(head, heading.current);
                 if (animation != null) {
                     TextureRegion headRegion = animation.getGraphic();
                     float offsetY = headOffsetY - 4 * SCALE;
@@ -175,7 +183,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
         void drawHelmet() {
             if (player.hasHelmet()) {
                 Helmet helmet = player.getHelmet();
-                BundledAnimation animation = AnimationHandler.getHelmetsAnimation(helmet, heading.current);
+                BundledAnimation animation = animationHandler.getHelmetsAnimation(helmet, heading.current);
                 if (animation != null) {
                     TextureRegion helmetRegion = animation.getGraphic();
                     float offsetY = headOffsetY - 4 * SCALE;
@@ -187,7 +195,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
         void drawWeapon() {
             if (player.hasWeapon()) {
                 Weapon weapon = player.getWeapon();
-                BundledAnimation animation = AnimationHandler.getWeaponAnimation(weapon, heading.current);
+                BundledAnimation animation = animationHandler.getWeaponAnimation(weapon, heading.current);
                 if (animation != null) {
                     TextureRegion weaponRegion = player.isMoving() || player.hasAttackAnimation() ? animation.getGraphic() : animation.getGraphic(0);
                     drawTexture(weaponRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, Math.max(0, headOffsetY) + idle);
@@ -198,7 +206,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
         void drawShield() {
             if (player.hasShield()) {
                 Shield shield = player.getShield();
-                BundledAnimation animation = AnimationHandler.getShieldAnimation(shield, heading.current);
+                BundledAnimation animation = animationHandler.getShieldAnimation(shield, heading.current);
                 if (animation != null) {
                     TextureRegion shieldRegion = player.isMoving() || player.hasAttackAnimation() ? animation.getGraphic() : animation.getGraphic(0);
                     drawTexture(shieldRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, Math.max(0, headOffsetY) + idle);

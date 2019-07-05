@@ -8,12 +8,9 @@ import java.util.stream.Stream;
 
 @PooledWeaver
 public class Inventory extends Component {
-    private final static int SIZE = 6;
+    public final static int SIZE = 20;
     public Item[] items = new Item[SIZE];
-    public Item[] shortcuts = new Item[4];
-
-    public Inventory() {
-    }
+    public Inventory() {}
 
     public void set(int i, Item item) {
         items[i] = item;
@@ -45,10 +42,6 @@ public class Inventory extends Component {
         item.ifPresent(it -> {
             it.count -= count;
         });
-    }
-
-    public void addShortcut(int shorcut, int realSlot) {
-        shortcuts[shorcut] = items[realSlot];
     }
 
     public Item[] userItems() {

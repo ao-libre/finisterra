@@ -4,20 +4,10 @@ import camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Align;
-import entity.character.attributes.Attribute;
 import entity.character.states.Buff;
-import entity.world.Dialog;
-import game.screens.GameScreen;
 import game.systems.OrderedEntityProcessingSystem;
 import game.systems.camera.CameraSystem;
-import game.systems.network.TimeSync;
-import game.utils.Fonts;
-import model.textures.TextureUtils;
-import position.WorldPos;
 
 import java.util.Comparator;
 
@@ -50,34 +40,17 @@ public class BuffRenderingSystem extends OrderedEntityProcessingSystem {
     protected void process(Entity e) {
         E player = E.E(e);
 
-        player.buffBuffedAtributes().forEach((attrib, time)->{
+        player.buffBuffedAtributes().forEach((attrib, time) -> {
 
             player.buffBuffedAtributes().put(attrib, player.buffBuffedAtributes().get(attrib) - getWorld().getDelta());
 
-            drawCoordinates(50, yOffset, time - (world.getSystem(TimeSync.class).getRtt()/1000), attrib);
+//            drawCoordinates(50, yOffset, time - (world.getSystem(TimeSync.class).getRtt()/1000), attrib);
 
             yOffset += 50;
         });
 
         yOffset = 100;
 
-    }
-
-    private void drawCoordinates(int offsetX, int offsetY, Float time, Attribute attrib) {
-        String worldPosString = "[" + attrib.getClass().getSimpleName() + ":" + attrib.getCurrentValue() + " Time Left:" + time.intValue() + "]";
-        BitmapFont font = Fonts.CONSOLE_FONT;
-        Fonts.layout.setText(font, worldPosString);
-        float fontX = cameraSystem.guiCamera.viewportWidth - Fonts.layout.width - offsetX;
-        float fontY = cameraSystem.guiCamera.viewportHeight - offsetY;
-        //background
-        Color oldColor = batch.getColor();
-        Color black = Color.BLACK.cpy();
-        batch.setColor(black.r, black.g, black.b, ALPHA);
-        batch.draw(TextureUtils.white, fontX - (BORDER >> 1), fontY - (BORDER >> 1), Fonts.layout.width + BORDER, Fonts.layout.height + BORDER);
-        //text
-        batch.setColor(Color.WHITE.cpy());
-        font.draw(batch, Fonts.layout, fontX, fontY + Fonts.layout.height);
-        batch.setColor(oldColor);
     }
 
     @Override

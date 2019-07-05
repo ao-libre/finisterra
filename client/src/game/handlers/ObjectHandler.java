@@ -2,7 +2,9 @@ package game.handlers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import game.AOGame;
 import model.textures.GameTexture;
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
 import shared.util.ObjJson;
@@ -14,29 +16,34 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ObjectHandler {
+public class ObjectHandler extends PassiveSystem {
 
-    private static Map<Integer, Obj> objects = new HashMap<>();
-    private static Map<Obj, GameTexture> textures = new HashMap<>();
-    private static Map<Obj, GameTexture> flipped = new HashMap<>();
+    private Map<Integer, Obj> objects = new HashMap<>();
+    private Map<Obj, GameTexture> textures = new HashMap<>();
+    private Map<Obj, GameTexture> flipped = new HashMap<>();
+    private AOAssetManager assetManager;
 
-    public static void load() {
-        ObjJson.loadObjectsByType(objects, Gdx.files.internal(SharedResources.OBJECTS_FOLDER));
+    @Override
+    protected void initialize() {
+        super.initialize();
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        assetManager = game.getAssetManager();
+        objects = assetManager.getObjs();
     }
 
-    public static Optional<Obj> getObject(int id) {
+    public Optional<Obj> getObject(int id) {
         return Optional.ofNullable(objects.get(id));
     }
 
-    public static TextureRegion getGraphic(Obj obj) {
+    public TextureRegion getGraphic(Obj obj) {
         return textures.computeIfAbsent(obj, presentObj -> new GameTexture(presentObj.getGrhIndex(), false)).getGraphic();
     }
 
-    public static TextureRegion getIngameGraphic(Obj obj) {
+    public TextureRegion getIngameGraphic(Obj obj) {
         return flipped.computeIfAbsent(obj, presentObj -> new GameTexture(presentObj.getGrhIndex(), true)).getGraphic();
     }
 
-    public static Set<Obj> getTypeObjects(Type type) {
+    public Set<Obj> getTypeObjects(Type type) {
         return objects.values().stream().filter(obj -> obj.getType().equals(type)).collect(Collectors.toSet());
     }
 
