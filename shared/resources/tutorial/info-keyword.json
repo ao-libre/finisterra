@@ -1,0 +1,19 @@
+{
+	"LANG": "spanish",
+	"ATTACK_1": "Realizas un ataque cuerpo a cuerpo. *Distancia: 1 posición*",
+	"ATTACK_2": "Mantienes presionado el ataque para cargar un poderoso impacto. *Distancia: hasta 3 posiciones*",
+	"MEDITATE": "Empiezas a meditar y recuperar tu maná. *Recuperas x cantidad de maná por segundo*.",
+	"USE": "Usas el objeto seleccionado. *Objetos: pociones, bebida, comida, herramientas, armas*",
+	"HIDE": "Te ocultas entre la maleza y te haces invisible a todos. *Duración: ocultarseBase*modClase*skillsOcultar*",
+	"INVENTORY": "Abres la ventana del inventorio donde se encuentran tu objetos.",
+	"SPELLS": "Abres la ventana de hechizos.",
+	"TALK": "Abre un caja de texto para enviar un mensaje visible en pantalla.",
+	"DROP": "Tiras un objeto al suelo.",
+	"TAKE": "Recoges un objeto del suelo.",
+	"EQUIP": "Equipas el objeto seleccionado. *Objetos: armas, herramientas, túnicas, armaduras*",
+
+	"MOVE_LEFT": "Caminas 1 posición a la izquierda.",
+	"MOVE_RIGHT": "Caminas 1 posición a la derecha.",
+	"MOVE_UP": "Caminas 1 posición cuesta arriba.",
+	"MOVE_DOWN": "Caminas 1 posición cuesta abajo."
+}
