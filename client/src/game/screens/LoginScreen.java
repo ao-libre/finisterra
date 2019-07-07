@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import game.ClientConfiguration;
 import game.ClientConfiguration.Network.DefaultServer;
@@ -30,8 +31,8 @@ public class LoginScreen extends AbstractScreen {
 
     @Override
     protected void keyPressed(int keyCode) {
-        if (!getStage().getKeyboardFocus().equals(username) && keyCode == Input.Keys.I) {
-            connectionTable.setVisible(!connectionTable.isVisible());
+        if (getStage().getKeyboardFocus().equals(username) && keyCode == Input.Keys.ENTER) {
+            //TODO: Trigger loginButton's event listener
         }
     }
 
@@ -100,8 +101,8 @@ public class LoginScreen extends AbstractScreen {
         connectionTable.add(ipText).width(500);
         connectionTable.add(portLabel);
         connectionTable.add(portText);
-        connectionTable.setPosition(420, 30); //Hardcoded
-        connectionTable.setVisible(false);
+        connectionTable.align(Align.center);
+        connectionTable.setVisible(true);
         getMainTable().add(connectionTable);
         getStage().setKeyboardFocus(username);
     }
