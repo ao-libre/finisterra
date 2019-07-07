@@ -109,7 +109,7 @@ public class AnimationHandler extends PassiveSystem {
         return saveGraphic(grhIndex, graphic);
     }
 
-    public BundledAnimation saveGraphic(int grhIndex, Graphic graphic) {
+    private BundledAnimation saveGraphic(int grhIndex, Graphic graphic) {
         BundledAnimation bundledAnimation = new BundledAnimation(graphic, true);
         animations.put(grhIndex, bundledAnimation);
         return bundledAnimation;

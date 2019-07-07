@@ -17,8 +17,8 @@ import com.badlogic.gdx.utils.Array;
 import java.util.Iterator;
 
 public class FadingGame extends Game {
-    protected Batch batch;
     private final Array<TransitionListener> listeners;
+    protected Batch batch;
     protected FrameBuffer currentScreenFBO;
     protected FrameBuffer nextScreenFBO;
     protected Screen nextScreen;
@@ -114,7 +114,7 @@ public class FadingGame extends Game {
         this.nextScreenFBO = new FrameBuffer(Format.RGBA8888, width, height, false);
     }
 
-    public boolean setTransition(ScreenTransition screenTransition, float duration) {
+    protected boolean setTransition(ScreenTransition screenTransition, float duration) {
         if (this.transitionRunning) {
             return false;
         } else {

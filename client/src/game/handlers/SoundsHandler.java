@@ -25,7 +25,7 @@ public class SoundsHandler extends PassiveSystem {
             return -1;
         }
         //TODO: it should be played with a global configurable volume
-        if (loop == false) {
+        if (!loop) {
             return sound.play(SoundSytem.volume);
         } else {
             return sound.loop(SoundSytem.volume);

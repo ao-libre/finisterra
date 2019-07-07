@@ -7,7 +7,7 @@
       "HiDPI_Mode": "Pixels"
     },
     "resizeable": true,
-    "disableAudio": true,
+    "disableAudio": false,
     "startMaximized": false
   },
   "network": {

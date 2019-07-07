@@ -18,7 +18,7 @@ import java.io.IOException;
 
 public class MidiLoader extends AsynchronousAssetLoader<Sequencer, MidiLoader.MidiParameter<Sequencer>> {
 
-    Sequencer result;
+    private Sequencer result;
 
     public MidiLoader() {
         super(new InternalFileHandleResolver());
@@ -37,7 +37,7 @@ public class MidiLoader extends AsynchronousAssetLoader<Sequencer, MidiLoader.Mi
         return result;
     }
 
-    public Sequencer loadSequencer(FileHandle file) {
+    private Sequencer loadSequencer(FileHandle file) {
         Sequencer sequencer;
         try {
             sequencer = MidiSystem.getSequencer();
@@ -62,6 +62,6 @@ public class MidiLoader extends AsynchronousAssetLoader<Sequencer, MidiLoader.Mi
         return null;
     }
 
-    static public class MidiParameter<T> extends AssetLoaderParameters<T> {
+    static class MidiParameter<T> extends AssetLoaderParameters<T> {
     }
 }

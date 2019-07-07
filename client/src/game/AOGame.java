@@ -53,6 +53,8 @@ public class AOGame extends FadingGame {
         ScreenManager.getInstance().showScreen(ScreenEnum.ROOM, params);
     }
 
+    public AOAssetManager getAssetManager() { return assetManager; }
+
     public void dispose() {
         Log.info("Closing client...");
         screen.dispose();
@@ -60,9 +62,5 @@ public class AOGame extends FadingGame {
         Gdx.app.exit();
         Log.info("Thank you for playing! See you soon...");
         System.exit(0);
-    }
-
-    public AOAssetManager getAssetManager() {
-        return assetManager;
     }
 }

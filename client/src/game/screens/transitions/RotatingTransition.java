@@ -49,12 +49,12 @@ public class RotatingTransition implements ScreenTransition {
         batch.end();
     }
 
-    public static enum TransitionScaling {
+    public enum TransitionScaling {
         NONE,
         IN,
         OUT;
 
-        private TransitionScaling() {
+        TransitionScaling() {
         }
     }
 }
