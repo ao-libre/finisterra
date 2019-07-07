@@ -13,7 +13,6 @@ import game.utils.AOKeys;
 import game.utils.AlternativeKeys;
 import game.utils.Cursors;
 import game.utils.WorldUtils;
-import org.lwjgl.system.CallbackI;
 import shared.model.AttackType;
 import shared.model.Spell;
 import shared.network.combat.AttackRequest;
@@ -23,11 +22,9 @@ import shared.network.interaction.MeditateRequest;
 import shared.network.interaction.TakeItemRequest;
 import shared.network.interaction.TalkRequest;
 import shared.network.inventory.ItemActionRequest;
-import shared.network.notifications.ConsoleMessage;
 import shared.util.Messages;
 
 import java.util.Optional;
-import java.util.Random;
 
 import static com.artemis.E.E;
 

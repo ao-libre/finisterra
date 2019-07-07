@@ -1,11 +1,8 @@
 package game.managers;
 
 import com.artemis.BaseSystem;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import game.handlers.AnimationHandler;
 import model.textures.BundledAnimation;
 import shared.model.map.Map;
@@ -13,7 +10,6 @@ import shared.model.map.Tile;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 public class MapManager extends BaseSystem {

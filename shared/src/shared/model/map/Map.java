@@ -1,9 +1,6 @@
 package shared.model.map;
 
-import shared.util.MapHelper;
 import shared.util.MapHelper.Dir;
-
-import static shared.util.MapHelper.Dir.LEFT;
 
 public class Map {
 

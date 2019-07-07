@@ -8,8 +8,6 @@ import entity.character.status.Mana;
 import entity.world.CombatMessage;
 import graphics.Effect;
 import graphics.Effect.EffectBuilder;
-import graphics.FX;
-import server.core.Server;
 import server.systems.manager.WorldManager;
 import shared.interfaces.Constants;
 import shared.network.notifications.ConsoleMessage;

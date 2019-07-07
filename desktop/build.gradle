@@ -14,9 +14,9 @@ sourceSets {
 def osName() { System.getProperty('os.name').toLowerCase(Locale.ROOT) }
 
 if (osName().contains('mac')) {
-	run {
-		jvmArgs += '-XstartOnFirstThread'
-	}
+    run {
+        jvmArgs += '-XstartOnFirstThread'
+    }
 }
 
 mainClassName = "launcher.DesktopLauncher"
@@ -41,7 +41,9 @@ dist.dependsOn classes
 run.dependsOn classes
 
 def releasesDir() { "${projectDir}/build/releases/" }
+
 def zipDir() { "${projectDir}/build/zip/" }
+
 static def packingDir() { "packing/" }
 
 static def switchConfig(platform) {
@@ -150,11 +152,11 @@ githubRelease {
 
 jlink {
     options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-    launcher{
+    launcher {
         name = 'Finisterra Argentum Online Client'
         if (osName().contains('mac')) {
-		jvmArgs += '-XstartOnFirstThread'
-	}
+            jvmArgs += '-XstartOnFirstThread'
+        }
     }
 
     jpackage {

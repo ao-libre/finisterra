@@ -8,7 +8,6 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.esotericsoftware.minlog.Log;
 import game.handlers.AnimationHandler;
 import game.handlers.MapHandler;
 import game.managers.MapManager;

@@ -3,7 +3,6 @@ package server.systems.manager;
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
-import server.core.Server;
 import server.database.ServerDescriptorReader;
 import shared.model.Spell;
 import shared.model.readers.DescriptorsReader;

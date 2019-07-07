@@ -2,22 +2,14 @@ package game.handlers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Timer;
-import com.esotericsoftware.minlog.Log;
 import game.AOGame;
-import game.utils.Resources;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
 
-import javax.annotation.Nullable;
-import javax.sound.midi.*;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Pattern;
+import javax.sound.midi.MidiChannel;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequencer;
 
 public class MusicHandler extends PassiveSystem {
 

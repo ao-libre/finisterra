@@ -8,7 +8,7 @@ mainClassName = "server.ServerLauncher"
 
 test {
     useJUnitPlatform()
-    failFast=true
+    failFast = true
 
     testLogging {
         // set options for log level LIFECYCLE

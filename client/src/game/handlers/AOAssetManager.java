@@ -22,6 +22,8 @@ public interface AOAssetManager {
 
     void load();
 
+    void dispose();
+
     AssetManager getAssetManager();
 
     Pixmap getPixmap(String key);

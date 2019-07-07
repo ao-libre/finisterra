@@ -5,7 +5,6 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
-import com.esotericsoftware.minlog.Log;
 import entity.character.states.Heading;
 import game.handlers.MapHandler;
 import game.managers.WorldManager;
@@ -17,7 +16,6 @@ import shared.model.map.Map;
 import shared.model.map.WorldPosition;
 import shared.network.interaction.MeditateRequest;
 import shared.network.movement.MovementRequest;
-import shared.util.MapHelper;
 import shared.util.Util;
 
 import java.util.Optional;

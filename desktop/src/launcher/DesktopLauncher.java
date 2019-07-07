@@ -3,7 +3,6 @@ package launcher;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.glutils.HdpiMode;
-import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.ClientConfiguration;

@@ -1,19 +1,19 @@
 {
-	"initConfig":{
-		"video":{
-			"width":1280,
-			"height":720,
-			"vSync":true,
-			"HiDPI_Mode":"Pixels"
-		},
-		"resizeable":true,
-		"disableAudio":false,
-		"startMaximized":false
-	},
-	"network":{
-		"defaultServer":{
-			"hostname":"localhost",
-			"port":7666
-		}
-	}
+  "initConfig": {
+    "video": {
+      "width": 1280,
+      "height": 720,
+      "vSync": true,
+      "HiDPI_Mode": "Pixels"
+    },
+    "resizeable": true,
+    "disableAudio": true,
+    "startMaximized": false
+  },
+  "network": {
+    "defaultServer": {
+      "hostname": "45.235.98.116",
+      "port": 9000
+    }
+  }
 }

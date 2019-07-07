@@ -12,11 +12,9 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import game.loaders.*;
 import game.loaders.ObjectsLoader.ObjectParameter;
 import game.utils.Resources;
-import game.utils.Skins;
 import game.utils.Skins.AOSkin;
 import model.descriptors.*;
 import org.reflections.Reflections;
@@ -259,4 +257,8 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         sounds.forEach(sound -> load(sound, Sound.class));
     }
 
+    @Override
+    public void dispose(){
+        super.dispose();
+    }
 }

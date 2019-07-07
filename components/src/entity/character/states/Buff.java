@@ -4,7 +4,6 @@ import com.artemis.Component;
 import com.artemis.annotations.PooledWeaver;
 import entity.character.attributes.Attribute;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

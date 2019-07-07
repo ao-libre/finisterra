@@ -1,8 +1,5 @@
 package shared.objects.types;
 
-import org.ini4j.Profile;
-import shared.objects.factory.ObjectFactory;
-
 public class DoorObj2 extends Obj {
 
     private boolean open = false;

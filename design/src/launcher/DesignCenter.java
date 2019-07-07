@@ -1,18 +1,8 @@
 package launcher;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import design.Scale2x;
 import game.utils.Resources;
-import graphics.GraphicScalator;
 import json.MapsToJson;
-import map.MapsToWorld;
-import json.DoorsToJson;
-import json.SeparateObjByType;
-
-import java.io.File;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 public class DesignCenter extends Game {
 
@@ -24,7 +14,6 @@ public class DesignCenter extends Game {
     public void create() {
         MapsToJson.transformToJson();
     }
-
 
 
 }

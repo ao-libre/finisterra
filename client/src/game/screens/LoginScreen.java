@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import game.ClientConfiguration;
 import game.ClientConfiguration.Network.DefaultServer;
-import game.handlers.MusicHandler;
 import game.network.ClientResponseProcessor;
 import game.network.GameNotificationProcessor;
 import game.systems.network.ClientSystem;

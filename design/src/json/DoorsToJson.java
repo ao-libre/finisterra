@@ -7,9 +7,11 @@ import shared.objects.types.DoorObj;
 import shared.objects.types.DoorObj2;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
-import shared.util.ObjJson;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DoorsToJson {

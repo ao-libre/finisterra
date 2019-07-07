@@ -2,18 +2,9 @@ package game.handlers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
-import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.systems.sound.SoundSytem;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
-
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Pattern;
 
 
 public class SoundsHandler extends PassiveSystem {

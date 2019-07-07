@@ -1,12 +1,10 @@
 package server.systems.manager;
 
-import com.artemis.BaseSystem;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import entity.character.equipment.Helmet;
 import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
-import server.core.Server;
 import server.systems.EntityFactorySystem;
 import shared.interfaces.Hero;
 import shared.interfaces.Race;

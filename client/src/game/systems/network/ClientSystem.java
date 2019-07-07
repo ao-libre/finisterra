@@ -2,7 +2,6 @@ package game.systems.network;
 
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.network.ClientResponseProcessor;
@@ -12,9 +11,7 @@ import game.screens.GameScreen;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import shared.network.init.NetworkDictionary;
 import shared.network.interfaces.INotification;
-import shared.network.interfaces.INotificationProcessor;
 import shared.network.interfaces.IResponse;
-import shared.network.interfaces.IResponseProcessor;
 
 @Wire
 public class ClientSystem extends MarshalSystem {

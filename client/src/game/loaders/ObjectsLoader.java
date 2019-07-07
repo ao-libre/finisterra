@@ -12,7 +12,6 @@ import shared.objects.types.Type;
 import shared.util.ObjJson;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class ObjectsLoader extends AsynchronousAssetLoader<HashMap<Integer, Obj>, ObjectsLoader.ObjectParameter<HashMap<Integer, Obj>>> {
 

@@ -1,8 +1,6 @@
 package game.managers;
 
 import com.artemis.BaseSystem;
-import com.artemis.World;
-import game.screens.GameScreen;
 
 import java.util.*;
 

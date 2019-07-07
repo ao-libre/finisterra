@@ -1,9 +1,5 @@
 package entity.character.attributes;
 
-import com.artemis.Component;
-
-import java.io.Serializable;
-
 public class Intelligence extends Attribute {
 
     public Intelligence() {

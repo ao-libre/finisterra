@@ -10,7 +10,6 @@ import entity.character.info.Inventory;
 import entity.character.states.Buff;
 import entity.character.status.Health;
 import entity.character.status.Mana;
-import server.core.Server;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;

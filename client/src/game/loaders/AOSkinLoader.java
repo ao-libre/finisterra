@@ -48,7 +48,7 @@ public class AOSkinLoader extends AsynchronousAssetLoader<AOSkin, AOSkinLoader.A
         return aoSkin;
     }
 
-    protected AOSkin newSkin(FileHandle file) {
+    private AOSkin newSkin(FileHandle file) {
         return new AOSkin(file);
     }
 

@@ -1,7 +1,6 @@
 package server.systems;
 
 import com.artemis.Aspect;
-import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
@@ -9,13 +8,11 @@ import movement.Destination;
 import movement.RandomMovement;
 import physics.AOPhysics;
 import position.WorldPos;
-import server.core.Server;
 import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
 import server.utils.WorldUtils;
 import shared.model.map.Map;
 import shared.network.movement.MovementNotification;
-import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 
 import java.util.*;

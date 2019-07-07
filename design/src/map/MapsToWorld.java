@@ -6,8 +6,6 @@ import com.badlogic.gdx.utils.JsonWriter;
 import com.esotericsoftware.minlog.Log;
 import shared.model.map.Map;
 import shared.model.map.Tile;
-import shared.model.map.WorldPosition;
-import shared.util.MapHelper;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,7 +24,7 @@ public class MapsToWorld {
 //        MapHelper.instance().getAlkonMaps(maps);
         WorldMap world = new WorldMap();
         // visit maps
-        visitMap(maps, 1,  0, 0, world, new HashSet<>());
+        visitMap(maps, 1, 0, 0, world, new HashSet<>());
         Map map = world.toMap();
         System.out.println("World tiles count: " + world.getTiles().size());
         save(map);
@@ -79,7 +77,7 @@ public class MapsToWorld {
                 if (tile.getTileExit() != null) {
                     switch (dir) {
                         case DOWN:
-                            if (y > map.MAX_MAP_SIZE_HEIGHT/2) {
+                            if (y > map.MAX_MAP_SIZE_HEIGHT / 2) {
                                 Optional<Tile> right = getTileWithExit(Dir.RIGHT, x, y, map);
                                 Optional<Tile> left = getTileWithExit(Dir.LEFT, x, y, map);
                                 if (right.isPresent() || left.isPresent()) {
@@ -88,7 +86,7 @@ public class MapsToWorld {
                             }
                             break;
                         case RIGHT:
-                            if (x > map.MAX_MAP_SIZE_WIDTH/2) {
+                            if (x > map.MAX_MAP_SIZE_WIDTH / 2) {
                                 Optional<Tile> up = getTileWithExit(Dir.UP, x, y, map);
                                 Optional<Tile> down = getTileWithExit(Dir.DOWN, x, y, map);
                                 if (up.isPresent() || down.isPresent()) {
@@ -97,7 +95,7 @@ public class MapsToWorld {
                             }
                             break;
                         case LEFT:
-                            if (x < map.MAX_MAP_SIZE_WIDTH/2) {
+                            if (x < map.MAX_MAP_SIZE_WIDTH / 2) {
                                 Optional<Tile> up = getTileWithExit(Dir.UP, x, y, map);
                                 Optional<Tile> down = getTileWithExit(Dir.DOWN, x, y, map);
                                 if (up.isPresent() || down.isPresent()) {
@@ -106,7 +104,7 @@ public class MapsToWorld {
                             }
                             break;
                         case UP:
-                            if (y < map.MAX_MAP_SIZE_HEIGHT/2) {
+                            if (y < map.MAX_MAP_SIZE_HEIGHT / 2) {
                                 Optional<Tile> right = getTileWithExit(Dir.RIGHT, x, y, map);
                                 Optional<Tile> left = getTileWithExit(Dir.LEFT, x, y, map);
                                 if (right.isPresent() || left.isPresent()) {

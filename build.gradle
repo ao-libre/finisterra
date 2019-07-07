@@ -15,7 +15,7 @@ buildscript {
         classpath "net.onedaybeard.artemis:artemis-fluid-gradle-plugin:2.2.0"
         classpath "de.undercouch:gradle-download-task:3.4.3"
         classpath "gradle.plugin.com.github.breadmoirai:github-release:2.2.9"
-	classpath "org.beryx:badass-jlink-plugin:2.11.2"
+        classpath "org.beryx:badass-jlink-plugin:2.11.2"
     }
 }
 

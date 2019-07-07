@@ -16,8 +16,6 @@ import shared.util.Util;
 
 import java.util.Optional;
 
-import static com.artemis.E.E;
-
 @Wire(injectInherited=true)
 public class ObjectRenderingSystem extends RenderingSystem {
 

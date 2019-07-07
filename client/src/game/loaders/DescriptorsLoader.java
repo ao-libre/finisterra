@@ -13,7 +13,6 @@ import shared.model.Graphic;
 import shared.util.AOJson;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DescriptorsLoader extends AsynchronousAssetLoader<ArrayList<Descriptor>, DescriptorsLoader.DescriptorParameter> {
 
@@ -27,8 +26,8 @@ public class DescriptorsLoader extends AsynchronousAssetLoader<ArrayList<Descrip
     public static final String HELMETS = "helmets";
     public static final String FXS = "fxs";
 
-    Json json = new AOJson();
-    ArrayList<Descriptor> descriptors;
+    private Json json = new AOJson();
+    private ArrayList<Descriptor> descriptors;
 
     public DescriptorsLoader() {
         super(new InternalFileHandleResolver());
@@ -63,7 +62,7 @@ public class DescriptorsLoader extends AsynchronousAssetLoader<ArrayList<Descrip
     static public class DescriptorParameter extends AssetLoaderParameters<ArrayList<Descriptor>> {
         final Class clazz;
 
-        public DescriptorParameter(Class clazz) {
+        private DescriptorParameter(Class clazz) {
             this.clazz = clazz;
         }
 

@@ -7,14 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import game.systems.network.ClientSystem;
-import game.utils.Skins;
 import shared.model.lobby.Player;
 import shared.model.lobby.Room;
 import shared.network.lobby.CreateRoomRequest;
 import shared.network.lobby.JoinRoomRequest;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 

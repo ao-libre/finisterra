@@ -8,7 +8,6 @@ import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
-import game.handlers.MusicHandler;
 import game.handlers.SoundsHandler;
 
 import javax.sound.midi.InvalidMidiDataException;
