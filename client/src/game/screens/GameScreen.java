@@ -38,6 +38,8 @@ import game.systems.sound.SoundSytem;
 import game.ui.GUI;
 import shared.model.map.Tile;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.artemis.E.E;
 import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
 
@@ -62,7 +64,7 @@ public class GameScreen extends ScreenAdapter {
         long start = System.currentTimeMillis();
         initWorldConfiguration();
         gui.initialize();
-        Gdx.app.log("Game screen initialization", "Elapsed time: " + (System.currentTimeMillis() - start));
+        Gdx.app.log("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
     }
 
     public static int getPlayer() {

@@ -21,6 +21,7 @@ import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import static shared.util.MapHelper.CacheStrategy.NEVER_EXPIRE;
 
@@ -60,7 +61,7 @@ public class Finisterra implements ApplicationListener {
                 .with(new FinisterraSystem(strategy))
                 .with(new FinisterraRequestProcessor())
                 .build());
-        Gdx.app.log("Server initialization", "Elapsed time: " + (start - System.currentTimeMillis()));
+        Gdx.app.log("Server initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(start - System.currentTimeMillis())) + " seconds.");
         Gdx.app.log("Server initialization", "Finisterra OK");
 
     }
