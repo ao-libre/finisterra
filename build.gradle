@@ -49,4 +49,10 @@ subprojects {
 
     sourceCompatibility = JavaVersion.VERSION_12
     targetCompatibility = JavaVersion.VERSION_12
+	
+	tasks.withType(JavaCompile) {
+		options.encoding = "UTF-8"
+		//options.compilerArgs << '-Xlint:unchecked'
+		//options.deprecation = true
+	}
 }
