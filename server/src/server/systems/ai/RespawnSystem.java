@@ -12,7 +12,7 @@ public class RespawnSystem extends FluidIteratingSystem {
 
     private EntityFactorySystem entityFactorySystem;
 
-    public RespawnSystem () {
+    public RespawnSystem() {
         super(Aspect.all(Respawn.class));
     }
 

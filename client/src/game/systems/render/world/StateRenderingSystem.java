@@ -12,7 +12,7 @@ import shared.util.Util;
 
 import static com.artemis.E.E;
 
-@Wire(injectInherited=true)
+@Wire(injectInherited = true)
 public class StateRenderingSystem extends RenderingSystem {
 
     public StateRenderingSystem(SpriteBatch batch) {

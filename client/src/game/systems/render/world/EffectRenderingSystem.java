@@ -114,7 +114,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
         Pos2D screenPos = Util.toScreen(pos.getPos2D());
         Effect effect = e.getEffect();
         int entityId = e.id();
-        switch(effect.type) {
+        switch (effect.type) {
             case FX:
                 BundledAnimation anim = fxs.get(entityId);
                 int effectId = effect.effectId;

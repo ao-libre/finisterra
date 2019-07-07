@@ -49,7 +49,7 @@ public class MovementAnimationSystem extends IteratingSystem {
     private void updateAnimationTime(E entity, Heading heading, boolean reset) {
         Optional<Float> velocity = Optional.empty();
         if (entity.hasAOPhysics() && entity.hasCharacter()) {
-            velocity =  Optional.of(entity.getAOPhysics().velocity);
+            velocity = Optional.of(entity.getAOPhysics().velocity);
         }
         if (entity.hasBody()) {
             final Body body = entity.getBody();

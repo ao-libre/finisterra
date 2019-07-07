@@ -57,7 +57,7 @@ public class LoadingScreen extends AbstractScreen {
     @Override
     public void render(float delta) {
         AssetManager manager = this.assetManager.getAssetManager();
-        if(manager.update() && !loaded) {
+        if (manager.update() && !loaded) {
             // we are done loading, let's move to another screen!
             AOGame game = (AOGame) Gdx.app.getApplicationListener();
             game.toLogin();

@@ -21,7 +21,7 @@ class SoundIndexPair {
     int soundID;
     long soundIndex;
 
-    SoundIndexPair(int ID, long Index){
+    SoundIndexPair(int ID, long Index) {
         this.soundID = ID;
         this.soundIndex = Index;
     }
@@ -34,7 +34,9 @@ public class SoundSytem extends IteratingSystem {
 
     public static float volume = 1.0f;
 
-    public SoundSytem() {super(Aspect.all(AOSound.class));}
+    public SoundSytem() {
+        super(Aspect.all(AOSound.class));
+    }
 
     private Map<Integer, SoundIndexPair> sounds = new HashMap<>();
 

@@ -53,7 +53,7 @@ public class Slot extends ImageButton {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch,parentAlpha);
+        super.draw(batch, parentAlpha);
         if (item.isPresent()) {
             drawItem(batch);
             if (item.get().equipped) {

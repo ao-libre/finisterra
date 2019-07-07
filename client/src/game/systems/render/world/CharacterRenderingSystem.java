@@ -31,7 +31,7 @@ import java.util.Optional;
 import static com.artemis.E.E;
 import static game.systems.render.world.CharacterRenderingSystem.CharacterDrawer.createDrawer;
 
-@Wire(injectInherited=true)
+@Wire(injectInherited = true)
 public class CharacterRenderingSystem extends RenderingSystem {
 
     private DescriptorHandler descriptorHandler;

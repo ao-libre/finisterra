@@ -9,7 +9,7 @@ import position.Pos2D;
 import position.WorldPos;
 import shared.util.Util;
 
-@Wire(injectInherited=true)
+@Wire(injectInherited = true)
 public class CharacterStatesRenderingSystem extends RenderingSystem {
 
     public CharacterStatesRenderingSystem(SpriteBatch batch) {

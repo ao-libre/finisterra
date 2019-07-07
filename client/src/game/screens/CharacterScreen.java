@@ -32,6 +32,7 @@ public class CharacterScreen extends ScreenAdapter {
     private final Chooser chooser;
     private FPSLogger logger;
     private GameState state;
+
     public CharacterScreen(World world, int player) {
         CharacterScreen.world = world;
         CharacterScreen.player = player;

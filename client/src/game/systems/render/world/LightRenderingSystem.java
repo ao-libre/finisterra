@@ -19,7 +19,7 @@ import shared.util.Util;
 
 import static game.utils.Resources.GAME_SHADERS_LIGHT;
 
-@Wire(injectInherited=true)
+@Wire(injectInherited = true)
 public class LightRenderingSystem extends RenderingSystem {
 
     private final Texture light;

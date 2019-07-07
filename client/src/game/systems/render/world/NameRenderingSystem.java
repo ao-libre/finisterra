@@ -51,7 +51,6 @@ public class NameRenderingSystem extends RenderingSystem {
                 }
 
 
-
             });
 
     public NameRenderingSystem(SpriteBatch batch) {

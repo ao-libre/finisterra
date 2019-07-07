@@ -13,15 +13,13 @@ import static game.utils.Resources.CLIENT_CONFIG;
 
 public class DesktopLauncher {
 
-    public static final String CLIENT_CONFIG_JSON = CLIENT_CONFIG;
-
     public static void main(String[] arg) {
         System.setProperty("org.lwjgl.opengl.Display.enableOSXFullscreenModeAPI", "true");
 
         /**
          * Load desktop config.json or create default.
          */
-        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG_JSON);
+        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG);
         if (config == null) {
             Log.info("DesktopLauncher", "Desktop config.json not found, creating default.");
             config = ClientConfiguration.createConfig();
@@ -43,21 +41,21 @@ public class DesktopLauncher {
         cfg.setMaximized(initConfig.isStartMaximized());
 
         // TODO use enum instead of strings
-        if (video.getHiDPIMode() == "Pixels") {
+        if (video.getHiDPIMode().equalsIgnoreCase("Pixels")) {
             cfg.setHdpiMode(HdpiMode.Pixels);
         } else {
             cfg.setHdpiMode(HdpiMode.Logical);
         }
 
-        // Log in console.
+        // Log in console. Un-comment the rest if you wish to debug Config.json's I/O
         Log.info("Initializing launcher...");
-//        Log.info("[Parameters - Window] Width: " + config.getClientWidth());
-//        Log.info("[Parameters - Window] Height: " + config.client_Height());
-//        Log.info("[Parameters - Window] Start Maximized: " + config.client_startMaximized());
-//        Log.info("[Parameters - Window] Resizeable: " + config.client_Resizeable());
-//        Log.info("[Parameters - Graphics] vSync: " + config.client_VSync());
-//        Log.info("[Parameters - Graphics] HiDPI Mode: " + config.client_HiDPI_Mode());
-//        Log.info("[Parameters - Audio] Disabled: " + config.client_noAudio());
+        //Log.info("[Parameters - Window] Width: " + video.getWidth());
+        //Log.info("[Parameters - Window] Height: " + video.getHeight());
+        //Log.info("[Parameters - Window] Start Maximized: " + initConfig.isStartMaximized());
+        //Log.info("[Parameters - Window] Resizeable: " + initConfig.isResizeable());
+        //Log.info("[Parameters - Graphics] vSync: " + video.getVsync());
+        //Log.info("[Parameters - Graphics] HiDPI Mode: " + video.getHiDPIMode());
+        //Log.info("[Parameters - Audio] Disabled: " + initConfig.isDisableAudio());
 
         /**
          * Launch application

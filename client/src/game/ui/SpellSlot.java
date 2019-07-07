@@ -44,10 +44,10 @@ public class SpellSlot extends ImageButton {
 
     public void setSpell(Spell spell) {
         this.spell = spell;
-        if(spell == null) {
+        if (spell == null) {
             return;
         }
-        if(tooltip != null) {
+        if (tooltip != null) {
             removeListener(tooltip);
         }
         tooltip = getTooltip(spell);
@@ -55,7 +55,7 @@ public class SpellSlot extends ImageButton {
     }
 
     private Tooltip getTooltip(Spell spell) {
-        Actor content = createTooltipContent(spell); 
+        Actor content = createTooltipContent(spell);
         return new Tooltip(content);
     }
 

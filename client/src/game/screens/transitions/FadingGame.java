@@ -170,8 +170,8 @@ public class FadingGame extends Game {
     private void notifyFinished() {
         Iterator var1 = this.listeners.iterator();
 
-        while(var1.hasNext()) {
-            TransitionListener transitionListener = (TransitionListener)var1.next();
+        while (var1.hasNext()) {
+            TransitionListener transitionListener = (TransitionListener) var1.next();
             transitionListener.onTransitionFinished();
         }
 
@@ -180,8 +180,8 @@ public class FadingGame extends Game {
     private void notifyStarted() {
         Iterator var1 = this.listeners.iterator();
 
-        while(var1.hasNext()) {
-            TransitionListener transitionListener = (TransitionListener)var1.next();
+        while (var1.hasNext()) {
+            TransitionListener transitionListener = (TransitionListener) var1.next();
             transitionListener.onTransitionStart();
         }
 

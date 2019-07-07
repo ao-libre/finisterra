@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Wire(injectInherited=true)
+@Wire(injectInherited = true)
 public class ParticleRenderingSystem extends RenderingSystem {
 
     private Map<Integer, Map<Integer, ParticleEffect>> particles = new HashMap<>();

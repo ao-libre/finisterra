@@ -8,10 +8,10 @@ import com.badlogic.gdx.utils.Array;
 import position.WorldPos;
 
 public class AStartPathFinding {
-	 public final AStarMap map;
-	 private final PathFinder<Node> pathfinder;
-	 private final Heuristic<Node> heuristic;
-	 private final GraphPath<Connection<Node>> connectionPath;
+    public final AStarMap map;
+    private final PathFinder<Node> pathfinder;
+    private final Heuristic<Node> heuristic;
+    private final GraphPath<Connection<Node>> connectionPath;
 
     public AStartPathFinding(AStarMap map) {
         this.map = map;
@@ -30,13 +30,13 @@ public class AStartPathFinding {
         int targetY = MathUtils.floor(target.y);
 
         if (map == null
-               || sourceX < 0 || sourceX >= map.getWidth()
-               || sourceY < 0 || sourceY >= map.getHeight()
-               || targetX < 0 || targetX >= map.getWidth()
-               || targetY < 0 || targetY >= map.getHeight()) {
-           return null;
+                || sourceX < 0 || sourceX >= map.getWidth()
+                || sourceY < 0 || sourceY >= map.getHeight()
+                || targetX < 0 || targetX >= map.getWidth()
+                || targetY < 0 || targetY >= map.getHeight()) {
+            return null;
         }
-       
+
         Node sourceNode = map.getNodeAt(sourceX, sourceY);
         Node targetNode = map.getNodeAt(targetX, targetY);
         connectionPath.clear();
@@ -45,14 +45,14 @@ public class AStartPathFinding {
         return connectionPath.getCount() == 0 ? null : connectionPath.get(0).getToNode();
     }
 
-    private static final int[][] NEIGHBORHOOD = new int[][] {
-        new int[] {-1,  0},
-        new int[] { 0, -1},
-        new int[] { 0,  1},
-        new int[] { 1,  0}
+    private static final int[][] NEIGHBORHOOD = new int[][]{
+            new int[]{-1, 0},
+            new int[]{0, -1},
+            new int[]{0, 1},
+            new int[]{1, 0}
     };
 
-    public static MyGraph createGraph (AStarMap map) {
+    public static MyGraph createGraph(AStarMap map) {
         final int height = map.getHeight();
         final int width = map.getWidth();
         MyGraph graph = new MyGraph(map);
@@ -81,10 +81,10 @@ public class AStartPathFinding {
     }
 
     private static class MyGraph implements IndexedGraph<Node> {
-   		
+
         AStarMap map;
 
-        public MyGraph (AStarMap map) {
+        public MyGraph(AStarMap map) {
             this.map = map;
         }
 
@@ -102,6 +102,6 @@ public class AStartPathFinding {
         public int getNodeCount() {
             return map.getHeight() * map.getHeight();
         }
-   	 
+
     }
 }
