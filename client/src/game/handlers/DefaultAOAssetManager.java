@@ -256,9 +256,4 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         Set<String> sounds = reflections.getResources(Pattern.compile(".*\\.wav"));
         sounds.forEach(sound -> load(sound, Sound.class));
     }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-    }
 }
