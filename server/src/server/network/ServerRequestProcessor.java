@@ -9,10 +9,10 @@ import entity.world.Dialog;
 import entity.world.Object;
 import movement.Destination;
 import position.WorldPos;
-import server.systems.combat.MagicCombatSystem;
-import server.systems.combat.PhysicalCombatSystem;
 import server.systems.MeditateSystem;
 import server.systems.ServerSystem;
+import server.systems.combat.MagicCombatSystem;
+import server.systems.combat.PhysicalCombatSystem;
 import server.systems.manager.ItemManager;
 import server.systems.manager.MapManager;
 import server.systems.manager.SpellManager;
@@ -82,7 +82,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     /**
      * Process {@link MovementRequest}. If it is valid, move player and notify.
      *
-     * @param request movement request
+     * @param request      movement request
      * @param connectionId id
      * @see MovementRequest
      */

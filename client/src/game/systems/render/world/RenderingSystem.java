@@ -73,13 +73,13 @@ public abstract class RenderingSystem extends OrderedEntityProcessingSystem {
 
     protected abstract void process(E e);
 
-    public enum CameraKind {
-        GUI,
-        WORLD
-    }
-
     @Override
     protected Comparator<? super Entity> getComparator() {
         return Comparator.comparingInt(entity -> E(entity).getWorldPos().y);
+    }
+
+    public enum CameraKind {
+        GUI,
+        WORLD
     }
 }

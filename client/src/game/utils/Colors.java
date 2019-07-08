@@ -22,7 +22,7 @@ public class Colors {
     }
 
 
-    public static Color rgb(int r, int g, int b) {
+    private static Color rgb(int r, int g, int b) {
         return rgba(r, g, b, 1);
     }
 

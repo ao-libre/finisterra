@@ -7,7 +7,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import entity.character.Character;
-import game.handlers.StateHandler;
 import game.screens.CharacterScreen;
 import game.systems.anim.IdleAnimationSystem;
 import game.systems.anim.MovementAnimationSystem;

@@ -2,22 +2,14 @@ package game.handlers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Timer;
-import com.esotericsoftware.minlog.Log;
 import game.AOGame;
-import game.utils.Resources;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import org.reflections.Reflections;
-import org.reflections.scanners.ResourcesScanner;
 
-import javax.annotation.Nullable;
-import javax.sound.midi.*;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Pattern;
+import javax.sound.midi.MidiChannel;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequencer;
 
 public class MusicHandler extends PassiveSystem {
 
@@ -25,13 +17,6 @@ public class MusicHandler extends PassiveSystem {
 
     private static float volume = 1.0f;
     private AOAssetManager assetManager;
-
-    @Override
-    protected void initialize() {
-        super.initialize();
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
-        assetManager = game.getAssetManager();
-    }
 
     public static void setVolume(float volume) {
         MusicHandler.volume = volume;
@@ -43,6 +28,13 @@ public class MusicHandler extends PassiveSystem {
         } catch (MidiUnavailableException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void initialize() {
+        super.initialize();
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        assetManager = game.getAssetManager();
     }
 
     public void playMusic(int musicID) {
@@ -106,7 +98,8 @@ public class MusicHandler extends PassiveSystem {
 
     //TODO: MIDIs cant be faded at the moment
     public void playMIDI(int midiID) {
-        Sequencer sequencer = assetManager.getMidi(midiID);;
+        Sequencer sequencer = assetManager.getMidi(midiID);
+        ;
         if (sequencer == null) {
             Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
             return;
@@ -116,7 +109,8 @@ public class MusicHandler extends PassiveSystem {
     }
 
     public void stopMIDI(int midiID) {
-        Sequencer sequencer = assetManager.getMidi(midiID);;
+        Sequencer sequencer = assetManager.getMidi(midiID);
+        ;
         if (sequencer == null) {
             Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
             return;

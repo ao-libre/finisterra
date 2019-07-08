@@ -1,11 +1,8 @@
 package game.managers;
 
 import com.artemis.BaseSystem;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import game.handlers.AnimationHandler;
 import model.textures.BundledAnimation;
 import shared.model.map.Map;
@@ -13,22 +10,18 @@ import shared.model.map.Tile;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 public class MapManager extends BaseSystem {
 
-    private AnimationHandler animationHandler;
-
     public static final List<Integer> LOWER_LAYERS = Arrays.asList(0, 1);
     public static final List<Integer> UPPER_LAYERS = Collections.singletonList(3);
-
     public static final int TILE_BUFFER_SIZE = 7;
-
     public static final int MAX_MAP_SIZE_WIDTH = 100;
     public static final int MIN_MAP_SIZE_WIDTH = 1;
     public static final int MAX_MAP_SIZE_HEIGHT = 100;
     public static final int MIN_MAP_SIZE_HEIGHT = 1;
+    private AnimationHandler animationHandler;
 
     public void drawTile(Map map, SpriteBatch batch, float delta, int layer, int y, int x) {
         int graphic = map.getTile(x, y).getGraphic(layer);
@@ -62,5 +55,6 @@ public class MapManager extends BaseSystem {
 
 
     @Override
-    protected void processSystem() {}
+    protected void processSystem() {
+    }
 }

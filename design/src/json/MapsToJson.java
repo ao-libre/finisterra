@@ -7,7 +7,6 @@ import shared.model.map.Map;
 import shared.util.AOJson;
 import shared.util.MapHelper;
 
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class MapsToJson {

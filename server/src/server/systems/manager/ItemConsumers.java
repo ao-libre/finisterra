@@ -1,12 +1,10 @@
 package server.systems.manager;
 
-import com.artemis.BaseSystem;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import entity.character.equipment.Helmet;
 import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
-import server.core.Server;
 import server.systems.EntityFactorySystem;
 import shared.interfaces.Hero;
 import shared.interfaces.Race;
@@ -24,9 +22,8 @@ import static com.artemis.E.E;
 public class ItemConsumers extends DefaultManager {
 
     private WorldManager worldManager;
-    private EntityFactorySystem entityFactorySystem;
-
     public final BiConsumer<Integer, Obj> WEAR = wear();
+    private EntityFactorySystem entityFactorySystem;
     public final BiConsumer<Integer, Obj> TAKE_OFF = takeOff();
 
     public ItemConsumers() {

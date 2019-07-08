@@ -45,7 +45,7 @@ public class CaveSystem extends IteratingSystem {
         }
     }
 
-    public Optional<Cave> getCurrent() {
+    private Optional<Cave> getCurrent() {
         return this.id != -1 && E(this.id).hasCave() ? Optional.ofNullable(E(this.id).getCave()) : Optional.empty();
     }
 

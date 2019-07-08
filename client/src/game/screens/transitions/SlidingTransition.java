@@ -63,13 +63,13 @@ public class SlidingTransition implements ScreenTransition {
         batch.end();
     }
 
-    public static enum Direction {
+    public enum Direction {
         LEFT,
         RIGHT,
         UP,
         DOWN;
 
-        private Direction() {
+        Direction() {
         }
     }
 }

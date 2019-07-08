@@ -2,8 +2,6 @@ package server.systems.manager;
 
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
-import com.esotericsoftware.minlog.Log;
-import server.core.Server;
 import server.database.ServerDescriptorReader;
 import shared.model.Spell;
 import shared.model.readers.DescriptorsReader;
@@ -27,10 +25,11 @@ public class SpellManager extends BaseSystem {
     }
 
     @Override
-    protected void processSystem() {}
+    protected void processSystem() {
+    }
 
     public void init() {
-        Log.info("Loading spells...");
+        Gdx.app.log("Server initialization", "Loading spells...");
         SpellJson.load(spells, Gdx.files.internal(SharedResources.SPELLS_JSON_FILE));
     }
 

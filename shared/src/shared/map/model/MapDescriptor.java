@@ -16,7 +16,7 @@ public class MapDescriptor {
     // Each tile-set row should contain two main terrain tiles and 14 transition tiles
     // (4 bit encoded tile indices: 0 - 15)
     public static final int TERRAINS_PER_ROW = 2;
-    public static final int TILES_PER_TERRAIN = 16;
+    private static final int TILES_PER_TERRAIN = 16;
 
     private final int terraninsPerRow = TERRAINS_PER_ROW;
     private final int tilesPerTerrain = TILES_PER_TERRAIN;
@@ -27,43 +27,37 @@ public class MapDescriptor {
     private List<List<Byte>> tileRowTerrains;
     private String texturePath;
 
-    public int getMapWidth() {
+    private int getMapWidth() {
         return mapWidth;
     }
 
-    public int getMapHeight() {
+    private int getMapHeight() {
         return mapHeight;
     }
 
-    public int getTileWidth() {
+    private int getTileWidth() {
         return tileDescriptor.getTileWidth();
     }
 
-    public int getTileHeight() {
+    private int getTileHeight() {
         return tileDescriptor.getTileHeight();
     }
 
-    public Map<Byte, TerrainType> getTerrainTypes() {
-        return terrainTypes;
-    }
+    //public Map<Byte, TerrainType> getTerrainTypes() { return terrainTypes; }
 
-    public List<List<Byte>> getTileRowTerrains() {
-        return tileRowTerrains;
-    }
+    //public List<List<Byte>> getTileRowTerrains() { return tileRowTerrains; }
 
-    public int getMaxTransitions() {
-        return terrainTypes.size() - 1;
-    }
+    //public int getMaxTransitions() { return terrainTypes.size() - 1; }
 
-    public String getTexturePath() {
+    private String getTexturePath() {
         return texturePath;
     }
 
-    public int getTerraninsPerRow() {
+    private int getTerraninsPerRow() {
         return terraninsPerRow;
     }
 
-    public int getTilesPerTerrain() {
+    private int getTilesPerTerrain() {
         return tilesPerTerrain;
     }
 

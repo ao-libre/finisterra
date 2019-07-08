@@ -63,12 +63,12 @@ public class SlicingTransition implements ScreenTransition {
         batch.end();
     }
 
-    public static enum Direction {
+    public enum Direction {
         UP,
         DOWN,
         UPDOWN;
 
-        private Direction() {
+        Direction() {
         }
     }
 }

@@ -37,13 +37,12 @@ import static shared.util.Messages.*;
 @Wire
 public class MagicCombatSystem extends BaseSystem {
 
+    private static final String SPACE = " ";
+    private static final int TIME_TO_MOVE_1_TILE = 200;
     // Injected Systems
     private MapManager mapManager;
     private WorldManager worldManager;
     private ObjectManager objectManager;
-
-    private static final String SPACE = " ";
-    private static final int TIME_TO_MOVE_1_TILE = 200;
 
     public void spell(int userId, SpellCastRequest spellCastRequest) {
         final Spell spell = spellCastRequest.getSpell();

@@ -7,14 +7,10 @@ import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Json;
-import model.readers.GenericReader;
 import shared.model.Spell;
 import shared.util.SpellJson;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
 
 public class SpellsLoader extends AsynchronousAssetLoader<HashMap<Integer, Spell>, SpellsLoader.SpellParameter<HashMap<Integer, Spell>>> {
 

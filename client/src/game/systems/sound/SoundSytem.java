@@ -2,9 +2,6 @@ package game.systems.sound;
 
 import Sound.AOSound;
 import com.artemis.Aspect;
-
-import static com.artemis.E.E;
-
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
@@ -17,12 +14,14 @@ import position.WorldPos;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.artemis.E.E;
+
 
 class SoundIndexPair {
     int soundID;
     long soundIndex;
 
-    SoundIndexPair(int ID, long Index){
+    SoundIndexPair(int ID, long Index) {
         this.soundID = ID;
         this.soundIndex = Index;
     }
@@ -31,13 +30,13 @@ class SoundIndexPair {
 @Wire
 public class SoundSytem extends IteratingSystem {
 
-    private SoundsHandler soundsHandler;
-
     public static float volume = 1.0f;
-
-    public SoundSytem() {super(Aspect.all(AOSound.class));}
-
+    private SoundsHandler soundsHandler;
     private Map<Integer, SoundIndexPair> sounds = new HashMap<>();
+
+    public SoundSytem() {
+        super(Aspect.all(AOSound.class));
+    }
 
     public void setVolume(float volume) {
         SoundSytem.volume = volume;

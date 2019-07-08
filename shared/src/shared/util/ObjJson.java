@@ -1,8 +1,6 @@
 package shared.util;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonWriter;
 import model.readers.AODescriptorsReader;
 import shared.objects.types.*;
 import shared.objects.types.common.*;

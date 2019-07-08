@@ -12,14 +12,14 @@ public class BoatObj extends Obj {
     public BoatObj() {
     }
 
+    public BoatObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
+    }
+
     @Override
     public void fillObject(Profile.Section section) {
         super.fillObject(section);
         ObjectFactory.fill(this, section);
-    }
-
-    public BoatObj(int id, String name, int grhIndex) {
-        super(id, name, grhIndex);
     }
 
     public int getBodyIndex() {

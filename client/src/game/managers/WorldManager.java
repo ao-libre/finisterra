@@ -1,8 +1,6 @@
 package game.managers;
 
 import com.artemis.BaseSystem;
-import com.artemis.World;
-import game.screens.GameScreen;
 
 import java.util.*;
 
@@ -40,7 +38,8 @@ public class WorldManager extends BaseSystem {
     }
 
     @Override
-    protected void processSystem() {}
+    protected void processSystem() {
+    }
 
     public Optional<Integer> getNetworkedId(int id) {
         return networkedEntities

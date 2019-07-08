@@ -3,7 +3,6 @@ package shared.interfaces;
 import com.artemis.E;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public enum CharClass {
@@ -19,9 +18,7 @@ public enum CharClass {
     THIEF,
     WARRIOR;
 
-    private static final List<CharClass> VALUES =
-            Collections.unmodifiableList(Arrays.asList(values()));
-    private static final int SIZE = VALUES.size();
+    private static final List<CharClass> VALUES = List.copyOf(Arrays.asList(values()));
 
     public static CharClass getClass(String classString) {
         switch (classString.toLowerCase()) {

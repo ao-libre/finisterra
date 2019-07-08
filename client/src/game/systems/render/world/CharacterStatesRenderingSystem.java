@@ -4,17 +4,12 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Align;
 import entity.character.Character;
-import game.utils.Fonts;
 import position.Pos2D;
 import position.WorldPos;
-import shared.model.map.Tile;
 import shared.util.Util;
 
-import static com.artemis.E.E;
-
-@Wire(injectInherited=true)
+@Wire(injectInherited = true)
 public class CharacterStatesRenderingSystem extends RenderingSystem {
 
     public CharacterStatesRenderingSystem(SpriteBatch batch) {
@@ -35,5 +30,3 @@ public class CharacterStatesRenderingSystem extends RenderingSystem {
         return entity.hasMeditating() || entity.hasWriting() || entity.hasResting();
     }
 }
-
-

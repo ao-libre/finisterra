@@ -10,7 +10,9 @@ import java.util.stream.Stream;
 public class Inventory extends Component {
     public final static int SIZE = 20;
     public Item[] items = new Item[SIZE];
-    public Inventory() {}
+
+    public Inventory() {
+    }
 
     public void set(int i, Item item) {
         items[i] = item;

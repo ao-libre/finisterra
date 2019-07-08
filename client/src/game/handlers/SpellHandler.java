@@ -4,16 +4,10 @@ import com.badlogic.gdx.Gdx;
 import entity.character.info.SpellBook;
 import game.AOGame;
 import game.screens.GameScreen;
-import model.readers.AODescriptorsReader;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.model.Spell;
-import shared.model.readers.DescriptorsReader;
-import shared.util.SharedResources;
-import shared.util.SpellJson;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import static com.artemis.E.E;

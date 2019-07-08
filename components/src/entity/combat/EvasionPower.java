@@ -9,7 +9,9 @@ import java.io.Serializable;
 public class EvasionPower extends Component implements Serializable {
 
     public int value;
-    public EvasionPower() {}
+
+    public EvasionPower() {
+    }
 
     public EvasionPower(int value) {
         this.value = value;

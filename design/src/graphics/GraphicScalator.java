@@ -3,12 +3,7 @@ package graphics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import design.Scale2x;
-import game.utils.Resources;
 import launcher.DesignCenter;
-
-import java.io.File;
-import java.util.Objects;
-import java.util.stream.Stream;
 
 public class GraphicScalator {
 
@@ -30,7 +25,7 @@ public class GraphicScalator {
                     String outputFile = output.file().getPath() + "/" + fileName;
                     Gdx.app.log(DesignCenter.class.getSimpleName(), "Scaling graphic " + fileName);
                     Scale2x.run(inputFile, outputFile);
-                    Gdx.app.log(DesignCenter.class.getSimpleName(),"Faltan :" + --missingFiles);
+                    Gdx.app.log(DesignCenter.class.getSimpleName(), "Faltan :" + --missingFiles);
                 }
             }
         }

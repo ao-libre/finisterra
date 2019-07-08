@@ -8,17 +8,17 @@ package game.screens.transitions;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.utils.Array;
+
 import java.util.Iterator;
 
 public class FadingGame extends Game {
-    protected Batch batch;
     private final Array<TransitionListener> listeners;
+    protected Batch batch;
     protected FrameBuffer currentScreenFBO;
     protected FrameBuffer nextScreenFBO;
     protected Screen nextScreen;
@@ -114,7 +114,7 @@ public class FadingGame extends Game {
         this.nextScreenFBO = new FrameBuffer(Format.RGBA8888, width, height, false);
     }
 
-    public boolean setTransition(ScreenTransition screenTransition, float duration) {
+    protected boolean setTransition(ScreenTransition screenTransition, float duration) {
         if (this.transitionRunning) {
             return false;
         } else {
@@ -170,8 +170,8 @@ public class FadingGame extends Game {
     private void notifyFinished() {
         Iterator var1 = this.listeners.iterator();
 
-        while(var1.hasNext()) {
-            TransitionListener transitionListener = (TransitionListener)var1.next();
+        while (var1.hasNext()) {
+            TransitionListener transitionListener = (TransitionListener) var1.next();
             transitionListener.onTransitionFinished();
         }
 
@@ -180,8 +180,8 @@ public class FadingGame extends Game {
     private void notifyStarted() {
         Iterator var1 = this.listeners.iterator();
 
-        while(var1.hasNext()) {
-            TransitionListener transitionListener = (TransitionListener)var1.next();
+        while (var1.hasNext()) {
+            TransitionListener transitionListener = (TransitionListener) var1.next();
             transitionListener.onTransitionStart();
         }
 

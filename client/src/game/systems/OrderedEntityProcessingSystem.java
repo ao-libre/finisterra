@@ -43,7 +43,7 @@ public abstract class OrderedEntityProcessingSystem extends BaseEntitySystem
         setShouldSyncEntities(true);
     }
 
-    public void setShouldSyncEntities(boolean shouldSyncEntities) {
+    private void setShouldSyncEntities(boolean shouldSyncEntities) {
         this.shouldSyncEntities = shouldSyncEntities;
     }
 
@@ -70,10 +70,10 @@ public abstract class OrderedEntityProcessingSystem extends BaseEntitySystem
         });
     }
 
-    protected void postProcess() {
+    private void postProcess() {
     }
 
-    protected void beforeProcess() {
+    private void beforeProcess() {
     }
 
     protected abstract void process(Entity e);

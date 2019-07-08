@@ -37,7 +37,6 @@ public class EntityFactorySystem extends PassiveSystem {
     private SpellManager spellManager;
 
 
-
     public void createObject(int objIndex, int objCount, WorldPos pos) {
         int objId = world.create();
         E(objId).worldPosMap(pos.map)

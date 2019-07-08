@@ -9,7 +9,7 @@ import com.soywiz.korio.vfs.UniversalVfs
 object Scale2x {
 
     @JvmStatic
-    fun run(input : String, output : String) = Korio {
+    fun run(input: String, output: String) = Korio {
         defaultImageFormats.registerStandard()
         val image = UniversalVfs(input).readBitmapNoNative().toBMP32()
 

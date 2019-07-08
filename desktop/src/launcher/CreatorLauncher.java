@@ -11,12 +11,10 @@ import static game.utils.Resources.CLIENT_CONFIG;
 
 public class CreatorLauncher {
 
-    public static final String CLIENT_CONFIG_JSON = CLIENT_CONFIG;
-
     public static void main(String[] arg) {
         System.setProperty("org.lwjgl.opengl.Display.enableOSXFullscreenModeAPI", "true");
 
-        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG_JSON);
+        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG);
         if (config == null) {
             Log.info("DesktopLauncher", "Desktop config.json not found, creating default.");
             config = ClientConfiguration.createConfig();
@@ -38,7 +36,7 @@ public class CreatorLauncher {
         cfg.setMaximized(initConfig.isStartMaximized());
 
         // TODO use enum instead of strings
-        if (video.getHiDPIMode() == "Pixels") {
+        if (video.getHiDPIMode().equalsIgnoreCase("Pixels")) {
             cfg.setHdpiMode(HdpiMode.Pixels);
         } else {
             cfg.setHdpiMode(HdpiMode.Logical);

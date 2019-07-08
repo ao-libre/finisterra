@@ -1,7 +1,5 @@
 package shared.objects.types.common;
 
-import org.ini4j.Profile;
-import shared.objects.factory.ObjectFactory;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
 

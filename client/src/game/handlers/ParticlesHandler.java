@@ -12,15 +12,6 @@ public class ParticlesHandler extends PassiveSystem {
     private static LongMap<ParticleEffectPool> particles = new LongMap<>();
     private AOAssetManager assetManager;
 
-    @Override
-    protected void initialize() {
-        super.initialize();
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
-        assetManager = game.getAssetManager();
-        particles.put(1, new ParticleEffectPool(assetManager.getParticle("meditate1.party"), 1, 100));
-        particles.put(2, new ParticleEffectPool(assetManager.getParticle("aura1.party"), 1, 100));
-    }
-
     public static void load() {
         ParticleEffect effect = new ParticleEffect();
         effect.load(Gdx.files.internal(Resources.GAME_FXS_PATH + "meditate1.party"), Gdx.files.internal(""));
@@ -32,5 +23,14 @@ public class ParticlesHandler extends PassiveSystem {
 
     public static ParticleEffect getParticle(int index) {
         return particles.get(index).obtain();
+    }
+
+    @Override
+    protected void initialize() {
+        super.initialize();
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        assetManager = game.getAssetManager();
+        particles.put(1, new ParticleEffectPool(assetManager.getParticle("meditate1.party"), 1, 100));
+        particles.put(2, new ParticleEffectPool(assetManager.getParticle("aura1.party"), 1, 100));
     }
 }

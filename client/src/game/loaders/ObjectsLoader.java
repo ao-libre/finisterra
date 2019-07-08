@@ -12,7 +12,6 @@ import shared.objects.types.Type;
 import shared.util.ObjJson;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class ObjectsLoader extends AsynchronousAssetLoader<HashMap<Integer, Obj>, ObjectsLoader.ObjectParameter<HashMap<Integer, Obj>>> {
 
@@ -44,6 +43,7 @@ public class ObjectsLoader extends AsynchronousAssetLoader<HashMap<Integer, Obj>
 
     public static class ObjectParameter<T> extends AssetLoaderParameters<T> {
         Type type;
+
         public ObjectParameter(Type type) {
             this.type = type;
         }

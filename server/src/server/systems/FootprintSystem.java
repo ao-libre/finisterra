@@ -7,7 +7,6 @@ import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.utils.TimeUtils;
 import entity.world.Footprint;
 import position.WorldPos;
-import server.core.Server;
 import server.systems.manager.MapManager;
 
 import java.util.Set;

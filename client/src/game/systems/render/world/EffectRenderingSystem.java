@@ -5,7 +5,6 @@ import com.artemis.E;
 import com.artemis.FluidIteratingSystem;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -115,7 +114,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
         Pos2D screenPos = Util.toScreen(pos.getPos2D());
         Effect effect = e.getEffect();
         int entityId = e.id();
-        switch(effect.type) {
+        switch (effect.type) {
             case FX:
                 BundledAnimation anim = fxs.get(entityId);
                 int effectId = effect.effectId;

@@ -32,6 +32,7 @@ public class CharacterScreen extends ScreenAdapter {
     private final Chooser chooser;
     private FPSLogger logger;
     private GameState state;
+
     public CharacterScreen(World world, int player) {
         CharacterScreen.world = world;
         CharacterScreen.player = player;
@@ -105,8 +106,8 @@ public class CharacterScreen extends ScreenAdapter {
     }
 
     private static class Chooser extends Window {
-        private ObjectHandler objectHandler;
         private final Stage stage;
+        private ObjectHandler objectHandler;
 
         Chooser() {
             super("Choose", Skins.COMODORE_SKIN, "black");

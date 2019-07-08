@@ -31,15 +31,14 @@ import java.util.Optional;
 import static com.artemis.E.E;
 import static game.systems.render.world.CharacterRenderingSystem.CharacterDrawer.createDrawer;
 
-@Wire(injectInherited=true)
+@Wire(injectInherited = true)
 public class CharacterRenderingSystem extends RenderingSystem {
 
+    private static final float SHADOW_ALPHA = 0.15f;
+    private static final Aspect.Builder CHAR_ASPECT = Aspect.all(WorldPos.class, Body.class, Heading.class);
+    private static Texture shadow = new Texture(Gdx.files.local("data/ui/images/shadow22.png"));
     private DescriptorHandler descriptorHandler;
     private AnimationHandler animationHandler;
-
-    public static final float SHADOW_ALPHA = 0.15f;
-    public static final Aspect.Builder CHAR_ASPECT = Aspect.all(WorldPos.class, Body.class, Heading.class);
-    private static Texture shadow = new Texture(Gdx.files.local("data/ui/images/shadow22.png"));
 
     public CharacterRenderingSystem(SpriteBatch batch) {
         super(CHAR_ASPECT, batch, CameraKind.WORLD);
@@ -65,6 +64,11 @@ public class CharacterRenderingSystem extends RenderingSystem {
         Pos2D screenPos = Util.toScreen(currentPos);
         final Heading heading = player.getHeading();
         createDrawer(getBatch(), player, heading, screenPos, descriptorHandler, animationHandler).draw();
+    }
+
+    @Override
+    protected Comparator<? super Entity> getComparator() {
+        return (entity1, entity2) -> E(entity2).getWorldPos().y - E(entity1).getWorldPos().y;
     }
 
     public static class CharacterDrawer {
@@ -219,11 +223,6 @@ public class CharacterRenderingSystem extends RenderingSystem {
                 batch.draw(region, x + offsetX, (y + offsetY));
             }
         }
-    }
-
-    @Override
-    protected Comparator<? super Entity> getComparator() {
-        return (entity1, entity2) -> E(entity2).getWorldPos().y - E(entity1).getWorldPos().y;
     }
 
 }

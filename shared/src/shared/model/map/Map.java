@@ -1,23 +1,18 @@
 package shared.model.map;
 
-import shared.util.MapHelper;
 import shared.util.MapHelper.Dir;
 
-import static shared.util.MapHelper.Dir.LEFT;
-
 public class Map {
-
-    private static final int LEFT = 0;
-    private static final int UP = 1;
-    private static final int RIGHT = 2;
-    private static final int DOWN = 3;
 
     public static final int MAX_MAP_SIZE_WIDTH = 100;
     public static final int MIN_MAP_SIZE_WIDTH = 1;
     public static final int MAX_MAP_SIZE_HEIGHT = 100;
     public static final int MIN_MAP_SIZE_HEIGHT = 1;
-
     public static final int TILE_BUFFER_SIZE = 7;
+    private static final int LEFT = 0;
+    private static final int UP = 1;
+    private static final int RIGHT = 2;
+    private static final int DOWN = 3;
     protected Tile tiles[][];
     private boolean secureZone;
     private int[] neighbours = new int[4];

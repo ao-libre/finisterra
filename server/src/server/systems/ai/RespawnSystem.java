@@ -6,14 +6,13 @@ import com.artemis.FluidIteratingSystem;
 import com.artemis.annotations.Wire;
 import entity.npc.Respawn;
 import server.systems.EntityFactorySystem;
-import server.systems.manager.WorldManager;
 
 @Wire
 public class RespawnSystem extends FluidIteratingSystem {
 
     private EntityFactorySystem entityFactorySystem;
 
-    public RespawnSystem () {
+    public RespawnSystem() {
         super(Aspect.all(Respawn.class));
     }
 

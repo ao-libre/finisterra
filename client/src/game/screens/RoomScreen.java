@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import game.systems.network.ClientSystem;
-import game.utils.Skins;
 import shared.model.lobby.Player;
 import shared.model.lobby.Room;
 import shared.network.lobby.StartGameRequest;

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import game.handlers.ObjectHandler;
@@ -54,7 +53,7 @@ public class Slot extends ImageButton {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch,parentAlpha);
+        super.draw(batch, parentAlpha);
         if (item.isPresent()) {
             drawItem(batch);
             if (item.get().equipped) {

@@ -549,13 +549,17 @@ public class Spell {
         this.resis = resis.equals("1");
     }
 
-    public float getAgilityDuration() { return agilityDuration; }
+    public float getAgilityDuration() {
+        return agilityDuration;
+    }
 
     public void setAgilityDuration(String agDur) {
         this.agilityDuration = Float.parseFloat(agDur);
     }
 
-    public float getStrengthDuration() { return strengthDuration; }
+    public float getStrengthDuration() {
+        return strengthDuration;
+    }
 
     public void setStrengthDuration(String strDur) {
         this.strengthDuration = Float.parseFloat(strDur);

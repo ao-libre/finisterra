@@ -17,7 +17,7 @@ public class BuffRenderingSystem extends OrderedEntityProcessingSystem {
     private static final int BORDER = 6;
     private SpriteBatch batch;
     private CameraSystem cameraSystem;
-    int yOffset = 100;
+    private int yOffset = 100;
 
     public BuffRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(Focused.class, Buff.class));
@@ -46,10 +46,10 @@ public class BuffRenderingSystem extends OrderedEntityProcessingSystem {
 
 //            drawCoordinates(50, yOffset, time - (world.getSystem(TimeSync.class).getRtt()/1000), attrib);
 
-            yOffset += 50;
+            this.yOffset += 50;
         });
 
-        yOffset = 100;
+        this.yOffset = 100;
 
     }
 

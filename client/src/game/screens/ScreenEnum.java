@@ -36,6 +36,5 @@ public enum ScreenEnum {
     };
 
 
-
     public abstract Screen getScreen(Object... params);
 }

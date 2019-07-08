@@ -51,7 +51,6 @@ public class NameRenderingSystem extends RenderingSystem {
                 }
 
 
-
             });
 
     public NameRenderingSystem(SpriteBatch batch) {
@@ -81,6 +80,7 @@ public class NameRenderingSystem extends RenderingSystem {
 
     private void drawClanName(E player, Pos2D screenPos, float nameY) {
         String clanOrHero = null;
+
         if (player.hasClan() && !player.getClan().name.isEmpty()) {
             clanOrHero = player.getClan().name;
         } else if (player.hasCharHero()) {

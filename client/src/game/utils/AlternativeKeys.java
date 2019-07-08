@@ -8,7 +8,7 @@ public class AlternativeKeys {
     public static final int ATTACK_2 = Input.Keys.SHIFT_RIGHT;
     public static final int MEDITATE = Input.Keys.M;
     public static final int USE = Input.Keys.SHIFT_LEFT;
-    public static final int HIDE = Input.Keys.O;
+    //public static final int HIDE = Input.Keys.O;
     public static final int INVENTORY = Input.Keys.I;
     public static final int SPELLS = Input.Keys.K;
     public static final int TALK = Input.Keys.ENTER;

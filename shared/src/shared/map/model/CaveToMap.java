@@ -57,11 +57,11 @@ public class CaveToMap {
 
     private int getTile(boolean[] neighbours) {
         boolean up = !neighbours[Position.UP.ordinal()];
-        boolean upleft = !neighbours[Position.UP_LEFT.ordinal()];
-        boolean upright = !neighbours[Position.UP_RIGHT.ordinal()];
+        //boolean upleft = !neighbours[Position.UP_LEFT.ordinal()];
+        //boolean upright = !neighbours[Position.UP_RIGHT.ordinal()];
         boolean down = !neighbours[Position.DOWN.ordinal()];
-        boolean downleft = !neighbours[Position.DOWN_LEFT.ordinal()];
-        boolean downright = !neighbours[Position.DOWN_RIGHT.ordinal()];
+        //boolean downleft = !neighbours[Position.DOWN_LEFT.ordinal()];
+        //boolean downright = !neighbours[Position.DOWN_RIGHT.ordinal()];
         boolean left = !neighbours[Position.LEFT.ordinal()];
         boolean right = !neighbours[Position.RIGHT.ordinal()];
         Tiles result = Tiles.EMPTY;
@@ -83,22 +83,23 @@ public class CaveToMap {
 
     private int getWall(boolean[] neighbours) {
         Tiles result = Tiles.EMPTY;
-        boolean up = !neighbours[Position.UP.ordinal()];
-        boolean upleft = !neighbours[Position.UP_LEFT.ordinal()];
-        boolean upright = !neighbours[Position.UP_RIGHT.ordinal()];
-        boolean down = !neighbours[Position.DOWN.ordinal()];
-        boolean downleft = !neighbours[Position.DOWN_LEFT.ordinal()];
-        boolean downright = !neighbours[Position.DOWN_RIGHT.ordinal()];
-        boolean left = !neighbours[Position.LEFT.ordinal()];
-        boolean right = !neighbours[Position.RIGHT.ordinal()];
-//        if (downleft && !down && !left) result = Tiles.WALL_LEFT_UP;
-//        if (down) result = Tiles.WALL_UP;
-//        if (downright && !down && !right) result = Tiles.WALL_RIGHT_UP;
-//        if (left) result = Tiles.WALL_RIGHT;
-//        if (right) result = Tiles.WALL_LEFT;
-//        if (upleft && !up && !left) result = Tiles.WALL_LEFT_DOWN;
-//        if (up) result = Tiles.WALL_DOWN;
-//        if (upright && !up && !right) result = Tiles.WALL_RIGHT_DOWN;
+        //boolean up = !neighbours[Position.UP.ordinal()];
+        //boolean upleft = !neighbours[Position.UP_LEFT.ordinal()];
+        //boolean upright = !neighbours[Position.UP_RIGHT.ordinal()];
+        //boolean down = !neighbours[Position.DOWN.ordinal()];
+        //boolean downleft = !neighbours[Position.DOWN_LEFT.ordinal()];
+        //boolean downright = !neighbours[Position.DOWN_RIGHT.ordinal()];
+        //boolean left = !neighbours[Position.LEFT.ordinal()];
+        //boolean right = !neighbours[Position.RIGHT.ordinal()];
+
+        //if (downleft && !down && !left) result = Tiles.WALL_LEFT_UP;
+        //if (down) result = Tiles.WALL_UP;
+        //if (downright && !down && !right) result = Tiles.WALL_RIGHT_UP;
+        //if (left) result = Tiles.WALL_RIGHT;
+        //if (right) result = Tiles.WALL_LEFT;
+        //if (upleft && !up && !left) result = Tiles.WALL_LEFT_DOWN;
+        //if (up) result = Tiles.WALL_DOWN;
+        //if (upright && !up && !right) result = Tiles.WALL_RIGHT_DOWN;
         return result.ordinal();
     }
 

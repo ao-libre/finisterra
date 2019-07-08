@@ -20,7 +20,7 @@ public class Resources {
     public static final String GAME_GRAPHICS_EXTENSION = ".png";
     public static final String GAME_SOUNDS_EXTENSION = ".wav";
     public static final String GAME_MUSIC_EXTENSION = ".mp3";
-    public static final String GAME_MIDI_EXTENSION  = ".mid";
+    public static final String GAME_MIDI_EXTENSION = ".mid";
     public static final String GAME_SHADERS_LIGHT = "light.png";
     public static final String GAME_SPELLS_PATH = "spells/";
 

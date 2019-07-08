@@ -43,7 +43,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
         int power = 0;
         if (e.hasCharHero()) {
             power = (int) (100 + 3 * e.getAgility().getBaseValue() * Modifiers.WEAPON.of(CharClass.of(e)));
-        } else if (e.hasAttackPower()){
+        } else if (e.hasAttackPower()) {
             power = e.getAttackPower().value;
         }
         return power;
@@ -97,5 +97,6 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
     abstract boolean isAttackable(int entityId);
 
     @Override
-    protected void processSystem() {}
+    protected void processSystem() {
+    }
 }

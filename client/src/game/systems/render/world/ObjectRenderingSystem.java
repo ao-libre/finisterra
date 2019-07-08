@@ -16,9 +16,7 @@ import shared.util.Util;
 
 import java.util.Optional;
 
-import static com.artemis.E.E;
-
-@Wire(injectInherited=true)
+@Wire(injectInherited = true)
 public class ObjectRenderingSystem extends RenderingSystem {
 
     private ObjectHandler objectHandler;
@@ -35,7 +33,7 @@ public class ObjectRenderingSystem extends RenderingSystem {
             Pos2D screenPos = Util.toScreen(objectPos);
             if (!e.hasScale()) {
                 e.scale(0f);
-            } else if(e.getScale().scale >= 1.0f) {
+            } else if (e.getScale().scale >= 1.0f) {
                 e.getScale().scale = 1f;
             } else {
                 e.getScale().scale += world.delta * 2;
@@ -47,5 +45,4 @@ public class ObjectRenderingSystem extends RenderingSystem {
             getBatch().draw(texture, screenPos.x + (Tile.TILE_PIXEL_WIDTH - width) / 2, screenPos.y + (Tile.TILE_PIXEL_HEIGHT - height) / 2, width, height);
         });
     }
-
 }

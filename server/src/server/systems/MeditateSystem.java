@@ -8,8 +8,6 @@ import entity.character.status.Mana;
 import entity.world.CombatMessage;
 import graphics.Effect;
 import graphics.Effect.EffectBuilder;
-import graphics.FX;
-import server.core.Server;
 import server.systems.manager.WorldManager;
 import shared.interfaces.Constants;
 import shared.network.notifications.ConsoleMessage;
@@ -27,10 +25,9 @@ import static shared.util.Messages.*;
 @Wire
 public class MeditateSystem extends IntervalFluidIteratingSystem {
 
-    private WorldManager worldManager;
-
     private static final float MANA_RECOVERY_PERCENT = 0.05f;
     private static Map<Integer, Integer> userMeditations = new HashMap<>();
+    private WorldManager worldManager;
 
     public MeditateSystem(float timer) {
         super(Aspect.all(Meditating.class, Mana.class), timer);

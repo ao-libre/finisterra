@@ -4,7 +4,6 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.EBag;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import entity.character.Character;
 import entity.character.states.Immobile;
@@ -25,8 +24,6 @@ import shared.network.notifications.EntityUpdate;
 import shared.util.MapHelper;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 import static physics.AOPhysics.Movement.*;
 import static server.utils.WorldUtils.WorldUtils;

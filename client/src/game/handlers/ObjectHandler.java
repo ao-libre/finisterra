@@ -7,8 +7,6 @@ import model.textures.GameTexture;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
-import shared.util.ObjJson;
-import shared.util.SharedResources;
 
 import java.util.HashMap;
 import java.util.Map;

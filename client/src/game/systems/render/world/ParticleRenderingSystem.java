@@ -18,9 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.artemis.E.E;
-
-@Wire(injectInherited=true)
+@Wire(injectInherited = true)
 public class ParticleRenderingSystem extends RenderingSystem {
 
     private Map<Integer, Map<Integer, ParticleEffect>> particles = new HashMap<>();
@@ -83,5 +81,4 @@ public class ParticleRenderingSystem extends RenderingSystem {
             }
         });
     }
-
 }

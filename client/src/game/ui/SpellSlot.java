@@ -6,7 +6,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Tooltip;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import game.utils.Resources;
@@ -15,13 +18,12 @@ import shared.model.Spell;
 
 public class SpellSlot extends ImageButton {
 
-    public static final float ICON_ALPHA = 0.5f;
     static final int SIZE = 64;
+    private static final float ICON_ALPHA = 0.5f;
     private static Drawable selection = Skins.COMODORE_SKIN.getDrawable("slot-selected2");
     private final SpellView spellView;
-    private Spell spell;
     private final ClickListener clickListener;
-
+    private Spell spell;
     private Texture icon;
     private Tooltip tooltip;
 
@@ -41,10 +43,10 @@ public class SpellSlot extends ImageButton {
 
     public void setSpell(Spell spell) {
         this.spell = spell;
-        if(spell == null) {
+        if (spell == null) {
             return;
         }
-        if(tooltip != null) {
+        if (tooltip != null) {
             removeListener(tooltip);
         }
         tooltip = getTooltip(spell);
@@ -52,7 +54,7 @@ public class SpellSlot extends ImageButton {
     }
 
     private Tooltip getTooltip(Spell spell) {
-        Actor content = createTooltipContent(spell); 
+        Actor content = createTooltipContent(spell);
         return new Tooltip(content);
     }
 

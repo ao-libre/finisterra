@@ -19,12 +19,11 @@ import game.managers.WorldManager;
 import game.network.ClientResponseProcessor;
 import game.network.GameNotificationProcessor;
 import game.network.KryonetClientMarshalStrategy;
-import game.systems.camera.CameraShakeSystem;
-import game.systems.sound.SoundSytem;
 import game.systems.anim.IdleAnimationSystem;
 import game.systems.anim.MovementAnimationSystem;
 import game.systems.camera.CameraFocusSystem;
 import game.systems.camera.CameraMovementSystem;
+import game.systems.camera.CameraShakeSystem;
 import game.systems.camera.CameraSystem;
 import game.systems.map.TiledMapSystem;
 import game.systems.network.ClientSystem;
@@ -35,8 +34,11 @@ import game.systems.physics.PhysicsAttackSystem;
 import game.systems.physics.PlayerInputSystem;
 import game.systems.render.ui.CoordinatesRenderingSystem;
 import game.systems.render.world.*;
+import game.systems.sound.SoundSytem;
 import game.ui.GUI;
 import shared.model.map.Tile;
+
+import java.util.concurrent.TimeUnit;
 
 import static com.artemis.E.E;
 import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
@@ -62,7 +64,7 @@ public class GameScreen extends ScreenAdapter {
         long start = System.currentTimeMillis();
         initWorldConfiguration();
         gui.initialize();
-        Gdx.app.log("Game screen initialization", "Elapsed time: " + (System.currentTimeMillis() - start));
+        Gdx.app.log("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
     }
 
     public static int getPlayer() {
@@ -81,6 +83,10 @@ public class GameScreen extends ScreenAdapter {
 
     public static World getWorld() {
         return world;
+    }
+
+    public static KryonetClientMarshalStrategy getClient() {
+        return world.getSystem(ClientSystem.class).getKryonetClient();
     }
 
     private void initWorldConfiguration() {
@@ -142,10 +148,6 @@ public class GameScreen extends ScreenAdapter {
                 .with(HIGH + 1, new GameNotificationProcessor())
                 .with(HIGH + 1, clientSystem);
         world = new World(worldConfigBuilder.build()); // preload Artemis world
-    }
-
-    public static KryonetClientMarshalStrategy getClient() {
-        return world.getSystem(ClientSystem.class).getKryonetClient();
     }
 
     private void postWorldInit() {

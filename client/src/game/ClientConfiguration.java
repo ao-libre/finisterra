@@ -14,22 +14,6 @@ public class ClientConfiguration {
     private Init initConfig;
     private Network network;
 
-    private void setInitConfig(Init initConfig) {
-        this.initConfig = initConfig;
-    }
-
-    public void setNetwork(Network network) {
-        this.network = network;
-    }
-
-    public Init getInitConfig() {
-        return initConfig;
-    }
-
-    public Network getNetwork() {
-        return network;
-    }
-
     public static ClientConfiguration loadConfig(String path) {
         Json configObject = new AOJson();
         try {
@@ -76,47 +60,63 @@ public class ClientConfiguration {
         return configOutput;
     }
 
+    public Init getInitConfig() {
+        return initConfig;
+    }
+
+    private void setInitConfig(Init initConfig) {
+        this.initConfig = initConfig;
+    }
+
+    public Network getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(Network network) {
+        this.network = network;
+    }
+
     public void save() {
         Json json = new AOJson();
         json.toJson(this, new FileHandle("assets/config.json"));
     }
-    
+
     public static class Init {
         private Video video;
         private boolean resizeable;
         private boolean disableAudio;
         private boolean startMaximized;
 
-        void setVideo(Video video) {
-            this.video = video;
-        }
-
-        void setResizeable(boolean resizeable) {
-            this.resizeable = resizeable;
-        }
-
-        void setDisableAudio(boolean disableAudio) {
-            this.disableAudio = disableAudio;
-        }
-
-        void setStartMaximized(boolean startMaximized) {
-            this.startMaximized = startMaximized;
-        }
-
         public Video getVideo() {
             return video;
+        }
+
+        void setVideo(Video video) {
+            this.video = video;
         }
 
         public boolean isDisableAudio() {
             return disableAudio;
         }
 
+        void setDisableAudio(boolean disableAudio) {
+            this.disableAudio = disableAudio;
+        }
+
         public boolean isResizeable() {
             return resizeable;
         }
 
+        void setResizeable(boolean resizeable) {
+            this.resizeable = resizeable;
+        }
+
         public boolean isStartMaximized() {
             return startMaximized;
+        }
+
+        void setStartMaximized(boolean startMaximized) {
+            this.startMaximized = startMaximized;
         }
 
         public static class Video {
@@ -125,36 +125,36 @@ public class ClientConfiguration {
             private boolean vSync;
             private String HiDPI_Mode;
 
-            public void setHeight(int height) {
-                this.height = height;
+            public int getWidth() {
+                return width;
             }
 
             public void setWidth(int width) {
                 this.width = width;
             }
 
-            private void setVsync(boolean vSync) {
-                this.vSync = vSync;
-            }
-
-            private void setHiDPIMode(String HiDPI_Mode) {
-                this.HiDPI_Mode = HiDPI_Mode;
-            }
-
-            public int getWidth() {
-                return width;
-            }
-
             public int getHeight() {
                 return height;
+            }
+
+            public void setHeight(int height) {
+                this.height = height;
             }
 
             public boolean getVsync() {
                 return vSync;
             }
 
+            private void setVsync(boolean vSync) {
+                this.vSync = vSync;
+            }
+
             public String getHiDPIMode() {
                 return HiDPI_Mode;
+            }
+
+            private void setHiDPIMode(String HiDPI_Mode) {
+                this.HiDPI_Mode = HiDPI_Mode;
             }
         }
     }
@@ -162,32 +162,32 @@ public class ClientConfiguration {
     public static class Network {
         private DefaultServer defaultServer;
 
-        void setDefaultServer(DefaultServer defaultServer) {
-            this.defaultServer = defaultServer;
-        }
-
         public DefaultServer getDefaultServer() {
             return defaultServer;
+        }
+
+        void setDefaultServer(DefaultServer defaultServer) {
+            this.defaultServer = defaultServer;
         }
 
         public static class DefaultServer {
             private String hostname;
             private int port;
 
-            void setHostname(String hostname) {
-                this.hostname = hostname;
-            }
-
-            void setPort(int port) {
-                this.port = port;
-            }
-
             public String getHostname() {
                 return hostname;
             }
 
+            void setHostname(String hostname) {
+                this.hostname = hostname;
+            }
+
             public int getPort() {
                 return port;
+            }
+
+            void setPort(int port) {
+                this.port = port;
             }
         }
     }

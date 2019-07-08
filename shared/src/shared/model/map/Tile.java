@@ -34,12 +34,12 @@ public class Tile {
         this.setObjCount(objCount);
     }
 
-    public void setObjCount(int objCount) {
-        this.objCount = objCount;
-    }
-
     public int getObjCount() {
         return objCount;
+    }
+
+    public void setObjCount(int objCount) {
+        this.objCount = objCount;
     }
 
     public int getGraphic(int index) {

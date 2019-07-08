@@ -55,7 +55,7 @@ public class ActionBar extends Table implements ActionSwitchListener {
         return inventory;
     }
 
-    public SpellView getSpellView() {
+    protected SpellView getSpellView() {
         return spellView;
     }
 

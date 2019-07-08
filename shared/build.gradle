@@ -19,8 +19,8 @@ ext {
 }
 
 sourceSets {
-	main.java.srcDirs = ["src/", fluidOutputDir]
-	main.resources.srcDirs = ["resources/"]
+    main.java.srcDirs = ["src/", fluidOutputDir]
+    main.resources.srcDirs = ["resources/"]
 }
 
 fluid {
@@ -39,8 +39,8 @@ fluid {
 }
 
 weave {
-	classesDir = new File(buildDir, "classes/java/main")
-	enableArtemisPlugin = true
+    classesDir = new File(buildDir, "classes/java/main")
+    enableArtemisPlugin = true
     enablePooledWeaving = true
     generateLinkMutators = true
     optimizeEntitySystems = true
