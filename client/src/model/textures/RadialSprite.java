@@ -11,7 +11,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
-/** @author Xoppa */
+/**
+ * @author Xoppa
+ */
 public class RadialSprite implements Drawable {
     private final static int TOPRIGHT1 = 0;
     private final static int BOTTOMRIGHT1 = 5;
@@ -25,16 +27,20 @@ public class RadialSprite implements Drawable {
     private final static int BOTTOMRIGHT3 = 45;
     private final static int BOTTOMLEFT3 = 50;
     private final static int TOPLEFT3 = 55;
-
-
-    private Texture texture;
     private final float[] verts = new float[60];
+    private Texture texture;
     private float x, y, angle, width, height, u1, u2, v1, v2, du, dv;
     private boolean dirty = true;
     private int draw = 0;
     private float angleOffset = 270f;
     private float originX, originY;
     private float scaleX = 1f, scaleY = 1f;
+    private float leftWidth = 0;
+    private float rightWidth = 0;
+    private float topHeight = 0;
+    private float bottomHeight = 0;
+    private float minWidth = 0;
+    private float minHeight = 0;
 
     public RadialSprite(final TextureRegion textureRegion) {
         this.texture = textureRegion.getTexture();
@@ -188,13 +194,6 @@ public class RadialSprite implements Drawable {
         this.angle = angle;
         dirty = true;
     }
-
-    private float leftWidth = 0;
-    private float rightWidth = 0;
-    private float topHeight = 0;
-    private float bottomHeight = 0;
-    private float minWidth = 0;
-    private float minHeight = 0;
 
     @Override
     public void draw(Batch batch, float x, float y, float width, float height) {

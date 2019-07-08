@@ -29,14 +29,13 @@ import static java.lang.String.format;
 public class CharacterTrainingSystem extends PassiveSystem {
 
     public static final int HIT_BREAKING_LEVEL = 35;
-    private WorldManager worldManager;
-    private NPCManager npcManager;
-
-    private static int MAX_LEVEL = 45;
     public static int INITIAL_LEVEL = 1;
     public static int DEFAULT_STAMINA = 15;
     public static int STAT_MAXHIT_UNDER36 = 99;
     public static int STAT_MAXHIT_OVER36 = 999;
+    private static int MAX_LEVEL = 45;
+    private WorldManager worldManager;
+    private NPCManager npcManager;
 
     public void userTakeDamage(int entityId, int target, int effectiveDamage) {
         int exp = getExp(target, effectiveDamage);

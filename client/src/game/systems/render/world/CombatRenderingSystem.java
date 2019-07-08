@@ -30,10 +30,8 @@ import java.util.concurrent.TimeUnit;
 @Wire(injectInherited = true)
 public class CombatRenderingSystem extends RenderingSystem {
 
-    private DescriptorHandler descriptorHandler;
-
     public static final float VELOCITY = 1f;
-
+    private DescriptorHandler descriptorHandler;
     private LoadingCache<CombatMessage, Table> messages = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
@@ -116,5 +114,4 @@ public class CombatRenderingSystem extends RenderingSystem {
 
         return color;
     }
-
 }

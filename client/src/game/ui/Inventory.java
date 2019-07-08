@@ -149,7 +149,7 @@ public class Inventory extends Window {
         };
     }
 
-    public void scrolled(int amount) {
+    protected void scrolled(int amount) {
         base += amount;
         base = MathUtils.clamp(base, 0, entity.character.info.Inventory.SIZE - Inventory.SIZE);
         updateUserInventory(base);

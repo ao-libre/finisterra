@@ -20,7 +20,8 @@ public class NPCManager extends BaseSystem {
     }
 
     @Override
-    protected void processSystem() {}
+    protected void processSystem() {
+    }
 
     public void init() {
         Log.info("Loading NPCs...");

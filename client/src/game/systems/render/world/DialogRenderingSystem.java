@@ -29,15 +29,13 @@ import java.util.concurrent.TimeUnit;
 @Wire(injectInherited = true)
 public class DialogRenderingSystem extends RenderingSystem {
 
-    private DescriptorHandler descriptorHandler;
-    private FontsHandler fontsHandler;
-
     private static final int ALPHA_TIME = 2;
     private static final int MAX_LENGTH = (int) (120 * SCALE);
     private static final int DISTANCE_TO_TOP = (int) (5 * SCALE);
     private static final float TIME = 0.3f;
     private static final float VELOCITY = DISTANCE_TO_TOP / TIME;
-
+    private DescriptorHandler descriptorHandler;
+    private FontsHandler fontsHandler;
     private LoadingCache<Dialog, Table> labels = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
@@ -100,5 +98,4 @@ public class DialogRenderingSystem extends RenderingSystem {
         label.draw(getBatch(), dialog.alpha);
         child.getStyle().fontColor = color;
     }
-
 }

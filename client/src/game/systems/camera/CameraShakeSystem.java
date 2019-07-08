@@ -12,8 +12,8 @@ public class CameraShakeSystem extends BaseSystem {
 
 
     public CameraSystem cameraSystem;
-    public float shake;
-    public Vector2 push = new Vector2();
+    private float shake;
+    private Vector2 push = new Vector2();
 
     public CameraShakeSystem() {
         shake = 0;

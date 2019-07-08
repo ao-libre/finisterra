@@ -45,5 +45,4 @@ public class ObjectRenderingSystem extends RenderingSystem {
             getBatch().draw(texture, screenPos.x + (Tile.TILE_PIXEL_WIDTH - width) / 2, screenPos.y + (Tile.TILE_PIXEL_HEIGHT - height) / 2, width, height);
         });
     }
-
 }

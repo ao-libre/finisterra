@@ -48,7 +48,7 @@ public class TiledMapSystem extends IteratingSystem {
      *
      * @param number
      */
-    public void changeMap(int number) {
+    private void changeMap(int number) {
         this.mapNumber = number;
         this.map = MapHandler.get(number);
 

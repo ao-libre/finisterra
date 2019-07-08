@@ -64,11 +64,6 @@ public class RadialProgress {
         this.startAngle = 90;
     }
 
-    public void setPercent(float percent) {
-        this.percent = percent;
-        buildVertices();
-    }
-
     private void buildVertices() {
         idx = 0;
 
@@ -140,5 +135,10 @@ public class RadialProgress {
 
     public float getPercent() {
         return percent;
+    }
+
+    public void setPercent(float percent) {
+        this.percent = percent;
+        buildVertices();
     }
 }

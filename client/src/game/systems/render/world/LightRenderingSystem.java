@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import game.utils.Resources;
 import position.Pos2D;
@@ -25,8 +24,7 @@ public class LightRenderingSystem extends RenderingSystem {
     private final Texture light;
     private final float width;
     private final float height;
-    FrameBuffer lightBuffer;
-    TextureRegion lightBufferRegion;
+    private FrameBuffer lightBuffer;
     private Color prevColor;
     private int blendDstFunc;
     private int blendSrcFunc;
@@ -106,5 +104,4 @@ public class LightRenderingSystem extends RenderingSystem {
 
         lightBuffer.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
     }
-
 }

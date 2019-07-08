@@ -60,6 +60,14 @@ public class GenericLoader<T> extends AsynchronousAssetLoader<HashMap<Integer, T
             this.function = function;
         }
 
+        public static GenericParameter<Graphic> graphicGenericParameter() {
+            return new GenericParameter<>(new GraphicsSerializer(), Graphic.class, Graphic::getGrhIndex);
+        }
+
+        public static GenericParameter<BodyDescriptor> bodiesGenericParameter() {
+            return new GenericParameter<>(new BodyDescriptorSerializer(), BodyDescriptor.class, BodyDescriptor::getId);
+        }
+
         Class getClazz() {
             return clazz;
         }
@@ -70,14 +78,6 @@ public class GenericLoader<T> extends AsynchronousAssetLoader<HashMap<Integer, T
 
         Function<T, Integer> getFunction() {
             return function;
-        }
-
-        public static GenericParameter<Graphic> graphicGenericParameter() {
-            return new GenericParameter<>(new GraphicsSerializer(), Graphic.class, Graphic::getGrhIndex);
-        }
-
-        public static GenericParameter<BodyDescriptor> bodiesGenericParameter() {
-            return new GenericParameter<>(new BodyDescriptorSerializer(), BodyDescriptor.class, BodyDescriptor::getId);
         }
     }
 }

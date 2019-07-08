@@ -3,7 +3,6 @@ package server.systems.manager;
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.esotericsoftware.minlog.Log;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
 import shared.util.ObjJson;
@@ -26,10 +25,11 @@ public class ObjectManager extends BaseSystem {
     }
 
     @Override
-    protected void processSystem() {}
+    protected void processSystem() {
+    }
 
     public void init() {
-        Log.info("Loading objects...");
+        Gdx.app.log("Server initialization", "Loading objects...");
         final FileHandle folder = Gdx.files.internal("objects/");
         ObjJson.loadObjectsByType(objects, folder);
     }

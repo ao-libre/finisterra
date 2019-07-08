@@ -23,23 +23,17 @@ public class TilesetConfig {
         return tileWidth;
     }
 
-    public void setTileWidth(int tileWidth) {
-        this.tileWidth = tileWidth;
-    }
+    //public void setTileWidth(int tileWidth) { this.tileWidth = tileWidth; }
 
     public int getTileHeight() {
         return tileHeight;
     }
 
-    public void setTileHeight(int tileHeight) {
-        this.tileHeight = tileHeight;
-    }
+    //public void setTileHeight(int tileHeight) { this.tileHeight = tileHeight; }
 
     public Array<Array<String>> getTerrainDefs() {
         return terrainDefs;
     }
 
-    public void setTerrainDefs(Array<Array<String>> terrainDefs) {
-        this.terrainDefs = terrainDefs;
-    }
+    //public void setTerrainDefs(Array<Array<String>> terrainDefs) { this.terrainDefs = terrainDefs; }
 }

@@ -2,10 +2,9 @@ package server.systems.ai;
 
 public class AStarMap {
 
-    private Node[][] map;
-
     private final int width;
     private final int height;
+    private Node[][] map;
 
     public AStarMap(int width, int height) {
         this.width = width;

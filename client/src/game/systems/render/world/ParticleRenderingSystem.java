@@ -81,5 +81,4 @@ public class ParticleRenderingSystem extends RenderingSystem {
             }
         });
     }
-
 }

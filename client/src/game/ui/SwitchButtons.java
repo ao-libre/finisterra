@@ -71,12 +71,12 @@ class SwitchButtons extends Table {
 
     }
 
-    public interface ActionSwitchListener {
-        void notify(State state);
-    }
-
     enum State {
         INVENTORY,
         SPELLS
+    }
+
+    public interface ActionSwitchListener {
+        void notify(State state);
     }
 }

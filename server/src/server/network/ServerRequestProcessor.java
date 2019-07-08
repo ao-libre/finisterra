@@ -82,7 +82,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     /**
      * Process {@link MovementRequest}. If it is valid, move player and notify.
      *
-     * @param request movement request
+     * @param request      movement request
      * @param connectionId id
      * @see MovementRequest
      */

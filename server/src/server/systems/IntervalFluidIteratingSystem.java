@@ -6,8 +6,8 @@ import com.artemis.FluidIteratingSystem;
 
 public class IntervalFluidIteratingSystem extends FluidIteratingSystem {
 
-    protected float acc;
     private final float interval;
+    protected float acc;
 
     public IntervalFluidIteratingSystem(Aspect.Builder aspect, float interval) {
         super(aspect);

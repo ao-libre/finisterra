@@ -38,7 +38,8 @@ public class WorldManager extends BaseSystem {
     }
 
     @Override
-    protected void processSystem() {}
+    protected void processSystem() {
+    }
 
     public Optional<Integer> getNetworkedId(int id) {
         return networkedEntities

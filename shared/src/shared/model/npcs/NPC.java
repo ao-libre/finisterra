@@ -25,7 +25,8 @@ public class NPC {
     //
     private int itemTypes;
     private boolean commerce;
-    private List<Pair<Integer, Integer>> objs = new ArrayList<>();;
+    private List<Pair<Integer, Integer>> objs = new ArrayList<>();
+    ;
     private boolean invReSpawn;
 
     //
@@ -347,16 +348,32 @@ public class NPC {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public boolean isDobleAttack() {
         return dobleAttack;
+    }
+
+    public void setDobleAttack(boolean dobleAttack) {
+        this.dobleAttack = dobleAttack;
     }
 
     public boolean isFaction() {
         return faction;
     }
 
+    public void setFaction(boolean faction) {
+        this.faction = faction;
+    }
+
     public boolean isInvalidEarth() {
         return invalidEarth;
+    }
+
+    public void setInvalidEarth(boolean invalidEarth) {
+        this.invalidEarth = invalidEarth;
     }
 
     public boolean isValidWater() {
@@ -365,22 +382,6 @@ public class NPC {
 
     public void setValidWater(boolean validWater) {
         this.validWater = validWater;
-    }
-
-    public void setInvalidEarth(boolean invalidEarth) {
-        this.invalidEarth = invalidEarth;
-    }
-
-    public void setFaction(boolean faction) {
-        this.faction = faction;
-    }
-
-    public void setDobleAttack(boolean dobleAttack) {
-        this.dobleAttack = dobleAttack;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }
 

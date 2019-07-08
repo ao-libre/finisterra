@@ -85,5 +85,6 @@ public class DefaultRequestProcessor extends BaseSystem implements IRequestProce
     }
 
     @Override
-    protected void processSystem() {}
+    protected void processSystem() {
+    }
 }

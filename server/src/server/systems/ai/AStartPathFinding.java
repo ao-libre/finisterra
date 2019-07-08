@@ -8,6 +8,12 @@ import com.badlogic.gdx.utils.Array;
 import position.WorldPos;
 
 public class AStartPathFinding {
+    private static final int[][] NEIGHBORHOOD = new int[][]{
+            new int[]{-1, 0},
+            new int[]{0, -1},
+            new int[]{0, 1},
+            new int[]{1, 0}
+    };
     public final AStarMap map;
     private final PathFinder<Node> pathfinder;
     private final Heuristic<Node> heuristic;
@@ -22,35 +28,6 @@ public class AStartPathFinding {
             return Math.abs(endNode.x - node.x) + Math.abs(endNode.y - node.y);
         };
     }
-
-    public Node findNextNode(WorldPos source, WorldPos target) {
-        int sourceX = MathUtils.floor(source.x);
-        int sourceY = MathUtils.floor(source.y);
-        int targetX = MathUtils.floor(target.x);
-        int targetY = MathUtils.floor(target.y);
-
-        if (map == null
-                || sourceX < 0 || sourceX >= map.getWidth()
-                || sourceY < 0 || sourceY >= map.getHeight()
-                || targetX < 0 || targetX >= map.getWidth()
-                || targetY < 0 || targetY >= map.getHeight()) {
-            return null;
-        }
-
-        Node sourceNode = map.getNodeAt(sourceX, sourceY);
-        Node targetNode = map.getNodeAt(targetX, targetY);
-        connectionPath.clear();
-        pathfinder.searchConnectionPath(sourceNode, targetNode, heuristic, connectionPath);
-
-        return connectionPath.getCount() == 0 ? null : connectionPath.get(0).getToNode();
-    }
-
-    private static final int[][] NEIGHBORHOOD = new int[][]{
-            new int[]{-1, 0},
-            new int[]{0, -1},
-            new int[]{0, 1},
-            new int[]{1, 0}
-    };
 
     public static MyGraph createGraph(AStarMap map) {
         final int height = map.getHeight();
@@ -78,6 +55,28 @@ public class AStartPathFinding {
             }
         }
         return graph;
+    }
+
+    public Node findNextNode(WorldPos source, WorldPos target) {
+        int sourceX = MathUtils.floor(source.x);
+        int sourceY = MathUtils.floor(source.y);
+        int targetX = MathUtils.floor(target.x);
+        int targetY = MathUtils.floor(target.y);
+
+        if (map == null
+                || sourceX < 0 || sourceX >= map.getWidth()
+                || sourceY < 0 || sourceY >= map.getHeight()
+                || targetX < 0 || targetX >= map.getWidth()
+                || targetY < 0 || targetY >= map.getHeight()) {
+            return null;
+        }
+
+        Node sourceNode = map.getNodeAt(sourceX, sourceY);
+        Node targetNode = map.getNodeAt(targetX, targetY);
+        connectionPath.clear();
+        pathfinder.searchConnectionPath(sourceNode, targetNode, heuristic, connectionPath);
+
+        return connectionPath.getCount() == 0 ? null : connectionPath.get(0).getToNode();
     }
 
     private static class MyGraph implements IndexedGraph<Node> {

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
@@ -12,10 +11,10 @@ import static game.systems.render.world.RenderingSystem.SCALE;
 
 public class Fonts {
 
-    public static final GlyphLayout layout = new GlyphLayout();
-    public static final GlyphLayout dialogLayout = new GlyphLayout();
+    //public static final GlyphLayout layout = new GlyphLayout();
+    //public static final GlyphLayout dialogLayout = new GlyphLayout();
     private static final String COMMODORE_FONT = "alagard.ttf";
-    private static final String FIRA_FONT = "FuraMono-Bold Powerline.otf";
+    //private static final String FIRA_FONT = "FuraMono-Bold Powerline.otf";
 
     static {
 //        WHITE_FONT = gui(Color.WHITE, 5, Color.BLACK, 0, 0, 0, COMMODORE_FONT);

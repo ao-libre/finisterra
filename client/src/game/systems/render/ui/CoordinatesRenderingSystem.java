@@ -21,9 +21,9 @@ public class CoordinatesRenderingSystem extends OrderedEntityProcessingSystem {
 
     public static final float ALPHA = 0.5f;
     private static final int BORDER = 6;
+    private final Label coordLabel;
     private SpriteBatch batch;
     private CameraSystem cameraSystem;
-    private final Label coordLabel;
 
     public CoordinatesRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(Focused.class, WorldPos.class));

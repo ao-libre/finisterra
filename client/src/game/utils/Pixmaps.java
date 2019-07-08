@@ -31,7 +31,7 @@ public class Pixmaps {
         ((ByteBuffer) pixels).put(lines);
     }
 
-    public static Pixmap copy(Pixmap input) {
+    private static Pixmap copy(Pixmap input) {
         Pixmap pixmap = new Pixmap(input.getWidth(), input.getHeight(), Format.RGBA8888);
         pixmap.drawPixmap(input, 0, 0);
         return pixmap;
@@ -51,7 +51,7 @@ public class Pixmaps {
         return pixmap;
     }
 
-    public static Pixmap outline(Pixmap input, Color color) {
+    protected static Pixmap outline(Pixmap input, Color color) {
         Pixmap pixmap = copy(input);
         pixmap.setColor(color);
 
@@ -126,14 +126,14 @@ public class Pixmaps {
         }
     }
 
-    public static Pixmap blankPixmap() {
+    private static Pixmap blankPixmap() {
         Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
         pixmap.fill();
         return pixmap;
     }
 
-    public static Texture blankTexture() {
+    private static Texture blankTexture() {
         Texture texture = new Texture(blankPixmap());
         texture.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
         return texture;

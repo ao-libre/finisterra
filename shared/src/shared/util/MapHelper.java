@@ -29,8 +29,12 @@ public class MapHelper {
     private static final int TOP_BORDER_TILE = 8;
     private static final int LEFT_BORDER_TILE = 10;
     private static final int RIGHT_BORDER_TILE = 91;
+    private static final AOJson JSON = new AOJson();
     private static MapHelper instance;
     private LoadingCache<Integer, Map> maps;
+
+    private MapHelper() {
+    }
 
     private static LoadingCache<Integer, Map> createCache(CacheStrategy cacheStrategy) {
         CacheBuilder<Object, Object> cacheBuilder = CacheBuilder
@@ -52,17 +56,17 @@ public class MapHelper {
                 });
     }
 
-    private static final AOJson JSON = new AOJson();
-
-    private MapHelper() {
-    }
-
     public static MapHelper instance(CacheStrategy strategy) {
         if (instance == null) {
             instance = new MapHelper();
             instance.maps = createCache(strategy);
         }
         return instance;
+    }
+
+    private static Map getMapFromJson(int i) {
+        FileHandle mapPath = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Map" + i + SharedResources.JSON_EXT);
+        return JSON.fromJson(Map.class, mapPath);
     }
 
     public Map getMap(int i) {
@@ -104,15 +108,10 @@ public class MapHelper {
      * Initialize maps.
      */
     public void loadAll() {
-        Log.info("Loading maps...");
+        Gdx.app.log("Server initialization", "Loading maps...");
         for (int i = 1; i <= 290; i++) {
             maps.getUnchecked(i);
         }
-    }
-
-    private static Map getMapFromJson(int i) {
-        FileHandle mapPath = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Map" + i + SharedResources.JSON_EXT);
-        return JSON.fromJson(Map.class, mapPath);
     }
 
     @Deprecated

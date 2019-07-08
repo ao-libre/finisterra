@@ -258,7 +258,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     }
 
     @Override
-    public void dispose(){
+    public void dispose() {
         super.dispose();
     }
 }

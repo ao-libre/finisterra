@@ -9,14 +9,14 @@ public class DepositObj extends Obj {
     public DepositObj() {
     }
 
+    public DepositObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
+    }
+
     @Override
     public void fillObject(Profile.Section section) {
         super.fillObject(section);
         ObjectFactory.fill(this, section);
-    }
-
-    public DepositObj(int id, String name, int grhIndex) {
-        super(id, name, grhIndex);
     }
 
     @Override

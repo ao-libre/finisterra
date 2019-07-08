@@ -7,9 +7,9 @@ public class Node {
 
     public final int x;
     public final int y;
-    public boolean isWall;
     private final int index;
     private final Array<Connection<Node>> connections;
+    public boolean isWall;
 
     public Node(AStarMap map, int x, int y) {
         this.x = x;
@@ -19,11 +19,11 @@ public class Node {
         this.connections = new Array<>();
     }
 
-    public int getIndex () {
+    public int getIndex() {
         return index;
     }
 
-    public Array<Connection<Node>> getConnections () {
+    public Array<Connection<Node>> getConnections() {
         return connections;
     }
 

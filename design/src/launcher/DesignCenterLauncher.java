@@ -8,11 +8,11 @@ public class DesignCenterLauncher {
         System.setProperty("org.lwjgl.opengl.Display.enableOSXFullscreenModeAPI", "true");
 
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
-            cfg.setTitle("Finisterra Design Center");
-            cfg.setWindowedMode(600,480);
-            cfg.useVsync(true);
-            cfg.setIdleFPS(60);
-            cfg.setResizable(true);
+        cfg.setTitle("Finisterra Design Center");
+        cfg.setWindowedMode(600, 480);
+        cfg.useVsync(true);
+        cfg.setIdleFPS(60);
+        cfg.setResizable(true);
 
         new Lwjgl3Application(new DesignCenter(), cfg);
     }

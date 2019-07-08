@@ -7,8 +7,6 @@ public enum Modifiers {
 
     EVASION,
     WEAPON,
-    PROJECTILE,
-    WRESTLING,
     WEAPON_DAMAGE,
     PROJECTILE_DAMAGE,
     WRESTLING_DAMAGE,

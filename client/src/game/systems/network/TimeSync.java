@@ -9,7 +9,7 @@ import shared.network.time.TimeSyncResponse;
 @Wire
 public class TimeSync extends BaseSystem {
 
-    public static final int SEND_REQUEST_EVERY_X_IN_SEGS = 60;
+    private static final int SEND_REQUEST_EVERY_X_IN_SEGS = 60;
     private ClientSystem client;
     private int requestId;
     private long sendTime;
@@ -22,14 +22,14 @@ public class TimeSync extends BaseSystem {
     /**
      * Returns a message to be sent, which should be sent immediately as the send time is tracked.
      */
-    public TimeSyncRequest send() {
+    private TimeSyncRequest send() {
         TimeSyncRequest request = TimeSyncRequest.getNextRequest();
         requestId = request.requestId;
         sendTime = TimeUtils.millis();
         return request;
     }
 
-    public void sendRequest() {
+    private void sendRequest() {
         client.getKryonetClient().sendToAll(send());
     }
 

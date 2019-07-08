@@ -22,9 +22,8 @@ import static com.artemis.E.E;
 public class ItemConsumers extends DefaultManager {
 
     private WorldManager worldManager;
-    private EntityFactorySystem entityFactorySystem;
-
     public final BiConsumer<Integer, Obj> WEAR = wear();
+    private EntityFactorySystem entityFactorySystem;
     public final BiConsumer<Integer, Obj> TAKE_OFF = takeOff();
 
     public ItemConsumers() {

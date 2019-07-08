@@ -27,10 +27,9 @@ import static com.artemis.E.E;
 @Wire
 public class MovementProcessorSystem extends IteratingSystem {
 
-    private WorldManager worldManager;
-
     private static java.util.Map<Integer, MovementRequest> requests = new ConcurrentHashMap<>();
     private static int requestNumber;
+    private WorldManager worldManager;
 
     public MovementProcessorSystem() {
         super(Aspect.all(Focused.class, AOPhysics.class,

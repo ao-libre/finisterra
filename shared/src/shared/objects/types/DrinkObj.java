@@ -10,14 +10,14 @@ public class DrinkObj extends Obj {
     public DrinkObj() {
     }
 
+    public DrinkObj(int id, String name, int grhIndex) {
+        super(id, name, grhIndex);
+    }
+
     @Override
     public void fillObject(Profile.Section section) {
         super.fillObject(section);
         ObjectFactory.fill(this, section);
-    }
-
-    public DrinkObj(int id, String name, int grhIndex) {
-        super(id, name, grhIndex);
     }
 
     @Override

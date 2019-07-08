@@ -15,7 +15,13 @@ public class Effect extends Component implements Serializable {
     public int loops;
     public Type type;
 
-    public Effect() {}
+    public Effect() {
+    }
+
+    public enum Type {
+        PARTICLE,
+        FX
+    }
 
     public static class EffectBuilder {
         Effect effect;
@@ -49,10 +55,5 @@ public class Effect extends Component implements Serializable {
         public Effect build() {
             return effect;
         }
-    }
-
-    public enum Type {
-        PARTICLE,
-        FX
     }
 }

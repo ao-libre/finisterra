@@ -14,8 +14,8 @@ import game.ui.user.UserInformation;
 
 public class GUI {
 
-    public static final int CONSOLE_TOP_BORDER = 16;
-    public static final int CONSOLE_LEFT_BORDER = 5;
+    //public static final int CONSOLE_TOP_BORDER = 16;
+    //public static final int CONSOLE_LEFT_BORDER = 5;
     private static ActionBar actionBar;
     private static UserInformation userTable;
     private static DialogText dialog;
@@ -43,16 +43,16 @@ public class GUI {
         return console;
     }
 
-    public static SpellView getSpellView() {
-        return actionBar.getSpellView();
-    }
-
     public static UserInformation getUserTable() {
         return userTable;
     }
 
     public static Stage getStage() {
         return stage;
+    }
+
+    public static SpellView getSpellView() {
+        return getActionBar().getSpellView();
     }
 
     public void initialize() {

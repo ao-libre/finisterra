@@ -21,18 +21,15 @@ import java.util.concurrent.ConcurrentHashMap;
 @Wire
 public class AnimationHandler extends PassiveSystem {
 
-    private DescriptorHandler descriptorHandler;
-    private ObjectHandler objectHandler;
-
     // TODO change maps to caches
     private static Map<Body, List<BundledAnimation>> bodyAnimations = new HashMap<>();
     private static Map<Head, List<BundledAnimation>> headAnimations = new HashMap<>();
     private static Map<Helmet, List<BundledAnimation>> helmetAnimations = new HashMap<>();
     private static Map<Weapon, List<BundledAnimation>> weaponAnimations = new HashMap<>();
     private static Map<Shield, List<BundledAnimation>> shieldAnimations = new HashMap<>();
-
     private static Map<Integer, BundledAnimation> animations = new ConcurrentHashMap<>();
-
+    private DescriptorHandler descriptorHandler;
+    private ObjectHandler objectHandler;
 
     @Deprecated
     private Map<Integer, List<BundledAnimation>> loadDescriptors(List<?> descriptors) {

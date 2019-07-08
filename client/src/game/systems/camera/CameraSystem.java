@@ -16,10 +16,10 @@ public class CameraSystem extends BaseSystem {
     private final float zoom;
     public OrthographicCamera camera;
     public OrthographicCamera guiCamera;
-    public float desiredZoom = AOGame.GAME_SCREEN_ZOOM;
+    private float desiredZoom = AOGame.GAME_SCREEN_ZOOM;
 
     // member variables:
-    float timeToCameraZoomTarget, cameraZoomOrigin, cameraZoomDuration;
+    private float timeToCameraZoomTarget, cameraZoomOrigin, cameraZoomDuration;
 
 
     public CameraSystem(float zoom, float width, float height) {
@@ -36,7 +36,7 @@ public class CameraSystem extends BaseSystem {
         this(zoom, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
-    protected void setupViewport(float width, float height) {
+    private void setupViewport(float width, float height) {
         createGameCamera(width, height);
         createGuiCamera(width, height);
     }

@@ -148,22 +148,6 @@ public class WorldRenderingSystem extends BaseSystem {
         mapManager.doTileDraw(batch, y, x, tileRegion);
     }
 
-    static class UserRange {
-        int minAreaX, minAreaY, maxAreaX, maxAreaY;
-
-        void forEachTile(TileDraw tile) {
-            for (int y = minAreaY; y <= maxAreaY; y++) {
-                for (int x = minAreaX; x <= maxAreaX; x++) {
-                    tile.doDraw(x, y);
-                }
-            }
-        }
-    }
-
-    public interface TileDraw {
-        void doDraw(int x, int y);
-    }
-
     private Optional<Integer> getMapElement(WorldPos pos) {
         Optional<Integer> result = Optional.empty();
 
@@ -186,5 +170,21 @@ public class WorldRenderingSystem extends BaseSystem {
             }
         }
         return result;
+    }
+
+    public interface TileDraw {
+        void doDraw(int x, int y);
+    }
+
+    static class UserRange {
+        int minAreaX, minAreaY, maxAreaX, maxAreaY;
+
+        void forEachTile(TileDraw tile) {
+            for (int y = minAreaY; y <= maxAreaY; y++) {
+                for (int x = minAreaX; x <= maxAreaX; x++) {
+                    tile.doDraw(x, y);
+                }
+            }
+        }
     }
 }

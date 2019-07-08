@@ -1,7 +1,6 @@
 package shared.interfaces;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -16,7 +15,7 @@ public enum Hero {
     ARQUERO(CharClass.ARCHER.ordinal(), Race.DWARF.ordinal()),
     CLERIGO(CharClass.CLERIC.ordinal(), Race.HUMAN.ordinal());
 
-    public static final List<Hero> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+    public static final List<Hero> VALUES = List.copyOf(Arrays.asList(values()));
     private static final int SIZE = VALUES.size();
     private static final Random RANDOM = new Random();
     private final int classId;

@@ -21,7 +21,7 @@ import java.util.Optional;
 @Wire(injectInherited = true)
 public class TargetRenderingSystem extends RenderingSystem {
 
-    public static Texture target = new Texture(Gdx.files.local("data/ui/images/target.png"));
+    private static Texture target = new Texture(Gdx.files.local("data/ui/images/target.png"));
 
     public TargetRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(Focused.class), batch, CameraKind.WORLD);

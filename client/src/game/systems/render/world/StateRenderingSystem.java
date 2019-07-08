@@ -40,5 +40,4 @@ public class StateRenderingSystem extends RenderingSystem {
             }
         }
     }
-
 }

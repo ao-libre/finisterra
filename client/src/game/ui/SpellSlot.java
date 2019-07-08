@@ -18,13 +18,12 @@ import shared.model.Spell;
 
 public class SpellSlot extends ImageButton {
 
-    public static final float ICON_ALPHA = 0.5f;
     static final int SIZE = 64;
+    private static final float ICON_ALPHA = 0.5f;
     private static Drawable selection = Skins.COMODORE_SKIN.getDrawable("slot-selected2");
     private final SpellView spellView;
-    private Spell spell;
     private final ClickListener clickListener;
-
+    private Spell spell;
     private Texture icon;
     private Tooltip tooltip;
 

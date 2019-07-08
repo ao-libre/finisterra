@@ -12,10 +12,9 @@ import game.utils.Resources;
 import game.utils.Skins;
 
 public abstract class AbstractScreen extends ScreenAdapter {
+    private static final Skin SKIN = Skins.COMODORE_SKIN;
     private static Texture backgroundTexture = new Texture(Gdx.files.internal(Resources.GAME_IMAGES_PATH + "background.jpg"));
     private static final SpriteDrawable background = new SpriteDrawable(new Sprite(backgroundTexture));
-
-    private static final Skin SKIN = Skins.COMODORE_SKIN;
     private final Stage stage;
     private Table mainTable;
 

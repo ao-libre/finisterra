@@ -23,12 +23,12 @@ import static server.utils.WorldUtils.WorldUtils;
 @Wire
 public class RandomMovementSystem extends IteratingSystem {
 
-    private MapManager mapManager;
-    private WorldManager worldManager;
     private static final List<AOPhysics.Movement> VALUES =
             Collections.unmodifiableList(Arrays.asList(AOPhysics.Movement.values()));
     private static final int SIZE = VALUES.size();
     private static final Random RANDOM = new Random();
+    private MapManager mapManager;
+    private WorldManager worldManager;
 
     public RandomMovementSystem() {
         super(Aspect.all(RandomMovement.class));

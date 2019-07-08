@@ -85,6 +85,10 @@ public class GameScreen extends ScreenAdapter {
         return world;
     }
 
+    public static KryonetClientMarshalStrategy getClient() {
+        return world.getSystem(ClientSystem.class).getKryonetClient();
+    }
+
     private void initWorldConfiguration() {
         worldConfigBuilder = new WorldConfigurationBuilder();
         worldConfigBuilder.with(new SuperMapper())
@@ -144,10 +148,6 @@ public class GameScreen extends ScreenAdapter {
                 .with(HIGH + 1, new GameNotificationProcessor())
                 .with(HIGH + 1, clientSystem);
         world = new World(worldConfigBuilder.build()); // preload Artemis world
-    }
-
-    public static KryonetClientMarshalStrategy getClient() {
-        return world.getSystem(ClientSystem.class).getKryonetClient();
     }
 
     private void postWorldInit() {

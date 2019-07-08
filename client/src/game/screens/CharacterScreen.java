@@ -106,8 +106,8 @@ public class CharacterScreen extends ScreenAdapter {
     }
 
     private static class Chooser extends Window {
-        private ObjectHandler objectHandler;
         private final Stage stage;
+        private ObjectHandler objectHandler;
 
         Chooser() {
             super("Choose", Skins.COMODORE_SKIN, "black");

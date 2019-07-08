@@ -10,7 +10,8 @@ public class NPC extends Component implements Serializable {
 
     public int id;
 
-    public NPC() {}
+    public NPC() {
+    }
 
     public NPC(int id) {
         this.id = id;

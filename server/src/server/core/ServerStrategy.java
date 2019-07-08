@@ -1,5 +1,6 @@
 package server.core;
 
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Server;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import net.mostlyoriginal.api.network.marshal.kryonet.KryonetMarshalStrategy;
@@ -20,13 +21,12 @@ public class ServerStrategy extends KryonetMarshalStrategy {
     @Override
     protected void connectEndpoint() {
         try {
-            System.out.print("Starting server... ");
             ((Server) endpoint).bind(tcpPort, udpPort);
-            System.out.println("Server UP and listening");
+            Gdx.app.log("Server initialization", "Listening connections in ports TCP: " + tcpPort + " and UDP: " + udpPort);
             state = MarshalState.STARTED;
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("FAILED!");
+            Gdx.app.log("Server initialization", "Server port binding has FAILED!");
             state = MarshalState.FAILED_TO_START;
         }
     }

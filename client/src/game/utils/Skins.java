@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.JsonValue;
 
 public class Skins {
 
-    public static final Skin AO_SKIN = new AOSkin(Gdx.files.internal(Resources.GAME_UI_PATH + "ao-skin-2/" + "ao-skin.json"));
+    private static final Skin AO_SKIN = new AOSkin(Gdx.files.internal(Resources.GAME_UI_PATH + "ao-skin-2/" + "ao-skin.json"));
     //    public static final Skin COMODORE_SKIN = new Skin(Gdx.files.internal("data/ui/commodore64-skin/skin/uiskin.json"));
     public static final Skin COMODORE_SKIN = AO_SKIN;
 

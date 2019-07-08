@@ -9,10 +9,10 @@ public class AOSound extends Component {
     public int soundID = -1;
     public boolean shouldLoop = false;
 
-    public AOSound(){
+    public AOSound() {
     }
 
-    public AOSound(int ID, boolean loop){
+    public AOSound(int ID, boolean loop) {
         setSoundID(ID);
         setShouldLoop(loop);
     }

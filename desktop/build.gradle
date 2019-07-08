@@ -151,18 +151,10 @@ githubRelease {
 }
 
 jlink {
-    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-    launcher {
-        name = 'Finisterra Argentum Online Client'
-        if (osName().contains('mac')) {
-            jvmArgs += '-XstartOnFirstThread'
-        }
-    }
 
     jpackage {
         jpackageHome = "${projectDir}/packing/jdks/jpack/bin"
         outputDir = releasesDir()
-        imageName = 'FinisterraAO'
         skipInstaller = true
     }
 }

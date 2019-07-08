@@ -22,7 +22,7 @@ buildscript {
 allprojects {
     apply plugin: "idea"
 
-    group 'ao-java'
+    group = 'ao-java'
     version = '0.1.10'
 
     ext {

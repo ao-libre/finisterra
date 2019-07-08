@@ -9,15 +9,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @PooledWeaver
 public class Buff extends Component {
-    private Map<Attribute,Float> buffedAttributes = new ConcurrentHashMap<>();
+    private Map<Attribute, Float> buffedAttributes = new ConcurrentHashMap<>();
 
-    public Buff() {}
+    public Buff() {
+    }
 
     public void addAttribute(Attribute attribute, float duration) {
         buffedAttributes.put(attribute, duration);
     }
 
-    public Map<Attribute,Float> getBuffedAtributes() {
+    public Map<Attribute, Float> getBuffedAtributes() {
         return buffedAttributes;
     }
 }

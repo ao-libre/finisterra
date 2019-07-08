@@ -23,12 +23,24 @@ public class DoorObj2 extends Obj {
         return closedGrh;
     }
 
+    public void setClosedGrh(int closedGrh) {
+        this.closedGrh = closedGrh;
+    }
+
     public int getTileHeight() {
         return tileHeight;
     }
 
+    public void setTileHeight(int tileHeight) {
+        this.tileHeight = tileHeight;
+    }
+
     public int getTileWidth() {
         return tileWidth;
+    }
+
+    public void setTileWidth(int tileWidth) {
+        this.tileWidth = tileWidth;
     }
 
     public boolean isOpen() {
@@ -37,18 +49,6 @@ public class DoorObj2 extends Obj {
 
     public void setOpen(boolean open) {
         this.open = open;
-    }
-
-    public void setClosedGrh(int closedGrh) {
-        this.closedGrh = closedGrh;
-    }
-
-    public void setTileHeight(int tileHeight) {
-        this.tileHeight = tileHeight;
-    }
-
-    public void setTileWidth(int tileWidth) {
-        this.tileWidth = tileWidth;
     }
 
     public int getOpenGrh() {

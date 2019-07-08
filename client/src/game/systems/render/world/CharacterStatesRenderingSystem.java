@@ -30,5 +30,3 @@ public class CharacterStatesRenderingSystem extends RenderingSystem {
         return entity.hasMeditating() || entity.hasWriting() || entity.hasResting();
     }
 }
-
-
