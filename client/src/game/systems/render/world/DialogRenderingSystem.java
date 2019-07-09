@@ -43,10 +43,11 @@ public class DialogRenderingSystem extends RenderingSystem {
                 @Override
                 public Table load(Dialog dialog) {
                     Table table = new Table(Skins.COMODORE_SKIN);
+                    table.setRound(false);
                     String text = dialog.text;
                     Label label = new Label(text, Skins.COMODORE_SKIN, dialog.kind == Kind.MAGIC_WORDS ? "title-no-background" : "speech-bubble");
-                    label.getGlyphLayout().setText(label.getStyle().font, text);
-                    float prefWidth = label.getGlyphLayout().width;
+                    label.getStyle().font.setUseIntegerPositions(false);
+                    float prefWidth = label.getPrefWidth();
                     label.getColor().a = 0.8f;
                     label.setWrap(true);
                     label.setAlignment(Align.center);

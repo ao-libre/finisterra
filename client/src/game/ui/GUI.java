@@ -10,6 +10,7 @@ import game.AOGame;
 import game.managers.AOInputProcessor;
 import game.screens.GameScreen;
 import game.ui.user.UserInformation;
+import game.utils.Skins;
 
 
 public class GUI {
@@ -56,6 +57,9 @@ public class GUI {
     }
 
     public void initialize() {
+        Skins.COMODORE_SKIN.getFont("flipped").setUseIntegerPositions(false);
+        Skins.COMODORE_SKIN.getFont("flipped-shadow").setUseIntegerPositions(false);
+
         Table table = new Table();
         table.setFillParent(true);
         createConsole(table);
