@@ -10,7 +10,7 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
         jcenter()
     }
-    
+
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "net.onedaybeard.artemis:artemis-odb-gradle-plugin:2.2.0"
@@ -46,13 +46,14 @@ allprojects {
 }
 
 subprojects {
-    
+    apply plugin: "java"
+
     sourceCompatibility = JavaVersion.VERSION_12
     targetCompatibility = JavaVersion.VERSION_12
 	
 	tasks.withType(JavaCompile) {
 		options.encoding = "UTF-8"
-		options.compilerArgs << '-Xlint:unchecked'
+		//options.compilerArgs << '-Xlint:unchecked'
 		//options.deprecation = true
 	}
 }
