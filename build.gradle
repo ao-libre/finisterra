@@ -6,16 +6,15 @@ buildscript {
     repositories {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url "https://plugins.gradle.org/m2/" }
         jcenter()
     }
+
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "net.onedaybeard.artemis:artemis-odb-gradle-plugin:2.2.0"
         classpath "net.onedaybeard.artemis:artemis-fluid-gradle-plugin:2.2.0"
-        classpath "de.undercouch:gradle-download-task:3.4.3"
-        classpath "gradle.plugin.com.github.breadmoirai:github-release:2.2.9"
-        classpath "org.beryx:badass-jlink-plugin:2.11.2"
     }
 }
 
@@ -41,6 +40,8 @@ allprojects {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "https://plugins.gradle.org/m2/" }
+        jcenter()
     }
 }
 
@@ -52,7 +53,7 @@ subprojects {
 	
 	tasks.withType(JavaCompile) {
 		options.encoding = "UTF-8"
-		options.compilerArgs << '-Xlint:unchecked'
+		//options.compilerArgs << '-Xlint:unchecked'
 		//options.deprecation = true
 	}
 }

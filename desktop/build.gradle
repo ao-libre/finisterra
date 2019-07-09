@@ -1,17 +1,17 @@
 import groovy.json.JsonSlurper
 
-apply plugin: 'java'
-apply plugin: 'application'
-apply plugin: 'de.undercouch.download'
-apply plugin: 'com.github.breadmoirai.github-release'
-apply plugin: 'org.beryx.jlink'
+plugins {
+    id 'application'
+    id "de.undercouch.download" version "4.0.0"
+    id "com.github.breadmoirai.github-release" version "2.2.9"
+}
 
 sourceSets {
     main.java.srcDirs = ["src/"]
     main.resources.srcDirs = ["assets/"]
 }
 
-def osName() { System.getProperty('os.name').toLowerCase(Locale.ROOT) }
+static def osName() { System.getProperty('os.name').toLowerCase(Locale.ROOT) }
 
 if (osName().contains('mac')) {
     run {
@@ -148,13 +148,4 @@ githubRelease {
     prerelease true
     releaseAssets project.file('build/zip/').listFiles()
     apiEndpoint "https://api.github.com"
-}
-
-jlink {
-
-    jpackage {
-        jpackageHome = "${projectDir}/packing/jdks/jpack/bin"
-        outputDir = releasesDir()
-        skipInstaller = true
-    }
 }

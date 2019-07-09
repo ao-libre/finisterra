@@ -1,7 +1,7 @@
-apply plugin: "artemis-fluid"
-apply plugin: "artemis"
-
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+plugins {
+    id 'artemis-fluid'
+    id 'artemis'
+}
 
 dependencies {
     compile project(":components")
