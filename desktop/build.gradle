@@ -11,13 +11,7 @@ sourceSets {
 }
 
 static def osName() { System.getProperty('os.name').toLowerCase(Locale.ROOT) }
-
-if (osName().contains('mac')) {
-    run {
-        jvmArgs += '-XstartOnFirstThread'
-    }
-}
-
+def releasesDir = "${buildDir}/releases"
 mainClassName = "launcher.DesktopLauncher"
 
 dependencies {
@@ -25,6 +19,12 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+}
+
+if (osName().contains('mac')) {
+    run {
+        jvmArgs += '-XstartOnFirstThread'
+    }
 }
 
 task dist(type: Jar) {
@@ -40,23 +40,43 @@ dist.dependsOn classes
 run.dependsOn classes
 
 runtime {
-    modules = ['java.base', 'java.desktop', 'java.logging' ,'jdk.unsupported']
+    modules = ['java.base', 'java.desktop', 'java.logging']
     options = ['--strip-debug', '--no-header-files', '--no-man-pages', '--strip-native-commands', '--compress', '2']
-    javaHome = "${projectDir}/jpackage"
+    javaHome = "${projectDir}/jdk-14"
     
     jpackage {
-    	jpackageHome = "${projectDir}/jpackage"
-    	imageOutputDir = file("$buildDir/ao-java-release")
+    	jpackageHome = "${projectDir}/jdk-14"
+    	imageOutputDir = file(releasesDir)
+		imageName = 'AO-Java'
+		
+		if (osName().contains('windows')) {
+			imageOptions = ['--icon', "${projectDir}/assets/ao.ico",
+							'--app-version', "${project.version}"]
+		} else if (osName().contains('linux')) {
+			imageOptions = ['--icon', "${projectDir}/assets/ao.png",
+							'--app-version', "${project.version}"]
+		} else if (osName().contains('mac')) {
+			imageOptions = ['--icon', "${projectDir}/assets/ao.icns",
+							'--app-version', "${project.version}"]
+		}
+		
         if (osName().contains('mac')) {
         	jvmArgs = ['-XstartOnFirstThread']
     	}
+		
         skipInstaller = true
     }
+}
+
+tasks.jpackage.doFirst {
+	if (!file(releasesDir).exists()) {
+		releasesDir.mkdirs()
+	}
 }
 
 tasks.jpackage.doLast {
 	copy {
 		from file("assets")
-		into file("$buildDir/ao-java-release/desktop/app/assets")
+		into file("$releasesDir/AO-Java/app/assets")
 	}
 }
