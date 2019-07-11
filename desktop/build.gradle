@@ -40,13 +40,16 @@ dist.dependsOn classes
 run.dependsOn classes
 
 runtime {
-    imageDir = file("${buildDir}/ao-java")
-    imageZip = file("${buildDir}/ao-java.zip")
     modules = ['java.base', 'java.desktop', 'jdk.unsupported']
     options = ['--strip-debug', '--no-header-files', '--no-man-pages', '--strip-native-commands', '--compress', '2']
     javaHome = "${projectDir}/jpackage"
+    
     jpackage {
-        jpackageHome = "${projectDir}/jpackage"
+    	jpackageHome = "${projectDir}/jpackage"
+    	imageOutputDir = file("$buildDir/ao-java-release")
+        if (osName().contains('mac')) {
+        	jvmArgs = ['-XstartOnFirstThread']
+    	}
         skipInstaller = true
     }
 }
