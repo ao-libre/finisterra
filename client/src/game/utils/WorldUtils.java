@@ -1,10 +1,14 @@
 package game.utils;
 
 import com.artemis.E;
+import com.artemis.World;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Vector3;
 import entity.character.states.Heading;
 import game.screens.GameScreen;
+import game.screens.WorldScreen;
 import game.systems.camera.CameraSystem;
 import physics.AOPhysics;
 import position.Pos2D;
@@ -17,23 +21,34 @@ import static com.artemis.E.E;
 
 public class WorldUtils {
 
-    public static Optional<WorldPos> mouseToWorldPos() {
-        CameraSystem camera = GameScreen.getWorld().getSystem(CameraSystem.class);
-        if (GameScreen.getPlayer() < 0) {
-            return Optional.empty();
+    public static Optional<World> getWorld() {
+        Game game = (Game) Gdx.app.getApplicationListener();
+        Screen screen = game.getScreen();
+        if (screen instanceof WorldScreen) {
+            return Optional.of(((WorldScreen) screen).getWorld());
         }
-        final E e = E(GameScreen.getPlayer());
-        if (e == null || !e.hasWorldPos()) {
-            return Optional.empty();
-        }
-        WorldPos worldPos = e.getWorldPos();
-        int map = worldPos.map;
+        return Optional.empty();
+    }
 
-        // Mouse coordinates in world
-        Vector3 screenPos = camera.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-        WorldPos value = Util.toWorld(new Pos2D(screenPos.x, screenPos.y));
-        value.map = map;
-        return Optional.of(value);
+    public static Optional<WorldPos> mouseToWorldPos() {
+        return getWorld().map(world -> {
+            CameraSystem camera = world.getSystem(CameraSystem.class);
+            if (GameScreen.getPlayer() < 0) {
+                return null;
+            }
+            final E e = E(GameScreen.getPlayer());
+            if (e == null || !e.hasWorldPos()) {
+                return null;
+            }
+            WorldPos worldPos = e.getWorldPos();
+            int map = worldPos.map;
+
+            // Mouse coordinates in world
+            Vector3 screenPos = camera.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+            WorldPos value = Util.toWorld(new Pos2D(screenPos.x, screenPos.y));
+            value.map = map;
+            return value;
+        });
     }
 
     public static int getHeading(AOPhysics.Movement movement) {

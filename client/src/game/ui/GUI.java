@@ -68,7 +68,6 @@ public class GUI {
         createDialogContainer(table);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
-
     }
 
     public OrthographicCamera getCamera() {

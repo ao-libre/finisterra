@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.Array;
 import game.handlers.DescriptorHandler;
-import game.screens.GameScreen;
+import game.utils.WorldUtils;
 import shared.model.Graphic;
 
 public class BundledAnimation {
@@ -30,7 +30,7 @@ public class BundledAnimation {
         if (numFrames > 0) {
 
             for (int frame : graphic.getFrames()) {
-                DescriptorHandler descriptorHandler = GameScreen.getWorld().getSystem(DescriptorHandler.class);
+                DescriptorHandler descriptorHandler = WorldUtils.getWorld().orElse(null).getSystem(DescriptorHandler.class);
                 this.frames.add(new GameTexture(descriptorHandler.getGraphic(frame)));
                 tmpRegions.add(this.frames.peek().getGraphic());
             }

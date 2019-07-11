@@ -1,19 +1,28 @@
 package launcher;
 
 import com.badlogic.gdx.Game;
-import game.utils.Resources;
-import json.MapsToJson;
+import design.screens.ScreenEnum;
+import design.screens.ScreenManager;
+import game.AssetManagerHolder;
+import game.handlers.AOAssetManager;
+import game.handlers.DefaultAOAssetManager;
 
-public class DesignCenter extends Game {
+public class DesignCenter extends Game implements AssetManagerHolder {
 
-    public static final String OUTPUT_FOLDER = "output/";
-    public static final String DATA_GRAFICOS = Resources.GAME_GRAPHICS_PATH;
-    public static final String DATA_GRAFICOS_2_X = Resources.GAME_DATA_PATH + "graficos2x/";
+    private AOAssetManager assetManager;
 
     @Override
     public void create() {
-        MapsToJson.transformToJson();
+        assetManager = new DefaultAOAssetManager();
+        assetManager.load();
+        assetManager.getAssetManager().finishLoading();
+        ScreenManager instance = ScreenManager.getInstance();
+        instance.initialize(this);
+        instance.showScreen(ScreenEnum.GRAPHIC_VIEW);
     }
 
-
+    @Override
+    public AOAssetManager getAssetManager() {
+        return assetManager;
+    }
 }

@@ -46,11 +46,13 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     static {
         HashMap<Integer, BodyDescriptor> integerBodyDescriptorHashMap = new HashMap<>();
         BODIES_CLASS = (Class<HashMap<Integer, BodyDescriptor>>) integerBodyDescriptorHashMap.getClass();
+
         HashMap<Integer, Graphic> integerGraphicHashMap = new HashMap<>();
         GRAPHICS_CLASS = (Class<HashMap<Integer, Graphic>>) integerGraphicHashMap.getClass();
 
         HashMap<Integer, Obj> integerObjHashMap = new HashMap<>();
         OBJS_CLASS = (Class<HashMap<Integer, Obj>>) integerObjHashMap.getClass();
+
         HashMap<Integer, Spell> integerSpellHashMap = new HashMap<>();
         SPELLS_CLASS = (Class<HashMap<Integer, Spell>>) integerSpellHashMap.getClass();
 

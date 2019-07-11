@@ -1,11 +1,12 @@
 package game.managers;
 
 import com.artemis.E;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import com.artemis.World;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.AOGame;
 import game.screens.GameScreen;
+import game.screens.WorldScreen;
 import game.systems.camera.CameraSystem;
 import game.systems.network.TimeSync;
 import game.ui.GUI;
@@ -37,8 +38,10 @@ public class AOInputProcessor extends Stage {
         if (GUI.getActionBar().isOver()) {
             GUI.getActionBar().scrolled(amount);
         } else {
-            CameraSystem system = GameScreen.getWorld().getSystem(CameraSystem.class);
-            system.zoom(amount, CameraSystem.ZOOM_TIME);
+            WorldUtils.getWorld().ifPresent(world -> {
+                CameraSystem system = world.getSystem(CameraSystem.class);
+                system.zoom(amount, CameraSystem.ZOOM_TIME);
+            });
         }
         return super.scrolled(amount);
     }
@@ -49,13 +52,13 @@ public class AOInputProcessor extends Stage {
         if (GUI.getActionBar().isOver()) {
             return result;
         }
-        WorldUtils.mouseToWorldPos().ifPresent(worldPos -> {
+        WorldUtils.getWorld().ifPresent(world -> WorldUtils.mouseToWorldPos().ifPresent(worldPos -> {
             final Optional<Spell> toCast = GUI.getSpellView().toCast;
             if (toCast.isPresent()) {
                 Spell spell = toCast.get();
                 E player = E.E(GameScreen.getPlayer());
-                if (!player.hasAttack() || player.getAttack().interval - GameScreen.getWorld().getDelta() < 0) {
-                    TimeSync timeSyncSystem = GameScreen.getWorld().getSystem(TimeSync.class);
+                if (!player.hasAttack() || player.getAttack().interval - world.getDelta() < 0) {
+                    TimeSync timeSyncSystem = world.getSystem(TimeSync.class);
                     long rtt = timeSyncSystem.getRtt();
                     long timeOffset = timeSyncSystem.getTimeOffset();
                     GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos, rtt + timeOffset));
@@ -66,7 +69,7 @@ public class AOInputProcessor extends Stage {
                 Cursors.setCursor("hand");
                 GUI.getSpellView().cleanCast();
             } else {
-                WorldManager worldManager = GameScreen.getWorld().getSystem(WorldManager.class);
+                WorldManager worldManager = world.getSystem(WorldManager.class);
                 Optional<String> name = worldManager.getEntities()
                         .stream()
                         .filter(entity -> E(entity).hasWorldPos() && E(entity).getWorldPos().equals(worldPos))
@@ -80,7 +83,7 @@ public class AOInputProcessor extends Stage {
                 }
 
             }
-        });
+        }));
         return result;
     }
 
@@ -189,10 +192,12 @@ public class AOInputProcessor extends Stage {
 
     private void attack() {
         E player = E(GameScreen.getPlayer());
-        if (!player.hasAttack() || player.getAttack().interval - GameScreen.getWorld().getDelta() <= 0) {
-            GameScreen.getClient().sendToAll(new AttackRequest(AttackType.PHYSICAL));
-            player.attack();
-        }
+        WorldUtils.getWorld().ifPresent(world -> {
+            if (!player.hasAttack() || player.getAttack().interval - world.getDelta() <= 0) {
+                GameScreen.getClient().sendToAll(new AttackRequest(AttackType.PHYSICAL));
+                player.attack();
+            }
+        });
     }
 
     private void equip() {

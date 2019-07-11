@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 import static com.artemis.E.E;
 import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
 
-public class GameScreen extends ScreenAdapter {
+public class GameScreen extends ScreenAdapter implements WorldScreen {
 
     private static final int HANDLER_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL + 3;
     private static final int ENTITY_RENDER_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL + 2;
@@ -54,7 +54,6 @@ public class GameScreen extends ScreenAdapter {
     public static int player = -1;
     private static GUI gui = new GUI();
     private FPSLogger logger;
-    private GameState state;
     private SpriteBatch spriteBatch;
     private WorldConfigurationBuilder worldConfigBuilder;
 
@@ -81,7 +80,7 @@ public class GameScreen extends ScreenAdapter {
         return gui;
     }
 
-    public static World getWorld() {
+    public World getWorld() {
         return world;
     }
 
@@ -169,17 +168,6 @@ public class GameScreen extends ScreenAdapter {
 
         world.setDelta(MathUtils.clamp(deltaTime, 0, 1 / 14f));
         world.process();
-
-        switch (state) {
-            case RUNNING: {
-                updateRunning(deltaTime);
-                break;
-            }
-            case PAUSED: {
-                updatePaused();
-                break;
-            }
-        }
     }
 
     public OrthographicCamera getGUICamera() {
@@ -189,7 +177,6 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void show() {
         this.postWorldInit();
-        this.state = GameState.RUNNING;
     }
 
     @Override
@@ -197,22 +184,6 @@ public class GameScreen extends ScreenAdapter {
         this.update(delta);
         if (player >= 0) {
             this.drawUI();
-        }
-    }
-
-    @Override
-    public void pause() {
-        if (this.state == GameState.RUNNING) {
-            this.state = GameState.PAUSED;
-            this.pauseSystems();
-        }
-    }
-
-    @Override
-    public void resume() {
-        if (this.state == GameState.PAUSED) {
-            this.state = GameState.RUNNING;
-            this.resumeSystems();
         }
     }
 
@@ -239,19 +210,4 @@ public class GameScreen extends ScreenAdapter {
         world.dispose();
     }
 
-    private void updateRunning(float deltaTime) {
-        //
-    }
-
-    private void updatePaused() {
-        //
-    }
-
-    private void pauseSystems() {
-        //
-    }
-
-    private void resumeSystems() {
-        //
-    }
 }

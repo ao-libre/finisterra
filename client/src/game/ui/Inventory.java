@@ -167,7 +167,7 @@ public class Inventory extends Window {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         dragging.ifPresent(slot -> slot.getItem().ifPresent(item -> {
-            ObjectHandler objectHandler = GameScreen.getWorld().getSystem(ObjectHandler.class);
+            ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
             Optional<Obj> object = objectHandler.getObject(item.objId);
             object.ifPresent(obj -> {
                 TextureRegion graphic = objectHandler.getGraphic(obj);

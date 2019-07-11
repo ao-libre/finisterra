@@ -14,6 +14,7 @@ import game.screens.GameScreen;
 import game.utils.Colors;
 import game.utils.Cursors;
 import game.utils.Skins;
+import game.utils.WorldUtils;
 import shared.model.Spell;
 
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class SpellView extends Table {
     }
 
     public void updateSpells() {
-        SpellHandler spellHandler = GameScreen.getWorld().getSystem(SpellHandler.class);
+        SpellHandler spellHandler =  WorldUtils.getWorld().orElse(null).getSystem(SpellHandler.class);
         final Spell[] spells = spellHandler.getSpells();
         Spell[] spellsToShow = new Spell[MAX_SPELLS];
         System.arraycopy(spells, base, spellsToShow, 0, Math.min(MAX_SPELLS, spells.length));

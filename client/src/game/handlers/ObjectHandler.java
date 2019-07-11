@@ -3,6 +3,7 @@ package game.handlers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import game.AOGame;
+import game.AssetManagerHolder;
 import model.textures.GameTexture;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.objects.types.Obj;
@@ -24,7 +25,7 @@ public class ObjectHandler extends PassiveSystem {
     @Override
     protected void initialize() {
         super.initialize();
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
         assetManager = game.getAssetManager();
         objects = assetManager.getObjs();
     }

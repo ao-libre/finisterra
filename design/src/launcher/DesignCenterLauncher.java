@@ -9,7 +9,7 @@ public class DesignCenterLauncher {
 
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
         cfg.setTitle("Finisterra Design Center");
-        cfg.setWindowedMode(600, 480);
+        cfg.setWindowedMode(1280, 720);
         cfg.useVsync(true);
         cfg.setIdleFPS(60);
         cfg.setResizable(true);

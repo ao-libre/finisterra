@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import game.AOGame;
+import game.AssetManagerHolder;
 import game.handlers.DescriptorHandler;
 import game.screens.GameScreen;
+import game.utils.WorldUtils;
 import shared.model.Graphic;
 
 public class GameTexture {
@@ -17,7 +19,7 @@ public class GameTexture {
     }
 
     public GameTexture(int grhIndex, boolean flipY) {
-        this(GameScreen.getWorld().getSystem(DescriptorHandler.class).getGraphic(grhIndex), flipY);
+        this(WorldUtils.getWorld().map(world -> world.getSystem(DescriptorHandler.class)).orElse(new DescriptorHandler()).getGraphic(grhIndex), flipY);
     }
 
     public GameTexture(Graphic graphic) {
@@ -25,7 +27,7 @@ public class GameTexture {
     }
 
     public GameTexture(Graphic graphic, boolean flipY) {
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
         Texture texture = game.getAssetManager().getTexture(graphic.getFileNum());
         this.textureRegion = new TextureRegion(texture,
                 graphic.getX(), graphic.getY(), graphic.getWidth(), graphic.getHeight());
