@@ -1,9 +1,8 @@
-import groovy.json.JsonSlurper
-
 plugins {
     id 'application'
-    id "de.undercouch.download" version "4.0.0"
-    id "com.github.breadmoirai.github-release" version "2.2.9"
+    id 'de.undercouch.download' version '4.0.0'
+    id 'com.github.breadmoirai.github-release' version '2.2.9'
+    id 'org.beryx.runtime' version '1.2.0'
 }
 
 sourceSets {
@@ -40,112 +39,14 @@ task dist(type: Jar) {
 dist.dependsOn classes
 run.dependsOn classes
 
-def releasesDir() { "${projectDir}/build/releases/" }
-
-def zipDir() { "${projectDir}/build/zip/" }
-
-static def packingDir() { "packing/" }
-
-static def switchConfig(platform) {
-    def config
-    switch (platform) {
-        case "windows32":
-            config = packingDir().concat("build-windows-32.json")
-            break
-        case "windows64":
-            config = packingDir().concat("build-windows-64.json")
-            break
-        case "mac":
-            config = packingDir().concat("build-mac.json")
-            break
-        case "linux64":
-            config = packingDir().concat("build-linux.json")
-            break
+runtime {
+    imageDir = file("${buildDir}/ao-java")
+    imageZip = file("${buildDir}/ao-java.zip")
+    modules = ['java.base', 'java.desktop', 'jdk.unsupported']
+    options = ['--strip-debug', '--no-header-files', '--no-man-pages', '--strip-native-commands', '--compress', '2']
+    javaHome = "${projectDir}/jpackage"
+    jpackage {
+        jpackageHome = "${projectDir}/jpackage"
+        skipInstaller = true
     }
-    config
-}
-
-def packArgs(platform) {
-    [
-            "${projectDir}/packing/jdks/packr.jar",
-            "--platform", platform,
-            switchConfig(platform)
-    ]
-}
-
-task packWindows32(type: JavaExec) {
-    main = "-jar"
-    args = packArgs("windows32")
-}
-
-task packWindows64(type: JavaExec) {
-    main = "-jar"
-    args = packArgs("windows64")
-}
-
-task packMac(type: JavaExec) {
-    main = "-jar"
-    args = packArgs("mac")
-}
-
-task packLinux64(type: JavaExec) {
-    main = "-jar"
-    args = packArgs("linux64")
-}
-
-task pack {
-    dependsOn 'dist'
-    dependsOn 'downloadBinaries'
-    dependsOn 'packWindows32'
-    dependsOn 'packWindows64'
-    dependsOn 'packMac'
-    dependsOn 'packLinux64'
-    tasks.findByName('dist').mustRunAfter('downloadBinaries')
-    tasks.findByName('packWindows32').mustRunAfter('dist')
-    tasks.findByName('packWindows64').mustRunAfter 'packWindows32'
-    tasks.findByName('packMac').mustRunAfter 'packWindows64'
-    tasks.findByName('packLinux64').mustRunAfter 'packMac'
-}
-
-task zipAll() {
-    file(releasesDir()).eachDir() { folder ->
-        def taskName = "zip${folder.name.capitalize()}"
-        task "$taskName"(type: Zip) {
-            from folder
-            archiveFile.set(project.file(zipDir() + folder.name + ".zip"))
-        }
-        zipAll.dependsOn taskName
-    }
-}
-
-task downloadBinaries() {
-    def binJson = file(packingDir().concat("binaries.json"))
-    def json = new JsonSlurper().parseText(binJson.text)
-
-    download {
-        src([json.packr, json.windows32, json.windows64, json.linux64, json.mac])
-        dest packingDir().concat("jdks")
-        overwrite false
-    }
-}
-
-task release() {
-    dependsOn 'dist'
-    dependsOn 'pack'
-    dependsOn 'zipAll'
-    dependsOn 'githubRelease'
-    tasks.findByName('pack').mustRunAfter('dist')
-    tasks.findByName("zipAll").mustRunAfter('pack')
-    tasks.findByName("githubRelease").mustRunAfter('zipAll')
-}
-
-githubRelease {
-    //token project.property('github.token')
-    owner "ao-libre"
-    repo "ao-java"
-    targetCommitish "master"
-    draft false
-    prerelease true
-    releaseAssets project.file('build/zip/').listFiles()
-    apiEndpoint "https://api.github.com"
 }
