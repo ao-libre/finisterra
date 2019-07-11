@@ -17,6 +17,7 @@ import game.screens.RoomScreen;
 import game.systems.camera.CameraShakeSystem;
 import game.ui.AOConsole;
 import game.ui.GUI;
+import game.utils.WorldUtils;
 import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.lobby.JoinRoomNotification;

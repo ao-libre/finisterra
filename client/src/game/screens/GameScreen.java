@@ -22,7 +22,6 @@ import game.network.GameNotificationProcessor;
 import game.network.KryonetClientMarshalStrategy;
 import game.systems.anim.IdleAnimationSystem;
 import game.systems.anim.MovementAnimationSystem;
-import game.systems.assets.AssetsSystem;
 import game.systems.camera.CameraFocusSystem;
 import game.systems.camera.CameraMovementSystem;
 import game.systems.camera.CameraShakeSystem;
@@ -89,9 +88,6 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     }
 
     private void initWorldConfiguration() {
-        AssetManagerHolder gameAssets = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        assetsManager = gameAssets.getAssetManager();
-
         worldConfigBuilder = new WorldConfigurationBuilder();
         worldConfigBuilder.with(new SuperMapper())
                 .with(HIGH, new TimeSync())
@@ -109,7 +105,6 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 // Logic systems
                 .with(HIGH, new WorldManager())
                 .with(HIGH, new PhysicsAttackSystem())
-                .with(HIGH, new AssetsSystem(assetsManager))
                 // Sound systems
                 .with(HIGH, new SoundSytem())
                 .with(HIGH, new TiledMapSystem())

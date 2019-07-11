@@ -433,4 +433,3 @@ public class NPC {
         this.expressions = other.expressions;
     }
 }
-

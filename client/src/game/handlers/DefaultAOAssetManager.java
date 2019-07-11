@@ -72,6 +72,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         DESCRIPTORS_CLASS = (Class<ArrayList<Descriptor>>) descriptors.getClass();
     }
 
+
     public DefaultAOAssetManager() {
         setLoader(Sequencer.class, new MidiLoader());
         setLoader(ANIMATION_CLASS, ANIMATIONS + JSON_EXTENSION, new AnimationLoader());
