@@ -14,7 +14,6 @@ import game.systems.network.ClientSystem;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.interfaces.Hero;
 import shared.network.lobby.JoinLobbyRequest;
-import com.esotericsoftware.minlog.Log;
 
 import static game.utils.Resources.CLIENT_CONFIG;
 
