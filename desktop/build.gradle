@@ -40,7 +40,7 @@ dist.dependsOn classes
 run.dependsOn classes
 
 runtime {
-    modules = ['java.base', 'java.desktop', 'java.logging']
+    modules = ['java.base', 'java.desktop', 'jdk.unsupported', 'jdk.unsupported.desktop','java.logging']
     options = ['--strip-debug', '--no-header-files', '--no-man-pages', '--strip-native-commands', '--compress', '2']
     javaHome = "${projectDir}/jdk-14"
     
