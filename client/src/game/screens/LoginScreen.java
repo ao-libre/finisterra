@@ -21,8 +21,11 @@ public class LoginScreen extends AbstractScreen {
 
     private ClientSystem clientSystem;
     private ClientConfiguration config;
-    private Table connectionTable;
+
     private TextField username;
+    private SelectBox<Hero> heroSelect;
+    private TextField ipText;
+    private TextField portText;
 
     public LoginScreen() {
         super();
@@ -31,9 +34,14 @@ public class LoginScreen extends AbstractScreen {
 
     @Override
     protected void keyPressed(int keyCode) {
-        if (getStage().getKeyboardFocus().equals(username) && keyCode == Input.Keys.ENTER) {
-            //TODO: Trigger loginButton's event listener
-        }
+         if (keyCode == Input.Keys.ENTER) {
+             String user = username.getText();
+             Hero hero = heroSelect.getSelected();
+             String ip = ipText.getText();
+             int port = Integer.valueOf(portText.getText());
+
+             connectThenLogin(ip, port, user, hero);
+         }
     }
 
     private void init() {
@@ -50,23 +58,23 @@ public class LoginScreen extends AbstractScreen {
 
         Window loginWindow = new Window("", getSkin());
         Label userLabel = new Label("User", getSkin());
-        username = new TextField("", getSkin());
-        username.setMessageText("username");
+        this.username = new TextField("", getSkin());
+        username.setMessageText("User Name");
 
         Label heroLabel = new Label("Hero", getSkin());
-        SelectBox<Hero> heroSelect = new SelectBox<>(getSkin());
+        this.heroSelect = new SelectBox<>(getSkin());
         final Array<Hero> heroes = new Array<>();
         Hero.getHeroes().forEach(heroes::add);
         heroSelect.setItems(heroes);
 
-        connectionTable = new Table((getSkin()));
+        Table connectionTable = new Table((getSkin()));
 
         Label ipLabel = new Label("IP: ", getSkin());
         DefaultServer defaultServer = config.getNetwork().getDefaultServer();
-        TextField ipText = new TextField(defaultServer.getHostname(), getSkin());
+        this.ipText = new TextField(defaultServer.getHostname(), getSkin());
 
         Label portLabel = new Label("Port: ", getSkin());
-        TextField portText = new TextField("" + defaultServer.getPort(), getSkin());
+        this.portText = new TextField("" + defaultServer.getPort(), getSkin());
         portText.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
 
         TextButton loginButton = new TextButton("Connect", getSkin());
