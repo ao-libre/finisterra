@@ -14,6 +14,7 @@ import game.systems.network.ClientSystem;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.interfaces.Hero;
 import shared.network.lobby.JoinLobbyRequest;
+import com.esotericsoftware.minlog.Log;
 
 import static game.utils.Resources.CLIENT_CONFIG;
 
@@ -27,6 +28,8 @@ public class LoginScreen extends AbstractScreen {
     private TextField ipText;
     private TextField portText;
 
+    private boolean canConnect = true;
+
     public LoginScreen() {
         super();
         init();
@@ -34,13 +37,12 @@ public class LoginScreen extends AbstractScreen {
 
     @Override
     protected void keyPressed(int keyCode) {
-         if (keyCode == Input.Keys.ENTER) {
-             String user = username.getText();
-             Hero hero = heroSelect.getSelected();
-             String ip = ipText.getText();
-             int port = Integer.valueOf(portText.getText());
+         if (keyCode == Input.Keys.ENTER && this.canConnect) {
+             //Connect
+             connectThenLogin();
 
-             connectThenLogin(ip, port, user, hero);
+             //Prevent multiple simultaneous connections.
+             this.canConnect = false;
          }
     }
 
@@ -81,14 +83,7 @@ public class LoginScreen extends AbstractScreen {
         loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                String user = username.getText();
-                Hero hero = heroSelect.getSelected();
-                String ip = ipText.getText();
-                int port = Integer.valueOf(portText.getText());
-
-                loginButton.setDisabled(true);
-                connectThenLogin(ip, port, user, hero);
-                loginButton.setDisabled(false);
+                connectThenLogin();
             }
 
         });
@@ -115,23 +110,33 @@ public class LoginScreen extends AbstractScreen {
         getStage().setKeyboardFocus(username);
     }
 
-    private void connectThenLogin(String ip, int port, String user, Hero hero) {
-        if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
-            if (clientSystem.getState() != MarshalState.STOPPED)
-                clientSystem.stop();
-            if (clientSystem.getState() == MarshalState.STOPPED) {
+    private void connectThenLogin() {
 
-                clientSystem.getKryonetClient().setHost(ip);
-                clientSystem.getKryonetClient().setPort(port);
+        if (this.canConnect) {
+            String user = username.getText();
+            Hero hero = heroSelect.getSelected();
+            String ip = ipText.getText();
+            int port = Integer.valueOf(portText.getText());
 
-                clientSystem.start();
-                if (clientSystem.getState() == MarshalState.STARTED) {
-                    clientSystem.getKryonetClient().sendToAll(new JoinLobbyRequest(user, hero));
-                } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
-                    Dialog dialog = new Dialog("Network error", getSkin());
-                    dialog.text("Failed to connect! :(");
-                    dialog.button("OK");
-                    dialog.show(getStage());
+            if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
+                if (clientSystem.getState() != MarshalState.STOPPED)
+                    clientSystem.stop();
+                if (clientSystem.getState() == MarshalState.STOPPED) {
+
+                    clientSystem.getKryonetClient().setHost(ip);
+                    clientSystem.getKryonetClient().setPort(port);
+
+                    clientSystem.start();
+                    if (clientSystem.getState() == MarshalState.STARTED) {
+                        clientSystem.getKryonetClient().sendToAll(new JoinLobbyRequest(user, hero));
+                        this.canConnect = false;
+                    } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
+                        Dialog dialog = new Dialog("Network error", getSkin());
+                        dialog.text("Failed to connect! :(");
+                        dialog.button("OK");
+                        dialog.show(getStage());
+                        this.canConnect = true;
+                    }
                 }
             }
         }
