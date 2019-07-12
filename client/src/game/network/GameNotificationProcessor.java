@@ -181,6 +181,6 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     @Override
     public void processNotification(SoundNotification soundNotification) {
         int soundNumber = soundNotification.getSoundNumber();
-        // soundsHandler.playSound(soundNumber);
+        soundsHandler.playSound(soundNumber);
     }
 }

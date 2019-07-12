@@ -161,7 +161,7 @@ public class GameScreen extends ScreenAdapter {
         world.getSystem(MusicHandler.class).setVolume(0);
 
         world.getSystem(MusicHandler.class).fadeOutMusic(101, 0.02f);
-        // world.getSystem(MusicHandler.class).playMIDI(1);
+        world.getSystem(MusicHandler.class).playMIDI(1);
     }
 
     protected void update(float deltaTime) {
