@@ -8,6 +8,7 @@ old/
 out/
 **/out/
 design/resources*
+desktop/jdk-14*
 desktop/build/releases/*.zip
 desktop/build/jdks/**
 desktop/finisterra*
