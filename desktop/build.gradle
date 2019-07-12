@@ -68,6 +68,38 @@ runtime {
     }
 }
 
+tasks.runtime.doFirst {
+	
+	download {
+
+		if (osName().contains('windows')) {
+			src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_windows-x64_bin.zip'
+		} else if (osName().contains('linux')) {
+			src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_linux-x64_bin.tar.gz'
+		} else if (osName().contains('mac')) {
+			src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_osx-x64_bin.tar.gz'
+		}
+		
+		dest projectDir
+		overwrite false
+	}
+	
+	if (!file("${projectDir}/jdk-14").exists()) {
+		copy {
+			
+			if (osName().contains('windows')) {
+				from zipTree("${projectDir}/openjdk-14-jpackage+8_windows-x64_bin.zip")
+			} else if (osName().contains('linux')) {
+				from tarTree("${projectDir}/openjdk-14-jpackage+8_linux-x64_bin.tar.gz")
+			} else if (osName().contains('mac')) {
+				from tarTree("${projectDir}/openjdk-14-jpackage+8_osx-x64_bin.tar.gz")
+			}
+			
+			into projectDir
+		}
+	}
+}
+
 tasks.jpackage.doFirst {
 	if (!file(releasesDir).exists()) {
 		releasesDir.mkdirs()
