@@ -68,7 +68,7 @@ runtime {
     }
 }
 
-tasks.runtime.doFirst {
+tasks.jre.doFirst {
 	
 	download {
 
