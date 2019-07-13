@@ -1,9 +1,8 @@
-import groovy.json.JsonSlurper
-
 plugins {
     id 'application'
-    id "de.undercouch.download" version "4.0.0"
-    id "com.github.breadmoirai.github-release" version "2.2.9"
+    id 'de.undercouch.download' version '4.0.0'
+    id 'com.github.breadmoirai.github-release' version '2.2.9'
+    id 'org.beryx.runtime' version '1.2.0'
 }
 
 sourceSets {
@@ -12,13 +11,7 @@ sourceSets {
 }
 
 static def osName() { System.getProperty('os.name').toLowerCase(Locale.ROOT) }
-
-if (osName().contains('mac')) {
-    run {
-        jvmArgs += '-XstartOnFirstThread'
-    }
-}
-
+def releasesDir = "${buildDir}/releases"
 mainClassName = "launcher.DesktopLauncher"
 
 dependencies {
@@ -26,6 +19,12 @@ dependencies {
     compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+}
+
+if (osName().contains('mac')) {
+    run {
+        jvmArgs += '-XstartOnFirstThread'
+    }
 }
 
 task dist(type: Jar) {
@@ -40,112 +39,76 @@ task dist(type: Jar) {
 dist.dependsOn classes
 run.dependsOn classes
 
-def releasesDir() { "${projectDir}/build/releases/" }
-
-def zipDir() { "${projectDir}/build/zip/" }
-
-static def packingDir() { "packing/" }
-
-static def switchConfig(platform) {
-    def config
-    switch (platform) {
-        case "windows32":
-            config = packingDir().concat("build-windows-32.json")
-            break
-        case "windows64":
-            config = packingDir().concat("build-windows-64.json")
-            break
-        case "mac":
-            config = packingDir().concat("build-mac.json")
-            break
-        case "linux64":
-            config = packingDir().concat("build-linux.json")
-            break
-    }
-    config
-}
-
-def packArgs(platform) {
-    [
-            "${projectDir}/packing/jdks/packr.jar",
-            "--platform", platform,
-            switchConfig(platform)
-    ]
-}
-
-task packWindows32(type: JavaExec) {
-    main = "-jar"
-    args = packArgs("windows32")
-}
-
-task packWindows64(type: JavaExec) {
-    main = "-jar"
-    args = packArgs("windows64")
-}
-
-task packMac(type: JavaExec) {
-    main = "-jar"
-    args = packArgs("mac")
-}
-
-task packLinux64(type: JavaExec) {
-    main = "-jar"
-    args = packArgs("linux64")
-}
-
-task pack {
-    dependsOn 'dist'
-    dependsOn 'downloadBinaries'
-    dependsOn 'packWindows32'
-    dependsOn 'packWindows64'
-    dependsOn 'packMac'
-    dependsOn 'packLinux64'
-    tasks.findByName('dist').mustRunAfter('downloadBinaries')
-    tasks.findByName('packWindows32').mustRunAfter('dist')
-    tasks.findByName('packWindows64').mustRunAfter 'packWindows32'
-    tasks.findByName('packMac').mustRunAfter 'packWindows64'
-    tasks.findByName('packLinux64').mustRunAfter 'packMac'
-}
-
-task zipAll() {
-    file(releasesDir()).eachDir() { folder ->
-        def taskName = "zip${folder.name.capitalize()}"
-        task "$taskName"(type: Zip) {
-            from folder
-            archiveFile.set(project.file(zipDir() + folder.name + ".zip"))
-        }
-        zipAll.dependsOn taskName
+runtime {
+    modules = ['java.base', 'java.desktop', 'jdk.unsupported', 'jdk.unsupported.desktop','java.logging']
+    options = ['--strip-debug', '--no-header-files', '--no-man-pages', '--strip-native-commands', '--compress', '2']
+    javaHome = "${projectDir}/jdk-14"
+    
+    jpackage {
+    	jpackageHome = "${projectDir}/jdk-14"
+    	imageOutputDir = file(releasesDir)
+		imageName = 'AO-Java'
+		
+		if (osName().contains('windows')) {
+			imageOptions = ['--icon', "${projectDir}/assets/ao.ico",
+							'--app-version', "${project.version}"]
+		} else if (osName().contains('linux')) {
+			imageOptions = ['--icon', "${projectDir}/assets/ao.png",
+							'--app-version', "${project.version}"]
+		} else if (osName().contains('mac')) {
+			imageOptions = ['--icon', "${projectDir}/assets/ao.icns",
+							'--app-version', "${project.version}"]
+		}
+		
+        if (osName().contains('mac')) {
+        	jvmArgs = ['-XstartOnFirstThread']
+    	}
+		
+        skipInstaller = true
     }
 }
 
-task downloadBinaries() {
-    def binJson = file(packingDir().concat("binaries.json"))
-    def json = new JsonSlurper().parseText(binJson.text)
+tasks.jre.doFirst {
+	
+	download {
 
-    download {
-        src([json.packr, json.windows32, json.windows64, json.linux64, json.mac])
-        dest packingDir().concat("jdks")
-        overwrite false
-    }
+		if (osName().contains('windows')) {
+			src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_windows-x64_bin.zip'
+		} else if (osName().contains('linux')) {
+			src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_linux-x64_bin.tar.gz'
+		} else if (osName().contains('mac')) {
+			src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_osx-x64_bin.tar.gz'
+		}
+		
+		dest projectDir
+		overwrite false
+	}
+	
+	if (!file("${projectDir}/jdk-14").exists()) {
+		copy {
+			
+			if (osName().contains('windows')) {
+				from zipTree("${projectDir}/openjdk-14-jpackage+8_windows-x64_bin.zip")
+			} else if (osName().contains('linux')) {
+				from tarTree("${projectDir}/openjdk-14-jpackage+8_linux-x64_bin.tar.gz")
+			} else if (osName().contains('mac')) {
+				from tarTree("${projectDir}/openjdk-14-jpackage+8_osx-x64_bin.tar.gz")
+			}
+			
+			into projectDir
+		}
+	}
 }
 
-task release() {
-    dependsOn 'dist'
-    dependsOn 'pack'
-    dependsOn 'zipAll'
-    dependsOn 'githubRelease'
-    tasks.findByName('pack').mustRunAfter('dist')
-    tasks.findByName("zipAll").mustRunAfter('pack')
-    tasks.findByName("githubRelease").mustRunAfter('zipAll')
+tasks.jpackage.doFirst {
+	if (!file(releasesDir).exists()) {
+		releasesDir.mkdirs()
+	}
 }
 
-githubRelease {
-    //token project.property('github.token')
-    owner "ao-libre"
-    repo "ao-java"
-    targetCommitish "master"
-    draft false
-    prerelease true
-    releaseAssets project.file('build/zip/').listFiles()
-    apiEndpoint "https://api.github.com"
+tasks.jpackage.doLast {
+	copy {
+		from file("assets")
+		into file("$releasesDir/AO-Java/app/assets")
+	}
 }
