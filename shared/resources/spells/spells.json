@@ -13,7 +13,9 @@
     "requiredMana": 12,
     "requiredStamina": 1,
     "target": 1,
-    "healPoison": true
+    "healPoison": true,
+    "desc": "Mediante el poder de la magia, sanas el envenenamiento a tí o un aliado.",
+    "roledesc": "Con este conjuro podrás mutar los fluidos tóxicos de tu cuerpo para detener su vil accionar, contrarrestando los efectos nocivos de todo tipo de ponzoñas y venenos. Se trata de un conjuro tan simple como necesario, puesto que, además de los magos que provocan envenenamiento, son varias las criaturas que lanzan veneno en estas tierras."
   },
   "2": {
     "name": "Dardo Mágico",
@@ -31,7 +33,9 @@
     "sumHP": 2,
     "minHP": 3,
     "maxHP": 5,
-    "resis": true
+    "resis": true,
+    "desc": "Inflinge pequeñas cantidades de daño sobre el objetivo.",
+    "roledesc": "Éste es uno de los más elementales y sencillos hechizos de ataque que podrás aprender. No causa un gran daño a la víctima, pero al consumir muy pocos recursos, resulta una herramienta muy útil para el entrenamiento de los jóvenes hechiceros."
   },
   "3": {
     "name": "Curar Heridas Leves",
@@ -47,7 +51,9 @@
     "target": 3,
     "sumHP": 1,
     "minHP": 1,
-    "maxHP": 5
+    "maxHP": 5,
+    "desc": "Sanas al objetivo levemente.",
+    "roledesc": "Con este sencillo conjuro podrás efectuar la sanación inmediata de pequeñas heridas y devolver lentamente la salud a quien se lo lances. Suele ser de gran utilidad para los jóvenes aprendices de magia, para poder entrenar al resguardo del ataque de las fieras salvajes."
   },
   "4": {
     "name": "Toxina",
@@ -64,7 +70,9 @@
     "requiredStamina": 3,
     "target": 3,
     "poison": true,
-    "resis": true
+    "resis": true,
+    "desc": "Inhundas el cuerpo de la víctima de un mortal veneno.",
+    "roledesc": "Con este hechizo de aprendizaje simple y veloz, podrás inundar el cuerpo de la víctima de un mortal veneno, con el que lentamente irá perdiendo la vida hasta sucumbir. Por ser un hechizo que requiere poco conocimiento, resulta de gran utilidad en las primeras etapas, fundamentalmente como modo de defensa personal e incluso para el entrenamiento."
   },
   "5": {
     "name": "Curar Heridas Graves",
@@ -81,7 +89,9 @@
     "target": 3,
     "sumHP": 1,
     "minHP": 12,
-    "maxHP": 35
+    "maxHP": 35,
+    "desc": "Sanarás al objetivo sus heridas más profundas y dolorosas",
+    "roledesc": "Con esta milagrosa sanación para las heridas más profundas y dolorosas, podrás rápidamente devolver la salud a quienes agonizan. Se trata de un conjuro de una complejidad intermedia, pero que suele resultar fundamental para los jóvenes aventureros que desean recorrer el mundo y enfrentarse con sus peligros"
   },
   "6": {
     "name": "Flecha Mágica",
@@ -98,7 +108,9 @@
     "sumHP": 2,
     "minHP": 6,
     "maxHP": 12,
-    "resis": true
+    "resis": true,
+    "desc": "Impacta a la víctima produciéndole heridas de mediana gravedad",
+    "roledesc": "Con este sortilegio lograrás que una inmaterial flecha impacte en la víctima produciéndole heridas de mediana gravedad. Su aprendizaje es medianamente fácil, y puede resultar de mucha utilidad para combatir contra las criaturas menores que suelen habitar los suburbios de las ciudades."
   },
   "7": {
     "name": "Flecha Eléctrica",
@@ -115,7 +127,9 @@
     "sumHP": 2,
     "minHP": 12,
     "maxHP": 20,
-    "resis": true
+    "resis": true,
+    "desc": "",
+    "roledesc": "Éste es un interesante hechizo que te permitirá canalizar las elergías eléctricas del mundo en ataques direccionados a un determinado objetivo. Si bien el daño que causa no es muy grande, es seguramente la mejor herramienta para el entrenamiento y la defensa de los hechiceros menos experimentad"
   },
   "8": {
     "name": "Proyectil Mágico",
@@ -132,7 +146,9 @@
     "sumHP": 2,
     "minHP": 30,
     "maxHP": 35,
-    "resis": true
+    "resis": true,
+    "desc": "Daño moderadamente al objetivo a distancia consumiendo pequeñas partes de tu maná.",
+    "roledesc": "Este rentable hechizo de ataque resulta el ideal para los niveles intermedios, pues les permitirá un gran poder de ataque que no sólo facilitará entrenar velozmente, si no que además, puede ser utilizado como una respetable arma en los combates contra tus adversarios."
   },
   "9": {
     "name": "Paralizar",
@@ -147,7 +163,9 @@
     "requiredMana": 450,
     "requiredStamina": 65,
     "target": 3,
-    "paralyze": true
+    "paralyze": true,
+    "desc": "",
+    "roledesc": ""
   },
   "10": {
     "name": "Devolver Movilidad",
@@ -161,7 +179,9 @@
     "requiredMana": 300,
     "requiredStamina": 44,
     "target": 3,
-    "removeParalysis": true
+    "removeParalysis": true,
+    "desc": "Contrarrestas en tí, aliado u objetivo el efecto de inmovilización.",
+    "roledesc": "Conjuro con el cual podrás contrarrestar los efectos tanto de la parálisis como de la inmovilización. En virtud de que los hechizos de estatismo son usados con mucha frecuencia por todos las clases mágicas que habitan estas tierras, éste conjuro se vuelve prácticamente vital para cualquier valiente que esté dispuesto a combatir."
   },
   "11": {
     "name": "Resucitar",
@@ -175,7 +195,9 @@
     "requiredStamina": 400,
     "target": 1,
     "revive": true,
-    "resis": true
+    "resis": true,
+    "desc": "",
+    "roledesc": ""
   },
   "12": {
     "name": "Ataque de Hambre",
@@ -191,7 +213,9 @@
     "target": 1,
     "minHangry": 20,
     "maxHangry": 50,
-    "resis": true
+    "resis": true,
+    "desc": "",
+    "roledesc": ""
   },
   "13": {
     "name": "Terrible hambre de Igôr",
@@ -207,7 +231,9 @@
     "target": 1,
     "minHangry": 100,
     "maxHangry": 100,
-    "resis": true
+    "resis": true,
+    "desc": "",
+    "roledesc": ""
   },
   "14": {
     "name": "Invisibilidad",
@@ -220,7 +246,9 @@
     "requiredMana": 500,
     "requiredStamina": 72,
     "target": 1,
-    "invisibility": true
+    "invisibility": true,
+    "desc": "",
+    "roledesc": ""
   },
   "15": {
     "name": "Tormenta de Fuego",
@@ -238,7 +266,9 @@
     "minHP": 45,
     "maxHP": 55,
     "staffAffected": true,
-    "resis": true
+    "resis": true,
+    "desc": "Envías una tormenta de fuego a un objetivo provocando daño.",
+    "roledesc": "Poderoso hechizo de ataque. Su costo en relación al daño que provoca lo convierte en un arma más propia para el combate que para el entrenamiento. Es ideal para aquellos aprendices de magia que todavía no alcanzaron a conocer el secreto de los hechizos mayores y necesitan estar bien equipados para la guerra."
   },
   "16": {
     "name": "Llamado a la Naturaleza",
@@ -253,7 +283,9 @@
     "target": 4,
     "invokes": true,
     "numNpc": 512,
-    "count": 2
+    "count": 2,
+    "desc": "",
+    "roledesc": ""
   },
   "17": {
     "name": "Llamado Nigromante",
@@ -269,7 +301,9 @@
     "invokes": true,
     "numNpc": 546,
     "count": 2,
-    "needStaff": true
+    "needStaff": true,
+    "desc": "",
+    "roledesc": ""
   },
   "18": {
     "name": "Celeridad",
@@ -287,7 +321,9 @@
     "sumAgility": true,
     "minAgility": 2,
     "maxAgility": 5,
-    "agilityDuration":300
+    "agilityDuration":300,
+    "desc": "",
+    "roledesc": ""
   },
   "19": {
     "name": "Torpeza",
@@ -303,7 +339,9 @@
     "target": 1,
     "minAgility": 2,
     "maxAgility": 5,
-    "agilityDuration":300
+    "agilityDuration":300,
+    "desc": "",
+    "roledesc": ""
   },
   "20": {
     "name": "Fuerza",
@@ -321,7 +359,9 @@
     "sumStrength": true,
     "minStrength": 2,
     "maxStrength": 5,
-    "strengthDuration": 300
+    "strengthDuration": 300,
+    "desc": "",
+    "roledesc": ""
   },
   "21": {
     "name": "Debilidad",
@@ -337,7 +377,9 @@
     "target": 1,
     "minStrength": 2,
     "maxStrength": 5,
-    "strengthDuration": 300
+    "strengthDuration": 300,
+    "desc": "",
+    "roledesc": ""
   },
   "22": {
     "name": "Llamado a Uhkrul",
@@ -351,7 +393,9 @@
     "target": 4,
     "invokes": true,
     "numNpc": 547,
-    "count": 1
+    "count": 1,
+    "desc": "",
+    "roledesc": ""
   },
   "23": {
     "name": "Descarga Eléctrica",
@@ -369,7 +413,9 @@
     "minHP": 55,
     "maxHP": 85,
     "staffAffected": true,
-    "resis": true
+    "resis": true,
+    "desc": "Impactas al objetivo con un poderoso hechizo que provoca serias heridas en él.",
+    "roledesc": "Éste es uno de los hechizos de daño más poderoso de todo el Argentum. Al controlarlo podrás manipular las fuerzas de la naturaleza de modo tal que del cielo mismo caiga una fuerte descarga de electricidad sobre el objetivo. El daño que provoca en sus vícitimas puede ser mortal frente a principiantes o aprendices."
   },
   "24": {
     "name": "Inmovilizar",
@@ -384,7 +430,9 @@
     "requiredMana": 300,
     "requiredStamina": 44,
     "target": 3,
-    "immobilize": true
+    "immobilize": true,
+    "desc": "Inmovilizas al objetivo en la posición en que se encuentra por unos segundos.",
+    "roledesc": "Este valioso sortilegio te permitirá dejar a la víctima sin la capacidad de desplazarse, tendrá la sensación de que una poderosa fuerza lo atrae hacia el piso, y si bien podrá mover sus miembros, no podrá dejar el lugar en el que se encuentra."
   },
   "25": {
     "name": "Apocalipsis",
@@ -402,7 +450,9 @@
     "minHP": 85,
     "maxHP": 100,
     "staffAffected": true,
-    "resis": true
+    "resis": true,
+    "desc": "Impactas al objetivo con un poderoso hechizo que provoca serias heridas en él.",
+    "roledesc": "El ataque mágico más letal de estas tierras. Sólo aquellos avezados en el arte de la magia pueden aprender este temible hechizo. Su poder es fulminante y suele ser mortal para quien es víctima de él. "
   },
   "26": {
     "name": "Invocar Elemental de Fuego",
@@ -418,7 +468,9 @@
     "target": 4,
     "invokes": true,
     "numNpc": 93,
-    "count": 1
+    "count": 1,
+    "desc": "",
+    "roledesc": ""
   },
   "27": {
     "name": "Invocar Elemental de Agua",
@@ -438,7 +490,9 @@
     "invokes": true,
     "numNpc": 92,
     "count": 1,
-    "needStaff": true
+    "needStaff": true,
+    "desc": "",
+    "roledesc": ""
   },
   "28": {
     "name": "Invocar Elemental de Tierra",
@@ -455,7 +509,9 @@
     "invokes": true,
     "numNpc": 94,
     "count": 1,
-    "needStaff": true
+    "needStaff": true,
+    "desc": "",
+    "roledesc": ""
   },
   "29": {
     "name": "Implorar Ayuda",
@@ -470,7 +526,9 @@
     "target": 4,
     "invokes": true,
     "numNpc": 89,
-    "count": 2
+    "count": 2,
+    "desc": "",
+    "roledesc": ""
   },
   "30": {
     "name": "Ceguera",
@@ -484,7 +542,9 @@
     "requiredMana": 1,
     "requiredStamina": 1,
     "target": 1,
-    "blindness": true
+    "blindness": true,
+    "desc": "",
+    "roledesc": ""
   },
   "31": {
     "name": "Aturdir",
@@ -498,7 +558,9 @@
     "requiredMana": 800,
     "requiredStamina": 76,
     "target": 1,
-    "stupid": true
+    "stupid": true,
+    "desc": "",
+    "roledesc": ""
   },
   "32": {
     "name": "Ira de Dios",
@@ -514,7 +576,9 @@
     "target": 3,
     "sumHP": 2,
     "minHP": 9999,
-    "maxHP": 9999
+    "maxHP": 9999,
+    "desc": "",
+    "roledesc": ""
   },
   "33": {
     "name": "Invocación de Ultratumba",
@@ -530,7 +594,9 @@
     "invokes": true,
     "numNpc": 520,
     "count": 1,
-    "needStaff": true
+    "needStaff": true,
+    "desc": "",
+    "roledesc": ""
   },
   "34": {
     "name": "Por el culo",
@@ -547,7 +613,9 @@
     "target": 1,
     "sumHP": 2,
     "minHP": 9999,
-    "maxHP": 9999
+    "maxHP": 9999,
+    "desc": "",
+    "roledesc": ""
   },
   "35": {
     "name": "Flecha",
@@ -558,7 +626,9 @@
     "wav": 10,
     "minSkill": 101,
     "requiredMana": 3000,
-    "target": 1
+    "target": 1,
+    "desc": "",
+    "roledesc": ""
   },
   "36": {
     "name": "Tormenta Pretoriana",
@@ -571,7 +641,9 @@
     "fxGrh": 7,
     "minSkill": 80,
     "requiredMana": 520,
-    "target": 3
+    "target": 3,
+    "desc": "",
+    "roledesc": ""
   },
   "37": {
     "name": "Flecha Cazador Pretoriano",
@@ -587,7 +659,9 @@
     "target": 3,
     "sumHP": 2,
     "minHP": 130,
-    "maxHP": 160
+    "maxHP": 160,
+    "desc": "",
+    "roledesc": ""
   },
   "38": {
     "name": "Remover Invisibilidad",
@@ -595,14 +669,18 @@
     "wav": 16,
     "fxGrh": 2,
     "loops": 2,
-    "minSkill": 101
+    "minSkill": 101,
+    "desc": "",
+    "roledesc": ""
   },
   "39": {
     "name": "Paralizar NPCs",
     "magicWords": "HOAX MANTRA",
     "wav": 16,
     "fxGrh": 8,
-    "minSkill": 101
+    "minSkill": 101,
+    "desc": "",
+    "roledesc": ""
   },
   "40": {
     "name": "Bendición de Sortilego",
@@ -620,7 +698,9 @@
     "target": 3,
     "sumHP": 1,
     "minHP": 9999,
-    "maxHP": 9999
+    "maxHP": 9999,
+    "desc": "",
+    "roledesc": ""
   },
   "41": {
     "name": "Desaturdir",
@@ -634,7 +714,9 @@
     "requiredMana": 350,
     "requiredStamina": 44,
     "target": 1,
-    "removeStupid": true
+    "removeStupid": true,
+    "desc": "",
+    "roledesc": ""
   },
   "42": {
     "name": "Mimetismo",
@@ -648,7 +730,9 @@
     "requiredMana": 800,
     "requiredStamina": 44,
     "target": 3,
-    "mimetize": true
+    "mimetize": true,
+    "desc": "",
+    "roledesc": ""
   },
   "43": {
     "name": "El Ojo del Demiurgo",
@@ -664,7 +748,9 @@
     "requiredMana": 1,
     "requiredStamina": 1,
     "target": 4,
-    "removeParcialInvisibility": true
+    "removeParcialInvisibility": true,
+    "desc": "",
+    "roledesc": ""
   },
   "44": {
     "name": "Flecha Elfica",
@@ -681,7 +767,9 @@
     "sumHP": 2,
     "minHP": 30,
     "maxHP": 35,
-    "resis": true
+    "resis": true,
+    "desc": "",
+    "roledesc": ""
   },
   "45": {
     "name": "Drenar",
@@ -699,6 +787,8 @@
     "sumHP": 2,
     "minHP": 35,
     "maxHP": 40,
-    "resis": true
+    "resis": true,
+    "desc": "",
+    "roledesc": ""
   }
 }
