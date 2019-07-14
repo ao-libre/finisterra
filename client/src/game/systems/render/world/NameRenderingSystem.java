@@ -89,10 +89,6 @@ public class NameRenderingSystem extends RenderingSystem {
         if (clanOrHero == null) {
             return;
         }
-//        Fonts.layout.setText(Fonts.CLAN_FONT, "<" + clanOrHero + ">");
-//        final float fontX = screenPos.x + ((Tile.TILE_PIXEL_WIDTH - Fonts.layout.width) / 2);
-//        final float fontY = nameY + Fonts.layout.height + 5;
-//        Fonts.CLAN_FONT.draw(getBatch(), Fonts.layout, fontX, fontY);
     }
 
     private Color setColor(E player, Label label) {
