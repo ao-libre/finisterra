@@ -3,9 +3,13 @@ package game.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.BufferUtils;
+import com.badlogic.gdx.utils.ScreenUtils;
 import game.AOGame;
 import game.managers.AOInputProcessor;
 import game.screens.GameScreen;
@@ -109,6 +113,23 @@ public class GUI {
         dialog.setPosition((getWidth() - width) / 2, getHeight() / 2);
         stage.addActor(dialog);
         return dialog;
+    }
+
+    public static void takeScreenshot() {
+        String screenshotPath = "assets/data/Screenshots/Screen.png";
+
+        byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
+
+        // this loop makes sure the whole screenshot is opaque and looks exactly like what the user is seeing
+        for(int i = 4; i < pixels.length; i += 4) {
+            pixels[i - 1] = (byte) 255;
+        }
+
+        Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
+        BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
+        PixmapIO.writePNG(Gdx.files.local(screenshotPath), pixmap);
+        GUI.getConsole().addInfo("3...2...1...Say Cheese!. Screenshot saved in " + screenshotPath);
+        pixmap.dispose();
     }
 
     private float getHeight() {
