@@ -21,5 +21,4 @@ public class AOKeys {
     public static int MOVE_UP = Input.Keys.UP;
     public static int MOVE_DOWN = Input.Keys.DOWN;
 
-
 }

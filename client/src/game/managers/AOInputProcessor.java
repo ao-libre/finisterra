@@ -142,6 +142,10 @@ public class AOInputProcessor extends Stage {
                 // Disconnect & go back to LoginScreen
                 AOGame game = (AOGame) Gdx.app.getApplicationListener();
                 game.toLogin();
+
+            case Input.Keys.F2:
+                GUI.takeScreenshot();
+                break;
         }
     }
 
@@ -178,6 +182,10 @@ public class AOInputProcessor extends Stage {
                 // Disconnect & go back to LoginScreen
                 AOGame game = (AOGame) Gdx.app.getApplicationListener();
                 game.toLogin();
+
+            case Input.Keys.F2:
+                GUI.takeScreenshot();
+                break;
         }
     }
 
