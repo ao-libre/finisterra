@@ -207,17 +207,19 @@ public class EntityFactorySystem extends PassiveSystem {
 
     private void setMana(E entity) {
         CharClass charClass = CharClass.of(entity);
-        int mana = 0;
+        int mana = 300; //Bonus 300 mana para tirar inmovilizar
         switch (charClass) {
             case MAGICIAN:
-                mana = entity.intelligenceBaseValue() * 3;
+                mana = entity.intelligenceBaseValue() * 3 + mana;
                 break;
             case CLERIC:
             case DRUID:
             case BARDIC:
+                mana = entity.intelligenceBaseValue() * 2 + mana;
+                break;
             case ASSASSIN:
-            case ROGUE:
-                mana = 50;
+            case PALADIN:
+                mana = entity.intelligenceBaseValue() + mana;
                 break;
         }
         entity.manaMax(mana);
