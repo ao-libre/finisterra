@@ -25,7 +25,7 @@ import static shared.util.Messages.*;
 @Wire
 public class MeditateSystem extends IntervalFluidIteratingSystem {
 
-    private static final float MANA_RECOVERY_PERCENT = 0.05f;
+    private static final float MANA_RECOVERY_PERCENT = 0.3f;
     private static Map<Integer, Integer> userMeditations = new HashMap<>();
     private WorldManager worldManager;
 
