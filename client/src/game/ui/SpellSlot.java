@@ -6,10 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Tooltip;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import game.utils.Resources;
@@ -59,12 +56,34 @@ public class SpellSlot extends ImageButton {
     }
 
     private Actor createTooltipContent(Spell spell) {
-        Table table = new Window("", Skins.COMODORE_SKIN);
         String name = spell.getName();
+        String desc = spell.getDesc();
+        int minhp = spell.getMinHP();
+        int maxhp = spell.getMaxHP();
         int requiredMana = spell.getRequiredMana();
-//        table.add(new Label(name, Skins.COMODORE_SKIN, "title-no-background")).prefWidth(200).row();
-//        table.add(new Label("Mana: " + requiredMana, Skins.COMODORE_SKIN, "desc-no-background")).pad(20).left();
-        table.setHeight(100);
+        int requiredSkills = spell.getMinSkill();
+
+        Table table = new Window("", Skins.COMODORE_SKIN);
+
+        table.pad(0,10,10,0);
+        table.add //    LabelNombre
+                (new Label(name, Skins.COMODORE_SKIN, "title-no-background"))
+                .left().pad(10,15,10,10).row();
+        table.add //    LabelSkills
+                (new Label("Requiere " + requiredSkills + " puntos de Magia.", Skins.COMODORE_SKIN, "font-style-skills"))
+                .pad(0,20,0,10).left().row();
+        table.add //    LabelMana
+                (new Label("Requiere " + requiredMana + " puntos de Maná.", Skins.COMODORE_SKIN, "font-style-mana"))
+                .pad(0,20,0,10).left().row();
+        table.add //    LabelDaño TODO Llamar daño base desde el character
+                (new Label("Inflinge entre " + minhp + " (+DañoBase)" + "/" + maxhp + " (+DañoBase)", Skins.COMODORE_SKIN, "font-style-magic"))
+                .pad(0,20,0,10).left().row();
+        table.add //    LabelDescripcion TODO hacer que el texto se ajuste a un tamaño fijo
+                (new Label(desc,
+                        Skins.COMODORE_SKIN,
+                        "font-style-desc"
+                ))
+                .pad(10,20,0,10).row();
         return table;
     }
 
