@@ -40,7 +40,7 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
         EntityUpdateBuilder notify = EntityUpdateBuilder.of(e.id());
         if (mana.min < mana.max) {
             int manaMin = mana.min;
-            int prob = ThreadLocalRandom.current().nextInt(6);
+            int prob = ThreadLocalRandom.current().nextInt(2);
             if (prob == 1) {
                 // meditar
                 mana.min += mana.max * MANA_RECOVERY_PERCENT;
