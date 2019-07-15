@@ -69,7 +69,6 @@ public interface AOAssetManager {
     List<HelmetDescriptor> getHelmets();
 
     List<WeaponDescriptor> getWeapons();
-
-    String getMessages(String key, Object... params);
-
+	
+	String getMessages(String key, Object... params);
 }

@@ -110,7 +110,6 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
         return npcs.containsKey(id);
     }
 
-
     public static class NPCParameters implements Parameters<NPC> {
         enum NPCModel {
             JSON,
