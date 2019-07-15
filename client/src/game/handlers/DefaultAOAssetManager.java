@@ -12,6 +12,8 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.I18NBundle;
+import game.ClientConfiguration;
 import game.loaders.*;
 import game.loaders.ObjectsLoader.ObjectParameter;
 import game.utils.Resources;
@@ -35,6 +37,7 @@ import static game.loaders.DescriptorsLoader.*;
 import static game.loaders.DescriptorsLoader.DescriptorParameter.descriptor;
 import static game.loaders.GenericLoader.GenericParameter.bodiesGenericParameter;
 import static game.utils.Resources.GAME_DESCRIPTORS_PATH;
+import static shared.util.SharedResources.LANGUAGES_EXTENSION;
 
 public class DefaultAOAssetManager extends AssetManager implements AOAssetManager {
 
@@ -44,6 +47,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     private static final Class<HashMap<Integer, Obj>> OBJS_CLASS;
     private static final Class<HashMap<Integer, Spell>> SPELLS_CLASS;
     private static final Class<ArrayList<Descriptor>> DESCRIPTORS_CLASS;
+    public static final String LANGUAGES_FILE = SharedResources.LANGUAGES_FOLDER + ClientConfiguration.Init.lang + LANGUAGES_EXTENSION;
 
     private Map<Integer, AOImage> images;
     private Map<Integer, AOAnimation> animations;
@@ -106,7 +110,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     }
 
     private void loadMessages() {
-        load(SharedResources.GAME_MESSAGES, I18Bundle.class);
+        load(LANGUAGES_FILE, I18NBundle.class);
     }
 
     @Override
@@ -254,17 +258,23 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         return get(GAME_DESCRIPTORS_FOLDER + WEAPONS + JSON_EXTENSION);
     }
 
-<<<<<<< HEAD
-=======
-    public String getMessages(String key, Object... params) { return get(SharedResources.LANGUAGES_FOLDER).get(key, params); }
+    public String getMessages(String key, Object... params) {
 
-    private void loadTextures() {
-        Reflections reflections = new Reflections(Resources.GAME_GRAPHICS_PATH, new ResourcesScanner());
-        Set<String> graphicFiles = reflections.getResources(Pattern.compile(".*\\.png"));
-        graphicFiles.forEach(this::loadTexture);
+        if (!isLoaded(LANGUAGES_FILE)) {
+            load(SharedResources.LANGUAGES_FOLDER + ClientConfiguration.Init.lang + LANGUAGES_EXTENSION, I18NBundle.class);
+            finishLoadingAsset(LANGUAGES_FILE);
+        }
+
+        I18NBundle i18 = get(LANGUAGES_FILE);
+
+        if (params.length > 0) {
+            return i18.format(key, params);
+        } else {
+            return i18.get(key);
+        }
+
     }
 
->>>>>>> Initial implementation
     private void loadTexture(String fileName) {
         TextureParameter param = new TextureParameter();
         param.minFilter = TextureFilter.Linear;
