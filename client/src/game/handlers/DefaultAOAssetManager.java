@@ -89,6 +89,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         loadMusic();
         loadSkins();
         loadFonts();
+        loadMessages();
     }
 
     @Override
@@ -102,6 +103,10 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     private void loadSkins() {
         load(Resources.GAME_SKIN_FILE, AOSkin.class);
+    }
+
+    private void loadMessages() {
+        load(SharedResources.GAME_MESSAGES, I18Bundle.class);
     }
 
     @Override
@@ -249,6 +254,17 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         return get(GAME_DESCRIPTORS_FOLDER + WEAPONS + JSON_EXTENSION);
     }
 
+<<<<<<< HEAD
+=======
+    public String getMessages(String key, Object... params) { return get(SharedResources.LANGUAGES_FOLDER).get(key, params); }
+
+    private void loadTextures() {
+        Reflections reflections = new Reflections(Resources.GAME_GRAPHICS_PATH, new ResourcesScanner());
+        Set<String> graphicFiles = reflections.getResources(Pattern.compile(".*\\.png"));
+        graphicFiles.forEach(this::loadTexture);
+    }
+
+>>>>>>> Initial implementation
     private void loadTexture(String fileName) {
         TextureParameter param = new TextureParameter();
         param.minFilter = TextureFilter.Linear;

@@ -70,4 +70,6 @@ public interface AOAssetManager {
 
     List<WeaponDescriptor> getWeapons();
 
+    String getMessages(String key, Object... params);
+
 }
