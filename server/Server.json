@@ -2,8 +2,8 @@
 	"network": {
 		"useLocalHost":true,
 		"ports": {
-			"tcpPort":9000,
-			"udpPort":9001
+			"tcpPort":7666,
+			"udpPort":7667
 		},
 		"api": {
 			"apiURL":"https://localhost",
