@@ -1,17 +1,17 @@
 package game.systems.assets;
 
-import game.handlers.DefaultAOAssetManager;
+import game.handlers.AOAssetManager;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 public class AssetsSystem extends PassiveSystem {
 
-    private DefaultAOAssetManager assetManager;
+    private AOAssetManager assetManager;
 
-    public AssetsSystem(DefaultAOAssetManager assetManager) {
+    public AssetsSystem(AOAssetManager assetManager) {
         this.assetManager = assetManager;
     }
 
-    public DefaultAOAssetManager getAssetManager() {
+    public AOAssetManager getAssetManager() {
         return assetManager;
     }
 }

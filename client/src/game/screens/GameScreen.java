@@ -89,7 +89,9 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     }
 
     private void initWorldConfiguration() {
-        AssetManagerHolder gameAssets = (AssetManagerHolder) Gdx.app.getApplicationListener();
+        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
+        AOAssetManager assetsManager = game.getAssetManager();
+
         worldConfigBuilder = new WorldConfigurationBuilder();
         worldConfigBuilder.with(new SuperMapper())
                 .with(HIGH, new TimeSync())
