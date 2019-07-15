@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
+import model.descriptors.HeadDescriptor;
 import model.textures.AOAnimation;
 import shared.util.AOJson;
 
@@ -11,61 +12,61 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static design.designers.AnimationDesigner.*;
+import static design.designers.HeadDesigner.*;
 
-public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParameters> {
+public class HeadDesigner implements IDesigner<HeadDescriptor, HeadParameters> {
 
-    private final String ANIMATIONS_FILE_NAME = "animations";
+    private final String HEADS_FILE_NAME = "heads";
     private final String JSON_EXT = ".json";
 
     private final String OUTPUT_FOLDER = "output/";
 
     private AOJson json = new AOJson();
-    private List<AOAnimation> animations;
+    private List<HeadDescriptor> heads;
 
     private int getFreeId() {
         return 0;
     }
 
-    public AnimationDesigner(AnimationParameters parameters) {
+    public HeadDesigner(HeadParameters parameters) {
         load(parameters);
     }
 
     @Override
-    public void load(AnimationParameters params) {
+    public void load(HeadParameters params) {
         AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
         AOAssetManager assetManager = game.getAssetManager();
-        animations = assetManager.getAnimations();
+        heads = assetManager.getHeads();
     }
 
     @Override
     public void save() {
-        json.toJson(animations, ArrayList.class, AOAnimation.class, Gdx.files.local(OUTPUT_FOLDER + ANIMATIONS_FILE_NAME + JSON_EXT));
+        json.toJson(heads, ArrayList.class, AOAnimation.class, Gdx.files.local(OUTPUT_FOLDER + HEADS_FILE_NAME + JSON_EXT));
     }
 
     @Override
-    public List<AOAnimation> get() {
-        return animations;
+    public List<HeadDescriptor> get() {
+        return heads;
     }
 
     @Override
-    public Optional<AOAnimation> get(int id) {
-        return animations.stream().filter(a -> id == a.getId()).findFirst();
+    public Optional<HeadDescriptor> get(int id) {
+        return heads.stream().filter(a -> id == a.getId()).findFirst();
     }
 
     @Override
-    public AOAnimation create() {
+    public HeadDescriptor create() {
         return null;
     }
 
     @Override
-    public void modify(AOAnimation element, Stage stage) {
+    public void modify(HeadDescriptor element, Stage stage) {
     }
 
     @Override
-    public void delete(AOAnimation element) {
+    public void delete(HeadDescriptor element) {
     }
 
-    public static class AnimationParameters implements Parameters<AOAnimation> {
+    public static class HeadParameters implements Parameters<HeadDescriptor> {
     }
 }

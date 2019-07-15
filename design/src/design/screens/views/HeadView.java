@@ -4,40 +4,42 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import design.designers.AnimationDesigner;
-import design.designers.AnimationDesigner.AnimationParameters;
+import design.designers.HeadDesigner;
+import design.designers.HeadDesigner.HeadParameters;
 import design.editors.AnimationEditor;
+import entity.character.parts.Head;
+import entity.character.states.Heading;
 import game.screens.WorldScreen;
+import model.descriptors.HeadDescriptor;
 import model.textures.AOAnimation;
+import model.textures.AOTexture;
 import model.textures.BundledAnimation;
 
 import java.util.Comparator;
 
-public class AnimationView extends View<AOAnimation, AnimationDesigner> implements WorldScreen {
+public class HeadView extends View<HeadDescriptor, HeadDesigner> implements WorldScreen {
 
-    public AnimationView() {
-        super(new AnimationDesigner(new AnimationParameters()));
+    public HeadView() {
+        super(new HeadDesigner(new HeadParameters()));
     }
 
     @Override
-    Preview<AOAnimation> createPreview() {
+    Preview<HeadDescriptor> createPreview() {
         return new AnimationPreview();
     }
 
     @Override
-    Preview<AOAnimation> createItemView() {
+    Preview<HeadDescriptor> createItemView() {
         AnimationItem animationItem = new AnimationItem();
 
         return animationItem;
     }
 
     @Override
-    protected void sort(Array<AOAnimation> items) {
-        items.sort(Comparator.comparingInt(AOAnimation::getId));
+    protected void sort(Array<HeadDescriptor> items) {
+        items.sort(Comparator.comparingInt(HeadDescriptor::getId));
     }
 
     @Override
@@ -45,9 +47,9 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
 
     }
 
-    class AnimationItem extends Preview<AOAnimation> {
+    class AnimationItem extends Preview<HeadDescriptor> {
 
-        private AOAnimation animation;
+        private HeadDescriptor head;
         private Actor view;
 
         public AnimationItem() {
@@ -55,27 +57,27 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
         }
 
         @Override
-        void show(AOAnimation animation) {
-            this.animation = animation;
+        void show(HeadDescriptor head) {
+            this.head = head;
             if (view != null) {
                 removeActor(view);
             }
-            view = AnimationEditor.getTable(animation);
+            //TODO view = AnimationEditor.getTable(head);
             add(view);
         }
 
         @Override
-        AOAnimation get() {
-            return animation;
+        HeadDescriptor get() {
+            return head;
         }
     }
 
-    class AnimationPreview extends Preview<AOAnimation> {
+    class AnimationPreview extends Preview<HeadDescriptor> {
 
         private final Image image;
         private final Label label;
-        private AOAnimation animation;
-        private BundledAnimation bundledAnimation;
+        private HeadDescriptor head;
+        private AOTexture texture;
 
         public AnimationPreview() {
             super(SKIN);
@@ -86,22 +88,22 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
         }
 
         @Override
-        public void show(AOAnimation animation) {
-            this.animation = animation;
-            label.setText(animation.getId());
-            bundledAnimation = getAnimationHandler().getAnimation(animation.getId());
+        public void show(HeadDescriptor head) {
+            this.head = head;
+            label.setText(head.getId());
+            texture = getAnimationHandler().getHeadAnimation(new Head(head.id), Heading.HEADING_SOUTH);
+            setSize(texture.getTexture().getRegionWidth(), texture.getTexture().getRegionHeight());
         }
 
         @Override
-        public AOAnimation get() {
-            return animation;
+        public HeadDescriptor get() {
+            return head;
         }
 
         @Override
         public void act(float delta) {
-            if (animation != null) {
-                bundledAnimation.setAnimationTime(bundledAnimation.getAnimationTime() + delta);
-                TextureRegion graphic = bundledAnimation.getGraphic();
+            if (head != null) {
+                TextureRegion graphic = texture.getTexture();
                 if (graphic.isFlipY()) {
                     graphic.flip(false, true);
                 }

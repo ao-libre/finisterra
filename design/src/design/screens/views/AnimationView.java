@@ -90,6 +90,8 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
             this.animation = animation;
             label.setText(animation.getId());
             bundledAnimation = getAnimationHandler().getAnimation(animation.getId());
+            TextureRegion graphic = bundledAnimation.getGraphic();
+            setSize(graphic.getRegionWidth(), graphic.getRegionHeight());
         }
 
         @Override

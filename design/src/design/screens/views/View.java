@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -18,7 +19,6 @@ import design.screens.DesignScreen;
 import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
 import game.handlers.ObjectHandler;
-import game.systems.render.world.CharacterRenderingSystem;
 import game.utils.Skins;
 
 public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Parameters<T>>> extends DesignScreen {
@@ -49,20 +49,22 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         Table leftPane = new Table();
         leftPane.pad(10);
         Table left = new Table();
-        Table buttons = createButtons();
-        left.add(buttons).row();
+        left.add(createButtons()).growX().row();
         List<T> list = createList();
-        left.add(new ScrollPane(list));
-        leftPane.add(left).left().top().expandX();
+        list.setTouchable(Touchable.enabled);
+        ScrollPane listScroll = new ScrollPane(list);
+        listScroll.setFlickScroll(false);
+        listScroll.setFadeScrollBars(false);
+        listScroll.setScrollbarsVisible(true);
+        left.add(listScroll).left().growX();
+        leftPane.add(left).left().growX();
 
         preview = createPreview();
         itemView = createItemView();
-        ScrollPane topRight = new ScrollPane(preview);
-        topRight.setFadeScrollBars(false);
-        topRight.setForceScroll(true, true);
-        topRight.setFlickScroll(false);
-        ScrollPane bottomRight = new ScrollPane(itemView);
+        ScrollPane topRight = new ScrollPane(preview, SKIN);
+        ScrollPane bottomRight = new ScrollPane(itemView, SKIN);
         bottomRight.setFadeScrollBars(false);
+        bottomRight.setForceScroll(false, true);
         bottomRight.setFlickScroll(false);
         SplitPane rightPane = new SplitPane(topRight, bottomRight, true, SKIN);
         SplitPane splitPane = new SplitPane(leftPane, rightPane, false, SKIN);
