@@ -14,15 +14,9 @@ public class DescriptorHandler extends PassiveSystem {
 
     private AOAssetManager assetManager;
 
-    @Override
-    protected void initialize() {
-        super.initialize();
+    public DescriptorHandler() {
         AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
         assetManager = game.getAssetManager();
-    }
-
-    public Map<Integer, Graphic> getGraphics() {
-        return assetManager.getGraphics();
     }
 
     public Map<Integer, BodyDescriptor> getBodies() {
@@ -71,10 +65,6 @@ public class DescriptorHandler extends PassiveSystem {
 
     public WeaponDescriptor getWeapon(int index) {
         return getWeapons().get(index);
-    }
-
-    public Graphic getGraphic(int index) {
-        return getGraphics().get(index);
     }
 
 }

@@ -9,6 +9,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import model.descriptors.*;
+import model.textures.AOAnimation;
+import model.textures.AOImage;
 import shared.model.Graphic;
 import shared.util.AOJson;
 
@@ -25,6 +27,8 @@ public class DescriptorsLoader extends AsynchronousAssetLoader<ArrayList<Descrip
     public static final String HEADS = "heads";
     public static final String HELMETS = "helmets";
     public static final String FXS = "fxs";
+    public static final String IMAGES = "images";
+    public static final String ANIMATIONS = "animations";
 
     private Json json = new AOJson();
     private ArrayList<Descriptor> descriptors;
@@ -32,6 +36,8 @@ public class DescriptorsLoader extends AsynchronousAssetLoader<ArrayList<Descrip
     public DescriptorsLoader() {
         super(new InternalFileHandleResolver());
         json.addClassTag(GRAPHICS, Graphic.class);
+        json.addClassTag(IMAGES, AOImage.class);
+        json.addClassTag(ANIMATIONS, AOAnimation.class);
         json.addClassTag(BODIES, BodyDescriptor.class);
         json.addClassTag(HEADS, HeadDescriptor.class);
         json.addClassTag(HELMETS, HelmetDescriptor.class);

@@ -3,6 +3,7 @@ package design.screens;
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -10,10 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import game.screens.WorldScreen;
 import game.utils.Resources;
 import game.utils.Skins;
 
-public abstract class DesignScreen extends ScreenAdapter {
+public abstract class DesignScreen extends ScreenAdapter implements WorldScreen {
 
     private final Stage stage;
     private Table mainTable;
@@ -27,7 +29,6 @@ public abstract class DesignScreen extends ScreenAdapter {
                 return super.keyUp(keyCode);
             }
         };
-        world = createWorld();
     }
 
     public World getWorld() {
@@ -49,6 +50,7 @@ public abstract class DesignScreen extends ScreenAdapter {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(getStage());
+        world = createWorld();
     }
 
     @Override
@@ -66,7 +68,8 @@ public abstract class DesignScreen extends ScreenAdapter {
     protected void createUI() {
         mainTable = new Table();
         mainTable.setFillParent(true);
-        createContent();
+        Table content = createContent();
+        mainTable.add(content).expand().fill().grow();
         getStage().addActor(getMainTable());
     }
 
@@ -75,7 +78,7 @@ public abstract class DesignScreen extends ScreenAdapter {
         getStage().getViewport().update(width, height);
     }
 
-    abstract protected void createContent();
+    abstract protected Table createContent();
 
     @Override
     public void dispose() {

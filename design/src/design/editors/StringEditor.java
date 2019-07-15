@@ -20,14 +20,12 @@ public class StringEditor extends FieldEditor<String> {
     @Override
     protected Actor createSimpleEditor() {
         TextField text = new TextField(getSupplier().get(), SKIN);
-
         text.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 getConsumer().accept(text.getText());
             }
         });
-
         return text;
     }
 

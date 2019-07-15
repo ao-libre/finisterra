@@ -1,74 +1,82 @@
 package game.handlers;
 
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import entity.character.equipment.Helmet;
 import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
 import entity.character.parts.Body;
 import entity.character.parts.Head;
+import game.AssetManagerHolder;
 import model.descriptors.*;
+import model.textures.AOAnimation;
+import model.textures.AOImage;
+import model.textures.AOTexture;
 import model.textures.BundledAnimation;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import shared.model.Graphic;
 import shared.objects.types.HelmetObj;
 import shared.objects.types.ShieldObj;
 import shared.objects.types.WeaponObj;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Wire
 public class AnimationHandler extends PassiveSystem {
 
     // TODO change maps to caches
     private static Map<Body, List<BundledAnimation>> bodyAnimations = new HashMap<>();
-    private static Map<Head, List<BundledAnimation>> headAnimations = new HashMap<>();
+    private static Map<Head, List<AOTexture>> headAnimations = new HashMap<>();
     private static Map<Helmet, List<BundledAnimation>> helmetAnimations = new HashMap<>();
     private static Map<Weapon, List<BundledAnimation>> weaponAnimations = new HashMap<>();
     private static Map<Shield, List<BundledAnimation>> shieldAnimations = new HashMap<>();
-    private static Map<Integer, BundledAnimation> animations = new ConcurrentHashMap<>();
+    private static Map<Integer, BundledAnimation> bundledAnimations = new ConcurrentHashMap<>();
+    private static Map<Integer, AOTexture> textures = new ConcurrentHashMap<>();
+
+    private AOAssetManager assetManager;
     private DescriptorHandler descriptorHandler;
     private ObjectHandler objectHandler;
 
-    @Deprecated
-    private Map<Integer, List<BundledAnimation>> loadDescriptors(List<?> descriptors) {
-        Map<Integer, List<BundledAnimation>> result = new HashMap<>();
-        int[] idx = {1};
-        descriptors.forEach(descriptor -> result.put(idx[0]++, createAnimations((IDescriptor) descriptor, true)));
-        return result;
+    public AnimationHandler() {
+        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
+        assetManager = game.getAssetManager();
     }
 
-    @Deprecated
-    private Map<Integer, List<BundledAnimation>> loadDescriptors(Map<Integer, ?> descriptors) {
-        Map<Integer, List<BundledAnimation>> result = new HashMap<>();
-        descriptors.forEach((id, descriptor) -> result.put(id, createAnimations((IDescriptor) descriptor, true)));
-        return result;
-    }
-
-    private List<BundledAnimation> createAnimations(IDescriptor descriptor, boolean pingpong) {
+    private List<BundledAnimation> createAnimations(IDescriptor descriptor) {
         Log.info("Animation created: " + Arrays.toString(descriptor.getIndexs()));
         List<BundledAnimation> animations = new ArrayList<>();
         int[] indexes = descriptor.getIndexs();
         for (int grhIndex : indexes) {
             if (grhIndex > 0) {
-                animations.add(saveBundledAnimation(grhIndex));
+                animations.add(saveAnimation(grhIndex));
             }
         }
         return animations;
     }
 
-    public BundledAnimation getHeadAnimation(Head head, int current) {
+    private List<AOTexture> createTextures(HeadDescriptor descriptor) {
+        List<AOTexture> heads = new ArrayList<>();
+        int[] indexes = descriptor.getIndexs();
+        for (int id : indexes) {
+            AOTexture aoTexture = saveTexture(id);
+            heads.add(aoTexture);
+        }
+        return heads;
+    }
+
+    public AOTexture getHeadAnimation(Head head, int current) {
         return headAnimations.computeIfAbsent(head, h -> {
             HeadDescriptor descriptor = descriptorHandler.getHead(h.index - 1);
-            return createAnimations(descriptor, false);
+            return createTextures(descriptor);
         }).get(current);
     }
 
     public BundledAnimation getBodyAnimation(Body body, int current) {
         return bodyAnimations.computeIfAbsent(body, b -> {
             BodyDescriptor descriptor = descriptorHandler.getBody(b.index);
-            return createAnimations(descriptor, true);
+            return createAnimations(descriptor);
         }).get(current);
     }
 
@@ -76,7 +84,7 @@ public class AnimationHandler extends PassiveSystem {
         return weaponAnimations.computeIfAbsent(weapon, w -> {
             WeaponObj weaponObj = (WeaponObj) objectHandler.getObject(w.index).get();
             WeaponDescriptor descriptor = descriptorHandler.getWeapon(Math.max(weaponObj.getAnimationId() - 1, 0));
-            return createAnimations(descriptor, true);
+            return createAnimations(descriptor);
         }).get(current);
     }
 
@@ -84,7 +92,7 @@ public class AnimationHandler extends PassiveSystem {
         return helmetAnimations.computeIfAbsent(helmet, h -> {
             HelmetObj helmetObj = (HelmetObj) objectHandler.getObject(h.index).get();
             HelmetDescriptor descriptor = descriptorHandler.getHelmet(Math.max(helmetObj.getAnimationId() - 1, 0));
-            return createAnimations(descriptor, true);
+            return createAnimations(descriptor);
         }).get(current);
     }
 
@@ -92,23 +100,38 @@ public class AnimationHandler extends PassiveSystem {
         return shieldAnimations.computeIfAbsent(shield, s -> {
             ShieldObj shieldObj = (ShieldObj) objectHandler.getObject(s.index).get();
             ShieldDescriptor descriptor = descriptorHandler.getShield(Math.max(shieldObj.getAnimationId() - 1, 0));
-            return createAnimations(descriptor, true);
+            return createAnimations(descriptor);
         }).get(current);
     }
 
-    public BundledAnimation getGraphicAnimation(int grhIndex) {
-        return Optional.ofNullable(animations.get(grhIndex)).orElseGet(() -> saveBundledAnimation(grhIndex));
+    public AOTexture getTexture(int id) {
+        return Optional.ofNullable(textures.get(id)).orElseGet(() -> saveTexture(id));
     }
 
-    private BundledAnimation saveBundledAnimation(int grhIndex) {
-        Log.info("BundledAnimation created:" + grhIndex);
-        Graphic graphic = descriptorHandler.getGraphic(grhIndex);
-        return saveGraphic(grhIndex, graphic);
+    public BundledAnimation getAnimation(int id) {
+        return Optional.ofNullable(bundledAnimations.get(id)).orElseGet(() -> saveAnimation(id));
     }
 
-    private BundledAnimation saveGraphic(int grhIndex, Graphic graphic) {
-        BundledAnimation bundledAnimation = new BundledAnimation(graphic, true);
-        animations.put(grhIndex, bundledAnimation);
+
+    private BundledAnimation saveAnimation(int id) {
+        AOAnimation animation = assetManager.getAnimation(id);
+        return saveAnimation(animation);
+    }
+
+    private BundledAnimation saveAnimation(AOAnimation animation) {
+        BundledAnimation bundledAnimation = new BundledAnimation(animation);
+        bundledAnimations.put(animation.getId(), bundledAnimation);
         return bundledAnimation;
+    }
+
+    private AOTexture saveTexture(int id) {
+        AOImage image = assetManager.getImage(id);
+        return saveTexture(image);
+    }
+
+    private AOTexture saveTexture(AOImage image) {
+        AOTexture aoTexture = new AOTexture(image);
+        textures.put(image.getId(), aoTexture);
+        return aoTexture;
     }
 }

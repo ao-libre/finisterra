@@ -17,9 +17,10 @@ import game.loaders.ObjectsLoader.ObjectParameter;
 import game.utils.Resources;
 import game.utils.Skins.AOSkin;
 import model.descriptors.*;
+import model.textures.AOAnimation;
+import model.textures.AOImage;
 import org.reflections.Reflections;
 import org.reflections.scanners.ResourcesScanner;
-import shared.model.Graphic;
 import shared.model.Spell;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
@@ -28,27 +29,34 @@ import shared.util.SharedResources;
 import javax.sound.midi.Sequencer;
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static game.loaders.DescriptorsLoader.*;
 import static game.loaders.DescriptorsLoader.DescriptorParameter.descriptor;
 import static game.loaders.GenericLoader.GenericParameter.bodiesGenericParameter;
-import static game.loaders.GenericLoader.GenericParameter.graphicGenericParameter;
 import static game.utils.Resources.GAME_DESCRIPTORS_PATH;
 
 public class DefaultAOAssetManager extends AssetManager implements AOAssetManager {
 
     private static final Class<HashMap<Integer, BodyDescriptor>> BODIES_CLASS;
-    private static final Class<HashMap<Integer, Graphic>> GRAPHICS_CLASS;
+    private static final Class<ArrayList<AOImage>> IMAGE_CLASS;
+    private static final Class<ArrayList<AOAnimation>> ANIMATION_CLASS;
     private static final Class<HashMap<Integer, Obj>> OBJS_CLASS;
     private static final Class<HashMap<Integer, Spell>> SPELLS_CLASS;
     private static final Class<ArrayList<Descriptor>> DESCRIPTORS_CLASS;
+
+    private Map<Integer, AOImage> images;
+    private Map<Integer, AOAnimation> animations;
 
     static {
         HashMap<Integer, BodyDescriptor> integerBodyDescriptorHashMap = new HashMap<>();
         BODIES_CLASS = (Class<HashMap<Integer, BodyDescriptor>>) integerBodyDescriptorHashMap.getClass();
 
-        HashMap<Integer, Graphic> integerGraphicHashMap = new HashMap<>();
-        GRAPHICS_CLASS = (Class<HashMap<Integer, Graphic>>) integerGraphicHashMap.getClass();
+        ArrayList<AOImage> integerGraphicHashMap = new ArrayList<>();
+        IMAGE_CLASS = (Class<ArrayList<AOImage>>) integerGraphicHashMap.getClass();
+
+        ArrayList<AOAnimation> integerAnimationHashMap = new ArrayList<>();
+        ANIMATION_CLASS = (Class<ArrayList<AOAnimation>>) integerAnimationHashMap.getClass();
 
         HashMap<Integer, Obj> integerObjHashMap = new HashMap<>();
         OBJS_CLASS = (Class<HashMap<Integer, Obj>>) integerObjHashMap.getClass();
@@ -62,7 +70,8 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     public DefaultAOAssetManager() {
         setLoader(Sequencer.class, new MidiLoader());
-        setLoader(GRAPHICS_CLASS, GRAPHICS + JSON_EXTENSION, new GenericLoader<>());
+        setLoader(ANIMATION_CLASS, ANIMATIONS + JSON_EXTENSION, new AnimationLoader());
+        setLoader(IMAGE_CLASS, IMAGES + JSON_EXTENSION, new ImageLoader());
         setLoader(BODIES_CLASS, BODIES + JSON_EXTENSION, new GenericLoader<>());
         setLoader(OBJS_CLASS, new ObjectsLoader());
         setLoader(SPELLS_CLASS, SharedResources.SPELLS_FILE + JSON_EXTENSION, new SpellsLoader());
@@ -72,7 +81,6 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     @Override
     public void load() {
-//        loadTextures();
         loadObjects();
         loadSpells();
         loadDescriptors();
@@ -109,6 +117,27 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
             finishLoadingAsset(fileName);
         }
         return get(fileName);
+    }
+
+    @Override
+    public AOImage getImage(int id) {
+        if (images == null) {
+            this.images = getImages()
+                    .stream()
+                    .collect(Collectors.toMap(AOImage::getId, image -> image));
+        }
+        return images.get(id);
+    }
+
+    @Override
+    public AOAnimation getAnimation(int id) {
+        if (animations == null) {
+            this.animations = getAnimations()
+                    .stream()
+                    .collect(Collectors.toMap(AOAnimation::getId, animation -> animation));
+
+        }
+        return animations.get(id);
     }
 
     @Override
@@ -152,8 +181,13 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     }
 
     @Override
-    public Map<Integer, Graphic> getGraphics() {
-        return get(GAME_DESCRIPTORS_PATH + GRAPHICS + JSON_EXTENSION);
+    public List<AOImage> getImages() {
+        return get(GAME_DESCRIPTORS_PATH + IMAGES + JSON_EXTENSION);
+    }
+
+    @Override
+    public List<AOAnimation> getAnimations() {
+        return get(GAME_DESCRIPTORS_PATH + ANIMATIONS + JSON_EXTENSION);
     }
 
     @Override
@@ -198,12 +232,6 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         return get(GAME_DESCRIPTORS_FOLDER + WEAPONS + JSON_EXTENSION);
     }
 
-    private void loadTextures() {
-        Reflections reflections = new Reflections(Resources.GAME_GRAPHICS_PATH, new ResourcesScanner());
-        Set<String> graphicFiles = reflections.getResources(Pattern.compile(".*\\.png"));
-        graphicFiles.forEach(this::loadTexture);
-    }
-
     private void loadTexture(String fileName) {
         TextureParameter param = new TextureParameter();
         param.minFilter = TextureFilter.Linear;
@@ -234,7 +262,8 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         load(GAME_DESCRIPTORS_FOLDER + HEADS + JSON_EXTENSION, DESCRIPTORS_CLASS, descriptor(HeadDescriptor.class));
         load(GAME_DESCRIPTORS_FOLDER + HELMETS + JSON_EXTENSION, DESCRIPTORS_CLASS, descriptor(HelmetDescriptor.class));
         load(GAME_DESCRIPTORS_FOLDER + FXS + JSON_EXTENSION, DESCRIPTORS_CLASS, descriptor(FXDescriptor.class));
-        load(GAME_DESCRIPTORS_FOLDER + GRAPHICS + JSON_EXTENSION, GRAPHICS_CLASS, graphicGenericParameter());
+        load(GAME_DESCRIPTORS_FOLDER + IMAGES + JSON_EXTENSION, IMAGE_CLASS);
+        load(GAME_DESCRIPTORS_FOLDER + ANIMATIONS + JSON_EXTENSION, ANIMATION_CLASS);
         load(GAME_DESCRIPTORS_FOLDER + BODIES + JSON_EXTENSION, BODIES_CLASS, bodiesGenericParameter());
     }
 

@@ -1,12 +1,8 @@
 package design.designers;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import design.screens.DesignScreen;
 import design.editors.NPCEditor;
 import shared.model.loaders.NPCLoader;
 import shared.model.npcs.NPC;
@@ -14,9 +10,7 @@ import shared.util.AOJson;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static design.designers.NPCDesigner.NPCParameters;
 
@@ -65,8 +59,8 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
     }
 
     @Override
-    public Map<Integer, NPC> get() {
-        return npcs;
+    public List<NPC> get() {
+        return new ArrayList<>(npcs.values());
     }
 
     @Override
@@ -80,32 +74,24 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
     }
 
     @Override
-    public void modify(NPC npc) {
-        ApplicationListener app = Gdx.app.getApplicationListener();
-        if(app instanceof Game) {
-            Screen screen = ((Game) app).getScreen();
-            if(screen instanceof DesignScreen) {
-                Stage stage = ((DesignScreen) screen).getStage();
-                NPCEditor npcEditor = new NPCEditor(new NPC(npc)) {
-                    @Override
-                    protected void result(Object object) {
-                        if (object instanceof NPC) {
-                            if (!object.equals(npc)) {
-                                npcs.put(((NPC) object).getId(), (NPC) object);
-                            }
-                        }
+    public void modify(NPC npc, Stage stage) {
+        NPCEditor npcEditor = new NPCEditor(new NPC(npc)) {
+            @Override
+            protected void result(Object object) {
+                if (object instanceof NPC) {
+                    if (!object.equals(npc)) {
+                        npcs.put(((NPC) object).getId(), (NPC) object);
                     }
-                };
-                npcEditor.show(stage);
+                }
             }
-        }
+        };
+        npcEditor.show(stage);
     }
 
     @Override
     public void delete(NPC npc) {
         npcs.remove(npc.getId());
     }
-
 
 
     public static class NPCParameters implements Parameters<NPC> {

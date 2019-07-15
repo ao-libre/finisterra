@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entity.character.parts.Body;
+import game.handlers.AOAssetManager;
 import game.handlers.DescriptorHandler;
 import game.handlers.ParticlesHandler;
 import game.managers.WorldManager;
@@ -16,9 +17,11 @@ import game.systems.camera.CameraSystem;
 import graphics.Effect;
 import model.descriptors.BodyDescriptor;
 import model.descriptors.FXDescriptor;
+import model.textures.AOAnimation;
 import model.textures.BundledAnimation;
 import position.Pos2D;
 import position.WorldPos;
+import shared.model.Graphic;
 import shared.model.map.Tile;
 import shared.util.Util;
 
@@ -34,6 +37,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
     private CameraSystem cameraSystem;
     private WorldManager worldManager;
     private DescriptorHandler descriptorHandler;
+    private AOAssetManager aoAssetManager;
 
     private int srcFunc;
     private int dstFunc;
@@ -64,7 +68,8 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                     break;
                 case FX:
                     FXDescriptor fxDescriptor = descriptorHandler.getFX(effectId);
-                    BundledAnimation bundledAnimation = new BundledAnimation(descriptorHandler.getGraphic(fxDescriptor.getIndexs()[0]), effect.loops);
+                    AOAnimation animation = aoAssetManager.getAnimation(fxDescriptor.getIndexs()[0]);
+                    BundledAnimation bundledAnimation = new BundledAnimation(animation, effect.loops);
                     fxs.put(entityId, bundledAnimation);
                     break;
             }
@@ -119,7 +124,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                 BundledAnimation anim = fxs.get(entityId);
                 int effectId = effect.effectId;
                 FXDescriptor fxDescriptor = descriptorHandler.getFX(effectId);
-                TextureRegion graphic = anim.getGraphic(false);
+                TextureRegion graphic = anim.getGraphic();
                 getBatch().draw(graphic, screenPos.x + (Tile.TILE_PIXEL_WIDTH - graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX(), screenPos.y - graphic.getRegionHeight() + 20 + fxDescriptor.getOffsetY());
                 break;
             case PARTICLE:
@@ -153,7 +158,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                     if (anim.isAnimationFinished()) {
                         worldManager.getNetworkedId(id).ifPresent(worldManager::unregisterEntity);
                     } else {
-                        anim.setAnimationTime(anim.getAnimationTime() + getWorld().getDelta() * (anim.getFrames().size * 0.33f));
+                        anim.setAnimationTime(anim.getAnimationTime() + getWorld().getDelta() * (anim.getAnimation().getKeyFrames().length* 0.33f));
                     }
                 }
                 break;

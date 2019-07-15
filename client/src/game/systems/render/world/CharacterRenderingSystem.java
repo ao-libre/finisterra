@@ -7,6 +7,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
@@ -19,6 +20,7 @@ import entity.character.states.Heading;
 import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
 import model.descriptors.BodyDescriptor;
+import model.textures.AOTexture;
 import model.textures.BundledAnimation;
 import position.Pos2D;
 import position.WorldPos;
@@ -69,11 +71,11 @@ public class CharacterRenderingSystem extends RenderingSystem {
     }
 
     public static class CharacterDrawer {
-        private SpriteBatch batch;
+        private boolean shouldFlip;
+        private Batch batch;
         private E player;
         private Heading heading;
         private Pos2D screenPos;
-
         private float headOffsetY;
 
         // body
@@ -85,7 +87,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
         private BundledAnimation bodyAnimation;
         private float idle;
 
-        private CharacterDrawer(SpriteBatch batch, E player, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler) {
+        private CharacterDrawer(Batch batch, E player, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler) {
             this.batch = batch;
             this.player = player;
             this.heading = player.getHeading();
@@ -97,8 +99,14 @@ public class CharacterRenderingSystem extends RenderingSystem {
             calculateOffsets();
         }
 
-        public static CharacterDrawer createDrawer(SpriteBatch batch, E player, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler) {
+        public static CharacterDrawer createDrawer(Batch batch, E player, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler) {
             return new CharacterDrawer(batch, player, screenPos, descriptorHandler, animationHandler);
+        }
+
+        public static CharacterDrawer createDrawer(Batch batch, E player, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler, boolean shouldFlip) {
+            CharacterDrawer characterDrawer = new CharacterDrawer(batch, player, screenPos, descriptorHandler, animationHandler);
+            characterDrawer.shouldFlip = shouldFlip;
+            return characterDrawer;
         }
 
         public void draw() {
@@ -152,16 +160,19 @@ public class CharacterRenderingSystem extends RenderingSystem {
 
         void drawBody() {
             float offsetY = -getMovementOffsetY() * SCALE;
+            if (bodyRegion.isFlipY() && shouldFlip) {
+                bodyRegion.flip(false, true);
+            }
             batch.draw(bodyRegion, bodyPixelOffsetX + idle / 4, (bodyPixelOffsetY + offsetY) + idle * 1.2f, bodyRegion.getRegionWidth() - idle / 2, bodyRegion.getRegionHeight() - idle * 1.2f);
         }
 
         void drawHead() {
             if (player.hasHead()) {
                 final Head head = player.getHead();
-                BundledAnimation animation = animationHandler.getHeadAnimation(head, heading.current);
-                if (animation != null) {
-                    TextureRegion headRegion = animation.getGraphic();
-                    float offsetY = headOffsetY - 4 * SCALE;
+                AOTexture headTexture = animationHandler.getHeadAnimation(head, heading.current);
+                if (headTexture != null) {
+                    TextureRegion headRegion = headTexture.getTexture();
+                    float offsetY = headOffsetY - (shouldFlip ? -1 : 1) * 4 * SCALE;
                     drawTexture(headRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f * SCALE, offsetY + (idle / 2));
                 }
             }
@@ -208,7 +219,10 @@ public class CharacterRenderingSystem extends RenderingSystem {
 
         private void drawTexture(TextureRegion region, float x, float y, float offsetX, float offsetY) {
             if (region != null) {
-                batch.draw(region, x + offsetX, (y + offsetY));
+                if (region.isFlipY() && shouldFlip) {
+                    region.flip(false, true);
+                }
+                batch.draw(region, x + offsetX, (y + offsetY * (shouldFlip ? -1 : 1)));
             }
         }
     }

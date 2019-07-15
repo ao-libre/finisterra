@@ -13,21 +13,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.minlog.Log;
-import design.screens.DesignScreen;
 import design.designers.IDesigner;
-import design.systems.PreviewRenderingSystem;
+import design.screens.DesignScreen;
 import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
 import game.handlers.ObjectHandler;
-import game.screens.WorldScreen;
-import game.systems.camera.CameraFocusSystem;
-import game.systems.camera.CameraSystem;
 import game.systems.render.world.CharacterRenderingSystem;
 import game.utils.Skins;
 
-public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Parameters<T>>> extends DesignScreen implements WorldScreen {
+public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Parameters<T>>> extends DesignScreen {
 
-    public final static Skin SKIN = new Skins.AOSkin(Gdx.files.internal("skin/uiskin.json"));
+    public final static Skin SKIN = new Skins.AOSkin(Gdx.files.internal("skin/skin-composer-ui.json"));
 
     private AnimationHandler animationHandler;
     private DescriptorHandler descriptorHandler;
@@ -37,19 +33,42 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
     private TextButton delete;
     private List<T> list;
     private Preview<T> preview;
+    private Preview<T> itemView;
 
     public View(P designer) {
         this.designer = designer;
         Log.info("View Created: " + getClass().getName());
+        animationHandler = new AnimationHandler();
+        descriptorHandler = new DescriptorHandler();
+        createUI();
+        getMainTable().setBackground(SKIN.getDrawable("white"));
     }
 
     @Override
-    protected void createContent() {
-        Table viewTable = new Table(SKIN);
-        createList(viewTable);
-        createButtons(viewTable);
-        preview = createPreview(viewTable);
-        getMainTable().add(viewTable);
+    protected Table createContent() {
+        Table leftPane = new Table();
+        leftPane.pad(10);
+        Table left = new Table();
+        Table buttons = createButtons();
+        left.add(buttons).row();
+        List<T> list = createList();
+        left.add(new ScrollPane(list));
+        leftPane.add(left).left().top().expandX();
+
+        preview = createPreview();
+        itemView = createItemView();
+        ScrollPane topRight = new ScrollPane(preview);
+        topRight.setFadeScrollBars(false);
+        topRight.setForceScroll(true, true);
+        topRight.setFlickScroll(false);
+        ScrollPane bottomRight = new ScrollPane(itemView);
+        bottomRight.setFadeScrollBars(false);
+        bottomRight.setFlickScroll(false);
+        SplitPane rightPane = new SplitPane(topRight, bottomRight, true, SKIN);
+        SplitPane splitPane = new SplitPane(leftPane, rightPane, false, SKIN);
+        Table content = new Table();
+        content.add(splitPane).grow();
+        return content;
     }
 
     public List<T> getList() {
@@ -61,17 +80,11 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
     }
 
     protected World createWorld() {
-        animationHandler = new AnimationHandler();
-        descriptorHandler = new DescriptorHandler();
         WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
         SpriteBatch batch = new SpriteBatch();
         builder
                 .with(new SuperMapper())
                 .with(new ObjectHandler())
-                .with(new CameraFocusSystem())
-                .with(new CameraSystem(2))
-                .with(new CharacterRenderingSystem(batch))
-                .with(new PreviewRenderingSystem(batch))
                 .with(animationHandler)
                 .with(descriptorHandler);
         WorldConfiguration config = builder.build();
@@ -90,10 +103,13 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         return designer;
     }
 
-    abstract Preview<T> createPreview(Table viewTable);
+    abstract Preview<T> createPreview();
 
-    private void createButtons(Table viewTable) {
+    abstract Preview<T> createItemView();
+
+    private Table createButtons() {
         Table buttons = new Table(SKIN);
+        buttons.defaults().space(5);
         TextButton create = new TextButton("Create", SKIN);
         create.addListener(new ClickListener() {
             @Override
@@ -125,26 +141,25 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
             }
         });
 
-        buttons.add(create).expandX().row();
-        buttons.add(modify).expandX().row();
-        buttons.add(delete).expandX().row();
-        buttons.add(save).expandX().row();
-        viewTable.add(buttons).right().row();
+        buttons.add(create);
+        buttons.add(delete);
+        buttons.add(save);
+        return buttons;
     }
 
     private void onModify(T selected) {
-        designer.modify(selected);
+        designer.modify(selected, getStage());
     }
 
     private void onDelete(T selected) {
         designer.delete(selected);
     }
 
-    private void createList(Table viewTable) {
+    private List<T> createList() {
         list = new List<>(SKIN);
         Array<T> items = new Array<>();
-        designer.get().values().forEach(items::add);
-        viewTable.add(new ScrollPane(list)).expandY().left();
+        designer.get().forEach(items::add);
+
         sort(items);
         list.setItems(items);
         list.addListener(new ChangeListener() {
@@ -153,15 +168,22 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
                 modify.setDisabled(list.getSelected() == null);
                 delete.setDisabled(list.getSelected() == null);
                 preview.show(list.getSelected());
+                itemView.show(list.getSelected());
             }
         });
+        return list;
     }
 
     protected abstract void sort(Array<T> items);
 
-    interface Preview<T> {
-        void show(T t);
+    abstract class Preview<T> extends Table {
 
-        T get();
+        public Preview(Skin skin) {
+            super(skin);
+        }
+
+        abstract void show(T t);
+
+        abstract T get();
     }
 }

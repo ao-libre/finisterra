@@ -18,7 +18,7 @@ public class DesignCenter extends Game implements AssetManagerHolder {
         assetManager.getAssetManager().finishLoading();
         ScreenManager instance = ScreenManager.getInstance();
         instance.initialize(this);
-        instance.showScreen(ScreenEnum.GRAPHIC_VIEW);
+        instance.showScreen(ScreenEnum.NPC_VIEW);
     }
 
     @Override
