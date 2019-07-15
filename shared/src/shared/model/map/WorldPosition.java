@@ -22,6 +22,11 @@
  * @version 0.1
  * @author Rodrigo Troncoso
  * @version 0.1
+ * @author Rodrigo Troncoso
+ * @version 0.1
+ * @since 2014-04-10
+ * <p>
+ * Stores data about a position in the world
  * @since 2014-04-10
  * <p>
  * Stores data about a position in the world
