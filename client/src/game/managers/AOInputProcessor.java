@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.AOGame;
 import game.screens.GameScreen;
 import game.screens.WorldScreen;
+import game.systems.assets.AssetsSystem;
 import game.systems.camera.CameraSystem;
 import game.systems.network.TimeSync;
 import game.ui.GUI;
@@ -30,6 +31,8 @@ import java.util.Optional;
 import static com.artemis.E.E;
 
 public class AOInputProcessor extends Stage {
+
+    private AssetsSystem assetsSystem;
 
     public static boolean alternativeKeys = false;
 
@@ -71,7 +74,7 @@ public class AOInputProcessor extends Stage {
                     GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos, rtt + timeOffset));
                     player.attack();
                 } else {
-                    gui.getConsole().addWarning(Messages.CANT_ATTACK);
+                    GUI.getConsole().addWarning(assetsSystem.getAssetManager().getMessages(Messages.CANT_ATTACK));
                 }
                 Cursors.setCursor("hand");
                 gui.getSpellView().cleanCast();

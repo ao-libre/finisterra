@@ -7,6 +7,7 @@ import com.esotericsoftware.minlog.Log;
 import entity.character.states.Heading;
 import entity.character.status.Health;
 import entity.world.CombatMessage;
+import game.systems.assets.AssetsSystem;
 import graphics.Effect;
 import physics.AttackAnimation;
 import position.WorldPos;
@@ -22,6 +23,7 @@ import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.sound.SoundNotification;
 import shared.objects.types.*;
+import shared.util.Messages;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -29,7 +31,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.artemis.E.E;
 import static java.lang.String.format;
 import static server.utils.WorldUtils.WorldUtils;
-import static shared.util.Messages.*;
 
 @Wire
 public class PhysicalCombatSystem extends AbstractCombatSystem {
@@ -55,11 +56,11 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     public boolean canAttack(int entityId, Optional<Integer> target) {
         final E e = E(entityId);
         if (e != null && e.hasStamina() && e.getStamina().min < e.getStamina().max * STAMINA_REQUIRED_PERCENT / 100) {
-            notifyCombat(entityId, NOT_ENOUGH_ENERGY);
+            notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.NOT_ENOUGH_ENERGY));
             return false;
         }
         if (e != null && e.hasHealth() && e.getHealth().min == 0) {
-            notifyCombat(entityId, DEAD_CANT_ATTACK);
+            notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.DEAD_CANT_ATTACK));
             return false;
         }
 
@@ -77,13 +78,13 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
 
             if (t.hasHealth() && t.getHealth().min == 0) {
                 // no podes atacar un muerto
-                notifyCombat(entityId, CANT_ATTACK_DEAD);
+                notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.CANT_ATTACK_DEAD));
                 return false;
             }
 
             // es del otro team? ciuda - crimi
             if (!e.isCriminal() && !t.isCriminal() /* TODO agregar seguro */) {
-                // notifyCombat(userId, CANT_ATTACK_CITIZEN);
+                // notifyCombat(userId, assetsSystem.getAssetManager().getMessages(Messages.CANT_ATTACK_CITIZEN));
                 // TODO descomentar: return false;
             }
 
@@ -99,13 +100,13 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
 
                 // shield evasion
                 if (E(targetId).hasShield() && ThreadLocalRandom.current().nextInt(101) <= prob) {
-                    notifyCombat(targetId, SHIELD_DEFENSE);
-                    notifyCombat(entityId, format(DEFENDED_WITH_SHIELD, getName(targetId)));
+                    notifyCombat(targetId, assetsSystem.getAssetManager().getMessages(Messages.SHIELD_DEFENSE));
+                    notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.DEFENDED_WITH_SHIELD, getName(targetId)));
                     // TODO shield animation
                     worldManager.notifyUpdate(targetId, new SoundNotification(37));
                 } else {
-                    notifyCombat(entityId, ATTACK_FAILED);
-                    notifyCombat(targetId, format(ATTACKED_AND_FAILED, getName(entityId)));
+                    notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.ATTACK_FAILED));
+                    notifyCombat(targetId, assetsSystem.getAssetManager().getMessages(Messages.ATTACKED_AND_FAILED, getName(entityId)));
 
                 }
             }
@@ -245,8 +246,8 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         } else {
             // TODO die
             characterTrainingSystem.takeGold(userId, entityId);
-            notifyCombat(userId, format(KILL, getName(entityId)));
-            notifyCombat(entityId, format(KILLED, getName(userId)));
+            notifyCombat(userId, assetsSystem.getAssetManager().getMessages(Messages.KILL, getName(entityId)));
+            notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.KILLED, getName(userId)));
             worldManager.entityDie(entityId);
         }
     }
@@ -257,14 +258,14 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     }
 
     private AttackResult doNormalAttack(int userId, int entityId, int damage) {
-        return new AttackResult(damage, format(USER_NORMAL_HIT, getName(entityId), damage),
-                format(VICTIM_NORMAL_HIT, getName(userId), damage));
+        return new AttackResult(damage, assetsSystem.getAssetManager().getMessages(Messages.USER_NORMAL_HIT, getName(entityId), damage),
+                assetsSystem.getAssetManager().getMessages(Messages.VICTIM_NORMAL_HIT, getName(userId), damage));
     }
 
     private AttackResult doCrititAttack(int userId, int entityId, int damage) {
         // TODO
-        return new AttackResult(damage, format(USER_CRITIC_HIT, getName(entityId), damage),
-                format(VICTIM_CRITIC_HIT, getName(userId), damage));
+        return new AttackResult(damage, assetsSystem.getAssetManager().getMessages(Messages.USER_CRITIC_HIT, getName(entityId), damage),
+                assetsSystem.getAssetManager().getMessages(Messages.VICTIM_CRITIC_HIT, getName(userId), damage));
     }
 
     private boolean canCriticAttack(int userId, int entityId) {
@@ -314,8 +315,8 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     private AttackResult doStab(int userId, int entityId, int damage) {
         final CharClass clazz = CharClass.of(E(userId));
         damage += (int) (CharClass.ASSASSIN.equals(clazz) ? damage * ASSASIN_STAB_FACTOR : damage * NORMAL_STAB_FACTOR);
-        return new AttackResult(damage, format(USER_STAB_HIT, getName(entityId), damage),
-                format(VICTIM_STAB_HIT, getName(userId), damage));
+        return new AttackResult(damage, assetsSystem.getAssetManager().getMessages(Messages.USER_STAB_HIT, getName(entityId), damage),
+                assetsSystem.getAssetManager().getMessages(Messages.VICTIM_STAB_HIT, getName(userId), damage));
     }
 
     private String getName(int userId) {

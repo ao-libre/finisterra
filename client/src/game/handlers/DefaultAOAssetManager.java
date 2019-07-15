@@ -24,6 +24,7 @@ import org.reflections.scanners.ResourcesScanner;
 import shared.model.Spell;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
+import shared.util.Messages;
 import shared.util.SharedResources;
 
 import javax.sound.midi.Sequencer;

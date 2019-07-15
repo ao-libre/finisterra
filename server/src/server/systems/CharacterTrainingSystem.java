@@ -7,6 +7,7 @@ import com.esotericsoftware.minlog.Log;
 import entity.character.status.Health;
 import entity.character.status.Level;
 import entity.world.CombatMessage;
+import game.systems.assets.AssetsSystem;
 import graphics.Effect;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.database.model.modifiers.Modifiers;
@@ -37,13 +38,14 @@ public class CharacterTrainingSystem extends PassiveSystem {
     private static int MAX_LEVEL = 45;
     private WorldManager worldManager;
     private NPCManager npcManager;
+    private AssetsSystem assetsSystem;
 
     public void userTakeDamage(int entityId, int target, int effectiveDamage) {
         int exp = getExp(target, effectiveDamage);
 
         E e = E(entityId);
         if (e.hasLevel() && exp > 0) {
-            worldManager.sendEntityUpdate(entityId, ConsoleMessage.combat(format(Messages.EXP_GAIN, exp)));
+            worldManager.sendEntityUpdate(entityId, ConsoleMessage.combat(assetsSystem.getAssetManager().getMessages(Messages.EXP_GAIN, exp)));
             Level level = e.getLevel();
             level.exp += exp;
             userCheckLevel(entityId);

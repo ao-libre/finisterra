@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
 import game.ClientConfiguration;
+import game.AssetManagerHolder;
 import game.handlers.*;
 import game.managers.MapManager;
 import game.managers.WorldManager;
@@ -88,6 +89,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     }
 
     private void initWorldConfiguration() {
+        AssetManagerHolder gameAssets = (AssetManagerHolder) Gdx.app.getApplicationListener();
         worldConfigBuilder = new WorldConfigurationBuilder();
         worldConfigBuilder.with(new SuperMapper())
                 .with(HIGH, new TimeSync())
