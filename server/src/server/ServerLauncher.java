@@ -18,6 +18,13 @@ public class ServerLauncher {
             config.save();
         }
 
+        // Log in console. Un-comment this if you wish to debug Server.json's I/O
+        //Log.info("[Network] Using LocalHost: " + config.getNetwork().getuseLocalHost());
+        //Log.info("[Network - Ports] TCP: " + config.getNetwork().getPorts().getTcpPort());
+        //Log.info("[Network - Ports] UDP: " + config.getNetwork().getPorts().getUdpPort());
+        //Log.info("[Network - API] URL: " + config.getNetwork().getApi().getapiURL());
+        //Log.info("[Network - API] Port: " + config.getNetwork().getApi().getApiPort());
+
         /**
          * Launch application
          */
