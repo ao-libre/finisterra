@@ -36,13 +36,13 @@ public class LoginScreen extends AbstractScreen {
 
     @Override
     protected void keyPressed(int keyCode) {
-         if (keyCode == Input.Keys.ENTER && this.canConnect) {
-             //Connect
-             connectThenLogin();
+        if (keyCode == Input.Keys.ENTER && this.canConnect) {
+            //Connect
+            connectThenLogin();
 
-             //Prevent multiple simultaneous connections.
-             this.canConnect = false;
-         }
+            //Prevent multiple simultaneous connections.
+            this.canConnect = false;
+        }
     }
 
     private void init() {

@@ -29,19 +29,19 @@ public class ServerConfiguration {
 
         // Default values of `Network`
         configOutput.setNetwork(new Network());
-            configOutput.getNetwork().setUseLocalHost(true);
+        configOutput.getNetwork().setUseLocalHost(true);
 
         // Default values of `Network.Ports`
         Network.Ports defNetwork = new Network.Ports();
-            defNetwork.setTcpPort(9000);
-            defNetwork.setUdpPort(9001);
-            configOutput.getNetwork().setPorts(defNetwork);
+        defNetwork.setTcpPort(9000);
+        defNetwork.setUdpPort(9001);
+        configOutput.getNetwork().setPorts(defNetwork);
 
         // Default values of `Network.Api`
         Network.Api defApi = new Network.Api();
-            defApi.setapiURL("https://localhost");
-            defApi.setApiPort(1337);
-            configOutput.getNetwork().setApi(defApi);
+        defApi.setapiURL("https://localhost");
+        defApi.setApiPort(1337);
+        configOutput.getNetwork().setApi(defApi);
 
         return configOutput;
     }
@@ -52,8 +52,13 @@ public class ServerConfiguration {
     }
 
 
-    public Network getNetwork() { return network; }
-    public void setNetwork(Network network) { this.network = network; }
+    public Network getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(Network network) {
+        this.network = network;
+    }
 
     public static class Network {
         private boolean useLocalHost;
@@ -63,11 +68,25 @@ public class ServerConfiguration {
         public boolean getuseLocalHost() {
             return this.useLocalHost;
         }
-        private void setUseLocalHost(boolean useLocalHost) { this.useLocalHost = useLocalHost; }
 
-        public Ports getPorts() { return ports; }
+        private void setUseLocalHost(boolean useLocalHost) {
+            this.useLocalHost = useLocalHost;
+        }
+
+        public Ports getPorts() {
+            return ports;
+        }
+
         void setPorts(Ports ports) {
             this.ports = ports;
+        }
+
+        public Api getApi() {
+            return api;
+        }
+
+        void setApi(Api api) {
+            this.api = api;
         }
 
         public static class Ports {
@@ -77,6 +96,7 @@ public class ServerConfiguration {
             public int getTcpPort() {
                 return tcpPort;
             }
+
             private void setTcpPort(int tcpPort) {
                 this.tcpPort = tcpPort;
             }
@@ -84,26 +104,28 @@ public class ServerConfiguration {
             public int getUdpPort() {
                 return udpPort;
             }
+
             private void setUdpPort(int udpPort) {
                 this.udpPort = udpPort;
             }
-        }
-
-        public Api getApi() { return api; }
-        void setApi(Api api) {
-            this.api = api;
         }
 
         public static class Api {
             private String apiURL;
             private int apiPort;
 
-            public String getapiURL() { return this.apiURL; }
-            private void setapiURL(String apiURL) { this.apiURL = apiURL; }
+            public String getapiURL() {
+                return this.apiURL;
+            }
+
+            private void setapiURL(String apiURL) {
+                this.apiURL = apiURL;
+            }
 
             public int getApiPort() {
                 return apiPort;
             }
+
             private void setApiPort(int apiPort) {
                 this.apiPort = apiPort;
             }

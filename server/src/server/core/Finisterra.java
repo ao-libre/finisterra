@@ -95,7 +95,9 @@ public class Finisterra implements ApplicationListener {
                 final String ip = IpChecker.getIp();
                 InetAddress inetAddress = InetAddress.getLocalHost();
 
-                if (shouldUseLocalHost) { System.out.println("Using localhost..."); }
+                if (shouldUseLocalHost) {
+                    System.out.println("Using localhost...");
+                }
 
                 getNetworkManager().sendTo(connectionId, new StartGameResponse(shouldUseLocalHost ? inetAddress.getHostAddress() : ip, roomServer.getTcpPort(), roomServer.getUdpPort()));
             } catch (Exception e) {
