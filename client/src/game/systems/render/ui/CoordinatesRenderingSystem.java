@@ -1,7 +1,4 @@
 package game.systems.render.ui;
-    public void setAssetManager(AOAssetManager assetManager) {
-        this.assetManager = assetManager;
-    }
 
 import camera.Focused;
 import com.artemis.Aspect;

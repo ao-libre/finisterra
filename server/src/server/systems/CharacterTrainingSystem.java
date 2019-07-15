@@ -45,7 +45,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
 
         E e = E(entityId);
         if (e.hasLevel() && exp > 0) {
-            worldManager.sendEntityUpdate(entityId, ConsoleMessage.combat(assetsSystem.getAssetManager().getMessages(Messages.EXP_GAIN, exp)));
+            worldManager.sendEntityUpdate(entityId, ConsoleMessage.combat(assetsSystem.getAssetManager().getMessages(Messages.EXP_GAIN.name(), exp)));
             Level level = e.getLevel();
             level.exp += exp;
             userCheckLevel(entityId);

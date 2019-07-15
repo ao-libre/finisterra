@@ -84,7 +84,7 @@ public class ClientConfiguration extends PassiveSystem {
 
     // @todo this is Desktop specific
     public static class Init {
-        public static final String lang;
+        public static final String lang = "Default";
         private Video video;
         private boolean resizeable;
         private boolean disableAudio;

@@ -55,11 +55,11 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     public boolean canAttack(int entityId, Optional<Integer> target) {
         final E e = E(entityId);
         if (e != null && e.hasStamina() && e.getStamina().min < e.getStamina().max * STAMINA_REQUIRED_PERCENT / 100) {
-            notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.NOT_ENOUGH_ENERGY));
+            notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.NOT_ENOUGH_ENERGY.name()));
             return false;
         }
         if (e != null && e.hasHealth() && e.getHealth().min == 0) {
-            notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.DEAD_CANT_ATTACK));
+            notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.DEAD_CANT_ATTACK.name()));
             return false;
         }
 
@@ -77,13 +77,13 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
 
             if (t.hasHealth() && t.getHealth().min == 0) {
                 // no podes atacar un muerto
-                notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.CANT_ATTACK_DEAD));
+                notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.CANT_ATTACK_DEAD.name()));
                 return false;
             }
 
             // es del otro team? ciuda - crimi
             if (!e.isCriminal() && !t.isCriminal() /* TODO agregar seguro */) {
-                // notifyCombat(userId, assetsSystem.getAssetManager().getMessages(Messages.CANT_ATTACK_CITIZEN));
+                // notifyCombat(userId, assetsSystem.getAssetManager().getMessages(Messages.CANT_ATTACK_CITIZEN.name()));
                 // TODO descomentar: return false;
             }
 
@@ -99,13 +99,13 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
 
                 // shield evasion
                 if (E(targetId).hasShield() && ThreadLocalRandom.current().nextInt(101) <= prob) {
-                    notifyCombat(targetId, assetsSystem.getAssetManager().getMessages(Messages.SHIELD_DEFENSE));
-                    notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.DEFENDED_WITH_SHIELD, getName(targetId)));
+                    notifyCombat(targetId, assetsSystem.getAssetManager().getMessages(Messages.SHIELD_DEFENSE.name()));
+                    notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.DEFENDED_WITH_SHIELD.name(), getName(targetId)));
                     // TODO shield animation
                     worldManager.notifyUpdate(targetId, new SoundNotification(37));
                 } else {
-                    notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.ATTACK_FAILED));
-                    notifyCombat(targetId, assetsSystem.getAssetManager().getMessages(Messages.ATTACKED_AND_FAILED, getName(entityId)));
+                    notifyCombat(entityId, assetsSystem.getAssetManager().getMessages(Messages.ATTACK_FAILED.name()));
+                    notifyCombat(targetId, assetsSystem.getAssetManager().getMessages(Messages.ATTACKED_AND_FAILED.name(), getName(entityId)));
 
                 }
             }
@@ -257,14 +257,14 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     }
 
     private AttackResult doNormalAttack(int userId, int entityId, int damage) {
-        return new AttackResult(damage, assetsSystem.getAssetManager().getMessages(Messages.USER_NORMAL_HIT, getName(entityId), damage),
-                assetsSystem.getAssetManager().getMessages(Messages.VICTIM_NORMAL_HIT, getName(userId), damage));
+        return new AttackResult(damage, assetsSystem.getAssetManager().getMessages(Messages.USER_NORMAL_HIT.name(), getName(entityId), damage),
+                assetsSystem.getAssetManager().getMessages(Messages.VICTIM_NORMAL_HIT.name(), getName(userId), damage));
     }
 
     private AttackResult doCrititAttack(int userId, int entityId, int damage) {
         // TODO
-        return new AttackResult(damage, assetsSystem.getAssetManager().getMessages(Messages.USER_CRITIC_HIT, getName(entityId), damage),
-                assetsSystem.getAssetManager().getMessages(Messages.VICTIM_CRITIC_HIT, getName(userId), damage));
+        return new AttackResult(damage, assetsSystem.getAssetManager().getMessages(Messages.USER_CRITIC_HIT.name(), getName(entityId), damage),
+                assetsSystem.getAssetManager().getMessages(Messages.VICTIM_CRITIC_HIT.name(), getName(userId), damage));
     }
 
     private boolean canCriticAttack(int userId, int entityId) {
@@ -314,8 +314,8 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     private AttackResult doStab(int userId, int entityId, int damage) {
         final CharClass clazz = CharClass.of(E(userId));
         damage += (int) (CharClass.ASSASSIN.equals(clazz) ? damage * ASSASIN_STAB_FACTOR : damage * NORMAL_STAB_FACTOR);
-        return new AttackResult(damage, assetsSystem.getAssetManager().getMessages(Messages.USER_STAB_HIT, getName(entityId), damage),
-                assetsSystem.getAssetManager().getMessages(Messages.VICTIM_STAB_HIT, getName(userId), damage));
+        return new AttackResult(damage, assetsSystem.getAssetManager().getMessages(Messages.USER_STAB_HIT.name(), getName(entityId), damage),
+                assetsSystem.getAssetManager().getMessages(Messages.VICTIM_STAB_HIT.name(), getName(userId), damage));
     }
 
     private String getName(int userId) {
@@ -375,8 +375,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
 
 
     private enum AttackPlace {
-        HEAD,
-        BODY;
+        HEAD;
 
         private static final List<AttackPlace> VALUES =
                 Collections.unmodifiableList(Arrays.asList(values()));

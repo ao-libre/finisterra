@@ -131,16 +131,16 @@ public class MagicCombatSystem extends BaseSystem {
                 victimUpdateToAllBuilder.withComponents(CombatMessage.magic(damage > 0 ? "+" : "-" + Math.abs(damage)));
                 victimUpdateBuilder.withComponents(health);
                 if (damage > 0) {
-                    notifyMagic(playerId, assetsSystem.getAssetManager().getMessages(Messages.HEAL_TO, getName(target), Math.abs(damage)));
-                    notifyMagic(target, assetsSystem.getAssetManager().getMessages(Messages.HEAL_BY, getName(playerId), Math.abs(damage)));
+                    notifyMagic(playerId, assetsSystem.getAssetManager().getMessages(Messages.HEAL_TO.name(), getName(target), Math.abs(damage)));
+                    notifyMagic(target, assetsSystem.getAssetManager().getMessages(Messages.HEAL_BY.name(), getName(playerId), Math.abs(damage)));
                 } else {
-                    notifyMagic(playerId, assetsSystem.getAssetManager().getMessages(Messages.DAMAGE_TO, Math.abs(damage), getName(target)));
-                    notifyMagic(target, assetsSystem.getAssetManager().getMessages(Messages.DAMAGED_BY, getName(playerId), Math.abs(damage)));
+                    notifyMagic(playerId, assetsSystem.getAssetManager().getMessages(Messages.DAMAGE_TO.name(), Math.abs(damage), getName(target)));
+                    notifyMagic(target, assetsSystem.getAssetManager().getMessages(Messages.DAMAGED_BY.name(), getName(playerId), Math.abs(damage)));
                 }
                 if (health.min <= 0) {
                     getWorldManager().entityDie(target);
-                    notifyMagic(playerId, assetsSystem.getAssetManager().getMessages(Messages.KILL, getName(target)));
-                    notifyMagic(target, assetsSystem.getAssetManager().getMessages(Messages.KILLED, getName(playerId)));
+                    notifyMagic(playerId, assetsSystem.getAssetManager().getMessages(Messages.KILL.name(), getName(target)));
+                    notifyMagic(target, assetsSystem.getAssetManager().getMessages(Messages.KILLED.name(), getName(playerId)));
                 }
             }
             if (spell.isImmobilize()) {
@@ -151,7 +151,7 @@ public class MagicCombatSystem extends BaseSystem {
                     targetEntity.immobile(false);
                     victimUpdateToAllBuilder.remove(Immobile.class);
                 } else {
-                    notifyInfo(playerId, assetsSystem.getAssetManager().getMessages(Messages.NOT_PARALYSIS));
+                    notifyInfo(playerId, assetsSystem.getAssetManager().getMessages(Messages.NOT_PARALYSIS.name()));
                     return;
                 }
             }
@@ -195,7 +195,7 @@ public class MagicCombatSystem extends BaseSystem {
             getWorldManager().notifyUpdate(playerId, playerUpdateBuilder
                     .withComponents(magicWords).build());
         } else {
-            notifyInfo(playerId, assetsSystem.getAssetManager().getMessages(Messages.NOT_ENOUGHT_MANA));
+            notifyInfo(playerId, assetsSystem.getAssetManager().getMessages(Messages.NOT_ENOUGHT_MANA.name()));
         }
     }
 

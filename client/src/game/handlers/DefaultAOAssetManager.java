@@ -255,7 +255,6 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     }
 	
 	public String getMessages(String key, Object... params) {
-
         if (!isLoaded(LANGUAGES_FILE)) {
             load(SharedResources.LANGUAGES_FOLDER + ClientConfiguration.Init.lang + LANGUAGES_EXTENSION, I18NBundle.class);
             finishLoadingAsset(LANGUAGES_FILE);

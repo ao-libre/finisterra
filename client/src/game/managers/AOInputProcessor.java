@@ -74,7 +74,7 @@ public class AOInputProcessor extends Stage {
                     GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos, rtt + timeOffset));
                     player.attack();
                 } else {
-                    GUI.getConsole().addWarning(assetsSystem.getAssetManager().getMessages(Messages.CANT_ATTACK));
+                    GUI.getConsole().addWarning(assetsSystem.getAssetManager().getMessages(Messages.CANT_ATTACK.name()));
                 }
                 Cursors.setCursor("hand");
                 gui.getSpellView().cleanCast();

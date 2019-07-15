@@ -52,14 +52,14 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
                 CombatMessage manaMessage = CombatMessage.magic("+" + recoveredMana);
                 update.withComponents(mana);
                 notify.withComponents(manaMessage);
-                ConsoleMessage consoleMessage = ConsoleMessage.info(assetsSystem.getAssetManager().getMessages(Messages.MANA_RECOVERED, recoveredMana));
+                ConsoleMessage consoleMessage = ConsoleMessage.info(assetsSystem.getAssetManager().getMessages(Messages.MANA_RECOVERED.name(), recoveredMana));
                 worldManager.sendEntityUpdate(e.id(), consoleMessage);
             }
         }
 
         if (mana.min >= mana.max) {
             notify.remove(Meditating.class);
-            ConsoleMessage consoleMessage = ConsoleMessage.info(assetsSystem.getAssetManager().getMessages(Messages.MEDITATE_STOP));
+            ConsoleMessage consoleMessage = ConsoleMessage.info(assetsSystem.getAssetManager().getMessages(Messages.MEDITATE_STOP.name()));
             worldManager.sendEntityUpdate(e.id(), consoleMessage);
             stopMeditationEffect(e.id());
         }
@@ -82,20 +82,20 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
 
         if (meditating) {
             stopMeditationEffect(userId);
-            consoleMessage = ConsoleMessage.info(assetsSystem.getAssetManager().getMessages(Messages.MEDITATE_STOP));
+            consoleMessage = ConsoleMessage.info(assetsSystem.getAssetManager().getMessages(Messages.MEDITATE_STOP.name()));
             update.remove(Meditating.class);
         } else {
             E entity = E(userId);
             Mana mana = entity.getMana();
             if (mana != null && mana.min == mana.max) {
-                consoleMessage = ConsoleMessage.info(assetsSystem.getAssetManager().getMessages(Messages.MANA_FULL));
+                consoleMessage = ConsoleMessage.info(assetsSystem.getAssetManager().getMessages(Messages.MANA_FULL.name()));
             } else {
                 int e = world.create();
                 Effect effect = new EffectBuilder().withParticle(Constants.MEDITATE_NW_FX).attachTo(userId).build();
                 worldManager.notifyUpdate(userId, EntityUpdateBuilder.of(e).withComponents(effect).build());
                 userMeditations.put(userId, e);
                 player.meditating();
-                consoleMessage = ConsoleMessage.info(assetsSystem.getAssetManager().getMessages(Messages.MEDITATE_START));
+                consoleMessage = ConsoleMessage.info(assetsSystem.getAssetManager().getMessages(Messages.MEDITATE_START.name()));
                 update.withComponents(player.getMeditating());
             }
         }
