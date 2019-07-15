@@ -1,0 +1,1 @@
+{"network":{"useLocalHost":true,"ports":{"tcpPort":9000,"udpPort":9001},"api":{"apiURL":"https://localhost","apiPort":1337}}}
