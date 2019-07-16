@@ -1,3 +1,10 @@
+plugins {
+	id 'java'
+}
+
+targetCompatibility = '12'
+sourceCompatibility = '12'
+
 sourceSets.main.java.srcDirs = ["src/"]
 
 dependencies {

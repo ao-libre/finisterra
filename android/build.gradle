@@ -1,7 +1,22 @@
-apply plugin: 'com.android.application'
+/**
+ * The first line in the build configuration applies the Android plugin for
+ * Gradle to this build and makes the android block available to specify
+ * Android-specific build options.
+ */
+
+plugins {
+	id 'com.android.application'
+}
+
+configurations {natives}
+
+/**
+* The android block is where you configure all your Android-specific
+* build options.
+*/
 
 android {
-	compileSdkVersion 19
+
 	sourceSets {
 		main {
 			java.srcDirs = ["src/"]
@@ -11,9 +26,120 @@ android {
 			renderscript.srcDirs = ['src/']
 			res.srcDirs = ['res']
 			jniLibs.srcDirs = ['libs']
-		}
-		
+		}		
 	}
+
+	/**
+	* compileSdkVersion specifies the Android API level Gradle should use to
+	* compile your app. This means your app can use the API features included in
+	* this API level and lower.
+	*/
+
+	compileSdkVersion 28
+
+	/**
+	* buildToolsVersion specifies the version of the SDK build tools, command-line
+	* utilities, and compiler that Gradle should use to build your app. You need to
+	* download the build tools using the SDK Manager.
+	*
+	* This property is optional because the plugin uses a recommended version of
+	* the build tools by default.
+	*/
+
+	buildToolsVersion "29.0.0"
+
+	/**
+	* The defaultConfig block encapsulates default settings and entries for all
+	* build variants, and can override some attributes in main/AndroidManifest.xml
+	* dynamically from the build system. You can configure product flavors to override
+	* these values for different versions of your app.
+	*/
+
+	defaultConfig {
+
+		/**
+		* applicationId uniquely identifies the package for publishing.
+		* However, your source code should still reference the package name
+		* defined by the package attribute in the main/AndroidManifest.xml file.
+		*/
+
+		applicationId 'world.finisterra.client'
+
+		// Defines the minimum API level required to run the app.
+		minSdkVersion 19
+
+		// Specifies the API level used to test the app.
+		targetSdkVersion 28
+
+		// Defines the version number of your app.
+		versionCode 1
+
+		// Defines a user-friendly version name for your app.
+		versionName "0.1.12"
+	}
+
+	/**
+	* The buildTypes block is where you can configure multiple build types.
+	* By default, the build system defines two build types: debug and release. The
+	* debug build type is not explicitly shown in the default build configuration,
+	* but it includes debugging tools and is signed with the debug key. The release
+	* build type applies Proguard settings and is not signed by default.
+	*/
+
+	buildTypes {
+
+		/**
+		* By default, Android Studio configures the release build type to enable code
+		* shrinking, using minifyEnabled, and specifies the Proguard settings file.
+		*/
+
+		release {
+			minifyEnabled true // Enables code shrinking for the release build type.
+			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+		}
+	}
+
+	/**
+	* The productFlavors block is where you can configure multiple product flavors.
+	* This allows you to create different versions of your app that can
+	* override the defaultConfig block with their own settings. Product flavors
+	* are optional, and the build system does not create them by default.
+	*
+	* This example creates a free and paid product flavor. Each product flavor
+	* then specifies its own application ID, so that they can exist on the Google
+	* Play Store, or an Android device, simultaneously.
+	*
+	* If you declare product flavors, you must also declare flavor dimensions
+	* and assign each flavor to a flavor dimension.
+	*/
+
+	flavorDimensions "tier"
+	productFlavors {
+		free {
+			dimension "tier"
+			applicationId 'world.finisterra.client'
+		}
+	}
+
+	/**
+	* The splits block is where you can configure different APK builds that
+	* each contain only code and resources for a supported screen density or
+	* ABI. You'll also need to configure your build so that each APK has a
+	* different versionCode.
+	*/
+
+	splits {
+		// Settings to build multiple APKs based on screen density.
+		density {
+
+		  // Enable or disable building multiple APKs.
+		  enable false
+
+		  // Exclude these densities when building multiple APKs.
+		  exclude "ldpi", "tvdpi", "xxxhdpi", "400dpi", "560dpi"
+		}
+	 }
+  
 	packagingOptions {
 		// Preventing from license violations (more or less):
 		pickFirst 'META-INF/LICENSE.txt'
@@ -23,20 +149,20 @@ android {
 		pickFirst 'META-INF/NOTICE.txt'
 		pickFirst 'META-INF/NOTICE'
 		pickFirst 'META-INF/notice.txt'
+		
 		// Excluding unnecessary meta-data:
 		exclude 'META-INF/robovm/ios/robovm.xml'
 		exclude 'META-INF/DEPENDENCIES.txt'
 		exclude 'META-INF/DEPENDENCIES'
 		exclude 'META-INF/dependencies.txt'
 	}
-	defaultConfig {
-		applicationId 'world.finisterra.client'
-		minSdkVersion 19
-		targetSdkVersion 28
-	}
 }
 
-configurations { natives }
+/**
+* The dependencies block in the module-level build configuration file
+* specifies dependencies required to build only the module itself.
+* To learn more, go to Add build dependencies.
+*/
 
 dependencies {
 	implementation project(':client')
@@ -58,7 +184,6 @@ dependencies {
 	natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-arm64-v8a"
 	natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86"
 	natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86_64"
-
 }
 
 // Called every time gradle gets executed, takes the native dependencies of
@@ -111,5 +236,5 @@ task run(type: Exec) {
 	}
 
 	def adb = path + "/platform-tools/adb"
-	commandLine "$adb", 'shell', 'am', 'start', '-n', 'world.finisterra.client/world.finisterra.client.android.AndroidLauncher'
+	commandLine "$adb", 'shell', 'am', 'start', '-n', 'launcher/launcher.AndroidLauncher'
 }

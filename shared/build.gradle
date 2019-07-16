@@ -1,6 +1,6 @@
 plugins {
-    id 'artemis-fluid'
-    id 'artemis'
+	id 'artemis-fluid'
+	id 'artemis'
 }
 
 dependencies {
@@ -13,9 +13,6 @@ dependencies {
     api group: "com.google.guava", name: "guava", version: "$guavaVersion"
 	api group: "org.ini4j", name: "ini4j", version: "$ini4jVersion"
 }
-
-targetCompatibility = '12'
-sourceCompatibility = '12'
 
 ext {
     fluidOutputDir = file("$buildDir/generated-sources/fluid/")
