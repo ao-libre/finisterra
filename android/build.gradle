@@ -1,5 +1,16 @@
+apply plugin: "android"
+
+configurations { natives }
+
+dependencies {
+    compile project(":client")
+    compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
+    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
+}
+
 android {
-    buildToolsVersion "19.0.1"
+    buildToolsVersion "28.0.3"
     compileSdkVersion 18
     sourceSets {
         main {
