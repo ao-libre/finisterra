@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.id=":client" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="android-gradle" name="Android-Gradle">
+      <configuration>
+        <option name="GRADLE_PROJECT_PATH" value=":client" />
+      </configuration>
+    </facet>
+    <facet type="java-gradle" name="Java-Gradle">
+      <configuration>
+        <option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/build" />
+        <option name="BUILDABLE" value="true" />
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_12">
+    <output url="file://$MODULE_DIR$/build/classes/java/main" />
+    <output-test url="file://$MODULE_DIR$/build/classes/java/test" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/.gradle" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="shared" exported="" />
+    <orderEntry type="module" module-name="components" exported="" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-tools-1.9.10-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-freetype-1.9.10-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-backend-lwjgl3-1.9.10-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: reflections-0.9.11" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: ini4j-0.5.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: contrib-network-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: contrib-jam-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: contrib-eventbus-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: contrib-plugin-operations-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: contrib-core-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-platform-1.9.10-SNAPSHOT-natives-desktop" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: guava-27.1-jre" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-backend-headless-1.9.10-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-1.9.10-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-glfw-3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-glfw-3.2.1-natives-windows" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-glfw-3.2.1-natives-linux" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-glfw-3.2.1-natives-macos" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-jemalloc-3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-jemalloc-3.2.1-natives-windows" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-jemalloc-3.2.1-natives-linux" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-jemalloc-3.2.1-natives-macos" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-opengl-3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-opengl-3.2.1-natives-windows" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-opengl-3.2.1-natives-linux" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-opengl-3.2.1-natives-macos" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-openal-3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-openal-3.2.1-natives-windows" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-openal-3.2.1-natives-linux" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-openal-3.2.1-natives-macos" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-3.2.1-natives-windows" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-3.2.1-natives-linux" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-3.2.1-natives-macos" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jlayer-1.0.1-gdx" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jorbis-0.0.17" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: javassist-3.21.0-GA" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: artemis-odb-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: kryonet-2.22.0-RC1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: failureaccess-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: listenablefuture-9999.0-empty-to-avoid-conflict-with-guava" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jsr305-3.0.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: checker-qual-2.5.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: error_prone_annotations-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: j2objc-annotations-1.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: animal-sniffer-annotations-1.17" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: kryo-2.24.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jsonbeans-0.7" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: minlog-1.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: objenesis-2.1" level="project" />
+    <orderEntry type="library" exported="" name="client.client-0.1.10" level="project" />
+    <orderEntry type="library" exported="" name="client.client-0.1.10" level="project" />
+    <orderEntry type="library" exported="" name="client.client-0.1.10" level="project" />
+    <orderEntry type="library" exported="" name="client.client-0.1.10" level="project" />
+    <orderEntry type="library" exported="" name="client.client-0.1.10" level="project" />
+    <orderEntry type="library" exported="" name="client.client-0.1.10" level="project" />
+    <orderEntry type="library" exported="" name="client.client-0.1.10" level="project" />
+    <orderEntry type="library" exported="" name="client.client-0.1.10" level="project" />
+  </component>
+</module>

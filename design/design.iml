@@ -1,2 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module type="JAVA_MODULE" version="4" />
+<module external.linked.project.id=":design" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$/.." external.system.id="GRADLE" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="android-gradle" name="Android-Gradle">
+      <configuration>
+        <option name="GRADLE_PROJECT_PATH" value=":design" />
+      </configuration>
+    </facet>
+    <facet type="java-gradle" name="Java-Gradle">
+      <configuration>
+        <option name="BUILD_FOLDER_PATH" value="$MODULE_DIR$/build" />
+        <option name="BUILDABLE" value="true" />
+      </configuration>
+    </facet>
+    <facet type="kotlin-language" name="Kotlin">
+      <configuration version="3" platform="JVM 1.6" useProjectSettings="false">
+        <compilerSettings />
+        <compilerArguments>
+          <option name="destination" value="$MODULE_DIR$/build/classes/kotlin/main" />
+          <option name="classpath" value="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.soywiz/kaifu2x/0.4.0/201bcba796ecb74b0bc14e337940784b3e220436/kaifu2x-0.4.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core/1.2.1/3839faf625f4197acaeceeb6da000f011a2acb49/kotlinx-coroutines-core-1.2.1.jar;C:/Users/Jopi/Documents/GitHub/ao-java/client/build/libs/client-0.1.10.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-lwjgl3/1.9.10-SNAPSHOT/7d45398762938e8c762bed2bf1366fc50031d3f5/gdx-backend-lwjgl3-1.9.10-SNAPSHOT.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-tools/1.9.10-SNAPSHOT/c4b2a57d38e704ae1b9b4710192c2d2eb2dfb951/gdx-tools-1.9.10-SNAPSHOT.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-freetype/1.9.10-SNAPSHOT/1c9d9008ea1104f69dcc9e3798819d1142a56732/gdx-freetype-1.9.10-SNAPSHOT.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-freetype-platform/1.9.10-SNAPSHOT/3e72ce89c8f1b18f2edefde443459d4b39d39586/gdx-freetype-platform-1.9.10-SNAPSHOT-natives-desktop.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.2.10/85fe1811f3e586d0cc53aba1394d8089f1862215/kotlin-stdlib-jdk8-1.2.10.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.soywiz/korim/0.18.3/c18be2cb39757de865b37463e1a7c522a2437f8/korim-0.18.3.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.soywiz/korio/0.18.7/c2bcd51ec1ed44364311c6e7b9082b9f9dff292b/korio-0.18.7.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.jocl/jocl/2.0.0/79c9e57adcea8bed6c8eeec9df964467d80105fe/jocl-2.0.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.2.10/cfe8b616b3bf0811ef70863c86b745a2e767a66e/kotlin-stdlib-jdk7-1.2.10.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.soywiz/klock/0.4.3/34ca5c5be571a760c3ea8be7d43d6f1922b5518/klock-0.4.3.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.soywiz/korinject/0.3.0/c302a19a753127a42610e521adc6ebf408728901/korinject-0.3.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.soywiz/kds/0.3.0/627ff598fb6171bed3eba24a5ddecf87596d424c/kds-0.3.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.soywiz/kmem/0.3.0/9346ff03ec486f0ba0b43a35ed59e4269ebc971b/kmem-0.3.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.soywiz/klogger/0.3.0/1773213307b6bae3ea6f08df012b730b02e33ad7/klogger-0.3.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.soywiz/korma/0.18.0/d332552a4f124a7a219f3a9caef7293faf4ff22/korma-0.18.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.30/9ea98e65c246d34de9af59c104ad9bdea4908ee/kotlin-stdlib-1.3.30.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-common/1.3.30/989a125fdb6e4d0d75a016032e03e1e3b57a13d/kotlin-stdlib-common-1.3.30.jar;C:/Users/Jopi/Documents/GitHub/ao-java/shared/build/libs/shared-0.1.10.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.reflections/reflections/0.9.11/4c686033d918ec1727e329b7222fcb020152e32b/reflections-0.9.11.jar;C:/Users/Jopi/Documents/GitHub/ao-java/components/build/libs/components-0.1.10.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-backend-headless/1.9.10-SNAPSHOT/6ae33f4f23c9cb4ba6c7c5f643fbd66d15df41bd/gdx-backend-headless-1.9.10-SNAPSHOT.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.10-SNAPSHOT/c8f761a0225bf69920be6eb5de396dbd9e3d32f0/gdx-1.9.10-SNAPSHOT.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.2.1/27abb7f64894b61cad163791acd8113f0b21296/lwjgl-glfw-3.2.1.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.2.1/def7c58ad2e1cb258d6d73be181ffab8ef8bd5/lwjgl-glfw-3.2.1-natives-windows.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.2.1/5a2fb27f9e12a34ecabf6f6a7606c61849e347ee/lwjgl-glfw-3.2.1-natives-linux.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.2.1/72fe6dab6110a5a1cd4833f11840eef7b2eadce5/lwjgl-glfw-3.2.1-natives-macos.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.2.1/7a0c583fcbec32b15784f846df536e1837d83666/lwjgl-jemalloc-3.2.1.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.2.1/3c869b3d7638c800b7039cd859d064658643ad6e/lwjgl-jemalloc-3.2.1-natives-windows.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.2.1/5536616b558cea2fea6330ca682fd7c733db9c43/lwjgl-jemalloc-3.2.1-natives-linux.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-jemalloc/3.2.1/439ab9d0264167a949cc7bcce673704322baaf50/lwjgl-jemalloc-3.2.1-natives-macos.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.2.1/57008c2374c5bc434b18adfef3f3653ee450ee18/lwjgl-opengl-3.2.1.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.2.1/80954961b31084d7b4f2f041d6b5a799a774c880/lwjgl-opengl-3.2.1-natives-windows.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.2.1/c43bb08ed7dcf1a6d344803e464148b3b14dd274/lwjgl-opengl-3.2.1-natives-linux.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.2.1/dca9ad9e59a87172144d531e08ef7f6988073db0/lwjgl-opengl-3.2.1-natives-macos.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.2.1/dc7ff2dabb40a141ee9bf2e326d9b1b19f3278fb/lwjgl-openal-3.2.1.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.2.1/92fb931e65c637cea209ad5c3ffebd1b325ed41d/lwjgl-openal-3.2.1-natives-windows.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.2.1/bcd4be67863dd908f696f628c3ca9f6eb9ae5152/lwjgl-openal-3.2.1-natives-linux.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.2.1/9357ebfc82a0d6f64e17093dd963219367cd6fa2/lwjgl-openal-3.2.1-natives-macos.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.2.1/2bb514e444994c6fece99a21f76e0c90438e377f/lwjgl-3.2.1.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.2.1/e799d06b8969db0610e68776e0eff4b6191098bd/lwjgl-3.2.1-natives-windows.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.2.1/9bdd47cd63ce102cec837a396c8ded597cb75a66/lwjgl-3.2.1-natives-linux.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.2.1/5a4c271d150906858d475603dcb9479453c60555/lwjgl-3.2.1-natives-macos.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.badlogicgames.jlayer/jlayer/1.0.1-gdx/7cca83cec5c1b2f011362f4d85aabd71a73b049d/jlayer-1.0.1-gdx.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.jcraft/jorbis/0.0.17/8872d22b293e8f5d7d56ff92be966e6dc28ebdc6/jorbis-0.0.17.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.ini4j/ini4j/0.5.1/8e737d82ecac9ba6100a9bba71e92a381b75efdc/ini4j-0.5.1.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/net.mostlyoriginal.artemis-odb/contrib-network/2.2.0/21d7f0a3845f950e8a0209a70fe925a93c9b14ff/contrib-network-2.2.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/net.mostlyoriginal.artemis-odb/contrib-jam/2.2.0/fe5629e1713401a2ff9f69d961e137e3304b86c3/contrib-jam-2.2.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/net.mostlyoriginal.artemis-odb/contrib-eventbus/2.2.0/d705e65d18e0f284f6a5ed15c6c60968bbedff36/contrib-eventbus-2.2.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/net.mostlyoriginal.artemis-odb/contrib-plugin-operations/2.2.0/b0030efebe69e3df9c648d5e6a6acd36850e598/contrib-plugin-operations-2.2.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/net.mostlyoriginal.artemis-odb/contrib-core/2.2.0/bf522e553dc371cf628c466de34480d320583fe2/contrib-core-2.2.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-platform/1.9.10-SNAPSHOT/acdc1a646412d82aa52ed20ec36ec9a739fffaac/gdx-platform-1.9.10-SNAPSHOT-natives-desktop.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/27.1-jre/e47b59c893079b87743cdcfb6f17ca95c08c592c/guava-27.1-jre.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.21.0-GA/598244f595db5c5fb713731eddbb1c91a58d959b/javassist-3.21.0-GA.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/net.onedaybeard.artemis/artemis-odb/2.2.0/88619880bf362dc7a52f3d67ca6b4ee4394fb288/artemis-odb-2.2.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.esotericsoftware/kryonet/2.22.0-RC1/2f25f7250a3096a8d1b8182946f6572d90d280d0/kryonet-2.22.0-RC1.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/b421526c5f297295adef1c886e5246c39d4ac629/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/2.5.2/cea74543d5904a30861a61b4643a5f2bb372efc4/checker-qual-2.5.2.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.2.0/88e3c593e9b3586e1c6177f89267da6fc6986f0c/error_prone_annotations-2.2.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.1/ed28ded51a8b1c6b112568def5f4b455e6809019/j2objc-annotations-1.1.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.17/f97ce6decaea32b36101e37979f8b647f00681fb/animal-sniffer-annotations-1.17.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.esotericsoftware.kryo/kryo/2.24.0/c6b206e80cfd97e66a1364003724491c757b92f/kryo-2.24.0.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.esotericsoftware/jsonbeans/0.7/de977f0875708eddd154f2a4c3a3f58a13ef297/jsonbeans-0.7.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/com.esotericsoftware.minlog/minlog/1.2/59bfcd171d82f9981a5e242b9e840191f650e209/minlog-1.2.jar;C:/Users/Jopi/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/2.1/87c0ea803b69252868d09308b4618f766f135a96/objenesis-2.1.jar" />
+          <option name="noStdlib" value="true" />
+          <option name="noReflect" value="true" />
+          <option name="moduleName" value="design" />
+          <option name="addCompilerBuiltIns" value="true" />
+          <option name="loadBuiltInsFromDependencies" value="true" />
+          <option name="languageVersion" value="1.3" />
+          <option name="apiVersion" value="1.3" />
+          <option name="pluginOptions">
+            <array />
+          </option>
+          <option name="pluginClasspaths">
+            <array />
+          </option>
+          <option name="errors">
+            <ArgumentParseErrors />
+          </option>
+        </compilerArguments>
+      </configuration>
+    </facet>
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_12">
+    <output url="file://$MODULE_DIR$/build/classes/java/main" />
+    <output-test url="file://$MODULE_DIR$/build/classes/java/test" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/kotlin" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/kotlin" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/.gradle" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="desktop" exported="" />
+    <orderEntry type="module" module-name="client" exported="" />
+    <orderEntry type="module" module-name="shared" exported="" />
+    <orderEntry type="module" module-name="components" exported="" />
+    <orderEntry type="library" exported="" name="Gradle: kaifu2x-0.4.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: kotlinx-coroutines-core-1.2.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-backend-lwjgl3-1.9.10-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-tools-1.9.10-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-freetype-1.9.10-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-freetype-platform-1.9.10-SNAPSHOT-natives-desktop" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: kotlin-stdlib-jdk8-1.2.10" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: korim-0.18.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: korio-0.18.7" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jocl-2.0.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: kotlin-stdlib-jdk7-1.2.10" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: klock-0.4.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: korinject-0.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: kds-0.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: kmem-0.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: klogger-0.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: korma-0.18.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: kotlin-stdlib-1.3.30" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: kotlin-stdlib-common-1.3.30" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: reflections-0.9.11" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-backend-headless-1.9.10-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-1.9.10-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-glfw-3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-glfw-3.2.1-natives-windows" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-glfw-3.2.1-natives-linux" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-glfw-3.2.1-natives-macos" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-jemalloc-3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-jemalloc-3.2.1-natives-windows" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-jemalloc-3.2.1-natives-linux" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-jemalloc-3.2.1-natives-macos" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-opengl-3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-opengl-3.2.1-natives-windows" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-opengl-3.2.1-natives-linux" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-opengl-3.2.1-natives-macos" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-openal-3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-openal-3.2.1-natives-windows" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-openal-3.2.1-natives-linux" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-openal-3.2.1-natives-macos" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-3.2.1-natives-windows" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-3.2.1-natives-linux" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: lwjgl-3.2.1-natives-macos" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jlayer-1.0.1-gdx" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jorbis-0.0.17" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: annotations-13.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: ini4j-0.5.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: contrib-network-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: contrib-jam-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: contrib-eventbus-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: contrib-plugin-operations-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: contrib-core-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gdx-platform-1.9.10-SNAPSHOT-natives-desktop" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: guava-27.1-jre" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: javassist-3.21.0-GA" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: artemis-odb-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: kryonet-2.22.0-RC1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: failureaccess-1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: listenablefuture-9999.0-empty-to-avoid-conflict-with-guava" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jsr305-3.0.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: checker-qual-2.5.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: error_prone_annotations-2.2.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: j2objc-annotations-1.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: animal-sniffer-annotations-1.17" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: kryo-2.24.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jsonbeans-0.7" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: minlog-1.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: objenesis-2.1" level="project" />
+  </component>
+</module>

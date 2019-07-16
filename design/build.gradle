@@ -3,6 +3,9 @@ plugins {
     id 'kotlin'
 }
 
+targetCompatibility = '12'
+sourceCompatibility = '12'
+
 sourceSets {
     main.java.srcDirs = ["src/"]
     main.resources.srcDirs = ["resources/"]

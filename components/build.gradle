@@ -1,5 +1,9 @@
+
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 sourceSets.main.java.srcDirs = ["src/"]
+
+targetCompatibility = '12'
+sourceCompatibility = '12'
 
 dependencies {
 	api group: "com.badlogicgames.gdx", name: "gdx", version: "$gdxVersion"

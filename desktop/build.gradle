@@ -5,6 +5,9 @@ plugins {
     id 'de.undercouch.download'
 }
 
+targetCompatibility = '12'
+sourceCompatibility = '12'
+
 sourceSets {
     main.java.srcDirs = ["src/"]
     main.resources.srcDirs = ["assets/"]

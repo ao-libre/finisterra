@@ -8,6 +8,9 @@ sourceSets {
     main.resources.srcDirs = ["resources/"] 
 }
 
+targetCompatibility = '12'
+sourceCompatibility = '12'
+
 mainClassName = "server.ServerLauncher"
 
 test {
