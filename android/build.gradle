@@ -4,14 +4,15 @@ android {
 	compileSdkVersion 19
 	sourceSets {
 		main {
+			java.srcDirs = ["src/"]
+			resources.srcDirs = ["assets/"]
 			manifest.srcFile 'AndroidManifest.xml'
-			java.srcDirs = ['src/main/java']
-			aidl.srcDirs = ['src/main/java']
-			renderscript.srcDirs = ['src/main/java']
+			aidl.srcDirs = ['src/']
+			renderscript.srcDirs = ['src/']
 			res.srcDirs = ['res']
-			assets.srcDirs = ['../assets']
 			jniLibs.srcDirs = ['libs']
 		}
+		
 	}
 	packagingOptions {
 		// Preventing from license violations (more or less):
@@ -29,21 +30,16 @@ android {
 		exclude 'META-INF/dependencies.txt'
 	}
 	defaultConfig {
-		applicationId 'world.finisterra.launcher'
+		applicationId 'world.finisterra.client'
 		minSdkVersion 19
 		targetSdkVersion 28
 	}
 }
 
-repositories {
-	// needed for AAPT2, may be needed for other tools
-	google()
-}
-
 configurations { natives }
 
 dependencies {
-	api project(':client')
+	implementation project(':client')
 	api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
 	api "com.badlogicgames.gdx:gdx-controllers-android:$gdxVersion"
 

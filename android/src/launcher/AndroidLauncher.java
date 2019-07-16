@@ -1,4 +1,4 @@
-package world.finisterra.launcher;
+package launcher;
 
 import android.os.Bundle;
 

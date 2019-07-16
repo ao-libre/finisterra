@@ -9,8 +9,10 @@ targetCompatibility = '12'
 sourceCompatibility = '12'
 
 sourceSets {
-    main.java.srcDirs = ["src/"]
-    main.resources.srcDirs = ["assets/"]
+	main {
+		java.srcDirs = ["src/"]
+		resources.srcDirs = ["assets/"]
+	}
 }
 
 dependencies {
