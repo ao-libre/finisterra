@@ -5,6 +5,7 @@
  */
 
 plugins {
+	id 'android'
 	id 'com.android.application'
 }
 
@@ -28,13 +29,17 @@ android {
 			jniLibs.srcDirs = ['libs']
 		}		
 	}
+	
+	compileOptions {
+		sourceCompatibility = JavaVersion.VERSION_12
+		targetCompatibility = JavaVersion.VERSION_12
+	}
 
 	/**
 	* compileSdkVersion specifies the Android API level Gradle should use to
 	* compile your app. This means your app can use the API features included in
 	* this API level and lower.
 	*/
-
 	compileSdkVersion 28
 
 	/**
@@ -45,7 +50,6 @@ android {
 	* This property is optional because the plugin uses a recommended version of
 	* the build tools by default.
 	*/
-
 	buildToolsVersion "29.0.0"
 
 	/**
@@ -54,7 +58,6 @@ android {
 	* dynamically from the build system. You can configure product flavors to override
 	* these values for different versions of your app.
 	*/
-
 	defaultConfig {
 
 		/**
@@ -85,7 +88,6 @@ android {
 	* but it includes debugging tools and is signed with the debug key. The release
 	* build type applies Proguard settings and is not signed by default.
 	*/
-
 	buildTypes {
 
 		/**
@@ -112,8 +114,8 @@ android {
 	* If you declare product flavors, you must also declare flavor dimensions
 	* and assign each flavor to a flavor dimension.
 	*/
-
 	flavorDimensions "tier"
+	
 	productFlavors {
 		free {
 			dimension "tier"
@@ -127,16 +129,15 @@ android {
 	* ABI. You'll also need to configure your build so that each APK has a
 	* different versionCode.
 	*/
-
 	splits {
 		// Settings to build multiple APKs based on screen density.
 		density {
 
-		  // Enable or disable building multiple APKs.
-		  enable false
+			// Enable or disable building multiple APKs.
+			enable false
 
-		  // Exclude these densities when building multiple APKs.
-		  exclude "ldpi", "tvdpi", "xxxhdpi", "400dpi", "560dpi"
+			// Exclude these densities when building multiple APKs.
+			exclude "ldpi", "tvdpi", "xxxhdpi", "400dpi", "560dpi"
 		}
 	 }
   
@@ -163,7 +164,6 @@ android {
 * specifies dependencies required to build only the module itself.
 * To learn more, go to Add build dependencies.
 */
-
 dependencies {
 	implementation project(':client')
 	api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
@@ -184,6 +184,8 @@ dependencies {
 	natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-arm64-v8a"
 	natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86"
 	natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86_64"
+	
+	implementation fileTree(include: ['*.jar'], dir: 'libs')
 }
 
 // Called every time gradle gets executed, takes the native dependencies of
