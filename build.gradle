@@ -51,16 +51,12 @@ allprojects {
     }
 }
 
-subprojects {
-
-	// Apply 'java' plugin to all projects except android.
-	if (!it.name.startsWith('android')) {
-        apply plugin: 'java'
+configure(subprojects.findAll { it.name != 'android' }) {
+    apply plugin: 'java-library'
 		
-		sourceCompatibility = JavaVersion.VERSION_12
-		targetCompatibility = JavaVersion.VERSION_12
-    }
-	
+	sourceCompatibility = JavaVersion.VERSION_12
+	targetCompatibility = JavaVersion.VERSION_12
+
 	tasks.withType(JavaCompile) {
 		options.encoding = "UTF-8"
 		//options.compilerArgs << '-Xlint:unchecked'
