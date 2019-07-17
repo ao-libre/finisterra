@@ -5,6 +5,8 @@ private/
 build/
 old/
 **/gradle.properties
+**/local.properties
+**/*.iml
 out/
 **/out/
 desktop/*.tar.gz
