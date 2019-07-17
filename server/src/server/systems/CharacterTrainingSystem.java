@@ -114,7 +114,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
         int stamina = addStamina(userId);
         // notify user
         notifyUpgrade(userId, mana, health, hit, stamina);
-        Log.info("hp: "+ health + "mAna" + mana + "hit: " + hit);
+        // Log.info("hp: "+ health + "mAna" + mana + "hit: " + hit);
     }
 
     private void notifyUpgrade(int userId, int mana, float health, Pair<Integer, Integer> hit, int stamina) {
@@ -194,7 +194,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
     }
 
     private int getMaxHealth(float average) {
-        return (int) (average % 1 == 0 ? average +  2 : average + 1.5f);
+        return (int) (average % 1 == 0 ? average + 2 : average + 1.5f);
     }
 
     private int getMinHealth(float average) {
