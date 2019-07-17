@@ -1,8 +1,20 @@
 language: java
 install: true
+jdk: openjdk12
+script: ./gradlew compileJava
 
-jdk:
-  - openjdk12
-
-script:
-  - ./gradlew compileJava
+language: android
+jdk: openjdk12
+dist: trusty
+android:
+  components:
+  	- platform-tools
+  	- tools
+    - build-tools-29.0.1
+    - android-19
+    - android-28
+    - sys-img-armeabi-v7a-android-19
+    - extra-android-m2repository
+    licenses:
+       - 'android-sdk-preview-license-52d11cd2'
+       - 'android-sdk-license-.+'
