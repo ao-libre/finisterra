@@ -1,26 +1,25 @@
 package design.editors;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static design.screens.views.View.SKIN;
+import static launcher.DesignCenter.SKIN;
 
-public abstract class FieldEditor<T> {
+public abstract class FieldEditor<T> implements IFieldEditor {
 
-    private final FieldProvider<List<T>> fieldProvider;
+    private final FieldProvider fieldProvider;
     private final Consumer<T> consumer;
     private final Supplier<T> supplier;
     private final String label;
     private final Actor field;
 
-    public FieldEditor(String label, FieldProvider<List<T>> fieldProvider, Consumer<T> consumer, Supplier<T> supplier) {
+    public FieldEditor(String label, FieldProvider fieldProvider, Consumer<T> consumer, Supplier<T> supplier) {
         this.label = label;
         this.fieldProvider = fieldProvider;
         this.consumer = consumer;
@@ -32,7 +31,7 @@ public abstract class FieldEditor<T> {
         return consumer;
     }
 
-    public FieldProvider<List<T>> getFieldProvider() {
+    public FieldProvider getFieldProvider() {
         return fieldProvider;
     }
 
@@ -48,27 +47,23 @@ public abstract class FieldEditor<T> {
         return supplier;
     }
 
-    Actor createField() {
+    private Actor createField() {
         Table field = new Table(SKIN);
         field.add(new Label(getLabel(), SKIN));
-        List<T> items = getFieldProvider().get();
-        if (items.size() > 1) {
-            com.badlogic.gdx.scenes.scene2d.ui.List<T> list = new com.badlogic.gdx.scenes.scene2d.ui.List<>(SKIN);
-            Array<T> itemsArray = new Array<>();
-            items.forEach(itemsArray::add);
-            list.setItems(itemsArray);
-            list.setSelected(supplier.get());
-            list.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    getConsumer().accept(list.getSelected());
-                }
-            });
-            field.add(list);
-        } else {
-            field.add(createSimpleEditor());
+        Actor editor = createSimpleEditor();
+        field.add(editor);
+        if (shouldAddButton(editor)) {
+            field.add(createButton((TextField) editor));
         }
         return field;
+    }
+
+    private boolean shouldAddButton(Actor editor) {
+        return !fieldProvider.equals(FieldProvider.NONE) && editor instanceof TextField;
+    }
+
+    protected Button createButton(TextField editor) {
+        return new Button();
     }
 
     protected abstract Actor createSimpleEditor();

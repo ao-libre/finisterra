@@ -2,6 +2,7 @@ package design.designers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import design.editors.Listener;
 import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import model.descriptors.HeadDescriptor;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static design.designers.HeadDesigner.*;
+import static design.designers.HeadDesigner.HeadParameters;
 
 public class HeadDesigner implements IDesigner<HeadDescriptor, HeadParameters> {
 
@@ -37,6 +38,9 @@ public class HeadDesigner implements IDesigner<HeadDescriptor, HeadParameters> {
         AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
         AOAssetManager assetManager = game.getAssetManager();
         heads = assetManager.getHeads();
+        for (int i = 0; i < heads.size(); i++) {
+            heads.get(i).setId(i + 1);
+        }
     }
 
     @Override
@@ -69,4 +73,5 @@ public class HeadDesigner implements IDesigner<HeadDescriptor, HeadParameters> {
 
     public static class HeadParameters implements Parameters<HeadDescriptor> {
     }
+
 }

@@ -21,4 +21,9 @@ public class BodyDescriptor extends Descriptor {
     public int getHeadOffsetY() {
         return headOffsetY;
     }
+
+    @Override
+    public String toString() {
+        return "Body: " + getId();
+    }
 }

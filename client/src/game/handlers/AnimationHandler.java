@@ -112,9 +112,11 @@ public class AnimationHandler extends PassiveSystem {
         return Optional.ofNullable(bundledAnimations.get(id)).orElseGet(() -> saveAnimation(id));
     }
 
-
     private BundledAnimation saveAnimation(int id) {
         AOAnimation animation = assetManager.getAnimation(id);
+        if (animation == null) {
+            Log.info("Fail to create animation for: " + id);
+        }
         return saveAnimation(animation);
     }
 
@@ -126,6 +128,9 @@ public class AnimationHandler extends PassiveSystem {
 
     private AOTexture saveTexture(int id) {
         AOImage image = assetManager.getImage(id);
+        if (image == null) {
+            Log.info("Fail to create AO Image: " + id);
+        }
         return saveTexture(image);
     }
 

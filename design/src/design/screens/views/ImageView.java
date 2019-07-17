@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static launcher.DesignCenter.SKIN;
+
 public class ImageView extends View<AOImage, ImageDesigner> implements WorldScreen {
 
     private static final ImageParameters EMPTY = new ImageParameters();

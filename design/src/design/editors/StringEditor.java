@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static design.screens.views.View.SKIN;
+import static launcher.DesignCenter.SKIN;
 
 public class StringEditor extends FieldEditor<String> {
 
-    private StringEditor(String label, FieldProvider<List<String>> fieldProvider, Consumer<String> consumer, Supplier<String> supplier) {
+    private StringEditor(String label, FieldProvider fieldProvider, Consumer<String> consumer, Supplier<String> supplier) {
         super(label, fieldProvider, consumer, supplier);
     }
 
@@ -30,12 +30,7 @@ public class StringEditor extends FieldEditor<String> {
     }
 
     public static Actor simple(String label, Consumer<String> consumer, Supplier<String> supplier) {
-        StringEditor stringEditor = new StringEditor(label, Collections::emptyList, consumer, supplier);
-        return stringEditor.getField();
-    }
-
-    public static Actor list(String label, FieldProvider<List<String>> fieldProvider, Consumer<String> consumer, Supplier<String> supplier) {
-        StringEditor stringEditor = new StringEditor(label, fieldProvider, consumer, supplier);
+        StringEditor stringEditor = new StringEditor(label, FieldProvider.NONE, consumer, supplier);
         return stringEditor.getField();
     }
 

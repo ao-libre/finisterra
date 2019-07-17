@@ -2,13 +2,13 @@ package design.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
-import game.AOGame;
 
 public class ScreenManager {
 
     private static ScreenManager instance;
 
     private Game game;
+    private Screen current;
 
     private ScreenManager() {
     }
@@ -29,6 +29,15 @@ public class ScreenManager {
         // Show new screen
         Screen newScreen = screenEnum.getScreen(params);
         game.setScreen(newScreen);
+        current = newScreen;
     }
 
+    public void showScreen(Screen screen) {
+        game.setScreen(screen);
+        current = screen;
+    }
+
+    public Screen getCurrent() {
+        return current;
+    }
 }

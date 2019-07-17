@@ -1,6 +1,8 @@
 package model.textures;
 
-public class AOAnimation {
+import model.ID;
+
+public class AOAnimation implements ID {
 
     private int id;
     private int[] frames; // references to ao images
@@ -13,6 +15,12 @@ public class AOAnimation {
         this.id = id;
         this.frames = frames;
         this.speed = speed;
+    }
+
+    public AOAnimation(AOAnimation other) {
+        this.id = other.id;
+        this.frames = other.frames;
+        this.speed = other.speed;
     }
 
     public int getId() {

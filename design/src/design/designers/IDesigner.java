@@ -8,7 +8,9 @@ import java.util.Optional;
 
 public interface IDesigner<T, P extends IDesigner.Parameters<T>> {
 
-    void load(P params);
+    default void load(P params) {
+
+    }
 
     void save();
 

@@ -1,11 +1,8 @@
 package design.screens.views;
 
-import com.artemis.SuperMapper;
 import com.artemis.World;
-import com.artemis.WorldConfiguration;
-import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -15,18 +12,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.minlog.Log;
 import design.designers.IDesigner;
+import design.editors.Listener;
 import design.screens.DesignScreen;
+import design.screens.ScreenEnum;
+import design.screens.ScreenManager;
 import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
-import game.handlers.ObjectHandler;
-import game.utils.Skins;
+import game.screens.WorldScreen;
+import launcher.DesignCenter;
+import model.ID;
 
-public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Parameters<T>>> extends DesignScreen {
+import java.util.ArrayList;
 
-    public final static Skin SKIN = new Skins.AOSkin(Gdx.files.internal("skin/skin-composer-ui.json"));
+import static launcher.DesignCenter.SKIN;
 
-    private AnimationHandler animationHandler;
-    private DescriptorHandler descriptorHandler;
+public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Parameters<T>>> extends DesignScreen implements WorldScreen {
 
     private P designer;
     private TextButton modify;
@@ -34,14 +34,22 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
     private List<T> list;
     private Preview<T> preview;
     private Preview<T> itemView;
+    private ArrayList<Listener> listenerList = new ArrayList<>();
 
     public View(P designer) {
         this.designer = designer;
         Log.info("View Created: " + getClass().getName());
-        animationHandler = new AnimationHandler();
-        descriptorHandler = new DescriptorHandler();
         createUI();
         getMainTable().setBackground(SKIN.getDrawable("white"));
+    }
+
+    public void setListener(Listener listener) {
+        listenerList.clear();
+        listenerList.add(listener);
+    }
+
+    public void clearListener() {
+        listenerList.clear();
     }
 
     @Override
@@ -73,6 +81,30 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         return content;
     }
 
+    @Override
+    protected Table createMenuButtons() {
+        Table table = new Table();
+        table.defaults().space(5);
+        for (ScreenEnum screen : ScreenEnum.values()) {
+            Button button = new TextButton(screen.name(), SKIN);
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.app.postRunnable(() -> ScreenManager.getInstance().showScreen(screen));
+                }
+            });
+            table.add(button);
+        }
+
+        return table;
+    }
+
+    public void refresh() {
+        getPreview().show(getPreview().get());
+        getItemView().show(getItemView().get());
+        clearListener();
+    }
+
     public List<T> getList() {
         return list;
     }
@@ -81,24 +113,21 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         return preview;
     }
 
-    protected World createWorld() {
-        WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
-        SpriteBatch batch = new SpriteBatch();
-        builder
-                .with(new SuperMapper())
-                .with(new ObjectHandler())
-                .with(animationHandler)
-                .with(descriptorHandler);
-        WorldConfiguration config = builder.build();
-        return new World(config);
+    public Preview<T> getItemView() {
+        return itemView;
     }
 
     public AnimationHandler getAnimationHandler() {
-        return animationHandler;
+        return ((DesignCenter) Gdx.app.getApplicationListener()).getAnimationHandler();
     }
 
     public DescriptorHandler getDescriptorHandler() {
-        return descriptorHandler;
+        return ((DesignCenter) Gdx.app.getApplicationListener()).getDescriptorHandler();
+    }
+
+    @Override
+    public World getWorld() {
+        return ((DesignCenter) Gdx.app.getApplicationListener()).getWorld();
     }
 
     public P getDesigner() {
@@ -149,6 +178,24 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         return buttons;
     }
 
+    private void onSelect(T select) {
+        listenerList.forEach(listener -> {
+            // ask
+            Dialog dialog = new Dialog("Select", SKIN) {
+                public void result(Object obj) {
+                    if ((Boolean) obj && select instanceof ID) {
+                        listener.select((ID) select);
+                    }
+                }
+            };
+            dialog.text("Are you sure you want to select " + select.toString() + "?");
+            dialog.button("Yes", true); //sends "true" as the result
+            dialog.button("No", false);  //sends "false" as the result
+            dialog.key(Input.Keys.ENTER, true); //sends "true" when the ENTER key is pressed
+            dialog.show(getStage());
+        });
+    }
+
     private void onModify(T selected) {
         designer.modify(selected, getStage());
     }
@@ -171,8 +218,12 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
                 delete.setDisabled(list.getSelected() == null);
                 preview.show(list.getSelected());
                 itemView.show(list.getSelected());
+                onSelect(list.getSelected());
             }
         });
+        if (items.size > 0) {
+            list.setSelected(items.get(0));
+        }
         return list;
     }
 

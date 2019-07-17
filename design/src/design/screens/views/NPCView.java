@@ -3,17 +3,14 @@ package design.screens.views;
 import camera.Focused;
 import com.artemis.E;
 import com.artemis.World;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import design.designers.NPCDesigner;
@@ -21,25 +18,20 @@ import design.designers.NPCDesigner.NPCParameters;
 import design.editors.NPCEditor;
 import entity.character.parts.Body;
 import entity.character.states.Heading;
-import game.screens.WorldScreen;
-import game.systems.camera.CameraSystem;
-import game.systems.render.world.CharacterRenderingSystem;
-import model.descriptors.BodyDescriptor;
 import model.textures.BundledAnimation;
 import position.Pos2D;
 import position.WorldPos;
 import shared.model.map.Tile;
 import shared.model.npcs.NPC;
 import shared.model.npcs.NPCToEntity;
-import shared.util.Util;
 
 import java.util.Comparator;
-import java.util.Optional;
 
 import static com.artemis.E.E;
 import static game.systems.render.world.CharacterRenderingSystem.CharacterDrawer.createDrawer;
+import static launcher.DesignCenter.SKIN;
 
-public class NPCView extends View<NPC, NPCDesigner> implements WorldScreen {
+public class NPCView extends View<NPC, NPCDesigner> {
 
     public NPCView() {
         super(new NPCDesigner(NPCParameters.dat()));
@@ -75,11 +67,12 @@ public class NPCView extends View<NPC, NPCDesigner> implements WorldScreen {
 
         @Override
         void show(NPC npc) {
-            this.npc = npc;
             if (view != null) {
                 clear();
             }
-            add(view = NPCEditor.getTable(npc)).growX();
+            NPC modifiedNpc = new NPC(npc);
+            add(view = NPCEditor.getTable(modifiedNpc)).growX();
+            this.npc = modifiedNpc;
         }
 
         @Override
@@ -132,18 +125,17 @@ public class NPCView extends View<NPC, NPCDesigner> implements WorldScreen {
 
         @Override
         public void show(NPC npc) {
-            if (!npc.equals(this.npc)) {
-                if (this.npc == null) {
-                    init();
-                }
-                this.npc = npc;
-                label.setText(npc.getName());
-                World world = getWorld();
-                E.withComponent(Focused.class).iterator().forEachRemaining(E::deleteFromWorld);
-                entityId = NPCToEntity.getNpcEntity(world, npc.getId(), new WorldPos(1, 1, 1), npc);
-                E(entityId).focused().moving();
-                animationActor.setEntityId(entityId);
+            if (this.npc == null) {
+                init();
             }
+            this.npc = npc;
+            label.setText(npc.getName());
+            World world = getWorld();
+            E.withComponent(Focused.class).iterator().forEachRemaining(E::deleteFromWorld);
+            entityId = NPCToEntity.getNpcEntity(world, npc.getId(), new WorldPos(1, 1, 1), npc);
+            E(entityId).focused().moving();
+            animationActor.setEntityId(entityId);
+
         }
 
         @Override
@@ -162,7 +154,8 @@ public class NPCView extends View<NPC, NPCDesigner> implements WorldScreen {
         private int entityId = -1;
         private int heading = Heading.HEADING_SOUTH;
 
-        public AnimationActor() {}
+        public AnimationActor() {
+        }
 
         public int getEntityId() {
             return entityId;

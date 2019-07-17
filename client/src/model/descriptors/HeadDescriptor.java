@@ -9,4 +9,12 @@ public class HeadDescriptor extends Descriptor {
         super(headIndex);
     }
 
+    public HeadDescriptor(HeadDescriptor other) {
+        this(other.indexs);
+    }
+
+    @Override
+    public String toString() {
+        return "Head: " + getId();
+    }
 }

@@ -9,19 +9,19 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static design.screens.views.View.SKIN;
+import static launcher.DesignCenter.SKIN;
 
 public class FloatEditor extends FieldEditor<Float> {
 
-    private FloatEditor(String label, FieldProvider<List<Float>> fieldProvider, Consumer<Float> consumer, Supplier<Float> supplier) {
+    private FloatEditor(String label, FieldProvider fieldProvider, Consumer<Float> consumer, Supplier<Float> supplier) {
         super(label, fieldProvider, consumer, supplier);
     }
 
     public static Actor simple(String label, Consumer<Float> consumer, Supplier<Float> supplier) {
-        return new FloatEditor(label, Collections::emptyList, consumer, supplier).getField();
+        return new FloatEditor(label, FieldProvider.NONE, consumer, supplier).getField();
     }
 
-    public static Actor list(String label, FieldProvider<List<Float>> fieldProvider, Consumer<Float> consumer, Supplier<Float> supplier) {
+    public static Actor list(String label, FieldProvider fieldProvider, Consumer<Float> consumer, Supplier<Float> supplier) {
         return new FloatEditor(label, fieldProvider, consumer, supplier).getField();
     }
 

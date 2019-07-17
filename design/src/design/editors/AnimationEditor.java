@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import model.textures.AOAnimation;
 import org.jetbrains.annotations.NotNull;
 
-import static design.screens.views.View.SKIN;
+import static launcher.DesignCenter.SKIN;
 
 public class AnimationEditor extends Dialog {
 
@@ -27,11 +27,16 @@ public class AnimationEditor extends Dialog {
     @NotNull
     public static Table getTable(AOAnimation animation) {
         Table table = new Table(SKIN);
-        table.add(IntegerEditor.simple("ID", id -> {
+        table.add(IntegerEditor.create("ID", id -> {
             animation.setId(id);
             // TODO refactor: search all items that use this animation to change it
         }, animation::getId)).expandX().row();
         table.add(FloatEditor.simple("Speed", animation::setSpeed, animation::getSpeed));
+        int[] frames = animation.getFrames();
+        for (int i = 0; i < frames.length; i++) {
+            int finalI = i;
+            table.add(IntegerEditor.create("Frame-" + i, FieldProvider.IMAGE, integer -> frames[finalI] = integer, () -> frames[finalI])).row();
+        }
 
         return table;
     }

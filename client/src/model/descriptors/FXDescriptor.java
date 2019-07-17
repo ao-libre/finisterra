@@ -21,4 +21,9 @@ public class FXDescriptor extends Descriptor {
     public int getOffsetX() {
         return offsetX;
     }
+
+    @Override
+    public String toString() {
+        return "FX: " + getId();
+    }
 }

@@ -17,6 +17,8 @@ import model.textures.BundledAnimation;
 
 import java.util.Comparator;
 
+import static launcher.DesignCenter.SKIN;
+
 public class AnimationView extends View<AOAnimation, AnimationDesigner> implements WorldScreen {
 
     public AnimationView() {

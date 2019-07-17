@@ -3,35 +3,40 @@ package design.editors;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import model.descriptors.HeadDescriptor;
 import model.textures.AOAnimation;
 import org.jetbrains.annotations.NotNull;
 
 import static launcher.DesignCenter.SKIN;
 
-public class AnimationEditor extends Dialog {
+public class HeadEditor extends Dialog {
 
-    private AOAnimation animation;
+    private HeadDescriptor head;
 
-    public AnimationEditor(AOAnimation animation) {
+    public HeadEditor(HeadDescriptor head) {
         super("Animation Editor", SKIN);
-        this.animation = animation;
+        this.head = head;
         addTable();
         button("Cancel", false);
-        button("OK", animation);
+        button("OK", head);
     }
 
     private void addTable() {
-        getContentTable().add(new ScrollPane(getTable(animation))).prefHeight(300).prefWidth(300);
+        getContentTable().add(new ScrollPane(getTable(head))).prefHeight(300).prefWidth(300);
     }
 
     @NotNull
-    public static Table getTable(AOAnimation animation) {
+    public static Table getTable(HeadDescriptor head) {
         Table table = new Table(SKIN);
-        table.add(IntegerEditor.simple("ID", id -> {
-            animation.setId(id);
+        table.add(IntegerEditor.create("ID", id -> {
+            head.setId(id);
             // TODO refactor: search all items that use this animation to change it
-        }, animation::getId)).expandX().row();
-        table.add(FloatEditor.simple("Speed", animation::setSpeed, animation::getSpeed));
+        }, head::getId)).expandX().row();
+        int[] heads = head.getIndexs();
+        for (int i = 0; i < heads.length; i++) {
+            final int j = i;
+            table.add(IntegerEditor.create("Index: " + i, FieldProvider.IMAGE, index -> heads[j] = index, () -> heads[j])).row();
+        }
 
         return table;
     }

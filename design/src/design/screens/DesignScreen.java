@@ -31,12 +31,6 @@ public abstract class DesignScreen extends ScreenAdapter implements WorldScreen 
         };
     }
 
-    public World getWorld() {
-        return world;
-    }
-
-    protected abstract World createWorld();
-
     protected abstract void keyPressed(int keyCode);
 
     public Stage getStage() {
@@ -50,7 +44,6 @@ public abstract class DesignScreen extends ScreenAdapter implements WorldScreen 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(getStage());
-        world = createWorld();
     }
 
     @Override
@@ -69,9 +62,13 @@ public abstract class DesignScreen extends ScreenAdapter implements WorldScreen 
         mainTable = new Table();
         mainTable.setFillParent(true);
         Table content = createContent();
-        mainTable.add(content).expand().fill().grow();
+        Table buttons = createMenuButtons();
+        mainTable.add(buttons).growX().row();
+        mainTable.add(content).grow();
         getStage().addActor(getMainTable());
     }
+
+    protected abstract Table createMenuButtons();
 
     @Override
     public void resize(int width, int height) {

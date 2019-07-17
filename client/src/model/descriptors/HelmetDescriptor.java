@@ -9,4 +9,8 @@ public class HelmetDescriptor extends Descriptor {
         super(headIndex);
     }
 
+    @Override
+    public String toString() {
+        return "Helmet: " + getId();
+    }
 }

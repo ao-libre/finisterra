@@ -1,6 +1,8 @@
 package model.textures;
 
-public class AOImage {
+import model.ID;
+
+public class AOImage implements ID {
 
     private int x;
     private int y;
