@@ -3,6 +3,7 @@ package server.systems;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.math.MathUtils;
+import com.esotericsoftware.minlog.Log;
 import entity.character.status.Health;
 import entity.character.status.Level;
 import entity.world.CombatMessage;
@@ -113,6 +114,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
         int stamina = addStamina(userId);
         // notify user
         notifyUpgrade(userId, mana, health, hit, stamina);
+        Log.info("hp: "+ health + "mAna" + mana + "hit: " + hit);
     }
 
     private void notifyUpgrade(int userId, int mana, float health, Pair<Integer, Integer> hit, int stamina) {
@@ -130,8 +132,8 @@ public class CharacterTrainingSystem extends PassiveSystem {
     }
 
     private String getMessage(int mana, float health, Pair<Integer, Integer> hit, int stamina) {
-        // TODO
-        return "Level up!";
+        // TODO refector MessageLvl
+        return ("Level up!" + " Recibiste " + health + " puntos de vida y " + mana + " Puntos de mana. Tu golpe máximo aumento. " + hit);
     }
 
     private void setNextRequiredExperience(Level level) {
@@ -192,7 +194,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
     }
 
     private int getMaxHealth(float average) {
-        return (int) (average % 1 == 0 ? average + 2 : average + 1.5f);
+        return (int) (average % 1 == 0 ? average +  2 : average + 1.5f);
     }
 
     private int getMinHealth(float average) {
