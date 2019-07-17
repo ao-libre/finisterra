@@ -1,18 +1,14 @@
 package design.screens.views;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
-import com.soywiz.korim.color.Colors;
 import design.designers.ImageDesigner;
 import design.designers.ImageDesigner.ImageParameters;
 import game.screens.WorldScreen;

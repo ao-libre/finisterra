@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import model.descriptors.HeadDescriptor;
-import model.textures.AOAnimation;
 import org.jetbrains.annotations.NotNull;
 
 import static launcher.DesignCenter.SKIN;

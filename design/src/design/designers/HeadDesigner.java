@@ -2,7 +2,6 @@ package design.designers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import design.editors.Listener;
 import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import model.descriptors.HeadDescriptor;

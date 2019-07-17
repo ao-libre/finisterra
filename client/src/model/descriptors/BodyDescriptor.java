@@ -22,6 +22,14 @@ public class BodyDescriptor extends Descriptor {
         return headOffsetY;
     }
 
+    public void setHeadOffsetX(int headOffsetX) {
+        this.headOffsetX = headOffsetX;
+    }
+
+    public void setHeadOffsetY(int headOffsetY) {
+        this.headOffsetY = headOffsetY;
+    }
+
     @Override
     public String toString() {
         return "Body: " + getId();

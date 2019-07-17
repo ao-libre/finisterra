@@ -32,7 +32,6 @@ import entity.character.states.Heading;
 import game.handlers.AnimationHandler;
 import model.descriptors.Descriptor;
 import model.textures.AOTexture;
-import model.textures.BundledAnimation;
 
 public class StaticDescriptorActor extends DescriptorActor {
 

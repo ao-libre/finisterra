@@ -26,4 +26,12 @@ public class FXDescriptor extends Descriptor {
     public String toString() {
         return "FX: " + getId();
     }
+
+    public void setOffsetY(int offsetY) {
+        this.offsetY = offsetY;
+    }
+
+    public void setOffsetX(int offsetX) {
+        this.offsetX = offsetX;
+    }
 }

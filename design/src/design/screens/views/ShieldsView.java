@@ -2,7 +2,7 @@ package design.screens.views;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import design.designers.DescriptorDesigner;
-import model.descriptors.BodyDescriptor;
+import design.editors.ShieldEditor;
 import model.descriptors.Descriptor;
 import model.descriptors.ShieldDescriptor;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +15,6 @@ public class ShieldsView extends DescriptorView {
     @NotNull
     @Override
     Table getTable(Descriptor descriptor) {
-        return null;
+        return ShieldEditor.create((ShieldDescriptor) descriptor);
     }
 }

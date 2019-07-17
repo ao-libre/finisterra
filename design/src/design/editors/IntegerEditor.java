@@ -1,6 +1,5 @@
 package design.editors;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -10,8 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import design.screens.ScreenManager;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 

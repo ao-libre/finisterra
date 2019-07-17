@@ -26,7 +26,6 @@ package graphics;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.esotericsoftware.minlog.Log;
 import design.screens.views.DescriptorActor;
 import entity.character.states.Heading;

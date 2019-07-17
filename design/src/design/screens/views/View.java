@@ -78,6 +78,9 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         SplitPane splitPane = new SplitPane(leftPane, rightPane, false, SKIN);
         Table content = new Table();
         content.add(splitPane).grow();
+        if (list.getItems().size > 0) {
+            list.setSelected(list.getItems().get(0));
+        }
         return content;
     }
 
@@ -221,9 +224,6 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
                 onSelect(list.getSelected());
             }
         });
-        if (items.size > 0) {
-            list.setSelected(items.get(0));
-        }
         return list;
     }
 

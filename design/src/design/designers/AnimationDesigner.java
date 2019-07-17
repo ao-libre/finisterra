@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static design.designers.AnimationDesigner.*;
+import static design.designers.AnimationDesigner.AnimationParameters;
 
 public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParameters> {
 

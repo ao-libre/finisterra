@@ -4,8 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 

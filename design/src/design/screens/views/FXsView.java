@@ -2,9 +2,9 @@ package design.screens.views;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import design.designers.DescriptorDesigner;
+import design.editors.FXEditor;
 import model.descriptors.Descriptor;
 import model.descriptors.FXDescriptor;
-import model.descriptors.ShieldDescriptor;
 import org.jetbrains.annotations.NotNull;
 
 public class FXsView extends DescriptorView {
@@ -15,6 +15,6 @@ public class FXsView extends DescriptorView {
     @NotNull
     @Override
     Table getTable(Descriptor descriptor) {
-        return new Table();
+        return FXEditor.create((FXDescriptor) descriptor);
     }
 }
