@@ -484,12 +484,14 @@ public class EntityFactorySystem extends PassiveSystem {
         Spell misil = spells.get(8);
         Spell inmo = spells.get(24);
         Spell remo = spells.get(10);
+        Spell curar = spells.get(3);
         switch (hero) {
-            case MAGO:
             case BARDO:
             case CLERIGO:
+                result.add(curar);
+            case MAGO:
                 result.add(apoca);
-                break;
+            break;
         }
         if (!(hero.equals(Hero.GUERRERO) || hero.equals(Hero.ARQUERO))) {
             result.add(misil);
@@ -532,6 +534,7 @@ public class EntityFactorySystem extends PassiveSystem {
     }
 
     private WorldPos getValidPosition(int map) {
+
         return new WorldPos(50, 50, map);
     }
 }

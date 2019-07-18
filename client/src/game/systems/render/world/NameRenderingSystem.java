@@ -39,7 +39,7 @@ public class NameRenderingSystem extends RenderingSystem {
                     table.setRound(false);
                     E e = E(integer);
                     String text = e.getName().text;
-                    Label label = new Label(text, Skins.COMODORE_SKIN, "flipped");
+                    Label label = new Label(text, Skins.COMODORE_SKIN, "flipped-name-user");
                     label.getStyle().font.setUseIntegerPositions(false);
                     float prefWidth = label.getPrefWidth();
                     label.setWrap(true);

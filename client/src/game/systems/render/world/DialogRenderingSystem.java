@@ -45,7 +45,7 @@ public class DialogRenderingSystem extends RenderingSystem {
                     Table table = new Table(Skins.COMODORE_SKIN);
                     table.setRound(false);
                     String text = dialog.text;
-                    Label label = new Label(text, Skins.COMODORE_SKIN, dialog.kind == Kind.MAGIC_WORDS ? "title-no-background" : "speech-bubble");
+                    Label label = new Label(text, Skins.COMODORE_SKIN, dialog.kind == Kind.MAGIC_WORDS ? "flipped-shadow" : "speech-bubble");
                     label.getStyle().font.setUseIntegerPositions(false);
                     float prefWidth = label.getPrefWidth();
                     label.getColor().a = 0.8f;

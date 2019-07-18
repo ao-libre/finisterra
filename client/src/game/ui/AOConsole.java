@@ -12,7 +12,7 @@ import java.util.LinkedList;
 
 public class AOConsole extends Actor {
 
-    private static final float MAX_MESSAGES = 6;
+    private static final float MAX_MESSAGES = 9;
 
     private LinkedList<Actor> messages = new LinkedList<>();
 
