@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import design.designers.AnimationDesigner;
@@ -12,6 +13,7 @@ import design.editors.AnimationEditor;
 import game.screens.WorldScreen;
 import model.textures.AOAnimation;
 import model.textures.BundledAnimation;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
 
@@ -45,7 +47,7 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
 
     }
 
-    class AnimationItem extends Preview<AOAnimation> {
+    class AnimationItem extends Editor<AOAnimation> {
 
         private AOAnimation animation;
         private Actor view;
@@ -54,20 +56,22 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
             super(SKIN);
         }
 
+        @NotNull
         @Override
-        void show(AOAnimation animation) {
-            this.animation = animation;
-            if (view != null) {
-                removeActor(view);
-            }
-            view = AnimationEditor.getTable(animation);
-            add(view);
+        protected Table getTable() {
+            return AnimationEditor.getTable(current);
         }
 
         @Override
-        AOAnimation get() {
-            return animation;
+        protected AOAnimation getCopy(AOAnimation to) {
+            return new AOAnimation(to);
         }
+
+        @Override
+        void save() {
+            getDesigner().add(current);
+        }
+
     }
 
     class AnimationPreview extends Preview<AOAnimation> {

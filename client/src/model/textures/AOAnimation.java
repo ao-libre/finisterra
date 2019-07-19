@@ -2,6 +2,10 @@ package model.textures;
 
 import model.ID;
 
+import java.util.Arrays;
+
+import static java.util.Arrays.copyOf;
+
 public class AOAnimation implements ID {
 
     private int id;
@@ -19,7 +23,7 @@ public class AOAnimation implements ID {
 
     public AOAnimation(AOAnimation other) {
         this.id = other.id;
-        this.frames = other.frames;
+        this.frames = copyOf(other.frames, other.frames.length);
         this.speed = other.speed;
     }
 

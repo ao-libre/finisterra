@@ -1,4 +1,4 @@
-package design.editors;
+package design.editors.fields;
 
 import model.ID;
 

@@ -19,6 +19,7 @@ import design.editors.NPCEditor;
 import entity.character.parts.Body;
 import entity.character.states.Heading;
 import model.textures.BundledAnimation;
+import org.jetbrains.annotations.NotNull;
 import position.Pos2D;
 import position.WorldPos;
 import shared.model.map.Tile;
@@ -56,29 +57,23 @@ public class NPCView extends View<NPC, NPCDesigner> {
     protected void keyPressed(int keyCode) {
     }
 
-    class NPCItem extends Preview<NPC> {
-
-        private Actor view;
-        private NPC npc;
+    class NPCItem extends Editor<NPC> {
 
         public NPCItem() {
             super(SKIN);
         }
 
+        @NotNull
         @Override
-        void show(NPC npc) {
-            if (view != null) {
-                clear();
-            }
-            NPC modifiedNpc = new NPC(npc);
-            add(view = NPCEditor.getTable(modifiedNpc)).growX();
-            this.npc = modifiedNpc;
+        protected Table getTable() {
+            return NPCEditor.getTable(current);
         }
 
         @Override
-        NPC get() {
-            return npc;
+        protected NPC getCopy(NPC to) {
+            return new NPC(to);
         }
+
     }
 
     class NPCPreview extends Preview<NPC> {

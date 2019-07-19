@@ -3,6 +3,9 @@ package design.editors;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import design.editors.fields.FieldProvider;
+import design.editors.fields.FloatEditor;
+import design.editors.fields.IntegerEditor;
 import model.textures.AOAnimation;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,11 +30,12 @@ public class AnimationEditor extends Dialog {
     @NotNull
     public static Table getTable(AOAnimation animation) {
         Table table = new Table(SKIN);
+        table.defaults().growX().uniform();
         table.add(IntegerEditor.create("ID", id -> {
             animation.setId(id);
             // TODO refactor: search all items that use this animation to change it
         }, animation::getId)).expandX().row();
-        table.add(FloatEditor.simple("Speed", animation::setSpeed, animation::getSpeed));
+        table.add(FloatEditor.simple("Speed", animation::setSpeed, animation::getSpeed)).row();
         int[] frames = animation.getFrames();
         for (int i = 0; i < frames.length; i++) {
             int finalI = i;

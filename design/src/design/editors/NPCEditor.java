@@ -3,6 +3,10 @@ package design.editors;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import design.editors.fields.BooleanEditor;
+import design.editors.fields.FieldProvider;
+import design.editors.fields.IntegerEditor;
+import design.editors.fields.StringEditor;
 import org.jetbrains.annotations.NotNull;
 import shared.model.npcs.NPC;
 
@@ -23,7 +27,6 @@ public class NPCEditor extends Dialog {
     @NotNull
     public static Table getTable(NPC npc) {
         Table table = new Table(SKIN);
-        table.setDebug(true);
         table.defaults().growX().uniform();
         // common
         table.add(IntegerEditor.create("ID", npc::setId, npc::getId)).row();

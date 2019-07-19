@@ -88,45 +88,21 @@ public abstract class DescriptorView<T extends Descriptor> extends View<T, Descr
 
     class DescriptorItem extends Editor<T> {
 
-        private Descriptor descriptor;
-        private Descriptor original;
-        private Actor view;
-
         public DescriptorItem() {
             super(SKIN);
         }
 
+        @NotNull
         @Override
-        void show(Descriptor descriptor) {
-            this.original = descriptor;
-            this.descriptor = copy(descriptor, getDesigner().gettClass());
-            if (view != null) {
-                clear();
-                addButtons();
-            }
-            add(view = getTable(this.descriptor)).colspan(2);
+        protected Table getTable() {
+            return DescriptorView.this.getTable(current);
         }
 
         @Override
-        T get() {
-            return (T) descriptor;
+        protected T getCopy(T to) {
+            return (T) copy(to, getDesigner().gettClass());
         }
 
-        @Override
-        T getOriginal() {
-            return (T) original;
-        }
-
-        @Override
-        void save() {
-            getDesigner().add(get());
-        }
-
-        @Override
-        void restore() {
-            show(getOriginal());
-            getPreview().show(getOriginal());
-        }
     }
 
     class DescriptorPreview extends Preview<T> {

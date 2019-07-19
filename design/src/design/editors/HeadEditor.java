@@ -3,6 +3,8 @@ package design.editors;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import design.editors.fields.FieldProvider;
+import design.editors.fields.IntegerEditor;
 import model.descriptors.HeadDescriptor;
 import org.jetbrains.annotations.NotNull;
 

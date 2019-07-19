@@ -1,6 +1,7 @@
 package design.editors;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import design.editors.fields.IntegerEditor;
 import model.descriptors.BodyDescriptor;
 import model.descriptors.Descriptor;
 

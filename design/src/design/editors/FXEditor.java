@@ -1,6 +1,8 @@
 package design.editors;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import design.editors.fields.FieldProvider;
+import design.editors.fields.IntegerEditor;
 import model.descriptors.Descriptor;
 import model.descriptors.FXDescriptor;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +23,6 @@ public class FXEditor extends DescriptorEditor {
     @Override
     public Table getTable(Descriptor descriptor) {
         Table table = new Table(SKIN);
-        table.setDebug(true);
         table.defaults().growX().uniform();
 
         table.add(IntegerEditor.create("ID", descriptor::setId, descriptor::getId)).row();

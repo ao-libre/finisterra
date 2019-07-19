@@ -4,6 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import design.editors.fields.FieldProvider;
+import design.editors.fields.IntegerEditor;
 import model.descriptors.Descriptor;
 import org.jetbrains.annotations.NotNull;
 import shared.interfaces.Constants;
@@ -25,14 +27,10 @@ abstract class DescriptorEditor extends Dialog {
     @NotNull
     public Table getTable(Descriptor descriptor) {
         Table table = new Table(SKIN);
-        table.setDebug(true);
         table.defaults().growX().uniform();
 
         table.add(IntegerEditor.create("ID", descriptor::setId, descriptor::getId)).row();
-
-
         getExtraFields(descriptor, table);
-
         table.add(new Label("Animations: ", SKIN)).row();
         table.add(IntegerEditor.create("South", FieldProvider.ANIMATION, b -> descriptor.getIndexs()[Constants.Heading.SOUTH.toInt()] = b, () -> descriptor.getGraphic(Constants.Heading.SOUTH.toInt()))).row();
         table.add(IntegerEditor.create("East", FieldProvider.ANIMATION, b -> descriptor.getIndexs()[Constants.Heading.EAST.toInt()] = b, () -> descriptor.getGraphic(Constants.Heading.EAST.toInt()))).row();

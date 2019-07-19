@@ -390,6 +390,7 @@ public class NPC {
     }
 
     public NPC(NPC other) {
+        // TODO CHECK
         this.id = other.id;
         this.name = other.name;
         this.npcType = other.npcType;

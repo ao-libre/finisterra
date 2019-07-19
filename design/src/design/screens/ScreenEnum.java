@@ -1,6 +1,6 @@
 package design.screens;
 
-import design.editors.Listener;
+import design.editors.fields.Listener;
 import design.screens.views.*;
 
 public enum ScreenEnum {

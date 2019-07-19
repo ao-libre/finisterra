@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.minlog.Log;
 import design.designers.IDesigner;
-import design.editors.Listener;
+import design.editors.fields.Listener;
 import design.screens.DesignScreen;
 import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
@@ -21,6 +21,7 @@ import game.handlers.DescriptorHandler;
 import game.screens.WorldScreen;
 import launcher.DesignCenter;
 import model.ID;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -111,6 +112,11 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         T t = getItemView().get();
         getPreview().show(t);
         clearListener();
+    }
+
+    public void saveEdition() {
+        T t = getItemView().get();
+        getDesigner().add(t);
     }
 
     public List<T> getList() {
@@ -258,6 +264,10 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
 
     abstract class Editor<T> extends Preview<T> {
 
+        T original;
+        T current;
+        Actor view;
+
         public Editor(Skin skin) {
             super(skin);
             addButtons();
@@ -282,10 +292,41 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
             add(save).row();
         }
 
-        abstract T getOriginal();
+        @Override
+        void show(T to) {
+            this.original = to;
+            this.current = getCopy(to);
+            if (view != null) {
+                clear();
+                addButtons();
+            }
+            view = getTable();
+            add(view).pad(20).growX().colspan(2);
+        }
 
-        abstract void save();
+        @NotNull
+        protected abstract Table getTable();
 
-        abstract void restore();
+        protected abstract T getCopy(T to);
+
+        T getOriginal() {
+            return original;
+        }
+
+        @Override
+        T get() {
+            return current;
+        }
+
+        void save() {
+            saveEdition();
+        }
+
+        void restore() {
+            show(getOriginal());
+            refreshPreview();
+        }
+
+
     }
 }

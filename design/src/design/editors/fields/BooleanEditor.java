@@ -1,4 +1,4 @@
-package design.editors;
+package design.editors.fields;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -20,9 +20,14 @@ public class BooleanEditor extends FieldEditor<Boolean> {
     }
 
     @Override
-    protected Actor createSimpleEditor() {
+    protected Actor createField() {
         Table table = new Table();
-        table.add(new CheckBox(getLabel(), SKIN));
+        table.add(new CheckBox(getLabel(), SKIN)).left().growX();
         return table;
+    }
+
+    @Override
+    protected Actor createSimpleEditor() {
+        return null;
     }
 }

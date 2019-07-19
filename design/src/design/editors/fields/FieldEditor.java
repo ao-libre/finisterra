@@ -1,4 +1,4 @@
-package design.editors;
+package design.editors.fields;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -47,13 +47,13 @@ public abstract class FieldEditor<T> implements IFieldEditor {
         return supplier;
     }
 
-    private Actor createField() {
+    protected Actor createField() {
         Table field = new Table(SKIN);
-        field.add(new Label(getLabel(), SKIN));
+        field.add(new Label(getLabel(), SKIN)).space(4);
         Actor editor = createSimpleEditor();
-        field.add(editor);
+        field.add(editor).growX();
         if (shouldAddButton(editor)) {
-            field.add(createButton((TextField) editor));
+            field.add(createButton((TextField) editor)).right();
         }
         return field;
     }

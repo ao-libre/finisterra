@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import design.designers.ImageDesigner;
 import design.designers.ImageDesigner.ImageParameters;
-import design.editors.Listener;
+import design.editors.fields.Listener;
 import game.screens.WorldScreen;
 import model.textures.AOImage;
 import model.textures.AOTexture;
