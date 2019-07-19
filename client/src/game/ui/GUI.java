@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.BufferUtils;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import game.AOGame;
 import game.managers.AOInputProcessor;
@@ -17,46 +18,50 @@ import game.ui.user.UserInformation;
 import game.utils.Skins;
 
 
-public class GUI {
+public class GUI implements Disposable {
 
     //public static final int CONSOLE_TOP_BORDER = 16;
     //public static final int CONSOLE_LEFT_BORDER = 5;
-    private static ActionBar actionBar;
-    private static UserInformation userTable;
-    private static DialogText dialog;
-    private static AOConsole console;
-    private static Stage stage;
+    private Stage stage;
+    private ActionBar actionBar;
+    private UserInformation userTable;
+    private DialogText dialog;
+    private AOConsole console;
     private OrthographicCamera camera;
 
     public GUI() {
-        this.stage = new AOInputProcessor();
+        this.stage = new AOInputProcessor(this);
+        this.actionBar = new ActionBar();
+        this.userTable = new UserInformation();
+        this.dialog = new DialogText();
+        this.console = new AOConsole();
     }
 
-    public static ActionBar getActionBar() {
+    public ActionBar getActionBar() {
         return actionBar;
     }
 
-    public static Inventory getInventory() {
+    public Inventory getInventory() {
         return actionBar.getInventory();
     }
 
-    public static DialogText getDialog() {
+    public DialogText getDialog() {
         return dialog;
     }
 
-    public static AOConsole getConsole() {
+    public AOConsole getConsole() {
         return console;
     }
 
-    public static UserInformation getUserTable() {
+    public UserInformation getUserTable() {
         return userTable;
     }
 
-    public static Stage getStage() {
+    public Stage getStage() {
         return stage;
     }
 
-    public static SpellView getSpellView() {
+    public SpellView getSpellView() {
         return getActionBar().getSpellView();
     }
 
@@ -73,7 +78,7 @@ public class GUI {
         Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
         BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
         PixmapIO.writePNG(Gdx.files.local(screenshotPath), pixmap);
-        GUI.getConsole().addInfo("3...2...1...Say Cheese!. Screenshot saved in " + screenshotPath);
+        //GUI.getConsole().addInfo("3...2...1...Say Cheese!. Screenshot saved in " + screenshotPath);
         pixmap.dispose();
     }
 
