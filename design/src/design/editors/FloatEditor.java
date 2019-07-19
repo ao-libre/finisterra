@@ -1,8 +1,11 @@
 package design.editors;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import design.screens.ScreenManager;
+import design.screens.views.View;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -34,6 +37,10 @@ public class FloatEditor extends FieldEditor<Float> {
                 try {
                     float t = Float.parseFloat(text.getText());
                     getConsumer().accept(t);
+                    Screen current = ScreenManager.getInstance().getCurrent();
+                    if (current instanceof View) {
+                        ((View) current).refresh();
+                    }
                 } catch (NumberFormatException ignored) {
 
                 }

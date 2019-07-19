@@ -38,6 +38,11 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
     }
 
     @Override
+    public void reload() {
+
+    }
+
+    @Override
     public void save() {
         json.toJson(images, ArrayList.class, AOImage.class, Gdx.files.local(OUTPUT_FOLDER + IMAGES_FILE_NAME + JSON_EXT));
     }

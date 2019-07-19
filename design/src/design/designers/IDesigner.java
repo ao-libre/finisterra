@@ -11,6 +11,8 @@ public interface IDesigner<T, P extends IDesigner.Parameters<T>> {
 
     }
 
+    void reload();
+
     void save();
 
     List<T> get();

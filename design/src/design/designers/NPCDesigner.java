@@ -53,6 +53,11 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
     }
 
     @Override
+    public void reload() {
+
+    }
+
+    @Override
     public void save() {
         FileHandle outputFile = Gdx.files.local(OUTPUT_FOLDER + NPCS_JSON);
         json.toJson(npcs, HashMap.class, NPC.class, outputFile);

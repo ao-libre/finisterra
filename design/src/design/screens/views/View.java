@@ -52,6 +52,10 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         listenerList.clear();
     }
 
+    public ArrayList<Listener> getListenerList() {
+        return listenerList;
+    }
+
     @Override
     protected Table createContent() {
         Table leftPane = new Table();
@@ -222,7 +226,14 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
                 delete.setDisabled(list.getSelected() == null);
                 preview.show(list.getSelected());
                 itemView.show(list.getSelected());
-                onSelect(list.getSelected());
+            }
+        });
+        list.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (getTapCount() >= 2) {
+                    onSelect(list.getSelected());
+                }
             }
         });
         return list;

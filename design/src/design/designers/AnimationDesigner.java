@@ -39,6 +39,11 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
     }
 
     @Override
+    public void reload() {
+
+    }
+
+    @Override
     public void save() {
         json.toJson(animations, ArrayList.class, AOAnimation.class, Gdx.files.local(OUTPUT_FOLDER + ANIMATIONS_FILE_NAME + JSON_EXT));
     }

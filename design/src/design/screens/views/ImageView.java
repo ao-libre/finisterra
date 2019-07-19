@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import design.designers.ImageDesigner;
 import design.designers.ImageDesigner.ImageParameters;
+import design.editors.Listener;
 import game.screens.WorldScreen;
 import model.textures.AOImage;
 import model.textures.AOTexture;
@@ -77,15 +78,25 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
 
     @NotNull
     private Table getImageContainer(AOImage aoImage) {
-        Button table = new Button(SKIN, "color-base-static");
-        // TODO add listener to button
+        Button table = new Button(SKIN, "color-base");
+        table.addListener(new ClickListener() {
+
+            private void accept(Listener listener) {
+                listener.select(aoImage);
+            }
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                getListenerList().forEach(this::accept);
+            }
+        });
         Table buttons = new Table();
         Button edit = new Button(SKIN, "settings-small");
         edit.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 getDesigner().modify(aoImage, getStage());
-                //refresh?
+                //TODO refresh?
             }
         });
         TextTooltip toolTip = new TextTooltip("Edit Image", SKIN);
@@ -110,9 +121,8 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
         image.setScaling(Scaling.fit);
         bg.fill(false);
         bg.setActor(image);
-
-        table.add(bg).expand().center();
-
+        table.add(bg).expand().center().row();
+        table.add(new Label(aoImage.getId() + "- file: " + aoImage.getFileNum(), SKIN));
         return table;
     }
 

@@ -43,6 +43,11 @@ public class HeadDesigner implements IDesigner<HeadDescriptor, HeadParameters> {
     }
 
     @Override
+    public void reload() {
+
+    }
+
+    @Override
     public void save() {
         json.toJson(heads, ArrayList.class, AOAnimation.class, Gdx.files.local(OUTPUT_FOLDER + HEADS_FILE_NAME + JSON_EXT));
     }

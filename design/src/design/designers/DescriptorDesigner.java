@@ -54,6 +54,11 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
     }
 
     @Override
+    public void reload() {
+
+    }
+
+    @Override
     public void save() {
         json.toJson(descriptors, ArrayList.class, tClass, Gdx.files.local(OUTPUT_FOLDER + getFileName() + JSON_EXT));
     }

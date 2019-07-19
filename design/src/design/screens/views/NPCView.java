@@ -143,10 +143,6 @@ public class NPCView extends View<NPC, NPCDesigner> {
             return npc;
         }
 
-        @Override
-        public void draw(Batch batch, float parentAlpha) {
-            super.draw(batch, parentAlpha);
-        }
     }
 
     class AnimationActor extends Actor {
