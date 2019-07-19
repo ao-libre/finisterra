@@ -135,7 +135,6 @@ public class NPCView extends View<NPC, NPCDesigner> {
             entityId = NPCToEntity.getNpcEntity(world, npc.getId(), new WorldPos(1, 1, 1), npc);
             E(entityId).focused().moving();
             animationActor.setEntityId(entityId);
-
         }
 
         @Override
@@ -163,6 +162,10 @@ public class NPCView extends View<NPC, NPCDesigner> {
             if (e.hasBody()) {
                 final Body body = e.getBody();
                 heading = Heading.HEADING_SOUTH;
+                if (body.index <= 0) {
+
+                    return;
+                }
                 BundledAnimation bodyAnimation = getAnimationHandler().getBodyAnimation(body, heading);
                 TextureRegion graphic = bodyAnimation.getGraphic();
                 setSize(graphic.getRegionWidth(), graphic.getRegionHeight());

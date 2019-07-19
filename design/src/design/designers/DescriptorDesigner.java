@@ -9,11 +9,9 @@ import model.descriptors.*;
 import org.jetbrains.annotations.NotNull;
 import shared.util.AOJson;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, IDesigner.Parameters<T>> {
@@ -60,7 +58,12 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
 
     @Override
     public void save() {
-        json.toJson(descriptors, ArrayList.class, tClass, Gdx.files.local(OUTPUT_FOLDER + getFileName() + JSON_EXT));
+        List<Descriptor> toSave = descriptors.stream().filter(this::anyAnimation).collect(Collectors.toList());
+        json.toJson(toSave, ArrayList.class, tClass, Gdx.files.local(OUTPUT_FOLDER + getFileName() + JSON_EXT));
+    }
+
+    private boolean anyAnimation(T t) {
+        return Stream.of(t.getIndexs()).flatMapToInt(Arrays::stream).anyMatch(i -> i > 0);
     }
 
     @NotNull

@@ -9,8 +9,11 @@ import model.textures.AOAnimation;
 import shared.util.AOJson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static design.designers.HeadDesigner.HeadParameters;
 
@@ -49,7 +52,12 @@ public class HeadDesigner implements IDesigner<HeadDescriptor, HeadParameters> {
 
     @Override
     public void save() {
-        json.toJson(heads, ArrayList.class, AOAnimation.class, Gdx.files.local(OUTPUT_FOLDER + HEADS_FILE_NAME + JSON_EXT));
+        List<HeadDescriptor> toSave = heads.stream().filter(this::anyAnimation).collect(Collectors.toList());
+        json.toJson(toSave, ArrayList.class, AOAnimation.class, Gdx.files.local(OUTPUT_FOLDER + HEADS_FILE_NAME + JSON_EXT));
+    }
+
+    private boolean anyAnimation(HeadDescriptor headDescriptor) {
+        return Stream.of(headDescriptor.getIndexs()).flatMapToInt(Arrays::stream).anyMatch(i -> i > 0);
     }
 
     @Override
