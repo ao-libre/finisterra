@@ -526,15 +526,27 @@ public class EntityFactorySystem extends PassiveSystem {
 
 
     private void setEntityPosition(E entity) {
-        WorldPos worldPos = getValidPosition(1);
-        entity
-                .worldPosX(worldPos.x)
-                .worldPosY(worldPos.y)
-                .worldPosMap(worldPos.map);
+        switch (Race.of(entity)) {
+            case DROW:
+                entity.worldPosX(62).worldPosY(68).worldPosMap(1);
+                break;
+            case ELF:
+                entity.worldPosX(43).worldPosY(16).worldPosMap(2);
+                break;
+            case DWARF:
+                entity.worldPosX(46).worldPosY(9).worldPosMap(40);
+                break;
+            case GNOME:
+                entity.worldPosX(33).worldPosY(49).worldPosMap(1);
+                break;
+            case HUMAN:
+                entity.worldPosX(65).worldPosY(17).worldPosMap(1);
+                break;
+        }
     }
 
     private WorldPos getValidPosition(int map) {
-
+        //TODO comprobar que la posición este libre
         return new WorldPos(50, 50, map);
     }
 }
