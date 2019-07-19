@@ -1,0 +1,34 @@
+[
+  {
+    "id": 40,
+    "name": "Atlas Argentum",
+    "grhIndex": 538,
+    "crucial": false
+  },
+  {
+    "id": 41,
+    "name": "Libro Antiguo",
+    "grhIndex": 539,
+    "crucial": false
+  },
+  {
+    "id": 236,
+    "name": "Atlas Argentum",
+    "grhIndex": 538,
+    "crucial": false
+  },
+  {
+    "id": 626,
+    "name": "No ves nada interesante.",
+    "grhIndex": 145,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 627,
+    "name": "No ves nada interesante.",
+    "grhIndex": 275,
+    "collectable": true,
+    "crucial": false
+  }
+]

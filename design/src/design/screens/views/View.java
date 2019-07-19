@@ -103,8 +103,9 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
     }
 
     public void refresh() {
-        getPreview().show(getPreview().get());
-        getItemView().show(getItemView().get());
+        T t = getItemView().get();
+        getPreview().show(t);
+        getItemView().show(t);
         clearListener();
     }
 

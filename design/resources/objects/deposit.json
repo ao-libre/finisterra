@@ -1,0 +1,98 @@
+[
+  {
+    "id": 188,
+    "name": "Yacimiento de Hierro",
+    "grhIndex": 8616,
+    "collectable": true,
+    "crucial": false,
+    "mineralIndex": 192
+  },
+  {
+    "id": 189,
+    "name": "Yacimiento de Hierro",
+    "grhIndex": 8617,
+    "collectable": true,
+    "crucial": false,
+    "mineralIndex": 192
+  },
+  {
+    "id": 190,
+    "name": "Yacimiento de Hierro",
+    "grhIndex": 8618,
+    "collectable": true,
+    "crucial": false,
+    "mineralIndex": 192
+  },
+  {
+    "id": 191,
+    "name": "Yacimiento de Hierro",
+    "grhIndex": 8619,
+    "collectable": true,
+    "crucial": false,
+    "mineralIndex": 192
+  },
+  {
+    "id": 228,
+    "name": "Yacimiento de Oro",
+    "grhIndex": 8608,
+    "collectable": true,
+    "crucial": false,
+    "mineralIndex": 194
+  },
+  {
+    "id": 229,
+    "name": "Yacimiento de Oro",
+    "grhIndex": 8609,
+    "collectable": true,
+    "crucial": false,
+    "mineralIndex": 194
+  },
+  {
+    "id": 230,
+    "name": "Yacimiento de Oro",
+    "grhIndex": 8610,
+    "collectable": true,
+    "crucial": false,
+    "mineralIndex": 194
+  },
+  {
+    "id": 231,
+    "name": "Yacimiento de Oro",
+    "grhIndex": 8611,
+    "collectable": true,
+    "crucial": false,
+    "mineralIndex": 194
+  },
+  {
+    "id": 232,
+    "name": "Yacimiento de Plata",
+    "grhIndex": 8612,
+    "collectable": true,
+    "crucial": false,
+    "mineralIndex": 193
+  },
+  {
+    "id": 233,
+    "name": "Yacimiento de Plata",
+    "grhIndex": 8613,
+    "collectable": true,
+    "crucial": false,
+    "mineralIndex": 193
+  },
+  {
+    "id": 234,
+    "name": "Yacimiento de Plata",
+    "grhIndex": 8614,
+    "collectable": true,
+    "crucial": false,
+    "mineralIndex": 193
+  },
+  {
+    "id": 235,
+    "name": "Yacimiento de Plata",
+    "grhIndex": 8615,
+    "collectable": true,
+    "crucial": false,
+    "mineralIndex": 193
+  }
+]

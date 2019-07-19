@@ -1,0 +1,37 @@
+[
+  {
+    "id": 362,
+    "name": "Tambor",
+    "grhIndex": 684,
+    "value": 2200,
+    "crucial": false
+  },
+  {
+    "id": 469,
+    "name": "Laúd",
+    "grhIndex": 685,
+    "value": 2200,
+    "crucial": false
+  },
+  {
+    "id": 540,
+    "name": "Flauta",
+    "grhIndex": 686,
+    "value": 2200,
+    "crucial": false
+  },
+  {
+    "id": 874,
+    "name": "Cuerno de llamado Armada",
+    "grhIndex": 11980,
+    "crucial": false,
+    "notDrop": true
+  },
+  {
+    "id": 875,
+    "name": "Cuerno de llamado Legionario",
+    "grhIndex": 11979,
+    "crucial": false,
+    "notDrop": true
+  }
+]

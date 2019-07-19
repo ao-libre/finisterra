@@ -1,0 +1,100 @@
+[
+  {
+    "id": 480,
+    "name": "Flecha",
+    "grhIndex": 752,
+    "value": 6,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID"
+      ]
+    },
+    "minHit": 1,
+    "maxHit": 3
+  },
+  {
+    "id": 551,
+    "name": "Flecha +1",
+    "grhIndex": 755,
+    "value": 10,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "minHit": 1,
+    "maxHit": 4
+  },
+  {
+    "id": 552,
+    "name": "Flecha +2",
+    "grhIndex": 754,
+    "value": 16,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "minHit": 1,
+    "maxHit": 5
+  },
+  {
+    "id": 553,
+    "name": "Flecha +3",
+    "grhIndex": 753,
+    "value": 23,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "minHit": 1,
+    "maxHit": 6
+  },
+  {
+    "id": 860,
+    "name": "Flecha (Newbie)",
+    "grhIndex": 752,
+    "value": 2,
+    "newbie": true,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID"
+      ]
+    },
+    "minHit": 1,
+    "maxHit": 1
+  }
+]

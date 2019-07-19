@@ -7,7 +7,6 @@ old/
 **/gradle.properties
 out/
 **/out/
-design/resources*
 desktop/jpackage/*
 desktop/build/releases/*.zip
 desktop/build/jdks/**

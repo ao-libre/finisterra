@@ -1,0 +1,853 @@
+[
+  {
+    "id": 13,
+    "name": "Cartel Armas",
+    "grhIndex": 500,
+    "collectable": true,
+    "crucial": false,
+    "text": "Tenemos las mejores armas para los mejores guerreros.",
+    "big": 501
+  },
+  {
+    "id": 18,
+    "name": "Cartel Comida",
+    "grhIndex": 512,
+    "collectable": true,
+    "crucial": false,
+    "text": "¡La mejor comida, al mejor precio!",
+    "big": 501
+  },
+  {
+    "id": 20,
+    "name": "Lápida",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Aquí yace Durmin Van Brick, otrora gran guerrero del Imperio.",
+    "big": 514
+  },
+  {
+    "id": 33,
+    "name": "Cartel Sastre",
+    "grhIndex": 530,
+    "collectable": true,
+    "crucial": false,
+    "text": "Ropa Azrra, los mejores precios!",
+    "big": 501
+  },
+  {
+    "id": 59,
+    "name": "Cartel Pociones",
+    "grhIndex": 546,
+    "collectable": true,
+    "crucial": false,
+    "text": "Pociones, aumente su fuerza, agilidad, recupere salud y demás efectos mágicos!!",
+    "big": 501
+  },
+  {
+    "id": 60,
+    "name": "Casa Número 1",
+    "grhIndex": 547,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 61,
+    "name": "Cartel Carpintería",
+    "grhIndex": 548,
+    "collectable": true,
+    "crucial": false,
+    "text": "¡Compra y venta de madera!",
+    "big": 501
+  },
+  {
+    "id": 62,
+    "name": "Cartel Propiedades",
+    "grhIndex": 549,
+    "collectable": true,
+    "crucial": false,
+    "text": "Compra y venta de propiedades. ¡Stock limitado!",
+    "big": 501
+  },
+  {
+    "id": 77,
+    "name": "Casa Número 2",
+    "grhIndex": 553,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 78,
+    "name": "Casa Número 3",
+    "grhIndex": 552,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 79,
+    "name": "Casa Número 4",
+    "grhIndex": 551,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 82,
+    "name": "Casa Número 5",
+    "grhIndex": 555,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 83,
+    "name": "Casa Número 6",
+    "grhIndex": 556,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 84,
+    "name": "Casa Número 7",
+    "grhIndex": 567,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 85,
+    "name": "Casa Número 8",
+    "grhIndex": 568,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 86,
+    "name": "Casa Número 9",
+    "grhIndex": 569,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 134,
+    "name": "Cartel Armaduras",
+    "grhIndex": 570,
+    "collectable": true,
+    "crucial": false,
+    "text": "Compra y venta de armaduras, cascos y escudos.",
+    "big": 501
+  },
+  {
+    "id": 209,
+    "name": "Cartel Mineros",
+    "grhIndex": 610,
+    "collectable": true,
+    "crucial": false,
+    "text": "Bienvenidos al Gremio de los Mineros, contamos con fabulosas herramientas y los mejores minerales de todo Argentum.",
+    "big": 501
+  },
+  {
+    "id": 210,
+    "name": "Casa Número 11",
+    "grhIndex": 611,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 211,
+    "name": "Casa Número 12",
+    "grhIndex": 612,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 212,
+    "name": "Casa Número 13",
+    "grhIndex": 613,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 213,
+    "name": "Casa Número 14",
+    "grhIndex": 614,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 214,
+    "name": "Casa Número 15",
+    "grhIndex": 615,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 215,
+    "name": "Casa Número 16",
+    "grhIndex": 616,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 216,
+    "name": "Casa Número 17",
+    "grhIndex": 617,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 217,
+    "name": "Casa Número 18",
+    "grhIndex": 618,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 218,
+    "name": "Casa Número 19",
+    "grhIndex": 619,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 219,
+    "name": "Casa Número 10",
+    "grhIndex": 620,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 220,
+    "name": "Casa Número 20",
+    "grhIndex": 621,
+    "collectable": true,
+    "crucial": false,
+    "text": "Residencia Privada.",
+    "big": 501
+  },
+  {
+    "id": 221,
+    "name": "Cartel Hechizos",
+    "grhIndex": 622,
+    "collectable": true,
+    "crucial": false,
+    "text": "¡Entrad noble Mago! Puedo ofrecerte mis mejores Hechizos.",
+    "big": 501
+  },
+  {
+    "id": 222,
+    "name": "Cartel Pescadores",
+    "grhIndex": 623,
+    "collectable": true,
+    "crucial": false,
+    "text": "Gremio de Pescadores",
+    "big": 501
+  },
+  {
+    "id": 223,
+    "name": "Cartel",
+    "grhIndex": 625,
+    "collectable": true,
+    "crucial": false,
+    "text": "Hola aventurero, unos cuantos kilómentros al Norte se encuentra el pueblo de Ullathorpe y al Oeste encontrarás la ciudad de Nix. ¡Buena Suerte, viajero!",
+    "big": 501
+  },
+  {
+    "id": 224,
+    "name": "Cartel",
+    "grhIndex": 624,
+    "collectable": true,
+    "crucial": false,
+    "text": "Forasteros: Este Pueblo forma parte del Gran Imperio de Argentum, cualquier acción criminal será reprimida por la Guardia Real. Todo criminal será perseguido y ajusticiado.                                Ordenanza Real.",
+    "big": 501
+  },
+  {
+    "id": 225,
+    "name": "Cartel Newbie Dungeon",
+    "grhIndex": 626,
+    "collectable": true,
+    "crucial": false,
+    "text": "¡Hola osados aventureros, sed bienvenidos en el Dungeon Newbie! Aquí podrán entrenar sus habilidades sin correr ningún riesgo ya que el Dungeon está fuertemente custodiado por la Guardia Imperial. Adentrándose encontrarán criaturas perversas con las cuales podrán luchar, también encontrarán un Sacerdote para ser resucitados, provisiones, etc. ¡Suerte y que lo disfruteís!",
+    "big": 501
+  },
+  {
+    "id": 226,
+    "name": "Cartel",
+    "grhIndex": 628,
+    "collectable": true,
+    "crucial": false,
+    "text": "Sigue el camino del Sur para ir a Nix, hacia al Oeste encontrarás el peligroso bosque de Dorck.",
+    "big": 501
+  },
+  {
+    "id": 227,
+    "name": "Cartel Bosque Dorck",
+    "grhIndex": 627,
+    "collectable": true,
+    "crucial": false,
+    "text": "Entrada al bosque de Dorck. Manténgase alejado, zona de peligro.",
+    "big": 501
+  },
+  {
+    "id": 258,
+    "name": "Cartel Banco",
+    "grhIndex": 670,
+    "collectable": true,
+    "crucial": false,
+    "text": "Banco Goliath. La mayor seguridad.",
+    "big": 501
+  },
+  {
+    "id": 259,
+    "name": "Cartel Provisiones",
+    "grhIndex": 672,
+    "collectable": true,
+    "crucial": false,
+    "text": "Provisiones.",
+    "big": 501
+  },
+  {
+    "id": 260,
+    "name": "Cartel Sacerdote",
+    "grhIndex": 673,
+    "collectable": true,
+    "crucial": false,
+    "text": "Sacerdote.",
+    "big": 501
+  },
+  {
+    "id": 261,
+    "name": "Cartel Mesón Hostigado",
+    "grhIndex": 671,
+    "collectable": true,
+    "crucial": false,
+    "text": "El Mesón Hostigado.",
+    "big": 501
+  },
+  {
+    "id": 262,
+    "name": "Cartel",
+    "grhIndex": 719,
+    "collectable": true,
+    "crucial": false,
+    "text": "El Gran Consejo.",
+    "big": 501
+  },
+  {
+    "id": 315,
+    "name": "Cartel Muelles",
+    "grhIndex": 675,
+    "collectable": true,
+    "crucial": false,
+    "text": "Muelles:¡Prohibido arrojar basura al mar!. Todo aquél que incurra en una infracción será multado.",
+    "big": 501
+  },
+  {
+    "id": 316,
+    "name": "Cartel Goliath",
+    "grhIndex": 676,
+    "collectable": true,
+    "crucial": false,
+    "text": "Casa Central del Banco Goliath.",
+    "big": 501
+  },
+  {
+    "id": 317,
+    "name": "Cartel Palacio Real",
+    "grhIndex": 677,
+    "collectable": true,
+    "crucial": false,
+    "text": "Bienvenido al Palacio Real.",
+    "big": 501
+  },
+  {
+    "id": 368,
+    "name": "Lápida",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Aquí yace Altair de Oteren. Fue conocido y amado por todos, sobre todo en Nix donde siempre mostraba su generosidad y su paciencia con los newbies, ayudando con todo lo que tenía a todos, pescando por horas para dar a los demás. Altair, descansa en paz... el pueblo de Nix siempre honrará tu memoria.",
+    "big": 514
+  },
+  {
+    "id": 371,
+    "name": "Tumba de Nebeth",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Bajo este mármol descansan los restos del Dios Nebeth, ese pequeño demiurgo de grandes sueños.",
+    "big": 514
+  },
+  {
+    "id": 457,
+    "name": "Cartel",
+    "grhIndex": 718,
+    "collectable": true,
+    "crucial": false,
+    "text": "Prisión del Reino",
+    "big": 501
+  },
+  {
+    "id": 458,
+    "name": "Cartel",
+    "grhIndex": 720,
+    "collectable": true,
+    "crucial": false,
+    "text": "Prisión",
+    "big": 501
+  },
+  {
+    "id": 459,
+    "name": "Cartel",
+    "grhIndex": 721,
+    "collectable": true,
+    "crucial": false,
+    "text": "Abadía de Lindos",
+    "big": 501
+  },
+  {
+    "id": 535,
+    "name": "Tumba de Gulfas Morgolock",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Lápida en homenaje a nuestro gran demiurgo, Gulfas Morgolock, quien desapareció físicamente de estas tierras para salvarnos del oscuro poder del mal.",
+    "big": 514
+  },
+  {
+    "id": 547,
+    "name": "Cartel Dungeon Veriil",
+    "grhIndex": 863,
+    "collectable": true,
+    "crucial": false,
+    "text": "¡¡Cuidado!! El Dúngeon de Veriil es uno de los lugares más peligrosos de todo Argentum; pocos son los aventureros que logran salir con vida de él.",
+    "big": 501
+  },
+  {
+    "id": 548,
+    "name": "Cartel Arghâl",
+    "grhIndex": 864,
+    "collectable": true,
+    "crucial": false,
+    "text": "¡¡¡Bienvenidos a Arghâl!!!",
+    "big": 501
+  },
+  {
+    "id": 574,
+    "name": "Cartel",
+    "grhIndex": 875,
+    "collectable": true,
+    "crucial": false,
+    "text": "La mística ciudad de Arghâl se encuentra hacia el este.",
+    "big": 501
+  },
+  {
+    "id": 577,
+    "name": "Cartel",
+    "grhIndex": 876,
+    "collectable": true,
+    "crucial": false,
+    "text": "El refugio de los aventureros, lugar propicio para beber y emprender nuevas aventuras.",
+    "big": 501
+  },
+  {
+    "id": 578,
+    "name": "Cartel",
+    "grhIndex": 877,
+    "collectable": true,
+    "crucial": false,
+    "text": "Al este se encuentra el centro histórico de Arghâl.",
+    "big": 501
+  },
+  {
+    "id": 579,
+    "name": "Cartel",
+    "grhIndex": 878,
+    "collectable": true,
+    "crucial": false,
+    "text": "El famoso espacio donde se congregan los más grandes artistas y poetas de Argentum.",
+    "big": 501
+  },
+  {
+    "id": 620,
+    "name": "Lápida",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Aquí yace el cuerpo del Pollo Encantado.",
+    "big": 514
+  },
+  {
+    "id": 621,
+    "name": "Cartel",
+    "grhIndex": 500,
+    "collectable": true,
+    "crucial": false,
+    "text": "Teleport a las Catacumbas.",
+    "big": 501
+  },
+  {
+    "id": 642,
+    "name": "Tumba de Calixto",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Aquí descansa el alma pura de Calixto, diosa eterna de estas tierras.",
+    "big": 514
+  },
+  {
+    "id": 643,
+    "name": "Tumba de Lobonegro",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Aquí yace el caballero más oscuro de la noche, el lobo más fiero. El restaurador del orden.",
+    "big": 514
+  },
+  {
+    "id": 644,
+    "name": "Tumba de Almendra",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Aquí yacen los restos de la Gran Diosa Almendra, quien será recordada por toda la eternidad por haber sido la única Diosa con barba.",
+    "big": 514
+  },
+  {
+    "id": 647,
+    "name": "Cartel",
+    "grhIndex": 500,
+    "collectable": true,
+    "crucial": false,
+    "text": "Vd está entrando en territorio del Imperio Pretoriano. Los visitantes NO son bienvenidos y serán atacados sin piedad.",
+    "big": 501
+  },
+  {
+    "id": 649,
+    "name": "Cartel",
+    "grhIndex": 500,
+    "collectable": true,
+    "crucial": false,
+    "text": "La reglamentación del robo de NPCs no se aplica aquí. Es un lugar de entrenamiento común y nadie puede proclamarse dueño de las criaturas.",
+    "big": 501
+  },
+  {
+    "id": 666,
+    "name": "Objetos Voodoo Satánicos",
+    "grhIndex": 740,
+    "crucial": false,
+    "text": "OAAAAAAAAAAAAAA!!! :-D",
+    "big": 740
+  },
+  {
+    "id": 703,
+    "name": "Tumba de Cronos",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Aquí yace el alma de Cronos, un dios que ha dado mucho por nuestro mundo. Descansa, hermano... el pueblo de Argentum jamás te olvidará!",
+    "big": 514
+  },
+  {
+    "id": 706,
+    "name": "Cartel de Advertencia",
+    "grhIndex": 500,
+    "collectable": true,
+    "crucial": false,
+    "text": "PROHIBIDO TOCAR (¡dioses y semidioses incluidos!). Este pergamino fue encargado al imperio real por los dioses de Argentum para su estudio."
+  },
+  {
+    "id": 711,
+    "name": "Tumba de Valkira",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Aquí descansan los restos de la Diosa Valkira, quien dejó todo de ella para ser la gran fuerza ordenadora de estas tierras durante largos años. El mundo de Argentum siempre te lo agradecerá.",
+    "big": 514
+  },
+  {
+    "id": 712,
+    "name": "Tumba de Jennifer",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Aquí descansan los restos de Jennifer de Nix. Largo fue el camino desde su infancia como gitana hasta diosa de la ciudad del sur, quien luchó con los peores males que estas tierras han conocido. Que este mundo no olvide tu sacrificio y tu lucha contra los dioses malignos que gobernaron en otras épocas. Que tu hijo EL OSO vele por tu espíritu en este pacífico lugar.",
+    "big": 514
+  },
+  {
+    "id": 713,
+    "name": "Tumba de Jareth",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Aquí descansan los restos de Jareth. Antiguo luchador y líder del ejército real de Banderbill. Que tu espíritu proteja a la ciudad.",
+    "big": 514
+  },
+  {
+    "id": 714,
+    "name": "Tumba de Gold Fire",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Aquí descansan los restos de Gold Fire. Líder supremo del ejército de Banderbill en la séptima era de este mundo.",
+    "big": 514
+  },
+  {
+    "id": 715,
+    "name": "Tumba de Amenakhte",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Aquí descansan los restos de Amenakhte. Líder supremo del ejército de la legión oscura en la novena era, ganó el respeto de este mundo a fuerza de espada y sangre.",
+    "big": 514
+  },
+  {
+    "id": 868,
+    "name": "Tumba de Chatillon",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Yacen bajo esta tumba los restos del Gran Dios Chatillon, que dejó su vida por la gloria y el orden de estas tierras.",
+    "big": 514
+  },
+  {
+    "id": 869,
+    "name": "Tumba de Nightsorrow",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Aquí descansan los restos del Dios Nightsorrow, que mucho colaboró por la justicia del Argentum.",
+    "big": 514
+  },
+  {
+    "id": 870,
+    "name": "Tumba de Shep",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Bajo esta piedra reposan en paz los restos del gran Shep, aquel Dios que dedicó su vida entera a estas tierras y sus habitantes.",
+    "big": 514
+  },
+  {
+    "id": 871,
+    "name": "Tumba de Patrick",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Yacen aquí los restos de Patrick, aquel bondadoso Dios que con esfuerzo y trabajo mucho dió por estas tierras.",
+    "big": 514
+  },
+  {
+    "id": 872,
+    "name": "Tumba de EL OSO",
+    "grhIndex": 513,
+    "collectable": true,
+    "crucial": false,
+    "text": "Aquí descansan los restos del mítico EL OSO, poderoso Dios que durante siglos fue el responsable de darle el hálito de vida a este hermoso mundo gracias a su gran ciencia, bondad y dedicación. Por siempre el pueblo del Argentum glorificará tu paso por estas tierras y te estrará eternamente agradecido.",
+    "big": 514
+  },
+  {
+    "id": 987,
+    "name": "Estatua de Otto Wallace",
+    "collectable": true,
+    "crucial": false,
+    "text": "",
+    "big": 18996
+  },
+  {
+    "id": 989,
+    "name": "Estatua del Panda",
+    "collectable": true,
+    "crucial": false,
+    "text": "",
+    "big": 19715
+  },
+  {
+    "id": 1019,
+    "name": "Cartel Asesino",
+    "grhIndex": 21969,
+    "collectable": true,
+    "crucial": false,
+    "text": "Asesinos",
+    "big": 501
+  },
+  {
+    "id": 1020,
+    "name": "Cartel Bandido",
+    "grhIndex": 21970,
+    "collectable": true,
+    "crucial": false,
+    "text": "Bandidos",
+    "big": 501
+  },
+  {
+    "id": 1021,
+    "name": "Cartel Bardo",
+    "grhIndex": 21971,
+    "collectable": true,
+    "crucial": false,
+    "text": "Bardos",
+    "big": 501
+  },
+  {
+    "id": 1022,
+    "name": "Cartel Clérigo",
+    "grhIndex": 21972,
+    "collectable": true,
+    "crucial": false,
+    "text": "Clérigos",
+    "big": 501
+  },
+  {
+    "id": 1023,
+    "name": "Cartel Druida",
+    "grhIndex": 21973,
+    "collectable": true,
+    "crucial": false,
+    "text": "Druidas",
+    "big": 501
+  },
+  {
+    "id": 1024,
+    "name": "Cartel Guerrero",
+    "grhIndex": 21974,
+    "collectable": true,
+    "crucial": false,
+    "text": "Guerreros",
+    "big": 501
+  },
+  {
+    "id": 1025,
+    "name": "Cartel Cazador",
+    "grhIndex": 21975,
+    "collectable": true,
+    "crucial": false,
+    "text": "Cazadores",
+    "big": 501
+  },
+  {
+    "id": 1026,
+    "name": "Cartel Ladrón",
+    "grhIndex": 21976,
+    "collectable": true,
+    "crucial": false,
+    "text": "Ladrónes",
+    "big": 501
+  },
+  {
+    "id": 1027,
+    "name": "Cartel Mago",
+    "grhIndex": 21977,
+    "collectable": true,
+    "crucial": false,
+    "text": "Magos",
+    "big": 501
+  },
+  {
+    "id": 1028,
+    "name": "Cartel Paladín",
+    "grhIndex": 21978,
+    "collectable": true,
+    "crucial": false,
+    "text": "Paladínes",
+    "big": 501
+  },
+  {
+    "id": 1029,
+    "name": "Cartel Pirata",
+    "grhIndex": 21979,
+    "collectable": true,
+    "crucial": false,
+    "text": "Piratas",
+    "big": 501
+  },
+  {
+    "id": 1030,
+    "name": "Cartel Trabajador",
+    "grhIndex": 21980,
+    "collectable": true,
+    "crucial": false,
+    "text": "Trabajadores",
+    "big": 501
+  },
+  {
+    "id": 1031,
+    "name": "Cartel Gremio de Trabajadores",
+    "grhIndex": 4909,
+    "collectable": true,
+    "crucial": false,
+    "text": "Gremio de Trabajadores",
+    "big": 501
+  },
+  {
+    "id": 1032,
+    "name": "Cartel Leñadores",
+    "grhIndex": 3716,
+    "collectable": true,
+    "crucial": false,
+    "text": "Leñadores",
+    "big": 501
+  },
+  {
+    "id": 1033,
+    "name": "Cartel",
+    "grhIndex": 4986,
+    "collectable": true,
+    "crucial": false,
+    "text": "Desde que se desató la Guerra que conllevó a la Plaga, Ullathorpe dejó de formar parte del Reino de Banderbill, para pasar a ser una zona comercial e ideal para todos los viajeros. Aquí podrás pasear, comerciar y platicar libremente, mientras no disturbes a sus pobladores, la paz ni el orden. Alcaldía de Ullathorpe.",
+    "big": 4987
+  },
+  {
+    "id": 1034,
+    "name": "Cartel",
+    "grhIndex": 4986,
+    "collectable": true,
+    "crucial": false,
+    "text": "Has llegado a la gran Ciudad de Nix, conocida por tener la Bahía de los Pescadores, actualmente es una ciudad neutral, ya que el Reino de Banderbill decidió retirar sus Guardias Reales. Desde ese momento Nix se convirtió en una zona portuaria ideal para los pescadores. Esta es una ciudad libre, donde ningún reino apuesta sus guardias, regida bajo nuestras propias leyes de paz y seguridad.",
+    "big": 4987
+  },
+  {
+    "id": 1035,
+    "name": "Cartel Nemahuak",
+    "grhIndex": 4923,
+    "collectable": true,
+    "crucial": false,
+    "text": "Bienvenido a Nemahuak",
+    "big": 501
+  }
+]

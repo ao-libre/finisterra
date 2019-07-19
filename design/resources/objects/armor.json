@@ -1,0 +1,4134 @@
+[
+  {
+    "id": 30,
+    "name": "Armadura de Cuero",
+    "grhIndex": 526,
+    "value": 4600,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 22,
+    "minDef": 10,
+    "maxDef": 15
+  },
+  {
+    "id": 31,
+    "name": "Vestimentas Comunes",
+    "grhIndex": 527,
+    "value": 50,
+    "forbiddenClasses": {},
+    "bodyNumber": 1
+  },
+  {
+    "id": 32,
+    "name": "Vestimentas Comunes",
+    "grhIndex": 528,
+    "value": 50,
+    "forbiddenClasses": {},
+    "bodyNumber": 2
+  },
+  {
+    "id": 35,
+    "name": "Vestimentas Comunes",
+    "grhIndex": 535,
+    "value": 50,
+    "forbiddenClasses": {},
+    "bodyNumber": 3
+  },
+  {
+    "id": 45,
+    "name": "Ropa de Clan",
+    "grhIndex": 544,
+    "value": 80,
+    "forbiddenClasses": {},
+    "bodyNumber": 35
+  },
+  {
+    "id": 80,
+    "name": "Ropa de Clan",
+    "grhIndex": 554,
+    "value": 80,
+    "forbiddenClasses": {},
+    "bodyNumber": 35
+  },
+  {
+    "id": 135,
+    "name": "Túnica Roja Burda",
+    "grhIndex": 657,
+    "value": 600,
+    "forbiddenClasses": {},
+    "bodyNumber": 50,
+    "minDef": 2,
+    "maxDef": 5
+  },
+  {
+    "id": 170,
+    "name": "Vestimenta de Mujer (H/E/EO-M)",
+    "grhIndex": 602,
+    "value": 50,
+    "forbiddenClasses": {},
+    "bodyNumber": 44,
+    "women": true
+  },
+  {
+    "id": 195,
+    "name": "Armadura de Placas Completa",
+    "grhIndex": 605,
+    "value": 27440,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 45,
+    "minDef": 35,
+    "maxDef": 40
+  },
+  {
+    "id": 196,
+    "name": "Túnica de Mago",
+    "grhIndex": 606,
+    "value": 3200,
+    "forbiddenClasses": {},
+    "bodyNumber": 46,
+    "minDef": 8,
+    "maxDef": 12
+  },
+  {
+    "id": 238,
+    "name": "Túnica Azul",
+    "grhIndex": 656,
+    "value": 2700,
+    "forbiddenClasses": {},
+    "bodyNumber": 49,
+    "minDef": 5,
+    "maxDef": 10
+  },
+  {
+    "id": 239,
+    "name": "Túnica Roja",
+    "grhIndex": 657,
+    "value": 2700,
+    "forbiddenClasses": {},
+    "bodyNumber": 50,
+    "minDef": 5,
+    "maxDef": 10
+  },
+  {
+    "id": 240,
+    "name": "Ropa de Enano (E/G)",
+    "grhIndex": 658,
+    "value": 40,
+    "forbiddenClasses": {},
+    "bodyNumber": 52,
+    "dwarf": true
+  },
+  {
+    "id": 243,
+    "name": "Armadura de Placas Completa (E/G)",
+    "grhIndex": 659,
+    "value": 27440,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 54,
+    "minDef": 35,
+    "maxDef": 40,
+    "dwarf": true
+  },
+  {
+    "id": 356,
+    "name": "Armadura de las Sombras",
+    "grhIndex": 680,
+    "value": 23030,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ARCHER",
+        "WARRIOR",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 48,
+    "minDef": 30,
+    "maxDef": 37
+  },
+  {
+    "id": 357,
+    "name": "Túnica de Monje",
+    "grhIndex": 693,
+    "value": 10500,
+    "forbiddenClasses": {},
+    "bodyNumber": 79,
+    "minDef": 15,
+    "maxDef": 20
+  },
+  {
+    "id": 359,
+    "name": "Cota de Mallas",
+    "grhIndex": 682,
+    "value": 7350,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "BARDIC"
+      ]
+    },
+    "bodyNumber": 57,
+    "minDef": 12,
+    "maxDef": 22
+  },
+  {
+    "id": 360,
+    "name": "Armadura de Cazador",
+    "grhIndex": 683,
+    "value": 17000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 58,
+    "minDef": 10,
+    "maxDef": 20
+  },
+  {
+    "id": 369,
+    "name": "Armadura Legionaria",
+    "grhIndex": 691,
+    "value": 3010,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "BARDIC",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 77,
+    "minDef": 7,
+    "maxDef": 13
+  },
+  {
+    "id": 372,
+    "name": "Manto de Sacerdote del Imperio",
+    "grhIndex": 759,
+    "value": 2900,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "PIRATE",
+        "PALADIN",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 92,
+    "minDef": 6,
+    "maxDef": 12
+  },
+  {
+    "id": 379,
+    "name": "Armadura Legionaria (E/G)",
+    "grhIndex": 695,
+    "value": 3010,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 81,
+    "minDef": 7,
+    "maxDef": 13,
+    "dwarf": true
+  },
+  {
+    "id": 381,
+    "name": "Túnica Antigua",
+    "grhIndex": 571,
+    "value": 3400,
+    "forbiddenClasses": {},
+    "bodyNumber": 38,
+    "minDef": 6,
+    "maxDef": 15
+  },
+  {
+    "id": 382,
+    "name": "Vestido Azul (H/E/EO-M)",
+    "grhIndex": 694,
+    "value": 275,
+    "forbiddenClasses": {},
+    "bodyNumber": 80,
+    "minDef": 2,
+    "maxDef": 3,
+    "women": true
+  },
+  {
+    "id": 390,
+    "name": "Armadura de Placas Completa +1",
+    "grhIndex": 3226,
+    "value": 35350,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 194,
+    "minDef": 40,
+    "maxDef": 45
+  },
+  {
+    "id": 391,
+    "name": "Armadura de Placas Completa +2",
+    "grhIndex": 3253,
+    "value": 47600,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 195,
+    "minDef": 45,
+    "maxDef": 50
+  },
+  {
+    "id": 392,
+    "name": "Armadura de Placas Completa +1 (E/G)",
+    "grhIndex": 3156,
+    "value": 35350,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 192,
+    "minDef": 40,
+    "maxDef": 45,
+    "dwarf": true
+  },
+  {
+    "id": 393,
+    "name": "Armadura de Placas Completa +2 (E/G)",
+    "grhIndex": 3155,
+    "value": 47600,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 191,
+    "minDef": 45,
+    "maxDef": 50,
+    "dwarf": true
+  },
+  {
+    "id": 463,
+    "name": "Vestimentas Comunes (Newbie)",
+    "grhIndex": 527,
+    "crucial": false,
+    "newbie": true,
+    "forbiddenClasses": {},
+    "bodyNumber": 1
+  },
+  {
+    "id": 464,
+    "name": "Vestimentas Comunes (Newbie)",
+    "grhIndex": 528,
+    "crucial": false,
+    "newbie": true,
+    "forbiddenClasses": {},
+    "bodyNumber": 2
+  },
+  {
+    "id": 465,
+    "name": "Vestimentas Comunes (Newbie)",
+    "grhIndex": 535,
+    "crucial": false,
+    "newbie": true,
+    "forbiddenClasses": {},
+    "bodyNumber": 3
+  },
+  {
+    "id": 466,
+    "name": "Harapos de Mendigo (E/G) (Newbie)",
+    "grhIndex": 15249,
+    "crucial": false,
+    "newbie": true,
+    "forbiddenClasses": {},
+    "bodyNumber": 300,
+    "dwarf": true
+  },
+  {
+    "id": 481,
+    "name": "Armadura de Dragón",
+    "grhIndex": 756,
+    "value": 540000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 89,
+    "minDef": 60,
+    "maxDef": 65
+  },
+  {
+    "id": 482,
+    "name": "Armadura de Dragón (H/E/EO-M)",
+    "grhIndex": 757,
+    "value": 540000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 90,
+    "minDef": 60,
+    "maxDef": 65,
+    "women": true
+  },
+  {
+    "id": 483,
+    "name": "Armadura de Dragón (E/G)",
+    "grhIndex": 758,
+    "value": 540000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 91,
+    "minDef": 60,
+    "maxDef": 65,
+    "dwarf": true
+  },
+  {
+    "id": 484,
+    "name": "Manto de Noble",
+    "grhIndex": 760,
+    "value": 4620,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 93,
+    "minDef": 10,
+    "maxDef": 15
+  },
+  {
+    "id": 485,
+    "name": "Armadura Legendaria",
+    "grhIndex": 761,
+    "value": 328000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 94,
+    "minDef": 55,
+    "maxDef": 60
+  },
+  {
+    "id": 486,
+    "name": "Ropa de Estilo (E/G)",
+    "grhIndex": 762,
+    "value": 120,
+    "forbiddenClasses": {},
+    "bodyNumber": 95,
+    "minDef": 1,
+    "maxDef": 1,
+    "dwarf": true
+  },
+  {
+    "id": 487,
+    "name": "Dama de las Tinieblas (H/E/EO-M)",
+    "grhIndex": 763,
+    "value": 398000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 96,
+    "minDef": 55,
+    "maxDef": 60,
+    "women": true
+  },
+  {
+    "id": 488,
+    "name": "White Lady (H/E/EO-M)",
+    "grhIndex": 764,
+    "value": 3000,
+    "forbiddenClasses": {},
+    "bodyNumber": 97,
+    "minDef": 7,
+    "maxDef": 9,
+    "women": true
+  },
+  {
+    "id": 489,
+    "name": "Armadura de Placas Azul",
+    "grhIndex": 765,
+    "value": 59000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 98,
+    "minDef": 40,
+    "maxDef": 45
+  },
+  {
+    "id": 490,
+    "name": "Ropa de Minero",
+    "grhIndex": 766,
+    "value": 5000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 100,
+    "minDef": 12,
+    "maxDef": 16
+  },
+  {
+    "id": 492,
+    "name": "Armadura Real (E/G)",
+    "grhIndex": 768,
+    "value": 3010,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "BARDIC",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 102,
+    "minDef": 7,
+    "maxDef": 13,
+    "dwarf": true
+  },
+  {
+    "id": 493,
+    "name": "Armadura de Placas Rojas (H/E/EO-M)",
+    "grhIndex": 769,
+    "value": 53750,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 103,
+    "minDef": 35,
+    "maxDef": 40,
+    "women": true
+  },
+  {
+    "id": 495,
+    "name": "Armadura Escarlata",
+    "grhIndex": 771,
+    "value": 86000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 105,
+    "minDef": 50,
+    "maxDef": 55
+  },
+  {
+    "id": 496,
+    "name": "Armadura de la Ciénaga",
+    "grhIndex": 772,
+    "value": 69500,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 106,
+    "minDef": 45,
+    "maxDef": 50
+  },
+  {
+    "id": 497,
+    "name": "Armadura de Placas de Gala",
+    "grhIndex": 773,
+    "value": 56640,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 107,
+    "minDef": 42,
+    "maxDef": 47
+  },
+  {
+    "id": 499,
+    "name": "Cota de Mallas (H/E/EO-M)",
+    "grhIndex": 775,
+    "value": 7350,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "BARDIC"
+      ]
+    },
+    "bodyNumber": 109,
+    "minDef": 12,
+    "maxDef": 22,
+    "women": true
+  },
+  {
+    "id": 500,
+    "name": "Armadura Bruñida (E/G)",
+    "grhIndex": 776,
+    "value": 59000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 110,
+    "minDef": 40,
+    "maxDef": 45,
+    "dwarf": true
+  },
+  {
+    "id": 501,
+    "name": "Ropa de Campesino",
+    "grhIndex": 777,
+    "value": 650,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 111,
+    "minDef": 3,
+    "maxDef": 5
+  },
+  {
+    "id": 502,
+    "name": "Ropa de Campesino (E/G)",
+    "grhIndex": 778,
+    "value": 650,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 112,
+    "minDef": 3,
+    "maxDef": 5,
+    "dwarf": true
+  },
+  {
+    "id": 503,
+    "name": "Trampa Visual (H/E/EO-M)",
+    "grhIndex": 779,
+    "value": 25200,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 113,
+    "minDef": 30,
+    "maxDef": 40,
+    "women": true
+  },
+  {
+    "id": 504,
+    "name": "Atuendo Combinado (H/E/EO-M)",
+    "grhIndex": 780,
+    "value": 200,
+    "forbiddenClasses": {
+      "CP": [
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 114,
+    "minDef": 1,
+    "maxDef": 3,
+    "women": true
+  },
+  {
+    "id": 505,
+    "name": "Atuendo Azul (H/E/EO-M)",
+    "grhIndex": 781,
+    "value": 200,
+    "forbiddenClasses": {},
+    "bodyNumber": 115,
+    "minDef": 1,
+    "maxDef": 3,
+    "women": true
+  },
+  {
+    "id": 506,
+    "name": "Atuendo Rosa (H/E/EO-M)",
+    "grhIndex": 782,
+    "value": 200,
+    "forbiddenClasses": {},
+    "bodyNumber": 116,
+    "minDef": 1,
+    "maxDef": 3,
+    "women": true
+  },
+  {
+    "id": 507,
+    "name": "Ropa Violeta (E/G)",
+    "grhIndex": 783,
+    "value": 410,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 117,
+    "minDef": 2,
+    "maxDef": 4,
+    "dwarf": true
+  },
+  {
+    "id": 508,
+    "name": "Ropa Estuaria (H/E/EO-M)",
+    "grhIndex": 784,
+    "value": 4000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 118,
+    "minDef": 8,
+    "maxDef": 15,
+    "women": true
+  },
+  {
+    "id": 509,
+    "name": "Túnica de Maga Oscura (H/E/EO-M)",
+    "grhIndex": 785,
+    "value": 2800,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "DRUID",
+        "ASSASSIN",
+        "BARDIC",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 119,
+    "minDef": 5,
+    "maxDef": 12,
+    "women": true
+  },
+  {
+    "id": 510,
+    "name": "Vestido Indulgente (H/E/EO-M)",
+    "grhIndex": 786,
+    "value": 10500,
+    "forbiddenClasses": {},
+    "bodyNumber": 120,
+    "minDef": 15,
+    "maxDef": 20,
+    "women": true
+  },
+  {
+    "id": 511,
+    "name": "Vestido de Novia Sensual (H/E/EO-M)",
+    "grhIndex": 787,
+    "value": 1600,
+    "forbiddenClasses": {},
+    "bodyNumber": 121,
+    "minDef": 3,
+    "maxDef": 10,
+    "women": true
+  },
+  {
+    "id": 512,
+    "name": "Vestido Calipso (E/G-M)",
+    "grhIndex": 789,
+    "value": 3075,
+    "forbiddenClasses": {
+      "CP": [
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 123,
+    "minDef": 6,
+    "maxDef": 10,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 513,
+    "name": "Vestido de Bruja (H/E/EO-M)",
+    "grhIndex": 790,
+    "value": 10500,
+    "forbiddenClasses": {
+      "CP": [
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 124,
+    "minDef": 15,
+    "maxDef": 20,
+    "women": true
+  },
+  {
+    "id": 514,
+    "name": "Vestido de Bruja Especial (H/E/EO-M)",
+    "grhIndex": 791,
+    "value": 15200,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 125,
+    "minDef": 19,
+    "maxDef": 26,
+    "women": true
+  },
+  {
+    "id": 515,
+    "name": "Ropa Legendaria",
+    "grhIndex": 792,
+    "value": 3900,
+    "forbiddenClasses": {},
+    "bodyNumber": 126,
+    "minDef": 9,
+    "maxDef": 14
+  },
+  {
+    "id": 516,
+    "name": "Túnica de Maga del Imperio (H/E/EO-M)",
+    "grhIndex": 793,
+    "value": 2800,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "DRUID",
+        "ASSASSIN",
+        "BARDIC",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 127,
+    "minDef": 5,
+    "maxDef": 12,
+    "women": true
+  },
+  {
+    "id": 517,
+    "name": "Túnica de Mago del Imperio",
+    "grhIndex": 794,
+    "value": 2800,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "DRUID",
+        "ASSASSIN",
+        "BARDIC",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 128,
+    "minDef": 5,
+    "maxDef": 12
+  },
+  {
+    "id": 518,
+    "name": "Túnica de Mago Oscuro",
+    "grhIndex": 795,
+    "value": 2800,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "DRUID",
+        "ASSASSIN",
+        "BARDIC",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 129,
+    "minDef": 5,
+    "maxDef": 12
+  },
+  {
+    "id": 519,
+    "name": "Túnica Legendaria",
+    "grhIndex": 796,
+    "value": 20000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 130,
+    "minDef": 30,
+    "maxDef": 35
+  },
+  {
+    "id": 520,
+    "name": "Armadura de Gran Sacerdotisa Imperial (H/E/EO-M)",
+    "grhIndex": 797,
+    "value": 9240,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "PIRATE",
+        "PALADIN",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 131,
+    "minDef": 15,
+    "maxDef": 22,
+    "women": true
+  },
+  {
+    "id": 521,
+    "name": "Armadura Real",
+    "grhIndex": 690,
+    "value": 3010,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "BARDIC",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 64,
+    "minDef": 7,
+    "maxDef": 13
+  },
+  {
+    "id": 523,
+    "name": "Manto de Sacerdote Demoníaco",
+    "grhIndex": 800,
+    "value": 2900,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "PIRATE",
+        "PALADIN",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 134,
+    "minDef": 6,
+    "maxDef": 12
+  },
+  {
+    "id": 524,
+    "name": "Túnica Roja Especial (E/G)",
+    "grhIndex": 801,
+    "value": 10500,
+    "forbiddenClasses": {},
+    "bodyNumber": 135,
+    "minDef": 15,
+    "maxDef": 20,
+    "dwarf": true
+  },
+  {
+    "id": 525,
+    "name": "Túnica Combinada (E/G)",
+    "grhIndex": 802,
+    "value": 20000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 136,
+    "minDef": 30,
+    "maxDef": 35,
+    "dwarf": true
+  },
+  {
+    "id": 526,
+    "name": "Túnica Combinada de Mujer (E/G-M)",
+    "grhIndex": 803,
+    "value": 20000,
+    "forbiddenClasses": {},
+    "bodyNumber": 137,
+    "minDef": 30,
+    "maxDef": 35,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 527,
+    "name": "Ropa de Enana (E/G-M)",
+    "grhIndex": 804,
+    "value": 400,
+    "forbiddenClasses": {},
+    "bodyNumber": 138,
+    "minDef": 2,
+    "maxDef": 4,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 528,
+    "name": "Túnica Negra",
+    "grhIndex": 806,
+    "value": 3000,
+    "forbiddenClasses": {
+      "CP": [
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 140,
+    "minDef": 5,
+    "maxDef": 8
+  },
+  {
+    "id": 529,
+    "name": "Armadura de Cuero (H/E/EO-M)",
+    "grhIndex": 807,
+    "value": 4600,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 142,
+    "minDef": 10,
+    "maxDef": 15,
+    "women": true
+  },
+  {
+    "id": 549,
+    "name": "Túnica de Mago del Imperio (E/G)",
+    "grhIndex": 799,
+    "value": 2800,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "DRUID",
+        "ASSASSIN",
+        "BARDIC",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 133,
+    "minDef": 5,
+    "maxDef": 12,
+    "dwarf": true
+  },
+  {
+    "id": 558,
+    "name": "Túnica de Mago Oscuro (E/G)",
+    "grhIndex": 774,
+    "value": 2800,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "DRUID",
+        "ASSASSIN",
+        "BARDIC",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 23,
+    "minDef": 5,
+    "maxDef": 12,
+    "dwarf": true
+  },
+  {
+    "id": 614,
+    "name": "Túnica de Archimago",
+    "grhIndex": 806,
+    "crucial": false,
+    "notDrop": true,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 140,
+    "minDef": 38,
+    "maxDef": 40
+  },
+  {
+    "id": 615,
+    "name": "Túnica de Archimago (E/G)",
+    "grhIndex": 657,
+    "crucial": false,
+    "notDrop": true,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 135,
+    "minDef": 38,
+    "maxDef": 40,
+    "dwarf": true
+  },
+  {
+    "id": 616,
+    "name": "Armadura de Guerrero Campeón",
+    "grhIndex": 756,
+    "crucial": false,
+    "notDrop": true,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 89,
+    "minDef": 80,
+    "maxDef": 85
+  },
+  {
+    "id": 617,
+    "name": "Armadura de Guerrero Campeón (E/G)",
+    "grhIndex": 758,
+    "value": 60000,
+    "crucial": false,
+    "notDrop": true,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 91,
+    "minDef": 60,
+    "maxDef": 65,
+    "dwarf": true
+  },
+  {
+    "id": 628,
+    "name": "Túnica de Archimago Imperial",
+    "grhIndex": 687,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 61,
+    "minDef": 35,
+    "maxDef": 35
+  },
+  {
+    "id": 629,
+    "name": "Armadura Nobilísima",
+    "grhIndex": 688,
+    "value": 11830,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 62,
+    "minDef": 15,
+    "maxDef": 25
+  },
+  {
+    "id": 630,
+    "name": "Túnica Celestial",
+    "grhIndex": 767,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "PIRATE",
+        "PALADIN",
+        "ARCHER",
+        "WARRIOR",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 101,
+    "minDef": 40,
+    "maxDef": 40
+  },
+  {
+    "id": 631,
+    "name": "Armadura de Líder Imperial (H/E/EO-M)",
+    "grhIndex": 797,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "CLERIC",
+        "ARCHER",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 131,
+    "minDef": 55,
+    "maxDef": 55
+  },
+  {
+    "id": 632,
+    "name": "Armadura de Guerrero Real (E/G)",
+    "grhIndex": 776,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 110,
+    "minDef": 55,
+    "maxDef": 55,
+    "dwarf": true
+  },
+  {
+    "id": 633,
+    "name": "Túnica Marrón de Mago Imperial (E/G)",
+    "grhIndex": 802,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "DRUID",
+        "ASSASSIN",
+        "BARDIC",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 136,
+    "minDef": 35,
+    "maxDef": 35,
+    "dwarf": true
+  },
+  {
+    "id": 634,
+    "name": "Túnica Egregia de Mago Oscuro",
+    "grhIndex": 692,
+    "value": 9500,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "DRUID",
+        "ASSASSIN",
+        "BARDIC",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 78,
+    "minDef": 15,
+    "maxDef": 20
+  },
+  {
+    "id": 635,
+    "name": "Armadura Lóbrega (H/E/EO-M)",
+    "grhIndex": 770,
+    "value": 11830,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "BARDIC",
+        "PIRATE",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 104,
+    "minDef": 15,
+    "maxDef": 25,
+    "women": true
+  },
+  {
+    "id": 636,
+    "name": "Túnica de Líder del Caos (E/G)",
+    "grhIndex": 657,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "ASSASSIN",
+        "PIRATE",
+        "PALADIN",
+        "ARCHER",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 135,
+    "minDef": 35,
+    "maxDef": 35,
+    "dwarf": true
+  },
+  {
+    "id": 637,
+    "name": "Túnica de líder del Caos",
+    "grhIndex": 806,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "PIRATE",
+        "PALADIN",
+        "ARCHER",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 140,
+    "minDef": 40,
+    "maxDef": 40
+  },
+  {
+    "id": 638,
+    "name": "Armadura de Guardián del Demonio",
+    "grhIndex": 756,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 89,
+    "minDef": 55,
+    "maxDef": 55
+  },
+  {
+    "id": 639,
+    "name": "Armadura de Guardián del Demonio (E/G)",
+    "grhIndex": 758,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 91,
+    "minDef": 55,
+    "maxDef": 55,
+    "dwarf": true
+  },
+  {
+    "id": 640,
+    "name": "Túnica de Archimago del Caos",
+    "grhIndex": 657,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 50,
+    "minDef": 55,
+    "maxDef": 55
+  },
+  {
+    "id": 641,
+    "name": "Ropa de Pordiosero",
+    "grhIndex": 654,
+    "value": 110,
+    "forbiddenClasses": {},
+    "bodyNumber": 47,
+    "minDef": 1,
+    "maxDef": 1
+  },
+  {
+    "id": 646,
+    "name": "Túnica Real Pretoriana",
+    "grhIndex": 689,
+    "value": 675000,
+    "crucial": false,
+    "forbiddenClasses": {},
+    "bodyNumber": 63
+  },
+  {
+    "id": 648,
+    "name": "Armadura de Cazador (E/G)",
+    "grhIndex": 1100,
+    "value": 17000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 155,
+    "minDef": 10,
+    "maxDef": 20,
+    "dwarf": true
+  },
+  {
+    "id": 650,
+    "name": "Túnica Pretoriana",
+    "grhIndex": 657,
+    "crucial": false,
+    "forbiddenClasses": {},
+    "bodyNumber": 50
+  },
+  {
+    "id": 656,
+    "name": "Túnica Pretoriana (E/G)",
+    "grhIndex": 657,
+    "crucial": false,
+    "forbiddenClasses": {},
+    "bodyNumber": 135,
+    "dwarf": true
+  },
+  {
+    "id": 667,
+    "name": "Cota de Mallas (E/G)",
+    "grhIndex": 1127,
+    "value": 7350,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "BARDIC"
+      ]
+    },
+    "bodyNumber": 156,
+    "minDef": 12,
+    "maxDef": 22,
+    "dwarf": true
+  },
+  {
+    "id": 668,
+    "name": "Armadura de Cuero (E/G)",
+    "grhIndex": 1154,
+    "value": 4700,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 157,
+    "minDef": 10,
+    "maxDef": 17,
+    "dwarf": true
+  },
+  {
+    "id": 669,
+    "name": "Ropa Real",
+    "grhIndex": 1181,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID",
+        "ASSASSIN",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 158,
+    "minDef": 20,
+    "maxDef": 20
+  },
+  {
+    "id": 670,
+    "name": "Túnica de Mago (E/G)",
+    "grhIndex": 1208,
+    "value": 3200,
+    "forbiddenClasses": {},
+    "bodyNumber": 159,
+    "minDef": 8,
+    "maxDef": 12,
+    "dwarf": true
+  },
+  {
+    "id": 671,
+    "name": "Túnica de Monje (E/G)",
+    "grhIndex": 1235,
+    "value": 3400,
+    "forbiddenClasses": {},
+    "bodyNumber": 160,
+    "minDef": 6,
+    "maxDef": 15,
+    "dwarf": true
+  },
+  {
+    "id": 672,
+    "name": "Armadura de Elite (E/G)",
+    "grhIndex": 1262,
+    "value": 21980,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 161,
+    "minDef": 30,
+    "maxDef": 35,
+    "dwarf": true
+  },
+  {
+    "id": 675,
+    "name": "Vestimenta Imperial",
+    "grhIndex": 4924,
+    "value": 175,
+    "forbiddenClasses": {},
+    "bodyNumber": 174,
+    "minDef": 1,
+    "maxDef": 3
+  },
+  {
+    "id": 676,
+    "name": "Vestimenta Imperial (E/G)",
+    "grhIndex": 4925,
+    "value": 175,
+    "forbiddenClasses": {},
+    "bodyNumber": 175,
+    "minDef": 1,
+    "maxDef": 3,
+    "dwarf": true
+  },
+  {
+    "id": 677,
+    "name": "Vestimenta Legionaria",
+    "grhIndex": 4926,
+    "value": 175,
+    "forbiddenClasses": {},
+    "bodyNumber": 176,
+    "minDef": 1,
+    "maxDef": 3
+  },
+  {
+    "id": 678,
+    "name": "Vestimenta Legionaria (E/G)",
+    "grhIndex": 4927,
+    "value": 175,
+    "forbiddenClasses": {},
+    "bodyNumber": 177,
+    "minDef": 1,
+    "maxDef": 3,
+    "dwarf": true
+  },
+  {
+    "id": 679,
+    "name": "Túnica Conspicua de Mago Imperial",
+    "grhIndex": 1181,
+    "value": 9500,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "DRUID",
+        "ASSASSIN",
+        "BARDIC",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 173,
+    "minDef": 15,
+    "maxDef": 20
+  },
+  {
+    "id": 680,
+    "name": "Armadura de Gran Sacerdote Imperial",
+    "grhIndex": 4922,
+    "value": 9240,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "PIRATE",
+        "PALADIN",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 172,
+    "minDef": 15,
+    "maxDef": 22
+  },
+  {
+    "id": 681,
+    "name": "Armadura Nobilísima (E/G)",
+    "grhIndex": 4921,
+    "value": 11830,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 179,
+    "minDef": 15,
+    "maxDef": 25,
+    "dwarf": true
+  },
+  {
+    "id": 682,
+    "name": "Túnica Conspicua de Mago Imperial (E/G)",
+    "grhIndex": 4920,
+    "value": 9500,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "DRUID",
+        "ASSASSIN",
+        "BARDIC",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 171,
+    "minDef": 15,
+    "maxDef": 20,
+    "dwarf": true
+  },
+  {
+    "id": 683,
+    "name": "Armadura Lóbrega",
+    "grhIndex": 4919,
+    "value": 11830,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "BARDIC",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 170,
+    "minDef": 15,
+    "maxDef": 25
+  },
+  {
+    "id": 684,
+    "name": "Armadura de Gran Sacerdote Demoníaco",
+    "grhIndex": 4918,
+    "value": 9240,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "PIRATE",
+        "PALADIN",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 169,
+    "minDef": 15,
+    "maxDef": 22
+  },
+  {
+    "id": 685,
+    "name": "Armadura Lóbrega (E/G)",
+    "grhIndex": 4917,
+    "value": 11830,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 168,
+    "minDef": 15,
+    "maxDef": 25,
+    "dwarf": true
+  },
+  {
+    "id": 686,
+    "name": "Túnica Egregia de Mago Oscuro (E/G)",
+    "grhIndex": 4916,
+    "value": 9500,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "DRUID",
+        "ASSASSIN",
+        "BARDIC",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 167,
+    "minDef": 15,
+    "maxDef": 20,
+    "dwarf": true
+  },
+  {
+    "id": 687,
+    "name": "Túnica Palatina",
+    "grhIndex": 687,
+    "value": 18000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 61,
+    "minDef": 30,
+    "maxDef": 35
+  },
+  {
+    "id": 688,
+    "name": "Pequeña Túnica Palatina (E/G)",
+    "grhIndex": 4915,
+    "value": 18000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 166,
+    "minDef": 30,
+    "maxDef": 35,
+    "dwarf": true
+  },
+  {
+    "id": 689,
+    "name": "Túnica Avernal",
+    "grhIndex": 806,
+    "value": 18000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 140,
+    "minDef": 30,
+    "maxDef": 35
+  },
+  {
+    "id": 690,
+    "name": "Pequeña Túnica Avernal (E/G)",
+    "grhIndex": 4914,
+    "value": 18000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 165,
+    "minDef": 30,
+    "maxDef": 35,
+    "dwarf": true
+  },
+  {
+    "id": 691,
+    "name": "Armadura de Ilustre Caballero",
+    "grhIndex": 4913,
+    "value": 25060,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 178,
+    "minDef": 35,
+    "maxDef": 40
+  },
+  {
+    "id": 693,
+    "name": "Armadura Magna (H/E/EO-M)",
+    "grhIndex": 798,
+    "value": 25900,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 132,
+    "minDef": 35,
+    "maxDef": 40,
+    "women": true
+  },
+  {
+    "id": 694,
+    "name": "Armadura de Ilustre Caballero (E/G)",
+    "grhIndex": 4912,
+    "value": 25060,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 164,
+    "minDef": 35,
+    "maxDef": 40,
+    "dwarf": true
+  },
+  {
+    "id": 695,
+    "name": "Armadura de Pequeño Pandemonium (E/G)",
+    "grhIndex": 4910,
+    "value": 25060,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 163,
+    "minDef": 35,
+    "maxDef": 40,
+    "dwarf": true
+  },
+  {
+    "id": 701,
+    "name": "Armadura Infame",
+    "grhIndex": 4911,
+    "value": 25060,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 162,
+    "minDef": 35,
+    "maxDef": 40
+  },
+  {
+    "id": 707,
+    "name": "Vestimenta de Noble (E/G)",
+    "grhIndex": 13282,
+    "value": 700,
+    "forbiddenClasses": {},
+    "bodyNumber": 180,
+    "minDef": 3,
+    "maxDef": 5,
+    "dwarf": true
+  },
+  {
+    "id": 854,
+    "name": "Armadura de las Sombras (E/G)",
+    "grhIndex": 22039,
+    "value": 23030,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ARCHER",
+        "WARRIOR",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 539,
+    "minDef": 30,
+    "maxDef": 37,
+    "dwarf": true
+  },
+  {
+    "id": 867,
+    "name": "Túnica de Gnomo (E/G)",
+    "grhIndex": 5326,
+    "value": 40,
+    "forbiddenClasses": {},
+    "bodyNumber": 34,
+    "dwarf": true
+  },
+  {
+    "id": 876,
+    "name": "Vestimenta de Game Master",
+    "grhIndex": 1470,
+    "crucial": false,
+    "notDrop": true,
+    "forbiddenClasses": {},
+    "bodyNumber": 255
+  },
+  {
+    "id": 877,
+    "name": "Túnica de Gran Hechicero (E/G)",
+    "grhIndex": 15519,
+    "value": 10500,
+    "forbiddenClasses": {},
+    "bodyNumber": 311,
+    "minDef": 15,
+    "maxDef": 20,
+    "dwarf": true
+  },
+  {
+    "id": 878,
+    "name": "Túnica de Gran Hechicera (E/G-M)",
+    "grhIndex": 15303,
+    "value": 10500,
+    "forbiddenClasses": {},
+    "bodyNumber": 302,
+    "minDef": 15,
+    "maxDef": 20,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 879,
+    "name": "Vestido Bordado de Gala (H/E/EO-M)",
+    "grhIndex": 16302,
+    "value": 105,
+    "forbiddenClasses": {},
+    "bodyNumber": 340,
+    "maxDef": 1,
+    "women": true
+  },
+  {
+    "id": 880,
+    "name": "Túnica del Oráculo (H/E/EO-M)",
+    "grhIndex": 16194,
+    "value": 120,
+    "forbiddenClasses": {
+      "CP": [
+        "WARRIOR",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 336,
+    "minDef": 1,
+    "maxDef": 1,
+    "women": true
+  },
+  {
+    "id": 881,
+    "name": "Armadura de la Ciénaga (H/E/EO-M)",
+    "grhIndex": 772,
+    "value": 69500,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 232,
+    "minDef": 45,
+    "maxDef": 50,
+    "women": true
+  },
+  {
+    "id": 882,
+    "name": "Anillas Livianas de Aventurero (H/E/EO)",
+    "grhIndex": 16167,
+    "value": 1190,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "BARDIC"
+      ]
+    },
+    "bodyNumber": 329,
+    "minDef": 3,
+    "maxDef": 8
+  },
+  {
+    "id": 883,
+    "name": "Cota de Anillas Compuesta (H/E/EO)",
+    "grhIndex": 15627,
+    "value": 2520,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 315,
+    "minDef": 5,
+    "maxDef": 9
+  },
+  {
+    "id": 884,
+    "name": "Cota de Anillas Compuesta (H/E/EO-M)",
+    "grhIndex": 15870,
+    "value": 2520,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 324,
+    "minDef": 5,
+    "maxDef": 9,
+    "women": true
+  },
+  {
+    "id": 885,
+    "name": "Armadura Liviana de Hierro (H/E/EO)",
+    "grhIndex": 15789,
+    "value": 3990,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 321,
+    "minDef": 8,
+    "maxDef": 15
+  },
+  {
+    "id": 886,
+    "name": "Vestido de Arquera (H/E/EO-M)",
+    "grhIndex": 15897,
+    "value": 3500,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 325,
+    "minDef": 5,
+    "maxDef": 15,
+    "women": true
+  },
+  {
+    "id": 887,
+    "name": "Cotas de Manto Marrón (H/E/EO)",
+    "grhIndex": 16221,
+    "value": 6800,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "BARDIC"
+      ]
+    },
+    "bodyNumber": 337,
+    "minDef": 8,
+    "maxDef": 25
+  },
+  {
+    "id": 888,
+    "name": "Brial del Bosque (H/E/EO)",
+    "grhIndex": 16275,
+    "value": 6500,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "BARDIC",
+        "PALADIN",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 339,
+    "minDef": 10,
+    "maxDef": 22
+  },
+  {
+    "id": 889,
+    "name": "Anillas Con Manto Verde (H/E/EO)",
+    "grhIndex": 15600,
+    "value": 7350,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "BARDIC"
+      ]
+    },
+    "bodyNumber": 314,
+    "minDef": 12,
+    "maxDef": 22
+  },
+  {
+    "id": 890,
+    "name": "Armadura de Cuero de Oso Pardo (H/E/EO)",
+    "grhIndex": 15762,
+    "value": 6000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "PALADIN",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 320,
+    "minDef": 10,
+    "maxDef": 20
+  },
+  {
+    "id": 891,
+    "name": "Armadura de Cuero de Oso Pardo (H/E/EO-M)",
+    "grhIndex": 15951,
+    "value": 6000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "PALADIN",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 327,
+    "minDef": 10,
+    "maxDef": 20,
+    "women": true
+  },
+  {
+    "id": 892,
+    "name": "Coraza Compuesta Roja (H/E/EO-M)",
+    "grhIndex": 15978,
+    "value": 12250,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "ASSASSIN",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 328,
+    "minDef": 15,
+    "maxDef": 23,
+    "women": true
+  },
+  {
+    "id": 893,
+    "name": "Anillas Con Manto Verde (H/E/EO-M)",
+    "grhIndex": 16005,
+    "value": 7350,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 329,
+    "minDef": 12,
+    "maxDef": 22,
+    "women": true
+  },
+  {
+    "id": 894,
+    "name": "Armadura de Cruzada (H/E/EO-M)",
+    "grhIndex": 16032,
+    "value": 8540,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "ARCHER",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 330,
+    "minDef": 13,
+    "maxDef": 23,
+    "women": true
+  },
+  {
+    "id": 895,
+    "name": "Armadura Legendaria (H/E/EO-M)",
+    "grhIndex": 761,
+    "value": 358000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 319,
+    "minDef": 55,
+    "maxDef": 60,
+    "women": true
+  },
+  {
+    "id": 896,
+    "name": "Túnica de Morgana (H/E/EO-M)",
+    "grhIndex": 16248,
+    "value": 13500,
+    "forbiddenClasses": {
+      "CP": [
+        "BARDIC"
+      ]
+    },
+    "bodyNumber": 338,
+    "minDef": 17,
+    "maxDef": 23,
+    "women": true
+  },
+  {
+    "id": 897,
+    "name": "Cota de Piquero (H/E/EO)",
+    "grhIndex": 16113,
+    "value": 7350,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 333,
+    "minDef": 12,
+    "maxDef": 22
+  },
+  {
+    "id": 898,
+    "name": "Armadura de Placas de Gala (H/E/EO-M)",
+    "grhIndex": 773,
+    "value": 56640,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC"
+      ]
+    },
+    "bodyNumber": 313,
+    "minDef": 42,
+    "maxDef": 47
+  },
+  {
+    "id": 899,
+    "name": "Cota de Peto Liso (H/E/EO-M)",
+    "grhIndex": 15924,
+    "value": 12250,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 326,
+    "minDef": 14,
+    "maxDef": 24,
+    "women": true
+  },
+  {
+    "id": 900,
+    "name": "Anillas Con Manto Desgastado (H/E/EO-M)",
+    "grhIndex": 16140,
+    "value": 9240,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 334,
+    "minDef": 13,
+    "maxDef": 24,
+    "women": true
+  },
+  {
+    "id": 901,
+    "name": "Coraza Compuesta de Mujer (H/E/EO-M)",
+    "grhIndex": 15816,
+    "value": 14000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 322,
+    "minDef": 17,
+    "maxDef": 25,
+    "women": true
+  },
+  {
+    "id": 902,
+    "name": "Cota de Mallas Enteriza (H/E/EO-M)",
+    "grhIndex": 15843,
+    "value": 14770,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 332,
+    "minDef": 19,
+    "maxDef": 25,
+    "women": true
+  },
+  {
+    "id": 903,
+    "name": "Armadura de Campeón (H/E/EO)",
+    "grhIndex": 15681,
+    "value": 22400,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "ASSASSIN",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 317,
+    "minDef": 25,
+    "maxDef": 40
+  },
+  {
+    "id": 904,
+    "name": "Placas Combinadas (H/E/EO-M)",
+    "grhIndex": 16059,
+    "value": 23100,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 331,
+    "minDef": 30,
+    "maxDef": 37,
+    "women": true
+  },
+  {
+    "id": 905,
+    "name": "Suprema Armadura Dorada (H/E/EO)",
+    "grhIndex": 15708,
+    "value": 51500,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 318,
+    "minDef": 35,
+    "maxDef": 45
+  },
+  {
+    "id": 906,
+    "name": "Manto del Dragón (H/E/EO)",
+    "grhIndex": 16329,
+    "value": 622000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 342,
+    "minDef": 63,
+    "maxDef": 68
+  },
+  {
+    "id": 908,
+    "name": "Vestimentas de Pescador (E/G)",
+    "grhIndex": 15276,
+    "value": 100,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "ROGUE",
+        "WARRIOR",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 301,
+    "maxDef": 1,
+    "dwarf": true
+  },
+  {
+    "id": 909,
+    "name": "Vestido de Novia (E/G-M)",
+    "grhIndex": 14952,
+    "value": 3400,
+    "forbiddenClasses": {},
+    "bodyNumber": 289,
+    "minDef": 7,
+    "maxDef": 12,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 910,
+    "name": "Atuendo de Gnomo (E/G)",
+    "grhIndex": 14655,
+    "value": 110,
+    "forbiddenClasses": {},
+    "bodyNumber": 278,
+    "minDef": 1,
+    "maxDef": 1,
+    "dwarf": true
+  },
+  {
+    "id": 911,
+    "name": "Vestimenta Bordo de Poblador (E/G)",
+    "grhIndex": 15141,
+    "value": 110,
+    "forbiddenClasses": {},
+    "bodyNumber": 296,
+    "minDef": 1,
+    "maxDef": 1,
+    "dwarf": true
+  },
+  {
+    "id": 912,
+    "name": "Vestimenta Verde de Poblador (E/G)",
+    "grhIndex": 15087,
+    "value": 110,
+    "forbiddenClasses": {},
+    "bodyNumber": 294,
+    "minDef": 1,
+    "maxDef": 1,
+    "dwarf": true
+  },
+  {
+    "id": 913,
+    "name": "Ropaje de Ermitaño (E/G)",
+    "grhIndex": 14736,
+    "value": 150,
+    "forbiddenClasses": {},
+    "bodyNumber": 281,
+    "minDef": 1,
+    "maxDef": 2,
+    "dwarf": true
+  },
+  {
+    "id": 914,
+    "name": "Ropaje de Aldeana (E/G-M)",
+    "grhIndex": 14925,
+    "value": 150,
+    "forbiddenClasses": {},
+    "bodyNumber": 288,
+    "minDef": 1,
+    "maxDef": 2,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 915,
+    "name": "Ropaje de Aldeano (E/G)",
+    "grhIndex": 15006,
+    "value": 150,
+    "forbiddenClasses": {},
+    "bodyNumber": 291,
+    "minDef": 1,
+    "maxDef": 2,
+    "dwarf": true
+  },
+  {
+    "id": 916,
+    "name": "Vestimenta Elegante (E/G)",
+    "grhIndex": 15033,
+    "value": 200,
+    "forbiddenClasses": {},
+    "bodyNumber": 292,
+    "minDef": 1,
+    "maxDef": 3,
+    "dwarf": true
+  },
+  {
+    "id": 917,
+    "name": "Vestimenta de Minero (E/G)",
+    "grhIndex": 15114,
+    "value": 200,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "ROGUE",
+        "WARRIOR",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 295,
+    "minDef": 1,
+    "maxDef": 3,
+    "dwarf": true
+  },
+  {
+    "id": 918,
+    "name": "Gabán de Cuero Pequeño (E/G)",
+    "grhIndex": 14574,
+    "value": 200,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 282,
+    "minDef": 2,
+    "maxDef": 2,
+    "dwarf": true
+  },
+  {
+    "id": 919,
+    "name": "Alifafe de Serpiente (E/G)",
+    "grhIndex": 14979,
+    "value": 200,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "BARDIC"
+      ]
+    },
+    "bodyNumber": 290,
+    "minDef": 2,
+    "maxDef": 2,
+    "dwarf": true
+  },
+  {
+    "id": 920,
+    "name": "Ropaje de Herrero (E/G)",
+    "grhIndex": 15060,
+    "value": 275,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "ROGUE",
+        "WARRIOR",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 293,
+    "minDef": 2,
+    "maxDef": 3,
+    "dwarf": true
+  },
+  {
+    "id": 921,
+    "name": "Túnica Sírica Elegante (E/G)",
+    "grhIndex": 15168,
+    "value": 450,
+    "forbiddenClasses": {},
+    "bodyNumber": 297,
+    "minDef": 1,
+    "maxDef": 5,
+    "dwarf": true
+  },
+  {
+    "id": 922,
+    "name": "Traje de Capitán Pirata (E/G)",
+    "grhIndex": 15195,
+    "value": 600,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PALADIN",
+        "CLERIC",
+        "ROGUE",
+        "WARRIOR",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 298,
+    "minDef": 2,
+    "maxDef": 5,
+    "dwarf": true
+  },
+  {
+    "id": 923,
+    "name": "Traje de Noble (E/G)",
+    "grhIndex": 15222,
+    "value": 700,
+    "forbiddenClasses": {},
+    "bodyNumber": 299,
+    "minDef": 3,
+    "maxDef": 5,
+    "dwarf": true
+  },
+  {
+    "id": 924,
+    "name": "Vestimenta de Explorador (E/G)",
+    "grhIndex": 14520,
+    "value": 900,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 278,
+    "minDef": 3,
+    "maxDef": 6,
+    "dwarf": true
+  },
+  {
+    "id": 925,
+    "name": "Peto de Gladiadora (E/G-M)",
+    "grhIndex": 14547,
+    "value": 1190,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 274,
+    "minDef": 3,
+    "maxDef": 8,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 926,
+    "name": "Hombreras de Amazona (E/G-M)",
+    "grhIndex": 14601,
+    "value": 1000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 276,
+    "minDef": 4,
+    "maxDef": 6,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 927,
+    "name": "Alifafe de Lobo (E/G)",
+    "grhIndex": 14682,
+    "value": 1400,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ROGUE",
+        "WARRIOR",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 279,
+    "minDef": 5,
+    "maxDef": 7,
+    "dwarf": true
+  },
+  {
+    "id": 928,
+    "name": "Barragán de Cazador (E/G)",
+    "grhIndex": 14628,
+    "value": 2550,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 277,
+    "minDef": 6,
+    "maxDef": 9,
+    "dwarf": true
+  },
+  {
+    "id": 929,
+    "name": "Barragán Compuesto (E/G)",
+    "grhIndex": 14709,
+    "value": 4600,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 280,
+    "minDef": 10,
+    "maxDef": 15,
+    "dwarf": true
+  },
+  {
+    "id": 930,
+    "name": "Toga de Aprendiz (E/G)",
+    "grhIndex": 15465,
+    "value": 2700,
+    "forbiddenClasses": {},
+    "bodyNumber": 309,
+    "minDef": 5,
+    "maxDef": 10,
+    "dwarf": true
+  },
+  {
+    "id": 931,
+    "name": "Vestido Elegante Púrpura (E/G-M)",
+    "grhIndex": 15384,
+    "value": 3175,
+    "forbiddenClasses": {},
+    "bodyNumber": 307,
+    "minDef": 7,
+    "maxDef": 11,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 932,
+    "name": "Sotana de Gran Hechicero (E/G)",
+    "grhIndex": 15492,
+    "value": 3200,
+    "forbiddenClasses": {
+      "CP": [
+        "ASSASSIN",
+        "PIRATE",
+        "PALADIN",
+        "WARRIOR",
+        "ROGUE",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 310,
+    "minDef": 8,
+    "maxDef": 12,
+    "dwarf": true
+  },
+  {
+    "id": 933,
+    "name": "Cota Liviana Verde (E/G-M)",
+    "grhIndex": 14817,
+    "value": 3710,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 284,
+    "minDef": 9,
+    "maxDef": 13,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 934,
+    "name": "Cotas Livianas (E/G)",
+    "grhIndex": 14871,
+    "value": 4600,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "BARDIC"
+      ]
+    },
+    "bodyNumber": 286,
+    "minDef": 10,
+    "maxDef": 15,
+    "dwarf": true
+  },
+  {
+    "id": 935,
+    "name": "Cotas con Peto Compuesto (E/G-M)",
+    "grhIndex": 14844,
+    "value": 6020,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 285,
+    "minDef": 13,
+    "maxDef": 17,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 936,
+    "name": "Túnica de Gran Hechicera (E/G-M)",
+    "grhIndex": 15303,
+    "value": 10500,
+    "forbiddenClasses": {},
+    "bodyNumber": 302,
+    "minDef": 15,
+    "maxDef": 20,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 937,
+    "name": "Cota de Peto Púrpura (E/G)",
+    "grhIndex": 14790,
+    "value": 7350,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 283,
+    "minDef": 12,
+    "maxDef": 22,
+    "dwarf": true
+  },
+  {
+    "id": 938,
+    "name": "Traje de Bruja (E/G-M)",
+    "grhIndex": 15330,
+    "value": 10500,
+    "forbiddenClasses": {
+      "CP": [
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 303,
+    "minDef": 15,
+    "maxDef": 20,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 939,
+    "name": "Túnica de Gala Roja (E/G)",
+    "grhIndex": 15546,
+    "value": 13500,
+    "forbiddenClasses": {},
+    "bodyNumber": 312,
+    "minDef": 19,
+    "maxDef": 23,
+    "dwarf": true
+  },
+  {
+    "id": 940,
+    "name": "Cota de Mallas Enteriza (E/G)",
+    "grhIndex": 14898,
+    "value": 15330,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 287,
+    "minDef": 20,
+    "maxDef": 26,
+    "dwarf": true
+  },
+  {
+    "id": 941,
+    "name": "Traje Seductor de Pitonisa (E/G-M)",
+    "grhIndex": 15411,
+    "value": 18000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 306,
+    "minDef": 25,
+    "maxDef": 30,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 942,
+    "name": "Vestido de Gala Turquesa (E/G-M)",
+    "grhIndex": 15438,
+    "value": 22000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 308,
+    "minDef": 30,
+    "maxDef": 35,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 943,
+    "name": "Sobrevesta Élfica (H/E/EO)",
+    "grhIndex": 16356,
+    "value": 50,
+    "forbiddenClasses": {},
+    "bodyNumber": 390
+  },
+  {
+    "id": 944,
+    "name": "Vestido Aurë (H/E/EO-M)",
+    "grhIndex": 16410,
+    "value": 50,
+    "forbiddenClasses": {},
+    "bodyNumber": 343,
+    "women": true
+  },
+  {
+    "id": 945,
+    "name": "Vestido de Gala Alcarinqua (H/E/EO-M)",
+    "grhIndex": 16383,
+    "value": 105,
+    "forbiddenClasses": {},
+    "bodyNumber": 341,
+    "maxDef": 1,
+    "women": true
+  },
+  {
+    "id": 946,
+    "name": "Vestimentas de Poblador Élfico (H/E/EO)",
+    "grhIndex": 16625,
+    "value": 110,
+    "forbiddenClasses": {},
+    "bodyNumber": 351,
+    "minDef": 1,
+    "maxDef": 1
+  },
+  {
+    "id": 947,
+    "name": "Hábito Liviano de Ritual (H/E/EO)",
+    "grhIndex": 16679,
+    "value": 420,
+    "forbiddenClasses": {},
+    "bodyNumber": 353,
+    "minDef": 2,
+    "maxDef": 4
+  },
+  {
+    "id": 948,
+    "name": "Vestido Bordado de Elite (H/E/EO-M)",
+    "grhIndex": 16707,
+    "value": 300,
+    "forbiddenClasses": {},
+    "bodyNumber": 354,
+    "minDef": 2,
+    "maxDef": 3,
+    "women": true
+  },
+  {
+    "id": 949,
+    "name": "Hábito Liviano de Ritual (H/E/EO-M)",
+    "grhIndex": 16571,
+    "value": 450,
+    "forbiddenClasses": {},
+    "bodyNumber": 349,
+    "minDef": 2,
+    "maxDef": 4,
+    "women": true
+  },
+  {
+    "id": 950,
+    "name": "Sírica Élfica Rojiza (H/E/EO-M)",
+    "grhIndex": 16652,
+    "value": 550,
+    "forbiddenClasses": {},
+    "bodyNumber": 352,
+    "minDef": 3,
+    "maxDef": 4,
+    "women": true
+  },
+  {
+    "id": 951,
+    "name": "Prenda de la Naturaleza (H/E/EO-M)",
+    "grhIndex": 16598,
+    "value": 700,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "bodyNumber": 350,
+    "minDef": 3,
+    "maxDef": 5,
+    "women": true
+  },
+  {
+    "id": 952,
+    "name": "Ropa de Explorador Élfico (H/E/EO)",
+    "grhIndex": 16544,
+    "value": 850,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN"
+      ]
+    },
+    "bodyNumber": 348,
+    "minDef": 4,
+    "maxDef": 5
+  },
+  {
+    "id": 953,
+    "name": "Manto Élfico Púrpura (H/E/EO-M)",
+    "grhIndex": 16437,
+    "value": 3550,
+    "forbiddenClasses": {},
+    "bodyNumber": 345,
+    "minDef": 5,
+    "maxDef": 16,
+    "women": true
+  },
+  {
+    "id": 954,
+    "name": "Hábito de Ritual de Hombre (H/E/EO)",
+    "grhIndex": 16490,
+    "value": 8000,
+    "forbiddenClasses": {},
+    "bodyNumber": 346,
+    "minDef": 11,
+    "maxDef": 20
+  },
+  {
+    "id": 955,
+    "name": "Hábito de Ritual Femenino (H/E/EO-M)",
+    "grhIndex": 16517,
+    "value": 8000,
+    "forbiddenClasses": {},
+    "bodyNumber": 347,
+    "minDef": 11,
+    "maxDef": 20,
+    "women": true
+  },
+  {
+    "id": 956,
+    "name": "Valya Silmeanar (H/E/EO-M)",
+    "grhIndex": 16734,
+    "value": 15000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 355,
+    "minDef": 20,
+    "maxDef": 25,
+    "women": true
+  },
+  {
+    "id": 957,
+    "name": "Vestido de Enana (E/G-M)",
+    "grhIndex": 17274,
+    "value": 50,
+    "forbiddenClasses": {},
+    "bodyNumber": 375,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 958,
+    "name": "Vestimenta Común (E/G)",
+    "grhIndex": 17139,
+    "value": 50,
+    "forbiddenClasses": {},
+    "bodyNumber": 370,
+    "dwarf": true
+  },
+  {
+    "id": 959,
+    "name": "Ropa de Carpintero Enano (E/G)",
+    "grhIndex": 17220,
+    "value": 100,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "ROGUE",
+        "WARRIOR",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 373,
+    "maxDef": 1,
+    "dwarf": true
+  },
+  {
+    "id": 960,
+    "name": "Ropa de Leñador (E/G)",
+    "grhIndex": 17085,
+    "value": 100,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "ROGUE",
+        "WARRIOR",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 368,
+    "maxDef": 1,
+    "dwarf": true
+  },
+  {
+    "id": 961,
+    "name": "Ropa de Minero (E/G)",
+    "grhIndex": 16977,
+    "value": 125,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "ROGUE",
+        "WARRIOR",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 364,
+    "maxDef": 2,
+    "dwarf": true
+  },
+  {
+    "id": 962,
+    "name": "Túnica Elegante (E/G)",
+    "grhIndex": 17166,
+    "value": 200,
+    "forbiddenClasses": {},
+    "bodyNumber": 371,
+    "minDef": 1,
+    "maxDef": 3,
+    "dwarf": true
+  },
+  {
+    "id": 963,
+    "name": "Ropaje de Luchador de Las Minas (E/G)",
+    "grhIndex": 17247,
+    "value": 275,
+    "forbiddenClasses": {},
+    "bodyNumber": 374,
+    "minDef": 2,
+    "maxDef": 3,
+    "dwarf": true
+  },
+  {
+    "id": 964,
+    "name": "Ropa de Viajero (E/G)",
+    "grhIndex": 16896,
+    "value": 400,
+    "forbiddenClasses": {},
+    "bodyNumber": 361,
+    "minDef": 2,
+    "maxDef": 4,
+    "dwarf": true
+  },
+  {
+    "id": 965,
+    "name": "Antigua Armadura Dorada (E/G)",
+    "grhIndex": 16869,
+    "value": 700,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 360,
+    "minDef": 3,
+    "maxDef": 5,
+    "dwarf": true
+  },
+  {
+    "id": 966,
+    "name": "Alifafe de Pirata (E/G)",
+    "grhIndex": 17193,
+    "value": 3200,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PALADIN",
+        "CLERIC",
+        "ROGUE",
+        "WARRIOR",
+        "ARCHER"
+      ]
+    },
+    "bodyNumber": 372,
+    "minDef": 4,
+    "maxDef": 16,
+    "dwarf": true
+  },
+  {
+    "id": 967,
+    "name": "Ropas de Buscador (E/G)",
+    "grhIndex": 17301,
+    "value": 3600,
+    "forbiddenClasses": {
+      "CP": [
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 376,
+    "minDef": 4,
+    "maxDef": 17,
+    "dwarf": true
+  },
+  {
+    "id": 968,
+    "name": "Armadura Grabada Completa (E/G)",
+    "grhIndex": 16842,
+    "value": 4480,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 359,
+    "minDef": 5,
+    "maxDef": 19,
+    "dwarf": true
+  },
+  {
+    "id": 969,
+    "name": "Túnica Dorada de Gala (E/G)",
+    "grhIndex": 16950,
+    "value": 10000,
+    "forbiddenClasses": {},
+    "bodyNumber": 363,
+    "minDef": 16,
+    "maxDef": 18,
+    "dwarf": true
+  },
+  {
+    "id": 970,
+    "name": "Armadura de Placas Livianas Thor (E/G)",
+    "grhIndex": 16761,
+    "value": 13350,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 356,
+    "minDef": 18,
+    "maxDef": 22,
+    "dwarf": true
+  },
+  {
+    "id": 971,
+    "name": "Armadura Metal Oscuro (E/G)",
+    "grhIndex": 16923,
+    "value": 13720,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 362,
+    "minDef": 19,
+    "maxDef": 23,
+    "dwarf": true
+  },
+  {
+    "id": 972,
+    "name": "Túnica de Mahal (E/G)",
+    "grhIndex": 17004,
+    "value": 15000,
+    "forbiddenClasses": {
+      "CP": [
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 365,
+    "minDef": 20,
+    "maxDef": 25,
+    "dwarf": true
+  },
+  {
+    "id": 973,
+    "name": "Armadura de Placas Livianas Thor (E/G-M)",
+    "grhIndex": 17328,
+    "value": 13350,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 377,
+    "minDef": 18,
+    "maxDef": 22,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 974,
+    "name": "Capa de Monje Cocida con Mithril (E/G)",
+    "grhIndex": 17058,
+    "value": 19000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 367,
+    "minDef": 23,
+    "maxDef": 35,
+    "dwarf": true
+  },
+  {
+    "id": 975,
+    "name": "Cota de Mallas Larga (E/G)",
+    "grhIndex": 17031,
+    "value": 23100,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 366,
+    "minDef": 28,
+    "maxDef": 40,
+    "dwarf": true
+  },
+  {
+    "id": 976,
+    "name": "Armadura Pesada de Hierro y Bronce (E/G)",
+    "grhIndex": 16788,
+    "value": 54000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 357,
+    "minDef": 30,
+    "maxDef": 50,
+    "dwarf": true
+  },
+  {
+    "id": 977,
+    "name": "Vestimenta Esclava (EO)",
+    "grhIndex": 17409,
+    "value": 50,
+    "forbiddenClasses": {},
+    "bodyNumber": 380
+  },
+  {
+    "id": 978,
+    "name": "Harapos de la Cueva (EO)",
+    "grhIndex": 17382,
+    "value": 105,
+    "forbiddenClasses": {},
+    "bodyNumber": 379,
+    "maxDef": 1
+  },
+  {
+    "id": 979,
+    "name": "Armadura Maghtere Roja (EO)",
+    "grhIndex": 17355,
+    "value": 7000,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 378,
+    "minDef": 10,
+    "maxDef": 20
+  },
+  {
+    "id": 980,
+    "name": "Armadura de Combate Liviana (EO)",
+    "grhIndex": 16706,
+    "value": 10000,
+    "forbiddenClasses": {
+      "CP": [
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 344,
+    "minDef": 14,
+    "maxDef": 20
+  },
+  {
+    "id": 981,
+    "name": "Piwafwi de Fuego (EO)",
+    "grhIndex": 17436,
+    "value": 11000,
+    "forbiddenClasses": {},
+    "bodyNumber": 381,
+    "minDef": 16,
+    "maxDef": 20
+  },
+  {
+    "id": 982,
+    "name": "Armadura Melee de Explorador (EO)",
+    "grhIndex": 17463,
+    "value": 13400,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "bodyNumber": 382,
+    "minDef": 18,
+    "maxDef": 22
+  },
+  {
+    "id": 983,
+    "name": "Piwafwi Purpura del Silencio (EO-M)",
+    "grhIndex": 17490,
+    "value": 14500,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 383,
+    "minDef": 20,
+    "maxDef": 24,
+    "women": true
+  },
+  {
+    "id": 984,
+    "name": "Piwafwi Alto Narbondel (EO)",
+    "grhIndex": 17517,
+    "value": 15000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 384,
+    "minDef": 20,
+    "maxDef": 25
+  },
+  {
+    "id": 985,
+    "name": "Piwafwi Socere de Lloth (EO-M)",
+    "grhIndex": 17544,
+    "value": 20000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 385,
+    "minDef": 25,
+    "maxDef": 35,
+    "women": true
+  },
+  {
+    "id": 986,
+    "name": "Túnica de Druida",
+    "grhIndex": 681,
+    "value": 17000,
+    "forbiddenClasses": {},
+    "bodyNumber": 56,
+    "minDef": 20,
+    "maxDef": 25
+  },
+  {
+    "id": 991,
+    "name": "Vestimentas Olímpicas (EO)",
+    "grhIndex": 20239,
+    "value": 50,
+    "crucial": false,
+    "forbiddenClasses": {},
+    "bodyNumber": 479,
+    "minDef": 1,
+    "maxDef": 1
+  },
+  {
+    "id": 992,
+    "name": "Vestimentas Olímpicas (EO-M)",
+    "grhIndex": 20266,
+    "value": 50,
+    "crucial": false,
+    "forbiddenClasses": {},
+    "bodyNumber": 480,
+    "minDef": 1,
+    "maxDef": 1,
+    "women": true
+  },
+  {
+    "id": 993,
+    "name": "Vestimentas Olímpicas (E-M)",
+    "grhIndex": 20293,
+    "value": 50,
+    "crucial": false,
+    "forbiddenClasses": {},
+    "bodyNumber": 481,
+    "minDef": 1,
+    "maxDef": 1,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 994,
+    "name": "Vestimentas Olímpicas (E)",
+    "grhIndex": 20320,
+    "value": 50,
+    "crucial": false,
+    "forbiddenClasses": {},
+    "bodyNumber": 482,
+    "minDef": 1,
+    "maxDef": 1,
+    "dwarf": true
+  },
+  {
+    "id": 995,
+    "name": "Vestimentas Olímpicas (H-M)",
+    "grhIndex": 20347,
+    "value": 50,
+    "crucial": false,
+    "forbiddenClasses": {},
+    "bodyNumber": 483,
+    "minDef": 1,
+    "maxDef": 1,
+    "women": true
+  },
+  {
+    "id": 996,
+    "name": "Vestimentas Olímpicas (H)",
+    "grhIndex": 20374,
+    "value": 50,
+    "crucial": false,
+    "forbiddenClasses": {},
+    "bodyNumber": 484,
+    "minDef": 1,
+    "maxDef": 1
+  },
+  {
+    "id": 998,
+    "name": "Vestimentas Olímpicas (G-M)",
+    "grhIndex": 20406,
+    "value": 50,
+    "crucial": false,
+    "forbiddenClasses": {},
+    "bodyNumber": 485,
+    "minDef": 1,
+    "maxDef": 1,
+    "women": true,
+    "dwarf": true
+  },
+  {
+    "id": 999,
+    "name": "Vestimentas Olímpicas (G)",
+    "grhIndex": 20433,
+    "value": 50,
+    "crucial": false,
+    "forbiddenClasses": {},
+    "bodyNumber": 486,
+    "minDef": 1,
+    "maxDef": 1,
+    "dwarf": true
+  },
+  {
+    "id": 1039,
+    "name": "Manto de Sacerdote del Imperio (E/G)",
+    "grhIndex": 23150,
+    "value": 2900,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "PIRATE",
+        "PALADIN",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 547,
+    "minDef": 6,
+    "maxDef": 12,
+    "dwarf": true
+  },
+  {
+    "id": 1040,
+    "name": "Armadura de Gran Sacerdote Imperial (E/G)",
+    "grhIndex": 23096,
+    "value": 9240,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "PIRATE",
+        "PALADIN",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 545,
+    "minDef": 15,
+    "maxDef": 22,
+    "dwarf": true
+  },
+  {
+    "id": 1041,
+    "name": "Manto de Sacerdote Demoníaco (E/G)",
+    "grhIndex": 23177,
+    "value": 2900,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "PIRATE",
+        "PALADIN",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 548,
+    "minDef": 6,
+    "maxDef": 12,
+    "dwarf": true
+  },
+  {
+    "id": 1042,
+    "name": "Armadura de Gran Sacerdote Demoníaco (E/G)",
+    "grhIndex": 23123,
+    "value": 9240,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "PIRATE",
+        "PALADIN",
+        "WARRIOR",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "bodyNumber": 546,
+    "minDef": 15,
+    "maxDef": 22,
+    "dwarf": true
+  },
+  {
+    "id": 1044,
+    "name": "Túnica (H/E/EO) (Newbie)",
+    "grhIndex": 606,
+    "value": 40,
+    "newbie": true,
+    "forbiddenClasses": {},
+    "bodyNumber": 46
+  },
+  {
+    "id": 1045,
+    "name": "Túnica (E/G) (Newbie)",
+    "grhIndex": 1208,
+    "value": 40,
+    "newbie": true,
+    "forbiddenClasses": {},
+    "bodyNumber": 159,
+    "dwarf": true
+  },
+  {
+    "id": 1046,
+    "name": "Armadura de Cuero (H/E/EO) (Newbie)",
+    "grhIndex": 526,
+    "value": 60,
+    "newbie": true,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 22,
+    "maxDef": 1
+  },
+  {
+    "id": 1047,
+    "name": "Armadura de Cuero (E/G) (Newbie)",
+    "grhIndex": 1154,
+    "value": 60,
+    "newbie": true,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "BARDIC",
+        "DRUID"
+      ]
+    },
+    "bodyNumber": 157,
+    "maxDef": 1,
+    "dwarf": true
+  }
+]

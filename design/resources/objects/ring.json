@@ -1,0 +1,247 @@
+[
+  {
+    "id": 208,
+    "name": "Flauta Mágica",
+    "grhIndex": 686,
+    "value": 4500,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "WARRIOR",
+        "MAGICIAN",
+        "CLERIC",
+        "PALADIN",
+        "BARDIC",
+        "PIRATE",
+        "ASSASSIN",
+        "THIEF",
+        "ROGUE",
+        "ARCHER"
+      ]
+    },
+    "minHit": 1,
+    "maxHit": 1
+  },
+  {
+    "id": 696,
+    "name": "Laúd Mágico",
+    "grhIndex": 685,
+    "value": 6030,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "WARRIOR",
+        "MAGICIAN",
+        "CLERIC",
+        "PALADIN",
+        "PIRATE",
+        "ASSASSIN",
+        "THIEF",
+        "ROGUE",
+        "ARCHER",
+        "DRUID"
+      ]
+    },
+    "minHit": 1,
+    "maxHit": 1
+  },
+  {
+    "id": 697,
+    "name": "Anillo Mágico",
+    "grhIndex": 4900,
+    "value": 3500,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "WARRIOR",
+        "PIRATE",
+        "THIEF",
+        "ROGUE",
+        "DRUID"
+      ]
+    }
+  },
+  {
+    "id": 698,
+    "name": "Anillo de Resistencia Mágica",
+    "grhIndex": 4901,
+    "value": 9500,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "WARRIOR",
+        "PALADIN",
+        "PIRATE",
+        "THIEF",
+        "ROGUE",
+        "DRUID",
+        "ARCHER"
+      ]
+    }
+  },
+  {
+    "id": 699,
+    "name": "Anillo de Disolución Mágica",
+    "grhIndex": 4902,
+    "value": 43500,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "WARRIOR",
+        "PALADIN",
+        "PIRATE",
+        "THIEF",
+        "ROGUE",
+        "DRUID",
+        "ARCHER"
+      ]
+    }
+  },
+  {
+    "id": 700,
+    "name": "Anillo de los Dioses",
+    "grhIndex": 4903,
+    "value": 1500000,
+    "crucial": false,
+    "forbiddenClasses": {}
+  },
+  {
+    "id": 863,
+    "name": "Flauta Mágica (Newbie)",
+    "grhIndex": 686,
+    "value": 100,
+    "crucial": false,
+    "newbie": true,
+    "forbiddenClasses": {
+      "CP": [
+        "WARRIOR",
+        "MAGICIAN",
+        "CLERIC",
+        "PALADIN",
+        "BARDIC",
+        "PIRATE",
+        "ASSASSIN",
+        "THIEF",
+        "ROGUE",
+        "ARCHER"
+      ]
+    },
+    "minHit": 1,
+    "maxHit": 1
+  },
+  {
+    "id": 864,
+    "name": "Laúd Mágico (Newbie)",
+    "grhIndex": 685,
+    "value": 100,
+    "crucial": false,
+    "newbie": true,
+    "forbiddenClasses": {
+      "CP": [
+        "WARRIOR",
+        "MAGICIAN",
+        "CLERIC",
+        "PALADIN",
+        "PIRATE",
+        "ASSASSIN",
+        "THIEF",
+        "ROGUE",
+        "ARCHER",
+        "DRUID"
+      ]
+    },
+    "minHit": 1,
+    "maxHit": 1
+  },
+  {
+    "id": 873,
+    "name": "Guantes de Hurto",
+    "grhIndex": 1469,
+    "value": 5000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "WARRIOR",
+        "CLERIC",
+        "PALADIN",
+        "BARDIC",
+        "PIRATE",
+        "ASSASSIN",
+        "ARCHER",
+        "DRUID"
+      ]
+    },
+    "minHit": 1,
+    "maxHit": 2
+  },
+  {
+    "id": 1036,
+    "name": "Guantes de Lucha",
+    "grhIndex": 22033,
+    "value": 10000,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "WARRIOR",
+        "CLERIC",
+        "PALADIN",
+        "BARDIC",
+        "PIRATE",
+        "ASSASSIN",
+        "ARCHER",
+        "DRUID"
+      ]
+    },
+    "minHit": 2,
+    "maxHit": 5
+  },
+  {
+    "id": 1049,
+    "name": "Laúd Élfico",
+    "grhIndex": 1523,
+    "value": 11000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "WARRIOR",
+        "MAGICIAN",
+        "CLERIC",
+        "PALADIN",
+        "PIRATE",
+        "ASSASSIN",
+        "THIEF",
+        "ROGUE",
+        "ARCHER",
+        "DRUID"
+      ]
+    },
+    "minHit": 1,
+    "maxHit": 1
+  },
+  {
+    "id": 1050,
+    "name": "Flauta Élfica",
+    "grhIndex": 1522,
+    "value": 10000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "WARRIOR",
+        "MAGICIAN",
+        "CLERIC",
+        "PALADIN",
+        "BARDIC",
+        "PIRATE",
+        "ASSASSIN",
+        "THIEF",
+        "ROGUE",
+        "ARCHER"
+      ]
+    },
+    "minHit": 1,
+    "maxHit": 1
+  }
+]

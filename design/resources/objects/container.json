@@ -1,0 +1,46 @@
+[
+  {
+    "id": 10,
+    "name": "Cofre Abierto",
+    "grhIndex": 502,
+    "crucial": false
+  },
+  {
+    "id": 11,
+    "name": "Cofre Cerrado",
+    "grhIndex": 503,
+    "crucial": false
+  },
+  {
+    "id": 738,
+    "name": "Carcaj",
+    "grhIndex": 494,
+    "crucial": false
+  },
+  {
+    "id": 739,
+    "name": "Baúl Abierto",
+    "grhIndex": 496,
+    "crucial": false
+  },
+  {
+    "id": 740,
+    "name": "Baúl Cerrado",
+    "grhIndex": 495,
+    "crucial": false
+  },
+  {
+    "id": 865,
+    "name": "Alforja",
+    "grhIndex": 388,
+    "value": 15000,
+    "crucial": false
+  },
+  {
+    "id": 866,
+    "name": "Mochila de Viajero",
+    "grhIndex": 403,
+    "value": 10000,
+    "crucial": false
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 192,
+    "name": "Minerales de Hierro",
+    "grhIndex": 604,
+    "value": 10,
+    "crucial": false,
+    "ingotIndex": 386
+  },
+  {
+    "id": 193,
+    "name": "Minerales de Plata",
+    "grhIndex": 632,
+    "value": 12,
+    "crucial": false,
+    "ingotIndex": 387
+  },
+  {
+    "id": 194,
+    "name": "Minerales de Oro",
+    "grhIndex": 631,
+    "value": 20,
+    "crucial": false,
+    "ingotIndex": 388
+  }
+]

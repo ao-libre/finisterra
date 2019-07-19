@@ -1,0 +1,403 @@
+[
+  {
+    "id": 14,
+    "name": "Llave",
+    "grhIndex": 509,
+    "crucial": false
+  },
+  {
+    "id": 54,
+    "name": "Llave Ullathorpe Casa Nro 1",
+    "grhIndex": 509,
+    "value": 10000000,
+    "crucial": false
+  },
+  {
+    "id": 65,
+    "name": "Llave Ullathorpe Casa Nro 2",
+    "grhIndex": 509,
+    "value": 10000000,
+    "crucial": false
+  },
+  {
+    "id": 69,
+    "name": "Llave Ullathorpe Casa Nro 3",
+    "grhIndex": 509,
+    "value": 10000000,
+    "crucial": false
+  },
+  {
+    "id": 73,
+    "name": "Llave Ullathorpe Casa Nro 4",
+    "grhIndex": 509,
+    "value": 10000000,
+    "crucial": false
+  },
+  {
+    "id": 87,
+    "name": "Llave Nix casa Nro 1",
+    "grhIndex": 509,
+    "value": 6000000,
+    "crucial": false
+  },
+  {
+    "id": 91,
+    "name": "Llave Nix Casa Nro 2",
+    "grhIndex": 509,
+    "value": 6000000,
+    "crucial": false
+  },
+  {
+    "id": 95,
+    "name": "Llave Nix Casa Nro 3",
+    "grhIndex": 509,
+    "value": 6000000,
+    "crucial": false
+  },
+  {
+    "id": 99,
+    "name": "Llave Nix Casa Nro 4",
+    "grhIndex": 509,
+    "value": 6000000,
+    "crucial": false
+  },
+  {
+    "id": 103,
+    "name": "Llave Nix Casa Nro 5",
+    "grhIndex": 509,
+    "value": 6000000,
+    "crucial": false
+  },
+  {
+    "id": 107,
+    "name": "Llave Nix Casa Nro 6",
+    "grhIndex": 509,
+    "value": 6000000,
+    "crucial": false
+  },
+  {
+    "id": 111,
+    "name": "Llave Nix Casa Nro 7",
+    "grhIndex": 509,
+    "value": 6000000,
+    "crucial": false
+  },
+  {
+    "id": 115,
+    "name": "Llave Nix Casa Nro 8",
+    "grhIndex": 509,
+    "value": 6000000,
+    "crucial": false
+  },
+  {
+    "id": 119,
+    "name": "Llave Nix Casa Nro 9",
+    "grhIndex": 509,
+    "value": 6000000,
+    "crucial": false
+  },
+  {
+    "id": 140,
+    "name": "Llave Nix Mansión",
+    "grhIndex": 509,
+    "value": 16000000,
+    "crucial": false
+  },
+  {
+    "id": 174,
+    "name": "Llave Catacumbas de Ullathorpe",
+    "grhIndex": 509,
+    "crucial": false
+  },
+  {
+    "id": 178,
+    "name": "Llave Dungeon Maleheing",
+    "grhIndex": 509,
+    "crucial": false
+  },
+  {
+    "id": 182,
+    "name": "Llave Dungeon Maleheing",
+    "grhIndex": 509,
+    "crucial": false
+  },
+  {
+    "id": 183,
+    "name": "Llave Fuerte",
+    "grhIndex": 509,
+    "crucial": false
+  },
+  {
+    "id": 266,
+    "name": "Llave Banderbill Casa Nro 1",
+    "grhIndex": 509,
+    "value": 6000000,
+    "crucial": false
+  },
+  {
+    "id": 270,
+    "name": "Llave Banderbill Casa Nro 2",
+    "grhIndex": 509,
+    "value": 4600000,
+    "crucial": false
+  },
+  {
+    "id": 274,
+    "name": "Llave Banderbill Casa Nro 3",
+    "grhIndex": 509,
+    "value": 6000000,
+    "crucial": false
+  },
+  {
+    "id": 278,
+    "name": "Llave Banderbill Casa Nro 4",
+    "grhIndex": 509,
+    "value": 3250000,
+    "crucial": false
+  },
+  {
+    "id": 282,
+    "name": "Llave Banderbill Casa Nro 5",
+    "grhIndex": 509,
+    "value": 4600000,
+    "crucial": false
+  },
+  {
+    "id": 286,
+    "name": "Llave Banderbill Casa Nro 6",
+    "grhIndex": 509,
+    "value": 6000000,
+    "crucial": false
+  },
+  {
+    "id": 290,
+    "name": "Llave Banderbill Casa Nro 7",
+    "grhIndex": 509,
+    "value": 3250000,
+    "crucial": false
+  },
+  {
+    "id": 294,
+    "name": "Llave Banderbill Casa Nro 8",
+    "grhIndex": 509,
+    "value": 6000000,
+    "crucial": false
+  },
+  {
+    "id": 298,
+    "name": "Llave Banderbill Casa Nro 9",
+    "grhIndex": 509,
+    "value": 6000000,
+    "crucial": false
+  },
+  {
+    "id": 302,
+    "name": "Llave del Gran Consejo",
+    "grhIndex": 509,
+    "crucial": false
+  },
+  {
+    "id": 306,
+    "name": "Llave Bóveda del Gran Consejo",
+    "grhIndex": 509,
+    "crucial": false
+  },
+  {
+    "id": 310,
+    "name": "Llave Bóveda del Gran Consejo",
+    "grhIndex": 509,
+    "crucial": false
+  },
+  {
+    "id": 314,
+    "name": "Llave del la Bóveda Goliath",
+    "grhIndex": 509,
+    "crucial": false
+  },
+  {
+    "id": 323,
+    "name": "Llave Banderbill Casa Nro 10",
+    "grhIndex": 509,
+    "value": 8000000,
+    "crucial": false
+  },
+  {
+    "id": 327,
+    "name": "Llave Banderbill Casa Nro 11",
+    "grhIndex": 509,
+    "value": 9000000,
+    "crucial": false
+  },
+  {
+    "id": 331,
+    "name": "Llave Banderbill Casa Nro 12",
+    "grhIndex": 509,
+    "value": 8000000,
+    "crucial": false
+  },
+  {
+    "id": 335,
+    "name": "Llave Banderbill Casa Nro 13",
+    "grhIndex": 509,
+    "value": 8000000,
+    "crucial": false
+  },
+  {
+    "id": 339,
+    "name": "Llave Banderbill Casa Nro 14",
+    "grhIndex": 509,
+    "value": 10000000,
+    "crucial": false
+  },
+  {
+    "id": 343,
+    "name": "Llave Banderbill Casa Nro 15",
+    "grhIndex": 509,
+    "value": 2500000,
+    "crucial": false
+  },
+  {
+    "id": 347,
+    "name": "Llave Banderbill Casa Nro 16",
+    "grhIndex": 509,
+    "value": 2500000,
+    "crucial": false
+  },
+  {
+    "id": 351,
+    "name": "Llave Banderbill Casa Nro 17",
+    "grhIndex": 509,
+    "value": 2500000,
+    "crucial": false
+  },
+  {
+    "id": 355,
+    "name": "Llave Banderbill Casa Nro 18",
+    "grhIndex": 509,
+    "value": 2500000,
+    "crucial": false
+  },
+  {
+    "id": 376,
+    "name": "Llave Isla Beleta",
+    "grhIndex": 509,
+    "crucial": false
+  },
+  {
+    "id": 420,
+    "name": "Llave Lindos Casa Nro 1",
+    "grhIndex": 509,
+    "value": 1800000,
+    "crucial": false
+  },
+  {
+    "id": 424,
+    "name": "Llave Lindos Casa Nro 2",
+    "grhIndex": 509,
+    "value": 1800000,
+    "crucial": false
+  },
+  {
+    "id": 428,
+    "name": "Llave Lindos Casa Nro 3",
+    "grhIndex": 509,
+    "value": 1800000,
+    "crucial": false
+  },
+  {
+    "id": 432,
+    "name": "Llave Lindos Casa Nro 4",
+    "grhIndex": 509,
+    "value": 1000000,
+    "crucial": false
+  },
+  {
+    "id": 436,
+    "name": "Llave Lindos Casa Nro 5",
+    "grhIndex": 509,
+    "value": 1000000,
+    "crucial": false
+  },
+  {
+    "id": 440,
+    "name": "Llave Lindos Casa Nro 6",
+    "grhIndex": 509,
+    "value": 1000000,
+    "crucial": false
+  },
+  {
+    "id": 444,
+    "name": "Llave Abadía de Lindos",
+    "grhIndex": 509,
+    "value": 20000000,
+    "crucial": false
+  },
+  {
+    "id": 448,
+    "name": "Llave Vault de la Abadía de Lindos",
+    "grhIndex": 509,
+    "crucial": false
+  },
+  {
+    "id": 452,
+    "name": "Llave Prisión de Banderbill",
+    "grhIndex": 509,
+    "crucial": false
+  },
+  {
+    "id": 583,
+    "name": "Llave Arkhein Casa Nro 1",
+    "grhIndex": 509,
+    "value": 1700000,
+    "crucial": false
+  },
+  {
+    "id": 587,
+    "name": "Llave Arkhein Casa Nro 2",
+    "grhIndex": 509,
+    "value": 1700000,
+    "crucial": false
+  },
+  {
+    "id": 591,
+    "name": "Llave Arkhein Casa Nro 3",
+    "grhIndex": 509,
+    "value": 1700000,
+    "crucial": false
+  },
+  {
+    "id": 595,
+    "name": "Llave Arkhein Casa Nro 4",
+    "grhIndex": 509,
+    "value": 1700000,
+    "crucial": false
+  },
+  {
+    "id": 599,
+    "name": "Llave Arkhein Casa Nro 5",
+    "grhIndex": 509,
+    "value": 1700000,
+    "crucial": false
+  },
+  {
+    "id": 603,
+    "name": "Llave Arkhein Casa Nro 6",
+    "grhIndex": 509,
+    "value": 1700000,
+    "crucial": false
+  },
+  {
+    "id": 607,
+    "name": "Llave Arkhein Casa Nro 7",
+    "grhIndex": 509,
+    "value": 1700000,
+    "crucial": false
+  },
+  {
+    "id": 611,
+    "name": "Llave Arkhein Casa Nro 8",
+    "grhIndex": 509,
+    "value": 1700000,
+    "crucial": false
+  }
+]
