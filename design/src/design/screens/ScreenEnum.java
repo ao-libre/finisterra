@@ -4,29 +4,7 @@ import design.editors.fields.Listener;
 import design.screens.views.*;
 
 public enum ScreenEnum {
-    NPC_VIEW {
-        private NPCView npcView;
-
-        public View getScreen(Object... params) {
-            if (npcView == null) {
-                npcView = new NPCView();
-            }
-            readParams(npcView, params);
-            return npcView;
-        }
-    },
-    ANIMATION_VIEW {
-        private AnimationView animationView;
-
-        public View getScreen(Object... params) {
-            if (animationView == null) {
-                animationView = new AnimationView();
-            }
-            readParams(animationView, params);
-            return animationView;
-        }
-    },
-    IMAGE_VIEW {
+    IMAGE_VIEW("Images") {
         private ImageView imageView;
 
         public View getScreen(Object... params) {
@@ -37,18 +15,29 @@ public enum ScreenEnum {
             return imageView;
         }
     },
-    HEADS_VIEW {
-        private View headView;
+    ANIMATION_VIEW("Animations") {
+        private AnimationView animationView;
 
         public View getScreen(Object... params) {
-            if (headView == null) {
-                headView = new HeadsView();
+            if (animationView == null) {
+                animationView = new AnimationView();
             }
-            readParams(headView, params);
-            return headView;
+            readParams(animationView, params);
+            return animationView;
         }
     },
-    BODIES_VIEW {
+    NPC_VIEW("NPCs") {
+        private NPCView npcView;
+
+        public View getScreen(Object... params) {
+            if (npcView == null) {
+                npcView = new NPCView();
+            }
+            readParams(npcView, params);
+            return npcView;
+        }
+    },
+    BODIES_VIEW("Bodies") {
         private View view;
 
         public View getScreen(Object... params) {
@@ -59,7 +48,18 @@ public enum ScreenEnum {
             return view;
         }
     },
-    SHIELDS_VIEW {
+    HEADS_VIEW("Heads") {
+        private View headView;
+
+        public View getScreen(Object... params) {
+            if (headView == null) {
+                headView = new HeadsView();
+            }
+            readParams(headView, params);
+            return headView;
+        }
+    },
+    SHIELDS_VIEW("Shields") {
         private View view;
 
         public View getScreen(Object... params) {
@@ -69,7 +69,8 @@ public enum ScreenEnum {
             readParams(view, params);
             return view;
         }
-    }, WEAPONS_VIEW {
+    },
+    WEAPONS_VIEW("Weapons") {
         private View view;
 
         public View getScreen(Object... params) {
@@ -79,17 +80,8 @@ public enum ScreenEnum {
             readParams(view, params);
             return view;
         }
-    }, FXS_VIEW {
-        private View view;
-
-        public View getScreen(Object... params) {
-            if (view == null) {
-                view = new FXsView();
-            }
-            readParams(view, params);
-            return view;
-        }
-    }, HELMETS_VIEW {
+    },
+    HELMETS_VIEW ("Helmets"){
         private View view;
 
         public View getScreen(Object... params) {
@@ -99,7 +91,24 @@ public enum ScreenEnum {
             readParams(view, params);
             return view;
         }
-    };
+    },
+    FXS_VIEW("FXs") {
+        private View view;
+
+        public View getScreen(Object... params) {
+            if (view == null) {
+                view = new FXsView();
+            }
+            readParams(view, params);
+            return view;
+        }
+    },;
+
+    private String title;
+
+    ScreenEnum(String title) {
+        this.title = title;
+    }
 
     public abstract View getScreen(Object... params);
 
@@ -109,5 +118,9 @@ public enum ScreenEnum {
                 view.setListener((Listener) params[0]);
             }
         }
+    }
+
+    public String getTitle() {
+        return title;
     }
 }

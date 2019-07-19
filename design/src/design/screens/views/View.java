@@ -70,8 +70,8 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         listScroll.setFlickScroll(false);
         listScroll.setFadeScrollBars(false);
         listScroll.setScrollbarsVisible(true);
-        left.add(listScroll).left().growX();
-        leftPane.add(left).left().growX();
+        left.add(listScroll).left().grow();
+        leftPane.add(left).left().grow();
 
         preview = createPreview();
         itemView = createItemView();
@@ -82,10 +82,13 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         bottomRight.setFlickScroll(false);
         SplitPane rightPane = new SplitPane(topRight, bottomRight, true, SKIN);
         SplitPane splitPane = new SplitPane(leftPane, rightPane, false, SKIN);
+        splitPane.setSplitAmount(0.3f);
         Table content = new Table();
         content.add(splitPane).grow();
         if (list.getItems().size > 0) {
-            list.setSelected(list.getItems().get(0));
+            T item = list.getItems().get(0);
+            list.setSelected(item);
+            refreshSelection();
         }
         return content;
     }
@@ -93,14 +96,23 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
     @Override
     protected Table createMenuButtons() {
         Table table = new Table();
+        table.setBackground(SKIN.getDrawable("white"));
+        table.setColor(SKIN.getColor("button"));
+        table.pad(3);
         table.defaults().space(5);
         for (ScreenEnum screen : ScreenEnum.values()) {
-            Button button = new TextButton(screen.name(), SKIN);
+            Button button = new TextButton(screen.getTitle(), SKIN, "menu-button");
+            button.setProgrammaticChangeEvents(false);
             button.addListener(new ClickListener() {
+
                 @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    Gdx.app.postRunnable(() -> ScreenManager.getInstance().showScreen(screen));
+                public void touchUp(InputEvent event, float x, float y, int pointer, int b) {
+                    Gdx.app.postRunnable(() -> {
+                        ScreenManager.getInstance().showScreen(screen);
+                    });
+                    super.touchUp(event, x, y, pointer, b);
                 }
+
             });
             table.add(button);
         }
@@ -224,10 +236,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         list.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                modify.setDisabled(list.getSelected() == null);
-                delete.setDisabled(list.getSelected() == null);
-                preview.show(list.getSelected());
-                itemView.show(list.getSelected());
+                refreshSelection();
             }
         });
         list.addListener(new ClickListener() {
@@ -241,12 +250,22 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         return list;
     }
 
+    public void refreshSelection() {
+        modify.setDisabled(list.getSelected() == null);
+        delete.setDisabled(list.getSelected() == null);
+        preview.show(list.getSelected());
+        itemView.show(list.getSelected());
+    }
+
     protected void loadItems(Optional<T> selection) {
         Array<T> items = new Array<>();
         designer.get().forEach(items::add);
         sort(items);
         list.setItems(items);
-        selection.ifPresent(list::setSelected);
+        selection.ifPresent(sel -> {
+            list.setSelected(sel);
+            onSelect(sel);
+        });
     }
 
     protected abstract void sort(Array<T> items);
