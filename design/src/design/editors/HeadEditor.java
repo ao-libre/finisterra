@@ -29,6 +29,7 @@ public class HeadEditor extends Dialog {
     @NotNull
     public static Table getTable(HeadDescriptor head) {
         Table table = new Table(SKIN);
+        table.defaults().growX().uniform();
         table.add(IntegerEditor.create("ID", id -> {
             head.setId(id);
             // TODO refactor: search all items that use this animation to change it

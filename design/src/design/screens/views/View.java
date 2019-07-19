@@ -251,6 +251,10 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
 
     protected abstract void sort(Array<T> items);
 
+    public void update(int width, int height) {
+        getStage().getViewport().update(width, height, true);
+    }
+
     abstract class Preview<T> extends Table {
 
         public Preview(Skin skin) {
