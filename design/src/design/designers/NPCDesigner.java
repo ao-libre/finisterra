@@ -98,6 +98,11 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
         npcs.remove(npc.getId());
     }
 
+    @Override
+    public void add(NPC npc) {
+        npcs.put(npc.getId(), npc);
+    }
+
 
     public static class NPCParameters implements Parameters<NPC> {
         enum NPCModel {

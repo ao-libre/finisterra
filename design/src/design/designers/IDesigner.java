@@ -25,5 +25,7 @@ public interface IDesigner<T, P extends IDesigner.Parameters<T>> {
 
     void delete(T element);
 
+    void add(T t);
+
     interface Parameters<T> {}
 }

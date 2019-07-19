@@ -11,10 +11,15 @@ import com.badlogic.gdx.utils.Array;
 import design.designers.DescriptorDesigner;
 import game.screens.WorldScreen;
 import graphics.AOAnimationActor;
+import model.descriptors.BodyDescriptor;
 import model.descriptors.Descriptor;
+import model.descriptors.FXDescriptor;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
+import java.util.Optional;
 
 import static launcher.DesignCenter.SKIN;
 
@@ -54,9 +59,37 @@ public abstract class DescriptorView<T extends Descriptor> extends View<T, Descr
         previewActor.setDescriptor(descriptor);
     }
 
-    class DescriptorItem extends Preview<T> {
+    public static Descriptor copy(Descriptor descriptor, Class<? extends Descriptor> clazz) {
+        Descriptor newDescriptor = null;
+        try {
+            Constructor<? extends Descriptor> constructor = clazz.getConstructor();
+            newDescriptor = constructor.newInstance();
+            for (int i = 0; i < (clazz.equals(FXDescriptor.class) ? 1 : 4); i++) {
+                newDescriptor.getIndexs()[i] = descriptor.getGraphic(i);
+            }
+            newDescriptor.setId(descriptor.getId());
+            if (clazz.equals(BodyDescriptor.class)) {
+                BodyDescriptor copy = (BodyDescriptor) newDescriptor;
+                BodyDescriptor original = (BodyDescriptor) descriptor;
+                copy.setHeadOffsetX(original.getHeadOffsetX());
+                copy.setHeadOffsetY(original.getHeadOffsetY());
+            } else if (clazz.equals(FXDescriptor.class)) {
+                FXDescriptor copy = (FXDescriptor) newDescriptor;
+                FXDescriptor original = (FXDescriptor) descriptor;
+                copy.setOffsetX(original.getOffsetX());
+                copy.setOffsetY(original.getOffsetY());
+            }
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return newDescriptor;
+    }
+
+
+    class DescriptorItem extends Editor<T> {
 
         private Descriptor descriptor;
+        private Descriptor original;
         private Actor view;
 
         public DescriptorItem() {
@@ -65,17 +98,34 @@ public abstract class DescriptorView<T extends Descriptor> extends View<T, Descr
 
         @Override
         void show(Descriptor descriptor) {
-            this.descriptor = descriptor;
+            this.original = descriptor;
+            this.descriptor = copy(descriptor, getDesigner().gettClass());
             if (view != null) {
-                removeActor(view);
+                clear();
+                addButtons();
             }
-            view = getTable(descriptor);
-            add(view);
+            add(view = getTable(this.descriptor)).colspan(2);
         }
 
         @Override
         T get() {
             return (T) descriptor;
+        }
+
+        @Override
+        T getOriginal() {
+            return (T) original;
+        }
+
+        @Override
+        void save() {
+            getDesigner().add(get());
+        }
+
+        @Override
+        void restore() {
+            show(getOriginal());
+            getPreview().show(getOriginal());
         }
     }
 

@@ -96,7 +96,7 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 getDesigner().modify(aoImage, getStage());
-                //TODO refresh?
+                //TODO refreshPreview?
             }
         });
         TextTooltip toolTip = new TextTooltip("Edit Image", SKIN);
@@ -107,7 +107,7 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 getDesigner().delete(aoImage);
-                //refresh?
+                //refreshPreview?
             }
         });
         toolTip = new TextTooltip("Delete Image", SKIN);

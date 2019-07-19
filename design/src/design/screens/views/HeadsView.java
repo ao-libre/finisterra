@@ -16,7 +16,7 @@ public class HeadsView extends DescriptorView {
     @NotNull
     @Override
     Table getTable(Descriptor descriptor) {
-        return HeadEditor.getTable(new HeadDescriptor((HeadDescriptor) descriptor));
+        return HeadEditor.getTable((HeadDescriptor) descriptor);
     }
 
     @Override

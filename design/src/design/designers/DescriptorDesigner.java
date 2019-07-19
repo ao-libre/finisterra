@@ -28,6 +28,10 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
         load(new DescriptorParameters());
     }
 
+    public Class<T> gettClass() {
+        return tClass;
+    }
+
     @Override
     public void load(Parameters<T> params) {
         AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
@@ -112,6 +116,12 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
             t = (T) new WeaponDescriptor();
         }
         return t;
+    }
+
+    @Override
+    public void add(T t) {
+        // TODO check
+        descriptors.set(t.getId() - 1, t);
     }
 
     @Override

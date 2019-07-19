@@ -71,6 +71,11 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
     public void delete(AOAnimation element) {
     }
 
+    @Override
+    public void add(AOAnimation animation) {
+        animations.set(animation.getId() - 1, animation);
+    }
+
     public static class AnimationParameters implements Parameters<AOAnimation> {
     }
 }

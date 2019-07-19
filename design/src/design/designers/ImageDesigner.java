@@ -70,6 +70,11 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
     public void delete(AOImage element) {
     }
 
+    @Override
+    public void add(AOImage aoImage) {
+        images.set(aoImage.getId() - 1, aoImage);
+    }
+
     public static class ImageParameters implements Parameters<AOImage> {
     }
 }

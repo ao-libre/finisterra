@@ -59,7 +59,7 @@ public class IntegerEditor extends FieldEditor<Integer> {
                     consumer.accept(t);
                     Screen current = ScreenManager.getInstance().getCurrent();
                     if (current instanceof View) {
-                        ((View) current).refresh();
+                        ((View) current).refreshPreview();
                     }
                 } catch (NumberFormatException ignored) {
 

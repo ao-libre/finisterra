@@ -23,6 +23,7 @@ import launcher.DesignCenter;
 import model.ID;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static launcher.DesignCenter.SKIN;
 
@@ -106,10 +107,9 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         return table;
     }
 
-    public void refresh() {
+    public void refreshPreview() {
         T t = getItemView().get();
         getPreview().show(t);
-        getItemView().show(t);
         clearListener();
     }
 
@@ -214,11 +214,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
 
     private List<T> createList() {
         list = new List<>(SKIN);
-        Array<T> items = new Array<>();
-        designer.get().forEach(items::add);
-
-        sort(items);
-        list.setItems(items);
+        loadItems(Optional.empty());
         list.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -239,6 +235,14 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         return list;
     }
 
+    protected void loadItems(Optional<T> selection) {
+        Array<T> items = new Array<>();
+        designer.get().forEach(items::add);
+        sort(items);
+        list.setItems(items);
+        selection.ifPresent(list::setSelected);
+    }
+
     protected abstract void sort(Array<T> items);
 
     abstract class Preview<T> extends Table {
@@ -250,5 +254,38 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         abstract void show(T t);
 
         abstract T get();
+    }
+
+    abstract class Editor<T> extends Preview<T> {
+
+        public Editor(Skin skin) {
+            super(skin);
+            addButtons();
+        }
+
+        public void addButtons() {
+            Button restore = new TextButton("Restore", SKIN);
+            restore.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    restore();
+                }
+            });
+            add(restore).space(5);
+            Button save = new TextButton("Save", SKIN);
+            save.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    save();
+                }
+            });
+            add(save).row();
+        }
+
+        abstract T getOriginal();
+
+        abstract void save();
+
+        abstract void restore();
     }
 }

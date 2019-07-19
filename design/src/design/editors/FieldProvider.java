@@ -63,7 +63,7 @@ public enum FieldProvider {
             consumer.accept(descriptor.getId());
             editor.setText(descriptor.getId() + "");
             if (current instanceof View) {
-                ((View) current).refresh();
+                ((View) current).refreshPreview();
             }
         };
     }

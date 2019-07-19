@@ -8,6 +8,7 @@ public class Descriptor implements IDescriptor, ID {
     protected int[] indexs;
 
     public Descriptor() {
+        indexs = new int[4];
     }
 
     public Descriptor(int[] grhIndex) {

@@ -39,7 +39,7 @@ public class FloatEditor extends FieldEditor<Float> {
                     getConsumer().accept(t);
                     Screen current = ScreenManager.getInstance().getCurrent();
                     if (current instanceof View) {
-                        ((View) current).refresh();
+                        ((View) current).refreshPreview();
                     }
                 } catch (NumberFormatException ignored) {
 
