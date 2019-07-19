@@ -1,8 +1,6 @@
 plugins {
     id 'application'
     id 'de.undercouch.download' version '4.0.0'
-    id 'com.github.breadmoirai.github-release' version '2.2.9'
-    id 'org.beryx.runtime' version '1.2.0'
 }
 
 sourceSets {
@@ -11,7 +9,7 @@ sourceSets {
 }
 
 static def osName() { System.getProperty('os.name').toLowerCase(Locale.ROOT) }
-def releasesDir = "${buildDir}/releases"
+
 mainClassName = "launcher.DesktopLauncher"
 
 dependencies {
@@ -43,40 +41,34 @@ run.dependsOn classes
 task jpackageStart(type: Exec, dependsOn: dist) {
 
 	doFirst() {
-		delete("${buildDir}/distribution/$project.appName")
+		delete("${buildDir}/distribution/${project.appName}")
 	}
 
-	workingDir projectDir
 	def commands = [
 			"${projectDir}/jdk-14/bin/jpackage",
+			'--name', project.appName,
+			'--vendor', "Argentum Online Libre",
+			'--app-version', "${project.version}",
 			'--output', "${buildDir}/distribution",
 			'--input', "${buildDir}/libs",
-			'--name', project.appName,
 			'--main-class', project.mainClassName,
 			'--main-jar', "${project.name}-${project.version}.jar"
 	]
 
 	if (osName().contains('windows')) {
-		commands << '--icon'
-		commands << "${projectDir}/assets/ao.ico"
+		commands << "--icon"
+		commands << "${projectDir}/assets/data/icons/ao.ico"
 	} else if (osName().contains('linux')) {
-		commands << '--icon'
-		commands << "${projectDir}/assets/ao.png"
+		commands << "--icon"
+		commands << "${projectDir}/assets/data/icons/ao.png"
 	} else if (osName().contains('mac')) {
-		commands << '--icon'
-		commands << "${projectDir}/assets/ao.icns"
+		commands << "--icon"
+		commands << "${projectDir}/assets/data/icons/ao.icns"
+		commands << "--java-options"
+		commands << "-XstartOnFirstThread"
 	}
 
 	commandLine = commands
-
-	doLast() {
-		if (!osName().contains('mac')) {
-			copy {
-				from "${projectDir}/assets/ao.png"
-				into "${buildDir}/distribution/${project.appName}/app"
-			}
-		}
-	}
 }
 
 // removes bloated runtime created by javapackager
@@ -104,7 +96,6 @@ task jpackageAppBundle(type: Exec, dependsOn: [jpackageCleanRuntime]) {
 		runtimePath = "${buildDir}/distribution/${project.appName}.app/contents/plugins/Java.runtime/Contents/Home"
 	}
 
-	workingDir projectDir
 	commandLine = [
 			"${projectDir}/jdk-14/bin/jlink",
 			'-p', "${projectDir}/jdk-14/jmods",
@@ -123,6 +114,18 @@ task jpackageAppBundle(type: Exec, dependsOn: [jpackageCleanRuntime]) {
         copy {
 			from("${projectDir}/assets")
 			into("${buildDir}/distribution/${project.appName}/app/assets")
+		}
+
+		copy {
+			if (osName().contains('windows')) {
+				from("${projectDir}/assets/data/icons/ao.ico")
+			} else if (osName().contains('linux')) {
+				from("${projectDir}/assets/data/icons/ao.png")
+			} else if (osName().contains('mac')) {
+				from("${projectDir}/assets/data/icons/ao.icns")
+			}
+
+			into("${buildDir}/distribution/${project.appName}/app")
 		}
 		
 		System.out.println("Application '${project.appName}' packaged.")
