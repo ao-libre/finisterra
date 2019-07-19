@@ -65,7 +65,7 @@ public class GUI implements Disposable {
         return getActionBar().getSpellView();
     }
 
-    public static void takeScreenshot() {
+    public void takeScreenshot() {
         String screenshotPath = "assets/data/Screenshots/Screen.png";
 
         byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
@@ -78,7 +78,7 @@ public class GUI implements Disposable {
         Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
         BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
         PixmapIO.writePNG(Gdx.files.local(screenshotPath), pixmap);
-        //GUI.getConsole().addInfo("3...2...1...Say Cheese!. Screenshot saved in " + screenshotPath);
+        getConsole().addInfo("3...2...1...Say Cheese!. Screenshot saved in " + screenshotPath);
         pixmap.dispose();
     }
 
