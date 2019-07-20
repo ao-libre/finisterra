@@ -528,12 +528,11 @@ public class EntityFactorySystem extends PassiveSystem {
 
 
     private void setEntityPosition(E entity) {
-        setWolrdPosInitial(entity);
-        //getValidPosition(1); TODO
+        setworldPosInitial(entity);
+        //TODO getValidPosition
     }
-    private void setWolrdPosInitial (E entity){
+    private void setworldPosInitial (E entity){
         switch (Race.of(entity)) {
-            //TODO position charge of init.json
             case DROW:
                 entity.worldPosX(62).worldPosY(68).worldPosMap(1);
                 break;
@@ -551,8 +550,6 @@ public class EntityFactorySystem extends PassiveSystem {
                 break;
         }
     }
-    private WorldPos getValidPosition(int map) {
-        //TODO comprobar que la posición este libre
-        return new WorldPos(50, 50, map);
-    }
+    //private worldPos getValidPosition(int map) { return new worldPos(50, 50, map); }
+
 }
