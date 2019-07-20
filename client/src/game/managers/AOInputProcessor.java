@@ -32,10 +32,16 @@ public class AOInputProcessor extends Stage {
 
     public static boolean alternativeKeys = false;
 
+    private GUI gui;
+
+    public AOInputProcessor (GUI gui) {
+        this.gui = gui;
+    }
+
     @Override
     public boolean scrolled(int amount) {
-        if (GUI.getActionBar().isOver()) {
-            GUI.getActionBar().scrolled(amount);
+        if (gui.getActionBar().isOver()) {
+            gui.getActionBar().scrolled(amount);
         } else {
             CameraSystem system = GameScreen.getWorld().getSystem(CameraSystem.class);
             system.zoom(amount, CameraSystem.ZOOM_TIME);
@@ -46,11 +52,11 @@ public class AOInputProcessor extends Stage {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         boolean result = super.touchUp(screenX, screenY, pointer, button);
-        if (GUI.getActionBar().isOver()) {
+        if (gui.getActionBar().isOver()) {
             return result;
         }
         WorldUtils.mouseToWorldPos().ifPresent(worldPos -> {
-            final Optional<Spell> toCast = GUI.getSpellView().toCast;
+            final Optional<Spell> toCast = gui.getSpellView().toCast;
             if (toCast.isPresent()) {
                 Spell spell = toCast.get();
                 E player = E.E(GameScreen.getPlayer());
@@ -61,10 +67,10 @@ public class AOInputProcessor extends Stage {
                     GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos, rtt + timeOffset));
                     player.attack();
                 } else {
-                    GUI.getConsole().addWarning(Messages.CANT_ATTACK);
+                    gui.getConsole().addWarning(Messages.CANT_ATTACK);
                 }
                 Cursors.setCursor("hand");
-                GUI.getSpellView().cleanCast();
+                gui.getSpellView().cleanCast();
             } else {
                 WorldManager worldManager = GameScreen.getWorld().getSystem(WorldManager.class);
                 Optional<String> name = worldManager.getEntities()
@@ -74,9 +80,9 @@ public class AOInputProcessor extends Stage {
                         .map(entity -> E(entity).getName().text)
                         .findFirst();
                 if (name.isPresent()) {
-                    GUI.getConsole().addInfo("Ves a " + name.get());
+                    gui.getConsole().addInfo("Ves a " + name.get());
                 } else {
-                    GUI.getConsole().addInfo("No ves nada interesante");
+                    gui.getConsole().addInfo("No ves nada interesante");
                 }
 
             }
@@ -86,7 +92,7 @@ public class AOInputProcessor extends Stage {
 
     @Override
     public boolean keyUp(int keycode) {
-        if (!GUI.getDialog().isVisible()) {
+        if (!gui.getDialog().isVisible()) {
             if (alternativeKeys) {
                 doAlternativeActions(keycode);
             } else {
@@ -136,7 +142,7 @@ public class AOInputProcessor extends Stage {
                 attack();
                 break;
             case Input.Keys.L:
-                GUI.getActionBar().toggle();
+                gui.getActionBar().toggle();
                 break;
             case Input.Keys.ESCAPE:
                 // Disconnect & go back to LoginScreen
@@ -144,7 +150,7 @@ public class AOInputProcessor extends Stage {
                 game.toLogin();
 
             case Input.Keys.F2:
-                GUI.takeScreenshot();
+                gui.takeScreenshot();
                 break;
         }
     }
@@ -184,15 +190,15 @@ public class AOInputProcessor extends Stage {
                 game.toLogin();
 
             case Input.Keys.F2:
-                GUI.takeScreenshot();
+                gui.takeScreenshot();
                 break;
         }
     }
 
     private void use() {
-        GUI.getInventory()
+        gui.getInventory()
                 .getSelected()
-                .ifPresent(slot -> GameScreen.getClient().sendToAll(new ItemActionRequest(GUI.getInventory().selectedIndex())));
+                .ifPresent(slot -> GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getInventory().selectedIndex())));
     }
 
     private void attack() {
@@ -204,9 +210,9 @@ public class AOInputProcessor extends Stage {
     }
 
     private void equip() {
-        GUI.getInventory()
+        gui.getInventory()
                 .getSelected()
-                .ifPresent(slot -> GameScreen.getClient().sendToAll(new ItemActionRequest(GUI.getInventory().selectedIndex())));
+                .ifPresent(slot -> GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getInventory().selectedIndex())));
     }
 
     private void takeItem() {
@@ -215,21 +221,21 @@ public class AOInputProcessor extends Stage {
 
     // drop selected item (count 1 for the time being)
     private void dropItem() {
-        GUI.getInventory().getSelected().ifPresent(selected -> {
+        gui.getInventory().getSelected().ifPresent(selected -> {
             int player = GameScreen.getPlayer();
             GameScreen
                     .getClient()
-                    .sendToAll(new DropItem(E(player).getNetwork().id, GUI.getInventory().selectedIndex(), E(player).getWorldPos()));
+                    .sendToAll(new DropItem(E(player).getNetwork().id, gui.getInventory().selectedIndex(), E(player).getWorldPos()));
         });
     }
 
     private void toggleDialogText() {
-        if (GUI.getDialog().isVisible()) {
-            String message = GUI.getDialog().getMessage();
+        if (gui.getDialog().isVisible()) {
+            String message = gui.getDialog().getMessage();
             GameScreen.getClient().sendToAll(new TalkRequest(message));
         }
-        GUI.getDialog().toggle();
-        E(GameScreen.getPlayer()).writing(GUI.getDialog().isVisible());
+        gui.getDialog().toggle();
+        E(GameScreen.getPlayer()).writing(gui.getDialog().isVisible());
     }
 
     private void toggleMeditate() {
@@ -237,11 +243,11 @@ public class AOInputProcessor extends Stage {
     }
 
     private void toggleInventory() {
-        GUI.getInventory().setVisible(!GUI.getInventory().isVisible());
+        gui.getInventory().setVisible(!gui.getInventory().isVisible());
     }
 
     private void toggleSpells() {
-        GUI.getSpellView().setVisible(!GUI.getSpellView().isVisible());
+        gui.getSpellView().setVisible(!gui.getSpellView().isVisible());
     }
 
 }

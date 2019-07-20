@@ -7,6 +7,8 @@ import com.artemis.WorldConfigurationBuilder;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -52,7 +54,8 @@ public class GameScreen extends ScreenAdapter {
     private static final int DECORATION_PRIORITY = ENTITY_RENDER_PRIORITY - 2;
     public static World world;
     public static int player = -1;
-    private static GUI gui = new GUI();
+    private static GUI gui;
+    //private InputMultiplexer inputMultiplexer;
     private FPSLogger logger;
     private GameState state;
     private SpriteBatch spriteBatch;
@@ -63,6 +66,7 @@ public class GameScreen extends ScreenAdapter {
         this.logger = new FPSLogger();
         long start = System.currentTimeMillis();
         initWorldConfiguration();
+        this.gui = new GUI();
         gui.initialize();
         Gdx.app.log("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
     }
@@ -73,11 +77,12 @@ public class GameScreen extends ScreenAdapter {
 
     public static void setPlayer(int player) {
         GameScreen.player = player;
-        GUI.getInventory().updateUserInventory(0);
-        GUI.getSpellView().updateSpells();
+        // @todo fix
+        gui.getInventory().updateUserInventory(0);
+        gui.getSpellView().updateSpells();
     }
 
-    public static GUI getGui() {
+    public GUI getGUI() {
         return gui;
     }
 
@@ -223,7 +228,7 @@ public class GameScreen extends ScreenAdapter {
         cameraSystem.camera.viewportHeight = cameraSystem.camera.viewportWidth * height / width;
         cameraSystem.camera.update();
 
-        GUI.getStage().getViewport().update(width, height);
+        gui.getStage().getViewport().update(width, height);
 
         getWorld().getSystem(LightRenderingSystem.class).resize(width, height);
     }
