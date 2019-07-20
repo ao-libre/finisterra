@@ -41,7 +41,38 @@ run.dependsOn classes
 task jpackageStart(type: Exec, dependsOn: dist) {
 
 	doFirst() {
-		delete("${buildDir}/distribution/${project.appName}")
+		download {
+
+			if (osName().contains('windows')) {
+				src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_windows-x64_bin.zip'
+			} else if (osName().contains('linux')) {
+				src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_linux-x64_bin.tar.gz'
+			} else if (osName().contains('mac')) {
+				src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_osx-x64_bin.tar.gz'
+			}
+			
+			dest projectDir
+			overwrite false
+		}
+		
+		if (!file("${projectDir}/jdk-14").exists()) {
+			copy {
+				
+				if (osName().contains('windows')) {
+					from zipTree("${projectDir}/openjdk-14-jpackage+8_windows-x64_bin.zip")
+				} else if (osName().contains('linux')) {
+					from tarTree("${projectDir}/openjdk-14-jpackage+8_linux-x64_bin.tar.gz")
+				} else if (osName().contains('mac')) {
+					from tarTree("${projectDir}/openjdk-14-jpackage+8_osx-x64_bin.tar.gz")
+				}
+				
+				into projectDir
+			}
+		}
+		
+		if (file("${buildDir}/distribution/${project.appName}").exists()) {
+			delete("${buildDir}/distribution/${project.appName}")
+		}
 	}
 
 	def commands = [
@@ -69,10 +100,8 @@ task jpackageStart(type: Exec, dependsOn: dist) {
 	}
 
 	commandLine = commands
-}
-
-// removes bloated runtime created by javapackager
-task jpackageCleanRuntime(dependsOn: jpackageStart) {
+	
+	// removes bloated runtime created by javapackager
 	doLast() {
 		File runtimeFile = file("${buildDir}/distribution/${project.appName}/runtime")
 		if (osName().contains('mac')) {
@@ -81,7 +110,7 @@ task jpackageCleanRuntime(dependsOn: jpackageStart) {
 
 		delete(runtimeFile)
 
-		delete fileTree("${buildDir}/distribution/${project.appName}").matching {
+		delete fileTree("${buildDir}/distribution/${project.appName}/app").matching {
 			include "api*.dll"
 		}
 
@@ -90,7 +119,7 @@ task jpackageCleanRuntime(dependsOn: jpackageStart) {
 }
 
 // creates a replacement runtime via jlink command (much smaller than jpackage)
-task jpackageAppBundle(type: Exec, dependsOn: [jpackageCleanRuntime]) {
+task appBundle(type: Exec, dependsOn: [jpackageStart]) {
 	String runtimePath = "${buildDir}/distribution/${project.appName}/runtime"
 	if (osName().contains('mac')) {
 		runtimePath = "${buildDir}/distribution/${project.appName}.app/contents/plugins/Java.runtime/Contents/Home"
@@ -130,37 +159,5 @@ task jpackageAppBundle(type: Exec, dependsOn: [jpackageCleanRuntime]) {
 		
 		System.out.println("Application '${project.appName}' packaged.")
 		System.out.println(" -> location: ${buildDir}/distribution/${project.appName}/")
-	}
-}
-
-tasks.jpackageStart.doFirst {
-	
-	download {
-
-		if (osName().contains('windows')) {
-			src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_windows-x64_bin.zip'
-		} else if (osName().contains('linux')) {
-			src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_linux-x64_bin.tar.gz'
-		} else if (osName().contains('mac')) {
-			src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_osx-x64_bin.tar.gz'
-		}
-		
-		dest projectDir
-		overwrite false
-	}
-	
-	if (!file("${projectDir}/jdk-14").exists()) {
-		copy {
-			
-			if (osName().contains('windows')) {
-				from zipTree("${projectDir}/openjdk-14-jpackage+8_windows-x64_bin.zip")
-			} else if (osName().contains('linux')) {
-				from tarTree("${projectDir}/openjdk-14-jpackage+8_linux-x64_bin.tar.gz")
-			} else if (osName().contains('mac')) {
-				from tarTree("${projectDir}/openjdk-14-jpackage+8_osx-x64_bin.tar.gz")
-			}
-			
-			into projectDir
-		}
 	}
 }
