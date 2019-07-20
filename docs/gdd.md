@@ -12,7 +12,12 @@
 - **Principios:** Comunidad - Diversión - Respeto - Open Source - Aprendizaje - Cooperación.
 (basados en la [Encuesta](https://docs.google.com/forms/d/e/1FAIpQLSemp4axFF6y5mitrH0bZjeKE64xMC0pIvhT7UELsmuTIqfXpg/viewform?usp=sf_link) incial del proyecto).
 
-# Manejo de Idiomas en la documentación y/o información del proyecto
+## Animaciones
+Assets gráficos frame per frame con o sin esqueletos.
+## Estilo gráfico
+Medieval. Colores vivos, iluminaciones.
+
+## Manejo de Idiomas en la documentación y/o información del proyecto
 - **Diseño del juego:** Español
 - **Programación:** Inglés
 - **Documentación de programación:** Inglés
@@ -20,69 +25,36 @@
 
 # Breve descripción del Diseño del Juego
     Los usuarios adoptan un rol.
-    Existen clases y razas
+    Existen razas:
+        Humanos
+        Elfos
+        Enanos
+        Gnomos
+        Elfos Oscuros
+    Existen clases:
+        Guerrero
+        Mago
+        Paladin
+        Asesino
+        Clerigo
+        Bardo
     Modo de juego:
-        Se mueve con las flechas y se apunta con el mouse.
-        Los ataques cuerpo a cuerpo se realizan presionando o manteniendo apretada una tecla.
-        La habilidades se usan con selección o macros.
-        Rangos ¿?
+        Se camina en direciones 4 con el teclado y se apunta con el mouse.
+    Modo de combate:
+        Cuerpo a cuerpo(1 posición de distancia):
+            Se realizan presionando o manteniendo apretada una tecla.
+        Magia:
+            Los hechizos se seleccionan de un libro y luego se aciertan sobre un objetivo.
+    Modo de entrenamiento:
+        Por medio de la mata de NPC.
     Los usuarios pueden agruparse.
     Existe el modo PVP
-    Existen Hechizos
-    Existen Habilidades
     Existe un mundo.
-    Existen Npc pacíficos y hostiles.
-## Animaciones
-Assets gráficos frame per frame con o sin esqueletos.
-## Estilo gráfico
-Medieval. Colores vivos, iluminaciones.
 
-# Testeos Públicos
-## Definiciones básicas.
-- Fecha y hora pautadas, alternan entre fin de semana y media semana.
-- Los test publicos disponen objetivos, son publicados junto con la Convocotaria.
-- Finalizado el test, se convoca al feedback mediante una invitación.
-## Frecuencia estimada para los testeos
-Mínimo 1 vez al mes.
-Máximo 4 veces al mes.
-## Canales de suscripción
-Por listas de email.
-## Canales de difusión
-Email Principal, Web, Discord, Redes Sociales.
-## Metajuego de los testeos
-Los jugadores realizan objetivos dentro de diferentes mundos que ofrecen variantes.
-### 1 Modo Hogar
-**Descripción.**
-Es una zona segura. Existen refugios para recibir a los nuevos ingresados y a los visitantes frencuentes.
-- Primer logueo: El jugador ingresa por primera vez a una zona segura donde lo recibe un Npc Guía que le enseña a jugar lo guía hasta un objetivo.
-- Siguientes visitas: En función del avanze que desarrolla el usuario, un npc lo sigue guiando.
-### 2 Modo pvp
-**Descripción.**
-Es una zona insegura. Compienza siendo una sala de combate en donde se encuentra un npc hostil con mecánicas de combate que van evolucionando y se permite el combate usuarios contra usuarios.
-Se encuentra Deshabilitado hasta que el usuario pueda superar el modo hogar, a partir de allí se desbloquea para nuevos ingresos.
-Al morir en el pvp, el usuario vuelve a salvo al modo hogar.
-
-**A lo largo de las versiones los modos evolucionan, ofrece nuevos conocimientos, misiones, mecánicas de combate.**
-## Repercusiones de los testeos
-- Oportunidad para los que quieran apoyar al proyecto.
-- FeedBack fomentado de jugadores casuales y experimentados.
-- Desarrollo de inteligencia artificial que puede ser utilizada para modo learning, modo combate, modo mascotas.
-- Oportunidad para probar mecánicas de combates, controles de mando, balance.
-
-# Npc 
-## Asistentes
-### Mario
-
-**Descripción** Mario debería guiar al nuevo a usuario a jugar en menos de 120 segundos.
-#### Primer encuentro
-- Le muestra cómo moverse.
-- Le regala equipo y el usuario aprende a levantarlos.
-- Luego lo golpea y le muestra los indicadores en pantalla de Estadisticas Primarias.
-- Le enseña a usar las pociones.
-- Lo guía a un objetivo.
-### Segundo encuentro
-- Si el usuario vuelve vivo sin haber cumplido el objetivo que le guío, vuelve al indicarle que debe superar el objetivo.
-- Si vuelve muerto, Mario le enseña a usar hechizos y le ofrece un duelo.
-    Si gana el Usuario, aparece un GM y le da un Toque de Magia. Resucita a Mario y se va.
-    Si gana Mario, Mario resucita a Usuario y le dice que su equipo no se ha caido porque esta en Zona Segura.
-        Mario le indica el próximo objetivo.
+## Posición de nacimiento según la Raza
+### Las posiciones iniciales estan pensadas en función del rol de cada raza (mitología Warhammer
+- Elfos - Los elfos nacen en la entrada a un bosque y cerca de una ciudad.
+- Humanos - En el centro de la ciudad principal.
+- Enanos -  Dentro de catacumbas, se ve la puerta de salida.
+- Elfos oscuros - Casa de magías.
+- Gnomos - Ocultos entre la maleza y las rocas de las cuevas.

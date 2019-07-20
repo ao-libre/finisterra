@@ -531,6 +531,7 @@ public class EntityFactorySystem extends PassiveSystem {
         setworldPosInitial(entity);
         //TODO getValidPosition
     }
+  
     private void setworldPosInitial (E entity){
         switch (Race.of(entity)) {
             case DROW:
@@ -551,5 +552,4 @@ public class EntityFactorySystem extends PassiveSystem {
         }
     }
     //private worldPos getValidPosition(int map) { return new worldPos(50, 50, map); }
-
 }
