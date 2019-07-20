@@ -27,9 +27,18 @@ public class ScreenManager {
     // Show in the game the screen which enum type is received
     public void showScreen(ScreenEnum screenEnum, Object... params) {
         // Show new screen
+        Screen current = game.getScreen();
+        if (current != null) {
+            if (current.getClass().equals(screenEnum.getType()) && params.length == 0) {
+                return;
+            }
+            current.pause();
+        }
+
         Screen newScreen = screenEnum.getScreen(params);
+        newScreen.resume();
         game.setScreen(newScreen);
-        current = newScreen;
+        this.current = newScreen;
     }
 
     public void showScreen(Screen screen) {

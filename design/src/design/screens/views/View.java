@@ -37,6 +37,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
     private Preview<T> preview;
     private Preview<T> itemView;
     private ArrayList<Listener> listenerList = new ArrayList<>();
+    private ButtonGroup<Button> buttons;
 
     public View(P designer) {
         this.designer = designer;
@@ -101,22 +102,18 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         table.pad(3);
         table.defaults().space(5);
         for (ScreenEnum screen : ScreenEnum.values()) {
-            Button button = new TextButton(screen.getTitle(), SKIN, "menu-button");
-            button.setProgrammaticChangeEvents(false);
+            boolean mainButton = screen.getType().equals(getClass());
+            TextButton button = new TextButton(screen.getTitle(), SKIN, mainButton ? "menu-button-selected" : "menu-button");
             button.addListener(new ClickListener() {
-
                 @Override
-                public void touchUp(InputEvent event, float x, float y, int pointer, int b) {
+                public void clicked(InputEvent event, float x, float y) {
                     Gdx.app.postRunnable(() -> {
                         ScreenManager.getInstance().showScreen(screen);
                     });
-                    super.touchUp(event, x, y, pointer, b);
                 }
-
             });
             table.add(button);
         }
-
         return table;
     }
 

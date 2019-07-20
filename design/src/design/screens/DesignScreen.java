@@ -13,6 +13,7 @@ public abstract class DesignScreen extends ScreenAdapter implements WorldScreen 
     private final Stage stage;
     private Table mainTable;
     World world;
+    boolean running;
 
     public DesignScreen() {
         stage = new Stage() {
@@ -37,26 +38,45 @@ public abstract class DesignScreen extends ScreenAdapter implements WorldScreen 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(getStage());
+        running = true;
+    }
+
+    @Override
+    public void pause() {
+        running = false;
+    }
+
+    @Override
+    public void hide() {
+        running = false;
+    }
+
+    @Override
+    public void resume() {
+        running = true;
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        getStage().act(delta);
-        getStage().draw();
-        if (world != null) {
-            world.setDelta(delta);
-            world.process();
+        if (running) {
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            getStage().act(delta);
+            getStage().draw();
+            if (world != null) {
+                world.setDelta(delta);
+                world.process();
+            }
         }
     }
 
     protected void createUI() {
         mainTable = new Table();
         mainTable.setFillParent(true);
-        Table content = createContent();
         Table buttons = createMenuButtons();
         mainTable.add(buttons).growX().row();
+
+        Table content = createContent();
         mainTable.add(content).grow();
         getStage().addActor(getMainTable());
     }

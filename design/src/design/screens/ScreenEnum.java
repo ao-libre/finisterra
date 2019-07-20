@@ -1,116 +1,40 @@
 package design.screens;
 
+import com.esotericsoftware.minlog.Log;
 import design.editors.fields.Listener;
 import design.screens.views.*;
 
 public enum ScreenEnum {
-    IMAGE_VIEW("Images") {
-        private ImageView imageView;
-
-        public View getScreen(Object... params) {
-            if (imageView == null) {
-                imageView = new ImageView();
-            }
-            readParams(imageView, params);
-            return imageView;
-        }
-    },
-    ANIMATION_VIEW("Animations") {
-        private AnimationView animationView;
-
-        public View getScreen(Object... params) {
-            if (animationView == null) {
-                animationView = new AnimationView();
-            }
-            readParams(animationView, params);
-            return animationView;
-        }
-    },
-    NPC_VIEW("NPCs") {
-        private NPCView npcView;
-
-        public View getScreen(Object... params) {
-            if (npcView == null) {
-                npcView = new NPCView();
-            }
-            readParams(npcView, params);
-            return npcView;
-        }
-    },
-    BODIES_VIEW("Bodies") {
-        private View view;
-
-        public View getScreen(Object... params) {
-            if (view == null) {
-                view = new BodiesView();
-            }
-            readParams(view, params);
-            return view;
-        }
-    },
-    HEADS_VIEW("Heads") {
-        private View headView;
-
-        public View getScreen(Object... params) {
-            if (headView == null) {
-                headView = new HeadsView();
-            }
-            readParams(headView, params);
-            return headView;
-        }
-    },
-    SHIELDS_VIEW("Shields") {
-        private View view;
-
-        public View getScreen(Object... params) {
-            if (view == null) {
-                view = new ShieldsView();
-            }
-            readParams(view, params);
-            return view;
-        }
-    },
-    WEAPONS_VIEW("Weapons") {
-        private View view;
-
-        public View getScreen(Object... params) {
-            if (view == null) {
-                view = new WeaponsView();
-            }
-            readParams(view, params);
-            return view;
-        }
-    },
-    HELMETS_VIEW ("Helmets"){
-        private View view;
-
-        public View getScreen(Object... params) {
-            if (view == null) {
-                view = new HelmetsView();
-            }
-            readParams(view, params);
-            return view;
-        }
-    },
-    FXS_VIEW("FXs") {
-        private View view;
-
-        public View getScreen(Object... params) {
-            if (view == null) {
-                view = new FXsView();
-            }
-            readParams(view, params);
-            return view;
-        }
-    },;
+    IMAGE_VIEW("Images", ImageView.class),
+    ANIMATION_VIEW("Animations", AnimationView.class),
+    NPC_VIEW("NPCs", NPCView.class),
+    BODIES_VIEW("Bodies", BodiesView.class),
+    HEADS_VIEW("Heads", HeadsView.class),
+    SHIELDS_VIEW("Shields", ShieldsView.class),
+    WEAPONS_VIEW("Weapons", WeaponsView.class),
+    HELMETS_VIEW ("Helmets", HelmetsView.class),
+    FXS_VIEW("FXs", FXsView.class);
 
     private String title;
+    private Class<? extends View> type;
+    private View view;
 
-    ScreenEnum(String title) {
+    ScreenEnum(String title, Class<? extends View> type) {
         this.title = title;
+        this.type = type;
     }
 
-    public abstract View getScreen(Object... params);
+    public View getScreen(Object... params) {
+        if (view == null) {
+            try {
+                view = type.newInstance();
+            } catch (InstantiationException | IllegalAccessException e) {
+                Log.error("View not implemented", e);
+            }
+        }
+        readParams(view, params);
+        return view;
+    }
 
     void readParams(View view, Object... params) {
         if (params.length > 0) {
@@ -118,6 +42,10 @@ public enum ScreenEnum {
                 view.setListener((Listener) params[0]);
             }
         }
+    }
+
+    public Class getType() {
+        return type;
     }
 
     public String getTitle() {

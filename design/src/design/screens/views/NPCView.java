@@ -162,8 +162,10 @@ public class NPCView extends View<NPC, NPCDesigner> {
                     return;
                 }
                 BundledAnimation bodyAnimation = getAnimationHandler().getBodyAnimation(body, heading);
-                TextureRegion graphic = bodyAnimation.getGraphic();
-                setSize(graphic.getRegionWidth(), graphic.getRegionHeight());
+                if (bodyAnimation != null) {
+                    TextureRegion graphic = bodyAnimation.getGraphic();
+                    setSize(graphic.getRegionWidth(), graphic.getRegionHeight());
+                }
             }
         }
 
