@@ -67,7 +67,7 @@ Server logic and systems (ECS), database connection (TBD), etc.
 All stuff shared between client and server, like network requests and responses, objects, maps, etc.
 
 ## Images 
-![alt text](https://github.com/guidotamb/ao-java/blob/master/src/main/resources/readme-example.png)
+![game preview image](https://cdn.discordapp.com/attachments/586729778027954187/599781752357126165/aoj2.png)
 
 # Key Config to play
 ## Default
