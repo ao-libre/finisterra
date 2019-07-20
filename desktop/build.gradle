@@ -101,20 +101,14 @@ task jpackageStart(type: Exec, dependsOn: dist) {
 
 	commandLine = commands
 	
-	// removes bloated runtime created by javapackager
 	doLast() {
+		// Initial debloat for jpackage
 		File runtimeFile = file("${buildDir}/distribution/${project.appName}/runtime")
 		if (osName().contains('mac')) {
 			runtimeFile = file("${buildDir}/distribution/${project.appName}.app/contents/plugins/Java.runtime/Contents/Home")
 		}
 
 		delete(runtimeFile)
-
-		delete fileTree("${buildDir}/distribution/${project.appName}/app").matching {
-			include "api*.dll"
-		}
-
-		System.out.println("Deleting bloated runtime in " + runtimeFile)
 	}
 }
 
@@ -157,6 +151,13 @@ task appBundle(type: Exec, dependsOn: [jpackageStart]) {
 			into("${buildDir}/distribution/${project.appName}/app")
 		}
 		
+		// Final debloat for jpackage
+		// TO-DO: After we fix the working-dir-after-packing issue try this...
+		//delete(file("${buildDir}/distribution/${project.appName}/runtime/conf"))
+		//delete(file("${buildDir}/distribution/${project.appName}/runtime/legal"))
+		//delete fileTree("${buildDir}/distribution/${project.appName}/bin").matching { include "*.dll" exclude "applauncher.dll"}
+		//delete fileTree("${buildDir}/distribution/${project.appName}/app").matching { include "api*.dll" }
+
 		System.out.println("Application '${project.appName}' packaged.")
 		System.out.println(" -> location: ${buildDir}/distribution/${project.appName}/")
 	}
