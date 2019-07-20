@@ -8,9 +8,7 @@ old/
 out/
 **/out/
 design/resources*
-desktop/jdk-14*
-desktop/*.zip
-desktop/*.tar.gz
+desktop/jpackage/*
 desktop/build/releases/*.zip
 desktop/build/jdks/**
 desktop/finisterra*
@@ -18,3 +16,4 @@ desktop/java*
 desktop/packing*
 desktop/jdk*
 desktop/desktop*
+desktop/assets/data/Screenshots/Screen.png

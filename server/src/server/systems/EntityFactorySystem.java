@@ -164,9 +164,11 @@ public class EntityFactorySystem extends PassiveSystem {
 
     private void setHead(E entity, Race race) {
         ThreadLocalRandom random = ThreadLocalRandom.current();
+        //TODO onlyWoman desde init.json
         int headIndex = 0;
         switch (race) {
             case HUMAN:
+                //TODO if onlyWoman = 1 set body woman
                 headIndex = random.nextInt(1, 51 + 1);
                 break;
             case DROW:
@@ -271,7 +273,7 @@ public class EntityFactorySystem extends PassiveSystem {
 
     private void setHeadAndBody(String name, E entity) {
         entity
-                .headingCurrent(Heading.HEADING_NORTH)
+                .headingCurrent(Heading.HEADING_SOUTH)
                 .character()
                 .nameText(name);
     }
@@ -526,15 +528,28 @@ public class EntityFactorySystem extends PassiveSystem {
 
 
     private void setEntityPosition(E entity) {
-        WorldPos worldPos = getValidPosition(1);
-        entity
-                .worldPosX(worldPos.x)
-                .worldPosY(worldPos.y)
-                .worldPosMap(worldPos.map);
+        setworldPosInitial(entity);
+        //TODO getValidPosition
     }
-
-    private WorldPos getValidPosition(int map) {
-
-        return new WorldPos(50, 50, map);
+  
+    private void setworldPosInitial (E entity){
+        switch (Race.of(entity)) {
+            case DROW:
+                entity.worldPosX(62).worldPosY(68).worldPosMap(1);
+                break;
+            case ELF:
+                entity.worldPosX(43).worldPosY(16).worldPosMap(2);
+                break;
+            case DWARF:
+                entity.worldPosX(46).worldPosY(9).worldPosMap(40);
+                break;
+            case GNOME:
+                entity.worldPosX(33).worldPosY(49).worldPosMap(1);
+                break;
+            case HUMAN:
+                entity.worldPosX(65).worldPosY(17).worldPosMap(1);
+                break;
+        }
     }
+    //private worldPos getValidPosition(int map) { return new worldPos(50, 50, map); }
 }
