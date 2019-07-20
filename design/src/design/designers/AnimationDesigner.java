@@ -81,6 +81,11 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
         }
     }
 
+    @Override
+    public boolean contains(int id) {
+        return getIndexOf(id) >= 0;
+    }
+
     private int getIndexOf(int animation) {
         for (int i = 0; i < animations.size(); i++) {
             if (animations.get(i).getId() == animation) {

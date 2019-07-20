@@ -103,6 +103,11 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
         npcs.put(npc.getId(), npc);
     }
 
+    @Override
+    public boolean contains(int id) {
+        return npcs.containsKey(id);
+    }
+
 
     public static class NPCParameters implements Parameters<NPC> {
         enum NPCModel {

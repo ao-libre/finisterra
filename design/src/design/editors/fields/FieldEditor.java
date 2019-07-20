@@ -81,7 +81,9 @@ public abstract class FieldEditor<T> implements IFieldEditor {
     }
 
     protected void onModify() {
-        listeners.forEach(FieldListener::onModify);
+        if (listeners != null) {
+            listeners.forEach(FieldListener::onModify);
+        }
     }
 
     protected abstract Actor createSimpleEditor();

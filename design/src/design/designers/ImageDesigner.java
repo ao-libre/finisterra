@@ -72,7 +72,25 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
 
     @Override
     public void add(AOImage aoImage) {
-        images.set(aoImage.getId() - 1, aoImage);
+        int index = getIndexOf(aoImage.getId());
+        if (index >= 0) {
+            images.set(index, aoImage);
+        } else {
+            images.add(aoImage);
+        }
+    }
+
+    private int getIndexOf(int image) {
+        for (int i = 0; i < images.size(); i++) {
+            if (images.get(i).getId() == image) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    @Override
+    public boolean contains(int id) {
+        return getIndexOf(id) >= 0;
     }
 
     public static class ImageParameters implements Parameters<AOImage> {

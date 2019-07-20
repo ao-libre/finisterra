@@ -1,14 +1,20 @@
 package design.editors.fields;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Timer;
+import design.designers.IDesigner;
 import design.screens.ScreenManager;
 import design.screens.views.View;
 import org.jetbrains.annotations.NotNull;
@@ -16,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static launcher.DesignCenter.SKIN;
 
 public class IntegerEditor extends FieldEditor<Integer> {
@@ -60,26 +67,61 @@ public class IntegerEditor extends FieldEditor<Integer> {
         text.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Screen current = ScreenManager.getInstance().getCurrent();
-                try {
-                    int t = Integer.parseInt(text.getText());
-                    consumer.accept(t);
-                    onModify();
-                    if (current instanceof View) {
-                        ((View) current).refreshPreview();
+                Timer.instance().clear();
+                Timer.schedule(new Timer.Task() {
+                    public void run() {
+                        Gdx.app.postRunnable(() -> {
+                            Screen current = ScreenManager.getInstance().getCurrent();
+                            if (current instanceof View) {
+                                View view = (View) current;
+                                try {
+                                    int t = Integer.parseInt(text.getText());
+                                    if (!getFieldProvider().equals(FieldProvider.NONE)) {
+                                        if (!validInput(t, view.getDesigner())) {
+                                            showWarning(t, text, getFieldProvider(), view.getStage());
+                                            text.setText(getSupplier().get().toString());
+                                            return;
+                                        }
+                                    }
+                                    getConsumer().accept(t);
+                                    onModify();
+                                    view.refreshPreview();
+                                } catch (NumberFormatException ignored) {
+                                    showWarning(current, text);
+                                    text.setText(getSupplier().get().toString());
+                                }
+                            }
+                        });
                     }
-                } catch (NumberFormatException ignored) {
-                    if (current instanceof View && !text.getText().isEmpty()) {
-                        Stage stage = ((View) current).getStage();
-                        Dialog notNumber = new Dialog("Invalid format", SKIN);
-                        notNumber.text("Not valid integer, changes are not going to be set");
-                        notNumber.button("OK");
-                        notNumber.show(stage);
+
+                    private boolean validInput(int ref, IDesigner designer) {
+                        return designer.contains(ref);
                     }
-                }
+                }, 2f);
             }
         });
         return text;
     }
 
+    public static void showWarning(int t, TextField text, FieldProvider fieldProvider, Stage stage) {
+        Dialog notNumber = new Dialog("Invalid Reference", SKIN);
+        String type = fieldProvider.getScreen().getTitle();
+        notNumber.text("This is not a valid reference of " + type);
+        notNumber.button("OK");
+        Vector2 coors = text.localToStageCoordinates(new Vector2(text.getX(), text.getY()));
+        notNumber.setPosition(coors.x, coors.y);
+        notNumber.show(stage, sequence(Actions.alpha(0), Actions.fadeIn(0.4f, Interpolation.fade)));
+    }
+
+    public static void showWarning(Screen current, TextField text) {
+        if (current instanceof View && !text.getText().isEmpty()) {
+            Stage stage = ((View) current).getStage();
+            Dialog notNumber = new Dialog("Invalid format", SKIN);
+            notNumber.text("Not valid integer, changes are not going to be set");
+            notNumber.button("OK");
+            Vector2 coors = text.localToStageCoordinates(new Vector2(text.getX(), text.getY()));
+            notNumber.setPosition(coors.x, coors.y);
+            notNumber.show(stage, sequence(Actions.alpha(0), Actions.fadeIn(0.4f, Interpolation.fade)));
+        }
+    }
 }

@@ -121,7 +121,26 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
     @Override
     public void add(T t) {
         // TODO check
-        descriptors.set(t.getId() - 1, t);
+        int index = getIndexOf(t.getId());
+        if (index >= 0) {
+            descriptors.set(index, t);
+        } else {
+            descriptors.add(t);
+        }
+    }
+
+    private int getIndexOf(int animation) {
+        for (int i = 0; i < descriptors.size(); i++) {
+            if (descriptors.get(i).getId() == animation) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public boolean contains(int id) {
+        return getIndexOf(id) >= 0;
     }
 
     @Override

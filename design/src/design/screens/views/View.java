@@ -301,8 +301,8 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         T original;
         T current;
         Actor view;
-        private TextButton restore;
-        private TextButton save;
+        private Button restore;
+        private Button save;
         private State state;
         private FieldListener listener;
 
@@ -314,7 +314,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         }
 
         public void addButtons() {
-            restore = new TextButton("Restore", SKIN);
+            restore = new TextButton("Restore", SKIN, "file");
             restore.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -322,7 +322,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
                 }
             });
             add(restore).left().pad(4).growX();
-            save = new TextButton("Save", SKIN);
+            save = new TextButton("Save", SKIN, "file");
             save.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -349,7 +349,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
                 saveDialog.button("NO", false);
                 saveDialog.button("YES", true);
                 Vector2 coord = localToScreenCoordinates(new Vector2(getX(), getY()));
-                float x = coord.x + ((view.getWidth() - saveDialog.getWidth()) / 2);
+                float x = coord.x + ((view.getWidth() - saveDialog.getWidth()) / 2) - 20;
                 float y = (this.getY() + this.getHeight() - saveDialog.getHeight()) / 2;
                 saveDialog.show(View.this.getStage(), sequence(Actions.alpha(0), Actions.fadeIn(0.4f, Interpolation.fade)));
                 saveDialog.setPosition(x, y);
@@ -390,7 +390,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         }
 
         void restore() {
-            show(getOriginal());
+            set(getOriginal());
             refreshPreview();
             setState(SAVED);
         }

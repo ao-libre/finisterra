@@ -27,5 +27,7 @@ public interface IDesigner<T, P extends IDesigner.Parameters<T>> {
 
     void add(T t);
 
+    boolean contains(int id);
+
     interface Parameters<T> {}
 }
