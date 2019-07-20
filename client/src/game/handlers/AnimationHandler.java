@@ -3,6 +3,9 @@ package game.handlers;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import entity.character.equipment.Helmet;
 import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
@@ -21,7 +24,7 @@ import shared.objects.types.WeaponObj;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
+import java.util.concurrent.TimeUnit;
 
 @Wire
 public class AnimationHandler extends PassiveSystem {
@@ -34,6 +37,15 @@ public class AnimationHandler extends PassiveSystem {
     private static Map<Shield, List<BundledAnimation>> shieldAnimations = new HashMap<>();
     private static Map<Integer, BundledAnimation> bundledAnimations = new ConcurrentHashMap<>();
     private static Map<Integer, AOTexture> textures = new ConcurrentHashMap<>();
+    private LoadingCache<AOAnimation, BundledAnimation> previews = CacheBuilder
+            .newBuilder()
+            .expireAfterAccess(3, TimeUnit.MINUTES)
+            .build(new CacheLoader<AOAnimation, BundledAnimation>() {
+                @Override
+                public BundledAnimation load(AOAnimation animation) {
+                    return new BundledAnimation(animation);
+                }
+            });
 
     private AOAssetManager assetManager;
     private DescriptorHandler descriptorHandler;
@@ -112,6 +124,10 @@ public class AnimationHandler extends PassiveSystem {
         return Optional.ofNullable(bundledAnimations.get(id)).orElseGet(() -> saveAnimation(id));
     }
 
+    public BundledAnimation getPreviewAnimation(AOAnimation animation) {
+        return previews.getUnchecked(animation);
+    }
+
     private BundledAnimation saveAnimation(int id) {
         AOAnimation animation = assetManager.getAnimation(id);
         if (animation == null) {
@@ -140,5 +156,9 @@ public class AnimationHandler extends PassiveSystem {
         AOTexture aoTexture = new AOTexture(image);
         textures.put(image.getId(), aoTexture);
         return aoTexture;
+    }
+
+    public void clearAnimation(AOAnimation animation) {
+        previews.invalidate(animation);
     }
 }

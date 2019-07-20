@@ -39,7 +39,7 @@ public class NPCEditor extends Dialog {
         table.add(IntegerEditor.create("Body", FieldProvider.BODY, npc::setBody, npc::getBody)).row();
 
         // hostile
-        table.add(BooleanEditor.simple("Hostile", npc::setHostile, npc::isHostile)).row();
+        table.add(BooleanEditor.simple("Hostile", npc::setHostile, npc::isHostile)).left().row();
         table.add(IntegerEditor.create("Min HP", npc::setMinHP, npc::getMinHP)).row();
         table.add(IntegerEditor.create("Max HP", npc::setMaxHP, npc::getMaxHP)).row();
         table.add(IntegerEditor.create("Min Hit", npc::setMinHit, npc::getMinHit)).row();

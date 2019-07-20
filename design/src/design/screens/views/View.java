@@ -301,7 +301,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
                     restore();
                 }
             });
-            add(restore).space(5);
+            add(restore).left().pad(4).growX();
             Button save = new TextButton("Save", SKIN);
             save.addListener(new ClickListener() {
                 @Override
@@ -309,7 +309,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
                     save();
                 }
             });
-            add(save).row();
+            add(save).left().pad(4).growX().row();
         }
 
         @Override

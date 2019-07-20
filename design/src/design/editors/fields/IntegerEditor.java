@@ -3,7 +3,9 @@ package design.editors.fields;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -48,21 +50,27 @@ public class IntegerEditor extends FieldEditor<Integer> {
     }
 
     @NotNull
-    public static TextField createIntegerField(Supplier<Integer> integer, Consumer<Integer> consumer) {
+    private static TextField createIntegerField(Supplier<Integer> integer, Consumer<Integer> consumer) {
         TextField text = new TextField("" + integer.get(), SKIN);
 
         text.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                Screen current = ScreenManager.getInstance().getCurrent();
                 try {
                     int t = Integer.parseInt(text.getText());
                     consumer.accept(t);
-                    Screen current = ScreenManager.getInstance().getCurrent();
                     if (current instanceof View) {
                         ((View) current).refreshPreview();
                     }
                 } catch (NumberFormatException ignored) {
-
+                    if (current instanceof View && !text.getText().isEmpty()) {
+                        Stage stage = ((View) current).getStage();
+                        Dialog notNumber = new Dialog("Invalid format", SKIN);
+                        notNumber.text("Not valid integer, changes are not going to be set");
+                        notNumber.button("OK");
+                        notNumber.show(stage);
+                    }
                 }
             }
         });

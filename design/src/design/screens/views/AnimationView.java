@@ -47,10 +47,14 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
 
     }
 
-    class AnimationItem extends Editor<AOAnimation> {
+    @Override
+    public void refreshPreview() {
+        AOAnimation animation = getItemView().get();
+        getAnimationHandler().clearAnimation(animation);
+        super.refreshPreview();
+    }
 
-        private AOAnimation animation;
-        private Actor view;
+    class AnimationItem extends Editor<AOAnimation> {
 
         public AnimationItem() {
             super(SKIN);
@@ -65,11 +69,6 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
         @Override
         protected AOAnimation getCopy(AOAnimation to) {
             return new AOAnimation(to);
-        }
-
-        @Override
-        void save() {
-            getDesigner().add(current);
         }
 
     }
@@ -93,9 +92,9 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
         public void show(AOAnimation animation) {
             this.animation = animation;
             label.setText(animation.getId());
-            bundledAnimation = getAnimationHandler().getAnimation(animation.getId());
+            bundledAnimation = getAnimationHandler().getPreviewAnimation(animation);
             TextureRegion graphic = bundledAnimation.getGraphic();
-            setSize(graphic.getRegionWidth(), graphic.getRegionHeight());
+            image.setSize(graphic.getRegionWidth(), graphic.getRegionHeight());
         }
 
         @Override
