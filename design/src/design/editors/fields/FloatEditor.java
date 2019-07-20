@@ -18,12 +18,8 @@ public class FloatEditor extends FieldEditor<Float> {
         super(label, fieldProvider, consumer, supplier);
     }
 
-    public static Actor simple(String label, Consumer<Float> consumer, Supplier<Float> supplier) {
+    public static Actor simple(String label, Consumer<Float> consumer, Supplier<Float> supplier, FieldListener listener) {
         return new FloatEditor(label, FieldProvider.NONE, consumer, supplier).getField();
-    }
-
-    public static Actor list(String label, FieldProvider fieldProvider, Consumer<Float> consumer, Supplier<Float> supplier) {
-        return new FloatEditor(label, fieldProvider, consumer, supplier).getField();
     }
 
     @Override

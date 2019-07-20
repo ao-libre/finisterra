@@ -6,6 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -18,6 +20,7 @@ public abstract class FieldEditor<T> implements IFieldEditor {
     private final Supplier<T> supplier;
     private final String label;
     private final Actor field;
+    private List<FieldListener> listeners;
 
     public FieldEditor(String label, FieldProvider fieldProvider, Consumer<T> consumer, Supplier<T> supplier) {
         this.label = label;
@@ -25,6 +28,17 @@ public abstract class FieldEditor<T> implements IFieldEditor {
         this.consumer = consumer;
         this.supplier = supplier;
         this.field = createField();
+    }
+
+    public void addListener(FieldListener listener) {
+        if (listeners == null) {
+            listeners = new ArrayList<>();
+        }
+        listeners.add(listener);
+    }
+
+    public List<FieldListener> getListeners() {
+        return listeners;
     }
 
     public Consumer<T> getConsumer() {
@@ -66,5 +80,15 @@ public abstract class FieldEditor<T> implements IFieldEditor {
         return new Button();
     }
 
+    protected void onModify() {
+        listeners.forEach(FieldListener::onModify);
+    }
+
     protected abstract Actor createSimpleEditor();
+
+    public interface FieldListener {
+
+        void onModify();
+
+    }
 }

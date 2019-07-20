@@ -27,8 +27,9 @@ public class StringEditor extends FieldEditor<String> {
         return text;
     }
 
-    public static Actor simple(String label, Consumer<String> consumer, Supplier<String> supplier) {
+    public static Actor simple(String label, Consumer<String> consumer, Supplier<String> supplier, FieldListener listener) {
         StringEditor stringEditor = new StringEditor(label, FieldProvider.NONE, consumer, supplier);
+        stringEditor.addListener(listener);
         return stringEditor.getField();
     }
 

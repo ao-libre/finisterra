@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import design.designers.NPCDesigner;
 import design.designers.NPCDesigner.NPCParameters;
 import design.editors.NPCEditor;
+import design.editors.fields.FieldEditor;
 import entity.character.parts.Body;
 import entity.character.states.Heading;
 import model.textures.BundledAnimation;
@@ -29,6 +30,7 @@ import shared.model.npcs.NPCToEntity;
 import java.util.Comparator;
 
 import static com.artemis.E.E;
+import static design.editors.fields.FieldEditor.*;
 import static game.systems.render.world.CharacterRenderingSystem.CharacterDrawer.createDrawer;
 import static launcher.DesignCenter.SKIN;
 
@@ -65,8 +67,8 @@ public class NPCView extends View<NPC, NPCDesigner> {
 
         @NotNull
         @Override
-        protected Table getTable() {
-            return NPCEditor.getTable(current);
+        protected Table getTable(FieldListener listener) {
+            return NPCEditor.getTable(current, listener);
         }
 
         @Override

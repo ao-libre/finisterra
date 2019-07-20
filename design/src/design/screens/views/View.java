@@ -3,15 +3,20 @@ package design.screens.views;
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.minlog.Log;
 import design.designers.IDesigner;
+import design.editors.fields.FieldEditor;
+import design.editors.fields.FieldEditor.FieldListener;
 import design.editors.fields.Listener;
 import design.screens.DesignScreen;
 import design.screens.ScreenEnum;
@@ -26,6 +31,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
+import static design.screens.views.View.State.MODIFIED;
+import static design.screens.views.View.State.SAVED;
 import static launcher.DesignCenter.SKIN;
 
 public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Parameters<T>>> extends DesignScreen implements WorldScreen {
@@ -126,6 +134,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
     public void saveEdition() {
         T t = getItemView().get();
         getDesigner().add(t);
+        loadItems(Optional.ofNullable(t));
     }
 
     public List<T> getList() {
@@ -282,19 +291,30 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         abstract T get();
     }
 
+    enum State {
+        MODIFIED,
+        SAVED
+    }
+
     abstract class Editor<T> extends Preview<T> {
 
         T original;
         T current;
         Actor view;
+        private TextButton restore;
+        private TextButton save;
+        private State state;
+        private FieldListener listener;
 
         public Editor(Skin skin) {
             super(skin);
+            listener = () -> setState(MODIFIED);
             addButtons();
+            setState(SAVED);
         }
 
         public void addButtons() {
-            Button restore = new TextButton("Restore", SKIN);
+            restore = new TextButton("Restore", SKIN);
             restore.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -302,7 +322,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
                 }
             });
             add(restore).left().pad(4).growX();
-            Button save = new TextButton("Save", SKIN);
+            save = new TextButton("Save", SKIN);
             save.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -314,18 +334,44 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
 
         @Override
         void show(T to) {
+            if (state == MODIFIED) {
+                // ASK TO SAVE
+                Dialog saveDialog = new Dialog("Save Changes", SKIN) {
+                    @Override
+                    protected void result(Object object) {
+                        if ((Boolean) object) {
+                            save();
+                        }
+                        set(to);
+                    }
+                };
+                saveDialog.text("Do you want to save changes before?");
+                saveDialog.button("NO", false);
+                saveDialog.button("YES", true);
+                Vector2 coord = localToScreenCoordinates(new Vector2(getX(), getY()));
+                float x = coord.x + ((view.getWidth() - saveDialog.getWidth()) / 2);
+                float y = (this.getY() + this.getHeight() - saveDialog.getHeight()) / 2;
+                saveDialog.show(View.this.getStage(), sequence(Actions.alpha(0), Actions.fadeIn(0.4f, Interpolation.fade)));
+                saveDialog.setPosition(x, y);
+                return;
+            }
+            set(to);
+        }
+
+        private void set(T to) {
             this.original = to;
             this.current = getCopy(to);
             if (view != null) {
                 clear();
                 addButtons();
             }
-            view = getTable();
+            view = getTable(listener);
             add(view).pad(20).growX().colspan(2);
+            setState(SAVED);
         }
 
         @NotNull
-        protected abstract Table getTable();
+        protected abstract Table getTable(FieldListener listener);
 
         protected abstract T getCopy(T to);
 
@@ -340,11 +386,23 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
 
         void save() {
             saveEdition();
+            setState(SAVED);
         }
 
         void restore() {
             show(getOriginal());
             refreshPreview();
+            setState(SAVED);
+        }
+
+        private void setState(State state) {
+            this.state = state;
+            refreshButtons();
+        }
+
+        private void refreshButtons() {
+            save.setDisabled(state.equals(SAVED));
+            restore.setDisabled(state.equals(SAVED));
         }
 
 

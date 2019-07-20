@@ -24,12 +24,16 @@ public class IntegerEditor extends FieldEditor<Integer> {
         super(label, fieldProvider, consumer, supplier);
     }
 
-    public static Actor create(String label, Consumer<Integer> consumer, Supplier<Integer> supplier) {
-        return new IntegerEditor(label, FieldProvider.NONE, consumer, supplier).getField();
+    public static Actor create(String label, Consumer<Integer> consumer, Supplier<Integer> supplier, FieldListener listener) {
+        IntegerEditor integerEditor = new IntegerEditor(label, FieldProvider.NONE, consumer, supplier);
+        integerEditor.addListener(listener);
+        return integerEditor.getField();
     }
 
-    public static Actor create(String label, FieldProvider fieldProvider, Consumer<Integer> consumer, Supplier<Integer> supplier) {
-        return new IntegerEditor(label, fieldProvider, consumer, supplier).getField();
+    public static Actor create(String label, FieldProvider fieldProvider, Consumer<Integer> consumer, Supplier<Integer> supplier, FieldListener listener) {
+        IntegerEditor integerEditor = new IntegerEditor(label, fieldProvider, consumer, supplier);
+        integerEditor.addListener(listener);
+        return integerEditor.getField();
     }
 
     @Override
@@ -50,7 +54,7 @@ public class IntegerEditor extends FieldEditor<Integer> {
     }
 
     @NotNull
-    private static TextField createIntegerField(Supplier<Integer> integer, Consumer<Integer> consumer) {
+    private TextField createIntegerField(Supplier<Integer> integer, Consumer<Integer> consumer) {
         TextField text = new TextField("" + integer.get(), SKIN);
 
         text.addListener(new ChangeListener() {
@@ -60,6 +64,7 @@ public class IntegerEditor extends FieldEditor<Integer> {
                 try {
                     int t = Integer.parseInt(text.getText());
                     consumer.accept(t);
+                    onModify();
                     if (current instanceof View) {
                         ((View) current).refreshPreview();
                     }

@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.Array;
 import design.designers.AnimationDesigner;
 import design.designers.AnimationDesigner.AnimationParameters;
 import design.editors.AnimationEditor;
+import design.editors.fields.FieldEditor;
+import design.editors.fields.FieldEditor.FieldListener;
 import game.screens.WorldScreen;
 import model.textures.AOAnimation;
 import model.textures.BundledAnimation;
@@ -62,8 +64,8 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
 
         @NotNull
         @Override
-        protected Table getTable() {
-            return AnimationEditor.getTable(current);
+        protected Table getTable(FieldListener listener) {
+            return AnimationEditor.getTable(current, listener);
         }
 
         @Override

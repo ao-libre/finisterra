@@ -1,6 +1,5 @@
 package design.screens.views;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import design.designers.DescriptorDesigner;
+import design.editors.fields.FieldEditor.FieldListener;
 import game.screens.WorldScreen;
 import graphics.AOAnimationActor;
 import model.descriptors.BodyDescriptor;
@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
-import java.util.Optional;
 
 import static launcher.DesignCenter.SKIN;
 
@@ -49,7 +48,7 @@ public abstract class DescriptorView<T extends Descriptor> extends View<T, Descr
     }
 
     @NotNull
-    abstract Table getTable(Descriptor descriptor);
+    abstract Table getTable(Descriptor descriptor, FieldListener listener);
 
     protected DescriptorActor createPreviewActor() {
         return new AOAnimationActor(getAnimationHandler());
@@ -94,8 +93,8 @@ public abstract class DescriptorView<T extends Descriptor> extends View<T, Descr
 
         @NotNull
         @Override
-        protected Table getTable() {
-            return DescriptorView.this.getTable(current);
+        protected Table getTable(FieldListener listener) {
+            return DescriptorView.this.getTable(current, listener);
         }
 
         @Override

@@ -20,8 +20,10 @@ public class BooleanEditor extends FieldEditor<Boolean> {
         super(label, fieldProvider, consumer, supplier);
     }
 
-    public static Actor simple(String label, Consumer<Boolean> consumer, Supplier<Boolean> supplier) {
-        return new BooleanEditor(label, FieldProvider.NONE, consumer, supplier).getField();
+    public static Actor simple(String label, Consumer<Boolean> consumer, Supplier<Boolean> supplier, FieldListener listener) {
+        BooleanEditor booleanEditor = new BooleanEditor(label, FieldProvider.NONE, consumer, supplier);
+        booleanEditor.addListener(listener);
+        return booleanEditor.getField();
     }
 
     @Override

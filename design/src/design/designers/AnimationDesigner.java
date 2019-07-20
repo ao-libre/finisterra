@@ -73,7 +73,21 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
 
     @Override
     public void add(AOAnimation animation) {
-        animations.set(animation.getId() - 1, animation);
+        int index = getIndexOf(animation.getId());
+        if (index >= 0) {
+            animations.set(index, animation);
+        } else {
+            animations.add(animation);
+        }
+    }
+
+    private int getIndexOf(int animation) {
+        for (int i = 0; i < animations.size(); i++) {
+            if (animations.get(i).getId() == animation) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public static class AnimationParameters implements Parameters<AOAnimation> {
