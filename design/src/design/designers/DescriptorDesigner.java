@@ -100,7 +100,7 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
     }
 
     @Override
-    public T create() {
+    public Optional<T> create() {
         T t = null;
         if (tClass.equals(HeadDescriptor.class)) {
             t = (T) new HeadDescriptor();
@@ -115,7 +115,8 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
         } else if (tClass.equals(WeaponDescriptor.class)) {
             t = (T) new WeaponDescriptor();
         }
-        return t;
+        descriptors.add(t);
+        return Optional.ofNullable(t);
     }
 
     @Override

@@ -59,8 +59,10 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
     }
 
     @Override
-    public AOAnimation create() {
-        return null;
+    public Optional<AOAnimation> create() {
+        AOAnimation animation = new AOAnimation();
+        animations.add(animation);
+        return Optional.of(animation);
     }
 
     @Override

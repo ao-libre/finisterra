@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.minlog.Log;
 import design.designers.IDesigner;
-import design.editors.fields.FieldEditor;
 import design.editors.fields.FieldEditor.FieldListener;
 import design.editors.fields.Listener;
 import design.screens.DesignScreen;
@@ -39,13 +38,12 @@ import static launcher.DesignCenter.SKIN;
 public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Parameters<T>>> extends DesignScreen implements WorldScreen {
 
     private P designer;
-    private TextButton modify;
-    private TextButton delete;
+    private Button modify;
+    private Button delete;
     private List<T> list;
     private Preview<T> preview;
     private Preview<T> itemView;
     private ArrayList<Listener> listenerList = new ArrayList<>();
-    private ButtonGroup<Button> buttons;
 
     public View(P designer) {
         this.designer = designer;
@@ -72,7 +70,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         Table leftPane = new Table();
         leftPane.pad(10);
         Table left = new Table();
-        left.add(createButtons()).growX().row();
+        left.add(createButtons()).right().growX().row();
         List<T> list = createList();
         list.setTouchable(Touchable.enabled);
         ScrollPane listScroll = new ScrollPane(list);
@@ -173,11 +171,11 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
     private Table createButtons() {
         Table buttons = new Table(SKIN);
         buttons.defaults().space(5);
-        TextButton create = new TextButton("Create", SKIN);
+        Button create = new Button(SKIN, "new");
         create.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                designer.create();
+                loadItems(designer.create());
             }
         });
         modify = new TextButton("Modify", SKIN);
@@ -188,7 +186,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
                 onModify(list.getSelected());
             }
         });
-        delete = new TextButton("Delete", SKIN);
+        delete = new Button(SKIN, "delete");
         delete.setDisabled(true);
         delete.addListener(new ClickListener() {
             @Override
@@ -196,7 +194,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
                 onDelete(list.getSelected());
             }
         });
-        TextButton save = new TextButton("Save", SKIN);
+        TextButton save = new TextButton("Save", SKIN, "file");
         save.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -204,9 +202,9 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
             }
         });
 
-        buttons.add(create);
-        buttons.add(delete);
-        buttons.add(save);
+        buttons.add(create).left();
+        buttons.add(delete).left();
+        buttons.add(save).expandX().right();
         return buttons;
     }
 
@@ -234,6 +232,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
 
     private void onDelete(T selected) {
         designer.delete(selected);
+        loadItems(Optional.empty());
     }
 
     private List<T> createList() {
@@ -271,6 +270,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         selection.ifPresent(sel -> {
             list.setSelected(sel);
             onSelect(sel);
+            refreshPreview();
         });
     }
 

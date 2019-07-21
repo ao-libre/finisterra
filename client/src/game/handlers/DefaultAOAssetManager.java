@@ -122,9 +122,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     @Override
     public AOImage getImage(int id) {
         if (images == null) {
-            this.images = getImages()
-                    .stream()
-                    .collect(Collectors.toMap(AOImage::getId, image -> image));
+            this.images = getImages();
         }
         return images.get(id);
     }
@@ -181,8 +179,14 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     }
 
     @Override
-    public List<AOImage> getImages() {
-        return get(GAME_DESCRIPTORS_PATH + IMAGES + JSON_EXTENSION);
+    public Map<Integer, AOImage> getImages() {
+        if (images == null) {
+            List<AOImage> list = get(GAME_DESCRIPTORS_PATH + IMAGES + JSON_EXTENSION);
+            this.images = list
+                        .stream()
+                        .collect(Collectors.toMap(AOImage::getId, image -> image));
+        }
+        return images;
     }
 
     @Override

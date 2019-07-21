@@ -74,8 +74,10 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
     }
 
     @Override
-    public NPC create() {
-        return new NPC(getFreeId());
+    public Optional<NPC> create() {
+        NPC npc = new NPC(getFreeId());
+        npcs.put(npc.getId(), npc);
+        return Optional.of(npc);
     }
 
     @Override

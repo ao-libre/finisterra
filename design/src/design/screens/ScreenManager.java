@@ -2,6 +2,7 @@ package design.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import design.screens.views.View;
 
 public class ScreenManager {
 
@@ -30,12 +31,16 @@ public class ScreenManager {
         Screen current = game.getScreen();
         if (current != null) {
             if (current.getClass().equals(screenEnum.getType()) && params.length == 0) {
+                ((View) current).clearListener();
                 return;
             }
             current.pause();
         }
 
         Screen newScreen = screenEnum.getScreen(params);
+        if (params.length == 0) {
+            ((View) newScreen).clearListener();
+        }
         newScreen.resume();
         game.setScreen(newScreen);
         this.current = newScreen;

@@ -13,6 +13,7 @@ public class AOAnimation implements ID {
     private float speed;
 
     public AOAnimation() {
+        frames = new int[4];
     }
 
     public AOAnimation(int id, int[] frames, float speed) {

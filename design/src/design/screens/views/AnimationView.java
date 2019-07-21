@@ -17,7 +17,9 @@ import model.textures.AOAnimation;
 import model.textures.BundledAnimation;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.stream.Stream;
 
 import static launcher.DesignCenter.SKIN;
 
@@ -94,9 +96,15 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
         public void show(AOAnimation animation) {
             this.animation = animation;
             label.setText(animation.getId());
-            bundledAnimation = getAnimationHandler().getPreviewAnimation(animation);
-            TextureRegion graphic = bundledAnimation.getGraphic();
-            image.setSize(graphic.getRegionWidth(), graphic.getRegionHeight());
+            if (hasAnimation(animation)) {
+                bundledAnimation = getAnimationHandler().getPreviewAnimation(animation);
+                TextureRegion graphic = bundledAnimation.getGraphic();
+                image.setSize(graphic.getRegionWidth(), graphic.getRegionHeight());
+            }
+        }
+
+        public boolean hasAnimation(AOAnimation animation) {
+            return Stream.of(animation.getFrames()).flatMapToInt(Arrays::stream).anyMatch(i -> i > 0);
         }
 
         @Override

@@ -24,7 +24,7 @@ public class AOImage implements ID {
     }
 
     public int getX() {
-        return x * 2;
+        return x;
     }
 
     public void setX(int x) {
@@ -32,7 +32,7 @@ public class AOImage implements ID {
     }
 
     public int getY() {
-        return y * 2;
+        return y;
     }
 
     public void setY(int y) {
@@ -48,7 +48,7 @@ public class AOImage implements ID {
     }
 
     public int getWidth() {
-        return width * 2;
+        return width;
     }
 
     public void setWidth(int width) {
@@ -56,7 +56,7 @@ public class AOImage implements ID {
     }
 
     public int getHeight() {
-        return height * 2;
+        return height;
     }
 
     public void setHeight(int height) {
@@ -74,5 +74,12 @@ public class AOImage implements ID {
     @Override
     public String toString() {
         return getId() + ":" + " file: " + getFileNum() + " x: " + getX() + " y: " + getY();
+    }
+
+    public void adjust() {
+        setX(getX());
+        setY(getY());
+        setWidth(getWidth());
+        setHeight(getHeight());
     }
 }

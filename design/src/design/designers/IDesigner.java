@@ -7,9 +7,7 @@ import java.util.Optional;
 
 public interface IDesigner<T, P extends IDesigner.Parameters<T>> {
 
-    default void load(P params) {
-
-    }
+    default void load(P params) { }
 
     void reload();
 
@@ -19,7 +17,7 @@ public interface IDesigner<T, P extends IDesigner.Parameters<T>> {
 
     Optional<T> get(int id);
 
-    T create();
+    Optional<T> create();
 
     void modify(T element, Stage stage);
 
