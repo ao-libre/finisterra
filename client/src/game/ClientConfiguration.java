@@ -1,6 +1,6 @@
 package game;
 
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.files.FileHandle; // @todo FileHandle is not cross-platform (desktop only)
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
 import shared.util.AOJson;
