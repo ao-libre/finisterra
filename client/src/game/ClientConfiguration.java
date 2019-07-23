@@ -4,6 +4,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
 import shared.util.AOJson;
+import static game.utils.Resources.CLIENT_CONFIG;
 
 /**
  * @todo distinguish between Desktop-specific configuration (LWJGL configuration) and platform-independent configuration (Client, Network, etc.).
@@ -78,7 +79,7 @@ public class ClientConfiguration {
 
     public void save() {
         Json json = new AOJson();
-        json.toJson(this, new FileHandle("assets/config.json"));
+        json.toJson(this, new FileHandle(CLIENT_CONFIG));
     }
 
     public static class Init {
