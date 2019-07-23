@@ -151,7 +151,7 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
 
     @Override
     public void delete(Descriptor element) {
-
+        descriptors.remove(element);
     }
 
     class DescriptorParameters implements Parameters<T> {

@@ -24,7 +24,7 @@ public class BundledAnimation {
     private int loops;
 
     public BundledAnimation(AOAnimation anim, boolean pingpong, int loops) {
-        TextureRegion[] textures = Arrays.stream(anim.getFrames()).mapToObj(this::getTexture).toArray(TextureRegion[]::new);
+        TextureRegion[] textures = Arrays.stream(anim.getFrames()).filter(i -> i > 0).mapToObj(this::getTexture).toArray(TextureRegion[]::new);
         Animation<TextureRegion> animation = new Animation<>(anim.getSpeed() / (1000.0f * 3.334f), Array.with(textures), pingpong ? Animation.PlayMode.LOOP_PINGPONG : Animation.PlayMode.NORMAL);
         this.setAnimation(animation);
         this.loops = loops;

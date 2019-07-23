@@ -23,8 +23,8 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
     private AOJson json = new AOJson();
     private List<AOAnimation> animations;
 
-    private int getFreeId() {
-        return 0;
+    public int getFreeId() {
+        return animations.get(animations.size() - 1).getId() + 1;
     }
 
     public AnimationDesigner(AnimationParameters parameters) {
@@ -61,6 +61,7 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
     @Override
     public Optional<AOAnimation> create() {
         AOAnimation animation = new AOAnimation();
+        animation.setId(getFreeId());
         animations.add(animation);
         return Optional.of(animation);
     }
@@ -71,6 +72,7 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
 
     @Override
     public void delete(AOAnimation element) {
+        animations.remove(element);
     }
 
     @Override

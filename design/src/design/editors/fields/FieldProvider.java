@@ -5,6 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
 import design.screens.views.View;
+import design.screens.views.View.Editor;
+import design.screens.views.View.State;
 import model.ID;
 
 import java.util.function.Consumer;
@@ -63,6 +65,8 @@ public enum FieldProvider {
             consumer.accept(descriptor.getId());
             editor.setText(descriptor.getId() + "");
             if (current instanceof View) {
+                Editor itemView = ((View) current).getItemView();
+                itemView.setState(State.MODIFIED);
                 ((View) current).refreshPreview();
             }
         };

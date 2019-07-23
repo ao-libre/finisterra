@@ -2,8 +2,6 @@ package model.textures;
 
 import model.ID;
 
-import java.util.Arrays;
-
 import static java.util.Arrays.copyOf;
 
 public class AOAnimation implements ID {

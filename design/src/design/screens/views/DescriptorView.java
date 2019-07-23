@@ -34,7 +34,7 @@ public abstract class DescriptorView<T extends Descriptor> extends View<T, Descr
     }
 
     @Override
-    Preview<T> createItemView() {
+    Editor<T> createItemView() {
         return new DescriptorItem();
     }
 

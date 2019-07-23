@@ -8,6 +8,8 @@ import com.esotericsoftware.minlog.Log;
 import design.editors.utils.SliceResult;
 import design.editors.utils.Slicer;
 import design.editors.utils.Utils;
+import design.screens.ScreenEnum;
+import design.screens.views.AnimationView;
 import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import game.handlers.DefaultAOAssetManager;
@@ -18,7 +20,10 @@ import org.lwjgl.util.tinyfd.TinyFileDialogs;
 import shared.util.AOJson;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static design.designers.ImageDesigner.ImageParameters;
 import static org.lwjgl.system.MemoryStack.stackPush;
@@ -71,7 +76,6 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
     @Override
     public Optional<AOImage> create() {
         // open file chooser
-
         Optional<AOImage> result = Optional.empty();
         File file = openDialog("Search Sprite Sheet", "", new String[]{"*.png"}, "");
         if (file == null) {
@@ -94,12 +98,16 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
             add(image);
             assetManager.getImages().put(image.getId(), image);
         });
+        if (slice.getImages().size() > 1) {
+            AnimationView animationView = (AnimationView) ScreenEnum.ANIMATION_VIEW.getScreen();
+            animationView.createAnimation(slice.getImages());
+        }
         return Optional.ofNullable(slice.getImages().get(0));
     }
 
     private File openDialog(String title, String defaultPath,
                             String[] filterPatterns, String filterDescription) {
-        String result = null;
+        String result;
 
         //fix file path characters
         if (Utils.isWindows()) {
@@ -115,7 +123,6 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
                 for (String filterPattern : filterPatterns) {
                     pointerBuffer.put(stack.UTF8(filterPattern));
                 }
-
                 pointerBuffer.flip();
                 result = TinyFileDialogs.tinyfd_openFileDialog(title, defaultPath, pointerBuffer, filterDescription, false);
             }
@@ -136,6 +143,7 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
 
     @Override
     public void delete(AOImage element) {
+        images.remove(element.getId());
     }
 
     @Override

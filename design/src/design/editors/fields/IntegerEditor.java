@@ -55,6 +55,7 @@ public class IntegerEditor extends FieldEditor<Integer> {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 getFieldProvider().search(editor, getConsumer(), ScreenManager.getInstance().getCurrent());
+                onModify();
             }
         });
         return chooser;
@@ -85,7 +86,6 @@ public class IntegerEditor extends FieldEditor<Integer> {
                                     }
                                     getConsumer().accept(t);
                                     onModify();
-                                    view.refreshPreview();
                                 } catch (NumberFormatException ignored) {
                                     showWarning(current, text);
                                     text.setText(getSupplier().get().toString());

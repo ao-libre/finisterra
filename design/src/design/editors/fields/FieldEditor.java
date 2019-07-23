@@ -1,10 +1,12 @@
 package design.editors.fields;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import design.screens.ScreenManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,10 @@ public abstract class FieldEditor<T> implements IFieldEditor {
         this.consumer = consumer;
         this.supplier = supplier;
         this.field = createField();
+        Screen current = ScreenManager.getInstance().getCurrent();
+        if (current instanceof FieldListener) {
+            addListener((FieldListener) current);
+        }
     }
 
     public void addListener(FieldListener listener) {

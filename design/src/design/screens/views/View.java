@@ -35,14 +35,14 @@ import static design.screens.views.View.State.MODIFIED;
 import static design.screens.views.View.State.SAVED;
 import static launcher.DesignCenter.SKIN;
 
-public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Parameters<T>>> extends DesignScreen implements WorldScreen {
+public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Parameters<T>>> extends DesignScreen implements WorldScreen, FieldListener {
 
     private P designer;
     private Button modify;
     private Button delete;
     private List<T> list;
     private Preview<T> preview;
-    private Preview<T> itemView;
+    private Editor<T> itemView;
     private ArrayList<Listener> listenerList = new ArrayList<>();
 
     public View(P designer) {
@@ -124,6 +124,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
     }
 
     public void refreshPreview() {
+        if (getItemView() == null) return;
         T t = getItemView().get();
         getPreview().show(t);
         clearListener();
@@ -132,7 +133,9 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
     public void saveEdition() {
         T t = getItemView().get();
         getDesigner().add(t);
-        loadItems(Optional.ofNullable(t));
+        int selectedIndex = list.getSelectedIndex();
+        loadItems(Optional.empty());
+        list.setSelectedIndex(selectedIndex);
     }
 
     public List<T> getList() {
@@ -143,7 +146,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         return preview;
     }
 
-    public Preview<T> getItemView() {
+    public Editor<T> getItemView() {
         return itemView;
     }
 
@@ -166,7 +169,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
 
     abstract Preview<T> createPreview();
 
-    abstract Preview<T> createItemView();
+    abstract Editor<T> createItemView();
 
     private Table createButtons() {
         Table buttons = new Table(SKIN);
@@ -226,13 +229,22 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         });
     }
 
+    @Override
+    public void onModify() {
+        refreshPreview();
+    }
+
     private void onModify(T selected) {
         designer.modify(selected, getStage());
     }
 
     private void onDelete(T selected) {
         designer.delete(selected);
+        int selectedIndex = list.getSelectedIndex();
         loadItems(Optional.empty());
+        if (list.getItems().size > 0) {
+            list.setSelectedIndex(Math.min(selectedIndex, list.getItems().size - 1));
+        }
     }
 
     private List<T> createList() {
@@ -258,11 +270,13 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
     public void refreshSelection() {
         modify.setDisabled(list.getSelected() == null);
         delete.setDisabled(list.getSelected() == null);
-        preview.show(list.getSelected());
-        itemView.show(list.getSelected());
+        if (list.getSelected() != null) {
+            preview.show(list.getSelected());
+            itemView.show(list.getSelected());
+        }
     }
 
-    protected void loadItems(Optional<T> selection) {
+    public void loadItems(Optional<T> selection) {
         Array<T> items = new Array<>();
         designer.get().forEach(items::add);
         sort(items);
@@ -291,12 +305,12 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         abstract T get();
     }
 
-    enum State {
+    public enum State {
         MODIFIED,
         SAVED
     }
 
-    abstract class Editor<T> extends Preview<T> {
+    public abstract class Editor<T> extends Preview<T> {
 
         T original;
         T current;
@@ -385,17 +399,17 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         }
 
         void save() {
-            saveEdition();
             setState(SAVED);
+            saveEdition();
         }
 
         void restore() {
+            setState(SAVED);
             set(getOriginal());
             refreshPreview();
-            setState(SAVED);
         }
 
-        private void setState(State state) {
+        public void setState(State state) {
             this.state = state;
             refreshButtons();
         }

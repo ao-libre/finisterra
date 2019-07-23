@@ -1,7 +1,6 @@
 package design.screens.views;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -9,16 +8,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import design.designers.AnimationDesigner;
 import design.designers.AnimationDesigner.AnimationParameters;
+import design.dialogs.AnimationFromImages;
 import design.editors.AnimationEditor;
-import design.editors.fields.FieldEditor;
 import design.editors.fields.FieldEditor.FieldListener;
 import game.screens.WorldScreen;
 import model.textures.AOAnimation;
+import model.textures.AOImage;
 import model.textures.BundledAnimation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static launcher.DesignCenter.SKIN;
@@ -35,10 +36,8 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
     }
 
     @Override
-    Preview<AOAnimation> createItemView() {
-        AnimationItem animationItem = new AnimationItem();
-
-        return animationItem;
+    Editor<AOAnimation> createItemView() {
+        return new AnimationItem();
     }
 
     @Override
@@ -58,9 +57,13 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
         super.refreshPreview();
     }
 
+    public void createAnimation(List<AOImage> images) {
+        AnimationFromImages.show(images);
+    }
+
     class AnimationItem extends Editor<AOAnimation> {
 
-        public AnimationItem() {
+        AnimationItem() {
             super(SKIN);
         }
 
@@ -84,7 +87,7 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
         private AOAnimation animation;
         private BundledAnimation bundledAnimation;
 
-        public AnimationPreview() {
+        AnimationPreview() {
             super(SKIN);
             label = new Label("", SKIN);
             add(label).row();
@@ -103,7 +106,7 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
             }
         }
 
-        public boolean hasAnimation(AOAnimation animation) {
+        boolean hasAnimation(AOAnimation animation) {
             return Stream.of(animation.getFrames()).flatMapToInt(Arrays::stream).anyMatch(i -> i > 0);
         }
 

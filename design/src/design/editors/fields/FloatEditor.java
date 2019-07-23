@@ -53,7 +53,6 @@ public class FloatEditor extends FieldEditor<Float> {
                                     float t = Float.parseFloat(text.getText());
                                     getConsumer().accept(t);
                                     onModify();
-                                    view.refreshPreview();
                                 } catch (NumberFormatException ignored) {
                                     IntegerEditor.showWarning(current, text);
                                     text.setText(getSupplier().get().toString());
@@ -61,7 +60,7 @@ public class FloatEditor extends FieldEditor<Float> {
                             }
                         });
                     }
-                }, 2f);
+                }, 0.5f);
             }
         });
 

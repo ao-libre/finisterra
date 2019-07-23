@@ -1,13 +1,8 @@
 package design.editors.fields;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import design.screens.ScreenManager;
-import design.screens.views.View;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;

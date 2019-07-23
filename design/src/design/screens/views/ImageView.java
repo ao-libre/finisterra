@@ -51,7 +51,7 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
     }
 
     @Override
-    protected void loadItems(Optional<AOImage> selection) {
+    public void loadItems(Optional<AOImage> selection) {
         Cell<Table> cell = getMainTable().getCell(content);
         content.clear();
         createContent();
@@ -77,7 +77,7 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
                 getDesigner().save();
             }
         });
-        buttons.add(create).left().expandX();
+        buttons.add(create).left();
         buttons.add(save).left().expandX();
         List<AOImage> aoImages = getDesigner().get();
         drawables = aoImages.stream().collect(Collectors.toMap(image -> image, this::getTextureDrawable));
@@ -112,7 +112,9 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                getListenerList().forEach(this::accept);
+                if (getTapCount() >= 2) {
+                    getListenerList().forEach(this::accept);
+                }
             }
         });
         Table buttons = new Table();
@@ -157,7 +159,7 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
     }
 
     @Override
-    Preview<AOImage> createItemView() {
+    Editor<AOImage> createItemView() {
         return null;
     }
 

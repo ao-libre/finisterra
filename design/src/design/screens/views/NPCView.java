@@ -46,7 +46,7 @@ public class NPCView extends View<NPC, NPCDesigner> {
     }
 
     @Override
-    Preview<NPC> createItemView() {
+    Editor<NPC> createItemView() {
         return new NPCItem();
     }
 
