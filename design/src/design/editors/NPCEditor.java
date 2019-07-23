@@ -53,6 +53,12 @@ public class NPCEditor extends Dialog {
         npc.getExpressions();
         npc.getDrops();
 
+        npc.isRespawn();
+        npc.isCommerce();
+        npc.isAttackable();
+        npc.isAffectParalysis();
+
+
         // trainer
         npc.getNpcSpanwer();
 

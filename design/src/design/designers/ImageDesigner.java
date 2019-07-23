@@ -13,6 +13,7 @@ import design.screens.views.AnimationView;
 import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import game.handlers.DefaultAOAssetManager;
+import game.utils.Resources;
 import model.textures.AOImage;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryStack;
@@ -83,7 +84,7 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
         }
 
         FileHandle fileHandle = new FileHandle(file);
-        FileHandle dest = Gdx.files.local("data/graficos2x/" + getFreeId() + ".png");
+        FileHandle dest = Gdx.files.local(Resources.GAME_GRAPHICS_PATH + getFreeId() + ".png");
         fileHandle.copyTo(dest);
         AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
         AOAssetManager assetManager = game.getAssetManager();
