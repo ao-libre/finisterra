@@ -7,7 +7,7 @@
       "HiDPI_Mode": "Logical"
     },
     "resizeable": true,
-    "disableAudio": false,
+    "disableAudio": true,
     "startMaximized": false
   },
   "network": {

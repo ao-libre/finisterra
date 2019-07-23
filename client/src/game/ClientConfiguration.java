@@ -78,7 +78,7 @@ public class ClientConfiguration {
 
     public void save() {
         Json json = new AOJson();
-        json.toJson(this, new FileHandle("assets/config.json"));
+        json.toJson(this, new FileHandle("Config.json"));
     }
 
     public static class Init {
