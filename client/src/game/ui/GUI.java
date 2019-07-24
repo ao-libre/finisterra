@@ -1,5 +1,6 @@
 package game.ui;
 
+import java.time.LocalDateTime;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -66,7 +67,7 @@ public class GUI implements Disposable {
     }
 
     public void takeScreenshot() {
-        String screenshotPath = "assets/data/Screenshots/Screen.png";
+        String screenshotPath = "Screenshots/Screenshot-" + LocalDateTime.now() + ".png";
 
         byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
 
