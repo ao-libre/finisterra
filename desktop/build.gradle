@@ -41,7 +41,6 @@ if (osName().contains('mac')) {
 
 task dist(type: Jar) {
     from files(sourceSets.main.output.classesDirs)
-    from files(sourceSets.main.resources.srcDirs)
     from { configurations.compile.collect { zipTree(it) } }
 
     manifest {
