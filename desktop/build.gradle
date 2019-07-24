@@ -9,7 +9,7 @@ sourceSets {
 }
 
 static def osName() { System.getProperty('os.name').toLowerCase(Locale.ROOT) }
-
+static def getJDK() { (String) org.gradle.internal.jvm.Jvm.current().getJavaHome() }
 mainClassName = "launcher.DesktopLauncher"
 
 dependencies {
@@ -88,8 +88,8 @@ task jlink(type: Exec, dependsOn: dist) {
 	}
 	
 	commandLine = [
-			"${projectDir}/jdk-14/bin/jlink",
-			'-p', "${projectDir}/jdk-14/jmods",
+			getJDK().concat("/bin/jlink"),
+			'-p', getJDK().concat("/jmods"),
 			'--add-modules', 'java.base,java.desktop,jdk.unsupported,java.logging',
 			'--strip-debug',
 			'--no-header-files',
