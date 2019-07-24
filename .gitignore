@@ -10,6 +10,7 @@ out/
 design/resources*
 desktop/jpackage/*
 desktop/*.tar.gz
+desktop/*.zip
 desktop/finisterra*
 desktop/java*
 desktop/packing*

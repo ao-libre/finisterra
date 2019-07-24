@@ -104,6 +104,7 @@ task jlink(type: Exec, dependsOn: dist) {
 		// Final debloat for jpackage
 		delete(file("${runtimePath}/conf"))
 		delete(file("${runtimePath}/legal"))
+		delete fileTree("${runtimePath}/bin").matching { include "api*.dll" }
 	}
 }
 
@@ -139,13 +140,6 @@ task appBundle(type: Exec, dependsOn: jlink) {
 	
 	doLast() {
 		copy {
-			if (osName().contains('windows')) {
-				from("${projectDir}/assets/data/icons/ao.ico")
-			} else if (osName().contains('linux')) {
-				from("${projectDir}/assets/data/icons/ao.png")
-			} else if (osName().contains('mac')) {
-				from("${projectDir}/assets/data/icons/ao.icns")
-			}
 			from("${projectDir}/assets")
 			from("${projectDir}/Config.json")
 			into("${buildDir}/distribution/${project.appName}/app")
