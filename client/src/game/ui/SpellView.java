@@ -1,6 +1,8 @@
 package game.ui;
 
 import com.artemis.E;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -9,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import game.AOGame;
 import game.handlers.SpellHandler;
 import game.screens.GameScreen;
 import game.utils.Colors;
@@ -52,8 +55,11 @@ public class SpellView extends Table {
     }
 
     private void changeCursor() {
-        GUI.getConsole().addInfo("Haz click para lanzar el hechizo");
-        Cursors.setCursor("select");
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        if (game.getScreen() instanceof GameScreen) {
+            ((GameScreen) game.getScreen()).getGUI().getConsole().addInfo("Haz click para lanzar el hechizo");
+            Cursors.setCursor("select");
+        }
     }
 
     public void updateSpells() {

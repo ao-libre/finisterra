@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import game.ClientConfiguration;
-import game.ClientConfiguration.Network.DefaultServer;
 import game.network.ClientResponseProcessor;
 import game.network.GameNotificationProcessor;
 import game.systems.network.ClientSystem;
@@ -21,8 +20,12 @@ public class LoginScreen extends AbstractScreen {
 
     private ClientSystem clientSystem;
     private ClientConfiguration config;
-    private Table connectionTable;
+
     private TextField username;
+    private SelectBox<Hero> heroSelect;
+    private List<ClientConfiguration.Network.Server> serverList;
+
+    private boolean canConnect = true;
 
     public LoginScreen() {
         super();
@@ -31,16 +34,20 @@ public class LoginScreen extends AbstractScreen {
 
     @Override
     protected void keyPressed(int keyCode) {
-        if (getStage().getKeyboardFocus().equals(username) && keyCode == Input.Keys.ENTER) {
-            //TODO: Trigger loginButton's event listener
+        if (keyCode == Input.Keys.ENTER && this.canConnect) {
+            //Connect
+            connectThenLogin();
+
+            //Prevent multiple simultaneous connections.
+            this.canConnect = false;
         }
     }
 
     private void init() {
-        DefaultServer defaultServer = config.getNetwork().getDefaultServer();
-        clientSystem = new ClientSystem(defaultServer.getHostname(), defaultServer.getPort());
+        clientSystem = new ClientSystem("127.0.0.1", 7666); // @todo implement empty constructor
         clientSystem.setNotificationProcessor(new GameNotificationProcessor());
         clientSystem.setResponseProcessor(new ClientResponseProcessor());
+
         // TODO MusicHandler.playMusic(101);
     }
 
@@ -50,37 +57,25 @@ public class LoginScreen extends AbstractScreen {
 
         Window loginWindow = new Window("", getSkin());
         Label userLabel = new Label("User", getSkin());
-        username = new TextField("", getSkin());
-        username.setMessageText("username");
+        this.username = new TextField("", getSkin());
+        username.setMessageText("User Name");
 
         Label heroLabel = new Label("Hero", getSkin());
-        SelectBox<Hero> heroSelect = new SelectBox<>(getSkin());
+        this.heroSelect = new SelectBox<>(getSkin());
         final Array<Hero> heroes = new Array<>();
         Hero.getHeroes().forEach(heroes::add);
         heroSelect.setItems(heroes);
 
-        connectionTable = new Table((getSkin()));
+        Table connectionTable = new Table((getSkin()));
 
-        Label ipLabel = new Label("IP: ", getSkin());
-        DefaultServer defaultServer = config.getNetwork().getDefaultServer();
-        TextField ipText = new TextField(defaultServer.getHostname(), getSkin());
-
-        Label portLabel = new Label("Port: ", getSkin());
-        TextField portText = new TextField("" + defaultServer.getPort(), getSkin());
-        portText.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
+        this.serverList = new List<>(getSkin());
+        serverList.setItems(config.getNetwork().getServers());
 
         TextButton loginButton = new TextButton("Connect", getSkin());
         loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                String user = username.getText();
-                Hero hero = heroSelect.getSelected();
-                String ip = ipText.getText();
-                int port = Integer.valueOf(portText.getText());
-
-                loginButton.setDisabled(true);
-                connectThenLogin(ip, port, user, hero);
-                loginButton.setDisabled(false);
+                connectThenLogin();
             }
 
         });
@@ -97,33 +92,43 @@ public class LoginScreen extends AbstractScreen {
         loginWindow.add(loginButton).padTop(20).expandX().row();
         getMainTable().add(loginWindow).width(400).height(300).row();
 
-        connectionTable.add(ipLabel);
-        connectionTable.add(ipText).width(500);
-        connectionTable.add(portLabel);
-        connectionTable.add(portText);
+        connectionTable.add(serverList).width(300);
         connectionTable.align(Align.center);
         connectionTable.setVisible(true);
         getMainTable().add(connectionTable);
         getStage().setKeyboardFocus(username);
     }
 
-    private void connectThenLogin(String ip, int port, String user, Hero hero) {
-        if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
-            if (clientSystem.getState() != MarshalState.STOPPED)
-                clientSystem.stop();
-            if (clientSystem.getState() == MarshalState.STOPPED) {
+    private void connectThenLogin() {
 
-                clientSystem.getKryonetClient().setHost(ip);
-                clientSystem.getKryonetClient().setPort(port);
+        if (this.canConnect) {
+            String user = username.getText();
+            Hero hero = heroSelect.getSelected();
+            ClientConfiguration.Network.Server server = serverList.getSelected();
+            if (server == null)
+                return;
+            String ip = server.getHostname();
+            int port = server.getPort();
 
-                clientSystem.start();
-                if (clientSystem.getState() == MarshalState.STARTED) {
-                    clientSystem.getKryonetClient().sendToAll(new JoinLobbyRequest(user, hero));
-                } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
-                    Dialog dialog = new Dialog("Network error", getSkin());
-                    dialog.text("Failed to connect! :(");
-                    dialog.button("OK");
-                    dialog.show(getStage());
+            if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
+                if (clientSystem.getState() != MarshalState.STOPPED)
+                    clientSystem.stop();
+                if (clientSystem.getState() == MarshalState.STOPPED) {
+
+                    clientSystem.getKryonetClient().setHost(ip);
+                    clientSystem.getKryonetClient().setPort(port);
+
+                    clientSystem.start();
+                    if (clientSystem.getState() == MarshalState.STARTED) {
+                        clientSystem.getKryonetClient().sendToAll(new JoinLobbyRequest(user, hero));
+                        this.canConnect = false;
+                    } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
+                        Dialog dialog = new Dialog("Network error", getSkin());
+                        dialog.text("Failed to connect! :(");
+                        dialog.button("OK");
+                        dialog.show(getStage());
+                        this.canConnect = true;
+                    }
                 }
             }
         }

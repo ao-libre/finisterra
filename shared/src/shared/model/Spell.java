@@ -15,6 +15,7 @@ public class Spell {
     int requiredMana;
     int requiredStamina;
     int target;
+    int iconGrh;
 
     // HP
     int sumHP;
@@ -151,6 +152,10 @@ public class Spell {
 
     public int getFxGrh() {
         return fxGrh;
+    }
+
+    public int getIconGrh() {
+        return iconGrh;
     }
 
     public void setFxGrh(String fxGrh) {

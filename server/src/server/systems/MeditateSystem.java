@@ -25,7 +25,7 @@ import static shared.util.Messages.*;
 @Wire
 public class MeditateSystem extends IntervalFluidIteratingSystem {
 
-    private static final float MANA_RECOVERY_PERCENT = 0.05f;
+    private static final float MANA_RECOVERY_PERCENT = 0.3f;
     private static Map<Integer, Integer> userMeditations = new HashMap<>();
     private WorldManager worldManager;
 
@@ -40,7 +40,7 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
         EntityUpdateBuilder notify = EntityUpdateBuilder.of(e.id());
         if (mana.min < mana.max) {
             int manaMin = mana.min;
-            int prob = ThreadLocalRandom.current().nextInt(6);
+            int prob = ThreadLocalRandom.current().nextInt(2);
             if (prob == 1) {
                 // meditar
                 mana.min += mana.max * MANA_RECOVERY_PERCENT;

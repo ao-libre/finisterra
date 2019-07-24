@@ -26,6 +26,8 @@ import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.objects.types.HelmetObj;
 import shared.objects.types.Obj;
+import server.systems.CharacterTrainingSystem;
+
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -43,6 +45,8 @@ public class MagicCombatSystem extends BaseSystem {
     private MapManager mapManager;
     private WorldManager worldManager;
     private ObjectManager objectManager;
+    private CharacterTrainingSystem characterTrainingSystem;
+
 
     public void spell(int userId, SpellCastRequest spellCastRequest) {
         final Spell spell = spellCastRequest.getSpell();
@@ -198,7 +202,8 @@ public class MagicCombatSystem extends BaseSystem {
         final int minHP = spell.getMinHP();
         final int maxHP = spell.getMaxHP();
         damage = ThreadLocalRandom.current().nextInt(minHP, maxHP + 1);
-        damage = damage * (3 * E(user).levelLevel()) / 100;
+        damage = E(user).levelLevel() + damage;
+        characterTrainingSystem.userTakeDamage(user, target, damage);
         if (spell.getSumHP() == 1) { // HEAL
             // TODO
         } else if (spell.getSumHP() == 2) {
@@ -215,7 +220,7 @@ public class MagicCombatSystem extends BaseSystem {
             // TODO anillos
             damage = -damage;
         }
-        return (int) (damage * 1.65f); // TODO super custom
+        return (int) (damage);
     }
 
     private void updateMana(int playerId, int requiredMana, Mana mana) {

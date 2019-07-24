@@ -21,8 +21,8 @@ buildscript {
 allprojects {
     apply plugin: "idea"
 
-    group = 'ao-java'
-    version = '0.1.10'
+    group = 'AO-Java'
+    version = '0.1.12'
 
     ext {
         appName = 'ao-java'

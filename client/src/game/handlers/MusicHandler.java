@@ -99,7 +99,7 @@ public class MusicHandler extends PassiveSystem {
     //TODO: MIDIs cant be faded at the moment
     public void playMIDI(int midiID) {
         Sequencer sequencer = assetManager.getMidi(midiID);
-        ;
+
         if (sequencer == null) {
             Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
             return;

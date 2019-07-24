@@ -155,17 +155,30 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     @Override
     public Music getMusic(int key) {
-        return get(Resources.GAME_MUSIC_PATH + key + Resources.GAME_MUSIC_EXTENSION);
+        if (Gdx.files.internal(Resources.GAME_MUSIC_PATH + key + Resources.GAME_MUSIC_EXTENSION).exists()) {
+            return get(Resources.GAME_MUSIC_PATH + key + Resources.GAME_MUSIC_EXTENSION);
+        } else {
+            return null;
+        }
     }
 
     @Override
     public Sound getSound(int key) {
-        return get(Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION);
+        if (Gdx.files.internal(Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION).exists()) {
+            return get(Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION);
+        } else {
+            return null;
+        }
     }
 
     @Override
     public Sequencer getMidi(int key) {
-        return get(Resources.GAME_MIDI_PATH + key + Resources.GAME_MIDI_EXTENSION);
+        if (Gdx.files.internal(Resources.GAME_MIDI_PATH + key + Resources.GAME_MIDI_EXTENSION).exists()) {
+            return get(Resources.GAME_MIDI_PATH + key + Resources.GAME_MIDI_EXTENSION);
+        } else {
+            return null;
+        }
+
     }
 
     @Override

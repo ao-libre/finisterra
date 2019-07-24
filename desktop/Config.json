@@ -1,0 +1,27 @@
+{
+  "initConfig": {
+    "video": {
+      "width": 1280,
+      "height": 720,
+      "vSync": true,
+      "HiDPI_Mode": "Logical"
+    },
+    "resizeable": true,
+    "disableAudio": true,
+    "startMaximized": false
+  },
+  "network": {
+    "servers": [
+      {
+        "name": "Testing VPS",
+        "hostname": "35.198.1.253",
+        "port": 7666
+      },
+      {
+        "name": "localhost",
+        "hostname":"127.0.0.1",
+        "port": 7666
+      }
+    ]
+  }
+}

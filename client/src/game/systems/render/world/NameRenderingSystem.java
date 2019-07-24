@@ -39,7 +39,7 @@ public class NameRenderingSystem extends RenderingSystem {
                     table.setRound(false);
                     E e = E(integer);
                     String text = e.getName().text;
-                    Label label = new Label(text, Skins.COMODORE_SKIN, "flipped");
+                    Label label = new Label(text, Skins.COMODORE_SKIN, "flipped-name-user");
                     label.getStyle().font.setUseIntegerPositions(false);
                     float prefWidth = label.getPrefWidth();
                     label.setWrap(true);
@@ -89,10 +89,6 @@ public class NameRenderingSystem extends RenderingSystem {
         if (clanOrHero == null) {
             return;
         }
-//        Fonts.layout.setText(Fonts.CLAN_FONT, "<" + clanOrHero + ">");
-//        final float fontX = screenPos.x + ((Tile.TILE_PIXEL_WIDTH - Fonts.layout.width) / 2);
-//        final float fontY = nameY + Fonts.layout.height + 5;
-//        Fonts.CLAN_FONT.draw(getBatch(), Fonts.layout, fontX, fontY);
     }
 
     private Color setColor(E player, Label label) {

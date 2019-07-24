@@ -23,7 +23,7 @@ public class DesktopLauncher {
         if (config == null) {
             Log.info("DesktopLauncher", "Desktop config.json not found, creating default.");
             config = ClientConfiguration.createConfig();
-            config.save();
+            config.save(CLIENT_CONFIG);
         }
         Init initConfig = config.getInitConfig();
         Video video = initConfig.getVideo();

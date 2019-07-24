@@ -4,7 +4,7 @@ NumNPCs=923
 [NPC34]
 Name=Cullighan
 NpcType=0
-Desc=Usted sabe que no hay persona noble o respetable en estas tierras que no tenga su propia vivienda. �ac�rquese y sea due�o de una de las exclusivas casas de Ullathorpe. �Ser� admirado por toda la poblaci�n!
+Desc=Usted sabe que no hay persona noble o respetable en estas tierras que no tenga su propia vivienda. ¿acérquese y sea dueño de una de las exclusivas casas de Ullathorpe. ¿Será admirado por toda la población!
 Head=33
 Heading=3
 Body=240
@@ -27,7 +27,7 @@ BackUp=1
 [NPC35]
 Name=Moraday
 NpcType=0
-Desc=�Ha descubierto que la ciudad de Nix es la m�s hermosa de todo Argentum, verdad? �Pues qu� mejor que ser un terrateniente de este para�so! �Ac�rcate que haremos negocios!
+Desc=¿Ha descubierto que la ciudad de Nix es la más hermosa de todo Argentum, verdad? ¡Pues qué mejor que ser un terrateniente de este paraíso! ¿Acércate que haremos negocios!
 Head=35
 Heading=3
 Body=239
@@ -56,7 +56,7 @@ BackUp=1
 [NPC52]
 Name=Rantarisk
 NpcType=0
-Desc=De lejos pude ver vuestro blaz�n, seguro busca una de las moradas m�s lujosas de todo el Argentum. En la ciudad real de Banderbill es donde deben habitar la flor y la nata de la nobleza �Venga y hagamos negocios!
+Desc=De lejos pude ver vuestro blazón, seguro busca una de las moradas más lujosas de todo el Argentum. En la ciudad real de Banderbill es donde deben habitar la flor y la nata de la nobleza ¡Venga y hagamos negocios!
 Head=32
 Heading=3
 Body=241
@@ -92,7 +92,7 @@ BackUp=1
 
 [NPC62]
 Name=Guldorf
-Desc=Si est� buscando la paz y la tranquilidad en estas tierras ha llegado al lugar indicado... adquiera una de nuestras exclusivas residencias, y cambie su vida para siempre.
+Desc=Si está buscando la paz y la tranquilidad en estas tierras ha llegado al lugar indicado... adquiera una de nuestras exclusivas residencias, y cambie su vida para siempre.
 Head=36
 Body=234
 Heading=3
@@ -116,7 +116,7 @@ BackUp=1
 
 [NPC101]
 Name=Vendedor de propiedades.
-Desc=En estas tierras demon�acas est�n las mejores residencias para los miembros de la Legi�n Oscura... Si no eres legionario puedes tambi�n vivir ac�, �pero os aseguro que los augura un infierno! jajaja!
+Desc=En estas tierras demoníacas están las mejores residencias para los miembros de la Legión Oscura... Si no eres legionario puedes también vivir acá, ¡pero os aseguro que los augura un infierno! jajaja!
 Head=34
 Body=170
 Heading=3
@@ -143,7 +143,7 @@ BackUp=1
 [NPC5]
 Name=Sacerdote
 NpcType=1
-Desc=�Hola, hijo m�o! Soy el Sacerdote de estas tierras. Si quieres que te resucite escribe /RESUCITAR, o haz doble click sobre m�. 
+Desc=¡Hola, hijo mío! Soy el Sacerdote de estas tierras. Si quieres que te resucite escribe /RESUCITAR, o haz doble click sobre mí. 
 Head=3
 Heading=3
 Body=49
@@ -159,7 +159,7 @@ BackUp=0
 [NPC119]
 Name=Sacerdote
 NpcType=9
-Desc=�Hola, hijo m�o! Soy el sacerdote de estas tierras. Si eres newbie te podr� resucitar, s�lo necesitas tipear /RESUCITAR o hacer doble click sobre mi cabeza.
+Desc=¡Hola, hijo mío! Soy el sacerdote de estas tierras. Si eres newbie te podrá resucitar, sólo necesitas tipear /RESUCITAR o hacer doble click sobre mi cabeza.
 Head=3
 Heading=3
 Body=49
@@ -191,7 +191,7 @@ BackUp=0
 [NPC98]
 Name=Demonio Legionario
 NpcType=5
-Desc=Si deseas unirte a la Legi�n Oscura escribe /ENLISTAR
+Desc=Si deseas unirte a la Legión Oscura escribe /ENLISTAR
 Head=0
 Heading=3
 Body=405
@@ -208,7 +208,7 @@ BackUp=0
 
 [NPC60]
 Name=O
-Desc=�Hola amigo! Soy el Maestro de armas de la Milicia de Banderbill, si deseas que traiga una criatura s�lo debes pedirmelo. (Escribe /ENTRENAR)
+Desc=¡Hola amigo! Soy el Maestro de armas de la Milicia de Banderbill, si deseas que traiga una criatura sólo debes pedirmelo. (Escribe /ENTRENAR)
 NpcType=3
 Head=6
 Heading=3
@@ -225,16 +225,16 @@ CI1=566
 CI2=565
 CI3=564
 CI4=516
-CN1=Murci�lago
+CN1=Murciélago
 CN2=Serpiente
-CN3=Escorpi�n
+CN3=Escorpión
 CN4=Goblin
 BackUp=0
 
 [NPC108]
 Name=O
 NpcType=3
-Desc=�Hola amigo! Escribe /ENTRENAR para divertirte con estas almas malvadas que hemos domado para tu diversi�n en estos festejos.
+Desc=¡Hola amigo! Escribe /ENTRENAR para divertirte con estas almas malvadas que hemos domado para tu diversión en estos festejos.
 Head=6
 Heading=3
 Body=57
@@ -255,7 +255,7 @@ CN1=Hormiga gigante
 CN2=Tortuga gigante
 CN3=Ogro
 CN4=Liche
-CN5=Duende M�gico
+CN5=Duende Mágico
 BackUp=0
 
 [NPC16] 
@@ -277,7 +277,7 @@ BackUp=0
 [NPC24]
 Name=Banquero
 NpcType=4
-Desc=Hola, bienvenido a la cadena de finanzas Goliath. Somos la cadena m�s grande en Argentum, contamos con bancos en las ciudades m�s importantes.
+Desc=Hola, bienvenido a la cadena de finanzas Goliath. Somos la cadena más grande en Argentum, contamos con bancos en las ciudades más importantes.
 Head=503
 Heading=3
 Body=201
@@ -330,9 +330,9 @@ Obj6=645-1000
 BackUp=1
 
 [NPC33]
-Name=Le�ador
+Name=Leñador
 NpcType=0
-Desc=�Hola muchacho!, si deseas vender o comprar madera escribe /COMERCIAR.
+Desc=¡Hola muchacho!, si deseas vender o comprar madera escribe /COMERCIAR.
 Head=4
 Heading=3
 Body=1
@@ -351,7 +351,7 @@ BackUp=1
 [NPC44]
 Name=Carpintero
 NpcType=0
-Desc=�Hola muchacho!, bienvenido a mi humilde Carpinter�a.
+Desc=¡Hola muchacho!, bienvenido a mi humilde Carpintería.
 Head=2
 Heading=3
 Body=1
@@ -374,7 +374,7 @@ BackUp=1
 [NPC41]
 Name=Pescador
 NpcType=0
-Desc=�Bienvenido al gremio de pescadores! 
+Desc=¡Bienvenido al gremio de pescadores!
 Head=2
 Heading=3
 Body=3
@@ -394,7 +394,7 @@ BackUp=1
 [NPC58]
 Name=Pescador
 NpcType=0
-Desc=�Bienvenido al gremio de pescadores!
+Desc=¡Bienvenido al gremio de pescadores!
 Head=101
 Heading=3
 Body=3
@@ -433,7 +433,7 @@ BackUp=1
 [NPC80]
 Name=Mercader
 NpcType=0
-Desc=��Hola buen amigo, compro y vendo todo tipo de mercanc�as!!
+Desc=¡Hola buen amigo, compro y vendo todo tipo de mercancías!!
 Head=2
 Heading=3
 Body=3
@@ -452,7 +452,7 @@ BackUp=1
 [NPC9]
 Name=Ralph
 NpcType=0
-Desc=�Hola, peque�o aventurero, tengo aqu� unas mercader�as para saciar tu hambre y sed!.
+Desc=¡Hola, pequeño aventurero, tengo aquí unas mercaderías para saciar tu hambre y sed!.
 Head=504
 Heading=3
 Body=202
@@ -473,7 +473,7 @@ BackUp=1
 [NPC42]
 Name=Antogne
 NpcType=0
-Desc=�Hola aventurero! Si estais hambriento habeis venido al lugar apropiador, tengo todo tipo de frutas.
+Desc=¡Hola aventurero! Si estais hambriento habeis venido al lugar apropiador, tengo todo tipo de frutas.
 Head=505
 Heading=3
 Body=202
@@ -497,7 +497,7 @@ BackUp=1
 [NPC114]
 Name=SR
 NpcType=0
-Desc=Bienvenido a la Sastrer�a Real.
+Desc=Bienvenido a la Sastrería Real.
 Head=171
 Heading=3
 Body=174
@@ -528,7 +528,7 @@ BackUp=1
 [NPC159]
 Name=SR
 NpcType=0
-Desc=Bienvenido a la Sastrer�a Real.
+Desc=Bienvenido a la Sastrería Real.
 Head=309
 Heading=3
 Body=175
@@ -556,7 +556,7 @@ BackUp=1
 [NPC115]
 Name=SC
 NpcType=0
-Desc=�AQU� OBTENDR�S TU ARMADURA LEGIONARIA!
+Desc=¡AQUÍ OBTENDRÁS TU ARMADURA LEGIONARIA!
 Head=0
 Heading=3
 Body=69
@@ -586,7 +586,7 @@ BackUp=1
 [NPC160]
 Name=SC
 NpcType=0
-Desc=�AQU� OBTENDR�S TU ARMADURA LEGIONARIA!
+Desc=¡AQUÍ OBTENDRÁS TU ARMADURA LEGIONARIA!
 Head=318
 Heading=3
 Body=177
@@ -645,7 +645,7 @@ BackUp=1
 
 [NPC121]
 Name=Isaac
-Desc=�Buscas ropas para HOMBRES HUMANOS? Entonces has hecho bien en acudir a m�.
+Desc=¿Buscas ropas para HOMBRES HUMANOS? Entonces has hecho bien en acudir a mí.
 Head=7
 Heading=3
 Body=240
@@ -669,7 +669,7 @@ BackUp=1
 
 [NPC122]
 Name=Nelvi
-Desc=Poseo una gran cantidad de ropajes para los astutos GNOMOS, �Deseas algo en particular?
+Desc=Poseo una gran cantidad de ropajes para los astutos GNOMOS, ¿Deseas algo en particular?
 Head=403
 Heading=3
 Body=294
@@ -769,7 +769,7 @@ BackUp=1
 
 [NPC125]
 Name=Torke
-Desc=Solo tengo ropajes para ENANOS, si no las puedes usar, �vete de aqui!
+Desc=Solo tengo ropajes para ENANOS, si no las puedes usar, ¡vete de aqui!
 Head=371
 Heading=3
 Body=306
@@ -846,7 +846,7 @@ Comercia=0
 [NPC1]
 Name=Aldeano
 NpcType=0
-Desc=�Hola forastero! Bienvenido a nuestra humilde aldea.
+Desc=¡Hola forastero! Bienvenido a nuestra humilde aldea.
 Head=0
 Heading=3
 Body=18
@@ -862,7 +862,7 @@ BackUp=0
 [NPC10] 
 Name=Bardo
 NpcType=0
-Desc=��Hola, os gustaria o�r una hermosa melod�a?!.
+Desc=¡¿Hola, os gustaria oír una hermosa melodía?!.
 Head=0
 Heading=3
 Body=17
@@ -878,7 +878,7 @@ BackUp=0
 [NPC11] 
 Name=Aldeana
 NpcType=0
-Desc=�Hola forastero! Bienvenido a nuestra humilde aldea.
+Desc=¡Hola forastero! Bienvenido a nuestra humilde aldea.
 Head=0
 Heading=3
 Body=19
@@ -894,7 +894,7 @@ BackUp=0
 [NPC13]
 Name=Gobernador
 NpcType=11
-Desc=Hola, soy el gobernador de Ullathorpe �Bienvenido a nuestra peque�a aldea! Escribe /Hogar para obtener la ciudadan�a.
+Desc=Hola, soy el gobernador de Ullathorpe ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
 Head=0
 Ciudad=1
 Heading=3
@@ -911,7 +911,7 @@ BackUp=0
 [NPC118]
 Name=Alarnick, antiguo soberano de Banderbill
 NpcType=0
-Desc=�Esto no es digno de un soberano! �Exijo me devuelvan mi trono y me saquen de esta pocilga!...�Maldito Tancredo, me las pagar�s!
+Desc=¡Esto no es digno de un soberano! ¡Exijo me devuelvan mi trono y me saquen de esta pocilga!...¡Maldito Tancredo, me las pagarás!
 Head=101
 Heading=3
 Body=348
@@ -927,7 +927,7 @@ BackUp=0
 [NPC128] 
 Name=Nelmasil
 NpcType=0
-Desc=El pueblo de Ullathorpe en contra del alcalde... �Todos aquellos que est�n en contra se presenten en el castillo del rey en Banderbill!
+Desc=El pueblo de Ullathorpe en contra del alcalde... ¡Todos aquellos que están en contra se presenten en el castillo del rey en Banderbill!
 Head=0
 Body=410
 Heading=3
@@ -942,7 +942,7 @@ Comercia=0
 [NPC129]
 Name=Gael Azrraed
 NpcType=0
-Desc=�Todos arder�n! arder�n en el infierno y luciernagas saldr�n de sus ojos!
+Desc=¡Todos arderán! arderán en el infierno y luciernagas saldrán de sus ojos!
 Head=2070
 Body=75
 Heading=3
@@ -957,7 +957,7 @@ Comercia=0
 [NPC130]
 Name=Altair de Oteren
 NpcType=0
-Desc=Aprovechad que la pesca es buena a estas horas... Si deseas pescar, puedes comprarle una ca�a al comerciante que se encuentra al oeste del muelle.
+Desc=Aprovechad que la pesca es buena a estas horas... Si deseas pescar, puedes comprarle una caña al comerciante que se encuentra al oeste del muelle.
 Head=60
 Body=75
 Heading=3
@@ -974,7 +974,7 @@ Comercia=0
 [NPC131] 
 Name=Linderoth
 NpcType=0
-Desc=Hey t�, �qu� me andas mirando? He matado Medusas en peligrosos Dungeons desde que era un ni�o...
+Desc=Hey tú, ¿qué me andas mirando? He matado Medusas en peligrosos Dungeons desde que era un niño...
 Head=2280
 Body=285
 Heading=3
@@ -991,7 +991,7 @@ Comercia=0
 [NPC132]
 Name= Sebastien
 NpcType=0
-Desc=���EH, EH?!! �no! �Yo no he hecho nada! �Vete si no quieres problemas!
+Desc=¡¡¡EH, EH?!! ¡no! ¡Yo no he hecho nada! ¡Vete si no quieres problemas!
 Head=2154
 Body=31
 Heading=3
@@ -1008,7 +1008,7 @@ Comercia=0
 [NPC133]
 Name=Anthares
 NpcType=0
-Desc=Shhh, ten cuidado, planeo raptar al Demonio. Buscar� refuerzos y la ciudad ser� asediada.
+Desc=Shhh, ten cuidado, planeo raptar al Demonio. Buscar refuerzos y la ciudad será asediada.
 Head=2050
 Body=378
 Heading=3
@@ -1025,7 +1025,7 @@ Comercia=0
 [NPC134]
 Name=Vuragon
 NpcType=0
-Desc=Estoy hasta la coronilla de que se escape mi vaca! ya recibir� su merecido cuando la encuentre.
+Desc=Estoy hasta la coronilla de que se escape mi vaca! ya recibirá su merecido cuando la encuentre.
 Head=60
 Body=501
 Heading=3
@@ -1042,7 +1042,7 @@ Comercia=0
 [NPC135] 
 Name=Belial
 NpcType=0
-Desc=�Maldito seas Tancredo de Hauteville! Me obligan limpiar esta mugrosa ciudad por haber hecho algo que ���no hice!!!
+Desc=¡Maldito seas Tancredo de Hauteville! Me obligan limpiar esta mugrosa ciudad por haber hecho algo que ¡¡¡No hice!!!
 Head=63
 Body=641
 Heading=3
@@ -1059,7 +1059,7 @@ Comercia=0
 [NPC136]
 Name=Efral
 NpcType=0
-Desc=�Qu� miras t�? �Acaso quieres sufrir?
+Desc=¿Qué miras tú? ¿Acaso quieres sufrir?
 Head=69
 Body=442
 Heading=3
@@ -1076,7 +1076,7 @@ Comercia=0
 [NPC137] 
 Name=Manrique
 NpcType=0
-Desc=El Rey es avaro y sus terratenientes tambi�n, dame algo por favor, no seas como �l...
+Desc=El Rey es avaro y sus terratenientes también, dame algo por favor, no seas como él...
 Head=0
 Body=411
 Heading=3
@@ -1110,7 +1110,7 @@ Comercia=0
 [NPC139]
 Name=Clipsa
 NpcType=0
-Desc=Que la Diosa naturaleza te gu�e.
+Desc=Que la Diosa naturaleza te guíe.
 Head=67
 Body=357
 Heading=3
@@ -1161,7 +1161,7 @@ Comercia=0
 [NPC142]
 Name=Onkin
 NpcType=0
-Desc=D�jenme tarnquilo... hip hip... descargar� lo que he... hip hip... bebido
+Desc=Déjenme tarnquilo... hip hip... descargará lo que he... hip hip... bebido
 Head=0
 Body=424
 Heading=3
@@ -1177,7 +1177,7 @@ Comercia=0
 [NPC143]
 Name=Fethresor
 NpcType=0
-Desc=En las batallas m�s escalofriantes, m�s sangrientas... Un bardo siempre est� presente.
+Desc=En las batallas más escalofriantes, más sangrientas... Un bardo siempre está presente.
 Head=0
 Body=418
 Heading=3
@@ -1194,7 +1194,7 @@ Comercia=0
 [NPC144] 
 Name=Whyx
 NpcType=0
-Desc=Mis melod�as podr�an hacer que hasta el m�s h�bil guerrero, caiga a mis pies...
+Desc=Mis melodías podrían hacer que hasta el más hábil guerrero, caiga a mis pies...
 Head=0
 Body=419
 Heading=3
@@ -1211,7 +1211,7 @@ Comercia=0
 [NPC145] 
 Name=Iklot
 NpcType=0
-Desc=Cuando te encuentres solo, perdido, sin saber para d�nde correr... Respira profundo y susurra mi melod�a.
+Desc=Cuando te encuentres solo, perdido, sin saber para dónde correr... Respira profundo y susurra mi melodía.
 Head=0
 Body=420
 Heading=3
@@ -1226,7 +1226,7 @@ Comercia=0
 [NPC146]
 Name=Unurbar Gorog
 NpcType=0
-Desc=�Hola! Poseo las mejores y m�s extra�as bebidas de estas tierras, �Qu� desea que le sirva?
+Desc=¡Hola! Poseo las mejores y más extrañas bebidas de estas tierras, ¿Qué desea que le sirva?
 Head=304
 Heading=3
 Body=372
@@ -1254,7 +1254,7 @@ BackUp=1
 [NPC147]
 Name=Dugh Dhail
 NpcType=0
-Desc=�Hola forastero! Pronto se celebrar� un nuevo aniversario de la creaci�n de la Cerveza. �Acudir�s a los festejos?
+Desc=¡Hola forastero! Pronto se celebrará un nuevo aniversario de la creación de la Cerveza. ¿Acudirás a los festejos?
 Head=0
 Heading=3
 Body=410
@@ -1323,7 +1323,7 @@ BackUp=1
 [NPC46]
 Name=Mago
 NpcType=0
-Desc=Bienvenido a mi peque�a tienda de Ullathorpe... Tengo algunos hechizos que podr�an interesarte.
+Desc=Bienvenido a mi pequeña tienda de Ullathorpe... Tengo algunos hechizos que podrían interesarte.
 Head=110
 Heading=3
 Body=46
@@ -1351,7 +1351,7 @@ BackUp=1
 [NPC12]
 Name=Sastre
 NpcType=0
-Desc=�Hola forastero! Soy el Sastre de Ullathorpe, Bienvenido!
+Desc=¡Hola forastero! Soy el Sastre de Ullathorpe, Bienvenido!
 Head=9
 Heading=3
 Body=50
@@ -1380,7 +1380,7 @@ BackUp=1
 [NPC19]
 Name=Sastre
 NpcType=0
-Desc=�Bienvenida Viajera! Tengo hermosas vestimentas para ofrecerte...
+Desc=¡Bienvenida Viajera! Tengo hermosas vestimentas para ofrecerte...
 Head=70
 Heading=3
 Body=80
@@ -1405,7 +1405,7 @@ BackUp=1
 [NPC20]
 Name=Sastre
 NpcType=0
-Desc=�Ac�rquese! Tengo peque�as prendas que ser�n de su agrado...
+Desc=¡Acérquese! Tengo pequeñas prendas que serán de su agrado...
 Head=303
 Heading=3
 Body=180
@@ -1430,7 +1430,7 @@ BackUp=1
 
 [NPC54] 
 Name=Armaduras
-Desc=Ac�rcate, tengo algunas armaduras que podr�an protegerte.
+Desc=Acércate, tengo algunas armaduras que podrían protegerte.
 Head=6
 Body=93
 Heading=4
@@ -1454,7 +1454,7 @@ BackUp=1
 [NPC15]
 Name=Thorkis
 NpcType=0
-Desc=�Qu� tal amigo! Entra, pues tengo las mejores provisiones de Nix!
+Desc=¡Qué tal amigo! Entra, pues tengo las mejores provisiones de Nix!
 Head=504
 Heading=3
 Body=202
@@ -1507,7 +1507,7 @@ BackUp=1
 [NPC47]
 Name=Mago
 NpcType=0
-Desc=Bienvenido a mi peque�a tienda de Nix... Tengo algunos hechizos que podr�an interesarte.
+Desc=Bienvenido a mi pequeña tienda de Nix... Tengo algunos hechizos que podrían interesarte.
 Head=110
 Heading=3
 Body=46
@@ -1538,7 +1538,7 @@ BackUp=1
 [NPC21] 
 Name=Sastre
 NpcType=0
-Desc=�Hola forastero! Soy el Sastre de Nix, Bienvenido!
+Desc=¡Hola forastero! Soy el Sastre de Nix, Bienvenido!
 Head=7
 Heading=3
 Body=50
@@ -1568,7 +1568,7 @@ BackUp=1
 [NPC22] 
 Name=Sastre
 NpcType=0
-Desc=�Bienvenida Viajera! Entra a mi tienda, �Tengo las mejores prendas de Nix!
+Desc=¡Bienvenida Viajera! Entra a mi tienda, ¡Tengo las mejores prendas de Nix!
 Head=71
 Heading=3
 Body=80
@@ -1593,7 +1593,7 @@ BackUp=1
 [NPC23] 
 Name=Sastre
 NpcType=0
-Desc=�Ac�rquese! Tengo peque�as prendas que ser�n de su agrado...
+Desc=¡Acérquese! Tengo pequeñas prendas que serán de su agrado...
 Head=404
 Heading=3
 Body=180
@@ -1618,7 +1618,7 @@ BackUp=1
 
 [NPC70] 
 Name=Armaduras
-Desc=Ac�rcate, tengo algunas armaduras que podr�an protegerte.
+Desc=Acércate, tengo algunas armaduras que podrían protegerte.
 Head=6
 Body=93
 Heading=4
@@ -1644,7 +1644,7 @@ BackUp=1
 [NPC50]
 Name=Tellez
 NpcType=0
-Desc=�Hola! Bienvenido al "Mes�n Hostigado", �Qu� desea que le sirva?
+Desc=¡Hola! Bienvenido al "Mesón Hostigado", ¿Qué desea que le sirva?
 Head=505
 Heading=3
 Body=202
@@ -1674,7 +1674,7 @@ BackUp=1
 [NPC38] 
 Name=Herrero
 NpcType=0
-Desc=�Ven, pasa, que he fabricado las m�s poderosas armas de Banderbill para t�!
+Desc=¡Ven, pasa, que he fabricado las más poderosas armas de Banderbill para tí!
 Head=505
 Heading=3
 Body=199
@@ -1703,7 +1703,7 @@ BackUp=1
 [NPC51] 
 Name=Mago
 NpcType=0
-Desc=Bienvenido a mi peque�a Tienda de Banderbill... Tengo algunos hechizos que podr�an interesarte.
+Desc=Bienvenido a mi pequeña Tienda de Banderbill... Tengo algunos hechizos que podrían interesarte.
 Head=110
 Heading=3
 Body=46
@@ -1738,7 +1738,7 @@ BackUp=1
 [NPC25] 
 Name=Sastre
 NpcType=0
-Desc=�Bienvenido a la Sastrer�a de Banderbill! �En qu� lo puedo ayudar?
+Desc=¡Bienvenido a la Sastrería de Banderbill! ¿En qué lo puedo ayudar?
 Head=7
 Heading=3
 Body=56
@@ -1769,7 +1769,7 @@ BackUp=1
 [NPC26] 
 Name=Sastre
 NpcType=0
-Desc=�Adelante hermosa ni�a! En mi tienda encontrar�s vestidos hechos para t�!
+Desc=¡Adelante hermosa niña! En mi tienda encontrarás vestidos hechos para tí!
 Head=173
 Heading=3
 Body=121
@@ -1794,7 +1794,7 @@ BackUp=1
 [NPC27] 
 Name=Sastre
 NpcType=0
-Desc=�Ven y mira estas prendas que he confeccionado para nuestra raza!
+Desc=¡Ven y mira estas prendas que he confeccionado para nuestra raza!
 Head=305
 Heading=3
 Body=159
@@ -1843,7 +1843,7 @@ BackUp=1
 [NPC43]
 Name=Sorks
 NpcType=0
-Desc=��Est�is sediento y hambriento!?
+Desc=¿¡Estáis sediento y hambriento!?
 Head=505
 Heading=3
 Body=202
@@ -1867,7 +1867,7 @@ BackUp=1
 [NPC56]
 Name=Herrero
 NpcType=0
-Desc=�Ven, pasa, que he fabricado, aqu� en Lindos, poderosas armas para t�!
+Desc=¡Ven, pasa, que he fabricado, aquí en Lindos, poderosas armas para tí!
 Head=505
 Heading=3
 Body=199
@@ -1895,7 +1895,7 @@ BackUp=1
 [NPC69]
 Name=Mago
 NpcType=0
-Desc=Ven por aqu� joven, las artes m�gicas superiores te est�n llamando...
+Desc=Ven por aquí joven, las artes mágicas superiores te están llamando...
 Head=110
 Heading=3
 Body=46
@@ -1932,7 +1932,7 @@ BackUp=1
 [NPC31] 
 Name=Sastre
 NpcType=0
-Desc=�Ven aqu�! Te puedo ofrecer las mejores ropas de la isla...
+Desc=¡Ven aquí! Te puedo ofrecer las mejores ropas de la isla...
 Head=7
 Heading=3
 Body=46
@@ -1963,7 +1963,7 @@ BackUp=1
 [NPC32] 
 Name=Sastre
 NpcType=0
-Desc=�Ven y mira estas vestimentas, seguro te encantar�n!
+Desc=¡Ven y mira estas vestimentas, seguro te encantarán!
 Head=75
 Heading=3
 Body=118
@@ -1988,7 +1988,7 @@ BackUp=1
 [NPC39] 
 Name=Sastre
 NpcType=0
-Desc=�Hola forastero! confeccionamos las mejores ropas de la zona.
+Desc=¡Hola forastero! confeccionamos las mejores ropas de la zona.
 Head=304
 Heading=3
 Body=135
@@ -2014,7 +2014,7 @@ BackUp=1
 
 [NPC113] 
 Name=Armaduras
-Desc=�Tengo a la venta las mejores armaduras de la isla!
+Desc=¡Tengo a la venta las mejores armaduras de la isla!
 Head=6
 Body=93
 Heading=4
@@ -2039,7 +2039,7 @@ BackUp=1
 [NPC103] 
 Name=Carahuel
 NpcType=0
-Desc=�Hola, peque�o amigo! �Est�s buscando algo para llenar tu est�mago? Creo que puedo ayudarte...
+Desc=¡Hola, pequeño amigo! ¿Estás buscando algo para llenar tu estómago? Creo que puedo ayudarte...
 Head=474
 Heading=3
 Body=309
@@ -2063,7 +2063,7 @@ BackUp=1
 [NPC57] 
 Name=Bhoemond
 NpcType=0
-Desc= �Sea bienvenido a la famosa Taberna de Arghal!, Aqu� podr� saciarse con la mejor comida y la mejor bebida de toda la zona.
+Desc= ¡Sea bienvenido a la famosa Taberna de Arghal!, Aquí podrá saciarse con la mejor comida y la mejor bebida de toda la zona.
 Head=17
 Heading=3
 Body=100
@@ -2093,7 +2093,7 @@ BackUp=1
 [NPC112] 
 Name=Herrero
 NpcType=0
-Desc=Con estas manos he constru�do algunas armas que te podr�n servir en tus aventuras... �paga por ellas y ser�n tuyas!
+Desc=Con estas manos he construído algunas armas que te podrán servir en tus aventuras... ¿paga por ellas y serán tuyas!
 Head=16
 Heading=3
 Body=199
@@ -2120,7 +2120,7 @@ BackUp=1
 
 [NPC59] 
 Name=Mago
-Desc=Bienvenido, ne�fito a �sta, a mi peque�a escuela de Magia, ubicada en el coraz�n mismo de la ciudad de Arghal.
+Desc=Bienvenido, neófito a ésta, a mi pequeña escuela de Magia, ubicada en el corazón mismo de la ciudad de Arghal.
 Head=20
 Heading=3
 Body=34
@@ -2147,7 +2147,7 @@ BackUp=1
 [NPC63] 
 Name=Steve
 NpcType=0
-Desc=Ven, ac�rcate, que tengo para ofrecerte las mejores prendas masculinas de todo Arghal...
+Desc=Ven, acércate, que tengo para ofrecerte las mejores prendas masculinas de todo Arghal...
 Head=22
 Heading=3
 Body=342
@@ -2177,7 +2177,7 @@ BackUp=1
 [NPC64] 
 Name=Virgin
 NpcType=0
-Desc=�Bienvenida jovencita! Soy quien hace los mejores atuendos femeninos de todo Arghal, ven y prueba mi mercader�a.
+Desc=¡Bienvenida jovencita! Soy quien hace los mejores atuendos femeninos de todo Arghal, ven y prueba mi mercadería.
 Head=70
 Heading=3
 Body=80
@@ -2202,7 +2202,7 @@ BackUp=1
 [NPC68] 
 Name=Odkon
 NpcType=0
-Desc=�Ac�rquese peque�o vistante de Arghal... Tengo prendas a su medida.
+Desc=¡Acérquese pequeño vistante de Arghal... Tengo prendas a su medida.
 Head=404
 Heading=3
 Body=371
@@ -2226,7 +2226,7 @@ BackUp=1
 
 [NPC73] 
 Name=Armaduras
-Desc=Si tienes agallas como para abandonar la ciudad y enfrentar el peligro de los bosques, deber�s comprar una de las armaduras que he fabricado.
+Desc=Si tienes agallas como para abandonar la ciudad y enfrentar el peligro de los bosques, deberías comprar una de las armaduras que he fabricado.
 Head=39
 Body=93
 Heading=3
@@ -2248,7 +2248,7 @@ BackUp=1
 [NPC40] 
 Name=Tolloz
 NpcType=0
-Desc=�Hola! Bienvenido a la Taberna de Arkhein, �Qu� desea que le sirva?
+Desc=¡Hola! Bienvenido a la Taberna de Arkhein, ¿Qué desea que le sirva?
 Head=505
 Heading=3
 Body=202
@@ -2278,7 +2278,7 @@ BackUp=1
 [NPC55] 
 Name=Herrero
 NpcType=0
-Desc=�Ven, pasa, que he fabricado las m�s poderosas armas de Arkhein para t�!
+Desc=¡Ven, pasa, que he fabricado las más poderosas armas de Arkhein para tí!
 Head=505
 Heading=3
 Body=199
@@ -2306,7 +2306,7 @@ BackUp=1
 
 [NPC61] 
 Name=Mago
-Desc=Bienvenido a mi peque�a tienda de Arkhein... Tengo algunos hechizos que podr�an interesarte.
+Desc=Bienvenido a mi pequeña tienda de Arkhein... Tengo algunos hechizos que podrían interesarte.
 Head=110
 Heading=3
 Body=46
@@ -2342,7 +2342,7 @@ BackUp=1
 [NPC28] 
 Name=Sastre
 NpcType=0
-Desc=�Entrad Valiente Viajero! En la Sastrer�a de Arkhein est�n las mejores ropas del continente.
+Desc=¡Entrad Valiente Viajero! En la Sastrería de Arkhein están las mejores ropas del continente.
 Head=15
 Heading=3
 Body=56
@@ -2376,7 +2376,7 @@ BackUp=1
 [NPC29] 
 Name=Sastre
 NpcType=0
-Desc=�Ven y mira estas vestimentas, seguro te encantar�n!
+Desc=¡Ven y mira estas vestimentas, seguro te encantarán!
 Head=173
 Heading=3
 Body=80
@@ -2400,7 +2400,7 @@ BackUp=1
 [NPC30] 
 Name=Sastre
 NpcType=0
-Desc=Aqu� encontrar�s las mejores prendas para enanos �Y a muy buen precio!
+Desc=Aquí encontrarás las mejores prendas para enanos ¡Y a muy buen precio!
 Head=404
 Heading=3
 Body=159
@@ -2450,7 +2450,7 @@ BackUp=1
 [NPC53] 
 Name=Roksar
 NpcType=0
-Desc=�Hola, buen viajero! Dispongo de todo tipo de provisiones... �Qu� deseas?
+Desc=¡Hola, buen viajero! Dispongo de todo tipo de provisiones... ¿Qué deseas?
 Head=505
 Heading=3
 Body=202
@@ -2477,7 +2477,7 @@ BackUp=1
 [NPC71] 
 Name=Herrero
 NpcType=0
-Desc=Tened aqu� las armas m�s poderosas de estas tierras... �Pasad y ved!
+Desc=Tened aquí las armas más poderosas de estas tierras... ¡Pasad y ved!
 Head=505
 Heading=3
 Body=199
@@ -2506,7 +2506,7 @@ BackUp=1
 [NPC99] 
 Name=Mago
 NpcType=0
-Desc=�Est�s buscando los hechizos m�s poderosos? A buen puerto has llegado...
+Desc=¿Estás buscando los hechizos más poderosos? A buen puerto has llegado...
 Head=110
 Heading=3
 Body=46
@@ -2532,7 +2532,7 @@ BackUp=1
 [NPC109] 
 Name=Sastre
 NpcType=0
-Desc=�Bienvenidos a la Gran Sastrer�a de la Ciudad Perdida! Aqu� encontrar�n las ropas m�s ex�ticas del mundo...
+Desc=¡Bienvenidos a la Gran Sastrería de la Ciudad Perdida! Aquí encontrarán las ropas más exóticas del mundo...
 Head=406
 Heading=3
 Body=130
@@ -2562,7 +2562,7 @@ BackUp=1
 [NPC110] 
 Name=Sastre
 NpcType=0
-Desc=�Entra! Jam�s ver�s prendas m�s bellas que las que tengo para ofrecerte...
+Desc=¡Entra! Jamás verás prendas más bellas que las que tengo para ofrecerte...
 Head=474
 Heading=3
 Body=124
@@ -2588,7 +2588,7 @@ BackUp=1
 [NPC117] 
 Name=Sastre
 NpcType=0
-Desc=�Aqu� en la Ciudad Perdida encontrar�n las mejores ropas peque�as de todo el mundo!
+Desc=¡Aquí en la Ciudad Perdida encontrarán las mejores ropas pequeñas de todo el mundo!
 Head=402
 Heading=3
 Body=136
@@ -2613,7 +2613,7 @@ BackUp=1
 
 [NPC116] 
 Name=Armaduras
-Desc=Si est�s buscando las mejores armaduras de estas tierras, has llegado al lugar correcto...
+Desc=Si estás buscando las mejores armaduras de estas tierras, has llegado al lugar correcto...
 Head=6
 Body=93
 Heading=4
@@ -2642,7 +2642,7 @@ BackUp=1
 [NPC6] 
 Name=Guardia Imperial
 NpcType=2
-Desc=�Dar� c�rcel a todos los criminales!
+Desc=¡Daré cárcel a todos los criminales!
 Head=0
 Heading=3
 Body=15
@@ -2671,7 +2671,7 @@ BackUp=0
 [NPC100] 
 Name=Guardia Imperial
 NpcType=2
-Desc=�Dar� c�rcel a todos los criminales y los perseguir� hasta el fin!
+Desc=¡Daré cárcel a todos los criminales y los perseguiré hasta el fin!
 Head=0
 Heading=3
 Body=15
@@ -2699,7 +2699,7 @@ BackUp=0
 [NPC49] 
 Name=Guardia Imperial
 NpcType=2
-Desc=�Dar� c�rcel a todos los criminales!
+Desc=¡Daré cárcel a todos los criminales!
 Head=0
 Heading=3
 Body=15
@@ -2728,7 +2728,7 @@ BackUp=0
 [NPC102] 
 Name=Guardia Imperial
 NpcType=2
-Desc=�Dar� c�rcel a todos los criminales!
+Desc=¡Daré cárcel a todos los criminales!
 Head=0
 Heading=3
 Body=15
@@ -2757,7 +2757,7 @@ BackUp=0
 [NPC106] 
 Name=Arquera Real
 NpcType=2
-Desc=Ning�n criminal escapar� de mi punter�a.
+Desc=Ningún criminal escapará de mi puntería.
 Head=172
 Heading=3
 Body=131
@@ -2789,7 +2789,7 @@ BackUp=0
 [NPC81] 
 Name=Sacerdote Imperial
 NpcType=2
-Desc=Ohhh hijo m�o!! que la llama de la virtud arda en tu coraz�n!!!
+Desc=Ohhh hijo mío!! que la llama de la virtud arda en tu corazón!!!
 Head=4
 Heading=3
 Body=101
@@ -2820,7 +2820,7 @@ BackUp=0
 [NPC82] 
 Name=Sacerdote Imperial
 NpcType=2
-Desc=Ohhh hijo m�o!! que la llama de la virtud arda en tu coraz�n!!!
+Desc=Ohhh hijo mío!! que la llama de la virtud arda en tu corazón!!!
 Head=5
 Heading=3
 Body=101
@@ -2851,7 +2851,7 @@ BackUp=0
 [NPC83] 
 Name=Druida Imperial
 NpcType=2
-Desc=Ohhh hijo m�o!! que la llama de la virtud arda en tu coraz�n!!!
+Desc=Ohhh hijo mío!! que la llama de la virtud arda en tu corazón!!!
 Head=101
 Heading=3
 Body=56
@@ -2883,7 +2883,7 @@ BackUp=0
 [NPC84] 
 Name=Druida Imperial
 NpcType=2
-Desc=Ohhh hijo m�o!! que la llama de la virtud arda en tu coraz�n!!!
+Desc=Ohhh hijo mío!! que la llama de la virtud arda en tu corazón!!!
 Head=102
 Heading=3
 Body=56
@@ -2915,7 +2915,7 @@ BackUp=0
 [NPC85] 
 Name=Druida Imperial
 NpcType=2
-Desc=Ohhh hijo m�o!! que la llama de la virtud arda en tu coraz�n!!!
+Desc=Ohhh hijo mío!! que la llama de la virtud arda en tu corazón!!!
 Head=103
 Heading=3
 Body=56
@@ -2947,7 +2947,7 @@ BackUp=0
 [NPC86] 
 Name=Mago Imperial
 NpcType=2
-Desc=Ohhh hijo m�o!! que la llama de la virtud arda en tu coraz�n!!!
+Desc=Ohhh hijo mío!! que la llama de la virtud arda en tu corazón!!!
 Head=6
 Heading=3
 Body=130
@@ -2978,7 +2978,7 @@ BackUp=0
 [NPC87] 
 Name=Mago Imperial
 NpcType=2
-Desc=Ohhh hijo m�o!! que la llama de la virtud arda en tu coraz�n!!!
+Desc=Ohhh hijo mío!! que la llama de la virtud arda en tu corazón!!!
 Head=6
 Heading=3
 Body=128
@@ -3009,7 +3009,7 @@ BackUp=0
 [NPC148] 
 Name=Guardia Imperial
 NpcType=0
-Desc=�Atenci�n! Si eres criminal e ingresas aqu� seras atacado por los guardias reales.
+Desc=¡Atención! Si eres criminal e ingresas aquí seras atacado por los guardias reales.
 Head=0
 Heading=3
 Body=15
@@ -3037,7 +3037,7 @@ BackUp=0
 [NPC150] 
 Name=Gobernador
 NpcType=11
-Desc=Hola, soy el gobernador de Nix �Bienvenido a nuestra peque�a aldea! Escribe /Hogar para obtener la ciudadan�a.
+Desc=Hola, soy el gobernador de Nix ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
 Head=0
 Heading=3
 Body=4
@@ -3056,7 +3056,7 @@ BackUp=0
 [NPC151] 
 Name=Gobernador
 NpcType=11
-Desc=Hola, soy el gobernador de Banderbill �Bienvenido a nuestra peque�a aldea! Escribe /Hogar para obtener la ciudadan�a.
+Desc=Hola, soy el gobernador de Banderbill ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
 Head=0
 Heading=3
 Body=4
@@ -3075,7 +3075,7 @@ BackUp=0
 [NPC152] 
 Name=Gobernador
 NpcType=11
-Desc=Hola, soy el gobernador de Lindos �Bienvenido a nuestra peque�a aldea! Escribe /Hogar para obtener la ciudadan�a.
+Desc=Hola, soy el gobernador de Lindos ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
 Head=0
 Heading=3
 Body=4
@@ -3094,7 +3094,7 @@ BackUp=0
 [NPC153] 
 Name=Gobernador
 NpcType=11
-Desc=Hola, soy el gobernador de Arghal �Bienvenido a nuestra peque�a aldea! Escribe /Hogar para obtener la ciudadan�a.
+Desc=Hola, soy el gobernador de Arghal ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
 Head=0
 Heading=3
 Body=4
@@ -3113,7 +3113,7 @@ BackUp=0
 [NPC158] 
 Name=Gobernador
 NpcType=11
-Desc=Hola, soy el gobernador de Arkhein �Bienvenido a nuestra peque�a aldea! Escribe /Hogar para obtener la ciudadan�a.
+Desc=Hola, soy el gobernador de Arkhein ¡Bienvenido a nuestra pequeña aldea! Escribe /Hogar para obtener la ciudadanía.
 Head=0
 Heading=3
 Body=4
@@ -3131,7 +3131,7 @@ BackUp=0
 [NPC127] 
 Name=Guardia Infernal
 NpcType=8
-Desc=�Por el Se�or Oscuro, aniquilar� a quienes lo deshonran!
+Desc=¡Por el Señor Oscuro, aniquilará a quienes lo deshonran!
 Head=201
 Heading=3
 Body=170
@@ -3160,7 +3160,7 @@ BackUp=0
 [NPC105] 
 Name=Mago del Caos
 NpcType=8
-Desc=�El mal prevalecer� sobre estas tierras!
+Desc=¡El mal prevalecerá sobre estas tierras!
 Head=202
 Heading=3
 Body=129
@@ -3220,7 +3220,7 @@ BackUp=0
 [NPC149] 
 Name=Guardia Infernal
 NpcType=0
-Desc=�Atenci�n! Si eres ciudadano e ingresas aqu� seras atacado por los guardias de la Legi�n.
+Desc=¡Atención! Si eres ciudadano e ingresas aquí seras atacado por los guardias de la Legión.
 Head=201
 Heading=3
 Body=170
@@ -3273,7 +3273,7 @@ BackUp=1
 [NPC155] 
 Name=Armaduras Newbie
 NpcType=0
-Desc=Si est�s buscando t�nicas y armaduras para principiantes, has llegado al lugar indicado.
+Desc=Si estás buscando tónicas y armaduras para principiantes, has llegado al lugar indicado.
 Head=6
 Heading=3
 Body=93
@@ -3326,7 +3326,7 @@ BackUp=1
 [NPC157] 
 Name=Magia Newbie
 NpcType=0
-Desc=Bienvenido a mi peque�a tienda. Tengo algunos hechizos que podr�an interesarte.
+Desc=Bienvenido a mi pequeña tienda. Tengo algunos hechizos que podrían interesarte.
 Head=110
 Heading=3
 Body=46
@@ -3491,9 +3491,9 @@ BackUp=0
 
 
 [NPC45] 
-Name=Esp�ritu
+Name=Espíritu
 NpcType=0
-Desc=�Huye de aqu� mientras puedas!
+Desc=¡Huye de aquí mientras puedas!
 Head=514
 Heading=3
 Body=8
@@ -3818,7 +3818,7 @@ BackUp=0
 
 
 [NPC91]
-Name=Gran �guila
+Name=Gran Águila
 NpcType=0
 Head=0
 Heading=3
@@ -3930,7 +3930,7 @@ BackUp=0
 
 
 [NPC95]
-Name=Jabal�
+Name=Jabalí
 NpcType=0
 Head=0
 Heading=3
@@ -4010,7 +4010,7 @@ Snd3=96
 BackUp=0
 
 [NPC500]
-Name=Murci�lago
+Name=Murcielago
 NpcType=0
 Head=0
 Heading=3
@@ -4299,7 +4299,7 @@ Drop5=380-1
 
 
 [NPC509]
-Name=Drag�n Rojo
+Name=Dragón Rojo
 NpcType=0
 Head=0
 Heading=3
@@ -4333,7 +4333,7 @@ Drop5=481-1
 
 
 [NPC510]
-Name=Ara�a Gigante
+Name=Araña Gigante
 NpcType=0
 Head=0
 Heading=3
@@ -4428,7 +4428,7 @@ BackUp=0
 
 
 [NPC513]
-Name=C�clope Guardi�n
+Name=Cíclope Guardián
 NpcType=0
 Head=0
 Heading=3
@@ -4590,7 +4590,7 @@ Drop5=531-1
 
 
 [NPC518]
-Name=Drag�n de las Profundidades
+Name=Dragón de las Profundidades
 NpcType=0
 Head=0
 Heading=3
@@ -4813,7 +4813,7 @@ Drop5=183-1
 
 
 [NPC525]
-Name=�guila
+Name=Águila
 NpcType=0
 Head=0
 Heading=3
@@ -4843,7 +4843,7 @@ Drop3=544-5
 
 
 [NPC526] 
-Name=Ara�a Malaheing
+Name=Araña Malaheing
 NpcType=0
 Head=0
 Heading=3
@@ -4877,7 +4877,7 @@ Drop5=174-1
 
 
 [NPC527] 
-Name=Drag�n Rojo
+Name=Dragón Rojo
 NpcType=0
 Head=0
 Heading=3
@@ -4941,7 +4941,7 @@ Drop3=12-50
 
 
 [NPC529]
-Name=Escorpi�n
+Name=Escorpión
 NpcType=0
 Head=0
 Heading=3
@@ -5359,7 +5359,7 @@ Drop5=698-1
 
 
 [NPC542]
-Name=Gran Drag�n Rojo
+Name=Gran Dragón Rojo
 NpcType=6
 Head=0
 Heading=3
@@ -5463,7 +5463,7 @@ Drop5=12-5000
 
 
 [NPC545]
-Name=Lic�ntropo
+Name=Licóntropo
 NpcType=0
 Head=0
 Heading=3
@@ -5523,7 +5523,7 @@ BackUp=0
 
 
 [NPC547]
-Name=Tar�ntula
+Name=Tarántula
 NpcType=0
 Head=0
 Heading=3
@@ -5867,7 +5867,7 @@ Drop5=12-750
 
 
 [NPC557]
-Name=Jabal� Salvaje
+Name=Jabalí Salvaje
 NpcType=0
 Head=0
 Heading=3
@@ -6033,7 +6033,7 @@ BackUp=0
 
 
 [NPC564] 
-Name=Escorpi�n
+Name=Escorpión
 NpcType=0
 Head=0
 Heading=3
@@ -6090,7 +6090,7 @@ BackUp=0
 
 
 [NPC566] 
-Name=Murci�lago
+Name=Murciélago
 NpcType=0
 Head=0
 Heading=3
@@ -6117,7 +6117,7 @@ BackUp=0
 
 
 [NPC567]
-Name=Duende M�gico
+Name=Duende Mágico
 NpcType=0
 Head=0
 Heading=3
@@ -6150,7 +6150,7 @@ Drop4=199-5
 
 
 [NPC568]
-Name=Gale�n Pirata
+Name=Galeón Pirata
 NpcType=0
 Head=0
 Heading=3
@@ -6183,7 +6183,7 @@ Drop5=476-1
 
 
 [NPC569]
-Name=Gale�n Fantasmal
+Name=Galeón Fantasmal
 NpcType=0
 Head=0
 Heading=3
@@ -6216,9 +6216,9 @@ Drop4=475-1
 
 
 [NPC573]
-Name=�rbol Encantado
+Name=Árbol Encantado
 NpcType=0
-Desc=�Odio los le�adores!
+Desc=¡Odio los leñadores!
 Head=0
 Heading=4
 Body=25
@@ -6281,7 +6281,7 @@ Drop5=58-10000
 
 
 [NPC575] 
-Name=�rbol de Jungla
+Name=Árbol de Jungla
 NpcType=0
 Head=0
 Heading=3
@@ -6314,7 +6314,7 @@ Drop3=696-5
 
 
 [NPC576]
-Name=�rbol de Jungla
+Name=Árbol de Jungla
 NpcType=0
 Head=0
 Heading=4
@@ -6345,7 +6345,7 @@ Drop2=58-15
 [NPC577]
 Name=Alma Putrefacta
 NpcType=0
-Desc=Soy un esclavo del mi se�or del mal
+Desc=Soy un esclavo del mi señor del mal
 Head=514
 Heading=3
 Body=145
@@ -6541,7 +6541,7 @@ Drop5=495-2
 
 
 [NPC585]
-Name=Drag�n Rojo Infernal
+Name=Dragón Rojo Infernal
 NpcType=0
 Head=0
 Heading=3
@@ -6780,7 +6780,7 @@ Drop5=12-1500
 
 
 [NPC592]
-Name=Ara�a de los Rincones
+Name=Araña de los Rincones
 NpcType=0
 Head=0
 Heading=3
@@ -6871,7 +6871,7 @@ Drop3=12-600
 
 
 [NPC595]
-Name=Tent�culo Putrefacto
+Name=Tentáculo Putrefacto
 NpcType=0
 Head=0
 Heading=3
@@ -6901,7 +6901,7 @@ Drop3=12-200
 
 
 [NPC596]
-Name=Esp�ritu chocarrero
+Name=Espíritu chocarrero
 NpcType=0
 Head=0
 Heading=3
@@ -7055,7 +7055,7 @@ Drop3=552-50
 
 
 [NPC601]
-Name=Lic�ntropo
+Name=Licóntropo
 NpcType=0
 Head=0
 Heading=3
@@ -7086,7 +7086,7 @@ Drop5=1002-5
 
 
 [NPC602]
-Name=Pira�a
+Name=Piraña
 NpcType=0
 Head=0
 Heading=3
@@ -7216,7 +7216,7 @@ Drop4=12-13500
 
 
 [NPC606]
-Name=Tibur�n
+Name=Tiburón
 NpcType=0
 Head=0
 Heading=3
@@ -7249,7 +7249,7 @@ Drop4=12-2100
 
 
 [NPC607]
-Name=Capit�n Pirata
+Name=Capitón Pirata
 NpcType=0
 Head=512
 Heading=3
@@ -7281,7 +7281,7 @@ Drop4=474-1
 
 
 [NPC608]
-Name=Guardi�n de las Profundidades
+Name=Guardión de las Profundidades
 NpcType=0
 Head=0
 Heading=3
@@ -7490,7 +7490,7 @@ Drop5=698-1
 
 
 [NPC614]
-Name=Elfo Guardi�n
+Name=Elfo Guardián
 NpcType=0
 Head=0
 Heading=3
@@ -7526,7 +7526,7 @@ Drop5=665-6
 
 
 [NPC615]
-Name=�rbol capturador de Almas
+Name=Árbol capturador de Almas
 NpcType=0
 Head=0
 Heading=3
@@ -7596,7 +7596,7 @@ Drop5=12-5000
 
 
 [NPC617]
-Name=Peque�o Escarabajo
+Name=Pequeño Escarabajo
 NpcType=0
 Head=0
 Heading=3
@@ -7628,7 +7628,7 @@ Drop5=126-1
 
 
 [NPC618]
-Name=Peque�o Duende
+Name=Pequeño Duende
 NpcType=0
 Head=0
 Heading=3
@@ -7692,7 +7692,7 @@ Drop5=205-1
 
 
 [NPC620]
-Name=Peque�a Ara�a
+Name=Pequeña Araña
 NpcType=0
 Head=0
 Heading=3
@@ -7724,7 +7724,7 @@ Drop5=30-1
 
 
 [NPC621]
-Name=Pira�a
+Name=Piraña
 NpcType=0
 Head=0
 Heading=3
@@ -7757,7 +7757,7 @@ Drop4=1009-20
 
 
 [NPC622]
-Name=Peque�o Drag�n M�gico
+Name=Pequeño Dragón Mágico
 NpcType=0
 Head=0
 Heading=3
@@ -7824,7 +7824,7 @@ Drop5=123-3
 
 
 [NPC624]
-Name=Peque�o Drag�n Rojo
+Name=Pequeño Dragón Rojo
 NpcType=0
 Head=0
 Heading=3
@@ -7856,7 +7856,7 @@ Drop5=990-3
 
 
 [NPC625]
-Name=V�bora
+Name=Víbora
 NpcType=0
 Head=0
 Heading=3
@@ -7950,7 +7950,7 @@ Drop5=470-1
 
 
 [NPC628]
-Name=Tar�ntula venenosa
+Name=Tarántula venenosa
 NpcType=0
 Head=0
 Heading=3
@@ -7983,7 +7983,7 @@ Drop4=396-1
 [NPC629]
 Name=Guerrero tutor I
 NpcType=0
-Desc= Los guerreros se especializan en el combate cuerpo a cuerpo por lo que las criaturas m�s adecuadas para ellos son aquellas que no poseen demasiada evasi�n y poder de ataque.
+Desc= Los guerreros se especializan en el combate cuerpo a cuerpo por lo que las criaturas más adecuadas para ellos son aquellas que no poseen demasiada evasión y poder de ataque.
 Head=301
 Heading=3
 Body=54
@@ -8001,7 +8001,7 @@ BackUp=0
 [NPC630]
 Name=Guerrero tutor II
 NpcType=0
-Desc= Debido a sus caracter�sticas, dentro de esta isla, los guerreros prefieren entrenar en el desierto al este de la ciudad.
+Desc= Debido a sus caracterásticas, dentro de esta isla, los guerreros prefieren entrenar en el desierto al este de la ciudad.
 Head=370
 Heading=3
 Body=54
@@ -8019,7 +8019,7 @@ BackUp=0
 [NPC631]
 Name= Cazador tutor I
 NpcType=0
-Desc= Los cazadores se especializan en el combate a distancia, por lo que las criaturas m�s indicadas para ellos, son las que no tengan un gran poder de evasi�n.
+Desc= Los cazadores se especializan en el combate a distancia, por lo que las criaturas más indicadas para ellos, son las que no tengan un gran poder de evasión.
 Head=303
 Heading=3
 Body=155
@@ -8037,7 +8037,7 @@ BackUp=0
 [NPC632]
 Name= Cazador tutor II
 NpcType=0
-Desc= Debido a sus caracter�sticas, dentro de esta isla, los cazadores, prefieren entrenar en el bosque, al oeste de la ciudad
+Desc= Debido a sus características, dentro de esta isla, los cazadores, prefieren entrenar en el bosque, al oeste de la ciudad
 Head=4
 Heading=3
 Body=58
@@ -8055,7 +8055,7 @@ BackUp=0
 [NPC633]
 Name= Pirata tutor I
 NpcType=0
-Desc= Los piratas pueden combatir tanto cuerpo a cuerpo como a distancia, por lo tanto, las criaturas m�s adecuadas para ellos, son aquellas que no posean gran poder de evasi�n ni de ataque.
+Desc= Los piratas pueden combatir tanto cuerpo a cuerpo como a distancia, por lo tanto, las criaturas más adecuadas para ellos, son aquellas que no posean gran poder de evasión ni de ataque.
 Head=380
 Heading=3
 Body=161
@@ -8073,7 +8073,7 @@ BackUp=0
 [NPC634]
 Name= Pirata tutor II
 NpcType=0
-Desc= Por sus caracter�sticas, dentro de esta isla, los piratas, pueden entrenar tanto en el desierto (cuerpo a cuerpo) como en el bosque (a distancia), al este u oeste de la ciudad.
+Desc= Por sus características, dentro de esta isla, los piratas, pueden entrenar tanto en el desierto (cuerpo a cuerpo) como en el bosque (a distancia), al este u oeste de la ciudad.
 Head=305
 Heading=3
 Body=161
@@ -8091,7 +8091,7 @@ BackUp=0
 [NPC635]
 Name= Bandido tutor I
 NpcType=0
-Desc= Los bandidos se especializan en el combate cuerpo a cuerpo, por lo tanto, las criaturas m�s adecuadas para esta clase, son aquellas que no posean un gran poder de evasi�n ni de ataque.
+Desc= Los bandidos se especializan en el combate cuerpo a cuerpo, por lo tanto, las criaturas más adecuadas para esta clase, son aquellas que no posean un gran poder de evasión ni de ataque.
 Head=9
 Heading=3
 Body=321
@@ -8109,7 +8109,7 @@ BackUp=0
 [NPC636]
 Name= Bandido tutor II
 NpcType=0
-Desc= Debido a sus caracter�sticas, dentro de esta isla, los bandidos, prefieren entrenar en el desierto, al este de la ciudad.
+Desc= Debido a sus características, dentro de esta isla, los bandidos, prefieren entrenar en el desierto, al este de la ciudad.
 Head=72
 Heading=3
 Body=321
@@ -8127,7 +8127,7 @@ BackUp=0
 [NPC637]
 Name= Ladron tutor I
 NpcType=0
-Desc= Los ladrones se destacan en el arte de ocultarse y el combate a distancia, por lo tanto, las criaturas m�s adecuadas para esta clase, son aquellas que no posean gran poder de evasi�n.
+Desc= Los ladrones se destacan en el arte de ocultarse y el combate a distancia, por lo tanto, las criaturas más adecuadas para esta clase, son aquellas que no posean gran poder de evasión.
 Head=75
 Heading=3
 Body=337
@@ -8145,7 +8145,7 @@ BackUp=0
 [NPC638]
 Name= Ladron tutor II
 NpcType=0
-Desc= Debido a sus caracter�sticas, dentro de esta isla, los ladrones, prefieren entrenar en el bosque, al oeste de la ciudad
+Desc= Debido a sus características, dentro de esta isla, los ladrones, prefieren entrenar en el bosque, al oeste de la ciudad
 Head=37
 Heading=3
 Body=337
@@ -8163,7 +8163,7 @@ BackUp=0
 [NPC639]
 Name= Mago tutor I
 NpcType=0
-Desc= Los magos se especializan en ataques m�gicos, por lo tanto, las criaturas m�s adecuadas para esta clase, son aquellas que no posean defensa m�gica.
+Desc= Los magos se especializan en ataques mágicos, por lo tanto, las criaturas más adecuadas para esta clase, son aquellas que no posean defensa mágica.
 Head=407
 Heading=3
 Body=159
@@ -8181,7 +8181,7 @@ BackUp=0
 [NPC640]
 Name= Mago tutor II
 NpcType=0
-Desc= Debido a sus caracter�sticas, dentro de esta isla, los magos, prefieren entrenar en el bosque, al norte de la ciudad
+Desc= Debido a sus características, dentro de esta isla, los magos, prefieren entrenar en el bosque, al norte de la ciudad
 Head=109
 Heading=3
 Body=353
@@ -8199,7 +8199,7 @@ BackUp=0
 [NPC641]
 Name=Bardo Tutor I
 NpcType=0
-Desc=Los bardos se especializan en conjurar hechizos y evadir golpes, por lo tanto, las criaturas m�s adecuadas para esta clase, son aquellas que no posean defensa m�gica.
+Desc=Los bardos se especializan en conjurar hechizos y evadir golpes, por lo tanto, las criaturas más adecuadas para esta clase, son aquellas que no posean defensa mágica.
 Head=220
 Heading=3
 Body=130
@@ -8217,7 +8217,7 @@ BackUp=0
 [NPC642]
 Name=Bardo Tutor II
 NpcType=0
-Desc=Debido a sus caracter�sticas, dentro de esta isla, los bardos, prefieren entrenar en el bosque, al norte de la ciudad
+Desc=Debido a sus características, dentro de esta isla, los bardos, prefieren entrenar en el bosque, al norte de la ciudad
 Head=179
 Heading=3
 Body=319
@@ -8233,9 +8233,9 @@ BackUp=0
 
 
 [NPC643]
-Name=Cl�rigo Tutor I
+Name=Clérigo Tutor I
 NpcType=0
-Desc=Los cl�rigos combinan la magia con el combate cuerpo a cuerpo, por lo tanto, las criaturas m�s adecuadas para ellos, son las que no posean defensa m�gica o posean bajo ataque y evasi�n.
+Desc=Los clérigos combinan la magia con el combate cuerpo a cuerpo, por lo tanto, las criaturas más adecuadas para ellos, son las que no posean defensa mágica o posean bajo ataque y evasión.
 Head=22
 Heading=3
 Body=314
@@ -8251,9 +8251,9 @@ BackUp=0
 
 
 [NPC644]
-Name=Cl�rigo Tutor II
+Name=Clérigo Tutor II
 NpcType=0
-Desc=Por sus caracter�sticas, dentro de esta isla, los cl�rigos, pueden entrenar tanto en el desierto (cuerpo a cuerpo) como en el bosque (magia), al este o norte de la ciudad.
+Desc=Por sus características, dentro de esta isla, los clérigos, pueden entrenar tanto en el desierto (cuerpo a cuerpo) como en el bosque (magia), al este o norte de la ciudad.
 Head=112
 Heading=3
 Body=314
@@ -8271,7 +8271,7 @@ BackUp=0
 [NPC645]
 Name=Druida Tutor I
 NpcType=0
-Desc=Los druidas se especializan en ataques m�gicos, por lo tanto, las criaturas m�s adecuadas para esta clase, son las que no posean defensa m�gica. Tambi�n pueden entrenar con mascotas al domar
+Desc=Los druidas se especializan en ataques mágicos, por lo tanto, las criaturas más adecuadas para esta clase, son las que no posean defensa mágica. También pueden entrenar con mascotas al domar
 Head=284
 Heading=3
 Body=56
@@ -8289,7 +8289,7 @@ BackUp=0
 [NPC646]
 Name=Druida Tutor II
 NpcType=0
-Desc=Debido a sus caracter�sticas, dentro de esta isla, los druidas, prefieren entrenar en el bosque, al norte de la ciudad
+Desc=Debido a sus características, dentro de esta isla, los druidas, prefieren entrenar en el bosque, al norte de la ciudad
 Head=115
 Heading=3
 Body=56
@@ -8305,9 +8305,9 @@ BackUp=0
 
 
 [NPC647]
-Name=Palad�n Tutor I
+Name=Paladón Tutor I
 NpcType=0
-Desc=Los paladines combinan el golpe cuerpo a cuerpo con la magia, por lo tanto, las criaturas m�s adecuadas para esta clase, son aquellas que no posean un gran poder de evasi�n ni de ataque.
+Desc=Los paladines combinan el golpe cuerpo a cuerpo con la magia, por lo tanto, las criaturas más adecuadas para esta clase, son aquellas que no posean un gran poder de evasión ni de ataque.
 Head=30
 Heading=3
 Body=45
@@ -8323,9 +8323,9 @@ BackUp=0
 
 
 [NPC648]
-Name=Palad�n Tutor II
+Name=Paladín Tutor II
 NpcType=0
-Desc=Debido a sus caracter�sticas, dentro de esta isla los paladines prefieren entrenar en el desierto al este de la ciudad.
+Desc=Debido a sus características, dentro de esta isla los paladines prefieren entrenar en el desierto al este de la ciudad.
 Head=382
 Heading=3
 Body=54
@@ -8343,7 +8343,7 @@ BackUp=0
 [NPC649]
 Name=Asesino Tutor I
 NpcType=0
-Desc=Los asesinos combinan el golpe cuerpo a cuerpo con la magia, por lo tanto, las criaturas m�s adecuadas para esta clase, son aquellas que no posean un gran poder de evasi�n ni de ataque.
+Desc=Los asesinos combinan el golpe cuerpo a cuerpo con la magia, por lo tanto, las criaturas más adecuadas para esta clase, son aquellas que no posean un gran poder de evasión ni de ataque.
 Head=288
 Heading=3
 Body=48
@@ -8361,7 +8361,7 @@ BackUp=0
 [NPC650]
 Name=Asesino Tutor II
 NpcType=0
-Desc=Debido a sus caracter�sticas, dentro de esta isla los asesinos prefieren entrenar en el desierto al este de la ciudad.
+Desc=Debido a sus características, dentro de esta isla los asesinos prefieren entrenar en el desierto al este de la ciudad.
 Head=309
 Heading=3
 Body=539
@@ -8379,7 +8379,7 @@ BackUp=0
 [NPC651]
 Name=Herrero Tutor
 NpcType=0
-Desc=Se considera Herrero al trabajador que tenga 100 skills en la habilidad Herrer�a. Los mismos se encargan de construir armas y armaduras para los aventureros de estas tierras.
+Desc=Se considera Herrero al trabajador que tenga 100 skills en la habilidad Herrería. Los mismos se encargan de construir armas y armaduras para los aventureros de estas tierras.
 Head=7
 Heading=3
 Body=93
@@ -8397,7 +8397,7 @@ BackUp=0
 [NPC652]
 Name=Minero Tutor
 NpcType=0
-Desc=Se considera Minero al trabajador que tenga 100 skills en la habilidad Miner�a. Los mismos se encargan de extraer minerales y transformarlos en lingotes para el uso de los herreros.
+Desc=Se considera Minero al trabajador que tenga 100 skills en la habilidad Minería. Los mismos se encargan de extraer minerales y transformarlos en lingotes para el uso de los herreros.
 Head=109
 Heading=3
 Body=100
@@ -8415,7 +8415,7 @@ BackUp=0
 [NPC653]
 Name=Carpintero Tutor
 NpcType=0
-Desc=Se considera Carpintero al trabajador que tenga 100 skills en la habilidad Carpinter�a. Los mismos se encargan de construir todo tipo de objetos que requieran madera.
+Desc=Se considera Carpintero al trabajador que tenga 100 skills en la habilidad Carpintería. Los mismos se encargan de construir todo tipo de objetos que requieran madera.
 Head=308
 Heading=3
 Body=373
@@ -8431,9 +8431,9 @@ BackUp=0
 
 
 [NPC654]
-Name=Le�ador Tutor
+Name=Leñador Tutor
 NpcType=0
-Desc=Se considera Le�ador al trabajador que tenga 100 skills en la habilidad Tala. Los mismos se encargan de extraer le�a com�n y le�a �lfica para el uso de los carpinteros.
+Desc=Se considera Leñador al trabajador que tenga 100 skills en la habilidad Tala. Los mismos se encargan de extraer leña común y leña élfica para el uso de los carpinteros.
 Head=216
 Heading=3
 Body=382
@@ -8451,7 +8451,7 @@ BackUp=0
 [NPC655]
 Name=Pescador Tutor
 NpcType=0
-Desc=Se considera Pescador al trabajador que tenga 100 skills en la habilidad Pesca. Los mismos se encargan de extraer peces de los r�os y mares para el venderselos al mejor postor.
+Desc=Se considera Pescador al trabajador que tenga 100 skills en la habilidad Pesca. Los mismos se encargan de extraer peces de los ríos y mares para el venderselos al mejor postor.
 Head=410
 Heading=3
 Body=301
@@ -8469,7 +8469,7 @@ BackUp=0
 [NPC656]
 Name=Trabajador Tutor I
 NpcType=0
-Desc=Los trabajadores pueden combatir tanto cuerpo a cuerpo como a distancia, por lo tanto, las criaturas m�s adecuadas para ellos, son aquellas que no posean gran poder de evasi�n ni de ataque.
+Desc=Los trabajadores pueden combatir tanto cuerpo a cuerpo como a distancia, por lo tanto, las criaturas más adecuadas para ellos, son aquellas que no posean gran poder de evasión ni de ataque.
 Head=172
 Heading=3
 Body=348
@@ -8487,7 +8487,7 @@ BackUp=0
 [NPC657]
 Name=Trabajador Tutor II
 NpcType=0
-Desc=Por sus caracter�sticas, dentro de esta isla, los trabajadores, pueden entrenar tanto en el desierto (cuerpo a cuerpo) como en el bosque (a distancia), al este u oeste de la ciudad.
+Desc=Por sus características, dentro de esta isla, los trabajadores, pueden entrenar tanto en el desierto (cuerpo a cuerpo) como en el bosque (a distancia), al este u oeste de la ciudad.
 Head=372
 Heading=3
 Body=376
@@ -9339,7 +9339,7 @@ BackUp=0
 
 
 [NPC922]
-Name=Ladr�n Pretoriano
+Name=Ladrón Pretoriano
 NpcType=10
 Head=7
 Heading=3
@@ -9373,7 +9373,7 @@ BackUp=0
 
 
 [NPC923] 
-Name=Ladr�n Pretoriano
+Name=Ladrón Pretoriano
 NpcType=10
 Head=7
 Heading=3

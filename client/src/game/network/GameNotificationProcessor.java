@@ -5,6 +5,7 @@ import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
@@ -97,7 +98,10 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
                 Log.info("Item equipped: " + item.equipped);
             }
         });
-        GUI.getInventory().updateUserInventory(0);
+        // @todo fix
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        if (game.getScreen() instanceof GameScreen)
+            ((GameScreen) game.getScreen()).getGUI().getInventory().updateUserInventory(0);
     }
 
     @Override
@@ -156,7 +160,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     public void processNotification(ConsoleMessage consoleMessage) {
         AOGame game = (AOGame) Gdx.app.getApplicationListener();
         if (game.getScreen() instanceof GameScreen) {
-            final GUI gui = GameScreen.getGui();
+            final GUI gui = ((GameScreen) game.getScreen()).getGUI();
             final AOConsole console = gui.getConsole();
             final String message = consoleMessage.getMessage();
             switch (consoleMessage.getKind()) {

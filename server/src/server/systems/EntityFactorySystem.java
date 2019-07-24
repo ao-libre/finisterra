@@ -129,9 +129,11 @@ public class EntityFactorySystem extends PassiveSystem {
 
     private void setHead(E entity, Race race) {
         ThreadLocalRandom random = ThreadLocalRandom.current();
+        //TODO onlyWoman desde init.json
         int headIndex = 0;
         switch (race) {
             case HUMAN:
+                //TODO if onlyWoman = 1 set body woman
                 headIndex = random.nextInt(1, 51 + 1);
                 break;
             case DROW:
@@ -172,17 +174,19 @@ public class EntityFactorySystem extends PassiveSystem {
 
     private void setMana(E entity) {
         CharClass charClass = CharClass.of(entity);
-        int mana = 0;
+        int mana = 300; //Bonus 300 mana para tirar inmovilizar
         switch (charClass) {
             case MAGICIAN:
-                mana = entity.intelligenceBaseValue() * 3;
+                mana = entity.intelligenceBaseValue() * 3 + mana;
                 break;
             case CLERIC:
             case DRUID:
             case BARDIC:
+                mana = entity.intelligenceBaseValue() * 2 + mana;
+                break;
             case ASSASSIN:
-            case ROGUE:
-                mana = 50;
+            case PALADIN:
+                mana = entity.intelligenceBaseValue() + mana;
                 break;
         }
         entity.manaMax(mana);
@@ -234,7 +238,7 @@ public class EntityFactorySystem extends PassiveSystem {
 
     private void setHeadAndBody(String name, E entity) {
         entity
-                .headingCurrent(Heading.HEADING_NORTH)
+                .headingCurrent(Heading.HEADING_SOUTH)
                 .character()
                 .nameText(name);
     }
@@ -447,12 +451,14 @@ public class EntityFactorySystem extends PassiveSystem {
         Spell misil = spells.get(8);
         Spell inmo = spells.get(24);
         Spell remo = spells.get(10);
+        Spell curar = spells.get(3);
         switch (hero) {
-            case MAGO:
             case BARDO:
             case CLERIGO:
+                result.add(curar);
+            case MAGO:
                 result.add(apoca);
-                break;
+            break;
         }
         if (!(hero.equals(Hero.GUERRERO) || hero.equals(Hero.ARQUERO))) {
             result.add(misil);
@@ -487,14 +493,28 @@ public class EntityFactorySystem extends PassiveSystem {
 
 
     private void setEntityPosition(E entity) {
-        WorldPos worldPos = getValidPosition(1);
-        entity
-                .worldPosX(worldPos.x)
-                .worldPosY(worldPos.y)
-                .worldPosMap(worldPos.map);
+        setworldPosInitial(entity);
+        //TODO getValidPosition
     }
-
-    private WorldPos getValidPosition(int map) {
-        return new WorldPos(50, 50, map);
+  
+    private void setworldPosInitial (E entity){
+        switch (Race.of(entity)) {
+            case DROW:
+                entity.worldPosX(62).worldPosY(68).worldPosMap(1);
+                break;
+            case ELF:
+                entity.worldPosX(43).worldPosY(16).worldPosMap(2);
+                break;
+            case DWARF:
+                entity.worldPosX(46).worldPosY(9).worldPosMap(40);
+                break;
+            case GNOME:
+                entity.worldPosX(33).worldPosY(49).worldPosMap(1);
+                break;
+            case HUMAN:
+                entity.worldPosX(65).worldPosY(17).worldPosMap(1);
+                break;
+        }
     }
+    //private worldPos getValidPosition(int map) { return new worldPos(50, 50, map); }
 }

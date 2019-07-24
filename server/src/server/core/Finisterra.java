@@ -6,6 +6,7 @@ import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import server.ServerConfiguration;
 import server.network.FinisterraRequestProcessor;
 import server.systems.FinisterraSystem;
 import server.systems.manager.ObjectManager;
@@ -29,6 +30,7 @@ public class Finisterra implements ApplicationListener {
 
     private final int tcpPort;
     private final int udpPort;
+    private boolean shouldUseLocalHost;
     private Set<Server> servers = new HashSet<>();
     private int lastPort;
     private Lobby lobby;
@@ -37,10 +39,18 @@ public class Finisterra implements ApplicationListener {
     private SpellManager spellManager;
     private HashMap<Integer, Map> maps = new HashMap<>();
 
-    public Finisterra(int tcpPort, int udpPort) {
-        this.tcpPort = tcpPort;
-        this.udpPort = udpPort;
-        this.lastPort = udpPort;
+    public Finisterra(ServerConfiguration config) {
+
+        /**
+         * Fetch ports configuration from Server.json
+         */
+        ServerConfiguration.Network.Ports currentPorts = config.getNetwork().getPorts();
+
+        this.tcpPort = currentPorts.getTcpPort();
+        this.udpPort = currentPorts.getUdpPort();
+        this.lastPort = currentPorts.getUdpPort();
+
+        this.shouldUseLocalHost = config.getNetwork().getuseLocalHost();
     }
 
     @Override
@@ -85,10 +95,11 @@ public class Finisterra implements ApplicationListener {
         room.getPlayers().stream().mapToInt(player -> getNetworkManager().getConnectionByPlayer(player)).forEach(connectionId -> {
             try {
                 final String ip = IpChecker.getIp();
-                String property = System.getProperty("server.useLocalhost");
-                System.out.println(property);
-                boolean shouldUseLocalHost = Boolean.parseBoolean(property);
                 InetAddress inetAddress = InetAddress.getLocalHost();
+
+                if (shouldUseLocalHost) {
+                    System.out.println("Using localhost...");
+                }
 
                 getNetworkManager().sendTo(connectionId, new StartGameResponse(shouldUseLocalHost ? inetAddress.getHostAddress() : ip, roomServer.getTcpPort(), roomServer.getUdpPort()));
             } catch (Exception e) {

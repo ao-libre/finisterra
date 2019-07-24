@@ -1,6 +1,7 @@
 package game;
 
-import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.files.FileHandle; // @todo FileHandle is not cross-platform (desktop only)
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
 import shared.util.AOJson;
@@ -22,7 +23,7 @@ public class ClientConfiguration {
             return configObject.fromJson(ClientConfiguration.class, new FileHandle(path));
 
         } catch (Exception ex) {
-            Log.debug("Client configuration file not found!");
+            Log.error("Client configuration file not found!", ex); // @todo check for other errors
         }
 
         return null;
@@ -51,11 +52,9 @@ public class ClientConfiguration {
         // Default values of `Network`
         configOutput.setNetwork(new Network());
 
-        // Default values of `Network.defaultServer`
-        Network.DefaultServer defServer = new Network.DefaultServer();
-        defServer.setHostname("45.235.98.116");
-        defServer.setPort(9000);
-        configOutput.getNetwork().setDefaultServer(defServer);
+        // Default values of `Network.servers`
+        Array<Network.Server> servers = configOutput.getNetwork().getServers();
+        servers.add(new Network.Server("localhost", "127.0.0.1", 7666));
 
         return configOutput;
     }
@@ -76,11 +75,12 @@ public class ClientConfiguration {
         this.network = network;
     }
 
-    public void save() {
+    public void save(String path) {
         Json json = new AOJson();
-        json.toJson(this, new FileHandle("assets/config.json"));
+        json.toJson(this, new FileHandle(path));
     }
 
+    // @todo this is Desktop specific
     public static class Init {
         private Video video;
         private boolean resizeable;
@@ -160,19 +160,52 @@ public class ClientConfiguration {
     }
 
     public static class Network {
-        private DefaultServer defaultServer;
+        Array<Server> servers;
 
-        public DefaultServer getDefaultServer() {
-            return defaultServer;
+        public Network() {
+            servers = new Array<>();
         }
 
-        void setDefaultServer(DefaultServer defaultServer) {
-            this.defaultServer = defaultServer;
+        public Array<Server> getServers() {
+            return servers;
         }
 
-        public static class DefaultServer {
+        public static class Server {
+            private String name;
             private String hostname;
             private int port;
+
+            // empty constructor needed for de-serialization
+            public Server() {
+                this(null, "127.0.0.1", 7666);
+            }
+
+            public Server(String hostname, int port) {
+                this(null, hostname, port);
+            }
+
+            public Server(String name, String hostname, int port) {
+                this.name = name;
+                this.hostname = hostname;
+                this.port = port;
+            }
+
+            @Override
+            public String toString() {
+                String prefix = "";
+                if (this.name != null)
+                    prefix = this.name + "  ";
+
+                return prefix + this.hostname + ":" + this.port;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            void setName(String name) {
+                this.name = name;
+            }
 
             public String getHostname() {
                 return hostname;

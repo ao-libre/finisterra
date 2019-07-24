@@ -35,6 +35,7 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
         ScreenManager.getInstance().initialize(this);
         toLoading();
         // @todo load platform-independent configuration (network, etc.)
+
     }
 
     private void toLoading() {
