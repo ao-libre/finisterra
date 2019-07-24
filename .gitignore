@@ -8,12 +8,8 @@ old/
 out/
 **/out/
 design/resources*
-desktop/jpackage/*
 desktop/*.tar.gz
 desktop/*.zip
-desktop/finisterra*
-desktop/java*
-desktop/packing*
 desktop/jdk*
 desktop/desktop*
-desktop/assets/data/Screenshots/Screen.png
+desktop/Screenshots*
