@@ -156,6 +156,9 @@ public class Inventory extends Window {
     }
 
     public void updateUserInventory(int base) {
+        if (base < 0) {
+            base = this.base;
+        }
         Item[] userItems = E(GameScreen.getPlayer()).getInventory().items;
         for (int i = 0; i < SIZE; i++) {
             Item item = base + i < userItems.length ? userItems[base + i] : null;

@@ -55,11 +55,10 @@ public class SpellView extends Table {
     }
 
     private void changeCursor() {
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
-        if (game.getScreen() instanceof GameScreen) {
-            ((GameScreen) game.getScreen()).getGUI().getConsole().addInfo("Haz click para lanzar el hechizo");
-            Cursors.setCursor("select");
-        }
+        WorldUtils.getWorld().ifPresent(world -> {
+            world.getSystem(GUI.class).getConsole().addInfo("Haz click para lanzar el hechizo");
+        });
+        Cursors.setCursor("select");
     }
 
     public void updateSpells() {
