@@ -1,0 +1,113 @@
+[
+  {
+    "id": 144,
+    "name": "Teleport a Dungeon Newbie",
+    "grhIndex": 669,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 145,
+    "name": "Teleport a Nix",
+    "grhIndex": 669,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 146,
+    "name": "Teleport a Ullathorpe",
+    "grhIndex": 669,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 358,
+    "name": "Teleport a Banderbill",
+    "grhIndex": 669,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 378,
+    "name": "Teleport",
+    "grhIndex": 669,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 456,
+    "name": "Teleport a Lindos",
+    "grhIndex": 669,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 692,
+    "name": "Teleport a Nemahuak",
+    "grhIndex": 669,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 988,
+    "name": "Teleport a Arghal",
+    "grhIndex": 669,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 1012,
+    "name": "Teleport",
+    "grhIndex": 669,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 1013,
+    "name": "Teleport",
+    "grhIndex": 669,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 1014,
+    "name": "Teleport",
+    "grhIndex": 669,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 1015,
+    "name": "Teleport",
+    "grhIndex": 669,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 1016,
+    "name": "Teleport",
+    "grhIndex": 669,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 1017,
+    "name": "Teleport",
+    "grhIndex": 669,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 1018,
+    "name": "Teleport",
+    "grhIndex": 669,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 1043,
+    "name": "No ves nada interesante.",
+    "collectable": true,
+    "crucial": false
+  }
+]

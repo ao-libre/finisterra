@@ -11,7 +11,6 @@ import com.badlogic.gdx.utils.Json;
 import model.descriptors.BodyDescriptor;
 import model.readers.GenericReader;
 import model.serializers.BodyDescriptorSerializer;
-import model.serializers.GraphicsSerializer;
 import shared.model.Graphic;
 
 import java.util.HashMap;
@@ -58,10 +57,6 @@ public class GenericLoader<T> extends AsynchronousAssetLoader<HashMap<Integer, T
             this.serializer = serializer;
             this.clazz = clazz;
             this.function = function;
-        }
-
-        public static GenericParameter<Graphic> graphicGenericParameter() {
-            return new GenericParameter<>(new GraphicsSerializer(), Graphic.class, Graphic::getGrhIndex);
         }
 
         public static GenericParameter<BodyDescriptor> bodiesGenericParameter() {

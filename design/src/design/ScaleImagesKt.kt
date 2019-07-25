@@ -12,7 +12,6 @@ object Scale2x {
     fun run(input: String, output: String) = Korio {
         defaultImageFormats.registerStandard()
         val image = UniversalVfs(input).readBitmapNoNative().toBMP32()
-
         val noiseReduction = 1
 
         val channels = BitmapChannel.ALL.toList()

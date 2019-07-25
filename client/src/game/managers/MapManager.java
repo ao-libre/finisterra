@@ -3,7 +3,11 @@ package game.managers;
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import game.handlers.AOAssetManager;
 import game.handlers.AnimationHandler;
+import model.textures.AOAnimation;
+import model.textures.AOImage;
+import model.textures.AOTexture;
 import model.textures.BundledAnimation;
 import shared.model.map.Map;
 import shared.model.map.Tile;
@@ -22,6 +26,7 @@ public class MapManager extends BaseSystem {
     public static final int MAX_MAP_SIZE_HEIGHT = 100;
     public static final int MIN_MAP_SIZE_HEIGHT = 1;
     private AnimationHandler animationHandler;
+    private AOAssetManager assetManager;
 
     public void drawTile(Map map, SpriteBatch batch, float delta, int layer, int y, int x) {
         int graphic = map.getTile(x, y).getGraphic(layer);
@@ -33,11 +38,19 @@ public class MapManager extends BaseSystem {
     }
 
     public void doTileDraw(SpriteBatch batch, float delta, int y, int x, int graphic) {
-        BundledAnimation animation = animationHandler.getGraphicAnimation(graphic);
-        TextureRegion tileRegion = animation.isAnimated() ? animation.getAnimatedGraphic(true) : animation.getGraphic();
-
-        if (animation.isAnimated()) {
-            animation.setAnimationTime(animation.getAnimationTime() + delta);
+        // TODO Refactor maps layers to have animations separated
+        AOImage image = assetManager.getImage(graphic);
+        TextureRegion tileRegion = null;
+        if (image != null) {
+            // TODO CACHE
+            tileRegion = new AOTexture(image, false).getTexture();
+        } else {
+            AOAnimation animation = assetManager.getAnimation(graphic);
+            if (animation != null) {
+                BundledAnimation anim = new BundledAnimation(animation);
+                anim.setAnimationTime(anim.getAnimationTime() + delta);
+                tileRegion = anim.getGraphic();
+            }
         }
 
         doTileDraw(batch, y, x, tileRegion);

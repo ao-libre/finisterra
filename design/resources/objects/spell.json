@@ -1,0 +1,248 @@
+[
+  {
+    "id": 197,
+    "name": "Flecha Mágica",
+    "grhIndex": 609,
+    "value": 2300,
+    "spellIndex": 6
+  },
+  {
+    "id": 199,
+    "name": "Dardo Mágico",
+    "grhIndex": 609,
+    "value": 500,
+    "spellIndex": 2
+  },
+  {
+    "id": 200,
+    "name": "Antídoto Mágico",
+    "grhIndex": 609,
+    "value": 200,
+    "spellIndex": 1
+  },
+  {
+    "id": 201,
+    "name": "Curar Heridas Leves",
+    "grhIndex": 609,
+    "value": 500,
+    "spellIndex": 3
+  },
+  {
+    "id": 202,
+    "name": "Toxina",
+    "grhIndex": 609,
+    "value": 3000,
+    "spellIndex": 4
+  },
+  {
+    "id": 203,
+    "name": "Curar Heridas Graves",
+    "grhIndex": 609,
+    "value": 35000,
+    "spellIndex": 5
+  },
+  {
+    "id": 204,
+    "name": "Flecha Eléctrica",
+    "grhIndex": 609,
+    "value": 4500,
+    "spellIndex": 7
+  },
+  {
+    "id": 205,
+    "name": "Proyectil Mágico",
+    "grhIndex": 609,
+    "value": 9000,
+    "spellIndex": 8
+  },
+  {
+    "id": 206,
+    "name": "Paralizar",
+    "grhIndex": 609,
+    "value": 50000,
+    "spellIndex": 9
+  },
+  {
+    "id": 207,
+    "name": "Devolver Movilidad",
+    "grhIndex": 609,
+    "value": 33000,
+    "spellIndex": 10
+  },
+  {
+    "id": 318,
+    "name": "Invisibilidad",
+    "grhIndex": 609,
+    "value": 210000,
+    "spellIndex": 14
+  },
+  {
+    "id": 319,
+    "name": "Resucitar",
+    "grhIndex": 609,
+    "value": 290000,
+    "spellIndex": 11
+  },
+  {
+    "id": 361,
+    "name": "Tormenta de Fuego",
+    "grhIndex": 609,
+    "value": 32000,
+    "spellIndex": 15
+  },
+  {
+    "id": 363,
+    "name": "Ataque de Hambre",
+    "grhIndex": 609,
+    "value": 100,
+    "spellIndex": 12
+  },
+  {
+    "id": 364,
+    "name": "Terrible Hambre de Igôr",
+    "grhIndex": 609,
+    "value": 350,
+    "spellIndex": 13
+  },
+  {
+    "id": 380,
+    "name": "Invocación de Ultratumba",
+    "grhIndex": 609,
+    "value": 100000,
+    "spellIndex": 33
+  },
+  {
+    "id": 394,
+    "name": "Llamado a la Naturaleza",
+    "grhIndex": 609,
+    "value": 15000,
+    "spellIndex": 16
+  },
+  {
+    "id": 395,
+    "name": "Llamado Nigromante",
+    "grhIndex": 609,
+    "value": 40000,
+    "spellIndex": 17
+  },
+  {
+    "id": 396,
+    "name": "Celeridad",
+    "grhIndex": 609,
+    "value": 12050,
+    "spellIndex": 18
+  },
+  {
+    "id": 397,
+    "name": "Torpeza",
+    "grhIndex": 609,
+    "value": 13450,
+    "spellIndex": 19
+  },
+  {
+    "id": 470,
+    "name": "Fuerza",
+    "grhIndex": 609,
+    "value": 15000,
+    "spellIndex": 20
+  },
+  {
+    "id": 471,
+    "name": "Debilidad",
+    "grhIndex": 609,
+    "value": 13450,
+    "spellIndex": 21
+  },
+  {
+    "id": 530,
+    "name": "Inmovilizar",
+    "grhIndex": 609,
+    "value": 110000,
+    "spellIndex": 24
+  },
+  {
+    "id": 531,
+    "name": "Descarga Eléctrica",
+    "grhIndex": 609,
+    "value": 1200000,
+    "spellIndex": 23
+  },
+  {
+    "id": 532,
+    "name": "Apocalipsis",
+    "grhIndex": 609,
+    "value": 2400000,
+    "spellIndex": 25
+  },
+  {
+    "id": 536,
+    "name": "Invocar Elemental de Fuego",
+    "grhIndex": 609,
+    "value": 950000,
+    "spellIndex": 26
+  },
+  {
+    "id": 537,
+    "name": "Invocar Elemental de Agua",
+    "grhIndex": 609,
+    "value": 350000,
+    "spellIndex": 27
+  },
+  {
+    "id": 538,
+    "name": "Invocar Elemental de Tierra",
+    "grhIndex": 609,
+    "value": 500000,
+    "spellIndex": 28
+  },
+  {
+    "id": 539,
+    "name": "Implorar Ayuda",
+    "grhIndex": 609,
+    "value": 90000,
+    "spellIndex": 29
+  },
+  {
+    "id": 541,
+    "name": "Ceguera",
+    "grhIndex": 609,
+    "value": 200000,
+    "spellIndex": 30
+  },
+  {
+    "id": 542,
+    "name": "Aturdir",
+    "grhIndex": 609,
+    "value": 100000,
+    "spellIndex": 31
+  },
+  {
+    "id": 657,
+    "name": "Desaturdir",
+    "grhIndex": 609,
+    "value": 50000,
+    "spellIndex": 41
+  },
+  {
+    "id": 673,
+    "name": "Mimetismo",
+    "grhIndex": 609,
+    "value": 400000,
+    "spellIndex": 42
+  },
+  {
+    "id": 705,
+    "name": "El Ojo del Demiurgo",
+    "grhIndex": 609,
+    "value": 6000000,
+    "crucial": false,
+    "spellIndex": 43
+  },
+  {
+    "id": 1007,
+    "name": "Invocar Mascota",
+    "grhIndex": 609,
+    "value": 100000,
+    "spellIndex": 46
+  }
+]

@@ -18,6 +18,7 @@ import game.screens.RoomScreen;
 import game.systems.camera.CameraShakeSystem;
 import game.ui.AOConsole;
 import game.ui.GUI;
+import game.utils.WorldUtils;
 import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.lobby.JoinRoomNotification;
@@ -41,7 +42,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     public void processNotification(EntityUpdate entityUpdate) {
         if (!worldManager.entityExsists(entityUpdate.entityId)) {
             Log.info("Network entity doesn't exist: " + entityUpdate.entityId + ". So we create it");
-            Entity newEntity = GameScreen.getWorld().createEntity();
+            Entity newEntity = getWorld().createEntity();
             worldManager.registerEntity(entityUpdate.entityId, newEntity.getId());
             addComponentsToEntity(newEntity, entityUpdate);
             if (E(newEntity).hasFocused()) {

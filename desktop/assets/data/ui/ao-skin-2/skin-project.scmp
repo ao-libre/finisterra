@@ -3,7 +3,7 @@ atlasData: {
 	atlasCurrent: true
 	drawables: [
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/action-bar.9.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/action-bar.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -19,7 +19,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/bar-frame.9.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/bar-frame.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -35,7 +35,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/hover-button.9.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/hover-button.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -51,7 +51,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/menu-frame.9.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/menu-frame.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -67,7 +67,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/simple-window.9.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/simple-window.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -83,7 +83,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/slot-frame.9.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/slot-frame.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -99,7 +99,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/big-disc.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/big-disc.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -115,7 +115,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/cross-button.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/cross-button.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -131,7 +131,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/disc.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/disc.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -147,7 +147,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/Inventory-Icon.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Inventory-Icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -163,7 +163,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/spells-icon.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/spells-icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -179,7 +179,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/unit-counter.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/unit-counter.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -195,7 +195,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/button.9.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/button.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -211,7 +211,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/cross-button.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/cross-button.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -227,7 +227,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/hover-button.9.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/hover-button.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -243,7 +243,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/hover-button.9.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/hover-button.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -259,7 +259,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/scale_bar.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/scale_bar.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -275,7 +275,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/slot-selected.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/slot-selected.png"
 			bgColor: {
 				r: 0
 				g: 0
@@ -291,7 +291,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/disc-glow.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/disc-glow.png"
 			bgColor: {
 				r: 0
 				g: 0
@@ -307,7 +307,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/text-cursor.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/text-cursor.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -323,7 +323,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/tooltip.9.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/tooltip.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -339,7 +339,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/icon-container.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/icon-container.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -355,7 +355,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/separator.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/separator.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -371,7 +371,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/inventory-spells-window.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/inventory-spells-window.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -387,7 +387,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/Inventory-Icon.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Inventory-Icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -403,7 +403,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/spells-icon.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/spells-icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -419,7 +419,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/spells-icon.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/spells-icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -435,7 +435,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/Inventory-Icon.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Inventory-Icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -451,7 +451,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/staff-hover-icon.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/staff-hover-icon.png"
 			bgColor: {
 				r: 0
 				g: 0
@@ -467,7 +467,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/staff-icon.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/staff-icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -483,7 +483,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/staff-selected-icon.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/staff-selected-icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -499,7 +499,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/slot-selected2.9.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/slot-selected2.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -515,7 +515,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/speech-bubble.9.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/speech-bubble.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -531,7 +531,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/bar.9.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/bar.9.png"
 			bgColor: {
 				r: 0
 				g: 0
@@ -547,7 +547,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/Desktop/UI/speech-bubble-flipped.9.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/speech-bubble-flipped.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -743,7 +743,7 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: big-shadow
-			file: "/Users/gtamborindeguy/Downloads/euxoi/euxoi_memesbruh03_01102018.ttf"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/euxoi_memesbruh03_01102018.ttf"
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
 			size: 20
@@ -772,7 +772,7 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: flipped
-			file: "/Users/gtamborindeguy/Downloads/euxoi/euxoi_memesbruh03_01102018.ttf"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/euxoi_memesbruh03_01102018.ttf"
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
 			size: 19
@@ -801,7 +801,7 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: flipped-shadow
-			file: "/Users/gtamborindeguy/Downloads/euxoi/euxoi_memesbruh03_01102018.ttf"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/euxoi_memesbruh03_01102018.ttf"
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
 			size: 20
@@ -830,7 +830,7 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: small
-			file: "/Users/gtamborindeguy/Downloads/euxoi/euxoi_memesbruh03_01102018.ttf"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/euxoi_memesbruh03_01102018.ttf"
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
 			size: 19
@@ -4031,7 +4031,7 @@ preferences: {
 	}
 	resources-relative: {
 		class: java.lang.Boolean
-		value: false
+		value: true
 	}
 }
 saveFile: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project.scmp"

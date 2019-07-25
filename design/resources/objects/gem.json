@@ -1,0 +1,95 @@
+[
+  {
+    "id": 386,
+    "name": "Lingote de Hierro",
+    "grhIndex": 724,
+    "value": 70,
+    "crucial": false
+  },
+  {
+    "id": 387,
+    "name": "Lingote de Plata",
+    "grhIndex": 725,
+    "value": 120,
+    "crucial": false
+  },
+  {
+    "id": 388,
+    "name": "Lingote de Oro",
+    "grhIndex": 723,
+    "value": 350,
+    "crucial": false
+  },
+  {
+    "id": 406,
+    "name": "Gema Lunar",
+    "grhIndex": 700,
+    "crucial": false
+  },
+  {
+    "id": 407,
+    "name": "Gema Azul",
+    "grhIndex": 701,
+    "crucial": false
+  },
+  {
+    "id": 408,
+    "name": "Gema Naranja",
+    "grhIndex": 702,
+    "crucial": false
+  },
+  {
+    "id": 409,
+    "name": "Gema Celeste",
+    "grhIndex": 703,
+    "crucial": false
+  },
+  {
+    "id": 410,
+    "name": "Gema Lila",
+    "grhIndex": 704,
+    "crucial": false
+  },
+  {
+    "id": 411,
+    "name": "Gema Roja",
+    "grhIndex": 705,
+    "crucial": false
+  },
+  {
+    "id": 412,
+    "name": "Gema Verde",
+    "grhIndex": 706,
+    "crucial": false
+  },
+  {
+    "id": 413,
+    "name": "Gema Violeta",
+    "grhIndex": 707,
+    "crucial": false
+  },
+  {
+    "id": 560,
+    "name": "Gema Sagrada Recuperada por Shadow VX",
+    "grhIndex": 705,
+    "crucial": false
+  },
+  {
+    "id": 613,
+    "name": "Gema Sagrada",
+    "grhIndex": 700,
+    "crucial": false
+  },
+  {
+    "id": 618,
+    "name": "Monedas de Oro",
+    "grhIndex": 511,
+    "crucial": false
+  },
+  {
+    "id": 652,
+    "name": "Piedra de Arghâl",
+    "grhIndex": 705,
+    "crucial": false
+  }
+]

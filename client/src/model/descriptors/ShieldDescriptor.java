@@ -9,4 +9,8 @@ public class ShieldDescriptor extends Descriptor {
         super(shieldIndex);
     }
 
+    @Override
+    public String toString() {
+        return "Shield: " + getId();
+    }
 }

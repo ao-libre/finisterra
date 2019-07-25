@@ -1,0 +1,46 @@
+[
+  {
+    "id": 474,
+    "name": "Barca",
+    "grhIndex": 749,
+    "value": 100000,
+    "crucial": false,
+    "notDrop": true,
+    "bodyIndex": 84,
+    "minDef": 5,
+    "maxDef": 10,
+    "minHit": 10,
+    "maxHit": 25
+  },
+  {
+    "id": 475,
+    "name": "Galera",
+    "grhIndex": 5587,
+    "value": 53000,
+    "crucial": false,
+    "bodyIndex": 85,
+    "minDef": 10,
+    "maxDef": 20,
+    "minHit": 25,
+    "maxHit": 35
+  },
+  {
+    "id": 476,
+    "name": "Galeón",
+    "grhIndex": 5594,
+    "value": 87000,
+    "crucial": false,
+    "bodyIndex": 86,
+    "minDef": 15,
+    "maxDef": 25,
+    "minHit": 45,
+    "maxHit": 55
+  },
+  {
+    "id": 477,
+    "name": "Fragata Fantasmal",
+    "grhIndex": 749,
+    "crucial": false,
+    "bodyIndex": 87
+  }
+]

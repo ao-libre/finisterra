@@ -1,0 +1,80 @@
+[
+  {
+    "id": 42,
+    "name": "Vino",
+    "grhIndex": 536,
+    "value": 10,
+    "min": 90
+  },
+  {
+    "id": 43,
+    "name": "Botella de Agua",
+    "grhIndex": 537,
+    "value": 3,
+    "min": 30
+  },
+  {
+    "id": 160,
+    "name": "Cerveza",
+    "grhIndex": 585,
+    "value": 7,
+    "min": 60
+  },
+  {
+    "id": 161,
+    "name": "Jugo de Frutas",
+    "grhIndex": 584,
+    "value": 12,
+    "min": 100
+  },
+  {
+    "id": 468,
+    "name": "Botella de Agua (Newbie)",
+    "grhIndex": 537,
+    "crucial": false,
+    "newbie": true,
+    "min": 30
+  },
+  {
+    "id": 498,
+    "name": "Sidra",
+    "grhIndex": 20509,
+    "value": 30,
+    "min": 30
+  },
+  {
+    "id": 522,
+    "name": "Hipocrás",
+    "grhIndex": 20507,
+    "value": 40,
+    "min": 40
+  },
+  {
+    "id": 550,
+    "name": "Porrón de cerveza",
+    "grhIndex": 20508,
+    "value": 50,
+    "min": 50
+  },
+  {
+    "id": 557,
+    "name": "Vino de canela",
+    "grhIndex": 20504,
+    "value": 70,
+    "min": 70
+  },
+  {
+    "id": 612,
+    "name": "Cerveza de los enanos",
+    "grhIndex": 20506,
+    "value": 90,
+    "min": 90
+  },
+  {
+    "id": 622,
+    "name": "Barrilito de cerveza",
+    "grhIndex": 20505,
+    "value": 100,
+    "min": 100
+  }
+]

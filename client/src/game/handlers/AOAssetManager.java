@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import model.descriptors.*;
+import model.textures.AOAnimation;
+import model.textures.AOImage;
 import shared.model.Graphic;
 import shared.model.Spell;
 import shared.objects.types.Obj;
@@ -30,6 +32,10 @@ public interface AOAssetManager {
 
     Texture getTexture(int key);
 
+    AOImage getImage(int id);
+
+    AOAnimation getAnimation(int id);
+
     BitmapFont getFont(String key);
 
     TextureAtlas getTextureAtlas(String key);
@@ -46,7 +52,9 @@ public interface AOAssetManager {
 
     Map<Integer, BodyDescriptor> getBodies();
 
-    Map<Integer, Graphic> getGraphics();
+    Map<Integer, AOImage> getImages();
+
+    List<AOAnimation> getAnimations();
 
     Map<Integer, Obj> getObjs();
 

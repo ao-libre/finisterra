@@ -1,6 +1,7 @@
 package server.systems;
 
 import com.artemis.E;
+import com.artemis.World;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
 import entity.character.states.Heading;
@@ -17,6 +18,7 @@ import shared.interfaces.Race;
 import shared.model.Spell;
 import shared.model.lobby.Team;
 import shared.model.npcs.NPC;
+import shared.model.npcs.NPCToEntity;
 import shared.objects.types.*;
 
 import java.util.*;
@@ -49,47 +51,10 @@ public class EntityFactorySystem extends PassiveSystem {
 
     public void createNPC(int npcIndex, WorldPos pos) {
         NPC npc = world.getSystem(NPCManager.class).getNpcs().get(npcIndex);
-        int npcId = world.create();
-
-        E npcEntity = E(npcId);
-        npcEntity
-                .nPCId(npcIndex)
-                .bodyIndex(npc.getBody())
-                .headingCurrent(Heading.HEADING_SOUTH)
-                .nameText(npc.getName());
-        if (npc.getMovement() == 3) {
-            npcEntity.aOPhysics().aOPhysicsVelocity(85f);
-            npcEntity.aIMovement();
-        }
-        if (npc.getHead() > 0) {
-            npcEntity.headIndex(npc.getHead());
-        }
-        if (npc.isCommerce()) {
-            npcEntity.commerce();
-        }
-        if (npc.isHostile()) {
-            npcEntity.hostile();
-        }
-        if (npc.getMaxHit() > 0) {
-            npcEntity.hit().hitMax(npc.getMaxHit()).hitMin(npc.getMinHit());
-        }
-        if (npc.getEvasionPower() > 0) {
-            npcEntity.evasionPowerValue(npc.getEvasionPower());
-        }
-        if (npc.getAttackPower() > 0) {
-            npcEntity.attackPowerValue(npc.getAttackPower());
-        }
-        if (npc.getMaxHP() > 0) {
-            npcEntity.health().healthMin(npc.getMinHP()).healthMax(npc.getMaxHP());
-        }
-        if (npc.isAttackable()) {
-            npcEntity.attackable();
-        }
-
-        npcEntity.originPosMap(pos.map).originPosX(pos.x).originPosY(pos.y);
-        npcEntity.worldPosMap(pos.map).worldPosX(pos.x).worldPosY(pos.y);
+        int npcId = NPCToEntity.getNpcEntity(world, npcIndex, pos, npc);
         worldManager.registerEntity(npcId);
     }
+
 
     public int createPlayer(String name, Hero hero, Team team) {
         int player = getWorld().create();

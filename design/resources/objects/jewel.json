@@ -1,0 +1,30 @@
+[
+  {
+    "id": 157,
+    "name": "Copa de Plata",
+    "grhIndex": 579,
+    "value": 2000,
+    "crucial": false
+  },
+  {
+    "id": 710,
+    "name": "Copa de Oro",
+    "grhIndex": 54,
+    "value": 4000,
+    "crucial": false
+  },
+  {
+    "id": 734,
+    "name": "Jarra de Losa",
+    "grhIndex": 310,
+    "value": 2000,
+    "crucial": false
+  },
+  {
+    "id": 736,
+    "name": "Candelabro Simple",
+    "grhIndex": 314,
+    "collectable": true,
+    "crucial": false
+  }
+]

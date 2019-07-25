@@ -1,0 +1,23 @@
+[
+  {
+    "id": 58,
+    "name": "Leña",
+    "grhIndex": 550,
+    "value": 5,
+    "crucial": false
+  },
+  {
+    "id": 136,
+    "name": "Ramitas",
+    "grhIndex": 572,
+    "value": 3,
+    "crucial": false
+  },
+  {
+    "id": 1006,
+    "name": "Leña Elfica",
+    "grhIndex": 1999,
+    "value": 5,
+    "crucial": false
+  }
+]

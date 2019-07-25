@@ -1,0 +1,145 @@
+[
+  {
+    "id": 1,
+    "name": "Manzana Roja",
+    "grhIndex": 506,
+    "value": 2
+  },
+  {
+    "id": 21,
+    "name": "Porción de Tarta",
+    "grhIndex": 515,
+    "value": 2,
+    "min": 15
+  },
+  {
+    "id": 22,
+    "name": "Frutas del Bosque",
+    "grhIndex": 516,
+    "value": 2,
+    "min": 15
+  },
+  {
+    "id": 23,
+    "name": "Pan de Trigo",
+    "grhIndex": 517,
+    "value": 3,
+    "min": 25
+  },
+  {
+    "id": 24,
+    "name": "Pan de Maíz",
+    "grhIndex": 518,
+    "value": 3,
+    "min": 25
+  },
+  {
+    "id": 25,
+    "name": "Pastel",
+    "grhIndex": 519,
+    "value": 9,
+    "min": 90
+  },
+  {
+    "id": 26,
+    "name": "Pollo",
+    "grhIndex": 520,
+    "value": 7,
+    "min": 75
+  },
+  {
+    "id": 27,
+    "name": "Chuleta",
+    "grhIndex": 521,
+    "value": 10,
+    "min": 100
+  },
+  {
+    "id": 28,
+    "name": "Queso de Cabra",
+    "grhIndex": 522,
+    "value": 6,
+    "min": 50
+  },
+  {
+    "id": 29,
+    "name": "Sandía",
+    "grhIndex": 523,
+    "value": 5,
+    "min": 40
+  },
+  {
+    "id": 64,
+    "name": "Manzana Roja",
+    "grhIndex": 506,
+    "value": 2,
+    "crucial": false,
+    "min": 10
+  },
+  {
+    "id": 81,
+    "name": "Sandía",
+    "grhIndex": 523,
+    "value": 5,
+    "min": 25
+  },
+  {
+    "id": 139,
+    "name": "Pescado",
+    "grhIndex": 573,
+    "value": 8,
+    "min": 75
+  },
+  {
+    "id": 158,
+    "name": "Banana",
+    "grhIndex": 581,
+    "value": 2
+  },
+  {
+    "id": 467,
+    "name": "Manzana Roja (Newbie)",
+    "grhIndex": 506,
+    "crucial": false,
+    "newbie": true
+  },
+  {
+    "id": 544,
+    "name": "Pez Dorado",
+    "grhIndex": 845,
+    "value": 16,
+    "crucial": false,
+    "min": 75
+  },
+  {
+    "id": 545,
+    "name": "Pez Espada",
+    "grhIndex": 846,
+    "value": 13,
+    "crucial": false,
+    "min": 75
+  },
+  {
+    "id": 546,
+    "name": "Merluza",
+    "grhIndex": 847,
+    "value": 13,
+    "crucial": false,
+    "min": 75
+  },
+  {
+    "id": 754,
+    "name": "Rábano",
+    "grhIndex": 591,
+    "value": 5,
+    "min": 40
+  },
+  {
+    "id": 775,
+    "name": "Hipocampo",
+    "grhIndex": 848,
+    "value": 13,
+    "crucial": false,
+    "min": 75
+  }
+]

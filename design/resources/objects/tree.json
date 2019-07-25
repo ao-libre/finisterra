@@ -1,0 +1,170 @@
+[
+  {
+    "id": 4,
+    "name": "Árbol",
+    "grhIndex": 7000,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 5,
+    "name": "Árbol",
+    "grhIndex": 7001,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 6,
+    "name": "Árbol",
+    "grhIndex": 7002,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 46,
+    "name": "Árbol",
+    "grhIndex": 641,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 47,
+    "name": "Árbol",
+    "grhIndex": 642,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 48,
+    "name": "Árbol",
+    "grhIndex": 641,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 49,
+    "name": "Árbol",
+    "grhIndex": 644,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 50,
+    "name": "Árbol",
+    "grhIndex": 647,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 147,
+    "name": "Árbol",
+    "grhIndex": 7001,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 148,
+    "name": "Árbol de la Jungla",
+    "grhIndex": 7002,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 149,
+    "name": "Árbol",
+    "grhIndex": 7000,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 150,
+    "name": "Árbol",
+    "grhIndex": 7222,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 151,
+    "name": "Árbol",
+    "grhIndex": 7223,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 152,
+    "name": "Árbol",
+    "grhIndex": 7224,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 153,
+    "name": "Árbol",
+    "grhIndex": 7225,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 154,
+    "name": "Árbol",
+    "grhIndex": 7226,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 472,
+    "name": "Palmera",
+    "grhIndex": 735,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 825,
+    "name": "Árbol",
+    "grhIndex": 1529,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 826,
+    "name": "Árbol",
+    "grhIndex": 1530,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 827,
+    "name": "Árbol",
+    "grhIndex": 1531,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 828,
+    "name": "Árbol",
+    "grhIndex": 1532,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 829,
+    "name": "Árbol",
+    "grhIndex": 1533,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 830,
+    "name": "Árbol",
+    "grhIndex": 1534,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 1008,
+    "name": "Árbol élfico",
+    "grhIndex": 18802,
+    "collectable": true,
+    "crucial": false
+  }
+]

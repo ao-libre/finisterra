@@ -1,0 +1,44 @@
+[
+  {
+    "id": 554,
+    "name": "Sangre",
+    "grhIndex": 264,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 555,
+    "name": "Sangre",
+    "grhIndex": 263,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 653,
+    "name": "Reja",
+    "grhIndex": 12402,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 654,
+    "name": "Reja",
+    "grhIndex": 12408,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 655,
+    "name": "Reja",
+    "grhIndex": 12410,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 674,
+    "name": "Sangre de Liche",
+    "grhIndex": 264,
+    "collectable": true,
+    "crucial": false
+  }
+]

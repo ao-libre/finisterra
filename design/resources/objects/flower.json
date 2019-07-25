@@ -1,0 +1,158 @@
+[
+  {
+    "id": 414,
+    "name": "Piel Lobo",
+    "grhIndex": 697,
+    "value": 21,
+    "crucial": false
+  },
+  {
+    "id": 415,
+    "name": "Piel Oso Pardo",
+    "grhIndex": 699,
+    "value": 51,
+    "crucial": false
+  },
+  {
+    "id": 416,
+    "name": "Piel Oso Polar",
+    "grhIndex": 698,
+    "value": 100,
+    "crucial": false
+  },
+  {
+    "id": 473,
+    "name": "Flor",
+    "grhIndex": 731,
+    "crucial": false
+  },
+  {
+    "id": 566,
+    "name": "Flores",
+    "grhIndex": 867,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 567,
+    "name": "Flores",
+    "grhIndex": 868,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 568,
+    "name": "Flores",
+    "grhIndex": 869,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 569,
+    "name": "Flores",
+    "grhIndex": 870,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 570,
+    "name": "Flores",
+    "grhIndex": 871,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 571,
+    "name": "Flores",
+    "grhIndex": 872,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 572,
+    "name": "Flores",
+    "grhIndex": 873,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 573,
+    "name": "Flores",
+    "grhIndex": 874,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 651,
+    "name": "Portal Mágico",
+    "grhIndex": 308,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 767,
+    "name": "Margarita",
+    "grhIndex": 729,
+    "crucial": false
+  },
+  {
+    "id": 768,
+    "name": "Hongo",
+    "grhIndex": 730,
+    "crucial": false
+  },
+  {
+    "id": 769,
+    "name": "Hongos",
+    "grhIndex": 732,
+    "crucial": false
+  },
+  {
+    "id": 770,
+    "name": "Algas",
+    "grhIndex": 733,
+    "crucial": false
+  },
+  {
+    "id": 809,
+    "name": "Hongos Amarillos",
+    "grhIndex": 2134,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 810,
+    "name": "Hongos Azules",
+    "grhIndex": 2135,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 811,
+    "name": "Hongos Rojos",
+    "grhIndex": 2136,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 812,
+    "name": "Hongos Violetas",
+    "grhIndex": 2137,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 831,
+    "name": "Arbusto",
+    "grhIndex": 1535,
+    "collectable": true,
+    "crucial": false
+  },
+  {
+    "id": 850,
+    "name": "Arco de Flores",
+    "grhIndex": 95,
+    "collectable": true,
+    "crucial": false
+  }
+]

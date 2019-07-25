@@ -69,7 +69,7 @@ public class WorldRenderingSystem extends BaseSystem {
         if (mapNumber > 0) {
             getRange().forEachTile((x, y) -> {
                 WorldPos pos = MapHandler.getHelper().getEffectivePosition(mapNumber, x, y);
-                getMapElement(pos).ifPresent(element -> drawTile(batch, world.getDelta(), element, x, y));
+                getMapElement(pos).ifPresent(element -> mapManager.doTileDraw(batch, world.getDelta(), element, x, y));
                 getBeforeEffect(pos).forEach(e -> effectRenderingSystem.drawEffect(e, e.hasWorldPos() ? translatePos(e.getWorldPos(), x, y) : Optional.empty()));
                 getPlayer(pos).ifPresent(e -> characterRenderingSystem.drawPlayer(e, translatePos(e.getWorldPos(), x, y)));
                 getAfterEffect(pos).forEach(e -> effectRenderingSystem.drawEffect(e, e.hasWorldPos() ? translatePos(e.getWorldPos(), x, y) : Optional.empty()));
@@ -135,17 +135,6 @@ public class WorldRenderingSystem extends BaseSystem {
         range.maxAreaY = cameraPosY + halfWindowTileHeight + 7;
 
         return range;
-    }
-
-    private void drawTile(SpriteBatch batch, float delta, int graphic, int x, int y) {
-        BundledAnimation animation = animationHandler.getGraphicAnimation(graphic);
-        TextureRegion tileRegion = animation.isAnimated() ? animation.getAnimatedGraphic(true) : animation.getGraphic();
-
-        if (animation.isAnimated()) {
-            animation.setAnimationTime(animation.getAnimationTime() + delta);
-        }
-
-        mapManager.doTileDraw(batch, y, x, tileRegion);
     }
 
     private Optional<Integer> getMapElement(WorldPos pos) {

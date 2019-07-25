@@ -20,6 +20,7 @@ public class LoadingScreen extends AbstractScreen {
     private Texture progressBarKnob;
     private ProgressBar progress;
     private boolean loaded;
+    private boolean textureLoading;
 
     public LoadingScreen() {
     }
@@ -40,7 +41,6 @@ public class LoadingScreen extends AbstractScreen {
         assetManager.getAssetManager().load(progressBarKnobPath, Texture.class);
         assetManager.getAssetManager().finishLoading();
 
-
         progressBar = assetManager.getAssetManager().get(progressBarPath);
         progressBarKnob = assetManager.getAssetManager().get(progressBarKnobPath);
 
@@ -58,10 +58,16 @@ public class LoadingScreen extends AbstractScreen {
     public void render(float delta) {
         AssetManager manager = this.assetManager.getAssetManager();
         if (manager.update() && !loaded) {
-            // we are done loading, let's move to another screen!
-            AOGame game = (AOGame) Gdx.app.getApplicationListener();
-            game.toLogin();
-            loaded = true;
+            if (!textureLoading) {
+                textureLoading = true;
+                // TODO
+
+            } else {
+                loaded = true;
+                // we are done loading, let's move to another screen!
+                AOGame game = (AOGame) Gdx.app.getApplicationListener();
+                game.toLogin();
+            }
         }
         // display loading information
         float progress = manager.getProgress();

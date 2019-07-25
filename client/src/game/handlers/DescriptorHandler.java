@@ -2,6 +2,7 @@ package game.handlers;
 
 import com.badlogic.gdx.Gdx;
 import game.AOGame;
+import game.AssetManagerHolder;
 import model.descriptors.*;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.model.Graphic;
@@ -13,15 +14,9 @@ public class DescriptorHandler extends PassiveSystem {
 
     private AOAssetManager assetManager;
 
-    @Override
-    protected void initialize() {
-        super.initialize();
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+    public DescriptorHandler() {
+        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
         assetManager = game.getAssetManager();
-    }
-
-    public Map<Integer, Graphic> getGraphics() {
-        return assetManager.getGraphics();
     }
 
     public Map<Integer, BodyDescriptor> getBodies() {
@@ -70,10 +65,6 @@ public class DescriptorHandler extends PassiveSystem {
 
     public WeaponDescriptor getWeapon(int index) {
         return getWeapons().get(index);
-    }
-
-    public Graphic getGraphic(int index) {
-        return getGraphics().get(index);
     }
 
 }

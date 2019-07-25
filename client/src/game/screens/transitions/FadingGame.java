@@ -128,6 +128,7 @@ public class FadingGame extends Game {
         return this.screen;
     }
 
+    @Override
     public void setScreen(Screen screen) {
         screen.show();
         if (this.transitionRunning) {

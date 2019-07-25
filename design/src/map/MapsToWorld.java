@@ -71,13 +71,13 @@ public class MapsToWorld {
     }
 
     private static int getMap(Dir dir, Map map) {
-        for (int x = 1; x < map.MAX_MAP_SIZE_WIDTH; x++) {
-            for (int y = 1; y < map.MAX_MAP_SIZE_HEIGHT; y++) {
+        for (int x = 1; x < Map.MAX_MAP_SIZE_WIDTH; x++) {
+            for (int y = 1; y < Map.MAX_MAP_SIZE_HEIGHT; y++) {
                 Tile tile = map.getTile(x, y);
                 if (tile.getTileExit() != null) {
                     switch (dir) {
                         case DOWN:
-                            if (y > map.MAX_MAP_SIZE_HEIGHT / 2) {
+                            if (y > Map.MAX_MAP_SIZE_HEIGHT / 2) {
                                 Optional<Tile> right = getTileWithExit(Dir.RIGHT, x, y, map);
                                 Optional<Tile> left = getTileWithExit(Dir.LEFT, x, y, map);
                                 if (right.isPresent() || left.isPresent()) {
@@ -86,7 +86,7 @@ public class MapsToWorld {
                             }
                             break;
                         case RIGHT:
-                            if (x > map.MAX_MAP_SIZE_WIDTH / 2) {
+                            if (x > Map.MAX_MAP_SIZE_WIDTH / 2) {
                                 Optional<Tile> up = getTileWithExit(Dir.UP, x, y, map);
                                 Optional<Tile> down = getTileWithExit(Dir.DOWN, x, y, map);
                                 if (up.isPresent() || down.isPresent()) {
@@ -95,7 +95,7 @@ public class MapsToWorld {
                             }
                             break;
                         case LEFT:
-                            if (x < map.MAX_MAP_SIZE_WIDTH / 2) {
+                            if (x < Map.MAX_MAP_SIZE_WIDTH / 2) {
                                 Optional<Tile> up = getTileWithExit(Dir.UP, x, y, map);
                                 Optional<Tile> down = getTileWithExit(Dir.DOWN, x, y, map);
                                 if (up.isPresent() || down.isPresent()) {
@@ -104,7 +104,7 @@ public class MapsToWorld {
                             }
                             break;
                         case UP:
-                            if (y < map.MAX_MAP_SIZE_HEIGHT / 2) {
+                            if (y < Map.MAX_MAP_SIZE_HEIGHT / 2) {
                                 Optional<Tile> right = getTileWithExit(Dir.RIGHT, x, y, map);
                                 Optional<Tile> left = getTileWithExit(Dir.LEFT, x, y, map);
                                 if (right.isPresent() || left.isPresent()) {
@@ -131,8 +131,8 @@ public class MapsToWorld {
 
     private static Corners getCorners(Map map) {
         Corners corners = new Corners();
-        for (int x = 1; x <= map.MAX_MAP_SIZE_WIDTH; x++) {
-            for (int y = 1; y <= map.MAX_MAP_SIZE_HEIGHT; y++) {
+        for (int x = 1; x <= Map.MAX_MAP_SIZE_WIDTH; x++) {
+            for (int y = 1; y <= Map.MAX_MAP_SIZE_HEIGHT; y++) {
                 Tile tile = map.getTile(x, y);
                 if (tile == null || tile.isBlocked() || tile.getTileExit() != null) {
                     continue;

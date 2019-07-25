@@ -95,7 +95,6 @@ public class GUI implements Disposable {
         createDialogContainer(table);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
-
     }
 
     public OrthographicCamera getCamera() {

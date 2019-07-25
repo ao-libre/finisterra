@@ -1,0 +1,916 @@
+[
+  {
+    "id": 2,
+    "name": "Espada Larga",
+    "grhIndex": 504,
+    "value": 210,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "PIRATE"
+      ]
+    },
+    "animationId": 21,
+    "dwarfAnimationId": 72,
+    "minHit": 1,
+    "maxHit": 8
+  },
+  {
+    "id": 3,
+    "name": "Hacha",
+    "grhIndex": 505,
+    "value": 140,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "CLERIC"
+      ]
+    },
+    "animationId": 25,
+    "minHit": 2,
+    "maxHit": 6
+  },
+  {
+    "id": 9,
+    "name": "Horquilla",
+    "grhIndex": 508,
+    "value": 70,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "CLERIC"
+      ]
+    },
+    "animationId": 26,
+    "minHit": 1,
+    "maxHit": 2
+  },
+  {
+    "id": 15,
+    "name": "Daga",
+    "grhIndex": 510,
+    "value": 140,
+    "forbiddenClasses": {},
+    "stab": true,
+    "animationId": 12,
+    "dwarfAnimationId": 48,
+    "minHit": 1,
+    "maxHit": 2
+  },
+  {
+    "id": 19,
+    "name": "Espada Dos Manos",
+    "grhIndex": 5748,
+    "value": 1120,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "CLERIC"
+      ]
+    },
+    "animationId": 1,
+    "dwarfAnimationId": 66,
+    "minHit": 4,
+    "maxHit": 9
+  },
+  {
+    "id": 123,
+    "name": "Espada Vikinga",
+    "grhIndex": 561,
+    "value": 4200,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC"
+      ]
+    },
+    "animationId": 22,
+    "dwarfAnimationId": 55,
+    "minHit": 6,
+    "maxHit": 17
+  },
+  {
+    "id": 124,
+    "name": "Katana",
+    "grhIndex": 562,
+    "value": 3010,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC"
+      ]
+    },
+    "animationId": 27,
+    "dwarfAnimationId": 54,
+    "minHit": 5,
+    "maxHit": 15
+  },
+  {
+    "id": 125,
+    "name": "Sable",
+    "grhIndex": 22723,
+    "value": 4200,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "BARDIC",
+        "DRUID",
+        "ASSASSIN",
+        "PALADIN",
+        "CLERIC",
+        "WARRIOR",
+        "ROGUE",
+        "ARCHER"
+      ]
+    },
+    "animationId": 56,
+    "dwarfAnimationId": 57,
+    "minHit": 6,
+    "maxHit": 17
+  },
+  {
+    "id": 126,
+    "name": "Hacha Larga de Guerra",
+    "grhIndex": 564,
+    "value": 6300,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC"
+      ]
+    },
+    "animationId": 3,
+    "dwarfAnimationId": 67,
+    "minHit": 10,
+    "maxHit": 18
+  },
+  {
+    "id": 127,
+    "name": "Hacha de Leñador",
+    "grhIndex": 565,
+    "value": 350,
+    "forbiddenClasses": {},
+    "animationId": 23,
+    "minHit": 2,
+    "maxHit": 3
+  },
+  {
+    "id": 129,
+    "name": "Hacha de Guerra Dos Filos",
+    "grhIndex": 566,
+    "value": 5950,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "ARCHER"
+      ]
+    },
+    "animationId": 24,
+    "minHit": 7,
+    "maxHit": 20
+  },
+  {
+    "id": 138,
+    "name": "Caña de Pescar",
+    "grhIndex": 574,
+    "value": 200,
+    "forbiddenClasses": {},
+    "animationId": 20,
+    "dwarfAnimationId": 76,
+    "minHit": 1,
+    "maxHit": 1
+  },
+  {
+    "id": 159,
+    "name": "Hacha de Bárbaro",
+    "grhIndex": 583,
+    "value": 4690,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC"
+      ]
+    },
+    "animationId": 19,
+    "minHit": 6,
+    "maxHit": 19
+  },
+  {
+    "id": 164,
+    "name": "Espada Corta",
+    "grhIndex": 588,
+    "value": 1050,
+    "forbiddenClasses": {},
+    "stab": true,
+    "animationId": 14,
+    "dwarfAnimationId": 64,
+    "minHit": 1,
+    "maxHit": 5
+  },
+  {
+    "id": 165,
+    "name": "Daga +1",
+    "grhIndex": 4999,
+    "value": 490,
+    "crucial": false,
+    "forbiddenClasses": {},
+    "stab": true,
+    "animationId": 34,
+    "dwarfAnimationId": 49,
+    "minHit": 2,
+    "maxHit": 4
+  },
+  {
+    "id": 187,
+    "name": "Piquete de Minero",
+    "grhIndex": 608,
+    "value": 210,
+    "forbiddenClasses": {},
+    "animationId": 30,
+    "dwarfAnimationId": 74,
+    "minHit": 2,
+    "maxHit": 3
+  },
+  {
+    "id": 198,
+    "name": "Serrucho",
+    "grhIndex": 607,
+    "value": 140,
+    "forbiddenClasses": {},
+    "animationId": 31,
+    "dwarfAnimationId": 73,
+    "minHit": 1,
+    "maxHit": 2
+  },
+  {
+    "id": 365,
+    "name": "Daga +2",
+    "grhIndex": 710,
+    "value": 1960,
+    "crucial": false,
+    "forbiddenClasses": {},
+    "stab": true,
+    "animationId": 35,
+    "dwarfAnimationId": 50,
+    "minHit": 3,
+    "maxHit": 6
+  },
+  {
+    "id": 366,
+    "name": "Daga +3",
+    "grhIndex": 711,
+    "value": 2660,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "PIRATE",
+        "WARRIOR"
+      ]
+    },
+    "stab": true,
+    "animationId": 36,
+    "dwarfAnimationId": 51,
+    "minHit": 4,
+    "maxHit": 7
+  },
+  {
+    "id": 367,
+    "name": "Daga +4",
+    "grhIndex": 5595,
+    "value": 3500,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "stab": true,
+    "animationId": 52,
+    "dwarfAnimationId": 53,
+    "minHit": 5,
+    "maxHit": 8
+  },
+  {
+    "id": 389,
+    "name": "Martillo de Herrero",
+    "grhIndex": 726,
+    "value": 140,
+    "forbiddenClasses": {},
+    "animationId": 29,
+    "dwarfAnimationId": 75,
+    "minHit": 2,
+    "maxHit": 2
+  },
+  {
+    "id": 398,
+    "name": "Garrote",
+    "grhIndex": 714,
+    "value": 100,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC"
+      ]
+    },
+    "animationId": 4,
+    "dwarfAnimationId": 70,
+    "minHit": 1,
+    "maxHit": 3
+  },
+  {
+    "id": 399,
+    "name": "Cimitarra",
+    "grhIndex": 709,
+    "value": 3500,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "animationId": 5,
+    "dwarfAnimationId": 71,
+    "minHit": 7,
+    "maxHit": 13
+  },
+  {
+    "id": 400,
+    "name": "Vara de Mago",
+    "grhIndex": 715,
+    "value": 85500,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "animationId": 6,
+    "dwarfAnimationId": 58,
+    "minHit": 5,
+    "maxHit": 15
+  },
+  {
+    "id": 401,
+    "name": "Martillo de Guerra",
+    "grhIndex": 708,
+    "value": 2310,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC"
+      ]
+    },
+    "animationId": 28,
+    "minHit": 6,
+    "maxHit": 11
+  },
+  {
+    "id": 402,
+    "name": "Espada Mata Dragones",
+    "grhIndex": 716,
+    "value": 188000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC"
+      ]
+    },
+    "animationId": 15,
+    "dwarfAnimationId": 65,
+    "minHit": 100,
+    "maxHit": 100
+  },
+  {
+    "id": 403,
+    "name": "Espada de Plata",
+    "grhIndex": 713,
+    "value": 36200,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "ASSASSIN",
+        "PIRATE",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE"
+      ]
+    },
+    "animationId": 13,
+    "dwarfAnimationId": 63,
+    "minHit": 13,
+    "maxHit": 20
+  },
+  {
+    "id": 460,
+    "name": "Daga (Newbie)",
+    "grhIndex": 510,
+    "crucial": false,
+    "newbie": true,
+    "forbiddenClasses": {},
+    "stab": true,
+    "animationId": 12,
+    "dwarfAnimationId": 48,
+    "minHit": 1,
+    "maxHit": 3
+  },
+  {
+    "id": 478,
+    "name": "Arco Simple",
+    "grhIndex": 750,
+    "value": 92,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID"
+      ]
+    },
+    "animationId": 41,
+    "dwarfAnimationId": 40,
+    "minHit": 1,
+    "maxHit": 4
+  },
+  {
+    "id": 479,
+    "name": "Arco Compuesto",
+    "grhIndex": 751,
+    "value": 1080,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID",
+        "PIRATE"
+      ]
+    },
+    "animationId": 7,
+    "dwarfAnimationId": 59,
+    "minHit": 4,
+    "maxHit": 10
+  },
+  {
+    "id": 543,
+    "name": "Red de Pesca",
+    "grhIndex": 844,
+    "value": 5000,
+    "crucial": false,
+    "forbiddenClasses": {}
+  },
+  {
+    "id": 556,
+    "name": "Espada Mata Dragones NatOs",
+    "grhIndex": 716,
+    "value": 188000,
+    "crucial": false,
+    "forbiddenClasses": {},
+    "animationId": 15,
+    "dwarfAnimationId": 65,
+    "minHit": 1000,
+    "maxHit": 1000
+  },
+  {
+    "id": 559,
+    "name": "Daga de Plata",
+    "grhIndex": 711,
+    "value": 4060,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "PIRATE"
+      ]
+    },
+    "stab": true,
+    "animationId": 12,
+    "minHit": 6,
+    "maxHit": 8
+  },
+  {
+    "id": 561,
+    "name": "Hacha de Leñador (Newbie)",
+    "grhIndex": 565,
+    "value": 150,
+    "newbie": true,
+    "forbiddenClasses": {},
+    "animationId": 23,
+    "minHit": 1,
+    "maxHit": 2
+  },
+  {
+    "id": 562,
+    "name": "Piquete de Minero (Newbie)",
+    "grhIndex": 608,
+    "value": 150,
+    "newbie": true,
+    "forbiddenClasses": {},
+    "animationId": 30,
+    "dwarfAnimationId": 74,
+    "minHit": 1,
+    "maxHit": 2
+  },
+  {
+    "id": 563,
+    "name": "Caña de pescar (Newbie)",
+    "grhIndex": 574,
+    "value": 150,
+    "newbie": true,
+    "forbiddenClasses": {},
+    "animationId": 20,
+    "dwarfAnimationId": 76,
+    "minHit": 1,
+    "maxHit": 2
+  },
+  {
+    "id": 564,
+    "name": "Serrucho (Newbie)",
+    "grhIndex": 607,
+    "value": 150,
+    "newbie": true,
+    "forbiddenClasses": {},
+    "animationId": 31,
+    "dwarfAnimationId": 73,
+    "minHit": 1,
+    "maxHit": 2
+  },
+  {
+    "id": 565,
+    "name": "Martillo de Herrero (Newbie)",
+    "grhIndex": 726,
+    "value": 150,
+    "newbie": true,
+    "forbiddenClasses": {},
+    "animationId": 29,
+    "dwarfAnimationId": 75,
+    "minHit": 1,
+    "maxHit": 2
+  },
+  {
+    "id": 619,
+    "name": "Daga Envenenada",
+    "grhIndex": 510,
+    "value": 350,
+    "forbiddenClasses": {},
+    "stab": true,
+    "animationId": 12,
+    "minHit": 2,
+    "maxHit": 3
+  },
+  {
+    "id": 658,
+    "name": "Vara de Fresno",
+    "grhIndex": 932,
+    "value": 800,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "animationId": 8,
+    "dwarfAnimationId": 60,
+    "minHit": 1,
+    "maxHit": 1
+  },
+  {
+    "id": 659,
+    "name": "Bastón Nudoso",
+    "grhIndex": 959,
+    "value": 2500,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "animationId": 9,
+    "dwarfAnimationId": 61,
+    "minHit": 1,
+    "maxHit": 1
+  },
+  {
+    "id": 660,
+    "name": "Báculo Engarzado",
+    "grhIndex": 986,
+    "value": 13000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "animationId": 10,
+    "dwarfAnimationId": 62,
+    "minHit": 1,
+    "maxHit": 1
+  },
+  {
+    "id": 663,
+    "name": "Arco Simple Reforzado",
+    "grhIndex": 1024,
+    "value": 438,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID"
+      ]
+    },
+    "animationId": 43,
+    "dwarfAnimationId": 42,
+    "minHit": 2,
+    "maxHit": 4
+  },
+  {
+    "id": 664,
+    "name": "Arco Compuesto Reforzado",
+    "grhIndex": 1025,
+    "value": 1788,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC"
+      ]
+    },
+    "animationId": 45,
+    "dwarfAnimationId": 44,
+    "minHit": 5,
+    "maxHit": 10
+  },
+  {
+    "id": 665,
+    "name": "Arco de Cazador",
+    "grhIndex": 1023,
+    "value": 3000,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "animationId": 47,
+    "dwarfAnimationId": 46,
+    "minHit": 6,
+    "maxHit": 11
+  },
+  {
+    "id": 753,
+    "name": "Mayal Triple",
+    "grhIndex": 590,
+    "value": 140,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC"
+      ]
+    },
+    "animationId": 1,
+    "minHit": 1,
+    "maxHit": 5
+  },
+  {
+    "id": 859,
+    "name": "Arco (Newbie)",
+    "grhIndex": 750,
+    "value": 100,
+    "crucial": false,
+    "newbie": true,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "DRUID"
+      ]
+    },
+    "animationId": 41,
+    "dwarfAnimationId": 40,
+    "minHit": 1,
+    "maxHit": 2
+  },
+  {
+    "id": 861,
+    "name": "Espada (Newbie)",
+    "grhIndex": 504,
+    "value": 150,
+    "newbie": true,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "PIRATE"
+      ]
+    },
+    "animationId": 21,
+    "minHit": 1,
+    "maxHit": 3
+  },
+  {
+    "id": 862,
+    "name": "Bastón de Mago (Newbie)",
+    "grhIndex": 932,
+    "value": 100,
+    "newbie": true,
+    "forbiddenClasses": {
+      "CP": [
+        "THIEF",
+        "ASSASSIN",
+        "BARDIC",
+        "DRUID",
+        "PIRATE",
+        "PALADIN",
+        "CLERIC",
+        "ARCHER",
+        "ROGUE",
+        "WARRIOR"
+      ]
+    },
+    "animationId": 8,
+    "minHit": 1,
+    "maxHit": 1
+  },
+  {
+    "id": 990,
+    "name": "Mazo del Juicio",
+    "grhIndex": 20233,
+    "value": 4100,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "DRUID",
+        "BARDIC",
+        "PIRATE",
+        "WARRIOR",
+        "ROGUE",
+        "ARCHER"
+      ]
+    },
+    "animationId": 32,
+    "dwarfAnimationId": 68,
+    "minHit": 5,
+    "maxHit": 16
+  },
+  {
+    "id": 1000,
+    "name": "Antorcha Olímpica de Mano",
+    "grhIndex": 20460,
+    "value": 210,
+    "crucial": false,
+    "forbiddenClasses": {},
+    "animationId": 33,
+    "dwarfAnimationId": 69,
+    "minHit": 1,
+    "maxHit": 8
+  },
+  {
+    "id": 1005,
+    "name": "Hacha de leña Elfica",
+    "grhIndex": 603,
+    "value": 1750,
+    "forbiddenClasses": {},
+    "animationId": 37,
+    "minHit": 3,
+    "maxHit": 8
+  },
+  {
+    "id": 1009,
+    "name": "Cuchillas",
+    "grhIndex": 2341,
+    "value": 50,
+    "crucial": false,
+    "forbiddenClasses": {
+      "CP": [
+        "MAGICIAN",
+        "THIEF",
+        "BARDIC",
+        "DRUID",
+        "ASSASSIN",
+        "PALADIN",
+        "CLERIC",
+        "WARRIOR",
+        "ROGUE",
+        "ARCHER"
+      ]
+    },
+    "animationId": 38,
+    "dwarfAnimationId": 39,
+    "minHit": 7,
+    "maxHit": 16
+  }
+]

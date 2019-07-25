@@ -19,7 +19,7 @@ import game.utils.Cursors;
  * <p>
  * This should be the primary instance of the app.
  */
-public class AOGame extends FadingGame {
+public class AOGame extends FadingGame implements AssetManagerHolder {
 
     public static final float GAME_SCREEN_ZOOM = 1f;
     public static final float GAME_SCREEN_MAX_ZOOM = 1.3f;
