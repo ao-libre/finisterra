@@ -63,14 +63,15 @@ public class SpellView extends Table {
     }
 
     public void updateSpells() {
-        SpellHandler spellHandler =  WorldUtils.getWorld().orElse(null).getSystem(SpellHandler.class);
-        final Spell[] spells = spellHandler.getSpells();
-        Spell[] spellsToShow = new Spell[MAX_SPELLS];
-        System.arraycopy(spells, base, spellsToShow, 0, Math.min(MAX_SPELLS, spells.length));
-        for (int i = 0; i < MAX_SPELLS; i++) {
-            slots.get(i).setSpell(spellsToShow[i]);
-        }
-
+        WorldUtils.getWorld().ifPresent(world -> {
+            SpellHandler spellHandler =  world.getSystem(SpellHandler.class);
+            final Spell[] spells = spellHandler.getSpells();
+            Spell[] spellsToShow = new Spell[MAX_SPELLS];
+            System.arraycopy(spells, base, spellsToShow, 0, Math.min(MAX_SPELLS, spells.length));
+            for (int i = 0; i < MAX_SPELLS; i++) {
+                slots.get(i).setSpell(spellsToShow[i]);
+            }
+        });
     }
 
     private ImageButton createCastButton() {
