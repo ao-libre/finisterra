@@ -1,6 +1,8 @@
 package game.ui;
 
 import java.time.LocalDateTime;
+
+import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -17,9 +19,10 @@ import game.managers.AOInputProcessor;
 import game.screens.GameScreen;
 import game.ui.user.UserInformation;
 import game.utils.Skins;
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 
-public class GUI implements Disposable {
+public class GUI extends BaseSystem implements Disposable  {
 
     //public static final int CONSOLE_TOP_BORDER = 16;
     //public static final int CONSOLE_LEFT_BORDER = 5;
@@ -36,6 +39,13 @@ public class GUI implements Disposable {
         this.userTable = new UserInformation();
         this.dialog = new DialogText();
         this.console = new AOConsole();
+    }
+
+    @Override
+    protected void processSystem() {
+        if (GameScreen.player >= 0) {
+            this.draw(world.getDelta());
+        }
     }
 
     public ActionBar getActionBar() {
@@ -83,6 +93,7 @@ public class GUI implements Disposable {
         pixmap.dispose();
     }
 
+    @Override
     public void initialize() {
         Skins.COMODORE_SKIN.getFont("flipped").setUseIntegerPositions(false);
         Skins.COMODORE_SKIN.getFont("flipped-shadow").setUseIntegerPositions(false);
@@ -145,8 +156,8 @@ public class GUI implements Disposable {
         return Gdx.graphics.getWidth();
     }
 
-    public void draw() {
-        stage.act(Gdx.graphics.getDeltaTime());
+    public void draw(float delta) {
+        stage.act(delta);
         stage.draw();
     }
 

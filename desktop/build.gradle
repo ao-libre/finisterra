@@ -10,7 +10,6 @@ sourceSets {
     main.resources.srcDirs = ["assets/"]
 }
 
-
 dependencies {
     compile project(":client")
     compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
