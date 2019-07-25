@@ -8,22 +8,22 @@ import game.AOGame;
 import game.ClientConfiguration;
 import game.ClientConfiguration.Init;
 import game.ClientConfiguration.Init.Video;
-
-import static game.utils.Resources.CLIENT_CONFIG;
+import game.utils.Resources;
 
 public class DesktopLauncher {
 
     public static void main(String[] arg) {
         System.setProperty("org.lwjgl.opengl.Display.enableOSXFullscreenModeAPI", "true");
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Finisterra");
 
         /**
          * Load desktop config.json or create default.
          */
-        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG);
+        ClientConfiguration config = ClientConfiguration.loadConfig(Resources.CLIENT_CONFIG);
         if (config == null) {
             Log.info("DesktopLauncher", "Desktop config.json not found, creating default.");
             config = ClientConfiguration.createConfig();
-            config.save(CLIENT_CONFIG);
+            config.save(Resources.CLIENT_CONFIG);
         }
         Init initConfig = config.getInitConfig();
         Video video = initConfig.getVideo();
@@ -40,11 +40,19 @@ public class DesktopLauncher {
         cfg.disableAudio(initConfig.isDisableAudio());
         cfg.setMaximized(initConfig.isStartMaximized());
 
-        // TODO use enum instead of strings
         if (video.getHiDPIMode().equalsIgnoreCase("Pixels")) {
             cfg.setHdpiMode(HdpiMode.Pixels);
         } else {
             cfg.setHdpiMode(HdpiMode.Logical);
+        }
+
+        /**
+         * Set the icon that will be used in the window's title bar and in MacOS's dock bar.
+         */
+        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+            java.awt.Taskbar.getTaskbar().setIconImage(new javax.swing.ImageIcon(Resources.CLIENT_ICON).getImage());
+        } else {
+            cfg.setWindowIcon(Resources.CLIENT_ICON);
         }
 
         // Log in console. Un-comment the rest if you wish to debug Config.json's I/O
