@@ -56,7 +56,7 @@ public class DesktopLauncher {
          * Set the icon that will be used in the window's title bar and in MacOS's dock bar.
          */
         if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-            try (FileInputStream is = new FileInputStream("assets/" + Resources.CLIENT_ICON)) {
+            try (FileInputStream is = new FileInputStream(Resources.CLIENT_ICON)) {
                 try {
                     BufferedImage image = ImageIO.read(is);
                     Taskbar.getTaskbar().setIconImage(image);
