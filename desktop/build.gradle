@@ -186,13 +186,3 @@ task appBundle(type: Exec, dependsOn: jlink) {
     }
 }
 
-githubRelease {
-    //token project.property('github.token')
-    owner "ao-libre"
-    repo "ao-java"
-    targetCommitish "master"
-    draft false
-    prerelease true
-    releaseAssets project.file('build/zip/').listFiles()
-    apiEndpoint "https://api.github.com"
-}
