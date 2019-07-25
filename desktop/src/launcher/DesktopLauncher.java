@@ -9,6 +9,12 @@ import game.ClientConfiguration;
 import game.ClientConfiguration.Init;
 import game.ClientConfiguration.Init.Video;
 import game.utils.Resources;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class DesktopLauncher {
 
@@ -50,7 +56,19 @@ public class DesktopLauncher {
          * Set the icon that will be used in the window's title bar and in MacOS's dock bar.
          */
         if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-            java.awt.Taskbar.getTaskbar().setIconImage(new javax.swing.ImageIcon(Resources.CLIENT_ICON).getImage());
+            try (FileInputStream is = new FileInputStream("assets/" + Resources.CLIENT_ICON)) {
+                try {
+                    BufferedImage image = ImageIO.read(is);
+                    Taskbar.getTaskbar().setIconImage(image);
+                } catch (IOException e) {
+                    Log.error("Failed to load icon", e);
+                }
+
+            } catch (FileNotFoundException e) {
+                Log.error("Image not found", e);
+            } catch (IOException e) {
+                Log.error("Couldn't read image", e);
+            }
         } else {
             cfg.setWindowIcon(Resources.CLIENT_ICON);
         }

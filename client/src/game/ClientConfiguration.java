@@ -6,6 +6,8 @@ import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
 import shared.util.AOJson;
 
+import java.io.FileInputStream;
+
 /**
  * @todo distinguish between Desktop-specific configuration (LWJGL configuration) and platform-independent configuration (Client, Network, etc.).
  * @see {@link AOGame}
@@ -17,11 +19,10 @@ public class ClientConfiguration {
 
     public static ClientConfiguration loadConfig(String path) {
         Json configObject = new AOJson();
-        try {
+        try (FileInputStream is = new FileInputStream(path)){
             // Before GDX initialization
             // DO NOT USE 'Gdx.Files', because 'Gdx.Files' in the launcher is always NULL!
-            return configObject.fromJson(ClientConfiguration.class, new FileHandle(path));
-
+            return configObject.fromJson(ClientConfiguration.class, is);
         } catch (Exception ex) {
             Log.error("Client configuration file not found!", ex); // @todo check for other errors
         }
