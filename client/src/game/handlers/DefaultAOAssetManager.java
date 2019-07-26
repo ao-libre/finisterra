@@ -46,6 +46,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     private Map<Integer, AOImage> images;
     private Map<Integer, AOAnimation> animations;
+    private ClientConfiguration cConfig;
 
     static {
         HashMap<Integer, BodyDescriptor> integerBodyDescriptorHashMap = new HashMap<>();
@@ -94,6 +95,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         loadMusic();
         loadSkins();
         loadFonts();
+        loadMessages();
     }
 
     @Override
@@ -104,6 +106,8 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     private void loadFonts() {
         // TODO
     }
+
+    private void loadMessages() { load(LANGUAGES_FILE, I18NBundle.class); }
 
     private void loadSkins() {
         load(Resources.GAME_SKIN_FILE, AOSkin.class);
@@ -277,6 +281,21 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
             weapons = list.stream().collect(Collectors.toMap(Descriptor::getId, o -> o));
         }
         return weapons;
+    }
+
+    public String getMessages(String key, Object... params) {
+        if (!isLoaded(LANGUAGES_FILE)) {
+            load(SharedResources.LANGUAGES_FOLDER + ClientConfiguration.Init.lang + LANGUAGES_EXTENSION, I18NBundle.class);
+            finishLoadingAsset(LANGUAGES_FILE);
+        }
+
+        I18NBundle i18 = get(LANGUAGES_FILE);
+
+        if (params.length > 0) {
+            return i18.format(key, params);
+        } else {
+            return i18.get(key);
+        }
     }
 
     private void loadTexture(String fileName) {
