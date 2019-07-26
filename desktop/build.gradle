@@ -56,42 +56,42 @@ task prepareInput(dependsOn: dist) {
     }
 }
 
-task downloadJPackage(dependsOn: prepareInput) {
-    download {
+// creates a replacement runtime via jlink command (much smaller than jpackage)
+task jlink(type: Exec, dependsOn: prepareInput) {
 
-        if (osName().contains('windows')) {
-            src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_windows-x64_bin.zip'
-        } else if (osName().contains('linux')) {
-            src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_linux-x64_bin.tar.gz'
-        } else if (osName().contains('mac')) {
-            src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_osx-x64_bin.tar.gz'
-        }
-
-        if (!file(jdkFolder).exists()) {
-            file(jdkFolder).mkdirs()
-        }
-        dest jdkFolder
-        overwrite false
-    }
-
-    if (!file(jdkPath).exists()) {
-        copy {
+    doFirst {
+        download {
 
             if (osName().contains('windows')) {
-                from zipTree("${jdkFolder}/openjdk-14-jpackage+8_windows-x64_bin.zip")
+                src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_windows-x64_bin.zip'
             } else if (osName().contains('linux')) {
-                from tarTree("${jdkFolder}/openjdk-14-jpackage+8_linux-x64_bin.tar.gz")
+                src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_linux-x64_bin.tar.gz'
             } else if (osName().contains('mac')) {
-                from tarTree("${jdkFolder}/openjdk-14-jpackage+8_osx-x64_bin.tar.gz")
+                src 'https://download.java.net/java/early_access/jpackage/8/openjdk-14-jpackage+8_osx-x64_bin.tar.gz'
             }
 
-            into jdkFolder
+            if (!file(jdkFolder).exists()) {
+                file(jdkFolder).mkdirs()
+            }
+            dest jdkFolder
+            overwrite false
+        }
+
+        if (!file(jdkPath).exists()) {
+            copy {
+
+                if (osName().contains('windows')) {
+                    from zipTree("${jdkFolder}/openjdk-14-jpackage+8_windows-x64_bin.zip")
+                } else if (osName().contains('linux')) {
+                    from tarTree("${jdkFolder}/openjdk-14-jpackage+8_linux-x64_bin.tar.gz")
+                } else if (osName().contains('mac')) {
+                    from tarTree("${jdkFolder}/openjdk-14-jpackage+8_osx-x64_bin.tar.gz")
+                }
+
+                into jdkFolder
+            }
         }
     }
-}
-
-// creates a replacement runtime via jlink command (much smaller than jpackage)
-task jlink(type: Exec, dependsOn: downloadJPackage) {
 
     // Overwrite previous packaged application.
     if (file("${buildDir}/distribution/${project.appName}").exists()) {
