@@ -1,70 +1,57 @@
 package game.handlers;
 
-import com.badlogic.gdx.Gdx;
-import game.AOGame;
-import game.AssetManagerHolder;
 import model.descriptors.*;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import shared.model.Graphic;
-
-import java.util.List;
-import java.util.Map;
 
 public class DescriptorHandler extends PassiveSystem {
 
     private AOAssetManager assetManager;
 
-    public DescriptorHandler() {
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        assetManager = game.getAssetManager();
-    }
-
-    public Map<Integer, BodyDescriptor> getBodies() {
-        return assetManager.getBodies();
-    }
-
-    public List<FXDescriptor> getFxs() {
-        return assetManager.getFXs();
-    }
-
-    public List<HeadDescriptor> getHeads() {
-        return assetManager.getHeads();
-    }
-
-    public List<HelmetDescriptor> getHelmets() {
-        return assetManager.getHelmets();
-    }
-
-    public List<ShieldDescriptor> getShields() {
-        return assetManager.getShields();
-    }
-
-    public List<WeaponDescriptor> getWeapons() {
-        return assetManager.getWeapons();
+    public DescriptorHandler(AOAssetManager assetManager) {
+        this.assetManager = assetManager;
     }
 
     public BodyDescriptor getBody(int index) {
-        return getBodies().get(index);
+        return assetManager.getBodies().get(index);
     }
 
     public HeadDescriptor getHead(int index) {
-        return getHeads().get(index);
+        return assetManager.getHeads().get(index);
     }
 
     public HelmetDescriptor getHelmet(int index) {
-        return getHelmets().get(index);
+        return assetManager.getHelmets().get(index);
     }
 
     public FXDescriptor getFX(int index) {
-        return getFxs().get(index);
+        return assetManager.getFXs().get(index);
     }
 
     public ShieldDescriptor getShield(int index) {
-        return getShields().get(index);
+        return assetManager.getShields().get(index);
     }
 
     public WeaponDescriptor getWeapon(int index) {
-        return getWeapons().get(index);
+        return assetManager.getWeapons().get(index);
     }
 
+    public boolean hasHelmet(int id) {
+        return assetManager.getHelmets().containsKey(id);
+    }
+
+    public boolean hasBody(int id) {
+        return assetManager.getBodies().containsKey(id);
+    }
+
+    public boolean hasHead(int id) {
+        return assetManager.getHeads().containsKey(id);
+    }
+
+    public boolean hasShield(int id) {
+        return assetManager.getShields().containsKey(id);
+    }
+
+    public boolean hasWeapon(int id) {
+        return assetManager.getWeapons().containsKey(id);
+    }
 }

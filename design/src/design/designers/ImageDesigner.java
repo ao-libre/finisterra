@@ -65,8 +65,8 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
     }
 
     @Override
-    public List<AOImage> get() {
-        return new ArrayList<>(images.values());
+    public Map<Integer, AOImage> get() {
+        return images;
     }
 
     @Override

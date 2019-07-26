@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 
 import static game.loaders.DescriptorsLoader.*;
 import static game.loaders.DescriptorsLoader.DescriptorParameter.descriptor;
-import static game.loaders.GenericLoader.GenericParameter.bodiesGenericParameter;
 import static game.utils.Resources.GAME_DESCRIPTORS_PATH;
 
 public class DefaultAOAssetManager extends AssetManager implements AOAssetManager {
@@ -68,11 +67,17 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         DESCRIPTORS_CLASS = (Class<ArrayList<Descriptor>>) descriptors.getClass();
     }
 
+    private Map<Integer, ShieldDescriptor> shields;
+    private Map<Integer, FXDescriptor> fxs;
+    private Map<Integer, HeadDescriptor> heads;
+    private Map<Integer, HelmetDescriptor> helmets;
+    private Map<Integer, WeaponDescriptor> weapons;
+    private Map<Integer, BodyDescriptor> bodies;
+
     public DefaultAOAssetManager() {
         setLoader(Sequencer.class, new MidiLoader());
         setLoader(ANIMATION_CLASS, ANIMATIONS + JSON_EXTENSION, new AnimationLoader());
         setLoader(IMAGE_CLASS, IMAGES + JSON_EXTENSION, new ImageLoader());
-        setLoader(BODIES_CLASS, BODIES + JSON_EXTENSION, new GenericLoader<>());
         setLoader(OBJS_CLASS, new ObjectsLoader());
         setLoader(SPELLS_CLASS, SharedResources.SPELLS_FILE + JSON_EXTENSION, new SpellsLoader());
         setLoader(DESCRIPTORS_CLASS, new DescriptorsLoader());
@@ -130,10 +135,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     @Override
     public AOAnimation getAnimation(int id) {
         if (animations == null) {
-            this.animations = getAnimations()
-                    .stream()
-                    .collect(Collectors.toMap(AOAnimation::getId, animation -> animation));
-
+            this.animations = getAnimations();
         }
         return animations.get(id);
     }
@@ -188,7 +190,11 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     @Override
     public Map<Integer, BodyDescriptor> getBodies() {
-        return get(GAME_DESCRIPTORS_PATH + BODIES + JSON_EXTENSION);
+        if (bodies == null) {
+            List<BodyDescriptor> list = get(GAME_DESCRIPTORS_PATH + BODIES + JSON_EXTENSION);
+            bodies = list.stream().collect(Collectors.toMap(Descriptor::getId, o -> o));
+        }
+        return bodies;
     }
 
     @Override
@@ -196,15 +202,19 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         if (images == null) {
             List<AOImage> list = get(GAME_DESCRIPTORS_PATH + IMAGES + JSON_EXTENSION);
             this.images = list
-                        .stream()
-                        .collect(Collectors.toMap(AOImage::getId, image -> image));
+                    .stream()
+                    .collect(Collectors.toMap(AOImage::getId, image -> image));
         }
         return images;
     }
 
     @Override
-    public List<AOAnimation> getAnimations() {
-        return get(GAME_DESCRIPTORS_PATH + ANIMATIONS + JSON_EXTENSION);
+    public Map<Integer, AOAnimation> getAnimations() {
+        if (animations == null) {
+            List<AOAnimation> aoAnimations = get(GAME_DESCRIPTORS_PATH + ANIMATIONS + JSON_EXTENSION);
+            animations = aoAnimations.stream().collect(Collectors.toMap(AOAnimation::getId, o -> o));
+        }
+        return animations;
     }
 
     @Override
@@ -225,28 +235,48 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     }
 
     @Override
-    public List<ShieldDescriptor> getShields() {
-        return get(GAME_DESCRIPTORS_FOLDER + SHIELDS + JSON_EXTENSION);
+    public Map<Integer, ShieldDescriptor> getShields() {
+        if (shields == null) {
+            List<ShieldDescriptor> list = get(GAME_DESCRIPTORS_FOLDER + SHIELDS + JSON_EXTENSION);
+            shields = list.stream().collect(Collectors.toMap(Descriptor::getId, o -> o));
+        }
+        return shields;
     }
 
     @Override
-    public List<FXDescriptor> getFXs() {
-        return get(GAME_DESCRIPTORS_FOLDER + FXS + JSON_EXTENSION);
+    public Map<Integer, FXDescriptor> getFXs() {
+        if (fxs == null) {
+            List<FXDescriptor> list = get(GAME_DESCRIPTORS_FOLDER + FXS + JSON_EXTENSION);
+            fxs = list.stream().collect(Collectors.toMap(Descriptor::getId, o -> o));
+        }
+        return fxs;
     }
 
     @Override
-    public List<HeadDescriptor> getHeads() {
-        return get(GAME_DESCRIPTORS_FOLDER + HEADS + JSON_EXTENSION);
+    public Map<Integer, HeadDescriptor> getHeads() {
+        if (heads == null) {
+            List<HeadDescriptor> list = get(GAME_DESCRIPTORS_FOLDER + HEADS + JSON_EXTENSION);
+            heads = list.stream().collect(Collectors.toMap(Descriptor::getId, o -> o));
+        }
+        return heads;
     }
 
     @Override
-    public List<HelmetDescriptor> getHelmets() {
-        return get(GAME_DESCRIPTORS_FOLDER + HELMETS + JSON_EXTENSION);
+    public Map<Integer, HelmetDescriptor> getHelmets() {
+        if (helmets == null) {
+            List<HelmetDescriptor> list = get(GAME_DESCRIPTORS_FOLDER + HELMETS + JSON_EXTENSION);
+            helmets = list.stream().collect(Collectors.toMap(Descriptor::getId, o -> o));
+        }
+        return helmets;
     }
 
     @Override
-    public List<WeaponDescriptor> getWeapons() {
-        return get(GAME_DESCRIPTORS_FOLDER + WEAPONS + JSON_EXTENSION);
+    public Map<Integer, WeaponDescriptor> getWeapons() {
+        if (weapons == null) {
+            List<WeaponDescriptor> list = get(GAME_DESCRIPTORS_FOLDER + WEAPONS + JSON_EXTENSION);
+            weapons = list.stream().collect(Collectors.toMap(Descriptor::getId, o -> o));
+        }
+        return weapons;
     }
 
     private void loadTexture(String fileName) {
@@ -279,9 +309,9 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         load(GAME_DESCRIPTORS_FOLDER + HEADS + JSON_EXTENSION, DESCRIPTORS_CLASS, descriptor(HeadDescriptor.class));
         load(GAME_DESCRIPTORS_FOLDER + HELMETS + JSON_EXTENSION, DESCRIPTORS_CLASS, descriptor(HelmetDescriptor.class));
         load(GAME_DESCRIPTORS_FOLDER + FXS + JSON_EXTENSION, DESCRIPTORS_CLASS, descriptor(FXDescriptor.class));
+        load(GAME_DESCRIPTORS_FOLDER + BODIES + JSON_EXTENSION, DESCRIPTORS_CLASS, descriptor(BodyDescriptor.class));
         load(GAME_DESCRIPTORS_FOLDER + IMAGES + JSON_EXTENSION, IMAGE_CLASS);
         load(GAME_DESCRIPTORS_FOLDER + ANIMATIONS + JSON_EXTENSION, ANIMATION_CLASS);
-        load(GAME_DESCRIPTORS_FOLDER + BODIES + JSON_EXTENSION, BODIES_CLASS, bodiesGenericParameter());
     }
 
     private void loadParticles() {

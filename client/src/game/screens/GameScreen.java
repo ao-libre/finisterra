@@ -59,9 +59,11 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     private SpriteBatch spriteBatch;
     private WorldConfigurationBuilder worldConfigBuilder;
     private final ClientConfiguration clientConfiguration;
+    private AOAssetManager assetManager;
 
-    public GameScreen(ClientConfiguration clientConfiguration) {
+    public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
         this.clientConfiguration = clientConfiguration;
+        this.assetManager = assetManager;
         this.spriteBatch = new SpriteBatch();
         this.logger = new FPSLogger();
         long start = System.currentTimeMillis();
@@ -109,8 +111,8 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .with(HIGH, new SoundSytem())
                 .with(HIGH, new TiledMapSystem())
                 // Handlers
-                .with(HANDLER_PRIORITY, new AnimationHandler())
-                .with(HANDLER_PRIORITY, new DescriptorHandler())
+                .with(HANDLER_PRIORITY, new AnimationHandler(assetManager))
+                .with(HANDLER_PRIORITY, new DescriptorHandler(assetManager))
                 .with(HANDLER_PRIORITY, new MapHandler())
                 .with(HANDLER_PRIORITY, new MusicHandler())
                 .with(HANDLER_PRIORITY, new ObjectHandler())

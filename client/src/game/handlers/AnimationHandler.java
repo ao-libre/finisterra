@@ -51,9 +51,8 @@ public class AnimationHandler extends PassiveSystem {
     private DescriptorHandler descriptorHandler;
     private ObjectHandler objectHandler;
 
-    public AnimationHandler() {
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        assetManager = game.getAssetManager();
+    public AnimationHandler(AOAssetManager assetManager) {
+        this.assetManager = assetManager;
     }
 
     private List<BundledAnimation> createAnimations(IDescriptor descriptor) {

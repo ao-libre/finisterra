@@ -145,7 +145,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
 
         private void calculateOffsets() {
             final Body body = player.getBody();
-            BodyDescriptor bodyDescriptor = descriptorHandler.getBodies().get(body.index);
+            BodyDescriptor bodyDescriptor = descriptorHandler.getBody(body.index);
             bodyAnimation = animationHandler.getBodyAnimation(body, heading.current);
 
             headOffsetY = bodyDescriptor.getHeadOffsetY() - getMovementOffsetY();

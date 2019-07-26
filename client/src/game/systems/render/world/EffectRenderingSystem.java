@@ -141,7 +141,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
         int headOffsetY = 0;
         if (E(entityId).hasBody()) {
             final Body body = E(entityId).getBody();
-            BodyDescriptor bodyDescriptor = descriptorHandler.getBodies().get(body.index);
+            BodyDescriptor bodyDescriptor = descriptorHandler.getBody(body.index);
             headOffsetY = Math.max(0, bodyDescriptor.getHeadOffsetY());
         }
         return headOffsetY;

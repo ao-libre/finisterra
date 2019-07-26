@@ -54,20 +54,20 @@ public interface AOAssetManager {
 
     Map<Integer, AOImage> getImages();
 
-    List<AOAnimation> getAnimations();
+    Map<Integer, AOAnimation> getAnimations();
 
     Map<Integer, Obj> getObjs();
 
     Map<Integer, Spell> getSpells();
 
-    List<ShieldDescriptor> getShields();
+    Map<Integer, ShieldDescriptor> getShields();
 
-    List<FXDescriptor> getFXs();
+    Map<Integer, FXDescriptor> getFXs();
 
-    List<HeadDescriptor> getHeads();
+    Map<Integer, HeadDescriptor> getHeads();
 
-    List<HelmetDescriptor> getHelmets();
+    Map<Integer, HelmetDescriptor> getHelmets();
 
-    List<WeaponDescriptor> getWeapons();
+    Map<Integer, WeaponDescriptor> getWeapons();
 
 }
