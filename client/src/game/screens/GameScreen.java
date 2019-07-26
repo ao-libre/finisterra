@@ -81,10 +81,6 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         this.clientConfiguration = clientConfiguration;
     }
     
-    private ClientConfiguration getClientConfiguration() {
-        return clientConfiguration;
-    }
-    
     public World getWorld() {
         return world;
     }
@@ -146,7 +142,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .with(new MapManager())
                 .with(new TagManager())
                 .with(new UuidEntityManager()); // why?
-                .with(getClientConfiguration());
+                .with(clientConfiguration);
 
     }
 
