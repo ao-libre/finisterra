@@ -152,9 +152,14 @@ public class AOInputProcessor extends Stage {
                 // Disconnect & go back to LoginScreen
                 AOGame game = (AOGame) Gdx.app.getApplicationListener();
                 game.toLogin();
-
+                break;
             case Input.Keys.F2:
+                // Take a screenshot of the render.
                 gui.takeScreenshot();
+                break;
+            case Input.Keys.F11:
+                // Toggle between Windowed Mode and Fullscreen.
+                gui.toggleFullscreen();
                 break;
         }
     }
@@ -192,9 +197,14 @@ public class AOInputProcessor extends Stage {
                 // Disconnect & go back to LoginScreen
                 AOGame game = (AOGame) Gdx.app.getApplicationListener();
                 game.toLogin();
-
+                break;
             case Input.Keys.F2:
+                // Take a screenshot of the render.
                 gui.takeScreenshot();
+                break;
+            case Input.Keys.F11:
+                // Toggle between Windowed Mode and Fullscreen.
+                gui.toggleFullscreen();
                 break;
         }
     }
