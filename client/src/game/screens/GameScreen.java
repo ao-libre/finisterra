@@ -57,6 +57,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     private FPSLogger logger;
     private SpriteBatch spriteBatch;
     private WorldConfigurationBuilder worldConfigBuilder;
+    private ClientConfiguration clientConfiguration;
 
     public GameScreen() {
         this.spriteBatch = new SpriteBatch();
@@ -75,7 +76,15 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         world.getSystem(GUI.class).getInventory().updateUserInventory(0);
         world.getSystem(GUI.class).getSpellView().updateSpells();
     }
-
+    
+    public void setClientConfiguration(ClientConfiguration clientConfiguration) {
+        this.clientConfiguration = clientConfiguration;
+    }
+    
+    private ClientConfiguration getClientConfiguration() {
+        return clientConfiguration;
+    }
+    
     public World getWorld() {
         return world;
     }
