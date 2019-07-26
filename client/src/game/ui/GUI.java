@@ -25,6 +25,8 @@ public class GUI extends BaseSystem implements Disposable  {
 
     //public static final int CONSOLE_TOP_BORDER = 16;
     //public static final int CONSOLE_LEFT_BORDER = 5;
+    private int windowedWidth;
+    private int windowedHeight;
     private Stage stage;
     private ActionBar actionBar;
     private UserInformation userTable;
@@ -93,11 +95,12 @@ public class GUI extends BaseSystem implements Disposable  {
     }
     
     public void toggleFullscreen() {
-        Graphics.DisplayMode currentMode = Gdx.graphics.getDisplayMode();
         if (Gdx.graphics.isFullscreen()) {
-            Gdx.graphics.setWindowedMode(currentMode.width, currentMode.height);
+            Gdx.graphics.setWindowedMode(this.windowedWidth, this.windowedHeight);
         } else {
-            Gdx.graphics.setFullscreenMode(currentMode);
+            this.windowedWidth = (int) getWidth();
+            this.windowedHeight = (int) getHeight();
+            Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
         }
     }
     
