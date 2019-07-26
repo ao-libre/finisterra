@@ -4,6 +4,7 @@ import com.badlogic.gdx.files.FileHandle; // @todo FileHandle is not cross-platf
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.util.AOJson;
 
 /**
