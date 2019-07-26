@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
+import game.ClientConfiguration;
 import game.handlers.*;
 import game.managers.MapManager;
 import game.managers.WorldManager;
