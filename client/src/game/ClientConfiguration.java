@@ -10,7 +10,7 @@ import shared.util.AOJson;
  * @todo distinguish between Desktop-specific configuration (LWJGL configuration) and platform-independent configuration (Client, Network, etc.).
  * @see {@link AOGame}
  */
-public class ClientConfiguration {
+public class ClientConfiguration extends PassiveSystem {
 
     private Init initConfig;
     private Network network;
