@@ -74,7 +74,7 @@ public class DesktopLauncher {
         }
 
         // Log in console. Un-comment the rest if you wish to debug Config.json's I/O
-        Log.info("Initializing launcher...");
+        Log.info("Initializing game...");
         //Log.info("[Parameters - Window] Width: " + video.getWidth());
         //Log.info("[Parameters - Window] Height: " + video.getHeight());
         //Log.info("[Parameters - Window] Start Maximized: " + initConfig.isStartMaximized());
