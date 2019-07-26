@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entity.character.parts.Body;
 import game.handlers.AOAssetManager;
+import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
 import game.handlers.ParticlesHandler;
 import game.managers.WorldManager;
@@ -37,7 +38,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
     private CameraSystem cameraSystem;
     private WorldManager worldManager;
     private DescriptorHandler descriptorHandler;
-    private AOAssetManager aoAssetManager;
+    private AnimationHandler animationHandler;
 
     private int srcFunc;
     private int dstFunc;
@@ -68,8 +69,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                     break;
                 case FX:
                     FXDescriptor fxDescriptor = descriptorHandler.getFX(effectId);
-                    AOAnimation animation = aoAssetManager.getAnimation(fxDescriptor.getIndexs()[0]);
-                    BundledAnimation bundledAnimation = new BundledAnimation(animation, effect.loops);
+                    BundledAnimation bundledAnimation = animationHandler.getAnimation(fxDescriptor.getIndexs()[0]);
                     fxs.put(entityId, bundledAnimation);
                     break;
             }
