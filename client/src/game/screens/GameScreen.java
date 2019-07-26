@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
+import game.ClientConfiguration;
 import game.handlers.*;
 import game.managers.MapManager;
 import game.managers.WorldManager;
@@ -57,6 +58,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     private FPSLogger logger;
     private SpriteBatch spriteBatch;
     private WorldConfigurationBuilder worldConfigBuilder;
+    private ClientConfiguration clientConfiguration;
 
     public GameScreen() {
         this.spriteBatch = new SpriteBatch();
@@ -75,7 +77,11 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         world.getSystem(GUI.class).getInventory().updateUserInventory(0);
         world.getSystem(GUI.class).getSpellView().updateSpells();
     }
-
+    
+    public void setClientConfiguration(ClientConfiguration clientConfiguration) {
+        this.clientConfiguration = clientConfiguration;
+    }
+    
     public World getWorld() {
         return world;
     }
@@ -136,7 +142,9 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 // Other
                 .with(new MapManager())
                 .with(new TagManager())
-                .with(new UuidEntityManager()); // why?
+                .with(new UuidEntityManager()) // why?
+                .with(clientConfiguration);
+
     }
 
     public void initWorld(ClientSystem clientSystem) {

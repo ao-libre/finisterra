@@ -26,7 +26,12 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
     public static final float GAME_SCREEN_MAX_ZOOM = 1.3f;
 
     private AOAssetManager assetManager = new DefaultAOAssetManager();
-
+    private ClientConfiguration clientConfiguration;
+    
+    public AOGame(ClientConfiguration clientConfiguration) {
+        this.clientConfiguration = clientConfiguration;
+    }
+    
     @Override
     public void create() {
         super.create();
@@ -56,6 +61,7 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
 
     public void toGame(GameScreen gameScreen) {
         setTransition(new ColorFadeTransition(Color.BLACK, Interpolation.exp10), 0f);
+        gameScreen.setClientConfiguration(this.clientConfiguration);
         setScreen(gameScreen);
     }
 

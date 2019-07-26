@@ -60,6 +60,6 @@ public class DesktopLauncher {
         /**
          * Launch application
          */
-        new Lwjgl3Application(new AOGame(), cfg);
+        new Lwjgl3Application(new AOGame(config), cfg);
     }
 }
