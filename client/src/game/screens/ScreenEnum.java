@@ -1,6 +1,7 @@
 package game.screens;
 
 import com.badlogic.gdx.Screen;
+import game.ClientConfiguration;
 import game.systems.network.ClientSystem;
 import shared.model.lobby.Player;
 import shared.model.lobby.Room;
@@ -31,7 +32,7 @@ public enum ScreenEnum {
     },
     GAME {
         public Screen getScreen(Object... params) {
-            return new GameScreen();
+            return new GameScreen((ClientConfiguration) params[0]);
         }
     };
 
