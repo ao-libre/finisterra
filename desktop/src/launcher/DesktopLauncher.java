@@ -1,29 +1,40 @@
 package launcher;
 
+import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Files.FileType;
+import com.badlogic.gdx.backends.headless.HeadlessFileHandle;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.glutils.HdpiMode;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.ClientConfiguration;
 import game.ClientConfiguration.Init;
 import game.ClientConfiguration.Init.Video;
+import game.utils.Resources;
 
-import static game.utils.Resources.CLIENT_CONFIG;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class DesktopLauncher {
 
     public static void main(String[] arg) {
         System.setProperty("org.lwjgl.opengl.Display.enableOSXFullscreenModeAPI", "true");
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Finisterra");
 
         /**
          * Load desktop config.json or create default.
          */
-        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG);
+        ClientConfiguration config = ClientConfiguration.loadConfig(Resources.CLIENT_CONFIG);
         if (config == null) {
             Log.info("DesktopLauncher", "Desktop config.json not found, creating default.");
             config = ClientConfiguration.createConfig();
-            config.save(CLIENT_CONFIG);
+            config.save(Resources.CLIENT_CONFIG);
         }
         Init initConfig = config.getInitConfig();
         Video video = initConfig.getVideo();
@@ -40,15 +51,30 @@ public class DesktopLauncher {
         cfg.disableAudio(initConfig.isDisableAudio());
         cfg.setMaximized(initConfig.isStartMaximized());
 
-        // TODO use enum instead of strings
         if (video.getHiDPIMode().equalsIgnoreCase("Pixels")) {
             cfg.setHdpiMode(HdpiMode.Pixels);
         } else {
             cfg.setHdpiMode(HdpiMode.Logical);
         }
 
+        /**
+         * Set the icon that will be used in the window's title bar and in MacOS's dock bar.
+         */
+        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+            FileHandle fileHandle = new HeadlessFileHandle(Resources.CLIENT_ICON, FileType.Internal);
+            try (InputStream is = fileHandle.read()){
+                BufferedImage image = ImageIO.read(is);
+                Taskbar.getTaskbar().setIconImage(image);
+            } catch (IOException e) {
+                Log.error("Failed to load icon", e);
+            }
+
+        } else {
+            cfg.setWindowIcon(Resources.CLIENT_ICON);
+        }
+
         // Log in console. Un-comment the rest if you wish to debug Config.json's I/O
-        Log.info("Initializing launcher...");
+        Log.info("Initializing game...");
         //Log.info("[Parameters - Window] Width: " + video.getWidth());
         //Log.info("[Parameters - Window] Height: " + video.getHeight());
         //Log.info("[Parameters - Window] Start Maximized: " + initConfig.isStartMaximized());

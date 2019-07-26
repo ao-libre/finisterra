@@ -1,7 +1,6 @@
 package game.ui;
 
 import java.time.LocalDateTime;
-
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
@@ -21,7 +20,7 @@ import game.screens.GameScreen;
 import game.ui.user.UserInformation;
 import game.utils.Skins;
 
-public class GUI extends BaseSystem implements Disposable  {
+public class GUI extends BaseSystem implements Disposable {
 
     //public static final int CONSOLE_TOP_BORDER = 16;
     //public static final int CONSOLE_LEFT_BORDER = 5;
