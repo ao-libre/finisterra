@@ -5,6 +5,7 @@ import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
@@ -36,7 +37,6 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     private WorldManager worldManager;
     private CameraShakeSystem cameraShakeSystem;
     private SoundsHandler soundsHandler;
-    private GUI gui;
 
     @Override
     public void processNotification(EntityUpdate entityUpdate) {
@@ -99,7 +99,9 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
             }
         });
         // @todo fix
-        gui.getInventory().updateUserInventory(0);
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        if (game.getScreen() instanceof GameScreen)
+            ((GameScreen) game.getScreen()).getGUI().getInventory().updateUserInventory(0);
     }
 
     @Override
@@ -156,26 +158,29 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     @Override
     public void processNotification(ConsoleMessage consoleMessage) {
-        final AOConsole console = gui.getConsole();
-        final String message = consoleMessage.getMessage();
-        switch (consoleMessage.getKind()) {
-            case INFO:
-                console.addInfo(message);
-                break;
-            case ERROR:
-                console.addError(message);
-                break;
-            case COMBAT:
-                console.addCombat(message);
-                break;
-            case WARNING:
-                console.addWarning(message);
-                break;
-            default:
-                console.addInfo(message);
-                break;
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        if (game.getScreen() instanceof GameScreen) {
+            final GUI gui = ((GameScreen) game.getScreen()).getGUI();
+            final AOConsole console = gui.getConsole();
+            final String message = consoleMessage.getMessage();
+            switch (consoleMessage.getKind()) {
+                case INFO:
+                    console.addInfo(message);
+                    break;
+                case ERROR:
+                    console.addError(message);
+                    break;
+                case COMBAT:
+                    console.addCombat(message);
+                    break;
+                case WARNING:
+                    console.addWarning(message);
+                    break;
+                default:
+                    console.addInfo(message);
+                    break;
+            }
         }
-
     }
 
     @Override

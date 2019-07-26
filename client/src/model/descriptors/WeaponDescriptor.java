@@ -9,8 +9,4 @@ public class WeaponDescriptor extends Descriptor {
         super(weaponIndex);
     }
 
-    @Override
-    public String toString() {
-        return "Weapon: " + getId();
-    }
 }

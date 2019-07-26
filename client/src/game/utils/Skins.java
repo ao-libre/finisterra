@@ -49,7 +49,6 @@ public class Skins {
                     parameter.hinting = hinting;
                     parameter.minFilter = minFilter;
                     parameter.magFilter = magFilter;
-                    parameter.characters = DEFAULT_CHARS;
                     parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS;
 
                     FreeTypeFontGenerator generator = new FreeTypeFontGenerator(skinFile.parent().child(path));

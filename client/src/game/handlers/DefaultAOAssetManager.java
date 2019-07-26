@@ -46,9 +46,6 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     private static final Class<HashMap<Integer, Spell>> SPELLS_CLASS;
     private static final Class<ArrayList<Descriptor>> DESCRIPTORS_CLASS;
 
-    private Map<Integer, AOImage> images;
-    private Map<Integer, AOAnimation> animations;
-
     static {
         HashMap<Integer, BodyDescriptor> integerBodyDescriptorHashMap = new HashMap<>();
         BODIES_CLASS = (Class<HashMap<Integer, BodyDescriptor>>) integerBodyDescriptorHashMap.getClass();
@@ -127,7 +124,9 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     @Override
     public AOImage getImage(int id) {
         if (images == null) {
-            this.images = getImages();
+            this.images = getImages()
+                    .stream()
+                    .collect(Collectors.toMap(AOImage::getId, image -> image));
         }
         return images.get(id);
     }
@@ -197,14 +196,8 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     }
 
     @Override
-    public Map<Integer, AOImage> getImages() {
-        if (images == null) {
-            List<AOImage> list = get(GAME_DESCRIPTORS_PATH + IMAGES + JSON_EXTENSION);
-            this.images = list
-                        .stream()
-                        .collect(Collectors.toMap(AOImage::getId, image -> image));
-        }
-        return images;
+    public List<AOImage> getImages() {
+        return get(GAME_DESCRIPTORS_PATH + IMAGES + JSON_EXTENSION);
     }
 
     @Override
@@ -260,6 +253,13 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
             finishLoadingAsset(LANGUAGES_FILE);
         }
 
+    public String getMessages(String key, Object... params) {
+
+        if (!isLoaded(LANGUAGES_FILE)) {
+            load(SharedResources.LANGUAGES_FOLDER + ClientConfiguration.Init.lang + LANGUAGES_EXTENSION, I18NBundle.class);
+            finishLoadingAsset(LANGUAGES_FILE);
+        }
+
         I18NBundle i18 = get(LANGUAGES_FILE);
 
         if (params.length > 0) {
@@ -269,7 +269,13 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         }
 
     }
-	
+
+    private void loadTextures() {
+        Reflections reflections = new Reflections(Resources.GAME_GRAPHICS_PATH, new ResourcesScanner());
+        Set<String> graphicFiles = reflections.getResources(Pattern.compile(".*\\.png"));
+        graphicFiles.forEach(this::loadTexture);
+    }
+
     private void loadTexture(String fileName) {
         TextureParameter param = new TextureParameter();
         param.minFilter = TextureFilter.Linear;

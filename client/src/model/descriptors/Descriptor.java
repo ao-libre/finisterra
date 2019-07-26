@@ -1,14 +1,11 @@
 package model.descriptors;
 
-import model.ID;
-
-public class Descriptor implements IDescriptor, ID {
+public class Descriptor implements IDescriptor {
 
     public int id;
     protected int[] indexs;
 
     public Descriptor() {
-        indexs = new int[4];
     }
 
     public Descriptor(int[] grhIndex) {

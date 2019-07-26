@@ -7,6 +7,8 @@ import com.artemis.WorldConfigurationBuilder;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -52,21 +54,21 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     private static final int PRE_ENTITY_RENDER_PRIORITY = ENTITY_RENDER_PRIORITY + 1;
     private static final int POST_ENTITY_RENDER_PRIORITY = ENTITY_RENDER_PRIORITY - 1;
     private static final int DECORATION_PRIORITY = ENTITY_RENDER_PRIORITY - 2;
-    private static final int GUI = DECORATION_PRIORITY - 1;
-
     public static World world;
     public static int player = -1;
+    private static GUI gui;
+    //private InputMultiplexer inputMultiplexer;
     private FPSLogger logger;
     private SpriteBatch spriteBatch;
     private WorldConfigurationBuilder worldConfigBuilder;
-    private final ClientConfiguration clientConfiguration;
 
-    public GameScreen(ClientConfiguration clientConfiguration) {
-        this.clientConfiguration = clientConfiguration;
+    public GameScreen() {
         this.spriteBatch = new SpriteBatch();
         this.logger = new FPSLogger();
         long start = System.currentTimeMillis();
         initWorldConfiguration();
+        this.gui = new GUI();
+        gui.initialize();
         Gdx.app.log("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
     }
 
@@ -76,8 +78,13 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
 
     public static void setPlayer(int player) {
         GameScreen.player = player;
-        world.getSystem(GUI.class).getInventory().updateUserInventory(0);
-        world.getSystem(GUI.class).getSpellView().updateSpells();
+        // @todo fix
+        gui.getInventory().updateUserInventory(0);
+        gui.getSpellView().updateSpells();
+    }
+
+    public GUI getGUI() {
+        return gui;
     }
 
     public World getWorld() {
@@ -138,14 +145,10 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .with(DECORATION_PRIORITY, new CharacterStatesRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL, new BuffRenderingSystem(spriteBatch))
-                // GUI
-                .with(GUI, new GUI())
                 // Other
                 .with(new MapManager())
                 .with(new TagManager())
-                .with(new UuidEntityManager())
-                .with(clientConfiguration);
-
+                .with(new UuidEntityManager()); // why?
     }
 
     public void initWorld(ClientSystem clientSystem) {
@@ -189,6 +192,9 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     @Override
     public void render(float delta) {
         this.update(delta);
+        if (player >= 0) {
+            this.drawUI();
+        }
     }
 
     @Override
@@ -198,15 +204,20 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         cameraSystem.camera.viewportHeight = cameraSystem.camera.viewportWidth * height / width;
         cameraSystem.camera.update();
 
-        getWorld().getSystem(GUI.class).getStage().getViewport().update(width, height);
+        gui.getStage().getViewport().update(width, height);
 
         getWorld().getSystem(LightRenderingSystem.class).resize(width, height);
+    }
+
+    private void drawUI() {
+        gui.draw();
     }
 
     @Override
     public void dispose() {
         world.getSystem(ClientSystem.class).stop();
-        world.getSystem(GUI.class).dispose();
+        gui.dispose();
+        world.dispose();
     }
 
 }

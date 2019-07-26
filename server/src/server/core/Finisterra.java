@@ -62,12 +62,10 @@ public class Finisterra implements ApplicationListener {
         objectManager = new ObjectManager();
         spellManager = new SpellManager();
 
-        Thread thread = new Thread(() -> {
+        new Thread(() -> {
             MapHelper helper = MapHelper.instance(NEVER_EXPIRE);
             helper.loadAll();
-        });
-        thread.setDaemon(true);
-        thread.start();
+        }).start();
 
         lobby = new Lobby();
         WorldConfigurationBuilder worldConfigurationBuilder = new WorldConfigurationBuilder();

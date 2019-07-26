@@ -11,17 +11,9 @@
     "startMaximized": false
   },
   "network": {
-    "servers": [
-      {
-        "name": "Testing VPS",
-        "hostname": "35.198.1.253",
-        "port": 7666
-      },
-      {
-        "name": "localhost",
-        "hostname":"127.0.0.1",
-        "port": 7666
-      }
-    ]
+    "defaultServer": {
+      "hostname": "35.198.1.253",
+      "port": 7666
+    }
   }
 }

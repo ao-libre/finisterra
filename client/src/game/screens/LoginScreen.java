@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import game.ClientConfiguration;
+import game.ClientConfiguration.Network.DefaultServer;
 import game.network.ClientResponseProcessor;
 import game.network.GameNotificationProcessor;
 import game.systems.network.ClientSystem;
@@ -23,7 +24,8 @@ public class LoginScreen extends AbstractScreen {
 
     private TextField username;
     private SelectBox<Hero> heroSelect;
-    private List<ClientConfiguration.Network.Server> serverList;
+    private TextField ipText;
+    private TextField portText;
 
     private boolean canConnect = true;
 
@@ -44,10 +46,10 @@ public class LoginScreen extends AbstractScreen {
     }
 
     private void init() {
-        clientSystem = new ClientSystem("127.0.0.1", 7666); // @todo implement empty constructor
+        DefaultServer defaultServer = config.getNetwork().getDefaultServer();
+        clientSystem = new ClientSystem(defaultServer.getHostname(), defaultServer.getPort());
         clientSystem.setNotificationProcessor(new GameNotificationProcessor());
         clientSystem.setResponseProcessor(new ClientResponseProcessor());
-
         // TODO MusicHandler.playMusic(101);
     }
 
@@ -68,8 +70,13 @@ public class LoginScreen extends AbstractScreen {
 
         Table connectionTable = new Table((getSkin()));
 
-        this.serverList = new List<>(getSkin());
-        serverList.setItems(config.getNetwork().getServers());
+        Label ipLabel = new Label("IP: ", getSkin());
+        DefaultServer defaultServer = config.getNetwork().getDefaultServer();
+        this.ipText = new TextField(defaultServer.getHostname(), getSkin());
+
+        Label portLabel = new Label("Port: ", getSkin());
+        this.portText = new TextField("" + defaultServer.getPort(), getSkin());
+        portText.setTextFieldFilter(new TextField.TextFieldFilter.DigitsOnlyFilter());
 
         TextButton loginButton = new TextButton("Connect", getSkin());
         loginButton.addListener(new ClickListener() {
@@ -92,7 +99,10 @@ public class LoginScreen extends AbstractScreen {
         loginWindow.add(loginButton).padTop(20).expandX().row();
         getMainTable().add(loginWindow).width(400).height(300).row();
 
-        connectionTable.add(serverList).width(300);
+        connectionTable.add(ipLabel);
+        connectionTable.add(ipText).width(500);
+        connectionTable.add(portLabel);
+        connectionTable.add(portText);
         connectionTable.align(Align.center);
         connectionTable.setVisible(true);
         getMainTable().add(connectionTable);
@@ -104,11 +114,8 @@ public class LoginScreen extends AbstractScreen {
         if (this.canConnect) {
             String user = username.getText();
             Hero hero = heroSelect.getSelected();
-            ClientConfiguration.Network.Server server = serverList.getSelected();
-            if (server == null)
-                return;
-            String ip = server.getHostname();
-            int port = server.getPort();
+            String ip = ipText.getText();
+            int port = Integer.valueOf(portText.getText());
 
             if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
                 if (clientSystem.getState() != MarshalState.STOPPED)

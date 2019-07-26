@@ -1,28 +1,21 @@
 package design.screens.views;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import design.designers.AnimationDesigner;
 import design.designers.AnimationDesigner.AnimationParameters;
-import design.dialogs.AnimationFromImages;
 import design.editors.AnimationEditor;
-import design.editors.fields.FieldEditor.FieldListener;
 import game.screens.WorldScreen;
 import model.textures.AOAnimation;
-import model.textures.AOImage;
 import model.textures.BundledAnimation;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Stream;
-
-import static launcher.DesignCenter.SKIN;
 
 public class AnimationView extends View<AOAnimation, AnimationDesigner> implements WorldScreen {
 
@@ -36,8 +29,10 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
     }
 
     @Override
-    Editor<AOAnimation> createItemView() {
-        return new AnimationItem();
+    Preview<AOAnimation> createItemView() {
+        AnimationItem animationItem = new AnimationItem();
+
+        return animationItem;
     }
 
     @Override
@@ -50,32 +45,28 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
 
     }
 
-    @Override
-    public void refreshPreview() {
-        AOAnimation animation = getItemView().get();
-        getAnimationHandler().clearAnimation(animation);
-        super.refreshPreview();
-    }
+    class AnimationItem extends Preview<AOAnimation> {
 
-    public void createAnimation(List<AOImage> images) {
-        AnimationFromImages.show(images);
-    }
+        private AOAnimation animation;
+        private Actor view;
 
-    class AnimationItem extends Editor<AOAnimation> {
-
-        AnimationItem() {
+        public AnimationItem() {
             super(SKIN);
         }
 
-        @NotNull
         @Override
-        protected Table getTable(FieldListener listener) {
-            return AnimationEditor.getTable(current, listener);
+        void show(AOAnimation animation) {
+            this.animation = animation;
+            if (view != null) {
+                removeActor(view);
+            }
+            view = AnimationEditor.getTable(animation);
+            add(view);
         }
 
         @Override
-        protected AOAnimation getCopy(AOAnimation to) {
-            return new AOAnimation(to);
+        AOAnimation get() {
+            return animation;
         }
 
     }
@@ -87,7 +78,7 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
         private AOAnimation animation;
         private BundledAnimation bundledAnimation;
 
-        AnimationPreview() {
+        public AnimationPreview() {
             super(SKIN);
             label = new Label("", SKIN);
             add(label).row();
@@ -99,15 +90,7 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
         public void show(AOAnimation animation) {
             this.animation = animation;
             label.setText(animation.getId());
-            if (hasAnimation(animation)) {
-                bundledAnimation = getAnimationHandler().getPreviewAnimation(animation);
-                TextureRegion graphic = bundledAnimation.getGraphic();
-                image.setSize(graphic.getRegionWidth(), graphic.getRegionHeight());
-            }
-        }
-
-        boolean hasAnimation(AOAnimation animation) {
-            return Stream.of(animation.getFrames()).flatMapToInt(Arrays::stream).anyMatch(i -> i > 0);
+            bundledAnimation = getAnimationHandler().getAnimation(animation.getId());
         }
 
         @Override

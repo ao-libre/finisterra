@@ -52,7 +52,7 @@ public interface AOAssetManager {
 
     Map<Integer, BodyDescriptor> getBodies();
 
-    Map<Integer, AOImage> getImages();
+    List<AOImage> getImages();
 
     List<AOAnimation> getAnimations();
 

@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Interpolation;
 import com.esotericsoftware.minlog.Log;
 import game.handlers.AOAssetManager;
 import game.handlers.DefaultAOAssetManager;
-import game.screens.GameScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
 import game.screens.transitions.ColorFadeTransition;
@@ -26,12 +25,7 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
     public static final float GAME_SCREEN_MAX_ZOOM = 1.3f;
 
     private AOAssetManager assetManager = new DefaultAOAssetManager();
-    private ClientConfiguration clientConfiguration;
-    
-    public AOGame(ClientConfiguration clientConfiguration) {
-        this.clientConfiguration = clientConfiguration;
-    }
-    
+
     @Override
     public void create() {
         super.create();
@@ -41,6 +35,7 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
         ScreenManager.getInstance().initialize(this);
         toLoading();
         // @todo load platform-independent configuration (network, etc.)
+
     }
 
     private void toLoading() {
@@ -57,15 +52,6 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
 
     public void toRoom(Object... params) {
         ScreenManager.getInstance().showScreen(ScreenEnum.ROOM, params);
-    }
-
-    public void toGame(GameScreen gameScreen) {
-        setTransition(new ColorFadeTransition(Color.BLACK, Interpolation.exp10), 0f);
-        setScreen(gameScreen);
-    }
-
-    public ClientConfiguration getClientConfiguration() {
-        return clientConfiguration;
     }
 
     public AOAssetManager getAssetManager() {

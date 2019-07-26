@@ -1,39 +1,85 @@
 package model.textures;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import game.AssetManagerHolder;
-import game.handlers.DescriptorHandler;
-import game.utils.WorldUtils;
-import shared.model.Graphic;
+import model.ID;
 
-public class AOTexture {
+public class AOImage implements ID {
 
-    private TextureRegion textureRegion;
+    private int x;
+    private int y;
+    private int fileNum;
+    private int id;
+    private int width;
+    private int height;
 
-    public AOTexture(AOImage image) {
-        this(image, true);
+    public AOImage() {
     }
 
-    public AOTexture(AOImage image, boolean flipY) {
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        Texture texture = game.getAssetManager().getTexture(image.getFileNum());
-        this.textureRegion = new TextureRegion(texture,
-                image.getX(), image.getY(), image.getWidth(), image.getHeight());
-        this.textureRegion.flip(false, flipY);
+    public AOImage(int id, int x, int y, int fileNum, int pixelWidth, int pixelHeight) {
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.fileNum = fileNum;
+        this.width = pixelWidth;
+        this.height = pixelHeight;
     }
 
-    public void dispose() {
-        this.textureRegion.getTexture().dispose();
+    public int getX() {
+        return x;
     }
 
-    public TextureRegion getTexture() {
-        return textureRegion;
+    public void setX(int x) {
+        this.x = x;
     }
 
-    public void setTexture(TextureRegion textureRegion) {
-        this.textureRegion = textureRegion;
+    public int getY() {
+        return y;
     }
 
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getFileNum() {
+        return fileNum;
+    }
+
+    public void setFileNum(int fileNum) {
+        this.fileNum = fileNum;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return getId() + ":" + " file: " + getFileNum() + " x: " + getX() + " y: " + getY();
+    }
+
+    public void adjust() {
+        setX(getX());
+        setY(getY());
+        setWidth(getWidth());
+        setHeight(getHeight());
+    }
 }

@@ -3,38 +3,36 @@ package design.screens.views;
 import camera.Focused;
 import com.artemis.E;
 import com.artemis.World;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import design.designers.NPCDesigner;
 import design.designers.NPCDesigner.NPCParameters;
 import design.editors.NPCEditor;
-import design.editors.fields.FieldEditor;
-import entity.character.parts.Body;
-import entity.character.states.Heading;
-import model.textures.BundledAnimation;
-import org.jetbrains.annotations.NotNull;
+import game.screens.WorldScreen;
+import game.systems.camera.CameraSystem;
+import game.systems.render.world.CharacterRenderingSystem;
 import position.Pos2D;
 import position.WorldPos;
-import shared.model.map.Tile;
 import shared.model.npcs.NPC;
 import shared.model.npcs.NPCToEntity;
+import shared.util.Util;
 
 import java.util.Comparator;
+import java.util.Optional;
 
 import static com.artemis.E.E;
-import static design.editors.fields.FieldEditor.*;
 import static game.systems.render.world.CharacterRenderingSystem.CharacterDrawer.createDrawer;
-import static launcher.DesignCenter.SKIN;
 
-public class NPCView extends View<NPC, NPCDesigner> {
+public class NPCView extends View<NPC, NPCDesigner> implements WorldScreen {
 
     public NPCView() {
         super(new NPCDesigner(NPCParameters.dat()));
@@ -46,7 +44,7 @@ public class NPCView extends View<NPC, NPCDesigner> {
     }
 
     @Override
-    Editor<NPC> createItemView() {
+    Preview<NPC> createItemView() {
         return new NPCItem();
     }
 
@@ -59,21 +57,27 @@ public class NPCView extends View<NPC, NPCDesigner> {
     protected void keyPressed(int keyCode) {
     }
 
-    class NPCItem extends Editor<NPC> {
+    class NPCItem extends Preview<NPC> {
+
+        private Actor view;
+        private NPC npc;
 
         public NPCItem() {
             super(SKIN);
         }
 
-        @NotNull
         @Override
-        protected Table getTable(FieldListener listener) {
-            return NPCEditor.getTable(current, listener);
+        void show(NPC npc) {
+            this.npc = npc;
+            if (view != null) {
+                clear();
+            }
+            add(view = NPCEditor.getTable(npc)).growX();
         }
 
         @Override
-        protected NPC getCopy(NPC to) {
-            return new NPC(to);
+        NPC get() {
+            return npc;
         }
 
     }
@@ -81,57 +85,31 @@ public class NPCView extends View<NPC, NPCDesigner> {
     class NPCPreview extends Preview<NPC> {
 
         private int entityId = -1;
-        private Label label;
-        private AnimationActor animationActor;
+        private final Label label;
+        private final AnimationActor animationActor;
         private NPC npc;
 
         public NPCPreview() {
             super(SKIN);
-        }
-
-        public void init() {
-            Button table = new Button(SKIN, "color-base-static");
-            table.defaults().space(5);
-            Table buttons = new Table();
+            defaults().space(10);
+            pad(20);
             label = new Label("", SKIN);
-            Container anim = new Container();
             animationActor = new AnimationActor();
-            Button move = new Button(SKIN, "switch");
-            move.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    animationActor.move();
-                }
-            });
-            buttons.add(move).right();
-            Button rotate = new Button(SKIN, "colorwheel");
-            rotate.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    animationActor.rotate();
-                }
-            });
-            buttons.add(rotate).right();
-            table.add(buttons).right();
-            table.row();
-            anim.setActor(animationActor);
-            table.add(anim).row();
-            table.add(label);
-            add(table);
+            add(label).top().row();
+            add(animationActor).top();
         }
 
         @Override
         public void show(NPC npc) {
-            if (this.npc == null) {
-                init();
+            if (!npc.equals(this.npc)) {
+                this.npc = npc;
+                label.setText(npc.getName());
+                World world = getWorld();
+                E.withComponent(Focused.class).iterator().forEachRemaining(E::deleteFromWorld);
+                entityId = NPCToEntity.getNpcEntity(world, npc.getId(), new WorldPos(1, 1, 1), npc);
+                E(entityId).focused();
+                animationActor.setEntityId(entityId);
             }
-            this.npc = npc;
-            label.setText(npc.getName());
-            World world = getWorld();
-            E.withComponent(Focused.class).iterator().forEachRemaining(E::deleteFromWorld);
-            entityId = NPCToEntity.getNpcEntity(world, npc.getId(), new WorldPos(1, 1, 1), npc);
-            E(entityId).focused().moving();
-            animationActor.setEntityId(entityId);
         }
 
         @Override
@@ -144,9 +122,13 @@ public class NPCView extends View<NPC, NPCDesigner> {
     class AnimationActor extends Actor {
 
         private int entityId = -1;
-        private int heading = Heading.HEADING_SOUTH;
+
+        public AnimationActor(int entityId) {
+            this.entityId = entityId;
+        }
 
         public AnimationActor() {
+
         }
 
         public int getEntityId() {
@@ -155,53 +137,12 @@ public class NPCView extends View<NPC, NPCDesigner> {
 
         public void setEntityId(int entityId) {
             this.entityId = entityId;
-            E e = E(entityId);
-            if (e.hasBody()) {
-                final Body body = e.getBody();
-                heading = Heading.HEADING_SOUTH;
-                if (body.index <= 0) {
-
-                    return;
-                }
-                BundledAnimation bodyAnimation = getAnimationHandler().getBodyAnimation(body, heading);
-                if (bodyAnimation != null) {
-                    TextureRegion graphic = bodyAnimation.getGraphic();
-                    setSize(graphic.getRegionWidth(), graphic.getRegionHeight());
-                }
-            }
-        }
-
-        public void move() {
-            if (entityId >= 0) {
-                E(entityId).moving(!E(entityId).isMoving());
-            }
-        }
-
-        public void rotate() {
-            if (entityId >= 0) {
-                heading = (heading + 1) % 4;
-                E(entityId).headingCurrent(heading);
-            }
-        }
-
-        @Override
-        public void act(float delta) {
-            super.act(delta);
-            if (entityId >= 0) {
-                E e = E(entityId);
-                if (e.hasBody()) {
-                    final Body body = e.getBody();
-                    BundledAnimation bodyAnimation = getAnimationHandler().getBodyAnimation(body, heading);
-                    bodyAnimation.setAnimationTime(bodyAnimation.getAnimationTime() + delta);
-                }
-            }
         }
 
         @Override
         public void draw(Batch batch, float parentAlpha) {
             if (entityId >= 0) {
-                float offset = (Tile.TILE_PIXEL_WIDTH - getWidth()) / 2;
-                createDrawer(batch, E(entityId), new Pos2D(getX() - offset, getY() + getHeight()), getDescriptorHandler(), getAnimationHandler(), true).draw();
+                createDrawer(batch, E(entityId), new Pos2D(getX() - 32, getY()), getDescriptorHandler(), getAnimationHandler(), true).draw();
             }
         }
 

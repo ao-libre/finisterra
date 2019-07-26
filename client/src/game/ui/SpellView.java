@@ -55,22 +55,22 @@ public class SpellView extends Table {
     }
 
     private void changeCursor() {
-        WorldUtils.getWorld().ifPresent(world -> {
-            world.getSystem(GUI.class).getConsole().addInfo("Haz click para lanzar el hechizo");
-        });
-        Cursors.setCursor("select");
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        if (game.getScreen() instanceof GameScreen) {
+            ((GameScreen) game.getScreen()).getGUI().getConsole().addInfo("Haz click para lanzar el hechizo");
+            Cursors.setCursor("select");
+        }
     }
 
     public void updateSpells() {
-        WorldUtils.getWorld().ifPresent(world -> {
-            SpellHandler spellHandler =  world.getSystem(SpellHandler.class);
-            final Spell[] spells = spellHandler.getSpells();
-            Spell[] spellsToShow = new Spell[MAX_SPELLS];
-            System.arraycopy(spells, base, spellsToShow, 0, Math.min(MAX_SPELLS, spells.length));
-            for (int i = 0; i < MAX_SPELLS; i++) {
-                slots.get(i).setSpell(spellsToShow[i]);
-            }
-        });
+        SpellHandler spellHandler =  WorldUtils.getWorld().orElse(null).getSystem(SpellHandler.class);
+        final Spell[] spells = spellHandler.getSpells();
+        Spell[] spellsToShow = new Spell[MAX_SPELLS];
+        System.arraycopy(spells, base, spellsToShow, 0, Math.min(MAX_SPELLS, spells.length));
+        for (int i = 0; i < MAX_SPELLS; i++) {
+            slots.get(i).setSpell(spellsToShow[i]);
+        }
+
     }
 
     private ImageButton createCastButton() {

@@ -3,7 +3,6 @@ package game.managers;
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import game.handlers.AOAssetManager;
 import game.handlers.AnimationHandler;
 import model.textures.AOAnimation;
@@ -37,18 +36,19 @@ public class MapManager extends BaseSystem {
         doTileDraw(batch, delta, y, x, graphic);
     }
 
-    public void doTileDraw(SpriteBatch batch, float delta, int x, int y, int graphic) {
+    public void doTileDraw(SpriteBatch batch, float delta, int y, int x, int graphic) {
         // TODO Refactor maps layers to have animations separated
+        AOImage image = assetManager.getImage(graphic);
         TextureRegion tileRegion = null;
-        AOTexture texture = animationHandler.getTexture(graphic);
-        if (texture != null) {
+        if (image != null) {
             // TODO CACHE
-            tileRegion = texture.getTexture();
+            tileRegion = new AOTexture(image, false).getTexture();
         } else {
-            BundledAnimation animation = animationHandler.getAnimation(graphic);
+            AOAnimation animation = assetManager.getAnimation(graphic);
             if (animation != null) {
-                animation.setAnimationTime(animation.getAnimationTime() + delta);
-                tileRegion = animation.getGraphic();
+                BundledAnimation anim = new BundledAnimation(animation);
+                anim.setAnimationTime(anim.getAnimationTime() + delta);
+                tileRegion = anim.getGraphic();
             }
         }
 

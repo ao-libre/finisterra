@@ -1,31 +1,29 @@
 package game;
 
-import com.badlogic.gdx.files.FileHandle; // @todo FileHandle is not cross-platform (desktop only)
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
-import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.util.AOJson;
-
-import java.io.FileInputStream;
+import static game.utils.Resources.CLIENT_CONFIG;
 
 /**
  * @todo distinguish between Desktop-specific configuration (LWJGL configuration) and platform-independent configuration (Client, Network, etc.).
  * @see {@link AOGame}
  */
-public class ClientConfiguration extends PassiveSystem {
+public class ClientConfiguration {
 
     private Init initConfig;
     private Network network;
 
     public static ClientConfiguration loadConfig(String path) {
         Json configObject = new AOJson();
-        try (FileInputStream is = new FileInputStream(path)){
+        try {
             // Before GDX initialization
             // DO NOT USE 'Gdx.Files', because 'Gdx.Files' in the launcher is always NULL!
-            return configObject.fromJson(ClientConfiguration.class, is);
+            return configObject.fromJson(ClientConfiguration.class, new FileHandle(path));
+
         } catch (Exception ex) {
-            Log.error("Client configuration file not found!", ex); // @todo check for other errors
+            Log.debug("Client configuration file not found!");
         }
 
         return null;
@@ -54,9 +52,11 @@ public class ClientConfiguration extends PassiveSystem {
         // Default values of `Network`
         configOutput.setNetwork(new Network());
 
-        // Default values of `Network.servers`
-        Array<Network.Server> servers = configOutput.getNetwork().getServers();
-        servers.add(new Network.Server("localhost", "127.0.0.1", 7666));
+        // Default values of `Network.defaultServer`
+        Network.DefaultServer defServer = new Network.DefaultServer();
+        defServer.setHostname("45.235.98.116");
+        defServer.setPort(9000);
+        configOutput.getNetwork().setDefaultServer(defServer);
 
         return configOutput;
     }
@@ -77,12 +77,11 @@ public class ClientConfiguration extends PassiveSystem {
         this.network = network;
     }
 
-    public void save(String path) {
+    public void save() {
         Json json = new AOJson();
-        json.toJson(this, new FileHandle(path));
+        json.toJson(this, new FileHandle(CLIENT_CONFIG));
     }
 
-    // @todo this is Desktop specific
     public static class Init {
         public static final String lang = "Default";
         private Video video;
@@ -163,52 +162,19 @@ public class ClientConfiguration extends PassiveSystem {
     }
 
     public static class Network {
-        Array<Server> servers;
+        private DefaultServer defaultServer;
 
-        public Network() {
-            servers = new Array<>();
+        public DefaultServer getDefaultServer() {
+            return defaultServer;
         }
 
-        public Array<Server> getServers() {
-            return servers;
+        void setDefaultServer(DefaultServer defaultServer) {
+            this.defaultServer = defaultServer;
         }
 
-        public static class Server {
-            private String name;
+        public static class DefaultServer {
             private String hostname;
             private int port;
-
-            // empty constructor needed for de-serialization
-            public Server() {
-                this(null, "127.0.0.1", 7666);
-            }
-
-            public Server(String hostname, int port) {
-                this(null, hostname, port);
-            }
-
-            public Server(String name, String hostname, int port) {
-                this.name = name;
-                this.hostname = hostname;
-                this.port = port;
-            }
-
-            @Override
-            public String toString() {
-                String prefix = "";
-                if (this.name != null)
-                    prefix = this.name + "  ";
-
-                return prefix + this.hostname + ":" + this.port;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            void setName(String name) {
-                this.name = name;
-            }
 
             public String getHostname() {
                 return hostname;

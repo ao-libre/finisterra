@@ -7,8 +7,13 @@ old/
 **/gradle.properties
 out/
 **/out/
-desktop/*.tar.gz
-desktop/*.zip
+design/resources*
+desktop/jpackage/*
+desktop/build/releases/*.zip
+desktop/build/jdks/**
+desktop/finisterra*
+desktop/java*
+desktop/packing*
 desktop/jdk*
 desktop/desktop*
-desktop/Screenshots*
+desktop/assets/data/Screenshots/Screen.png

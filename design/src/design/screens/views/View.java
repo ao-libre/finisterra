@@ -1,68 +1,47 @@
 package design.screens.views;
 
+import com.artemis.SuperMapper;
 import com.artemis.World;
+import com.artemis.WorldConfiguration;
+import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.minlog.Log;
 import design.designers.IDesigner;
-import design.editors.fields.FieldEditor.FieldListener;
-import design.editors.fields.Listener;
 import design.screens.DesignScreen;
-import design.screens.ScreenEnum;
-import design.screens.ScreenManager;
 import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
-import game.screens.WorldScreen;
-import launcher.DesignCenter;
-import model.ID;
-import org.jetbrains.annotations.NotNull;
+import game.handlers.ObjectHandler;
+import game.systems.render.world.CharacterRenderingSystem;
+import game.utils.Skins;
 
-import java.util.ArrayList;
-import java.util.Optional;
+public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Parameters<T>>> extends DesignScreen {
 
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
-import static design.screens.views.View.State.MODIFIED;
-import static design.screens.views.View.State.SAVED;
-import static launcher.DesignCenter.SKIN;
+    public final static Skin SKIN = new Skins.AOSkin(Gdx.files.internal("skin/skin-composer-ui.json"));
 
-public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Parameters<T>>> extends DesignScreen implements WorldScreen, FieldListener {
+    private AnimationHandler animationHandler;
+    private DescriptorHandler descriptorHandler;
 
     private P designer;
-    private Button modify;
-    private Button delete;
+    private TextButton modify;
+    private TextButton delete;
     private List<T> list;
     private Preview<T> preview;
-    private Editor<T> itemView;
-    private ArrayList<Listener> listenerList = new ArrayList<>();
+    private Preview<T> itemView;
 
     public View(P designer) {
         this.designer = designer;
         Log.info("View Created: " + getClass().getName());
+        animationHandler = new AnimationHandler();
+        descriptorHandler = new DescriptorHandler();
         createUI();
         getMainTable().setBackground(SKIN.getDrawable("white"));
-    }
-
-    public void setListener(Listener listener) {
-        listenerList.clear();
-        listenerList.add(listener);
-    }
-
-    public void clearListener() {
-        listenerList.clear();
-    }
-
-    public ArrayList<Listener> getListenerList() {
-        return listenerList;
     }
 
     @Override
@@ -70,72 +49,26 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         Table leftPane = new Table();
         leftPane.pad(10);
         Table left = new Table();
-        left.add(createButtons()).right().growX().row();
+        Table buttons = createButtons();
+        left.add(buttons).row();
         List<T> list = createList();
-        list.setTouchable(Touchable.enabled);
-        ScrollPane listScroll = new ScrollPane(list);
-        listScroll.setFlickScroll(false);
-        listScroll.setFadeScrollBars(false);
-        listScroll.setScrollbarsVisible(true);
-        left.add(listScroll).left().grow();
-        leftPane.add(left).left().grow();
+        left.add(new ScrollPane(list));
+        leftPane.add(left).left().top().expandX();
 
         preview = createPreview();
         itemView = createItemView();
-        ScrollPane topRight = new ScrollPane(preview, SKIN);
-        ScrollPane bottomRight = new ScrollPane(itemView, SKIN);
+        ScrollPane topRight = new ScrollPane(preview);
+        topRight.setFadeScrollBars(false);
+        topRight.setForceScroll(true, true);
+        topRight.setFlickScroll(false);
+        ScrollPane bottomRight = new ScrollPane(itemView);
         bottomRight.setFadeScrollBars(false);
-        bottomRight.setForceScroll(false, true);
         bottomRight.setFlickScroll(false);
         SplitPane rightPane = new SplitPane(topRight, bottomRight, true, SKIN);
         SplitPane splitPane = new SplitPane(leftPane, rightPane, false, SKIN);
-        splitPane.setSplitAmount(0.3f);
         Table content = new Table();
         content.add(splitPane).grow();
-        if (list.getItems().size > 0) {
-            T item = list.getItems().get(0);
-            list.setSelected(item);
-            refreshSelection();
-        }
         return content;
-    }
-
-    @Override
-    protected Table createMenuButtons() {
-        Table table = new Table();
-        table.setBackground(SKIN.getDrawable("white"));
-        table.setColor(SKIN.getColor("button"));
-        table.pad(3);
-        table.defaults().space(5);
-        for (ScreenEnum screen : ScreenEnum.values()) {
-            boolean mainButton = screen.getType().equals(getClass());
-            TextButton button = new TextButton(screen.getTitle(), SKIN, mainButton ? "menu-button-selected" : "menu-button");
-            button.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    Gdx.app.postRunnable(() -> {
-                        ScreenManager.getInstance().showScreen(screen);
-                    });
-                }
-            });
-            table.add(button);
-        }
-        return table;
-    }
-
-    public void refreshPreview() {
-        if (getItemView() == null) return;
-        T t = getItemView().get();
-        getPreview().show(t);
-        clearListener();
-    }
-
-    public void saveEdition() {
-        T t = getItemView().get();
-        getDesigner().add(t);
-        int selectedIndex = list.getSelectedIndex();
-        loadItems(Optional.empty());
-        list.setSelectedIndex(selectedIndex);
     }
 
     public List<T> getList() {
@@ -146,21 +79,24 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         return preview;
     }
 
-    public Editor<T> getItemView() {
-        return itemView;
+    protected World createWorld() {
+        WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
+        SpriteBatch batch = new SpriteBatch();
+        builder
+                .with(new SuperMapper())
+                .with(new ObjectHandler())
+                .with(animationHandler)
+                .with(descriptorHandler);
+        WorldConfiguration config = builder.build();
+        return new World(config);
     }
 
     public AnimationHandler getAnimationHandler() {
-        return ((DesignCenter) Gdx.app.getApplicationListener()).getAnimationHandler();
+        return animationHandler;
     }
 
     public DescriptorHandler getDescriptorHandler() {
-        return ((DesignCenter) Gdx.app.getApplicationListener()).getDescriptorHandler();
-    }
-
-    @Override
-    public World getWorld() {
-        return ((DesignCenter) Gdx.app.getApplicationListener()).getWorld();
+        return descriptorHandler;
     }
 
     public P getDesigner() {
@@ -169,16 +105,16 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
 
     abstract Preview<T> createPreview();
 
-    abstract Editor<T> createItemView();
+    abstract Preview<T> createItemView();
 
     private Table createButtons() {
         Table buttons = new Table(SKIN);
         buttons.defaults().space(5);
-        Button create = new Button(SKIN, "new");
+        TextButton create = new TextButton("Create", SKIN);
         create.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                loadItems(designer.create());
+                designer.create();
             }
         });
         modify = new TextButton("Modify", SKIN);
@@ -189,7 +125,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
                 onModify(list.getSelected());
             }
         });
-        delete = new Button(SKIN, "delete");
+        delete = new TextButton("Delete", SKIN);
         delete.setDisabled(true);
         delete.addListener(new ClickListener() {
             @Override
@@ -197,7 +133,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
                 onDelete(list.getSelected());
             }
         });
-        TextButton save = new TextButton("Save", SKIN, "file");
+        TextButton save = new TextButton("Save", SKIN);
         save.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -228,10 +164,10 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
             dialog.show(getStage());
         });
     }
-
-    @Override
-    public void onModify() {
-        refreshPreview();
+        buttons.add(create);
+        buttons.add(delete);
+        buttons.add(save);
+        return buttons;
     }
 
     private void onModify(T selected) {
@@ -240,28 +176,22 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
 
     private void onDelete(T selected) {
         designer.delete(selected);
-        int selectedIndex = list.getSelectedIndex();
-        loadItems(Optional.empty());
-        if (list.getItems().size > 0) {
-            list.setSelectedIndex(Math.min(selectedIndex, list.getItems().size - 1));
-        }
     }
 
     private List<T> createList() {
         list = new List<>(SKIN);
-        loadItems(Optional.empty());
+        Array<T> items = new Array<>();
+        designer.get().forEach(items::add);
+
+        sort(items);
+        list.setItems(items);
         list.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                refreshSelection();
-            }
-        });
-        list.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                if (getTapCount() >= 2) {
-                    onSelect(list.getSelected());
-                }
+                modify.setDisabled(list.getSelected() == null);
+                delete.setDisabled(list.getSelected() == null);
+                preview.show(list.getSelected());
+                itemView.show(list.getSelected());
             }
         });
         return list;
@@ -293,6 +223,8 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
     public void update(int width, int height) {
         getStage().getViewport().update(width, height, true);
     }
+
+    protected abstract void sort(Array<T> items);
 
     abstract class Preview<T> extends Table {
 

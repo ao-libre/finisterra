@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static design.designers.AnimationDesigner.AnimationParameters;
+import static design.designers.AnimationDesigner.*;
+
 
 public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParameters> {
 
@@ -23,8 +25,8 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
     private AOJson json = new AOJson();
     private List<AOAnimation> animations;
 
-    public int getFreeId() {
-        return animations.get(animations.size() - 1).getId() + 1;
+    private int getFreeId() {
+        return 0;
     }
 
     public AnimationDesigner(AnimationParameters parameters) {
@@ -59,11 +61,8 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
     }
 
     @Override
-    public Optional<AOAnimation> create() {
-        AOAnimation animation = new AOAnimation();
-        animation.setId(getFreeId());
-        animations.add(animation);
-        return Optional.of(animation);
+    public AOAnimation create() {
+        return null;
     }
 
     @Override
@@ -72,31 +71,6 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
 
     @Override
     public void delete(AOAnimation element) {
-        animations.remove(element);
-    }
-
-    @Override
-    public void add(AOAnimation animation) {
-        int index = getIndexOf(animation.getId());
-        if (index >= 0) {
-            animations.set(index, animation);
-        } else {
-            animations.add(animation);
-        }
-    }
-
-    @Override
-    public boolean contains(int id) {
-        return getIndexOf(id) >= 0;
-    }
-
-    private int getIndexOf(int animation) {
-        for (int i = 0; i < animations.size(); i++) {
-            if (animations.get(i).getId() == animation) {
-                return i;
-            }
-        }
-        return -1;
     }
 
     public static class AnimationParameters implements Parameters<AOAnimation> {

@@ -69,7 +69,7 @@ public class WorldRenderingSystem extends BaseSystem {
         if (mapNumber > 0) {
             getRange().forEachTile((x, y) -> {
                 WorldPos pos = MapHandler.getHelper().getEffectivePosition(mapNumber, x, y);
-                getMapElement(pos).ifPresent(element -> mapManager.doTileDraw(batch, world.getDelta(), x, y, element));
+                getMapElement(pos).ifPresent(element -> mapManager.doTileDraw(batch, world.getDelta(), element, x, y));
                 getBeforeEffect(pos).forEach(e -> effectRenderingSystem.drawEffect(e, e.hasWorldPos() ? translatePos(e.getWorldPos(), x, y) : Optional.empty()));
                 getPlayer(pos).ifPresent(e -> characterRenderingSystem.drawPlayer(e, translatePos(e.getWorldPos(), x, y)));
                 getAfterEffect(pos).forEach(e -> effectRenderingSystem.drawEffect(e, e.hasWorldPos() ? translatePos(e.getWorldPos(), x, y) : Optional.empty()));
