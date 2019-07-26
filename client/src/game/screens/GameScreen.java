@@ -58,9 +58,10 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     private FPSLogger logger;
     private SpriteBatch spriteBatch;
     private WorldConfigurationBuilder worldConfigBuilder;
-    private ClientConfiguration clientConfiguration;
+    private final ClientConfiguration clientConfiguration;
 
-    public GameScreen() {
+    public GameScreen(ClientConfiguration clientConfiguration) {
+        this.clientConfiguration = clientConfiguration;
         this.spriteBatch = new SpriteBatch();
         this.logger = new FPSLogger();
         long start = System.currentTimeMillis();
@@ -77,11 +78,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         world.getSystem(GUI.class).getInventory().updateUserInventory(0);
         world.getSystem(GUI.class).getSpellView().updateSpells();
     }
-    
-    public void setClientConfiguration(ClientConfiguration clientConfiguration) {
-        this.clientConfiguration = clientConfiguration;
-    }
-    
+
     public World getWorld() {
         return world;
     }
@@ -142,7 +139,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 // Other
                 .with(new MapManager())
                 .with(new TagManager())
-                .with(new UuidEntityManager()) // why?
+                .with(new UuidEntityManager())
                 .with(clientConfiguration);
 
     }

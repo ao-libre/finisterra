@@ -61,8 +61,11 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
 
     public void toGame(GameScreen gameScreen) {
         setTransition(new ColorFadeTransition(Color.BLACK, Interpolation.exp10), 0f);
-        gameScreen.setClientConfiguration(this.clientConfiguration);
         setScreen(gameScreen);
+    }
+
+    public ClientConfiguration getClientConfiguration() {
+        return clientConfiguration;
     }
 
     public AOAssetManager getAssetManager() {

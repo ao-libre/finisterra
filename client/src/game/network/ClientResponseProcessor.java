@@ -56,7 +56,7 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
         AOGame game = (AOGame) Gdx.app.getApplicationListener();
         if (game.getScreen() instanceof RoomScreen) {
             RoomScreen roomScreen = (RoomScreen) game.getScreen();
-            GameScreen gameScreen = (GameScreen) ScreenEnum.GAME.getScreen();
+            GameScreen gameScreen = (GameScreen) ScreenEnum.GAME.getScreen(game.getClientConfiguration());
             ClientSystem clientSystem = new ClientSystem(startGameResponse.getHost(), startGameResponse.getTcpPort());
             clientSystem.start();
             gameScreen.initWorld(clientSystem);
