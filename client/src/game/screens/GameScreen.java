@@ -50,6 +50,8 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     private static final int PRE_ENTITY_RENDER_PRIORITY = ENTITY_RENDER_PRIORITY + 1;
     private static final int POST_ENTITY_RENDER_PRIORITY = ENTITY_RENDER_PRIORITY - 1;
     private static final int DECORATION_PRIORITY = ENTITY_RENDER_PRIORITY - 2;
+    private static final int GUI = DECORATION_PRIORITY - 1;
+
     public static World world;
     public static int player = -1;
     private FPSLogger logger;
@@ -92,8 +94,6 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .with(HIGH, new MovementAnimationSystem())
                 .with(HIGH, new IdleAnimationSystem())
                 .with(HIGH, new MovementSystem())
-                // GUI
-                .with(HIGH, new GUI())
                 // Camera
                 .with(HIGH, new CameraSystem(AOGame.GAME_SCREEN_ZOOM))
                 .with(HIGH, new CameraFocusSystem())
@@ -131,6 +131,8 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .with(DECORATION_PRIORITY, new CharacterStatesRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(spriteBatch))
                 .with(WorldConfigurationBuilder.Priority.NORMAL, new BuffRenderingSystem(spriteBatch))
+                // GUI
+                .with(GUI, new GUI())
                 // Other
                 .with(new MapManager())
                 .with(new TagManager())
@@ -196,7 +198,6 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public void dispose() {
         world.getSystem(ClientSystem.class).stop();
         world.getSystem(GUI.class).dispose();
-        world.dispose();
     }
 
 }

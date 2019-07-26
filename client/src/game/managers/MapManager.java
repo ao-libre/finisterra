@@ -3,6 +3,7 @@ package game.managers;
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import game.handlers.AOAssetManager;
 import game.handlers.AnimationHandler;
 import model.textures.AOAnimation;
@@ -26,7 +27,6 @@ public class MapManager extends BaseSystem {
     public static final int MAX_MAP_SIZE_HEIGHT = 100;
     public static final int MIN_MAP_SIZE_HEIGHT = 1;
     private AnimationHandler animationHandler;
-    private AOAssetManager assetManager;
 
     public void drawTile(Map map, SpriteBatch batch, float delta, int layer, int y, int x) {
         int graphic = map.getTile(x, y).getGraphic(layer);
@@ -37,19 +37,18 @@ public class MapManager extends BaseSystem {
         doTileDraw(batch, delta, y, x, graphic);
     }
 
-    public void doTileDraw(SpriteBatch batch, float delta, int y, int x, int graphic) {
+    public void doTileDraw(SpriteBatch batch, float delta, int x, int y, int graphic) {
         // TODO Refactor maps layers to have animations separated
-        AOImage image = assetManager.getImage(graphic);
         TextureRegion tileRegion = null;
-        if (image != null) {
+        AOTexture texture = animationHandler.getTexture(graphic);
+        if (texture != null) {
             // TODO CACHE
-            tileRegion = new AOTexture(image, false).getTexture();
+            tileRegion = texture.getTexture();
         } else {
-            AOAnimation animation = assetManager.getAnimation(graphic);
+            BundledAnimation animation = animationHandler.getAnimation(graphic);
             if (animation != null) {
-                BundledAnimation anim = new BundledAnimation(animation);
-                anim.setAnimationTime(anim.getAnimationTime() + delta);
-                tileRegion = anim.getGraphic();
+                animation.setAnimationTime(animation.getAnimationTime() + delta);
+                tileRegion = animation.getGraphic();
             }
         }
 

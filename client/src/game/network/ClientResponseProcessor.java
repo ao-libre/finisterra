@@ -61,7 +61,8 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
             clientSystem.start();
             gameScreen.initWorld(clientSystem);
             clientSystem.getKryonetClient().sendToAll(new PlayerLoginRequest(roomScreen.getPlayer()));
-            game.setScreen(gameScreen);
+            AOGame aoGame = game;
+            aoGame.toGame(gameScreen);
         }
     }
 
