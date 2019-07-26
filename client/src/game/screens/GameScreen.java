@@ -146,6 +146,8 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .with(new MapManager())
                 .with(new TagManager())
                 .with(new UuidEntityManager()); // why?
+                .with(getClientConfiguration());
+
     }
 
     public void initWorld(ClientSystem clientSystem) {
