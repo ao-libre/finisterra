@@ -55,11 +55,10 @@ task prepareInput(dependsOn: dist) {
         into inputPath
     }
 }
-
 // creates a replacement runtime via jlink command (much smaller than jpackage)
 task jlink(type: Exec, dependsOn: prepareInput) {
 	
-	doFirst{
+	doFirst { 
 		download {
 
 			if (osName().contains('windows')) {
