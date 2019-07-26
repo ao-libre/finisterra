@@ -41,14 +41,14 @@ import static game.utils.Resources.GAME_DESCRIPTORS_PATH;
 @Wire
 public class DefaultAOAssetManager extends AssetManager implements AOAssetManager {
 
-    private ClientConfiguration cConfig;
+    private ClientConfiguration clientConfiguration;
     private static final Class<HashMap<Integer, BodyDescriptor>> BODIES_CLASS;
     private static final Class<ArrayList<AOImage>> IMAGE_CLASS;
     private static final Class<ArrayList<AOAnimation>> ANIMATION_CLASS;
     private static final Class<HashMap<Integer, Obj>> OBJS_CLASS;
     private static final Class<HashMap<Integer, Spell>> SPELLS_CLASS;
     private static final Class<ArrayList<Descriptor>> DESCRIPTORS_CLASS;
-    private final String LANGUAGES_FILE = SharedResources.LANGUAGES_FOLDER + cConfig.getInitConfig().getLanguage() + SharedResources.LANGUAGES_EXT;
+    private final String LANGUAGES_FILE = SharedResources.LANGUAGES_FOLDER + clientConfiguration.getInitConfig().getLanguage() + SharedResources.LANGUAGES_EXT;
 
     private Map<Integer, AOImage> images;
     private Map<Integer, AOAnimation> animations;
