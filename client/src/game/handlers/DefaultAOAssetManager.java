@@ -1,5 +1,6 @@
 package game.handlers;
 
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.ParticleEffectLoader.ParticleEffectParameter;
@@ -12,6 +13,8 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.I18NBundle;
+import game.ClientConfiguration;
 import game.loaders.*;
 import game.loaders.ObjectsLoader.ObjectParameter;
 import game.utils.Resources;
@@ -35,18 +38,21 @@ import static game.loaders.DescriptorsLoader.*;
 import static game.loaders.DescriptorsLoader.DescriptorParameter.descriptor;
 import static game.utils.Resources.GAME_DESCRIPTORS_PATH;
 
+@Wire
 public class DefaultAOAssetManager extends AssetManager implements AOAssetManager {
 
+    private ClientConfiguration cConfig;
     private static final Class<HashMap<Integer, BodyDescriptor>> BODIES_CLASS;
     private static final Class<ArrayList<AOImage>> IMAGE_CLASS;
     private static final Class<ArrayList<AOAnimation>> ANIMATION_CLASS;
     private static final Class<HashMap<Integer, Obj>> OBJS_CLASS;
     private static final Class<HashMap<Integer, Spell>> SPELLS_CLASS;
     private static final Class<ArrayList<Descriptor>> DESCRIPTORS_CLASS;
+    private final String LANGUAGES_FILE = SharedResources.LANGUAGES_FOLDER + cConfig.getInitConfig().getLanguage() + SharedResources.LANGUAGES_EXT;
 
     private Map<Integer, AOImage> images;
     private Map<Integer, AOAnimation> animations;
-    private ClientConfiguration cConfig;
+
 
     static {
         HashMap<Integer, BodyDescriptor> integerBodyDescriptorHashMap = new HashMap<>();
@@ -285,7 +291,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     public String getMessages(String key, Object... params) {
         if (!isLoaded(LANGUAGES_FILE)) {
-            load(SharedResources.LANGUAGES_FOLDER + ClientConfiguration.Init.lang + LANGUAGES_EXTENSION, I18NBundle.class);
+            load(LANGUAGES_FILE, I18NBundle.class);
             finishLoadingAsset(LANGUAGES_FILE);
         }
 
