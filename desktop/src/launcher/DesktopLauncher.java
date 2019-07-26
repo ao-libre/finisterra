@@ -1,7 +1,11 @@
 package launcher;
 
+import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Files.FileType;
+import com.badlogic.gdx.backends.headless.HeadlessFileHandle;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.glutils.HdpiMode;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
@@ -9,12 +13,13 @@ import game.ClientConfiguration;
 import game.ClientConfiguration.Init;
 import game.ClientConfiguration.Init.Video;
 import game.utils.Resources;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class DesktopLauncher {
 
@@ -56,19 +61,14 @@ public class DesktopLauncher {
          * Set the icon that will be used in the window's title bar and in MacOS's dock bar.
          */
         if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-            try (FileInputStream is = new FileInputStream(Resources.CLIENT_ICON)) {
-                try {
-                    BufferedImage image = ImageIO.read(is);
-                    Taskbar.getTaskbar().setIconImage(image);
-                } catch (IOException e) {
-                    Log.error("Failed to load icon", e);
-                }
-
-            } catch (FileNotFoundException e) {
-                Log.error("Image not found", e);
+            FileHandle fileHandle = new HeadlessFileHandle(Resources.CLIENT_ICON, FileType.Internal);
+            try (InputStream is = fileHandle.read()){
+                BufferedImage image = ImageIO.read(is);
+                Taskbar.getTaskbar().setIconImage(image);
             } catch (IOException e) {
-                Log.error("Couldn't read image", e);
+                Log.error("Failed to load icon", e);
             }
+
         } else {
             cfg.setWindowIcon(Resources.CLIENT_ICON);
         }

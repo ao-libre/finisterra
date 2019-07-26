@@ -21,7 +21,6 @@ public abstract class RenderingSystem extends OrderedEntityProcessingSystem {
 
     private SpriteBatch batch;
     private CameraKind kind;
-    @Wire
     private CameraSystem cameraSystem;
 
     public RenderingSystem(Aspect.Builder aspect, SpriteBatch batch, CameraKind kind) {
