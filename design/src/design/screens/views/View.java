@@ -278,7 +278,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
 
     public void loadItems(Optional<T> selection) {
         Array<T> items = new Array<>();
-        designer.get().forEach(items::add);
+        designer.get().values().forEach(items::add);
         sort(items);
         list.setItems(items);
         selection.ifPresent(sel -> {

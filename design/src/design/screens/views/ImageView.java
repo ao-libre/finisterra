@@ -18,10 +18,8 @@ import model.textures.AOImage;
 import model.textures.AOTexture;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static launcher.DesignCenter.SKIN;
@@ -79,7 +77,7 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
         });
         buttons.add(create).left();
         buttons.add(save).left().expandX();
-        List<AOImage> aoImages = getDesigner().get();
+        Collection<AOImage> aoImages = getDesigner().get().values();
         drawables = aoImages.stream().collect(Collectors.toMap(image -> image, this::getTextureDrawable));
         Table scrollableContent = new Table();
         scrollableContent.pad(5);

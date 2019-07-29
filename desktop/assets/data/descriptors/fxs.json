@@ -1,283 +1,220 @@
 [
-
   {
-    class: fxs,
-    indexs: [
+    "id": 1,
+    "indexs": [
       115
     ],
-    offsetX: 0,
-    offsetY: 32
+    "offsetY": 32
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 2,
+    "indexs": [
       119
     ],
-    offsetX: 0,
-    offsetY: -15
+    "offsetY": -15
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 3,
+    "indexs": [
       123
     ],
-    offsetX: 0,
-    offsetY: -15
+    "offsetY": -15
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 4,
+    "indexs": [
       134
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 5,
+    "indexs": [
       145
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 6,
+    "indexs": [
       156
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 7,
+    "indexs": [
       172
     ],
-    offsetX: 0,
-    offsetY: 30
+    "offsetY": 30
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 8,
+    "indexs": [
       183
     ],
-    offsetX: 0,
-    offsetY: 32
+    "offsetY": 32
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 9,
+    "indexs": [
       194
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 10,
+    "indexs": [
       205
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 11,
+    "indexs": [
       221
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 12,
+    "indexs": [
       237
     ],
-    offsetX: 0,
-    offsetY: 32
+    "offsetY": 32
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 13,
+    "indexs": [
       259
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 14,
+    "indexs": [
       265
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 15,
+    "indexs": [
       275
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 16,
+    "indexs": [
       286
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 17,
+    "indexs": [
       420
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 18,
+    "indexs": [
       93
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 19,
+    "indexs": [
       297
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 20,
+    "indexs": [
       421
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 21,
+    "indexs": [
       308
     ],
-    offsetX: 0,
-    offsetY: 5
+    "offsetY": 5
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 22,
+    "indexs": [
       1885
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 23,
+    "indexs": [
       1894
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 24,
+    "indexs": [
       2316
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 25,
+    "indexs": [
       4797
     ],
-    offsetX: 0,
-    offsetY: 15
+    "offsetY": 15
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 26,
+    "indexs": [
       5954
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 27,
+    "indexs": [
       6580
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 28,
+    "indexs": [
       9568
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 29,
+    "indexs": [
       5941
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 30,
+    "indexs": [
       5942
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 31,
+    "indexs": [
       5943
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 32,
+    "indexs": [
       18191
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 33,
+    "indexs": [
       18401
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 34,
+    "indexs": [
       18413
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   },
   {
-    class: fxs,
-    indexs: [
+    "id": 35,
+    "indexs": [
       20503
-    ],
-    offsetX: 0,
-    offsetY: 0
+    ]
   }
 ]

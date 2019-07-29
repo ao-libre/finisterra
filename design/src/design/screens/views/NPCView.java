@@ -16,7 +16,6 @@ import com.badlogic.gdx.utils.Array;
 import design.designers.NPCDesigner;
 import design.designers.NPCDesigner.NPCParameters;
 import design.editors.NPCEditor;
-import design.editors.fields.FieldEditor;
 import entity.character.parts.Body;
 import entity.character.states.Heading;
 import model.textures.BundledAnimation;
@@ -30,7 +29,7 @@ import shared.model.npcs.NPCToEntity;
 import java.util.Comparator;
 
 import static com.artemis.E.E;
-import static design.editors.fields.FieldEditor.*;
+import static design.editors.fields.FieldEditor.FieldListener;
 import static game.systems.render.world.CharacterRenderingSystem.CharacterDrawer.createDrawer;
 import static launcher.DesignCenter.SKIN;
 
@@ -61,7 +60,7 @@ public class NPCView extends View<NPC, NPCDesigner> {
 
     class NPCItem extends Editor<NPC> {
 
-        public NPCItem() {
+        NPCItem() {
             super(SKIN);
         }
 
@@ -85,11 +84,11 @@ public class NPCView extends View<NPC, NPCDesigner> {
         private AnimationActor animationActor;
         private NPC npc;
 
-        public NPCPreview() {
+        NPCPreview() {
             super(SKIN);
         }
 
-        public void init() {
+        void init() {
             Button table = new Button(SKIN, "color-base-static");
             table.defaults().space(5);
             Table buttons = new Table();
@@ -146,14 +145,10 @@ public class NPCView extends View<NPC, NPCDesigner> {
         private int entityId = -1;
         private int heading = Heading.HEADING_SOUTH;
 
-        public AnimationActor() {
+        AnimationActor() {
         }
 
-        public int getEntityId() {
-            return entityId;
-        }
-
-        public void setEntityId(int entityId) {
+        void setEntityId(int entityId) {
             this.entityId = entityId;
             E e = E(entityId);
             if (e.hasBody()) {
@@ -171,13 +166,13 @@ public class NPCView extends View<NPC, NPCDesigner> {
             }
         }
 
-        public void move() {
+        void move() {
             if (entityId >= 0) {
                 E(entityId).moving(!E(entityId).isMoving());
             }
         }
 
-        public void rotate() {
+        void rotate() {
             if (entityId >= 0) {
                 heading = (heading + 1) % 4;
                 E(entityId).headingCurrent(heading);
@@ -201,8 +196,24 @@ public class NPCView extends View<NPC, NPCDesigner> {
         public void draw(Batch batch, float parentAlpha) {
             if (entityId >= 0) {
                 float offset = (Tile.TILE_PIXEL_WIDTH - getWidth()) / 2;
-                createDrawer(batch, E(entityId), new Pos2D(getX() - offset, getY() + getHeight()), getDescriptorHandler(), getAnimationHandler(), true).draw();
+                if (validate()) {
+                    createDrawer(batch, E(entityId), new Pos2D(getX() - offset, getY() + getHeight()), getDescriptorHandler(), getAnimationHandler(), true).draw();
+                }
             }
+        }
+
+        private boolean validate() {
+            boolean result = true;
+            if (entityId >= 0) {
+                E e = E(entityId);
+                if (e.hasBody()) {
+                    result = getDescriptorHandler().hasBody(e.getBody().index);
+                }
+                if (e.hasHead()) {
+                    result &= getDescriptorHandler().hasHead(e.getHead().index);
+                }
+            }
+            return result;
         }
 
     }

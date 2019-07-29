@@ -8,7 +8,8 @@ import model.textures.AOAnimation;
 import shared.util.AOJson;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
+import java.util.Map;
 import java.util.Optional;
 
 import static design.designers.AnimationDesigner.AnimationParameters;
@@ -21,10 +22,10 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
     private final String OUTPUT_FOLDER = "output/";
 
     private AOJson json = new AOJson();
-    private List<AOAnimation> animations;
+    private Map<Integer, AOAnimation> animations;
 
     public int getFreeId() {
-        return animations.get(animations.size() - 1).getId() + 1;
+        return animations.values().stream().max(Comparator.comparingInt(AOAnimation::getId)).get().getId() + 1;
     }
 
     public AnimationDesigner(AnimationParameters parameters) {
@@ -45,24 +46,26 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
 
     @Override
     public void save() {
-        json.toJson(animations, ArrayList.class, AOAnimation.class, Gdx.files.local(OUTPUT_FOLDER + ANIMATIONS_FILE_NAME + JSON_EXT));
+        ArrayList<AOAnimation> list = new ArrayList<>(animations.values());
+        list.sort(Comparator.comparingInt(AOAnimation::getId));
+        json.toJson(list, ArrayList.class, AOAnimation.class, Gdx.files.local(OUTPUT_FOLDER + ANIMATIONS_FILE_NAME + JSON_EXT));
     }
 
     @Override
-    public List<AOAnimation> get() {
+    public Map<Integer, AOAnimation> get() {
         return animations;
     }
 
     @Override
     public Optional<AOAnimation> get(int id) {
-        return animations.stream().filter(a -> id == a.getId()).findFirst();
+        return Optional.ofNullable(animations.get(id));
     }
 
     @Override
     public Optional<AOAnimation> create() {
         AOAnimation animation = new AOAnimation();
         animation.setId(getFreeId());
-        animations.add(animation);
+        animations.put(animation.getId(), animation);
         return Optional.of(animation);
     }
 
@@ -72,31 +75,17 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
 
     @Override
     public void delete(AOAnimation element) {
-        animations.remove(element);
+        animations.remove(element.getId());
     }
 
     @Override
     public void add(AOAnimation animation) {
-        int index = getIndexOf(animation.getId());
-        if (index >= 0) {
-            animations.set(index, animation);
-        } else {
-            animations.add(animation);
-        }
+        animations.put(animation.getId(), animation);
     }
 
     @Override
     public boolean contains(int id) {
-        return getIndexOf(id) >= 0;
-    }
-
-    private int getIndexOf(int animation) {
-        for (int i = 0; i < animations.size(); i++) {
-            if (animations.get(i).getId() == animation) {
-                return i;
-            }
-        }
-        return -1;
+        return animations.containsKey(id);
     }
 
     public static class AnimationParameters implements Parameters<AOAnimation> {

@@ -3,6 +3,7 @@ package design.designers;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface IDesigner<T, P extends IDesigner.Parameters<T>> {
@@ -13,7 +14,7 @@ public interface IDesigner<T, P extends IDesigner.Parameters<T>> {
 
     void save();
 
-    List<T> get();
+    Map<Integer, T> get();
 
     Optional<T> get(int id);
 

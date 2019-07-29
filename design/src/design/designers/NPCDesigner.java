@@ -11,6 +11,7 @@ import shared.util.AOJson;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static design.designers.NPCDesigner.NPCParameters;
 
@@ -29,7 +30,7 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
     private AOJson json = new AOJson();
 
     private int getFreeId() {
-        return 0;
+        return npcs.keySet().stream().max(Integer::compareTo).get() + 1;
     }
 
     public NPCDesigner(NPCParameters parameters) {
@@ -60,12 +61,13 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
     @Override
     public void save() {
         FileHandle outputFile = Gdx.files.local(OUTPUT_FOLDER + NPCS_JSON);
-        json.toJson(npcs, HashMap.class, NPC.class, outputFile);
+        List<NPC> list = npcs.values().stream().sorted(Comparator.comparingInt(NPC::getId)).collect(Collectors.toList());
+        json.toJson(list, ArrayList.class, NPC.class, outputFile);
     }
 
     @Override
-    public List<NPC> get() {
-        return new ArrayList<>(npcs.values());
+    public Map<Integer, NPC> get() {
+        return npcs;
     }
 
     @Override

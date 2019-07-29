@@ -51,9 +51,8 @@ public class AnimationHandler extends PassiveSystem {
     private DescriptorHandler descriptorHandler;
     private ObjectHandler objectHandler;
 
-    public AnimationHandler() {
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        assetManager = game.getAssetManager();
+    public AnimationHandler(AOAssetManager assetManager) {
+        this.assetManager = assetManager;
     }
 
     private List<BundledAnimation> createAnimations(IDescriptor descriptor) {
@@ -80,7 +79,7 @@ public class AnimationHandler extends PassiveSystem {
 
     public AOTexture getHeadAnimation(Head head, int current) {
         return headAnimations.computeIfAbsent(head, h -> {
-            HeadDescriptor descriptor = descriptorHandler.getHead(h.index - 1);
+            HeadDescriptor descriptor = descriptorHandler.getHead(h.index);
             return createTextures(descriptor);
         }).get(current);
     }
@@ -95,7 +94,7 @@ public class AnimationHandler extends PassiveSystem {
     public BundledAnimation getWeaponAnimation(Weapon weapon, int current) {
         return weaponAnimations.computeIfAbsent(weapon, w -> {
             WeaponObj weaponObj = (WeaponObj) objectHandler.getObject(w.index).get();
-            WeaponDescriptor descriptor = descriptorHandler.getWeapon(Math.max(weaponObj.getAnimationId() - 1, 0));
+            WeaponDescriptor descriptor = descriptorHandler.getWeapon(Math.max(weaponObj.getAnimationId(), 0));
             return createAnimations(descriptor);
         }).get(current);
     }
@@ -103,7 +102,7 @@ public class AnimationHandler extends PassiveSystem {
     public BundledAnimation getHelmetsAnimation(Helmet helmet, int current) {
         return helmetAnimations.computeIfAbsent(helmet, h -> {
             HelmetObj helmetObj = (HelmetObj) objectHandler.getObject(h.index).get();
-            HelmetDescriptor descriptor = descriptorHandler.getHelmet(Math.max(helmetObj.getAnimationId() - 1, 0));
+            HelmetDescriptor descriptor = descriptorHandler.getHelmet(Math.max(helmetObj.getAnimationId(), 0));
             return createAnimations(descriptor);
         }).get(current);
     }
@@ -111,7 +110,7 @@ public class AnimationHandler extends PassiveSystem {
     public BundledAnimation getShieldAnimation(Shield shield, int current) {
         return shieldAnimations.computeIfAbsent(shield, s -> {
             ShieldObj shieldObj = (ShieldObj) objectHandler.getObject(s.index).get();
-            ShieldDescriptor descriptor = descriptorHandler.getShield(Math.max(shieldObj.getAnimationId() - 1, 0));
+            ShieldDescriptor descriptor = descriptorHandler.getShield(Math.max(shieldObj.getAnimationId(), 0));
             return createAnimations(descriptor);
         }).get(current);
     }

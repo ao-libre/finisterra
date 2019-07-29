@@ -6,6 +6,7 @@ import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import game.loaders.DescriptorsLoader;
 import model.descriptors.*;
+import model.textures.AOAnimation;
 import org.jetbrains.annotations.NotNull;
 import shared.util.AOJson;
 
@@ -20,7 +21,7 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
     private final String OUTPUT_FOLDER = "output/";
 
     private AOJson json = new AOJson();
-    private List<T> descriptors;
+    private Map<Integer, T> descriptors;
     private Class<T> tClass;
 
     public DescriptorDesigner(Class<T> tClass) {
@@ -36,33 +37,40 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
     public void load(Parameters<T> params) {
         AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
         AOAssetManager assetManager = game.getAssetManager();
+        Collection<? extends Descriptor> values = Collections.emptyList();
         if (tClass.equals(HeadDescriptor.class)) {
-            descriptors = assetManager.getHeads().stream().map(tClass::cast).collect(Collectors.toList());
+            values = assetManager.getHeads().values();
         } else if (tClass.equals(BodyDescriptor.class)) {
-            Map<Integer, BodyDescriptor> bodies = assetManager.getBodies();
-            descriptors = bodies.values().stream().map(tClass::cast).collect(Collectors.toList());
+            values = assetManager.getBodies().values();
         } else if (tClass.equals(FXDescriptor.class)) {
-            descriptors = assetManager.getFXs().stream().map(tClass::cast).collect(Collectors.toList());
+            values = assetManager.getFXs().values();
         } else if (tClass.equals(HelmetDescriptor.class)) {
-            descriptors = assetManager.getHelmets().stream().map(tClass::cast).collect(Collectors.toList());
+            values = assetManager.getHelmets().values();
         } else if (tClass.equals(ShieldDescriptor.class)) {
-            descriptors = assetManager.getShields().stream().map(tClass::cast).collect(Collectors.toList());
+            values = assetManager.getShields().values();
         } else if (tClass.equals(WeaponDescriptor.class)) {
-            descriptors = assetManager.getWeapons().stream().map(tClass::cast).collect(Collectors.toList());
+            values = assetManager.getWeapons().values();
         }
-        for (int i = 0; i < descriptors.size(); i++) {
-            descriptors.get(i).setId(i + 1);
-        }
+        descriptors = toMap(values);
+    }
+
+    @NotNull
+    private Map<Integer, T> toMap(Collection<? extends Descriptor> values) {
+        return values.stream().map(tClass::cast).collect(Collectors.toMap(Descriptor::getId, o -> o));
     }
 
     @Override
     public void reload() {
-
+        load(new DescriptorParameters());
     }
 
     @Override
     public void save() {
-        List<Descriptor> toSave = descriptors.stream().filter(this::anyAnimation).collect(Collectors.toList());
+        List<Descriptor> toSave = descriptors.values()
+                .stream()
+                .filter(this::anyAnimation)
+                .sorted(Comparator.comparingInt(Descriptor::getId))
+                .collect(Collectors.toList());
         json.toJson(toSave, ArrayList.class, tClass, Gdx.files.local(OUTPUT_FOLDER + getFileName() + JSON_EXT));
     }
 
@@ -90,13 +98,13 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
     }
 
     @Override
-    public List<T> get() {
+    public Map<Integer, T> get() {
         return descriptors;
     }
 
     @Override
     public Optional<T> get(int id) {
-        return descriptors.stream().filter(a -> id == a.getId()).findFirst();
+        return Optional.ofNullable(descriptors.get(id));
     }
 
     @Override
@@ -115,46 +123,34 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
         } else if (tClass.equals(WeaponDescriptor.class)) {
             t = (T) new WeaponDescriptor();
         }
-        descriptors.add(t);
+        t.setId(getFreeId());
+        descriptors.put(t.getId(), t);
         return Optional.ofNullable(t);
+    }
+
+    private int getFreeId() {
+        return descriptors.values().stream().max(Comparator.comparingInt(Descriptor::getId)).get().getId() + 1;
     }
 
     @Override
     public void add(T t) {
-        // TODO check
-        int index = getIndexOf(t.getId());
-        if (index >= 0) {
-            descriptors.set(index, t);
-        } else {
-            descriptors.add(t);
-        }
-    }
-
-    private int getIndexOf(int animation) {
-        for (int i = 0; i < descriptors.size(); i++) {
-            if (descriptors.get(i).getId() == animation) {
-                return i;
-            }
-        }
-        return -1;
+        descriptors.put(t.getId(), t);
     }
 
     @Override
     public boolean contains(int id) {
-        return getIndexOf(id) >= 0;
+        return descriptors.containsKey(id);
     }
 
     @Override
-    public void modify(Descriptor element, Stage stage) {
-
-    }
+    public void modify(Descriptor element, Stage stage) {}
 
     @Override
     public void delete(Descriptor element) {
-        descriptors.remove(element);
+        descriptors.remove(element.id);
     }
 
-    class DescriptorParameters implements Parameters<T> {
+    private class DescriptorParameters implements Parameters<T> {
     }
 
 }
