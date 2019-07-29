@@ -25,7 +25,7 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
     private Map<Integer, AOAnimation> animations;
 
     public int getFreeId() {
-        return animations.get(animations.size() - 1).getId() + 1;
+        return animations.values().stream().max(Comparator.comparingInt(AOAnimation::getId)).get().getId() + 1;
     }
 
     public AnimationDesigner(AnimationParameters parameters) {

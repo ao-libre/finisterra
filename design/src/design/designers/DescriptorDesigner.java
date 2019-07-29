@@ -6,6 +6,7 @@ import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import game.loaders.DescriptorsLoader;
 import model.descriptors.*;
+import model.textures.AOAnimation;
 import org.jetbrains.annotations.NotNull;
 import shared.util.AOJson;
 
@@ -122,8 +123,13 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
         } else if (tClass.equals(WeaponDescriptor.class)) {
             t = (T) new WeaponDescriptor();
         }
+        t.setId(getFreeId());
         descriptors.put(t.getId(), t);
         return Optional.ofNullable(t);
+    }
+
+    private int getFreeId() {
+        return descriptors.values().stream().max(Comparator.comparingInt(Descriptor::getId)).get().getId() + 1;
     }
 
     @Override
@@ -137,9 +143,7 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
     }
 
     @Override
-    public void modify(Descriptor element, Stage stage) {
-
-    }
+    public void modify(Descriptor element, Stage stage) {}
 
     @Override
     public void delete(Descriptor element) {

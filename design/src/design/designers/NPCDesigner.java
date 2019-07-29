@@ -30,7 +30,7 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
     private AOJson json = new AOJson();
 
     private int getFreeId() {
-        return 0;
+        return npcs.keySet().stream().max(Integer::compareTo).get() + 1;
     }
 
     public NPCDesigner(NPCParameters parameters) {
