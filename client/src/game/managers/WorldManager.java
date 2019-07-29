@@ -1,6 +1,7 @@
 package game.managers;
 
 import com.artemis.BaseSystem;
+import com.esotericsoftware.minlog.Log;
 
 import java.util.*;
 
@@ -32,9 +33,13 @@ public class WorldManager extends BaseSystem {
     }
 
     public void unregisterEntity(int networkId) {
-        int entityId = networkedEntities.get(networkId);
-        world.delete(entityId);
-        networkedEntities.remove(networkId);
+        try {
+            int entityId = networkedEntities.get(networkId);
+            world.delete(entityId);
+            networkedEntities.remove(networkId);
+        } catch (Exception e) {
+            Log.error("Couldn't remove entity: " + networkId, e);
+        }
     }
 
     @Override
