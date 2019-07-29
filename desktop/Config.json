@@ -1,6 +1,6 @@
 {
   "initConfig": {
-	"language": "es_AR",
+	"language": "messages",
     "video": {
       "width": 1280,
       "height": 720,

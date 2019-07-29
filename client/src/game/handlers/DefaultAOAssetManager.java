@@ -3,6 +3,7 @@ package game.handlers;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.I18NBundleLoader;
 import com.badlogic.gdx.assets.loaders.ParticleEffectLoader.ParticleEffectParameter;
 import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
 import com.badlogic.gdx.audio.Music;
@@ -79,7 +80,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     public DefaultAOAssetManager(ClientConfiguration clientConfiguration) {
         this.clientConfiguration = clientConfiguration;
-        this.languagesFile = SharedResources.LANGUAGES_FOLDER + clientConfiguration.getInitConfig().getLanguage() + SharedResources.LANGUAGES_EXT;
+        this.languagesFile = SharedResources.LANGUAGES_FOLDER + clientConfiguration.getInitConfig().getLanguage();
         setLoader(Sequencer.class, new MidiLoader());
         setLoader(ANIMATION_CLASS, ANIMATIONS + JSON_EXTENSION, new AnimationLoader());
         setLoader(IMAGE_CLASS, IMAGES + JSON_EXTENSION, new ImageLoader());
@@ -111,7 +112,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         // TODO
     }
 
-    private void loadMessages() { load(languagesFile, I18NBundle.class); }
+    private void loadMessages() { load(languagesFile, I18NBundle.class, new I18NBundleLoader.I18NBundleParameter(new Locale("es", "AR"))); }
 
     private void loadSkins() {
         load(Resources.GAME_SKIN_FILE, AOSkin.class);
