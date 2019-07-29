@@ -48,7 +48,7 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
     public void create() {
         SKIN = new Skins.AOSkin(Gdx.files.internal("skin/skin-composer-ui.json"));
         loadingAnimation = new AnimationDrawable(SKIN, "loading-animation", 1 / 30f);
-        assetManager = new DefaultAOAssetManager();
+        assetManager = new DefaultAOAssetManager(clientConfiguration);
         assetManager.load();
         Table t = new Table();
         t.setFillParent(true);
