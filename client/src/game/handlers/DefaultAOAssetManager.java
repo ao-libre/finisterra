@@ -50,6 +50,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     private static final Class<HashMap<Integer, Spell>> SPELLS_CLASS;
     private static final Class<ArrayList<Descriptor>> DESCRIPTORS_CLASS;
     private final String languagesFile;
+    private final String[] languagesLocale;
 
     private Map<Integer, AOImage> images;
     private Map<Integer, AOAnimation> animations;
@@ -81,7 +82,8 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     public DefaultAOAssetManager(ClientConfiguration clientConfiguration) {
         this.clientConfiguration = clientConfiguration;
-        this.languagesFile = SharedResources.LANGUAGES_FOLDER + clientConfiguration.getInitConfig().getLanguage();
+        this.languagesFile = SharedResources.LANGUAGES_FOLDER + "messages";
+        this.languagesLocale = clientConfiguration.getInitConfig().getLanguage().split("_");
         setLoader(Sequencer.class, new MidiLoader());
         setLoader(ANIMATION_CLASS, ANIMATIONS + JSON_EXTENSION, new AnimationLoader());
         setLoader(IMAGE_CLASS, IMAGES + JSON_EXTENSION, new ImageLoader());
@@ -113,7 +115,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         // TODO
     }
 
-    private void loadMessages() { load(languagesFile, I18NBundle.class, new I18NBundleLoader.I18NBundleParameter(new Locale("es", "AR"))); }
+    private void loadMessages() { load(languagesFile, I18NBundle.class, new I18NBundleLoader.I18NBundleParameter(new Locale(languagesLocale[0], languagesLocale[1]))); }
 
     private void loadSkins() {
         load(Resources.GAME_SKIN_FILE, AOSkin.class);
