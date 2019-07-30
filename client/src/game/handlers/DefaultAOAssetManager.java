@@ -28,6 +28,7 @@ import org.reflections.scanners.ResourcesScanner;
 import shared.model.Spell;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
+import shared.util.Messages;
 import shared.util.SharedResources;
 
 import javax.sound.midi.Sequencer;
@@ -288,7 +289,8 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         return weapons;
     }
 
-    public String getMessages(String key, Object... params) {
+    public String getMessages(Messages key, Object... params) {
+
         if (!isLoaded(languagesFile)) {
             load(languagesFile, I18NBundle.class);
             finishLoadingAsset(languagesFile);
@@ -296,10 +298,14 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
         I18NBundle i18 = get(languagesFile);
 
+        if (key == null) {
+            Gdx.app.error("Internationalization", "Error trying to get message: " + key.name());
+        }
+
         if (params.length > 0) {
-            return i18.format(key, params);
+            return i18.format(key.name(), params);
         } else {
-            return i18.get(key);
+            return i18.get(key.name());
         }
     }
 

@@ -21,6 +21,8 @@ import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.sound.SoundNotification;
 import shared.objects.types.*;
+import shared.util.MessageList;
+import shared.util.Messages;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -52,11 +54,11 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     public boolean canAttack(int entityId, Optional<Integer> target) {
         final E e = E(entityId);
         if (e != null && e.hasStamina() && e.getStamina().min < e.getStamina().max * STAMINA_REQUIRED_PERCENT / 100) {
-            notifyCombat(entityId, NOT_ENOUGH_ENERGY);
+            notifyCombat(entityId, Messages.NOT_ENOUGH_ENERGY);
             return false;
         }
         if (e != null && e.hasHealth() && e.getHealth().min == 0) {
-            notifyCombat(entityId, DEAD_CANT_ATTACK);
+            notifyCombat(entityId, Messages.DEAD_CANT_ATTACK);
             return false;
         }
 
@@ -74,7 +76,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
 
             if (t.hasHealth() && t.getHealth().min == 0) {
                 // no podes atacar un muerto
-                notifyCombat(entityId, CANT_ATTACK_DEAD);
+                notifyCombat(entityId, Messages.CANT_ATTACK_DEAD);
                 return false;
             }
 
@@ -97,12 +99,12 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
                 // shield evasion
                 if (E(targetId).hasShield() && ThreadLocalRandom.current().nextInt(101) <= prob) {
                     notifyCombat(targetId, SHIELD_DEFENSE);
-                    notifyCombat(entityId, format(DEFENDED_WITH_SHIELD, getName(targetId)));
+                    notifyCombat(entityId, format(Messages.DEFENDED_WITH_SHIELD, getName(targetId)));
                     // TODO shield animation
                     worldManager.notifyUpdate(targetId, new SoundNotification(37));
                 } else {
-                    notifyCombat(entityId, ATTACK_FAILED);
-                    notifyCombat(targetId, format(ATTACKED_AND_FAILED, getName(entityId)));
+                    notifyCombat(entityId, Messages.ATTACK_FAILED);
+                    notifyCombat(targetId, format(Messages.ATTACKED_AND_FAILED, getName(entityId)));
 
                 }
             }
