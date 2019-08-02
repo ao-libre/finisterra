@@ -4,42 +4,36 @@ import shared.network.interfaces.INotification;
 import shared.network.interfaces.INotificationProcessor;
 import shared.util.Messages;
 
+import java.util.Optional;
+
 import static shared.network.notifications.ConsoleMessage.Kind.*;
 
 public class ConsoleMessage implements INotification {
 
-    private String message;
     private Messages messageId;
+    private Object[] messageParams;
     private Kind kind;
 
-    private ConsoleMessage(String message, Kind kind) {
-        this.message = message;
-        this.kind = kind;
-    }
-
-    private ConsoleMessage(Messages messageId, Kind kind) {
+    private ConsoleMessage(Messages messageId, Kind kind, Object... messageParams) {
         this.messageId = messageId;
+        this.messageParams = messageParams;
         this.kind = kind;
     }
 
-    public static ConsoleMessage error(String message) {
-        return new ConsoleMessage(message, ERROR);
+    public static ConsoleMessage error(Messages messageId, Object... messageParams) {
+        return new ConsoleMessage(messageId, ERROR, messageParams);
     }
 
-    public static ConsoleMessage info(Messages messageId) {
-        return new ConsoleMessage(messageId, INFO);
+    public static ConsoleMessage info(Messages messageId, Object... messageParams) {
+        return new ConsoleMessage(messageId, INFO, messageParams);
     }
 
-    public static ConsoleMessage infoCustom(String message) {
-        return new ConsoleMessage(message, INFO);
+    public static ConsoleMessage combat(Messages messageId, Object... messageParams) {
+        return new ConsoleMessage(messageId, COMBAT, messageParams);
     }
 
-    public static ConsoleMessage combat(Messages message) {
-        return new ConsoleMessage(message, COMBAT);
-    }
-
-    public static ConsoleMessage warning(String message) {
-        return new ConsoleMessage(message, WARNING);
+    public static ConsoleMessage warning(Messages messageId, Object... messageParams) {
+        return new ConsoleMessage(messageId, WARNING, messageParams);
     }
 
     public String getMessage() {
