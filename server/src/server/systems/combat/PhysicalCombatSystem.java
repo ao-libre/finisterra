@@ -383,11 +383,4 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
             return VALUES.get(RANDOM.nextInt(SIZE));
         }
     }
-
-    private static class AttackResult {
-
-        private final int damage;
-
-        AttackResult(int damage) { this.damage = damage; }
-    }
 }
