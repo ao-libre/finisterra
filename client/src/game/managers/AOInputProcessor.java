@@ -5,6 +5,8 @@ import com.artemis.World;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.AOGame;
+import game.AssetManagerHolder;
+import game.handlers.AOAssetManager;
 import game.screens.GameScreen;
 import game.screens.WorldScreen;
 import game.systems.camera.CameraSystem;
@@ -34,9 +36,12 @@ public class AOInputProcessor extends Stage {
     public static boolean alternativeKeys = false;
 
     private GUI gui;
+    private AOAssetManager assetManager;
 
     public AOInputProcessor (GUI gui) {
         this.gui = gui;
+        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
+        assetManager = game.getAssetManager();
     }
 
     @Override
@@ -71,7 +76,7 @@ public class AOInputProcessor extends Stage {
                     GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos, rtt + timeOffset));
                     player.attack();
                 } else {
-                    gui.getConsole().addWarning(Messages.CANT_ATTACK);
+                    gui.getConsole().addWarning(assetManager.getMessages(Messages.CANT_ATTACK));
                 }
                 Cursors.setCursor("hand");
                 gui.getSpellView().cleanCast();

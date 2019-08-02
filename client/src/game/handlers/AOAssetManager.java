@@ -15,6 +15,7 @@ import model.textures.AOImage;
 import shared.model.Graphic;
 import shared.model.Spell;
 import shared.objects.types.Obj;
+import shared.util.Messages;
 
 import javax.sound.midi.Sequencer;
 import java.util.List;
@@ -70,4 +71,5 @@ public interface AOAssetManager {
 
     Map<Integer, WeaponDescriptor> getWeapons();
 
+    String getMessages(Messages key, Object... params);
 }

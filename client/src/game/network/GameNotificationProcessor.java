@@ -9,6 +9,8 @@ import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
 import game.AOGame;
+import game.AssetManagerHolder;
+import game.handlers.AOAssetManager;
 import game.handlers.SoundsHandler;
 import game.managers.WorldManager;
 import game.screens.GameScreen;
@@ -26,6 +28,7 @@ import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
 import shared.network.sound.SoundNotification;
+import shared.util.Messages;
 
 import static com.artemis.E.E;
 
@@ -33,6 +36,7 @@ import static com.artemis.E.E;
 public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     private WorldManager worldManager;
+    private AOAssetManager assetManager;
     private CameraShakeSystem cameraShakeSystem;
     private SoundsHandler soundsHandler;
     private GUI gui;
@@ -53,6 +57,8 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
             updateActions(entityUpdate.entityId, () -> updateEntity(entityUpdate));
 
         }
+        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
+        assetManager = game.getAssetManager();
     }
 
     private void updateActions(int id, Runnable update) {
@@ -156,7 +162,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     @Override
     public void processNotification(ConsoleMessage consoleMessage) {
         final AOConsole console = gui.getConsole();
-        final String message = consoleMessage.getMessage();
+        final String message = assetManager.getMessages(consoleMessage.getMessageId(), consoleMessage.getMessageParams());
         switch (consoleMessage.getKind()) {
             case INFO:
                 console.addInfo(message);

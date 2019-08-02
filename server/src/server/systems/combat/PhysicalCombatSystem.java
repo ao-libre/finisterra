@@ -97,7 +97,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
 
                 // shield evasion
                 if (E(targetId).hasShield() && ThreadLocalRandom.current().nextInt(101) <= prob) {
-                    notifyCombat(targetId, SHIELD_DEFENSE);
+                    notifyCombat(targetId, Messages.SHIELD_DEFENSE);
                     notifyCombat(entityId, Messages.DEFENDED_WITH_SHIELD, getName(targetId));
                     // TODO shield animation
                     worldManager.notifyUpdate(targetId, new SoundNotification(37));

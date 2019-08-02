@@ -12,7 +12,7 @@ public class ConsoleMessage implements INotification {
     private Object[] messageParams;
     private Kind kind;
 
-    private ConsoleMessage(Messages messageId, Kind kind, Object... messageParams) {
+    private ConsoleMessage(Messages, Kind kind, Object... messageParams) {
         this.messageId = messageId;
         this.messageParams = messageParams;
         this.kind = kind;
@@ -34,8 +34,12 @@ public class ConsoleMessage implements INotification {
         return new ConsoleMessage(messageId, WARNING, messageParams);
     }
 
-    public Messages getMessage() {
+    public Messages getMessageId() {
         return messageId;
+    }
+    
+    public Object getMessageParams() {
+        return messageParams;
     }
 
     public Kind getKind() {
