@@ -128,16 +128,16 @@ public class MagicCombatSystem extends BaseSystem {
                 victimUpdateToAllBuilder.withComponents(CombatMessage.magic(damage > 0 ? "+" : "-" + Math.abs(damage)));
                 victimUpdateBuilder.withComponents(health);
                 if (damage > 0) {
-                    notifyMagic(playerId, format(Messages.HEAL_TO, getName(target), Math.abs(damage)));
-                    notifyMagic(target, format(Messages.HEAL_BY, getName(playerId), Math.abs(damage)));
+                    notifyMagic(playerId, Messages.HEAL_TO, getName(target), Math.abs(damage));
+                    notifyMagic(target, Messages.HEAL_BY, getName(playerId), Math.abs(damage));
                 } else {
-                    notifyMagic(playerId, format(Messages.DAMAGE_TO, Math.abs(damage), getName(target)));
-                    notifyMagic(target, format(Messages.DAMAGED_BY, getName(playerId), Math.abs(damage)));
+                    notifyMagic(playerId, Messages.DAMAGE_TO, Math.abs(damage), getName(target));
+                    notifyMagic(target, Messages.DAMAGED_BY, getName(playerId), Math.abs(damage));
                 }
                 if (health.min <= 0) {
                     getWorldManager().entityDie(target);
-                    notifyMagic(playerId, format(Messages.KILL, getName(target)));
-                    notifyMagic(target, format(Messages.KILLED, getName(playerId)));
+                    notifyMagic(playerId, Messages.KILL, getName(target));
+                    notifyMagic(target, Messages.KILLED, getName(playerId));
                 }
             }
             if (spell.isImmobilize()) {
@@ -238,12 +238,10 @@ public class MagicCombatSystem extends BaseSystem {
         E targetEntity = E(target);
         int spellTarget = spell.getTarget();
         switch (spellTarget) {
-            case 1:
+            case 1,3:
                 return targetEntity.isCharacter() || (targetEntity.hasNPC() && targetEntity.isHostile());
             case 2:
                 return (targetEntity.hasNPC() && targetEntity.isHostile());
-            case 3:
-                return targetEntity.isCharacter() || (targetEntity.hasNPC() && targetEntity.isHostile());
             case 4:
                 return targetEntity == null;
         }
@@ -251,18 +249,13 @@ public class MagicCombatSystem extends BaseSystem {
         return false;
     }
 
-    private void notifyInfo(int userId, Messages messageId) {
-        final ConsoleMessage combat = ConsoleMessage.info(messageId);
+    private void notifyInfo(int userId, Messages messageId, Object... messageParams) {
+        final ConsoleMessage combat = ConsoleMessage.info(messageId, messageParams);
         getWorldManager().sendEntityUpdate(userId, combat);
     }
 
-    private void notifyMagic(int userId, Messages message) {
-        final ConsoleMessage combat = ConsoleMessage.combat(message);
-        getWorldManager().sendEntityUpdate(userId, combat);
-    }
-
-    private void notifyInfoCustom(int userId, String message) {
-        final ConsoleMessage combat = ConsoleMessage.infoCustom(message);
+    private void notifyMagic(int userId, Messages messageId, Object... messageParams) {
+        final ConsoleMessage combat = ConsoleMessage.combat(messageId, messageParams);
         getWorldManager().sendEntityUpdate(userId, combat);
     }
 

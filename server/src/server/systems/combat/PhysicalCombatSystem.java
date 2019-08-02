@@ -21,7 +21,6 @@ import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.sound.SoundNotification;
 import shared.objects.types.*;
-import shared.util.MessageList;
 import shared.util.Messages;
 
 import java.util.*;
@@ -226,7 +225,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
                                 doNormalAttack(userId, entityId, damage);
 
         worldManager.notifyUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(new AttackAnimation()).build());
-        notify(entityId, userStab ? CombatMessage.stab("" + result.damage) : CombatMessage.physic("" + result.damage));
+        notify(entityId, userStab ? CombatMessage.stab("" + damage) : CombatMessage.physic("" + damage));
 
         final E target = E(entityId);
         Health health = target.getHealth();
