@@ -39,8 +39,9 @@ public class NameRenderingSystem extends RenderingSystem {
                     table.setRound(false);
                     E e = E(integer);
                     String text = e.getName().text;
-                    Label label = new Label(text, Skins.COMODORE_SKIN, "flipped-name-user");
+                    Label label = new Label(text, Skins.COMODORE_SKIN, "flipped");
                     label.getStyle().font.setUseIntegerPositions(false);
+                    label.setFontScale(1.1f);
                     float prefWidth = label.getPrefWidth();
                     label.setWrap(true);
                     label.setAlignment(Align.center);
@@ -93,8 +94,8 @@ public class NameRenderingSystem extends RenderingSystem {
 
     private Color setColor(E player, Label label) {
         Color previous = new Color(label.getStyle().fontColor);
-        Color color = player.hasGM() ? Colors.GM :
-                player.hasLevel() && player.getLevel().level < 13 ? Colors.NEWBIE :
+        Color color = //player.hasGM() ? Colors.GM :
+//                player.hasLevel() && player.getLevel().level < 13 ? Colors.NEWBIE :
                         player.hasCriminal() ? Colors.CRIMINAL : Colors.CITIZEN;
         label.getStyle().fontColor = color;
         return previous;

@@ -742,23 +742,23 @@ jsonData: {
 	freeTypeFonts: [
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
-			name: big-shadow
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/euxoi_memesbruh03_01102018.ttf"
+			name: big
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
 			size: 20
 			mono: false
-			hinting: AutoFull
+			hinting: AutoMedium
 			color: ao-white
 			gamma: 1.8
-			renderCount: 2
+			renderCount: 4
 			borderWidth: 0
 			borderColor: null
 			borderStraight: false
-			borderGamma: 0.8
-			shadowOffsetX: -1
-			shadowOffsetY: 1
-			shadowColor: ao-black
+			borderGamma: 1.8
+			shadowOffsetX: 0
+			shadowOffsetY: 0
+			shadowColor: null
 			spaceX: 0
 			spaceY: 0
 			characters: ""
@@ -767,51 +767,22 @@ jsonData: {
 			genMipMaps: false
 			minFilter: Nearest
 			magFilter: Nearest
-			incremental: true
-		}
-		{
-			class: com.ray3k.skincomposer.data.FreeTypeFontData
-			name: flipped
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/euxoi_memesbruh03_01102018.ttf"
-			previewTTF: SourceSansPro-Regular
-			useCustomSerializer: true
-			size: 19
-			mono: false
-			hinting: AutoMedium
-			color: ao-white
-			gamma: 1.8
-			renderCount: 2
-			borderWidth: 0
-			borderColor: null
-			borderStraight: false
-			borderGamma: 1.8
-			shadowOffsetX: 0
-			shadowOffsetY: 0
-			shadowColor: null
-			spaceX: 0
-			spaceY: 0
-			characters: ""
-			kerning: true
-			flip: true
-			genMipMaps: false
-			minFilter: Nearest
-			magFilter: Nearest
 			incremental: false
 		}
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
-			name: flipped-shadow
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/euxoi_memesbruh03_01102018.ttf"
+			name: combat
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/GROBOLD.ttf"
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
-			size: 20
+			size: 16
 			mono: false
-			hinting: AutoMedium
+			hinting: AutoSlight
 			color: ao-white
 			gamma: 1.8
 			renderCount: 2
-			borderWidth: 0
-			borderColor: null
+			borderWidth: 1
+			borderColor: ao-black
 			borderStraight: false
 			borderGamma: 1.8
 			shadowOffsetX: -1
@@ -829,16 +800,16 @@ jsonData: {
 		}
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
-			name: small
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/euxoi_memesbruh03_01102018.ttf"
+			name: flipped
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
-			size: 19
+			size: 18
 			mono: false
 			hinting: AutoMedium
 			color: ao-white
 			gamma: 1.8
-			renderCount: 2
+			renderCount: 4
 			borderWidth: 0
 			borderColor: null
 			borderStraight: false
@@ -846,6 +817,93 @@ jsonData: {
 			shadowOffsetX: 0
 			shadowOffsetY: 0
 			shadowColor: null
+			spaceX: 0
+			spaceY: 0
+			characters: ""
+			kerning: true
+			flip: true
+			genMipMaps: false
+			minFilter: Nearest
+			magFilter: Nearest
+			incremental: false
+		}
+		{
+			class: com.ray3k.skincomposer.data.FreeTypeFontData
+			name: flipped-with-border
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
+			previewTTF: SourceSansPro-Regular
+			useCustomSerializer: true
+			size: 18
+			mono: false
+			hinting: AutoMedium
+			color: ao-white
+			gamma: 1.8
+			renderCount: 4
+			borderWidth: 1
+			borderColor: ao-black
+			borderStraight: false
+			borderGamma: 1
+			shadowOffsetX: -1
+			shadowOffsetY: 1
+			shadowColor: ao-black
+			spaceX: 0
+			spaceY: 0
+			characters: ""
+			kerning: true
+			flip: true
+			genMipMaps: false
+			minFilter: Nearest
+			magFilter: Nearest
+			incremental: false
+		}
+		{
+			class: com.ray3k.skincomposer.data.FreeTypeFontData
+			name: simple
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
+			previewTTF: SourceSansPro-Regular
+			useCustomSerializer: true
+			size: 18
+			mono: false
+			hinting: AutoMedium
+			color: ao-white
+			gamma: 1.8
+			renderCount: 4
+			borderWidth: 0
+			borderColor: null
+			borderStraight: false
+			borderGamma: 1.8
+			shadowOffsetX: 0
+			shadowOffsetY: 0
+			shadowColor: null
+			spaceX: 0
+			spaceY: 0
+			characters: ""
+			kerning: true
+			flip: false
+			genMipMaps: false
+			minFilter: Nearest
+			magFilter: Nearest
+			incremental: false
+		}
+		{
+			class: com.ray3k.skincomposer.data.FreeTypeFontData
+			name: simple-with-border
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
+			previewTTF: SourceSansPro-Regular
+			useCustomSerializer: true
+			size: 18
+			mono: false
+			hinting: AutoMedium
+			color: ao-white
+			gamma: 1.8
+			renderCount: 4
+			borderWidth: 1
+			borderColor: ao-black
+			borderStraight: false
+			borderGamma: 1
+			shadowOffsetX: -1
+			shadowOffsetY: 1
+			shadowColor: ao-black
 			spaceX: 0
 			spaceY: 0
 			characters: ""
@@ -1020,14 +1078,14 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: small
+						value: simple-with-border
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
 						type: com.badlogic.gdx.graphics.Color
 						name: fontColor
 						optional: true
-						value: ao-black
+						value: ao-white
 					}
 					downFontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -2414,7 +2472,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: small
+						value: simple
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -2612,7 +2670,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: big-shadow
+						value: simple
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -2770,7 +2828,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: small
+						value: simple-with-border
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -2784,7 +2842,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: tooltip
+						value: null
 					}
 				}
 				deletable: false
@@ -2800,7 +2858,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: small
+						value: simple
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -2830,7 +2888,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: big-shadow
+						value: big
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -2860,7 +2918,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: small
+						value: simple
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -2897,7 +2955,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.Color
 						name: fontColor
 						optional: true
-						value: ao-black
+						value: ao-grey
 					}
 					background: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -2920,7 +2978,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: flipped-shadow
+						value: flipped-with-border
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -2952,7 +3010,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: big-shadow
+						value: simple
 					}
 					fontColorSelected: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -3313,7 +3371,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: big-shadow
+						value: simple
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -3581,7 +3639,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: big-shadow
+						value: simple
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -3739,7 +3797,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: big-shadow
+						value: simple
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -3944,21 +4002,21 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: menu-frame
+						value: simple-window
 					}
 					titleFont: {
 						class: com.ray3k.skincomposer.data.StyleProperty
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: titleFont
 						optional: false
-						value: big-shadow
+						value: simple-with-border
 					}
 					titleFontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
 						type: com.badlogic.gdx.graphics.Color
 						name: titleFontColor
 						optional: true
-						value: null
+						value: ao-white
 					}
 					stageBackground: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -3988,7 +4046,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: titleFont
 						optional: false
-						value: big-shadow
+						value: simple-with-border
 					}
 					titleFontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty

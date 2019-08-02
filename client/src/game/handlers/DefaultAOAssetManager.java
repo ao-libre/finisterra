@@ -183,7 +183,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     @Override
     public ParticleEffect getParticle(String particle) {
-        return get(Resources.GAME_FXS_PATH + particle);
+        return get(Resources.GAME_PARTICLES_PATH + particle);
     }
 
     @Override
@@ -285,10 +285,14 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     }
 
     private void loadParticles() {
-        load(Resources.GAME_FXS_PATH + "meditate1.party", ParticleEffect.class);
+        load(Resources.GAME_PARTICLES_PATH + "meditate1.party", ParticleEffect.class);
         ParticleEffectParameter params = new ParticleEffectParameter();
-        params.imagesDir = Gdx.files.internal(Resources.GAME_PARTICLES_PATH);
-        load(Resources.GAME_FXS_PATH + "aura1.party", ParticleEffect.class, params);
+        params.imagesDir = Gdx.files.internal(Resources.GAME_PARTICLES_PATH + "images/");
+        load(Resources.GAME_PARTICLES_PATH + "aura1.party", ParticleEffect.class, params);
+        load(Resources.GAME_PARTICLES_PATH + "blue-meditation.p", ParticleEffect.class, params);
+        load(Resources.GAME_PARTICLES_PATH + "level-up.p", ParticleEffect.class, params);
+        load(Resources.GAME_PARTICLES_PATH + "magic-projectile.p", ParticleEffect.class, params);
+        load(Resources.GAME_PARTICLES_PATH + "thunder.p", ParticleEffect.class, params);
     }
 
     private void loadMusic() {
