@@ -36,8 +36,8 @@ public class ConsoleMessage implements INotification {
         return new ConsoleMessage(messageId, WARNING, messageParams);
     }
 
-    public String getMessage() {
-        return message;
+    public Messages getMessage() {
+        return messageId;
     }
 
     public Kind getKind() {
