@@ -4,8 +4,6 @@ import shared.network.interfaces.INotification;
 import shared.network.interfaces.INotificationProcessor;
 import shared.util.Messages;
 
-import java.util.Optional;
-
 import static shared.network.notifications.ConsoleMessage.Kind.*;
 
 public class ConsoleMessage implements INotification {
