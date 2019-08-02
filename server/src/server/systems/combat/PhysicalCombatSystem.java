@@ -250,7 +250,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         }
     }
 
-    private void notifyCombat(int userId, String message) {
+    private void notifyCombat(int userId, Messages message) {
         final ConsoleMessage combat = ConsoleMessage.combat(message);
         worldManager.sendEntityUpdate(userId, combat);
     }

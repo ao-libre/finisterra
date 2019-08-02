@@ -65,6 +65,11 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
         setScreen(gameScreen);
     }
 
+    public static AOAssetManager getGlobalAssetManager() {
+        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
+        return game.getAssetManager();
+    }
+
     public ClientConfiguration getClientConfiguration() {
         return clientConfiguration;
     }
