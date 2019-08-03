@@ -31,8 +31,6 @@ public enum ScreenEnum {
                 view = type.getDeclaredConstructor().newInstance();
             } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 Log.error("View not implemented", e);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
             }
         }
         readParams(view, params);

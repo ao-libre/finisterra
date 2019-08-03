@@ -14,6 +14,8 @@ public class DesignCenterLauncher {
         cfg.setIdleFPS(60);
         cfg.setResizable(true);
 
-        new Lwjgl3Application(new DesignCenter(), cfg);
+        DesignCenter listener = new DesignCenter();
+        cfg.setWindowListener(listener);
+        new Lwjgl3Application(listener, cfg);
     }
 }

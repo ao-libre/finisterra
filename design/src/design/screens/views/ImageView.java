@@ -1,6 +1,7 @@
 package design.screens.views;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -33,6 +34,7 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
 
     private final static int[] sizes = {64, 128, 150, 200, 250};
     private Table content;
+    private Button selected;
 
     public ImageView() {
         super(new ImageDesigner(new ImageParameters()));
@@ -69,10 +71,17 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
 
     @Override
     public void loadItems(Optional<AOImage> selection) {
+        float x = 0, y = 0;
+        if (selected != null) {
+            x = selected.getX();
+            y = selected.getY();
+        }
         Cell<Table> cell = getMainTable().getCell(content);
         content.clear();
         createContent();
         cell.setActor(content);
+        ScrollPane pane = (ScrollPane) content.getChild(1);
+        pane.scrollTo(x, y, 100, 100);
         selection.ifPresent(this::scrollTo);
     }
 
@@ -169,7 +178,20 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
         });
         TextTooltip toolTip = new TextTooltip("Edit Image", SKIN);
         edit.addListener(toolTip);
-        buttons.add(edit).right();
+        buttons.add(edit).right().expandX();
+
+        Button duplicate = new Button(SKIN, "duplicate");
+        duplicate.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                AOImage copy = new AOImage(aoImage);
+                copy.setId(getDesigner().getFreeId());
+                getDesigner().add(copy);
+                loadItems(Optional.empty());
+            }
+        });
+        buttons.add(duplicate).right();
+
         Button delete = new Button(SKIN, "delete-small");
         delete.addListener(new ClickListener() {
             @Override
@@ -192,7 +214,20 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
         bg.setActor(image);
         table.add(bg).expand().center().row();
         table.add(new Label(aoImage.getId() + "- file: " + aoImage.getFileNum(), SKIN));
+
+        table.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                selected = table;
+            }
+        });
         return table;
+    }
+
+    @Override
+    public void filesDropped(List<FileHandle> files) {
+        files.forEach(getDesigner()::create);
+        loadItems(Optional.empty());
     }
 
     @Override

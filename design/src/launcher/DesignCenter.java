@@ -7,12 +7,16 @@ import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Window;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3WindowListener;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
@@ -23,8 +27,13 @@ import game.handlers.*;
 import game.screens.WorldScreen;
 import game.utils.Skins;
 import graphics.AnimationDrawable;
+import org.lwjgl.system.CallbackI;
 
-public class DesignCenter extends Game implements AssetManagerHolder, WorldScreen {
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class DesignCenter extends Game implements AssetManagerHolder, WorldScreen, Lwjgl3WindowListener {
 
     public static Skin SKIN;
     private AOAssetManager assetManager;
@@ -117,5 +126,49 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
         if (screen instanceof View) {
             ((View) screen).update(width, height);
         }
+    }
+
+    @Override
+    public void created(Lwjgl3Window window) {
+
+    }
+
+    @Override
+    public void iconified(boolean isIconified) {
+
+    }
+
+    @Override
+    public void maximized(boolean isMaximized) {
+
+    }
+
+    @Override
+    public void focusLost() {
+
+    }
+
+    @Override
+    public void focusGained() {
+
+    }
+
+    @Override
+    public boolean closeRequested() {
+        return false;
+    }
+
+    @Override
+    public void filesDropped(String[] files) {
+        List<FileHandle> list = Arrays.stream(files).map(FileHandle::new).collect(Collectors.toList());
+        Screen screen = getScreen();
+        if (screen instanceof View) {
+            ((View) screen).filesDropped(list);
+        }
+    }
+
+    @Override
+    public void refreshRequested() {
+
     }
 }

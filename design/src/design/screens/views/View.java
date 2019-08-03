@@ -3,6 +3,7 @@ package design.screens.views;
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -172,6 +173,8 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
     public P getDesigner() {
         return designer;
     }
+
+    public void filesDropped(java.util.List<FileHandle> files) {}
 
     abstract Preview<T> createPreview();
 

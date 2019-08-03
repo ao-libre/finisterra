@@ -43,7 +43,7 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
     private AOJson json = new AOJson();
     private Map<Integer, AOImage> images;
 
-    private int getFreeId() {
+    public int getFreeId() {
         return images.keySet().stream().max(Integer::compareTo).get() + 1;
     }
 
@@ -89,6 +89,10 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
         }
 
         FileHandle fileHandle = new FileHandle(file);
+        return create(fileHandle);
+    }
+
+    public Optional<AOImage> create(FileHandle fileHandle) {
         FileHandle dest = Gdx.files.local(Resources.GAME_GRAPHICS_PATH + getFreeId() + ".png");
         fileHandle.copyTo(dest);
         AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
