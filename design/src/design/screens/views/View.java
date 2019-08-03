@@ -113,13 +113,19 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    Gdx.app.postRunnable(() -> {
-                        ScreenManager.getInstance().showScreen(screen);
-                    });
+                    Gdx.app.postRunnable(() -> ScreenManager.getInstance().showScreen(screen));
                 }
             });
             table.add(button);
         }
+        Button mapButton = new TextButton("Map Editor", SKIN, "menu-button");
+        mapButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.postRunnable(() -> ScreenManager.getInstance().toMapEditorScreen());
+            }
+        });
+        table.add(mapButton);
         return table;
     }
 

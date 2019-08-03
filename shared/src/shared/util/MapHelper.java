@@ -134,7 +134,7 @@ public class MapHelper {
         return tile != null && tile.getTileExit() != null;
     }
 
-    public Tile getTile(Map map, WorldPos pos) {
+    public static Tile getTile(Map map, WorldPos pos) {
         if (pos.x > 0 && pos.x < map.getWidth()) {
             if (pos.y > 0 && pos.y < map.getHeight()) {
                 return map.getTile(pos.x, pos.y);

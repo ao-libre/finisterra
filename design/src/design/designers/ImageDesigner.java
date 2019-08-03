@@ -177,6 +177,11 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
         return images.containsKey(id);
     }
 
+    @Override
+    public void markUsedImages() {
+
+    }
+
     public static class ImageParameters implements Parameters<AOImage> {
     }
 }

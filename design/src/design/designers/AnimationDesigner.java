@@ -2,6 +2,8 @@ package design.designers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import design.screens.ScreenEnum;
+import design.screens.views.ImageView;
 import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import model.textures.AOAnimation;
@@ -86,6 +88,19 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
     @Override
     public boolean contains(int id) {
         return animations.containsKey(id);
+    }
+
+    @Override
+    public void markUsedImages() {
+        ImageView view = (ImageView) ScreenEnum.IMAGE_VIEW.getScreen();
+        animations.values().forEach(animation -> {
+            int[] frames = animation.getFrames();
+            for (int i = 0; i < frames.length; i++) {
+                if (frames[i] > 0) {
+                    view.imageUsed(frames[i]);
+                }
+            }
+        });
     }
 
     public static class AnimationParameters implements Parameters<AOAnimation> {

@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
 import design.designers.ImageDesigner;
 import design.designers.ImageDesigner.ImageParameters;
+import design.dialogs.OptimizeImages;
 import design.editors.fields.Listener;
 import game.screens.WorldScreen;
 import model.textures.AOImage;
@@ -28,6 +29,7 @@ import static launcher.DesignCenter.SKIN;
 public class ImageView extends View<AOImage, ImageDesigner> implements WorldScreen {
 
     private Map<AOImage, Drawable> drawables;
+    private Map<Integer, Integer> usedImages = new HashMap<>();
 
     private final static int[] sizes = {64, 128, 150, 200, 250};
     private Table content;
@@ -38,6 +40,18 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
 
     public ImageView(ImageParameters parameters) {
         super(new ImageDesigner(parameters));
+    }
+
+    public void imageUsed(int imageId) {
+        Integer count = 1;
+        if (usedImages.containsKey(imageId)) {
+            count = usedImages.get(imageId) + 1;
+        }
+        usedImages.put(imageId, count);
+    }
+
+    public Set<Integer> getUsedImages() {
+        return usedImages.keySet();
     }
 
     private Drawable getTextureDrawable(AOImage image) {
@@ -78,22 +92,7 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
         content = new Table();
         Table buttons = new Table();
         content.add(buttons).growX().row();
-        Button create = new Button(SKIN, "new");
-        create.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                loadItems(getDesigner().create());
-            }
-        });
-        Button save = new TextButton("Save", SKIN, "file");
-        save.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                getDesigner().save();
-            }
-        });
-        buttons.add(create).left();
-        buttons.add(save).left().expandX();
+        addButtons(buttons);
         Collection<AOImage> aoImages = getDesigner().get().values();
         drawables = aoImages.stream().collect(Collectors.toMap(image -> image, this::getTextureDrawable));
         Table scrollableContent = new Table();
@@ -114,6 +113,34 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
         scrollPa.setScrollbarsVisible(true);
         content.add(scrollPa);
         return content;
+    }
+
+    private void addButtons(Table buttons) {
+        Button create = new Button(SKIN, "new");
+        create.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                loadItems(getDesigner().create());
+            }
+        });
+        Button save = new TextButton("Save", SKIN, "file");
+        save.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                getDesigner().save();
+            }
+        });
+        buttons.add(create).left();
+        buttons.add(save).left().expandX();
+        Button optimize = new TextButton("Optimize images", SKIN, "file");
+        optimize.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                OptimizeImages optimizeImages = new OptimizeImages(SKIN);
+                optimizeImages.show(getStage());
+            }
+        });
+        buttons.add(optimize).right();
     }
 
     @NotNull
@@ -187,4 +214,7 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
     protected void keyPressed(int keyCode) {
     }
 
+    public void clearUsedImages() {
+        usedImages.clear();
+    }
 }

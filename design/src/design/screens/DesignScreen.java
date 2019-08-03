@@ -13,7 +13,7 @@ public abstract class DesignScreen extends ScreenAdapter implements WorldScreen 
     private final Stage stage;
     private Table mainTable;
     World world;
-    boolean running;
+    protected boolean running;
 
     public DesignScreen() {
         stage = new Stage() {

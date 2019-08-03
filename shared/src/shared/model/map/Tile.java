@@ -1,5 +1,9 @@
 package shared.model.map;
 
+import com.google.common.base.Objects;
+
+import java.util.Arrays;
+
 public class Tile {
 
     public static final int EMPTY_INDEX = -1;
@@ -19,6 +23,17 @@ public class Tile {
     private int trigger;
 
     public Tile() {
+    }
+
+    public Tile(Tile other) {
+        this.graphic = Arrays.copyOf(other.graphic, other.graphic.length);
+        this.charIndex = other.charIndex;
+        this.objIndex = other.objIndex;
+        this.objCount = other.objCount;
+        this.npcIndex = other.npcIndex;
+        this.tileExit = other.tileExit;
+        this.blocked = other.blocked;
+        this.trigger = other.trigger;
     }
 
     public Tile(int[] graphic, int charIndex, int objCount, int objIndex,
@@ -102,4 +117,23 @@ public class Tile {
         this.trigger = trigger;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tile tile = (Tile) o;
+        return charIndex == tile.charIndex &&
+                objIndex == tile.objIndex &&
+                objCount == tile.objCount &&
+                npcIndex == tile.npcIndex &&
+                blocked == tile.blocked &&
+                trigger == tile.trigger &&
+                Objects.equal(graphic, tile.graphic) &&
+                Objects.equal(tileExit, tile.tileExit);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(graphic, charIndex, objIndex, objCount, npcIndex, tileExit, blocked, trigger);
+    }
 }
