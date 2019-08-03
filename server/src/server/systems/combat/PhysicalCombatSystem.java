@@ -238,7 +238,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         } else {
             // TODO die
             characterTrainingSystem.takeGold(userId, entityId);
-            notifyCombat(userId, Messages.KILL, getName(entityId)));
+            notifyCombat(userId, Messages.KILL, getName(entityId));
             notifyCombat(entityId, Messages.KILLED, getName(userId));
             worldManager.entityDie(entityId);
         }

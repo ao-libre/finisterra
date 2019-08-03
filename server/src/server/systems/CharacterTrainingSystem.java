@@ -123,17 +123,12 @@ public class CharacterTrainingSystem extends PassiveSystem {
                 .withComponents(e.getLevel(), e.getHealth(), e.getMana(), e.getHit(), e.getStamina())
                 .build();
         worldManager.sendEntityUpdate(userId, update);
-        worldManager.sendEntityUpdate(userId, ConsoleMessage.info(getMessage(mana, health, hit, stamina)));
+        worldManager.sendEntityUpdate(userId, ConsoleMessage.info(Messages.LEVEL_UP, health, mana, hit, stamina));
         int fxE = world.create();
         Effect effect = new Effect.EffectBuilder().attachTo(userId).withLoops(1).withFX(FXs.FX_LEVEL_UP).build();
         EntityUpdate fxUpdate = EntityUpdateBuilder.of(fxE).withComponents(effect).build();
         worldManager.notifyUpdate(userId, fxUpdate);
         worldManager.unregisterEntity(fxE);
-    }
-
-    private String getMessage(int mana, float health, Pair<Integer, Integer> hit, int stamina) {
-        // TODO refector MessageLvl
-        return ("Level up!" + " Recibiste " + health + " puntos de vida y " + mana + " Puntos de mana. Tu golpe máximo aumento. " + hit);
     }
 
     private void setNextRequiredExperience(Level level) {

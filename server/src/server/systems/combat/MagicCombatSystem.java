@@ -111,10 +111,10 @@ public class MagicCombatSystem extends BaseSystem {
                     notifyMagic(playerId, Messages.CANT_ATTACK_YOURSELF);
                     return;
                 }
-                notifyMagic(playerId, spell.getOwnerMsg());
+                notifyMagic(playerId, Messages.OWNER_MSG, spell.getOwnerMsg());
             } else {
-                notifyMagic(playerId, spell.getOriginMsg() + SPACE + getName(target));
-                notifyMagic(target, getName(playerId) + SPACE + spell.getTargetMsg());
+                notifyMagic(playerId, Messages.ORIGIN_MSG, spell.getOriginMsg(), getName(target));
+                notifyMagic(target, Messages.TARGET_MSG, getName(playerId), spell.getTargetMsg());
             }
 
             int fxGrh = spell.getFxGrh();
@@ -238,10 +238,12 @@ public class MagicCombatSystem extends BaseSystem {
         E targetEntity = E(target);
         int spellTarget = spell.getTarget();
         switch (spellTarget) {
-            case 1,3:
+            case 1:
                 return targetEntity.isCharacter() || (targetEntity.hasNPC() && targetEntity.isHostile());
             case 2:
                 return (targetEntity.hasNPC() && targetEntity.isHostile());
+            case 3:
+                return targetEntity.isCharacter() || (targetEntity.hasNPC() && targetEntity.isHostile());
             case 4:
                 return targetEntity == null;
         }

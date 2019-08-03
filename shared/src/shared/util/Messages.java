@@ -37,7 +37,13 @@ public enum Messages {
 
     // CHARACTER TRAINING SYSTEM
     EXP_GAIN,
+    LEVEL_UP,
 
     // AO INPUT PROCESSOR
-    CANT_ATTACK
+    CANT_ATTACK,
+
+    // SPELLS
+    ORIGIN_MSG,
+    OWNER_MSG,
+    TARGET_MSG
 }
