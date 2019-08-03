@@ -160,4 +160,8 @@ public class AnimationHandler extends PassiveSystem {
     public void clearAnimation(AOAnimation animation) {
         previews.invalidate(animation);
     }
+
+    public void clearImage(AOImage image) {
+        textures.remove(image.getId());
+    }
 }

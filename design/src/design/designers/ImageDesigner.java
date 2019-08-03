@@ -1,15 +1,20 @@
 package design.designers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.esotericsoftware.minlog.Log;
+import design.editors.ImageEditor;
 import design.editors.utils.SliceResult;
 import design.editors.utils.Slicer;
 import design.editors.utils.Utils;
 import design.screens.ScreenEnum;
+import design.screens.ScreenManager;
 import design.screens.views.AnimationView;
+import design.screens.views.ImageView;
+import design.screens.views.View;
 import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import game.handlers.DefaultAOAssetManager;
@@ -140,6 +145,20 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
 
     @Override
     public void modify(AOImage element, Stage stage) {
+        ImageEditor imageEditor = new ImageEditor(new AOImage(element)) {
+            @Override
+            protected void result(Object object) {
+                if (object instanceof AOImage) {
+                    // refresh view
+                    View screen = ScreenEnum.IMAGE_VIEW.getScreen();
+                    AOImage image = (AOImage) object;
+                    ((ImageView) screen).evict(image);
+                    images.put((image).getId(), image);
+                    screen.loadItems(Optional.of(image));
+                }
+            }
+        };
+        imageEditor.show(stage);
     }
 
     @Override

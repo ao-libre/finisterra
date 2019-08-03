@@ -14,6 +14,15 @@ public class AOImage implements ID {
     public AOImage() {
     }
 
+    public AOImage(AOImage other) {
+        this.x = other.x;
+        this.y = other.y;
+        this.fileNum = other.fileNum;
+        this.id = other.id;
+        this.width = other.width;
+        this.height = other.height;
+    }
+
     public AOImage(int id, int x, int y, int fileNum, int pixelWidth, int pixelHeight) {
         this.id = id;
         this.x = x;
