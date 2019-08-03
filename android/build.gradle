@@ -8,8 +8,6 @@ plugins {
     id 'com.android.application'
 }
 
-configurations {natives}
-
 /**
  * The android block is where you configure all your Android-specific
  * build options.
@@ -122,24 +120,6 @@ android {
         }
     }
 
-    /**
-     * The splits block is where you can configure different APK builds that
-     * each contain only code and resources for a supported screen density or
-     * ABI. You'll also need to configure your build so that each APK has a
-     * different versionCode.
-     */
-    splits {
-        // Settings to build multiple APKs based on screen density.
-        density {
-
-            // Enable or disable building multiple APKs.
-            enable false
-
-            // Exclude these densities when building multiple APKs.
-            exclude "ldpi", "tvdpi", "xxxhdpi", "400dpi", "560dpi"
-        }
-    }
-
     packagingOptions {
         // Preventing from license violations (more or less):
         pickFirst 'META-INF/LICENSE.txt'
@@ -163,6 +143,9 @@ android {
  * specifies dependencies required to build only the module itself.
  * To learn more, go to Add build dependencies.
  */
+
+configurations { natives } 
+ 
 dependencies {
     implementation project(':client')
     api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
