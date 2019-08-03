@@ -105,8 +105,10 @@ public class GUI extends BaseSystem implements Disposable {
     
     @Override
     public void initialize() {
+        Skins.COMODORE_SKIN.getFont("simple").setUseIntegerPositions(false);
+        Skins.COMODORE_SKIN.getFont("simple-with-border").setUseIntegerPositions(false);
         Skins.COMODORE_SKIN.getFont("flipped").setUseIntegerPositions(false);
-        Skins.COMODORE_SKIN.getFont("flipped-shadow").setUseIntegerPositions(false);
+        Skins.COMODORE_SKIN.getFont("flipped-with-border").setUseIntegerPositions(false);
 
         Table table = new Table();
         table.setFillParent(true);

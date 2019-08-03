@@ -18,6 +18,7 @@ import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
 import design.screens.views.View;
 import game.AssetManagerHolder;
+import game.ClientConfiguration;
 import game.handlers.*;
 import game.screens.WorldScreen;
 import game.utils.Skins;

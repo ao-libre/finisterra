@@ -33,7 +33,7 @@ import static shared.util.Messages.*;
 @Wire
 public class PhysicalCombatSystem extends AbstractCombatSystem {
 
-    private static final String MISS = "MISS";
+    private static final String MISS = "Fallas!";
     private static final float ASSASIN_STAB_FACTOR = 1.5f;
     private static final float NORMAL_STAB_FACTOR = 1.4f;
     private static final int TIME_TO_MOVE_1_TILE = 250;

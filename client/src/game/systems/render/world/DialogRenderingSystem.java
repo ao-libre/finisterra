@@ -33,7 +33,7 @@ public class DialogRenderingSystem extends RenderingSystem {
     private static final int MAX_LENGTH = (int) (120 * SCALE);
     private static final int DISTANCE_TO_TOP = (int) (5 * SCALE);
     private static final float TIME = 0.3f;
-    private static final float VELOCITY = DISTANCE_TO_TOP / TIME;
+    private static final float VELOCITY = DISTANCE_TO_TOP / TIME * SCALE;
     private DescriptorHandler descriptorHandler;
     private FontsHandler fontsHandler;
     private LoadingCache<Dialog, Table> labels = CacheBuilder
@@ -45,10 +45,9 @@ public class DialogRenderingSystem extends RenderingSystem {
                     Table table = new Table(Skins.COMODORE_SKIN);
                     table.setRound(false);
                     String text = dialog.text;
-                    Label label = new Label(text, Skins.COMODORE_SKIN, dialog.kind == Kind.MAGIC_WORDS ? "flipped-shadow" : "speech-bubble");
+                    Label label = new Label(text, Skins.COMODORE_SKIN, dialog.kind == Kind.MAGIC_WORDS ? "flipped" : "speech-bubble");
                     label.getStyle().font.setUseIntegerPositions(false);
                     float prefWidth = label.getPrefWidth();
-                    label.getColor().a = 0.5f;
                     label.setWrap(true);
                     label.setAlignment(Align.center);
                     Log.info("Width: " + prefWidth);
@@ -85,8 +84,8 @@ public class DialogRenderingSystem extends RenderingSystem {
     private void drawBubble(E player, Pos2D playerPos, Dialog dialog) {
         Table label = labels.getUnchecked(dialog);
         final float x = playerPos.x + (Tile.TILE_PIXEL_WIDTH - label.getWidth()) / 2;
-
-        float up = Dialog.DEFAULT_TIME - dialog.time <= TIME ? (Dialog.DEFAULT_TIME - dialog.time) * VELOCITY : DISTANCE_TO_TOP;
+        float up = (Dialog.DEFAULT_TIME - dialog.time) * VELOCITY;
+        up = Math.min(up, DISTANCE_TO_TOP);
         float offsetY = descriptorHandler.getBody(player.getBody().index).getHeadOffsetY() * SCALE;
         final float y = playerPos.y - 55 * SCALE + offsetY - up + label.getHeight();
 

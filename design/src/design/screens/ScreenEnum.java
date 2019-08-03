@@ -4,6 +4,8 @@ import com.esotericsoftware.minlog.Log;
 import design.editors.fields.Listener;
 import design.screens.views.*;
 
+import java.lang.reflect.InvocationTargetException;
+
 public enum ScreenEnum {
     IMAGE_VIEW("Images", ImageView.class),
     ANIMATION_VIEW("Animations", AnimationView.class),
@@ -27,9 +29,11 @@ public enum ScreenEnum {
     public View getScreen(Object... params) {
         if (view == null) {
             try {
-                view = type.newInstance();
-            } catch (InstantiationException | IllegalAccessException e) {
+                view = type.getDeclaredConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 Log.error("View not implemented", e);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
             }
         }
         readParams(view, params);

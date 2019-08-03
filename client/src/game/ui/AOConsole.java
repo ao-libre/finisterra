@@ -13,6 +13,7 @@ import java.util.LinkedList;
 public class AOConsole extends Actor {
 
     private static final float MAX_MESSAGES = 9;
+    public static final int LINE_HEIGHT = 20;
 
     private LinkedList<Actor> messages = new LinkedList<>();
 
@@ -37,9 +38,8 @@ public class AOConsole extends Actor {
     }
 
     private void addMessage(String message, Color color) {
-        LabelStyle labelStyle = new LabelStyle(Skins.COMODORE_SKIN.getFont("big-shadow"), color);
+        LabelStyle labelStyle = new LabelStyle(Skins.COMODORE_SKIN.getFont("big"), color);
         Label label = new Label(message, labelStyle);
-        label.getStyle().fontColor = color;
         label.setX(getX());
         if (messages.size() >= MAX_MESSAGES) {
             messages.pollLast();
@@ -49,9 +49,9 @@ public class AOConsole extends Actor {
     }
 
     private void setY() {
-        float v = getY() - messages.size() * 16;
+        float v = getY() - messages.size() * LINE_HEIGHT;
         for (int i = 0; i < messages.size(); i++) {
-            messages.get(i).setY(v + i * 16);
+            messages.get(i).setY(v + i * LINE_HEIGHT);
         }
     }
 

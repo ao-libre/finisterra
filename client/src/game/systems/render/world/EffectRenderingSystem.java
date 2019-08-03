@@ -65,6 +65,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
             switch (effect.type) {
                 case PARTICLE:
                     ParticleEffect particle = ParticlesHandler.getParticle(effectId);
+                    particle.flipY();
                     particleEffects.put(entityId, particle);
                     break;
                 case FX:
