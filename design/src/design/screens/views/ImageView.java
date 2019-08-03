@@ -2,6 +2,7 @@ package design.screens.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -50,12 +51,28 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
         return new TextureRegionDrawable(texture1);
     }
 
+    public void evict(AOImage image) {
+        getAnimationHandler().clearImage(image);
+    }
+
     @Override
     public void loadItems(Optional<AOImage> selection) {
         Cell<Table> cell = getMainTable().getCell(content);
         content.clear();
         createContent();
         cell.setActor(content);
+        selection.ifPresent(this::scrollTo);
+    }
+
+    private void scrollTo(AOImage aoImage) {
+        // TODO
+        Actor child = content.getChild(1);
+        if (child instanceof ScrollPane) {
+            ScrollPane scrollPane = (ScrollPane) child;
+            int size = sizes[1];
+            int columns = ((Gdx.graphics.getWidth() - size) / size) - 1;
+
+        }
     }
 
     @Override
@@ -95,8 +112,8 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
             }
         });
         ScrollPane scrollPa = new ScrollPane(scrollableContent);
-        scrollPa.setFlickScroll(false);
-        scrollPa.setFadeScrollBars(false);
+        scrollPa.setDebug(true);
+        scrollPa.setScrollbarsVisible(true);
         content.add(scrollPa);
         return content;
     }
@@ -123,7 +140,6 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 getDesigner().modify(aoImage, getStage());
-                //TODO refreshPreview?
             }
         });
         TextTooltip toolTip = new TextTooltip("Edit Image", SKIN);
@@ -135,6 +151,7 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
             public void clicked(InputEvent event, float x, float y) {
                 getDesigner().delete(aoImage);
                 //refreshPreview?
+                loadItems(Optional.empty());
             }
         });
         toolTip = new TextTooltip("Delete Image", SKIN);

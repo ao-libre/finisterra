@@ -97,7 +97,7 @@ public class IntegerEditor extends FieldEditor<Integer> {
                     private boolean validInput(int ref, IDesigner designer) {
                         return designer.contains(ref);
                     }
-                }, 2f);
+                }, 0.5f);
             }
         });
         return text;
