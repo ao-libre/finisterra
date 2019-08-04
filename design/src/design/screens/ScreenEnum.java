@@ -42,6 +42,8 @@ public enum ScreenEnum {
             if (params[0] instanceof Listener) {
                 view.setListener((Listener) params[0]);
             }
+        } else {
+            view.clearListener();
         }
     }
 

@@ -183,6 +183,11 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
     private Table createButtons() {
         Table buttons = new Table(SKIN);
         buttons.defaults().space(5);
+        addButtons(buttons);
+        return buttons;
+    }
+
+    protected void addButtons(Table buttons) {
         Button create = new Button(SKIN, "new");
         create.addListener(new ClickListener() {
             @Override
@@ -217,7 +222,6 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         buttons.add(create).left();
         buttons.add(delete).left();
         buttons.add(save).expandX().right();
-        return buttons;
     }
 
     private void onSelect(T select) {

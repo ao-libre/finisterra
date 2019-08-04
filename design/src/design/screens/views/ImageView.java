@@ -124,7 +124,8 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
         return content;
     }
 
-    private void addButtons(Table buttons) {
+    @Override
+    protected void addButtons(Table buttons) {
         Button create = new Button(SKIN, "new");
         create.addListener(new ClickListener() {
             @Override
@@ -180,6 +181,17 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
         edit.addListener(toolTip);
         buttons.add(edit).right().expandX();
 
+        Button split = new ImageButton(SKIN, "grid-light");
+        split.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                evict(aoImage);
+                getDesigner().splitImage(aoImage.getId());
+            }
+        });
+        split.addListener(new TextTooltip("Split image in columns and rows", SKIN));
+        buttons.add(split).right();
+
         Button duplicate = new Button(SKIN, "duplicate");
         duplicate.addListener(new ClickListener() {
             @Override
@@ -196,6 +208,7 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
         delete.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                evict(aoImage);
                 getDesigner().delete(aoImage);
                 //refreshPreview?
                 loadItems(Optional.empty());
@@ -204,7 +217,7 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
         toolTip = new TextTooltip("Delete Image", SKIN);
         delete.addListener(toolTip);
         buttons.add(delete).right();
-        table.add(buttons).row();
+        table.add(buttons).growX().row();
 
         Container bg = new Container();
         bg.setClip(true);

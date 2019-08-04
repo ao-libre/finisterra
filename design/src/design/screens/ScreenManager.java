@@ -2,14 +2,14 @@ package design.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
-import design.screens.map.MapEditorScreen;
+import design.screens.map.MapEditor;
 import design.screens.views.View;
 
 public class ScreenManager {
 
     private static ScreenManager instance;
 
-    private MapEditorScreen mapEditorScreen;
+    private MapEditor mapEditorScreen;
     private Game game;
     private Screen current;
 
@@ -40,9 +40,6 @@ public class ScreenManager {
         }
 
         Screen newScreen = screenEnum.getScreen(params);
-        if (params.length == 0) {
-            ((View) newScreen).clearListener();
-        }
         newScreen.resume();
         game.setScreen(newScreen);
         this.current = newScreen;
@@ -55,7 +52,7 @@ public class ScreenManager {
 
     public void toMapEditorScreen() {
         if (mapEditorScreen == null) {
-            mapEditorScreen = new MapEditorScreen();
+            mapEditorScreen = new MapEditor();
         }
         showScreen(mapEditorScreen);
     }

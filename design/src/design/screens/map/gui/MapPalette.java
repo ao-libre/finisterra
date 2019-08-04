@@ -13,10 +13,13 @@ public class MapPalette extends Window {
 
     public MapPalette() {
         super("Palette", SKIN, "main");
-        defaults().pad(20);
-        add(IntegerEditor.create("Image", FieldProvider.IMAGE, i -> image = i, () -> image, () -> {
+        defaults().growX();
+        setDebug(true);
+        add("Image:").row();
+        add(IntegerEditor.create("", FieldProvider.IMAGE, i -> image = i, () -> image, () -> {
         })).row();
-        add(IntegerEditor.create("Animation", FieldProvider.ANIMATION, i -> animation = i, () -> animation, () -> {
+        add("Animation:").row();
+        add(IntegerEditor.create("", FieldProvider.ANIMATION, i -> animation = i, () -> animation, () -> {
         })).row();
     }
 

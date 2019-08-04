@@ -1,15 +1,14 @@
 package design.designers;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.esotericsoftware.minlog.Log;
+import design.dialogs.AnimationFromImages;
+import design.dialogs.SplitImage;
 import design.editors.ImageEditor;
-import design.editors.utils.SliceResult;
-import design.editors.utils.Slicer;
-import design.editors.utils.Utils;
 import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
 import design.screens.views.AnimationView;
@@ -19,20 +18,18 @@ import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import game.handlers.DefaultAOAssetManager;
 import game.utils.Resources;
+import model.textures.AOAnimation;
 import model.textures.AOImage;
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.system.MemoryStack;
-import org.lwjgl.util.tinyfd.TinyFileDialogs;
 import shared.util.AOJson;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Optional;
 
 import static design.designers.ImageDesigner.ImageParameters;
-import static org.lwjgl.system.MemoryStack.stackPush;
+import static design.utils.FileUtils.openDialog;
 
 public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
 
@@ -44,7 +41,10 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
     private Map<Integer, AOImage> images;
 
     public int getFreeId() {
-        return images.keySet().stream().max(Integer::compareTo).get() + 1;
+        AnimationDesigner designer = (AnimationDesigner) ScreenEnum.ANIMATION_VIEW.getScreen().getDesigner();
+        int freeAnimation = designer.get().values().stream().max(Comparator.comparingInt(AOAnimation::getId)).get().getId() + 1;
+        int freeImage = images.values().stream().max(Comparator.comparingInt(AOImage::getId)).get().getId() + 1;
+        return Math.max(freeAnimation, freeImage);
     }
 
     public ImageDesigner(ImageParameters parameters) {
@@ -83,7 +83,7 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
     public Optional<AOImage> create() {
         // open file chooser
         Optional<AOImage> result = Optional.empty();
-        File file = openDialog("Search Sprite Sheet", "", new String[]{"*.png"}, "");
+        File file = openDialog("Search Image", "", new String[]{"*.png"}, "");
         if (file == null) {
             return result;
         }
@@ -93,7 +93,8 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
     }
 
     public Optional<AOImage> create(FileHandle fileHandle) {
-        FileHandle dest = Gdx.files.local(Resources.GAME_GRAPHICS_PATH + getFreeId() + ".png");
+        int freeId = getFreeId();
+        FileHandle dest = Gdx.files.local(Resources.GAME_GRAPHICS_PATH + freeId + ".png");
         fileHandle.copyTo(dest);
         AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
         AOAssetManager assetManager = game.getAssetManager();
@@ -103,48 +104,15 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
             defaultAOAssetManager.finishLoadingAsset(dest.path());
         }
 
-        SliceResult slice = new Slicer(dest).slice(getFreeId());
-        slice.getImages().forEach(image -> {
-            add(image);
-            assetManager.getImages().put(image.getId(), image);
-        });
-        if (slice.getImages().size() > 1) {
-            AnimationView animationView = (AnimationView) ScreenEnum.ANIMATION_VIEW.getScreen();
-            animationView.createAnimation(slice.getImages());
-        }
-        return Optional.ofNullable(slice.getImages().get(0));
-    }
-
-    private File openDialog(String title, String defaultPath,
-                            String[] filterPatterns, String filterDescription) {
-        String result;
-
-        //fix file path characters
-        if (Utils.isWindows()) {
-            defaultPath = defaultPath.replace("/", "\\");
-        } else {
-            defaultPath = defaultPath.replace("\\", "/");
-        }
-
-        if (filterPatterns != null && filterPatterns.length > 0) {
-            try (MemoryStack stack = stackPush()) {
-                PointerBuffer pointerBuffer = stack.mallocPointer(filterPatterns.length);
-
-                for (String filterPattern : filterPatterns) {
-                    pointerBuffer.put(stack.UTF8(filterPattern));
-                }
-                pointerBuffer.flip();
-                result = TinyFileDialogs.tinyfd_openFileDialog(title, defaultPath, pointerBuffer, filterDescription, false);
-            }
-        } else {
-            result = TinyFileDialogs.tinyfd_openFileDialog(title, defaultPath, null, filterDescription, false);
-        }
-
-        if (result != null) {
-            return new File(result);
-        } else {
-            return null;
-        }
+        var image = new Pixmap(dest);
+        AOImage aoImage = new AOImage();
+        aoImage.setId(freeId);
+        aoImage.setHeight(image.getHeight());
+        aoImage.setWidth(image.getWidth());
+        aoImage.setFileNum(freeId);
+        add(aoImage);
+        assetManager.getImages().put(aoImage.getId(), aoImage);
+        return Optional.of(aoImage);
     }
 
     @Override
@@ -163,6 +131,22 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
             }
         };
         imageEditor.show(stage);
+    }
+
+    public void splitImage(int imageId) {
+        get(imageId).ifPresent(image -> {
+            SplitImage.split(image, ScreenEnum.IMAGE_VIEW.getScreen().getStage(), (list) -> {
+                delete(image);
+                for (AOImage aoImage : list) {
+                    aoImage.setId(getFreeId());
+                    add(aoImage);
+                }
+                View screen = ScreenEnum.IMAGE_VIEW.getScreen();
+                screen.loadItems(Optional.ofNullable(list.get(0)));
+                AnimationFromImages.show(list);
+            });
+        });
+
     }
 
     @Override

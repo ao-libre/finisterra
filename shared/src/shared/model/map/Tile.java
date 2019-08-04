@@ -128,8 +128,16 @@ public class Tile {
                 npcIndex == tile.npcIndex &&
                 blocked == tile.blocked &&
                 trigger == tile.trigger &&
-                Objects.equal(graphic, tile.graphic) &&
+                sameGraphics(tile) &&
                 Objects.equal(tileExit, tile.tileExit);
+    }
+
+    public boolean sameGraphics(Tile tile) {
+        boolean result = true;
+        for (int i = 0; i < 4; i++) {
+            result &= graphic[i] == tile.graphic[i];
+        }
+        return result;
     }
 
     @Override

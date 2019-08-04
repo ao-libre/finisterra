@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.esotericsoftware.minlog.Log;
+import com.google.common.base.Objects;
 import design.screens.DesignScreen;
 import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
@@ -41,7 +43,7 @@ import java.util.Optional;
 import static com.artemis.E.E;
 import static launcher.DesignCenter.SKIN;
 
-public class MapEditorScreen extends DesignScreen {
+public class MapEditor extends DesignScreen {
 
     private final Stage stage;
     private World world;
@@ -63,14 +65,30 @@ public class MapEditorScreen extends DesignScreen {
             this.tile = tile;
             this.pos = pos;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Undo undo = (Undo) o;
+            return Objects.equal(tile, undo.tile) &&
+                    Objects.equal(pos, undo.pos);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(tile, pos);
+        }
     }
 
     private Deque<Undo> undoableActions = new ArrayDeque<>(50);
 
 
 
-    public MapEditorScreen() {
+    public MapEditor() {
         stage = new Stage() {
+
+            private boolean dragging;
 
             @Override
             public boolean touchDragged(int screenX, int screenY, int pointer) {
@@ -79,6 +97,7 @@ public class MapEditorScreen extends DesignScreen {
                     float y = Gdx.input.getDeltaY();
                     world.getSystem(CameraSystem.class).camera.translate(-x, -y);
                 } else {
+                    dragging = true;
                     setTile();
                 }
                 return true;
@@ -99,6 +118,7 @@ public class MapEditorScreen extends DesignScreen {
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
                 setTile();
+                dragging = false;
                 return super.touchUp(screenX, screenY, pointer, button);
             }
 
@@ -108,9 +128,7 @@ public class MapEditorScreen extends DesignScreen {
                     Tile tile = map.getTile(pos.x, pos.y);
                     Undo undo = new Undo(new Tile(tile), pos);
                     Undo last = undoableActions.peek();
-                    if (last == null || !last.equals(undo)) {
-                        undoableActions.push(undo);
-                    }
+                    boolean validAction = true;
                     if (block) {
                         tile.setBlocked(!tile.isBlocked());
                     } else if (delete) {
@@ -120,12 +138,25 @@ public class MapEditorScreen extends DesignScreen {
                             case 0:
                             case 2:
                             case 3:
-                                tile.getGraphic()[layer] = palette.getImage();
+                                if (palette.getImage() > 0) {
+                                    tile.getGraphic()[layer] = palette.getImage();
+                                } else {
+                                    validAction = false;
+                                }
                                 break;
                             case 1:
-                                tile.getGraphic()[layer] = palette.getAnimation();
+                                if (palette.getAnimation() > 0) {
+                                    tile.getGraphic()[layer] = palette.getAnimation();
+                                } else {
+                                    validAction = false;
+                                }
                                 break;
                         }
+                    }
+
+                    if (validAction && (last == null || !(dragging && undo.pos.equals(last.pos)))) {
+                        Log.info("Save tile action. Tile: " + undo.tile.toString() + " in pos: " + undo.pos);
+                        undoableActions.push(undo);
                     }
                 });
             }
@@ -269,7 +300,7 @@ public class MapEditorScreen extends DesignScreen {
 
     private void createRightPane(Table table) {
         palette = new MapPalette();
-        table.add(palette).right().prefWidth(150).expandY();
+        table.add(palette).right().width(200).expandY();
     }
 
     private void createLeftPane(Table table) {
@@ -314,7 +345,7 @@ public class MapEditorScreen extends DesignScreen {
         block.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                MapEditorScreen.this.block = block.isChecked();
+                MapEditor.this.block = block.isChecked();
             }
         });
         leftPane.add(block).spaceTop(10).row();
@@ -322,7 +353,7 @@ public class MapEditorScreen extends DesignScreen {
         clean.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                MapEditorScreen.this.delete = clean.isChecked();
+                MapEditor.this.delete = clean.isChecked();
             }
         });
         leftPane.add(clean).spaceTop(10).spaceBottom(5).row();

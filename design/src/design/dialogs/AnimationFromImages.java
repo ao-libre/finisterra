@@ -55,7 +55,7 @@ public class AnimationFromImages {
             this.designer = designer;
             this.animationHandler = animationHandler;
             this.images = images;
-            columns = images.size() / 4;
+            columns = Math.max(images.size() / 4, 1);
             createContent();
         }
 
