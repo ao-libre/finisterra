@@ -14,7 +14,7 @@ public class Colors {
     public static final Color CRIMINAL = rgb(231, 76, 60);
     public static final Color COMBAT = rgb(255, 76, 60);
     public static final Color GREY = rgb(149, 165, 166);
-    public static final Color TRANSPARENT_RED = rgba(231, 76, 60, 0.35f);
+    public static final Color TRANSPARENT_RED = rgba(231, 76, 60, 0.1f);
     public static final Color RED = rgb(231, 76, 60);
     public static final Color YELLOW = rgb(244, 244, 143);
 

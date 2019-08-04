@@ -23,6 +23,7 @@ public class Tile {
     private int trigger;
 
     public Tile() {
+        graphic = new int[4];
     }
 
     public Tile(Tile other) {

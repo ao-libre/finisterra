@@ -8,6 +8,7 @@ import model.textures.AOTexture;
 import model.textures.BundledAnimation;
 import shared.model.map.Map;
 import shared.model.map.Tile;
+import shared.model.map.WorldPosition;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,7 +25,7 @@ public class MapManager extends BaseSystem {
     public static final int MIN_MAP_SIZE_HEIGHT = 1;
     private AnimationHandler animationHandler;
 
-    public void drawLayer(Map map, SpriteBatch batch, float delta, int layer) {
+    public void drawLayer(Map map, SpriteBatch batch, float delta, int layer, boolean drawExit, boolean drawBlock) {
             for (int x = 0; x < map.getWidth(); x++) {
                 for (int y = map.getHeight() - 1; y >= 0; y--) {
                     Tile tile = map.getTile(x, y);
@@ -36,6 +37,14 @@ public class MapManager extends BaseSystem {
                         continue;
                     }
                     doTileDrawFlipped(batch, delta, x, y, graphic);
+                    if (drawBlock && tile.isBlocked()) {
+                        // draw block
+                        doTileDraw(batch, delta, x, y, 4);
+                    }
+                    if (drawExit && tile.getTileExit() != null && !(new WorldPosition().equals(tile.getTileExit()))) {
+                        // draw exit
+                        doTileDraw(batch, delta, x, y, 3);
+                    }
                 }
             }
     }

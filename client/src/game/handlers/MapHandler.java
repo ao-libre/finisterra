@@ -24,7 +24,6 @@ public class MapHandler extends PassiveSystem {
     }
 
     public static Tile getTile(WorldPos pos) {
-        Map map = get(pos.map);
-        return getHelper().getTile(map, pos);
+        return MapHelper.getTile(get(pos.map), pos);
     }
 }

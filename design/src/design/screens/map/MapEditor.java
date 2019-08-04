@@ -12,14 +12,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.esotericsoftware.minlog.Log;
 import com.google.common.base.Objects;
 import design.screens.DesignScreen;
 import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
+import design.screens.map.gui.MapAssetChooser;
 import design.screens.map.gui.MapPalette;
+import design.screens.map.gui.MapPalette.Selection;
 import design.screens.map.gui.MapProperties;
 import design.screens.map.systems.MapDesignRenderingSystem;
 import game.handlers.AnimationHandler;
@@ -32,11 +37,13 @@ import position.Pos2D;
 import position.WorldPos;
 import shared.model.map.Map;
 import shared.model.map.Tile;
+import shared.model.map.WorldPosition;
 import shared.util.AOJson;
 import shared.util.MapHelper;
 import shared.util.Util;
 
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.Optional;
 
@@ -49,13 +56,12 @@ public class MapEditor extends DesignScreen {
     private World world;
     private int viewer;
 
-    // palette
-    private int layer;
-    private boolean block;
-    private boolean delete;
+    // state
+    private boolean dragging;
 
-    private MapPalette palette;
+    private MapAssetChooser assetChooser;
     private MapProperties mapProperties;
+    private MapPalette mapPalette;
 
     private class Undo {
         Tile tile;
@@ -84,11 +90,9 @@ public class MapEditor extends DesignScreen {
     private Deque<Undo> undoableActions = new ArrayDeque<>(50);
 
 
-
     public MapEditor() {
         stage = new Stage() {
 
-            private boolean dragging;
 
             @Override
             public boolean touchDragged(int screenX, int screenY, int pointer) {
@@ -105,13 +109,18 @@ public class MapEditor extends DesignScreen {
 
             @Override
             public boolean scrolled(int amount) {
-                int x = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT) ? amount : 0;
-                int y = !(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ||
-                        Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) ?
-                        amount : 0;
-                x *= 2;
-                y *= 2;
-                world.getSystem(CameraSystem.class).camera.translate(x, y);
+                if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
+                    CameraSystem system = world.getSystem(CameraSystem.class);
+                    system.zoom(amount, CameraSystem.ZOOM_TIME);
+                } else {
+                    int x = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT) ? amount : 0;
+                    int y = !(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ||
+                            Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) ?
+                            amount : 0;
+                    x *= 2;
+                    y *= 2;
+                    world.getSystem(CameraSystem.class).camera.translate(x, y);
+                }
                 return super.scrolled(amount);
             }
 
@@ -122,54 +131,8 @@ public class MapEditor extends DesignScreen {
                 return super.touchUp(screenX, screenY, pointer, button);
             }
 
-            public void setTile() {
-                mouseToWorldPos().ifPresent(pos -> {
-                    Map map = mapProperties.getCurrent();
-                    Tile tile = map.getTile(pos.x, pos.y);
-                    Undo undo = new Undo(new Tile(tile), pos);
-                    Undo last = undoableActions.peek();
-                    boolean validAction = true;
-                    if (block) {
-                        tile.setBlocked(!tile.isBlocked());
-                    } else if (delete) {
-                        tile.getGraphic()[layer] = 0;
-                    } else {
-                        switch (layer) {
-                            case 0:
-                            case 2:
-                            case 3:
-                                if (palette.getImage() > 0) {
-                                    tile.getGraphic()[layer] = palette.getImage();
-                                } else {
-                                    validAction = false;
-                                }
-                                break;
-                            case 1:
-                                if (palette.getAnimation() > 0) {
-                                    tile.getGraphic()[layer] = palette.getAnimation();
-                                } else {
-                                    validAction = false;
-                                }
-                                break;
-                        }
-                    }
-
-                    if (validAction && (last == null || !(dragging && undo.pos.equals(last.pos)))) {
-                        Log.info("Save tile action. Tile: " + undo.tile.toString() + " in pos: " + undo.pos);
-                        undoableActions.push(undo);
-                    }
-                });
-            }
-
-            private Optional<WorldPos> mouseToWorldPos() {
-
-                CameraSystem camera = world.getSystem(CameraSystem.class);
-                Vector3 screenPos = camera.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-                WorldPos value = Util.toWorld(new Pos2D(screenPos.x, screenPos.y));
-                if (MapHelper.getTile(mapProperties.getCurrent(), value) != null) {
-                    return Optional.of(value);
-                }
-                return Optional.empty();
+            void setTile() {
+                mouseToWorldPos().ifPresent(MapEditor.this::setTile);
             }
 
             @Override
@@ -194,6 +157,77 @@ public class MapEditor extends DesignScreen {
         createWorld();
     }
 
+    private void setTile(int x, int y) {
+        setTile(new WorldPos(x, y, 0));
+    }
+
+    private void setTile(WorldPos pos) {
+        Map map = mapProperties.getCurrent();
+        Tile tile = map.getTile(pos.x, pos.y);
+        Undo undo = new Undo(new Tile(tile), pos);
+        Undo last = undoableActions.peek();
+        if (last != null && dragging && undo.pos.equals(last.pos)) {
+            return;
+        }
+        boolean validAction = true;
+        Selection selection = mapPalette.getSelection();
+        int layer = mapPalette.getLayer();
+        switch (selection) {
+            case NONE:
+                switch (layer) {
+                    case 0:
+                    case 2:
+                    case 3:
+                        if (assetChooser.getImage() > 0) {
+                            tile.getGraphic()[layer] = assetChooser.getImage();
+                        } else {
+                            validAction = false;
+                        }
+                        break;
+                    case 1:
+                        if (assetChooser.getAnimation() > 0) {
+                            tile.getGraphic()[layer] = assetChooser.getAnimation();
+                        } else {
+                            validAction = false;
+                        }
+                        break;
+                }
+                break;
+            case BLOCK:
+                tile.setBlocked(!tile.isBlocked());
+                break;
+            case CLEAN:
+                tile.getGraphic()[layer] = 0;
+                break;
+            case TILE_EXIT:
+                WorldPosition tileExit = tile.getTileExit();
+                WorldPosition chosenTileExit = assetChooser.getTileExit();
+                WorldPosition emptyTranslate = new WorldPosition();
+                if (tileExit == null || tileExit.equals(emptyTranslate)) {
+                    tile.setTileExit(chosenTileExit);
+                } else {
+                    tile.setTileExit(emptyTranslate);
+                }
+                break;
+        }
+        if (validAction) {
+            Log.info("Save tile action. Tile: " + undo.tile.toString() + " in pos: " + undo.pos);
+            undoableActions.push(undo);
+        }
+
+    }
+
+    private Optional<WorldPos> mouseToWorldPos() {
+
+        CameraSystem camera = world.getSystem(CameraSystem.class);
+        Vector3 screenPos = camera.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+        WorldPos value = Util.toWorld(new Pos2D(screenPos.x, screenPos.y));
+        if (MapHelper.getTile(mapProperties.getCurrent(), value) != null) {
+            return Optional.of(value);
+        }
+        return Optional.empty();
+    }
+
     @Override
     public Stage getStage() {
         return stage;
@@ -206,7 +240,7 @@ public class MapEditor extends DesignScreen {
         builder
                 .with(new SuperMapper())
                 .with(new ObjectHandler())
-                .with(new CameraSystem(1))
+                .with(new CameraSystem(0.1f, 2f))
                 .with(animationHandler)
                 .with(descriptorHandler)
                 .with(new MapDesignRenderingSystem(new SpriteBatch()))
@@ -223,9 +257,6 @@ public class MapEditor extends DesignScreen {
 
     @Override
     protected void keyPressed(int keyCode) {
-        MapDesignRenderingSystem mapSystem = world.getSystem(MapDesignRenderingSystem.class);
-        mapSystem.getCurrent();
-
     }
 
     @Override
@@ -240,41 +271,70 @@ public class MapEditor extends DesignScreen {
         });
         menus.add(back).left().expandX();
 
-        Button newMap = new ImageTextButton("New", SKIN);
-        newMap.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Map map = new Map();
-                world.getSystem(MapDesignRenderingSystem.class).addMap(map);
-                mapProperties.show(map);
-            }
-        });
-        menus.add(newMap);
-        Button loadMap = new ImageTextButton("Load", SKIN);
-        loadMap.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                int map = 1;
-                initMap(map);
-            }
-        });
-        menus.add(loadMap).spaceLeft(5);
+        menus.add(createButton("Show Exits", "switch",
+                () -> world.getSystem(MapDesignRenderingSystem.class).toggleExits(), "Toggle exit tiles draw"))
+                .spaceLeft(5);
 
-        Button save = new ImageTextButton("Save", SKIN);
-        save.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Map current = mapProperties.getCurrent();
-                FileHandle folder = Gdx.files.local("output/maps/");
-                new AOJson().toJson(current, folder.child(current.getName() + ".json"));
+        menus.add(createButton("Show Blocks", "switch",
+                () -> world.getSystem(MapDesignRenderingSystem.class).toggleBlocks(), "Toggle blocks draw"))
+                .spaceLeft(5);
+
+        menus.add(createButton("Show Grid", "switch",
+                () -> world.getSystem(MapDesignRenderingSystem.class).toggleGrid(), "Toggle blocks draw"))
+                .spaceLeft(5);
+
+        menus.add(createButton("New", "default", () -> {
+            Map map = new Map();
+            Arrays.stream(map.getTiles()).forEach(tiles -> {
+                for (int i = 0; i < tiles.length; i++) {
+                    tiles[i] = new Tile();
+                }
+            });
+            world.getSystem(MapDesignRenderingSystem.class).setMap(map);
+            mapProperties.show(map);
+        }, "Create new empty map")).spaceLeft(5);
+
+        menus.add(createButton("Fill", "default", () -> {
+            Map current = mapProperties.getCurrent();
+            for (int i = 0; i < current.getWidth(); i++) {
+                for (int j = 0; j < current.getHeight(); j++) {
+                    setTile(i, j);
+                }
             }
-        });
-        menus.add(save).spaceLeft(5);
+        }, "All tiles will be set with current configuration (layer & selection)"))
+                .spaceLeft(5);
+
+        menus.add(createButton("Load", "default",
+                () -> {
+                    int map = 1;
+                    initMap(map);
+                }, "Load map"))
+                .spaceLeft(5);
+
+        menus.add(createButton("Save", "default",
+                () -> {
+                    Map current = mapProperties.getCurrent();
+                    FileHandle folder = Gdx.files.local("output/maps/");
+                    new AOJson().toJson(current, folder.child(current.getName() + ".json"));
+                }, "Save map in output folder"))
+                .spaceLeft(5);
 
         return menus;
     }
 
-    public void initMap(int map) {
+    private Button createButton(String label, String style, Runnable listener, String tooltip) {
+        Button button = new ImageTextButton(label, SKIN, style);
+        button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                listener.run();
+            }
+        });
+        button.addListener(new TextTooltip(tooltip, SKIN));
+        return button;
+    }
+
+    private void initMap(int map) {
         Map map1 = world.getSystem(MapDesignRenderingSystem.class).loadMap(map);
         E(viewer)
                 .worldPosMap(map)
@@ -286,7 +346,6 @@ public class MapEditor extends DesignScreen {
     @Override
     protected Table createContent() {
         Table table = new Table();
-        table.setDebug(true);
         createLeftPane(table);
         createBottomPane(table);
         createRightPane(table);
@@ -299,66 +358,13 @@ public class MapEditor extends DesignScreen {
     }
 
     private void createRightPane(Table table) {
-        palette = new MapPalette();
-        table.add(palette).right().width(200).expandY();
+        assetChooser = new MapAssetChooser();
+        table.add(assetChooser).right().width(200).expandY();
     }
 
     private void createLeftPane(Table table) {
-        Window leftPane = new Window("Layers", SKIN, "main");
-        leftPane.setMovable(true);
-        ButtonGroup group = new ButtonGroup();
-        Button fst = new TextButton("1", SKIN, "file");
-        fst.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                layer = 0;
-            }
-        });
-        leftPane.add(fst).spaceTop(5).growX().row();
-        Button snd = new TextButton("2", SKIN, "file");
-        snd.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                layer = 1;
-            }
-        });
-        leftPane.add(snd).growX().row();
-        Button third = new TextButton("3", SKIN, "file");
-        third.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                layer = 2;
-            }
-        });
-        leftPane.add(third).growX().row();
-        Button forth = new TextButton("4", SKIN, "file");
-        forth.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                layer = 3;
-            }
-        });
-        leftPane.add(forth).growX().row();
-        group.add(fst, snd, third, forth);
-
-        Button block = new TextButton("block", SKIN, "file");
-        block.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                MapEditor.this.block = block.isChecked();
-            }
-        });
-        leftPane.add(block).spaceTop(10).row();
-        Button clean = new Button(SKIN, "delete-check");
-        clean.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                MapEditor.this.delete = clean.isChecked();
-            }
-        });
-        leftPane.add(clean).spaceTop(10).spaceBottom(5).row();
-
-        table.add(leftPane).left().expandY();
+        mapPalette = new MapPalette();
+        table.add(mapPalette).left().expandY();
     }
 
     @Override
