@@ -192,7 +192,9 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         create.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                loadItems(designer.create());
+                Optional<T> newItem = designer.create();
+                newItem.ifPresent(item -> getItemView().set(item));
+                loadItems(newItem);
             }
         });
         modify = new TextButton("Modify", SKIN);
@@ -231,6 +233,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
                 public void result(Object obj) {
                     if ((Boolean) obj && select instanceof ID) {
                         listener.select((ID) select);
+                        clearListener();
                     }
                 }
             };
@@ -240,6 +243,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
             dialog.key(Input.Keys.ENTER, true); //sends "true" when the ENTER key is pressed
             dialog.show(getStage());
         });
+
     }
 
     @Override

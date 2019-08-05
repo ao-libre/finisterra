@@ -32,8 +32,7 @@ public class ScreenManager {
         // Show new screen
         Screen current = game.getScreen();
         if (current != null) {
-            if (current.getClass().equals(screenEnum.getType()) && params.length == 0) {
-                ((View) current).clearListener();
+            if (current.getClass().equals(screenEnum.getType())) {
                 return;
             }
             current.pause();

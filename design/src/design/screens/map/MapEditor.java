@@ -26,7 +26,10 @@ import design.screens.map.gui.MapAssetChooser;
 import design.screens.map.gui.MapPalette;
 import design.screens.map.gui.MapPalette.Selection;
 import design.screens.map.gui.MapProperties;
+import design.screens.map.model.TileSet;
 import design.screens.map.systems.MapDesignRenderingSystem;
+import design.screens.views.TileSetView;
+import design.screens.views.View;
 import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
 import game.handlers.ObjectHandler;
@@ -169,7 +172,7 @@ public class MapEditor extends DesignScreen {
         if (last != null && dragging && undo.pos.equals(last.pos)) {
             return;
         }
-        boolean validAction = true;
+        boolean saveUndo = true;
         Selection selection = mapPalette.getSelection();
         int layer = mapPalette.getLayer();
         switch (selection) {
@@ -181,14 +184,14 @@ public class MapEditor extends DesignScreen {
                         if (assetChooser.getImage() > 0) {
                             tile.getGraphic()[layer] = assetChooser.getImage();
                         } else {
-                            validAction = false;
+                            saveUndo = false;
                         }
                         break;
                     case 1:
                         if (assetChooser.getAnimation() > 0) {
                             tile.getGraphic()[layer] = assetChooser.getAnimation();
                         } else {
-                            validAction = false;
+                            saveUndo = false;
                         }
                         break;
                 }
@@ -198,6 +201,20 @@ public class MapEditor extends DesignScreen {
                 break;
             case CLEAN:
                 tile.getGraphic()[layer] = 0;
+                break;
+            case TILE_SET:
+                int tileset = assetChooser.getTileset();
+                if (tileset > 0) {
+                    TileSetView view = (TileSetView) ScreenEnum.TILE_SET_VIEW.getScreen();
+                    view.getDesigner().get(tileset).ifPresent(tileSet -> {
+                        for (int x = 0; x < tileSet.getCols(); x++) {
+                            for (int y = 0; y < tileSet.getRows(); y++) {
+                                putTileSet(pos.x + x, pos.y + y, pos.map, map, tileSet.getImage(x,y));
+                            }
+                        }
+                    });
+                    saveUndo = false;
+                }
                 break;
             case TILE_EXIT:
                 WorldPosition tileExit = tile.getTileExit();
@@ -210,15 +227,22 @@ public class MapEditor extends DesignScreen {
                 }
                 break;
         }
-        if (validAction) {
+        if (saveUndo) {
             Log.info("Save tile action. Tile: " + undo.tile.toString() + " in pos: " + undo.pos);
             undoableActions.push(undo);
         }
 
     }
 
-    private Optional<WorldPos> mouseToWorldPos() {
+    private void putTileSet(int x, int y, int mapId, Map map, int image) {
+        Tile tile = MapHelper.getTile(map, new WorldPos(x, y, mapId));
+        if (tile != null) {
+            undoableActions.push(new Undo(new Tile(tile), new WorldPos(x,y, mapId)));
+            tile.getGraphic()[mapPalette.getLayer()] = image;
+        }
+    }
 
+    private Optional<WorldPos> mouseToWorldPos() {
         CameraSystem camera = world.getSystem(CameraSystem.class);
         Vector3 screenPos = camera.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
         WorldPos value = Util.toWorld(new Pos2D(screenPos.x, screenPos.y));

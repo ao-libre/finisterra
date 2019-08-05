@@ -49,6 +49,12 @@ public enum FieldProvider {
             return ScreenEnum.IMAGE_VIEW;
         }
     },
+    TILE_SET {
+        @Override
+        public ScreenEnum getScreen() {
+            return ScreenEnum.TILE_SET_VIEW;
+        }
+    },
     NONE {
         @Override
         public ScreenEnum getScreen() {

@@ -14,7 +14,8 @@ public enum ScreenEnum {
     SHIELDS_VIEW("Shields", ShieldsView.class),
     WEAPONS_VIEW("Weapons", WeaponsView.class),
     HELMETS_VIEW ("Helmets", HelmetsView.class),
-    FXS_VIEW("FXs", FXsView.class);
+    FXS_VIEW("FXs", FXsView.class),
+    TILE_SET_VIEW("Tile Set", TileSetView.class);
 
     private String title;
     private Class<? extends View> type;
@@ -42,8 +43,6 @@ public enum ScreenEnum {
             if (params[0] instanceof Listener) {
                 view.setListener((Listener) params[0]);
             }
-        } else {
-            view.clearListener();
         }
     }
 

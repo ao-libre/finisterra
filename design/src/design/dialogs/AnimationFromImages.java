@@ -101,7 +101,7 @@ public class AnimationFromImages {
         private void createContent() {
             Table content = new Table(SKIN);
             List<AOImage> selected = getAoImages(content);
-            add(content).growX();
+            add(new ScrollPane(content)).growX();
 
             Table buttons = getButtons(selected);
             add(buttons).growX();

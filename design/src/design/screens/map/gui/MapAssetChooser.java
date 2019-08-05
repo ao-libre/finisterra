@@ -17,12 +17,18 @@ public class MapAssetChooser extends Window {
     public MapAssetChooser() {
         super("Chooser", SKIN, "main");
         defaults().growX();
-        setDebug(true);
+
+
         add("Image:").row();
         add(IntegerEditor.create("", FieldProvider.IMAGE, i -> image = i, () -> image, () -> {
         })).spaceLeft(2).row();
+
         add("Animation:").row();
         add(IntegerEditor.create("", FieldProvider.ANIMATION, i -> animation = i, () -> animation, () -> {
+        })).spaceLeft(2).row();
+
+        add("Tile set:").row();
+        add(IntegerEditor.create("", FieldProvider.TILE_SET, i -> tileset = i, () -> tileset, () -> {
         })).spaceLeft(2).row();
 
         add("Tile Exit: ").row();

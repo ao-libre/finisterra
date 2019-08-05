@@ -80,8 +80,19 @@ public class MapPalette extends Window {
             }
         });
         add(tileExit).row();
+
+        Button tileSet = new TextButton("Tile Set", SKIN, "file");
+        tileSet.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                selection = tileSet.isChecked() ? Selection.TILE_SET : Selection.NONE;
+            }
+        });
+        add(tileSet).row();
+
+
         ButtonGroup buttons = new ButtonGroup();
-        buttons.add(block, clean, tileExit);
+        buttons.add(block, clean, tileExit, tileSet);
         buttons.setMinCheckCount(0);
 
     }
@@ -98,6 +109,7 @@ public class MapPalette extends Window {
         NONE,
         BLOCK,
         CLEAN,
-        TILE_EXIT
+        TILE_EXIT,
+        TILE_SET
     }
 }
