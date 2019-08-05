@@ -32,6 +32,7 @@ public class GUI extends BaseSystem implements Disposable {
     private DialogText dialog;
     private AOConsole console;
     private OrthographicCamera camera;
+    private AOAssetManager assetManager;
 
     public GUI() {
         this.stage = new AOInputProcessor(this);
@@ -39,6 +40,7 @@ public class GUI extends BaseSystem implements Disposable {
         this.userTable = new UserInformation();
         this.dialog = new DialogText();
         this.console = new AOConsole();
+        this.assetManager = AOGame.getGlobalAssetManager();
     }
 
     @Override
@@ -89,7 +91,7 @@ public class GUI extends BaseSystem implements Disposable {
         Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
         BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
         PixmapIO.writePNG(Gdx.files.local(screenshotPath), pixmap);
-        getConsole().addInfo("3...2...1...Say Cheese!. Screenshot saved in " + screenshotPath);
+        getConsole().addInfo(assetManager.getMessages(Messages.SCREENSHOT), screenshotPath);
         pixmap.dispose();
     }
 

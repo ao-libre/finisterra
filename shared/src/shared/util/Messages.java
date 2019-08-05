@@ -43,6 +43,7 @@ public enum Messages {
     CANT_ATTACK,
     SEE_SOMEONE,
     SEE_NOTHING,
+    SCREENSHOT,
 
     // SPELLS
     ORIGIN_MSG,
