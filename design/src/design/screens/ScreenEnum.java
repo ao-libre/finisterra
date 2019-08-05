@@ -9,6 +9,7 @@ public enum ScreenEnum {
     IMAGE_VIEW("Images", ImageView.class),
     ANIMATION_VIEW("Animations", AnimationView.class),
     NPC_VIEW("NPCs", NPCView.class),
+    OBJ_VIEW("Objects", ObjectView.class),
     BODIES_VIEW("Bodies", BodiesView.class),
     HEADS_VIEW("Heads", HeadsView.class),
     SHIELDS_VIEW("Shields", ShieldsView.class),
