@@ -242,21 +242,21 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         }
     }
 
-    private void notifyCombat(int userId, Messages message, Object... messageParams) {
+    private void notifyCombat(int userId, Messages message, String... messageParams) {
         final ConsoleMessage combat = ConsoleMessage.combat(message, messageParams);
         worldManager.sendEntityUpdate(userId, combat);
     }
 
     private int doNormalAttack(int userId, int entityId, int damage) {
-        notifyCombat(userId, Messages.USER_NORMAL_HIT, getName(entityId), damage);
-        notifyCombat(entityId, Messages.VICTIM_NORMAL_HIT, getName(userId), damage);
+        notifyCombat(userId, Messages.USER_NORMAL_HIT, getName(entityId), Integer.toString(damage));
+        notifyCombat(entityId, Messages.VICTIM_NORMAL_HIT, getName(userId), Integer.toString(damage));
         return damage;
     }
 
     private int doCriticAttack(int userId, int entityId, int damage) {
         // TODO
-        notifyCombat(userId, Messages.USER_CRITIC_HIT, getName(entityId), damage);
-        notifyCombat(entityId, Messages.VICTIM_CRITIC_HIT, getName(userId), damage);
+        notifyCombat(userId, Messages.USER_CRITIC_HIT, getName(entityId), Integer.toString(damage));
+        notifyCombat(entityId, Messages.VICTIM_CRITIC_HIT, getName(userId), Integer.toString(damage));
         return damage;
     }
 
@@ -307,8 +307,8 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     private int doStab(int userId, int entityId, int damage) {
         final CharClass clazz = CharClass.of(E(userId));
         damage += (int) (CharClass.ASSASSIN.equals(clazz) ? damage * ASSASIN_STAB_FACTOR : damage * NORMAL_STAB_FACTOR);
-        notifyCombat(userId, Messages.USER_STAB_HIT, getName(entityId), damage);
-        notifyCombat(entityId, Messages.VICTIM_STAB_HIT, getName(userId), damage);
+        notifyCombat(userId, Messages.USER_STAB_HIT, getName(entityId), Integer.toString(damage));
+        notifyCombat(entityId, Messages.VICTIM_STAB_HIT, getName(userId), Integer.toString(damage));
         return damage;
     }
 
@@ -371,8 +371,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         HEAD,
         BODY;
 
-        private static final List<AttackPlace> VALUES =
-                Collections.unmodifiableList(Arrays.asList(values()));
+        private static final List<AttackPlace> VALUES = List.of(values());
         private static final int SIZE = VALUES.size();
         private static final Random RANDOM = new Random();
 

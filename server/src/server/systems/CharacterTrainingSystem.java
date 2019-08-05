@@ -27,12 +27,9 @@ import static com.artemis.E.E;
 @Wire
 public class CharacterTrainingSystem extends PassiveSystem {
 
-    public static final int HIT_BREAKING_LEVEL = 35;
-    public static int INITIAL_LEVEL = 1;
-    public static int DEFAULT_STAMINA = 15;
-    public static int STAT_MAXHIT_UNDER36 = 99;
-    public static int STAT_MAXHIT_OVER36 = 999;
-    private static int MAX_LEVEL = 45;
+    private static final int HIT_BREAKING_LEVEL = 35;
+    static int INITIAL_LEVEL = 1;
+    static int DEFAULT_STAMINA = 15;
     private WorldManager worldManager;
     private NPCManager npcManager;
 
@@ -41,7 +38,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
 
         E e = E(entityId);
         if (e.hasLevel() && exp > 0) {
-            worldManager.sendEntityUpdate(entityId, ConsoleMessage.combat(Messages.EXP_GAIN, exp));
+            worldManager.sendEntityUpdate(entityId, ConsoleMessage.combat(Messages.EXP_GAIN, Integer.toString(exp)));
             Level level = e.getLevel();
             level.exp += exp;
             userCheckLevel(entityId);
@@ -87,6 +84,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
         assert (E(userId).hasLevel());
         Level level = E(userId).getLevel();
         if (level.exp > level.expToNextLevel) {
+            int MAX_LEVEL = 45;
             if (level.level < MAX_LEVEL) {
                 levelUp(userId);
             } else {
@@ -121,7 +119,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
                 .withComponents(e.getLevel(), e.getHealth(), e.getMana(), e.getHit(), e.getStamina())
                 .build();
         worldManager.sendEntityUpdate(userId, update);
-        worldManager.sendEntityUpdate(userId, ConsoleMessage.info(Messages.LEVEL_UP, health, mana, hit, stamina));
+        worldManager.sendEntityUpdate(userId, ConsoleMessage.info(Messages.LEVEL_UP, Float.toString(health), Integer.toString(mana), hit.getValue().toString(), Integer.toString(stamina)));
         int fxE = world.create();
         Effect effect = new Effect.EffectBuilder().attachTo(userId).withLoops(1).withFX(FXs.FX_LEVEL_UP).build();
         EntityUpdate fxUpdate = EntityUpdateBuilder.of(fxE).withComponents(effect).build();
@@ -233,11 +231,13 @@ public class CharacterTrainingSystem extends PassiveSystem {
                 break;
         }
         hit = entity.getLevel().level < HIT_BREAKING_LEVEL ? minLvl : maxLvl;
+        int STAT_MAXHIT_UNDER36 = 99;
+        int STAT_MAXHIT_OVER36 = 999;
         int minHit = MathUtils.clamp(entity.hitMin() + hit, 0, entity.getLevel().level < 35 ? STAT_MAXHIT_UNDER36 : STAT_MAXHIT_OVER36);
         int maxHit = MathUtils.clamp(entity.hitMax() + hit, 0, entity.getLevel().level < 35 ? STAT_MAXHIT_UNDER36 : STAT_MAXHIT_OVER36);
 
         entity.hitMax(maxHit).hitMin(minHit);
-        return new Pair(minHit, maxHit);
+        return new Pair<>(minHit, maxHit);
     }
 
     private int addStamina(int userId) {

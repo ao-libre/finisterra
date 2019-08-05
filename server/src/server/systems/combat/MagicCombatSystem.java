@@ -126,11 +126,11 @@ public class MagicCombatSystem extends BaseSystem {
                 victimUpdateToAllBuilder.withComponents(CombatMessage.magic(damage > 0 ? "+" : "-" + Math.abs(damage)));
                 victimUpdateBuilder.withComponents(health);
                 if (damage > 0) {
-                    notifyMagic(playerId, Messages.HEAL_TO, getName(target), Math.abs(damage));
-                    notifyMagic(target, Messages.HEAL_BY, getName(playerId), Math.abs(damage));
+                    notifyMagic(playerId, Messages.HEAL_TO, getName(target), Integer.toString(Math.abs(damage)));
+                    notifyMagic(target, Messages.HEAL_BY, getName(playerId), Integer.toString(Math.abs(damage)));
                 } else {
-                    notifyMagic(playerId, Messages.DAMAGE_TO, Math.abs(damage), getName(target));
-                    notifyMagic(target, Messages.DAMAGED_BY, getName(playerId), Math.abs(damage));
+                    notifyMagic(playerId, Messages.DAMAGE_TO, Integer.toString(Math.abs(damage)), getName(target));
+                    notifyMagic(target, Messages.DAMAGED_BY, getName(playerId), Integer.toString(Math.abs(damage)));
                 }
                 if (health.min <= 0) {
                     getWorldManager().entityDie(target);
@@ -237,11 +237,10 @@ public class MagicCombatSystem extends BaseSystem {
         int spellTarget = spell.getTarget();
         switch (spellTarget) {
             case 1:
+            case 3:
                 return targetEntity.isCharacter() || (targetEntity.hasNPC() && targetEntity.isHostile());
             case 2:
                 return (targetEntity.hasNPC() && targetEntity.isHostile());
-            case 3:
-                return targetEntity.isCharacter() || (targetEntity.hasNPC() && targetEntity.isHostile());
             case 4:
                 return targetEntity == null;
         }
@@ -249,12 +248,12 @@ public class MagicCombatSystem extends BaseSystem {
         return false;
     }
 
-    private void notifyInfo(int userId, Messages messageId, Object... messageParams) {
+    private void notifyInfo(int userId, Messages messageId, String... messageParams) {
         final ConsoleMessage combat = ConsoleMessage.info(messageId, messageParams);
         getWorldManager().sendEntityUpdate(userId, combat);
     }
 
-    private void notifyMagic(int userId, Messages messageId, Object... messageParams) {
+    private void notifyMagic(int userId, Messages messageId, String... messageParams) {
         final ConsoleMessage combat = ConsoleMessage.combat(messageId, messageParams);
         getWorldManager().sendEntityUpdate(userId, combat);
     }

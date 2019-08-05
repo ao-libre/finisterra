@@ -48,7 +48,7 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
                 CombatMessage manaMessage = CombatMessage.magic("+" + recoveredMana);
                 update.withComponents(mana);
                 notify.withComponents(manaMessage);
-                ConsoleMessage consoleMessage = ConsoleMessage.info(Messages.MANA_RECOVERED, recoveredMana);
+                ConsoleMessage consoleMessage = ConsoleMessage.info(Messages.MANA_RECOVERED, Integer.toString(recoveredMana));
                 worldManager.sendEntityUpdate(e.id(), consoleMessage);
             }
         }

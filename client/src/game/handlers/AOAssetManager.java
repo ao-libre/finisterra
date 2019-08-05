@@ -69,5 +69,5 @@ public interface AOAssetManager {
 
     Map<Integer, WeaponDescriptor> getWeapons();
 
-    String getMessages(Messages key, Object... params);
+    String getMessages(Messages key, String... params);
 }

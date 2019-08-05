@@ -9,30 +9,30 @@ import static shared.network.notifications.ConsoleMessage.Kind.*;
 public class ConsoleMessage implements INotification {
 
     private Messages messageId;
-    private Object[] messageParams;
+    private String[] messageParams;
     private Kind kind;
 	
 	public ConsoleMessage() {}
 	
-    public ConsoleMessage(Messages messageId, Kind kind, Object... messageParams) {
+    public ConsoleMessage(Messages messageId, Kind kind, String... messageParams) {
         this.messageId = messageId;
         this.messageParams = messageParams;
         this.kind = kind;
     }
 
-    public static ConsoleMessage error(Messages messageId, Object... messageParams) {
+    public static ConsoleMessage error(Messages messageId, String... messageParams) {
         return new ConsoleMessage(messageId, ERROR, messageParams);
     }
 
-    public static ConsoleMessage info(Messages messageId, Object... messageParams) {
+    public static ConsoleMessage info(Messages messageId, String... messageParams) {
         return new ConsoleMessage(messageId, INFO, messageParams);
     }
 
-    public static ConsoleMessage combat(Messages messageId, Object... messageParams) {
+    public static ConsoleMessage combat(Messages messageId, String... messageParams) {
         return new ConsoleMessage(messageId, COMBAT, messageParams);
     }
 
-    public static ConsoleMessage warning(Messages messageId, Object... messageParams) {
+    public static ConsoleMessage warning(Messages messageId, String... messageParams) {
         return new ConsoleMessage(messageId, WARNING, messageParams);
     }
 
@@ -40,7 +40,7 @@ public class ConsoleMessage implements INotification {
         return messageId;
     }
 
-    public Object getMessageParams() {
+    public String[] getMessageParams() {
         return messageParams;
     }
 

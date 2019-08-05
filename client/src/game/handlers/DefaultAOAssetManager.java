@@ -292,15 +292,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         return weapons;
     }
 
-    private String paramsToString(Object parameter) {
-        if (parameter instanceof Integer) {
-            return Integer.toString((Integer) parameter);
-        } else if (parameter instanceof Float) {
-            return Float.toString((Float) parameter);
-        }
-    }
-
-    public String getMessages(Messages key, Object... params) {
+    public String getMessages(Messages key, String... params) {
 
         if (!isLoaded(languagesFile)) {
             load(languagesFile, I18NBundle.class);
@@ -313,10 +305,8 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
             Gdx.app.error("Internationalization", "Error trying to get message: " + key.name());
         }
 
-        String[] stringParams = Stream.of(params).map(this::paramsToString).toArray(String[]::new);
-
         if (params.length > 0) {
-            return i18.format(key.name(), stringParams);
+            return i18.format(key.name(), params);
         } else {
             return i18.get(key.name());
         }
@@ -334,7 +324,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     private void loadObjects() {
         Arrays.stream(Type.values()).forEach(type -> {
-            ObjectParameter param = new ObjectParameter(type);
+            ObjectParameter<HashMap<Integer, Obj>> param = new ObjectParameter<>(type);
             String fileName = SharedResources.OBJECTS_FOLDER + type.name().toLowerCase() + JSON_EXTENSION;
             if (Gdx.app.getFiles().internal(fileName).exists()) {
                 load(fileName, OBJS_CLASS, param);
