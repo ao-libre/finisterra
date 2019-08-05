@@ -27,11 +27,6 @@ public class ObjectEditor extends Dialog {
         button("OK", obj);
     }
 
-    private void addTable() {
-        getContentTable().add(new ScrollPane(getTable(obj, () -> {
-        }))).prefHeight(300).prefWidth(300);
-    }
-
     public static Table getTable(Obj obj, FieldEditor.FieldListener listener) {
         Table table = new Table(SKIN);
         table.defaults().growX().uniform();
@@ -127,5 +122,10 @@ public class ObjectEditor extends Dialog {
                 return FieldProvider.ANIMATION;
         }
         return FieldProvider.NONE;
+    }
+
+    private void addTable() {
+        getContentTable().add(new ScrollPane(getTable(obj, () -> {
+        }))).prefHeight(300).prefWidth(300);
     }
 }

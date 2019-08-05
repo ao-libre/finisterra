@@ -62,33 +62,7 @@ public class MapEditor extends DesignScreen {
     private MapAssetChooser assetChooser;
     private MapProperties mapProperties;
     private MapPalette mapPalette;
-
-    private class Undo {
-        Tile tile;
-        WorldPos pos;
-
-        Undo(Tile tile, WorldPos pos) {
-            this.tile = tile;
-            this.pos = pos;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Undo undo = (Undo) o;
-            return Objects.equal(tile, undo.tile) &&
-                    Objects.equal(pos, undo.pos);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(tile, pos);
-        }
-    }
-
     private Deque<Undo> undoableActions = new ArrayDeque<>(50);
-
 
     public MapEditor() {
         stage = new Stage() {
@@ -397,12 +371,10 @@ public class MapEditor extends DesignScreen {
         table.add(mapPalette).left().expandY();
     }
 
-
     @Override
     public World getWorld() {
         return world;
     }
-
 
     @Override
     public void render(float delta) {
@@ -415,6 +387,30 @@ public class MapEditor extends DesignScreen {
             }
             getStage().act(delta);
             getStage().draw();
+        }
+    }
+
+    private class Undo {
+        Tile tile;
+        WorldPos pos;
+
+        Undo(Tile tile, WorldPos pos) {
+            this.tile = tile;
+            this.pos = pos;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Undo undo = (Undo) o;
+            return Objects.equal(tile, undo.tile) &&
+                    Objects.equal(pos, undo.pos);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(tile, pos);
         }
     }
 

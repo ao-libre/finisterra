@@ -43,18 +43,11 @@ import static game.utils.Resources.GAME_DESCRIPTORS_PATH;
 @Wire
 public class DefaultAOAssetManager extends AssetManager implements AOAssetManager {
 
-    private ClientConfiguration clientConfiguration;
     private static final Class<ArrayList<AOImage>> IMAGE_CLASS;
     private static final Class<ArrayList<AOAnimation>> ANIMATION_CLASS;
     private static final Class<HashMap<Integer, Obj>> OBJS_CLASS;
     private static final Class<HashMap<Integer, Spell>> SPELLS_CLASS;
     private static final Class<ArrayList<Descriptor>> DESCRIPTORS_CLASS;
-    private final String languagesFile;
-    private final String[] languagesLocale;
-
-    private Map<Integer, AOImage> images;
-    private Map<Integer, AOAnimation> animations;
-
 
     static {
         ArrayList<AOImage> integerGraphicHashMap = new ArrayList<>();
@@ -73,6 +66,11 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         DESCRIPTORS_CLASS = (Class<ArrayList<Descriptor>>) descriptors.getClass();
     }
 
+    private final String languagesFile;
+    private final String[] languagesLocale;
+    private ClientConfiguration clientConfiguration;
+    private Map<Integer, AOImage> images;
+    private Map<Integer, AOAnimation> animations;
     private Map<Integer, ShieldDescriptor> shields;
     private Map<Integer, FXDescriptor> fxs;
     private Map<Integer, HeadDescriptor> heads;
@@ -115,7 +113,9 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         // TODO
     }
 
-    private void loadMessages() { load(languagesFile, I18NBundle.class, new I18NBundleLoader.I18NBundleParameter(new Locale(languagesLocale[0], languagesLocale[1]))); }
+    private void loadMessages() {
+        load(languagesFile, I18NBundle.class, new I18NBundleLoader.I18NBundleParameter(new Locale(languagesLocale[0], languagesLocale[1])));
+    }
 
     private void loadSkins() {
         load(Resources.GAME_SKIN_FILE, AOSkin.class);

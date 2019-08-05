@@ -28,6 +28,32 @@ public abstract class DescriptorView<T extends Descriptor> extends View<T, Descr
         super(designer);
     }
 
+    public static Descriptor copy(Descriptor descriptor, Class<? extends Descriptor> clazz) {
+        Descriptor newDescriptor = null;
+        try {
+            Constructor<? extends Descriptor> constructor = clazz.getConstructor();
+            newDescriptor = constructor.newInstance();
+            for (int i = 0; i < (clazz.equals(FXDescriptor.class) ? 1 : 4); i++) {
+                newDescriptor.getIndexs()[i] = descriptor.getGraphic(i);
+            }
+            newDescriptor.setId(descriptor.getId());
+            if (clazz.equals(BodyDescriptor.class)) {
+                BodyDescriptor copy = (BodyDescriptor) newDescriptor;
+                BodyDescriptor original = (BodyDescriptor) descriptor;
+                copy.setHeadOffsetX(original.getHeadOffsetX());
+                copy.setHeadOffsetY(original.getHeadOffsetY());
+            } else if (clazz.equals(FXDescriptor.class)) {
+                FXDescriptor copy = (FXDescriptor) newDescriptor;
+                FXDescriptor original = (FXDescriptor) descriptor;
+                copy.setOffsetX(original.getOffsetX());
+                copy.setOffsetY(original.getOffsetY());
+            }
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return newDescriptor;
+    }
+
     @Override
     protected void sort(Array<T> items) {
         items.sort(Comparator.comparingInt(Descriptor::getId));
@@ -57,33 +83,6 @@ public abstract class DescriptorView<T extends Descriptor> extends View<T, Descr
     protected void setContent(DescriptorActor previewActor, Descriptor descriptor) {
         previewActor.setDescriptor(descriptor);
     }
-
-    public static Descriptor copy(Descriptor descriptor, Class<? extends Descriptor> clazz) {
-        Descriptor newDescriptor = null;
-        try {
-            Constructor<? extends Descriptor> constructor = clazz.getConstructor();
-            newDescriptor = constructor.newInstance();
-            for (int i = 0; i < (clazz.equals(FXDescriptor.class) ? 1 : 4); i++) {
-                newDescriptor.getIndexs()[i] = descriptor.getGraphic(i);
-            }
-            newDescriptor.setId(descriptor.getId());
-            if (clazz.equals(BodyDescriptor.class)) {
-                BodyDescriptor copy = (BodyDescriptor) newDescriptor;
-                BodyDescriptor original = (BodyDescriptor) descriptor;
-                copy.setHeadOffsetX(original.getHeadOffsetX());
-                copy.setHeadOffsetY(original.getHeadOffsetY());
-            } else if (clazz.equals(FXDescriptor.class)) {
-                FXDescriptor copy = (FXDescriptor) newDescriptor;
-                FXDescriptor original = (FXDescriptor) descriptor;
-                copy.setOffsetX(original.getOffsetX());
-                copy.setOffsetY(original.getOffsetY());
-            }
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        return newDescriptor;
-    }
-
 
     class DescriptorItem extends Editor<T> {
 

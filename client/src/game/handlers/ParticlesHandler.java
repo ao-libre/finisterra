@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.utils.LongMap;
 import game.AOGame;
-import game.utils.Resources;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 public class ParticlesHandler extends PassiveSystem {

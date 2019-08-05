@@ -1,8 +1,6 @@
 package game.ui;
 
 import com.artemis.E;
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import game.AOGame;
 import game.handlers.SpellHandler;
 import game.screens.GameScreen;
 import game.utils.Colors;
@@ -63,7 +60,7 @@ public class SpellView extends Table {
 
     public void updateSpells() {
         WorldUtils.getWorld().ifPresent(world -> {
-            SpellHandler spellHandler =  world.getSystem(SpellHandler.class);
+            SpellHandler spellHandler = world.getSystem(SpellHandler.class);
             final Spell[] spells = spellHandler.getSpells();
             Spell[] spellsToShow = new Spell[MAX_SPELLS];
             System.arraycopy(spells, base, spellsToShow, 0, Math.min(MAX_SPELLS, spells.length));

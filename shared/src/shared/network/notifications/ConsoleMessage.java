@@ -37,7 +37,7 @@ public class ConsoleMessage implements INotification {
     public Messages getMessageId() {
         return messageId;
     }
-    
+
     public Object getMessageParams() {
         return messageParams;
     }

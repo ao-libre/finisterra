@@ -55,10 +55,10 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
 
     public static World world;
     public static int player = -1;
+    private final ClientConfiguration clientConfiguration;
     private FPSLogger logger;
     private SpriteBatch spriteBatch;
     private WorldConfigurationBuilder worldConfigBuilder;
-    private final ClientConfiguration clientConfiguration;
     private AOAssetManager assetManager;
 
     public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
@@ -81,12 +81,12 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         world.getSystem(GUI.class).getSpellView().updateSpells();
     }
 
-    public World getWorld() {
-        return world;
-    }
-
     public static KryonetClientMarshalStrategy getClient() {
         return world.getSystem(ClientSystem.class).getKryonetClient();
+    }
+
+    public World getWorld() {
+        return world;
     }
 
     private void initWorldConfiguration() {

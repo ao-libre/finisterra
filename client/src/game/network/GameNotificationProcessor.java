@@ -28,7 +28,6 @@ import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
 import shared.network.sound.SoundNotification;
-import shared.util.Messages;
 
 import static com.artemis.E.E;
 

@@ -1,14 +1,13 @@
 package game.managers;
 
 import com.artemis.E;
-import com.artemis.World;
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.AOGame;
 import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import game.screens.GameScreen;
-import game.screens.WorldScreen;
 import game.systems.camera.CameraSystem;
 import game.systems.network.TimeSync;
 import game.ui.GUI;
@@ -38,7 +37,7 @@ public class AOInputProcessor extends Stage {
     private GUI gui;
     private AOAssetManager assetManager;
 
-    public AOInputProcessor (GUI gui) {
+    public AOInputProcessor(GUI gui) {
         this.gui = gui;
         AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
         assetManager = game.getAssetManager();

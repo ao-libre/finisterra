@@ -72,7 +72,7 @@ public class AOAnimationActor extends DescriptorActor {
         this.descriptor = descriptor;
         if (descriptor == null) {
             this.animation = null;
-            setSize(0,0);
+            setSize(0, 0);
         } else {
             setAnimation(descriptor);
         }

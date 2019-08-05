@@ -13,7 +13,7 @@ public class FileUtils {
 
 
     public static File openDialog(String title, String defaultPath,
-                            String[] filterPatterns, String filterDescription) {
+                                  String[] filterPatterns, String filterDescription) {
         String result;
 
         //fix file path characters

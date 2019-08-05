@@ -30,14 +30,16 @@ public class MapProperties extends Window {
     public void show(Map map) {
         content.clear();
         current = map;
-        content.add(StringEditor.simple("Map Name", map::setName, map::getName, () -> {})).row();
+        content.add(StringEditor.simple("Map Name", map::setName, map::getName, () -> {
+        })).row();
         int[] neighbours = map.getNeighbours();
         for (int i = 0; i < 4; i++) {
             int finalI = i;
             content.add(IntegerEditor.create(getNeighbourDisplay(i), id -> map.setNeighbour(finalI, id), () -> neighbours[finalI], () -> {
             })).row();
         }
-        content.add(BooleanEditor.simple("Secure", map::setSecureZone, () -> current.isSecureZone(), () -> { })).row();
+        content.add(BooleanEditor.simple("Secure", map::setSecureZone, () -> current.isSecureZone(), () -> {
+        })).row();
     }
 
     private String getNeighbourDisplay(int i) {

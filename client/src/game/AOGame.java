@@ -27,12 +27,17 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
 
     private AOAssetManager assetManager;
     private ClientConfiguration clientConfiguration;
-    
+
     public AOGame(ClientConfiguration clientConfiguration) {
         this.clientConfiguration = clientConfiguration;
         this.assetManager = new DefaultAOAssetManager(clientConfiguration);
     }
-    
+
+    public static AOAssetManager getGlobalAssetManager() {
+        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
+        return game.getAssetManager();
+    }
+
     @Override
     public void create() {
         super.create();
@@ -63,11 +68,6 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
     public void toGame(GameScreen gameScreen) {
         setTransition(new ColorFadeTransition(Color.BLACK, Interpolation.exp10), 0f);
         setScreen(gameScreen);
-    }
-
-    public static AOAssetManager getGlobalAssetManager() {
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        return game.getAssetManager();
     }
 
     public ClientConfiguration getClientConfiguration() {

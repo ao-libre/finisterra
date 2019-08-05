@@ -3,7 +3,6 @@ package server.systems;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.math.MathUtils;
-import com.esotericsoftware.minlog.Log;
 import entity.character.status.Health;
 import entity.character.status.Level;
 import entity.world.CombatMessage;
@@ -24,7 +23,6 @@ import shared.util.Pair;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
-import static java.lang.String.format;
 
 @Wire
 public class CharacterTrainingSystem extends PassiveSystem {

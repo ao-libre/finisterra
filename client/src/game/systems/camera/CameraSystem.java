@@ -13,12 +13,11 @@ import shared.model.map.Tile;
 public class CameraSystem extends BaseSystem {
 
     public final static float ZOOM_TIME = 0.5f;
+    private final float minZoom;
+    private final float maxZoom;
     public OrthographicCamera camera;
     public OrthographicCamera guiCamera;
     private float desiredZoom = AOGame.GAME_SCREEN_ZOOM;
-    private final float minZoom;
-    private final float maxZoom;
-
     // member variables:
     private float timeToCameraZoomTarget, cameraZoomOrigin, cameraZoomDuration;
 

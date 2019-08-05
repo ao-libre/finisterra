@@ -1,9 +1,7 @@
 package game.ui;
 
-import java.time.LocalDateTime;
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -19,6 +17,8 @@ import game.managers.AOInputProcessor;
 import game.screens.GameScreen;
 import game.ui.user.UserInformation;
 import game.utils.Skins;
+
+import java.time.LocalDateTime;
 
 public class GUI extends BaseSystem implements Disposable {
 
@@ -92,7 +92,7 @@ public class GUI extends BaseSystem implements Disposable {
         getConsole().addInfo("3...2...1...Say Cheese!. Screenshot saved in " + screenshotPath);
         pixmap.dispose();
     }
-    
+
     public void toggleFullscreen() {
         if (Gdx.graphics.isFullscreen()) {
             Gdx.graphics.setWindowedMode(this.windowedWidth, this.windowedHeight);
@@ -102,7 +102,7 @@ public class GUI extends BaseSystem implements Disposable {
             Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
         }
     }
-    
+
     @Override
     public void initialize() {
         Skins.COMODORE_SKIN.getFont("simple").setUseIntegerPositions(false);

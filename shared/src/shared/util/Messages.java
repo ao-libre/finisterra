@@ -41,6 +41,8 @@ public enum Messages {
 
     // AO INPUT PROCESSOR
     CANT_ATTACK,
+    SEE_SOMEONE,
+    SEE_NOTHING,
 
     // SPELLS
     ORIGIN_MSG,

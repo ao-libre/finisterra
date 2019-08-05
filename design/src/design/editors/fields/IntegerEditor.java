@@ -46,6 +46,28 @@ public class IntegerEditor extends FieldEditor<Integer> {
         return integerEditor.getField();
     }
 
+    public static void showWarning(int t, TextField text, FieldProvider fieldProvider, Stage stage) {
+        Dialog notNumber = new Dialog("Invalid Reference", SKIN);
+        String type = fieldProvider.getScreen().getTitle();
+        notNumber.text("This is not a valid reference of " + type);
+        notNumber.button("OK");
+        Vector2 coors = text.localToStageCoordinates(new Vector2(text.getX(), text.getY()));
+        notNumber.setPosition(coors.x, coors.y);
+        notNumber.show(stage, sequence(Actions.alpha(0), Actions.fadeIn(0.4f, Interpolation.fade)));
+    }
+
+    public static void showWarning(Screen current, TextField text) {
+        if (current instanceof View && !text.getText().isEmpty()) {
+            Stage stage = ((View) current).getStage();
+            Dialog notNumber = new Dialog("Invalid format", SKIN);
+            notNumber.text("Not valid integer, changes are not going to be set");
+            notNumber.button("OK");
+            Vector2 coors = text.localToStageCoordinates(new Vector2(text.getX(), text.getY()));
+            notNumber.setPosition(coors.x, coors.y);
+            notNumber.show(stage, sequence(Actions.alpha(0), Actions.fadeIn(0.4f, Interpolation.fade)));
+        }
+    }
+
     @Override
     protected Actor createSimpleEditor() {
         return createIntegerField(getSupplier(), getConsumer());
@@ -104,27 +126,5 @@ public class IntegerEditor extends FieldEditor<Integer> {
             }
         });
         return text;
-    }
-
-    public static void showWarning(int t, TextField text, FieldProvider fieldProvider, Stage stage) {
-        Dialog notNumber = new Dialog("Invalid Reference", SKIN);
-        String type = fieldProvider.getScreen().getTitle();
-        notNumber.text("This is not a valid reference of " + type);
-        notNumber.button("OK");
-        Vector2 coors = text.localToStageCoordinates(new Vector2(text.getX(), text.getY()));
-        notNumber.setPosition(coors.x, coors.y);
-        notNumber.show(stage, sequence(Actions.alpha(0), Actions.fadeIn(0.4f, Interpolation.fade)));
-    }
-
-    public static void showWarning(Screen current, TextField text) {
-        if (current instanceof View && !text.getText().isEmpty()) {
-            Stage stage = ((View) current).getStage();
-            Dialog notNumber = new Dialog("Invalid format", SKIN);
-            notNumber.text("Not valid integer, changes are not going to be set");
-            notNumber.button("OK");
-            Vector2 coors = text.localToStageCoordinates(new Vector2(text.getX(), text.getY()));
-            notNumber.setPosition(coors.x, coors.y);
-            notNumber.show(stage, sequence(Actions.alpha(0), Actions.fadeIn(0.4f, Interpolation.fade)));
-        }
     }
 }

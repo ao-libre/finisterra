@@ -7,7 +7,6 @@ import com.artemis.EBag;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import game.handlers.AnimationHandler;
 import game.handlers.MapHandler;
 import game.managers.MapManager;
@@ -16,7 +15,6 @@ import game.systems.camera.CameraSystem;
 import game.systems.map.TiledMapSystem;
 import graphics.Effect;
 import graphics.RenderBefore;
-import model.textures.BundledAnimation;
 import position.WorldPos;
 import shared.model.map.Tile;
 

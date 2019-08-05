@@ -19,10 +19,10 @@ import shared.util.MapHelper;
 public class MapDesignRenderingSystem extends RenderingSystem {
 
     private final MapHelper helper;
+    ShapeRenderer sr = new ShapeRenderer();
     private int current;
     private Map map;
     private MapManager mapManager;
-    ShapeRenderer sr = new ShapeRenderer();
     private boolean showExit;
     private boolean showBlocks;
     private boolean showGrid;

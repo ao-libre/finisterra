@@ -154,12 +154,12 @@ public class Spell {
         return fxGrh;
     }
 
-    public int getIconGrh() {
-        return iconGrh;
-    }
-
     public void setFxGrh(String fxGrh) {
         this.fxGrh = Integer.parseInt(fxGrh);
+    }
+
+    public int getIconGrh() {
+        return iconGrh;
     }
 
     public int getLoops() {

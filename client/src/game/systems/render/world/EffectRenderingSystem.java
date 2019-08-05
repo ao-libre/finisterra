@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entity.character.parts.Body;
-import game.handlers.AOAssetManager;
 import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
 import game.handlers.ParticlesHandler;
@@ -18,11 +17,9 @@ import game.systems.camera.CameraSystem;
 import graphics.Effect;
 import model.descriptors.BodyDescriptor;
 import model.descriptors.FXDescriptor;
-import model.textures.AOAnimation;
 import model.textures.BundledAnimation;
 import position.Pos2D;
 import position.WorldPos;
-import shared.model.Graphic;
 import shared.model.map.Tile;
 import shared.util.Util;
 
@@ -159,7 +156,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                     if (anim.isAnimationFinished()) {
                         worldManager.getNetworkedId(id).ifPresent(worldManager::unregisterEntity);
                     } else {
-                        anim.setAnimationTime(anim.getAnimationTime() + getWorld().getDelta() * (anim.getAnimation().getKeyFrames().length* 0.33f));
+                        anim.setAnimationTime(anim.getAnimationTime() + getWorld().getDelta() * (anim.getAnimation().getKeyFrames().length * 0.33f));
                     }
                 }
                 break;

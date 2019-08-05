@@ -62,12 +62,12 @@ public class StaticDescriptorActor extends DescriptorActor {
         this.descriptor = descriptor;
         if (descriptor == null) {
             this.texture = null;
-            setSize(0,0);
+            setSize(0, 0);
         } else {
             int graphic = descriptor.getGraphic(heading);
             if (graphic > 0) {
                 this.texture = animationHandler.getTexture(graphic);
-                setSize(texture.getTexture().getRegionWidth(),texture.getTexture().getRegionHeight());
+                setSize(texture.getTexture().getRegionWidth(), texture.getTexture().getRegionHeight());
             } else {
                 Log.info("Fail to show preview for descriptor: " + descriptor);
                 this.texture = null;

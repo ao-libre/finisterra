@@ -3,7 +3,6 @@ package design.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import design.screens.map.MapEditor;
-import design.screens.views.View;
 
 public class ScreenManager {
 

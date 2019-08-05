@@ -12,13 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import model.descriptors.*;
 import model.textures.AOAnimation;
 import model.textures.AOImage;
-import shared.model.Graphic;
 import shared.model.Spell;
 import shared.objects.types.Obj;
 import shared.util.Messages;
 
 import javax.sound.midi.Sequencer;
-import java.util.List;
 import java.util.Map;
 
 public interface AOAssetManager {

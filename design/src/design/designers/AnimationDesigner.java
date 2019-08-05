@@ -36,15 +36,15 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
     private AOJson json = new AOJson();
     private Map<Integer, AOAnimation> animations;
 
+    public AnimationDesigner(AnimationParameters parameters) {
+        load(parameters);
+    }
+
     public int getFreeId() {
         ImageDesigner designer = (ImageDesigner) ScreenEnum.IMAGE_VIEW.getScreen().getDesigner();
         int freeImage = designer.get().values().stream().max(Comparator.comparingInt(AOImage::getId)).get().getId() + 1;
         int freeAnimation = animations.values().stream().max(Comparator.comparingInt(AOAnimation::getId)).get().getId() + 1;
         return Math.max(freeAnimation, freeImage);
-    }
-
-    public AnimationDesigner(AnimationParameters parameters) {
-        load(parameters);
     }
 
     @Override

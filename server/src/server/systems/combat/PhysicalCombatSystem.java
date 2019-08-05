@@ -27,9 +27,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
-import static java.lang.String.format;
 import static server.utils.WorldUtils.WorldUtils;
-import static shared.util.Messages.*;
 
 @Wire
 public class PhysicalCombatSystem extends AbstractCombatSystem {

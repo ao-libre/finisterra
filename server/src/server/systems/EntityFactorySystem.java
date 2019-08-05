@@ -1,7 +1,6 @@
 package server.systems;
 
 import com.artemis.E;
-import com.artemis.World;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
 import entity.character.states.Heading;
@@ -458,7 +457,7 @@ public class EntityFactorySystem extends PassiveSystem {
                 result.add(curar);
             case MAGO:
                 result.add(apoca);
-            break;
+                break;
         }
         if (!(hero.equals(Hero.GUERRERO) || hero.equals(Hero.ARQUERO))) {
             result.add(misil);
@@ -496,8 +495,8 @@ public class EntityFactorySystem extends PassiveSystem {
         setworldPosInitial(entity);
         //TODO getValidPosition
     }
-  
-    private void setworldPosInitial (E entity){
+
+    private void setworldPosInitial(E entity) {
         switch (Race.of(entity)) {
             case DROW:
                 entity.worldPosX(62).worldPosY(68).worldPosMap(1);

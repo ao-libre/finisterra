@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -21,18 +20,17 @@ import model.textures.AOImage;
 import model.textures.AOTexture;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static launcher.DesignCenter.SKIN;
 
 public class ImageView extends View<AOImage, ImageDesigner> implements WorldScreen {
 
+    private final static int[] sizes = {64, 128, 150, 200, 250};
     private Map<AOImage, Drawable> drawables;
     private Map<Integer, Integer> usedImages = new HashMap<>();
-
-    private final static int[] sizes = {64, 128, 150, 200, 250};
     private Table content;
     private Button selected;
 

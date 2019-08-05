@@ -1,6 +1,6 @@
 package game;
 
-import com.badlogic.gdx.files.FileHandle; // @todo FileHandle is not cross-platform (desktop only)
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
@@ -20,7 +20,7 @@ public class ClientConfiguration extends PassiveSystem {
 
     public static ClientConfiguration loadConfig(String path) {
         Json configObject = new AOJson();
-        try (FileInputStream is = new FileInputStream(path)){
+        try (FileInputStream is = new FileInputStream(path)) {
             // Before GDX initialization
             // DO NOT USE 'Gdx.Files', because 'Gdx.Files' in the launcher is always NULL!
             return configObject.fromJson(ClientConfiguration.class, is);
@@ -91,9 +91,13 @@ public class ClientConfiguration extends PassiveSystem {
         private boolean disableAudio;
         private boolean startMaximized;
 
-        public String getLanguage() { return language; }
+        public String getLanguage() {
+            return language;
+        }
 
-        void setLanguage(String language) { this.language = language; }
+        void setLanguage(String language) {
+            this.language = language;
+        }
 
         public Video getVideo() {
             return video;

@@ -11,9 +11,9 @@ import game.screens.WorldScreen;
 public abstract class DesignScreen extends ScreenAdapter implements WorldScreen {
 
     private final Stage stage;
-    private Table mainTable;
-    World world;
     protected boolean running;
+    World world;
+    private Table mainTable;
 
     public DesignScreen() {
         stage = new Stage() {

@@ -96,7 +96,7 @@ public class NameRenderingSystem extends RenderingSystem {
         Color previous = new Color(label.getStyle().fontColor);
         Color color = //player.hasGM() ? Colors.GM :
 //                player.hasLevel() && player.getLevel().level < 13 ? Colors.NEWBIE :
-                        player.hasCriminal() ? Colors.CRIMINAL : Colors.CITIZEN;
+                player.hasCriminal() ? Colors.CRIMINAL : Colors.CITIZEN;
         label.getStyle().fontColor = color;
         return previous;
     }

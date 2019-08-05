@@ -4,9 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import game.AssetManagerHolder;
-import game.handlers.DescriptorHandler;
-import game.utils.WorldUtils;
-import shared.model.Graphic;
 
 public class AOTexture {
 

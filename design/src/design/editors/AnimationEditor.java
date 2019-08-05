@@ -9,7 +9,6 @@ import design.editors.fields.FieldEditor;
 import design.editors.fields.FieldProvider;
 import design.editors.fields.FloatEditor;
 import design.editors.fields.IntegerEditor;
-import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
 import design.screens.views.View;
 import model.textures.AOAnimation;
@@ -29,11 +28,6 @@ public class AnimationEditor extends Dialog {
         addTable();
         button("Cancel", false);
         button("OK", animation);
-    }
-
-    private void addTable() {
-        getContentTable().add(new ScrollPane(getTable(animation, () -> {
-        }))).prefHeight(300).prefWidth(300);
     }
 
     @NotNull
@@ -90,6 +84,11 @@ public class AnimationEditor extends Dialog {
             }
         });
         table.add(addFrame).fill(false, false).left();
+    }
+
+    private void addTable() {
+        getContentTable().add(new ScrollPane(getTable(animation, () -> {
+        }))).prefHeight(300).prefWidth(300);
     }
 
 }

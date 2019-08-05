@@ -1,18 +1,18 @@
 /*******************************************************************************
  * MIT License
- * 
+ *
  * Copyright (c) 2018 Raymond Buckley
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -61,28 +61,28 @@ public class MenuList<T> extends Table {
         items = new Array<>();
         shortcuts = new Array<>();
         buttons = new Array<>();
-        
+
         setBackground(style.background);
         setTouchable(Touchable.enabled);
-        
+
         updateContents();
         selectedIndex = -1;
     }
-    
+
     public void show(Vector2 screenPosition, Stage stage) {
         stage.addActor(this);
         setX(screenPosition.x);
         setY(screenPosition.y - getHeight());
-        
+
         //fade in
         clearActions();
         getColor().a = 0;
         addAction(fadeIn(0.3f, Interpolation.fade));
-        
+
         selectedItem = null;
         selectedIndex = -1;
     }
-    
+
     public void hide() {
         //fade out and then remove
         clearActions();
@@ -95,17 +95,7 @@ public class MenuList<T> extends Table {
         SequenceAction sequenceAction = new SequenceAction(alphaAction, removeAction);
         addAction(sequenceAction);
     }
-    
-    public void setStyle(MenuListStyle style) {
-        if (style == null) {
-            throw new NullPointerException("style cannot be null");
-        }
-        if (!(style instanceof MenuListStyle)) {
-            throw new IllegalArgumentException("style must be a MenuListStyle.");
-        }
-        this.style = style;
-    }
-    
+
     public Array<T> getItems() {
         return items;
     }
@@ -114,57 +104,57 @@ public class MenuList<T> extends Table {
         if (newItems == null) throw new IllegalArgumentException("newItems cannot be null.");
         this.items.clear();
         this.items.addAll(newItems);
-        
+
         updateContents();
     }
-    
+
     public void setItems(T... newItems) {
         if (newItems == null) throw new IllegalArgumentException("newItems cannot be null.");
         items.clear();
         items.addAll(newItems);
-        
+
         updateContents();
     }
-    
+
     public void clearItems() {
         items.clear();
-        
+
         updateContents();
     }
-    
+
     public Array<String> getShortcuts() {
         return shortcuts;
     }
-    
+
     public void setShortcuts(Array<String> shortcuts) {
         if (shortcuts == null) throw new IllegalArgumentException("shortcuts cannot be null.");
         this.shortcuts.clear();
         this.shortcuts.addAll(shortcuts);
-        
+
         updateContents();
     }
-    
+
     public void setShortcuts(String... shortcuts) {
         if (shortcuts == null) throw new IllegalArgumentException("shortcuts cannot be null.");
         this.shortcuts.clear();
         this.shortcuts.addAll(shortcuts);
-        
+
         updateContents();
     }
-    
+
     public void clearShortcuts() {
         shortcuts.clear();
-        
+
         updateContents();
     }
-    
+
     public void updateContents() {
         setSize(0.0f, 0.0f);
         clearChildren();
         buttons.clear();
-        
+
         int index = 0;
-        
+
         for (T item : items) {
             TextButton textButton = new TextButton(item.toString(), style.textButtonStyle);
             textButton.getLabel().setAlignment(Align.left);
@@ -172,12 +162,12 @@ public class MenuList<T> extends Table {
                 row();
             }
             add(textButton);
-            
+
             if (index < shortcuts.size && shortcuts.get(index) != null && style.labelStyle != null) {
                 Label label = new Label(shortcuts.get(index), style.labelStyle);
                 textButton.add(label).padLeft(5.0f);
             }
-            
+
             int i = index++;
             textButton.addListener(new ChangeListener() {
                 @Override
@@ -187,28 +177,28 @@ public class MenuList<T> extends Table {
                     fire(new MenuListEvent());
                 }
             });
-            
+
             buttons.add(textButton);
         }
-        
+
         validate();
-        
+
         float width = style.background.getLeftWidth() + style.background.getRightWidth();
         for (int i = 0; i < getColumns(); i++) {
-            
+
             width += getColumnWidth(i);
         }
-        
+
         float height = style.background.getLeftWidth() + style.background.getRightWidth();
         for (int i = 0; i < getRows(); i++) {
-            
+
             height += getRowHeight(i);
         }
-        
+
         for (Cell cell : getCells()) {
             cell.growX();
         }
-        
+
         setSize(width, height);
     }
 
@@ -231,11 +221,11 @@ public class MenuList<T> extends Table {
     public Array<TextButton> getButtons() {
         return buttons;
     }
-    
+
     public void setDisabled(int index, boolean disabled) {
         buttons.get(index).setDisabled(disabled);
-        
-        if(disabled) {
+
+        if (disabled) {
             if (style.disabledLabelStyle != null && buttons.get(index).getChildren().size > 1) {
                 Label label = (Label) buttons.get(index).getChildren().get(1);
                 label.setStyle(style.disabledLabelStyle);
@@ -247,29 +237,39 @@ public class MenuList<T> extends Table {
             }
         }
     }
-    
+
     public void setDisabled(T item, boolean disabled) {
         setDisabled(items.indexOf(item, false), disabled);
     }
-    
+
     public MenuListStyle getStyle() {
         return style;
     }
-    
+
+    public void setStyle(MenuListStyle style) {
+        if (style == null) {
+            throw new NullPointerException("style cannot be null");
+        }
+        if (!(style instanceof MenuListStyle)) {
+            throw new IllegalArgumentException("style must be a MenuListStyle.");
+        }
+        this.style = style;
+    }
+
     public static class MenuListStyle {
         public Drawable background;
         public TextButtonStyle textButtonStyle;
-        
+
         /**
          * OPTIONAL
          */
         public LabelStyle labelStyle;
         public LabelStyle disabledLabelStyle;
     }
-    
+
     public static class MenuListEvent extends Event {
     }
-    
+
     public static abstract class MenuListListener implements EventListener {
 
         @Override
@@ -279,7 +279,7 @@ public class MenuList<T> extends Table {
             }
             return false;
         }
-        
+
         public abstract void menuClicked();
     }
 }

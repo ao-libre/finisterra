@@ -38,16 +38,16 @@ public class AOAnimation implements ID {
         return speed;
     }
 
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
     public int[] getFrames() {
         return frames;
     }
 
     public void setFrames(int[] frames) {
         this.frames = frames;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
     }
 
     @Override

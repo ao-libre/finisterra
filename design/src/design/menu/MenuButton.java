@@ -1,18 +1,18 @@
 /*******************************************************************************
  * MIT License
- * 
+ *
  * Copyright (c) 2018 Raymond Buckley
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -38,7 +38,7 @@ public class MenuButton<T> extends TextButton {
     private Vector2 menuListPosition;
     private StageHideListener hideListener;
     private MenuButtonGroup menuButtonGroup;
-    
+
 
     public MenuButton(String text, Skin skin) {
         this(text, skin, "default");
@@ -52,9 +52,9 @@ public class MenuButton<T> extends TextButton {
     public MenuButton(String text, MenuButtonStyle style) {
         super(text, style);
         setStyle(style);
-        
+
         menuList = new MenuList(style.menuListStyle);
-        
+
         menuList.addCaptureListener(new MenuList.MenuListListener() {
             @Override
             public void menuClicked() {
@@ -62,18 +62,18 @@ public class MenuButton<T> extends TextButton {
                 setChecked(false);
             }
         });
-        
+
         menuListPosition = new Vector2();
-        
+
         addListener(new MbGroupInputListener(this));
-        
+
         addListener(new ChangeListener() {
             @Override
             public void changed(ChangeListener.ChangeEvent event, Actor actor) {
                 if (isChecked() && getStage() != null) {
                     localToStageCoordinates(menuListPosition.set(0.0f, 0.0f));
                     menuList.show(menuListPosition, getStage());
-                    
+
                     if (menuButtonGroup != null) {
                         menuButtonGroup.check((MenuButton) actor);
                     }
@@ -108,16 +108,16 @@ public class MenuButton<T> extends TextButton {
         if (newItems == null) throw new IllegalArgumentException("newItems cannot be null.");
         menuList.setItems(newItems);
     }
-    
+
     public void setItems(T... newItems) {
         if (newItems == null) throw new IllegalArgumentException("newItems cannot be null.");
         menuList.setItems(newItems);
     }
-    
+
     public void clearItems() {
         menuList.clearItems();
     }
-    
+
     public Array<String> getShortcuts() {
         return menuList.getShortcuts();
     }
@@ -126,40 +126,45 @@ public class MenuButton<T> extends TextButton {
         if (shortcuts == null) throw new IllegalArgumentException("shortcuts cannot be null.");
         menuList.setShortcuts(shortcuts);
     }
-    
+
     public void setShortcuts(String... shortcuts) {
         if (shortcuts == null) throw new IllegalArgumentException("shortcuts cannot be null.");
         menuList.setShortcuts(shortcuts);
     }
-    
+
     public void clearShortcuts() {
         menuList.clearItems();
     }
-    
+
     public Array<TextButton> getButtons() {
         return menuList.getButtons();
     }
-    
+
     public int getSelectedIndex() {
         return menuList.getSelectedIndex();
     }
-    
+
     public T getSelectedItem() {
         return menuList.getSelectedItem();
     }
-    
+
     public void setDisabled(int index, boolean disabled) {
         menuList.setDisabled(index, disabled);
     }
-    
+
     public void setDisabled(T item, boolean disabled) {
         menuList.setDisabled(item, disabled);
     }
-    
+
     public void updateContents() {
         menuList.updateContents();
     }
-    
+
+    @Override
+    public MenuButtonStyle getStyle() {
+        return style;
+    }
+
     @Override
     public void setStyle(ButtonStyle style) {
         if (style == null) {
@@ -175,32 +180,27 @@ public class MenuButton<T> extends TextButton {
         }
     }
 
-    @Override
-    public MenuButtonStyle getStyle() {
-        return style;
-    }
-    
     public static class MenuButtonStyle extends TextButtonStyle {
         public MenuListStyle menuListStyle;
     }
-    
+
     private static class MbGroupInputListener extends InputListener {
         final private MenuButton menuButton;
 
         public MbGroupInputListener(MenuButton menuButton) {
             this.menuButton = menuButton;
         }
-        
+
         @Override
         public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-            if (menuButton.menuButtonGroup != null 
+            if (menuButton.menuButtonGroup != null
                     && menuButton.menuButtonGroup.getSelected() != null) {
                 menuButton.menuButtonGroup.check(menuButton);
             }
         }
-        
+
     }
-    
+
     private static class StageHideListener extends InputListener {
         private final MenuButton menuButton;
         private final Stage stage;
@@ -209,7 +209,7 @@ public class MenuButton<T> extends TextButton {
             this.menuButton = menuButton;
             this.stage = stage;
         }
-        
+
         @Override
         public boolean keyDown(InputEvent event, int keycode) {
             if (keycode == Input.Keys.ESCAPE) {
@@ -232,10 +232,10 @@ public class MenuButton<T> extends TextButton {
             }
         }
     }
-    
+
     public static class MenuButtonEvent extends Event {
     }
-    
+
     public static abstract class MenuButtonListener implements EventListener {
 
         @Override
@@ -247,7 +247,7 @@ public class MenuButton<T> extends TextButton {
                 return false;
             }
         }
-        
+
         public abstract void menuClicked();
     }
 }

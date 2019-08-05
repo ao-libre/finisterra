@@ -46,7 +46,8 @@ abstract class DescriptorEditor extends Dialog {
     }
 
     private void addTable() {
-        getContentTable().add(new ScrollPane(getTable(descriptor, () -> {}))).prefHeight(300).prefWidth(300);
+        getContentTable().add(new ScrollPane(getTable(descriptor, () -> {
+        }))).prefHeight(300).prefWidth(300);
     }
 
 }

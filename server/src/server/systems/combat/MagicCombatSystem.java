@@ -16,6 +16,7 @@ import graphics.Effect;
 import graphics.Effect.EffectBuilder;
 import physics.AttackAnimation;
 import position.WorldPos;
+import server.systems.CharacterTrainingSystem;
 import server.systems.manager.MapManager;
 import server.systems.manager.ObjectManager;
 import server.systems.manager.WorldManager;
@@ -27,14 +28,11 @@ import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.objects.types.HelmetObj;
 import shared.objects.types.Obj;
 import shared.util.Messages;
-import shared.util.Messages.*;
-import server.systems.CharacterTrainingSystem;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
-import static java.lang.String.format;
 
 @Wire
 public class MagicCombatSystem extends BaseSystem {

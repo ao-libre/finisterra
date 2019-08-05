@@ -3,7 +3,6 @@ package entity.world;
 import com.artemis.Component;
 import com.artemis.annotations.DelayedComponentRemoval;
 import com.artemis.annotations.PooledWeaver;
-import com.artemis.annotations.Transient;
 
 import java.io.Serializable;
 

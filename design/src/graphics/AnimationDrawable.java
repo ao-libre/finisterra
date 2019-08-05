@@ -34,21 +34,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 public class AnimationDrawable extends BaseDrawable {
     private String regionName;
     private Skin skin;
-    
+
     private Animation<TextureRegion> animation;
     private float stateTime;
 
     public AnimationDrawable(Skin skin, String regionName, float frameDuration) {
         super();
         stateTime = 0.0f;
-        
+
         setRegion(skin, regionName, frameDuration);
     }
 
     public void update(float delta) {
         stateTime += delta;
     }
-    
+
     @Override
     public void draw(Batch batch, float x, float y, float width, float height) {
         batch.draw(animation.getKeyFrame(stateTime), x, y, width, height);

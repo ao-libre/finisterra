@@ -20,8 +20,6 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
-import static java.lang.String.format;
-import static shared.util.Messages.*;
 
 @Wire
 public class MeditateSystem extends IntervalFluidIteratingSystem {
