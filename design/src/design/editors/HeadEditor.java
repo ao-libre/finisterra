@@ -3,7 +3,6 @@ package design.editors;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import design.editors.fields.FieldEditor;
 import design.editors.fields.FieldEditor.FieldListener;
 import design.editors.fields.FieldProvider;
 import design.editors.fields.IntegerEditor;
@@ -24,10 +23,6 @@ public class HeadEditor extends Dialog {
         button("OK", head);
     }
 
-    private void addTable() {
-        getContentTable().add(new ScrollPane(getTable(head, () -> {}))).prefHeight(300).prefWidth(300);
-    }
-
     @NotNull
     public static Table getTable(HeadDescriptor head, FieldListener listener) {
         Table table = new Table(SKIN);
@@ -43,6 +38,11 @@ public class HeadEditor extends Dialog {
         }
 
         return table;
+    }
+
+    private void addTable() {
+        getContentTable().add(new ScrollPane(getTable(head, () -> {
+        }))).prefHeight(300).prefWidth(300);
     }
 
 }

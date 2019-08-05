@@ -27,14 +27,6 @@ public abstract class SplitImage extends Dialog {
         button("OK", true);
     }
 
-    private Actor getFieldX() {
-        return IntegerEditor.create("Columns", i -> x = i, () -> x, () -> {});
-    }
-
-    private Actor getFieldY() {
-        return IntegerEditor.create("Rows", i -> y = i, () -> y, () -> {});
-    }
-
     public static void split(AOImage image, Stage stage, Consumer<List<AOImage>> result) {
         SplitImage splitImage = new SplitImage(image) {
 
@@ -44,6 +36,16 @@ public abstract class SplitImage extends Dialog {
             }
         };
         splitImage.show(stage);
+    }
+
+    private Actor getFieldX() {
+        return IntegerEditor.create("Columns", i -> x = i, () -> x, () -> {
+        });
+    }
+
+    private Actor getFieldY() {
+        return IntegerEditor.create("Rows", i -> y = i, () -> y, () -> {
+        });
     }
 
     @Override

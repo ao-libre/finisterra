@@ -9,7 +9,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import model.textures.AOAnimation;
-import model.textures.AOImage;
 import shared.util.AOJson;
 
 import java.util.ArrayList;

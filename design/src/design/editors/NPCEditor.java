@@ -3,8 +3,11 @@ package design.editors;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import design.editors.fields.*;
+import design.editors.fields.BooleanEditor;
 import design.editors.fields.FieldEditor.FieldListener;
+import design.editors.fields.FieldProvider;
+import design.editors.fields.IntegerEditor;
+import design.editors.fields.StringEditor;
 import org.jetbrains.annotations.NotNull;
 import shared.model.npcs.NPC;
 
@@ -63,7 +66,7 @@ public class NPCEditor extends Dialog {
         npc.getNpcSpanwer();
 
         // movement
-        table.add(IntegerEditor.create("Movement" , npc::setMovement, npc::getMovement, listener)).row();
+        table.add(IntegerEditor.create("Movement", npc::setMovement, npc::getMovement, listener)).row();
         table.add(IntegerEditor.create("City", npc::setCity, npc::getCity, listener)).row();
         table.add(IntegerEditor.create("Item Type", npc::setItemTypes, npc::getItemTypes, listener)).row();
 
@@ -74,7 +77,8 @@ public class NPCEditor extends Dialog {
     }
 
     private void addTable() {
-        getContentTable().add(new ScrollPane(getTable(new NPC(npc), () -> {}))).prefHeight(300).prefWidth(300);
+        getContentTable().add(new ScrollPane(getTable(new NPC(npc), () -> {
+        }))).prefHeight(300).prefWidth(300);
     }
 
 }

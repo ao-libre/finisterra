@@ -1,13 +1,12 @@
 package design.editors;
 
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import design.editors.fields.FieldEditor;
-import design.editors.fields.FieldProvider;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import design.editors.fields.IntegerEditor;
-import model.descriptors.Descriptor;
 import model.textures.AOImage;
 import org.jetbrains.annotations.NotNull;
-import shared.interfaces.Constants;
 
 import static launcher.DesignCenter.SKIN;
 
@@ -30,11 +29,16 @@ public class ImageEditor extends Dialog {
         table.defaults().growX().uniform();
 
         table.add(new Label("ID: " + image.getId(), SKIN)).row();
-        table.add(IntegerEditor.create("Y", image::setY, image::getY, () -> {})).row();
-        table.add(IntegerEditor.create("X", image::setX, image::getX, () -> {})).row();
-        table.add(IntegerEditor.create("Width", image::setWidth, image::getWidth, () -> {})).row();
-        table.add(IntegerEditor.create("Height", image::setHeight, image::getHeight, () -> {})).row();
-        table.add(IntegerEditor.create("File", image::setFileNum, image::getFileNum, () -> {})).row();
+        table.add(IntegerEditor.create("Y", image::setY, image::getY, () -> {
+        })).row();
+        table.add(IntegerEditor.create("X", image::setX, image::getX, () -> {
+        })).row();
+        table.add(IntegerEditor.create("Width", image::setWidth, image::getWidth, () -> {
+        })).row();
+        table.add(IntegerEditor.create("Height", image::setHeight, image::getHeight, () -> {
+        })).row();
+        table.add(IntegerEditor.create("File", image::setFileNum, image::getFileNum, () -> {
+        })).row();
         return table;
     }
 

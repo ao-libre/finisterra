@@ -21,14 +21,16 @@ import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.sound.SoundNotification;
 import shared.objects.types.*;
+import shared.util.Messages;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
-import static java.lang.String.format;
 import static server.utils.WorldUtils.WorldUtils;
-import static shared.util.Messages.*;
 
 @Wire
 public class PhysicalCombatSystem extends AbstractCombatSystem {
@@ -52,11 +54,11 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     public boolean canAttack(int entityId, Optional<Integer> target) {
         final E e = E(entityId);
         if (e != null && e.hasStamina() && e.getStamina().min < e.getStamina().max * STAMINA_REQUIRED_PERCENT / 100) {
-            notifyCombat(entityId, NOT_ENOUGH_ENERGY);
+            notifyCombat(entityId, Messages.NOT_ENOUGH_ENERGY);
             return false;
         }
         if (e != null && e.hasHealth() && e.getHealth().min == 0) {
-            notifyCombat(entityId, DEAD_CANT_ATTACK);
+            notifyCombat(entityId, Messages.DEAD_CANT_ATTACK);
             return false;
         }
 
@@ -74,7 +76,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
 
             if (t.hasHealth() && t.getHealth().min == 0) {
                 // no podes atacar un muerto
-                notifyCombat(entityId, CANT_ATTACK_DEAD);
+                notifyCombat(entityId, Messages.CANT_ATTACK_DEAD);
                 return false;
             }
 
@@ -96,13 +98,13 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
 
                 // shield evasion
                 if (E(targetId).hasShield() && ThreadLocalRandom.current().nextInt(101) <= prob) {
-                    notifyCombat(targetId, SHIELD_DEFENSE);
-                    notifyCombat(entityId, format(DEFENDED_WITH_SHIELD, getName(targetId)));
+                    notifyCombat(targetId, Messages.SHIELD_DEFENSE);
+                    notifyCombat(entityId, Messages.DEFENDED_WITH_SHIELD, getName(targetId));
                     // TODO shield animation
                     worldManager.notifyUpdate(targetId, new SoundNotification(37));
                 } else {
-                    notifyCombat(entityId, ATTACK_FAILED);
-                    notifyCombat(targetId, format(ATTACKED_AND_FAILED, getName(entityId)));
+                    notifyCombat(entityId, Messages.ATTACK_FAILED);
+                    notifyCombat(targetId, Messages.ATTACKED_AND_FAILED, getName(entityId));
 
                 }
             }
@@ -216,52 +218,49 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     @Override
     void doHit(int userId, int entityId, int damage) {
         boolean userStab = canStab(userId);
-        AttackResult result =
+        int result =
                 userStab ?
                         doStab(userId, entityId, damage) :
                         canCriticAttack(userId, entityId) ?
-                                doCrititAttack(userId, entityId, damage) :
+                                doCriticAttack(userId, entityId, damage) :
                                 doNormalAttack(userId, entityId, damage);
 
-        notifyCombat(userId, result.userMessage);
-        notifyCombat(entityId, result.victimMessage);
-
-
-        worldManager
-                .notifyUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(new AttackAnimation()).build());
-        notify(entityId, userStab ? CombatMessage.stab("" + result.damage) : CombatMessage.physic("" + result.damage));
+        worldManager.notifyUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(new AttackAnimation()).build());
+        notify(entityId, userStab ? CombatMessage.stab("" + damage) : CombatMessage.physic("" + damage));
 
         final E target = E(entityId);
         Health health = target.getHealth();
-        int effectiveDamage = Math.min(health.min, result.damage);
+        int effectiveDamage = Math.min(health.min, result);
         characterTrainingSystem.userTakeDamage(userId, entityId, effectiveDamage);
-        health.min = Math.max(0, health.min - result.damage);
+        health.min = Math.max(0, health.min - result);
         sendFX(entityId);
         if (health.min > 0) {
             update(entityId);
         } else {
             // TODO die
             characterTrainingSystem.takeGold(userId, entityId);
-            notifyCombat(userId, format(KILL, getName(entityId)));
-            notifyCombat(entityId, format(KILLED, getName(userId)));
+            notifyCombat(userId, Messages.KILL, getName(entityId));
+            notifyCombat(entityId, Messages.KILLED, getName(userId));
             worldManager.entityDie(entityId);
         }
     }
 
-    private void notifyCombat(int userId, String message) {
-        final ConsoleMessage combat = ConsoleMessage.combat(message);
+    private void notifyCombat(int userId, Messages message, String... messageParams) {
+        final ConsoleMessage combat = ConsoleMessage.combat(message, messageParams);
         worldManager.sendEntityUpdate(userId, combat);
     }
 
-    private AttackResult doNormalAttack(int userId, int entityId, int damage) {
-        return new AttackResult(damage, format(USER_NORMAL_HIT, getName(entityId), damage),
-                format(VICTIM_NORMAL_HIT, getName(userId), damage));
+    private int doNormalAttack(int userId, int entityId, int damage) {
+        notifyCombat(userId, Messages.USER_NORMAL_HIT, getName(entityId), Integer.toString(damage));
+        notifyCombat(entityId, Messages.VICTIM_NORMAL_HIT, getName(userId), Integer.toString(damage));
+        return damage;
     }
 
-    private AttackResult doCrititAttack(int userId, int entityId, int damage) {
+    private int doCriticAttack(int userId, int entityId, int damage) {
         // TODO
-        return new AttackResult(damage, format(USER_CRITIC_HIT, getName(entityId), damage),
-                format(VICTIM_CRITIC_HIT, getName(userId), damage));
+        notifyCombat(userId, Messages.USER_CRITIC_HIT, getName(entityId), Integer.toString(damage));
+        notifyCombat(entityId, Messages.VICTIM_CRITIC_HIT, getName(userId), Integer.toString(damage));
+        return damage;
     }
 
     private boolean canCriticAttack(int userId, int entityId) {
@@ -308,11 +307,12 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         return ThreadLocalRandom.current().nextInt(101) < lucky;
     }
 
-    private AttackResult doStab(int userId, int entityId, int damage) {
+    private int doStab(int userId, int entityId, int damage) {
         final CharClass clazz = CharClass.of(E(userId));
         damage += (int) (CharClass.ASSASSIN.equals(clazz) ? damage * ASSASIN_STAB_FACTOR : damage * NORMAL_STAB_FACTOR);
-        return new AttackResult(damage, format(USER_STAB_HIT, getName(entityId), damage),
-                format(VICTIM_STAB_HIT, getName(userId), damage));
+        notifyCombat(userId, Messages.USER_STAB_HIT, getName(entityId), Integer.toString(damage));
+        notifyCombat(entityId, Messages.VICTIM_STAB_HIT, getName(userId), Integer.toString(damage));
+        return damage;
     }
 
     private String getName(int userId) {
@@ -331,8 +331,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
      * @param combatMessage message
      */
     private void notify(int victim, CombatMessage combatMessage) {
-        worldManager
-                .notifyUpdate(victim, EntityUpdateBuilder.of(victim).withComponents(combatMessage).build());
+        worldManager.notifyUpdate(victim, EntityUpdateBuilder.of(victim).withComponents(combatMessage).build());
     }
 
     /**
@@ -375,28 +374,12 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         HEAD,
         BODY;
 
-        private static final List<AttackPlace> VALUES =
-                Collections.unmodifiableList(Arrays.asList(values()));
+        private static final List<AttackPlace> VALUES = List.of(values());
         private static final int SIZE = VALUES.size();
         private static final Random RANDOM = new Random();
 
         public static AttackPlace getRandom() {
             return VALUES.get(RANDOM.nextInt(SIZE));
         }
-    }
-
-    private static class AttackResult {
-
-        private final int damage;
-        private final String userMessage;
-        private String victimMessage;
-
-        AttackResult(int damage, String userMessage, String victimMessage) {
-
-            this.damage = damage;
-            this.userMessage = userMessage;
-            this.victimMessage = victimMessage;
-        }
-
     }
 }

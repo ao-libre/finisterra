@@ -64,6 +64,50 @@ public class NPC {
         this.id = id;
     }
 
+    public NPC(NPC other) {
+        // TODO CHECK
+        this.id = other.id;
+        this.name = other.name;
+        this.npcType = other.npcType;
+        this.desc = other.desc;
+        this.head = other.head;
+        this.heading = other.heading;
+        this.body = other.body;
+        this.city = other.city;
+        this.validWater = other.validWater;
+        this.invalidEarth = other.invalidEarth;
+        this.faction = other.faction;
+        this.dobleAttack = other.dobleAttack;
+        this.itemTypes = other.itemTypes;
+        this.commerce = other.commerce;
+        this.objs = other.objs;
+        this.invReSpawn = other.invReSpawn;
+        this.movement = other.movement;
+        this.attackable = other.attackable;
+        this.respawn = other.respawn;
+        this.hostile = other.hostile;
+        this.domable = other.domable;
+        this.alignment = other.alignment;
+        this.backup = other.backup;
+        this.poison = other.poison;
+        this.affectParalysis = other.affectParalysis;
+        this.giveEXP = other.giveEXP;
+        this.giveGLD = other.giveGLD;
+        this.attackPower = other.attackPower;
+        this.evasionPower = other.evasionPower;
+        this.maxHP = other.maxHP;
+        this.minHP = other.minHP;
+        this.maxHit = other.maxHit;
+        this.minHit = other.minHit;
+        this.def = other.def;
+        this.defM = other.defM;
+        this.drops = other.drops;
+        this.spells = other.spells;
+        this.npcSpanwer = other.npcSpanwer;
+        this.sounds = other.sounds;
+        this.expressions = other.expressions;
+    }
+
     public void addObj(int id, int count) {
         objs.add(new Pair(id, count));
     }
@@ -387,50 +431,6 @@ public class NPC {
     @Override
     public String toString() {
         return getId() + ": " + getName();
-    }
-
-    public NPC(NPC other) {
-        // TODO CHECK
-        this.id = other.id;
-        this.name = other.name;
-        this.npcType = other.npcType;
-        this.desc = other.desc;
-        this.head = other.head;
-        this.heading = other.heading;
-        this.body = other.body;
-        this.city = other.city;
-        this.validWater = other.validWater;
-        this.invalidEarth = other.invalidEarth;
-        this.faction = other.faction;
-        this.dobleAttack = other.dobleAttack;
-        this.itemTypes = other.itemTypes;
-        this.commerce = other.commerce;
-        this.objs = other.objs;
-        this.invReSpawn = other.invReSpawn;
-        this.movement = other.movement;
-        this.attackable = other.attackable;
-        this.respawn = other.respawn;
-        this.hostile = other.hostile;
-        this.domable = other.domable;
-        this.alignment = other.alignment;
-        this.backup = other.backup;
-        this.poison = other.poison;
-        this.affectParalysis = other.affectParalysis;
-        this.giveEXP = other.giveEXP;
-        this.giveGLD = other.giveGLD;
-        this.attackPower = other.attackPower;
-        this.evasionPower = other.evasionPower;
-        this.maxHP = other.maxHP;
-        this.minHP = other.minHP;
-        this.maxHit = other.maxHit;
-        this.minHit = other.minHit;
-        this.def = other.def;
-        this.defM = other.defM;
-        this.drops = other.drops;
-        this.spells = other.spells;
-        this.npcSpanwer = other.npcSpanwer;
-        this.sounds = other.sounds;
-        this.expressions = other.expressions;
     }
 }
 

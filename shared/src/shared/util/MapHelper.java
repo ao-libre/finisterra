@@ -69,6 +69,15 @@ public class MapHelper {
         return JSON.fromJson(Map.class, mapPath);
     }
 
+    public static Tile getTile(Map map, WorldPos pos) {
+        if (pos.x > 0 && pos.x < map.getWidth()) {
+            if (pos.y > 0 && pos.y < map.getHeight()) {
+                return map.getTile(pos.x, pos.y);
+            }
+        }
+        return null;
+    }
+
     public Map getMap(int i) {
         return maps.getUnchecked(i);
     }
@@ -132,15 +141,6 @@ public class MapHelper {
     public boolean hasTileExit(Map map, WorldPos expectedPos) {
         Tile tile = map.getTile(expectedPos.x, expectedPos.y);
         return tile != null && tile.getTileExit() != null;
-    }
-
-    public static Tile getTile(Map map, WorldPos pos) {
-        if (pos.x > 0 && pos.x < map.getWidth()) {
-            if (pos.y > 0 && pos.y < map.getHeight()) {
-                return map.getTile(pos.x, pos.y);
-            }
-        }
-        return null;
     }
 
     public boolean isNear(WorldPos pos1, WorldPos pos2) {

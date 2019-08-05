@@ -1,7 +1,9 @@
 package game.handlers;
 
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.I18NBundleLoader;
 import com.badlogic.gdx.assets.loaders.ParticleEffectLoader.ParticleEffectParameter;
 import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
 import com.badlogic.gdx.audio.Music;
@@ -12,6 +14,8 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.I18NBundle;
+import game.ClientConfiguration;
 import game.loaders.*;
 import game.loaders.ObjectsLoader.ObjectParameter;
 import game.utils.Resources;
@@ -24,6 +28,7 @@ import org.reflections.scanners.ResourcesScanner;
 import shared.model.Spell;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
+import shared.util.Messages;
 import shared.util.SharedResources;
 
 import javax.sound.midi.Sequencer;
@@ -35,22 +40,16 @@ import static game.loaders.DescriptorsLoader.*;
 import static game.loaders.DescriptorsLoader.DescriptorParameter.descriptor;
 import static game.utils.Resources.GAME_DESCRIPTORS_PATH;
 
+@Wire
 public class DefaultAOAssetManager extends AssetManager implements AOAssetManager {
 
-    private static final Class<HashMap<Integer, BodyDescriptor>> BODIES_CLASS;
     private static final Class<ArrayList<AOImage>> IMAGE_CLASS;
     private static final Class<ArrayList<AOAnimation>> ANIMATION_CLASS;
     private static final Class<HashMap<Integer, Obj>> OBJS_CLASS;
     private static final Class<HashMap<Integer, Spell>> SPELLS_CLASS;
     private static final Class<ArrayList<Descriptor>> DESCRIPTORS_CLASS;
 
-    private Map<Integer, AOImage> images;
-    private Map<Integer, AOAnimation> animations;
-
     static {
-        HashMap<Integer, BodyDescriptor> integerBodyDescriptorHashMap = new HashMap<>();
-        BODIES_CLASS = (Class<HashMap<Integer, BodyDescriptor>>) integerBodyDescriptorHashMap.getClass();
-
         ArrayList<AOImage> integerGraphicHashMap = new ArrayList<>();
         IMAGE_CLASS = (Class<ArrayList<AOImage>>) integerGraphicHashMap.getClass();
 
@@ -67,6 +66,11 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         DESCRIPTORS_CLASS = (Class<ArrayList<Descriptor>>) descriptors.getClass();
     }
 
+    private final String languagesFile;
+    private final String[] languagesLocale;
+    private ClientConfiguration clientConfiguration;
+    private Map<Integer, AOImage> images;
+    private Map<Integer, AOAnimation> animations;
     private Map<Integer, ShieldDescriptor> shields;
     private Map<Integer, FXDescriptor> fxs;
     private Map<Integer, HeadDescriptor> heads;
@@ -74,7 +78,10 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     private Map<Integer, WeaponDescriptor> weapons;
     private Map<Integer, BodyDescriptor> bodies;
 
-    public DefaultAOAssetManager() {
+    public DefaultAOAssetManager(ClientConfiguration clientConfiguration) {
+        this.clientConfiguration = clientConfiguration;
+        this.languagesFile = SharedResources.LANGUAGES_FOLDER + "messages";
+        this.languagesLocale = clientConfiguration.getInitConfig().getLanguage().split("_");
         setLoader(Sequencer.class, new MidiLoader());
         setLoader(ANIMATION_CLASS, ANIMATIONS + JSON_EXTENSION, new AnimationLoader());
         setLoader(IMAGE_CLASS, IMAGES + JSON_EXTENSION, new ImageLoader());
@@ -94,6 +101,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         loadMusic();
         loadSkins();
         loadFonts();
+        loadMessages();
     }
 
     @Override
@@ -103,6 +111,10 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     private void loadFonts() {
         // TODO
+    }
+
+    private void loadMessages() {
+        load(languagesFile, I18NBundle.class, new I18NBundleLoader.I18NBundleParameter(new Locale(languagesLocale[0], languagesLocale[1])));
     }
 
     private void loadSkins() {
@@ -278,6 +290,26 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         }
         return weapons;
     }
+	
+    public String getMessages(Messages key, String... params) {
+
+        if (!isLoaded(languagesFile)) {
+            load(languagesFile, I18NBundle.class);
+            finishLoadingAsset(languagesFile);
+        }
+
+        I18NBundle i18 = get(languagesFile);
+
+        if (key == null) {
+            Gdx.app.error("Internationalization", "Error trying to get message: " + key.name());
+        }
+
+        if (params.length > 0) {
+            return i18.format(key.name(), (Object[]) params);
+        } else {
+            return i18.get(key.name());
+        }
+    }
 
     private void loadTexture(String fileName) {
         TextureParameter param = new TextureParameter();
@@ -291,7 +323,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     private void loadObjects() {
         Arrays.stream(Type.values()).forEach(type -> {
-            ObjectParameter param = new ObjectParameter(type);
+            ObjectParameter<HashMap<Integer, Obj>> param = new ObjectParameter<>(type);
             String fileName = SharedResources.OBJECTS_FOLDER + type.name().toLowerCase() + JSON_EXTENSION;
             if (Gdx.app.getFiles().internal(fileName).exists()) {
                 load(fileName, OBJS_CLASS, param);

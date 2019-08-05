@@ -3,6 +3,7 @@ package design.screens;
 import com.esotericsoftware.minlog.Log;
 import design.editors.fields.Listener;
 import design.screens.views.*;
+
 import java.lang.reflect.InvocationTargetException;
 
 public enum ScreenEnum {
@@ -14,7 +15,7 @@ public enum ScreenEnum {
     HEADS_VIEW("Heads", HeadsView.class),
     SHIELDS_VIEW("Shields", ShieldsView.class),
     WEAPONS_VIEW("Weapons", WeaponsView.class),
-    HELMETS_VIEW ("Helmets", HelmetsView.class),
+    HELMETS_VIEW("Helmets", HelmetsView.class),
     FXS_VIEW("FXs", FXsView.class),
     TILE_SET_VIEW("Tile Set", TileSetView.class);
 

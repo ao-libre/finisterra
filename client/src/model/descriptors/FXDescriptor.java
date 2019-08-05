@@ -18,20 +18,20 @@ public class FXDescriptor extends Descriptor {
         return offsetY;
     }
 
+    public void setOffsetY(int offsetY) {
+        this.offsetY = offsetY;
+    }
+
     public int getOffsetX() {
         return offsetX;
+    }
+
+    public void setOffsetX(int offsetX) {
+        this.offsetX = offsetX;
     }
 
     @Override
     public String toString() {
         return "FX: " + getId();
-    }
-
-    public void setOffsetY(int offsetY) {
-        this.offsetY = offsetY;
-    }
-
-    public void setOffsetX(int offsetX) {
-        this.offsetX = offsetX;
     }
 }

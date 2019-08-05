@@ -1,7 +1,6 @@
 package game.handlers;
 
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -11,7 +10,6 @@ import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
 import entity.character.parts.Body;
 import entity.character.parts.Head;
-import game.AssetManagerHolder;
 import model.descriptors.*;
 import model.textures.AOAnimation;
 import model.textures.AOImage;

@@ -26,27 +26,27 @@ public class MapManager extends BaseSystem {
     private AnimationHandler animationHandler;
 
     public void drawLayer(Map map, SpriteBatch batch, float delta, int layer, boolean drawExit, boolean drawBlock) {
-            for (int x = 0; x < map.getWidth(); x++) {
-                for (int y = map.getHeight() - 1; y >= 0; y--) {
-                    Tile tile = map.getTile(x, y);
-                    if (tile == null) {
-                        continue;
-                    }
-                    int graphic = tile.getGraphic(layer);
-                    if (graphic == 0) {
-                        continue;
-                    }
-                    doTileDrawFlipped(batch, delta, x, y, graphic);
-                    if (drawBlock && tile.isBlocked()) {
-                        // draw block
-                        doTileDraw(batch, delta, x, y, 4);
-                    }
-                    if (drawExit && tile.getTileExit() != null && !(new WorldPosition().equals(tile.getTileExit()))) {
-                        // draw exit
-                        doTileDraw(batch, delta, x, y, 3);
-                    }
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = map.getHeight() - 1; y >= 0; y--) {
+                Tile tile = map.getTile(x, y);
+                if (tile == null) {
+                    continue;
+                }
+                int graphic = tile.getGraphic(layer);
+                if (graphic == 0) {
+                    continue;
+                }
+                doTileDrawFlipped(batch, delta, x, y, graphic);
+                if (drawBlock && tile.isBlocked()) {
+                    // draw block
+                    doTileDraw(batch, delta, x, y, 4);
+                }
+                if (drawExit && tile.getTileExit() != null && !(new WorldPosition().equals(tile.getTileExit()))) {
+                    // draw exit
+                    doTileDraw(batch, delta, x, y, 3);
                 }
             }
+        }
     }
 
     public void doTileDrawFlipped(SpriteBatch batch, float delta, int x, int y, int graphic) {

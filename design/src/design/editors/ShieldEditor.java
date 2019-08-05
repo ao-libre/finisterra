@@ -1,7 +1,6 @@
 package design.editors;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import design.editors.fields.FieldEditor;
 import design.editors.fields.FieldEditor.FieldListener;
 import model.descriptors.Descriptor;
 import model.descriptors.ShieldDescriptor;

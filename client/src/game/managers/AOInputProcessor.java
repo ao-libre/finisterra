@@ -1,12 +1,12 @@
 package game.managers;
 
 import com.artemis.E;
-import com.artemis.World;
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.AOGame;
+import game.handlers.AOAssetManager;
 import game.screens.GameScreen;
-import game.screens.WorldScreen;
 import game.systems.camera.CameraSystem;
 import game.systems.network.TimeSync;
 import game.ui.GUI;
@@ -34,9 +34,11 @@ public class AOInputProcessor extends Stage {
     public static boolean alternativeKeys = false;
 
     private GUI gui;
+    private AOAssetManager assetManager;
 
-    public AOInputProcessor (GUI gui) {
+    public AOInputProcessor(GUI gui) {
         this.gui = gui;
+        this.assetManager = AOGame.getGlobalAssetManager();
     }
 
     @Override
@@ -71,7 +73,7 @@ public class AOInputProcessor extends Stage {
                     GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos, rtt + timeOffset));
                     player.attack();
                 } else {
-                    gui.getConsole().addWarning(Messages.CANT_ATTACK);
+                    gui.getConsole().addWarning(assetManager.getMessages(Messages.CANT_ATTACK));
                 }
                 Cursors.setCursor("hand");
                 gui.getSpellView().cleanCast();
@@ -84,9 +86,9 @@ public class AOInputProcessor extends Stage {
                         .map(entity -> E(entity).getName().text)
                         .findFirst();
                 if (name.isPresent()) {
-                    gui.getConsole().addInfo("Ves a " + name.get());
+                    gui.getConsole().addInfo(assetManager.getMessages(Messages.SEE_SOMEONE, name.get()));
                 } else {
-                    gui.getConsole().addInfo("No ves nada interesante");
+                    gui.getConsole().addInfo(assetManager.getMessages(Messages.SEE_NOTHING));
                 }
 
             }

@@ -174,7 +174,8 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         return designer;
     }
 
-    public void filesDropped(java.util.List<FileHandle> files) {}
+    public void filesDropped(java.util.List<FileHandle> files) {
+    }
 
     abstract Preview<T> createPreview();
 
@@ -311,6 +312,11 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         getStage().getViewport().update(width, height, true);
     }
 
+    public enum State {
+        MODIFIED,
+        SAVED
+    }
+
     abstract class Preview<T> extends Table {
 
         public Preview(Skin skin) {
@@ -320,11 +326,6 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         abstract void show(T t);
 
         abstract T get();
-    }
-
-    public enum State {
-        MODIFIED,
-        SAVED
     }
 
     public abstract class Editor<T> extends Preview<T> {

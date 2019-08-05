@@ -52,22 +52,6 @@ public class TileSet implements ID {
         return rows;
     }
 
-    public int getCols() {
-        return cols;
-    }
-
-    public int[][] getImages() {
-        return images;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setRows(int rows) {
         int diff = rows - this.rows;
         this.rows = rows;
@@ -77,6 +61,10 @@ public class TileSet implements ID {
                 images[rows - j - 1] = new int[cols];
             }
         }
+    }
+
+    public int getCols() {
+        return cols;
     }
 
     public void setCols(int cols) {
@@ -94,6 +82,18 @@ public class TileSet implements ID {
 
             }
         }
+    }
+
+    public int[][] getImages() {
+        return images;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

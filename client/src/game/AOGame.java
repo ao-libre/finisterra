@@ -25,13 +25,19 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
     public static final float GAME_SCREEN_ZOOM = 1f;
     public static final float GAME_SCREEN_MAX_ZOOM = 1.3f;
 
-    private AOAssetManager assetManager = new DefaultAOAssetManager();
+    private AOAssetManager assetManager;
     private ClientConfiguration clientConfiguration;
-    
+
     public AOGame(ClientConfiguration clientConfiguration) {
         this.clientConfiguration = clientConfiguration;
+        this.assetManager = new DefaultAOAssetManager(clientConfiguration);
     }
-    
+
+    public static AOAssetManager getGlobalAssetManager() {
+        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
+        return game.getAssetManager();
+    }
+
     @Override
     public void create() {
         super.create();

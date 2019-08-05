@@ -16,18 +16,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
 import design.screens.views.View;
 import game.AssetManagerHolder;
-import game.ClientConfiguration;
 import game.handlers.*;
 import game.screens.WorldScreen;
 import game.utils.Skins;
 import graphics.AnimationDrawable;
-import org.lwjgl.system.CallbackI;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +45,7 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
     public void create() {
         SKIN = new Skins.AOSkin(Gdx.files.internal("skin/skin-composer-ui.json"));
         loadingAnimation = new AnimationDrawable(SKIN, "loading-animation", 1 / 30f);
-        assetManager = new DefaultAOAssetManager();
+        assetManager = getGlobalAssetManager();
         assetManager.load();
         Table t = new Table();
         t.setFillParent(true);
@@ -63,6 +60,11 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
         stage = new Stage(new ScreenViewport());
         stage.addActor(t);
         Gdx.input.setInputProcessor(stage);
+    }
+
+    public static AOAssetManager getGlobalAssetManager() {
+        AssetManagerHolder app = (AssetManagerHolder) Gdx.app.getApplicationListener();
+        return app.getAssetManager();
     }
 
     public void show() {
@@ -119,7 +121,7 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
     }
 
     @Override
-    public void resize (int width, int height) {
+    public void resize(int width, int height) {
         // See below for what true means.
         stage.getViewport().update(width, height, true);
         Screen screen = getScreen();

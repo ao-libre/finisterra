@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import shared.objects.types.Obj;
-import shared.util.AOJson;
 import shared.util.ObjJson;
 
 import java.util.Map;
@@ -23,12 +22,12 @@ public class ObjectDesigner implements IDesigner<Obj, ObjectParameters> {
 
     private Map<Integer, Obj> objs;
 
-    private int getFreeId() {
-        return objs.keySet().stream().max(Integer::compareTo).get() + 1;
-    }
-
     public ObjectDesigner() {
         load(new ObjectParameters());
+    }
+
+    private int getFreeId() {
+        return objs.keySet().stream().max(Integer::compareTo).get() + 1;
     }
 
     @Override

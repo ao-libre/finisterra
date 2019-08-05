@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.Array;
-import game.AssetManagerHolder;
-import game.handlers.AOAssetManager;
 import game.handlers.AnimationHandler;
 import game.screens.WorldScreen;
 
@@ -30,13 +28,6 @@ public class BundledAnimation {
         this.loops = loops;
     }
 
-    private TextureRegion getTexture(int id) {
-        Game game = (Game) Gdx.app.getApplicationListener();
-        WorldScreen screen = (WorldScreen) game.getScreen();
-        AnimationHandler system = screen.getWorld().getSystem(AnimationHandler.class);
-        return system.getTexture(id).getTexture();
-    }
-
     public BundledAnimation(AOAnimation anim, boolean pingpong) {
         this(anim, pingpong, 1);
     }
@@ -47,6 +38,13 @@ public class BundledAnimation {
 
     public BundledAnimation(AOAnimation anim, int loops) {
         this(anim, false, loops);
+    }
+
+    private TextureRegion getTexture(int id) {
+        Game game = (Game) Gdx.app.getApplicationListener();
+        WorldScreen screen = (WorldScreen) game.getScreen();
+        AnimationHandler system = screen.getWorld().getSystem(AnimationHandler.class);
+        return system.getTexture(id).getTexture();
     }
 
     public Animation getAnimation() {

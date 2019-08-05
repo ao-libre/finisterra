@@ -1,6 +1,5 @@
 package launcher;
 
-import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.backends.headless.HeadlessFileHandle;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
@@ -17,7 +16,6 @@ import game.utils.Resources;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -62,7 +60,7 @@ public class DesktopLauncher {
          */
         if (System.getProperty("os.name").toLowerCase().contains("mac")) {
             FileHandle fileHandle = new HeadlessFileHandle(Resources.CLIENT_ICON, FileType.Internal);
-            try (InputStream is = fileHandle.read()){
+            try (InputStream is = fileHandle.read()) {
                 BufferedImage image = ImageIO.read(is);
                 Taskbar.getTaskbar().setIconImage(image);
             } catch (IOException e) {

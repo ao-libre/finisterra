@@ -15,6 +15,12 @@ public class StringEditor extends FieldEditor<String> {
         super(label, fieldProvider, consumer, supplier);
     }
 
+    public static Actor simple(String label, Consumer<String> consumer, Supplier<String> supplier, FieldListener listener) {
+        StringEditor stringEditor = new StringEditor(label, FieldProvider.NONE, consumer, supplier);
+        stringEditor.addListener(listener);
+        return stringEditor.getField();
+    }
+
     @Override
     protected Actor createSimpleEditor() {
         TextField text = new TextField(getSupplier().get(), SKIN);
@@ -25,12 +31,6 @@ public class StringEditor extends FieldEditor<String> {
             }
         });
         return text;
-    }
-
-    public static Actor simple(String label, Consumer<String> consumer, Supplier<String> supplier, FieldListener listener) {
-        StringEditor stringEditor = new StringEditor(label, FieldProvider.NONE, consumer, supplier);
-        stringEditor.addListener(listener);
-        return stringEditor.getField();
     }
 
 

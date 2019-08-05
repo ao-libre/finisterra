@@ -34,7 +34,8 @@ public class TileSetEditor extends Dialog {
     }
 
     private static void fillTable(TileSet tileSet, FieldListener listener, Table table) {
-        table.add(IntegerEditor.create("ID", tileSet::setId, tileSet::getId, () -> {})).row();
+        table.add(IntegerEditor.create("ID", tileSet::setId, tileSet::getId, () -> {
+        })).row();
         table.add(IntegerEditor.create("Rows", tileSet::setRows, tileSet::getRows, () -> {
             refresh(table, tileSet, listener);
             listener.onModify();
@@ -50,15 +51,15 @@ public class TileSetEditor extends Dialog {
             Table row = new Table();
             for (int j = 0; j < tileSet.getCols(); j++) {
                 int finalJ = j;
-                row.add(IntegerEditor.create("", id -> tileSet.setImage(finalI, finalJ,id), () -> tileSet.getImage(finalI, finalJ), listener));
+                row.add(IntegerEditor.create("", id -> tileSet.setImage(finalI, finalJ, id), () -> tileSet.getImage(finalI, finalJ), listener));
             }
             table.add(row).row();
         }
     }
 
     private static void refresh(Table table, TileSet tileSet, FieldListener listener) {
-            table.clear();
-            fillTable(tileSet, listener, table);
+        table.clear();
+        fillTable(tileSet, listener, table);
     }
 
     private void addTable() {

@@ -29,12 +29,12 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
     private Map<Integer, NPC> npcs;
     private AOJson json = new AOJson();
 
-    private int getFreeId() {
-        return npcs.keySet().stream().max(Integer::compareTo).get() + 1;
-    }
-
     public NPCDesigner(NPCParameters parameters) {
         load(parameters);
+    }
+
+    private int getFreeId() {
+        return npcs.keySet().stream().max(Integer::compareTo).get() + 1;
     }
 
     @Override
@@ -119,23 +119,23 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
 
 
     public static class NPCParameters implements Parameters<NPC> {
-        enum NPCModel {
-            JSON,
-            DAT
-        }
-
         private NPCModel model;
 
         NPCParameters(NPCModel model) {
             this.model = model;
         }
 
+        public static NPCParameters dat() {
+            return new NPCParameters(NPCModel.DAT);
+        }
+
         public NPCParameters json() {
             return new NPCParameters(NPCModel.JSON);
         }
 
-        public static NPCParameters dat() {
-            return new NPCParameters(NPCModel.DAT);
+        enum NPCModel {
+            JSON,
+            DAT
         }
     }
 }

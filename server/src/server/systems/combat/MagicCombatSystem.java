@@ -16,6 +16,7 @@ import graphics.Effect;
 import graphics.Effect.EffectBuilder;
 import physics.AttackAnimation;
 import position.WorldPos;
+import server.systems.CharacterTrainingSystem;
 import server.systems.manager.MapManager;
 import server.systems.manager.ObjectManager;
 import server.systems.manager.WorldManager;
@@ -26,27 +27,24 @@ import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.objects.types.HelmetObj;
 import shared.objects.types.Obj;
-import server.systems.CharacterTrainingSystem;
-
+import shared.util.Messages;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
-import static java.lang.String.format;
-import static shared.util.Messages.*;
 
 @Wire
 public class MagicCombatSystem extends BaseSystem {
 
     private static final String SPACE = " ";
     private static final int TIME_TO_MOVE_1_TILE = 200;
+
     // Injected Systems
     private MapManager mapManager;
     private WorldManager worldManager;
     private ObjectManager objectManager;
     private CharacterTrainingSystem characterTrainingSystem;
-
 
     public void spell(int userId, SpellCastRequest spellCastRequest) {
         final Spell spell = spellCastRequest.getSpell();
@@ -54,8 +52,7 @@ public class MagicCombatSystem extends BaseSystem {
         final long timestamp = spellCastRequest.getTimestamp();
         Optional<Integer> target = getTarget(userId, targetPos, timestamp);
         if (target.isPresent()) {
-            worldManager
-                    .notifyUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(new AttackAnimation()).build());
+            worldManager.notifyUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(new AttackAnimation()).build());
             castSpell(userId, target.get(), spell);
         }
     }
@@ -98,24 +95,24 @@ public class MagicCombatSystem extends BaseSystem {
 
         if (mana.min > requiredMana) {
             if (!isValid(target, spell)) {
-                notifyInfo(playerId, INVALID_TARGET);
+                notifyInfo(playerId, Messages.INVALID_TARGET);
                 return;
             }
 
             if (stamina.min < requiredStamina) {
-                notifyInfo(playerId, NOT_ENOUGH_ENERGY);
+                notifyInfo(playerId, Messages.NOT_ENOUGH_ENERGY);
                 return;
             }
 
             if (playerId == target) {
                 if (spell.getSumHP() == 2 || spell.isImmobilize() || spell.isParalyze()) {
-                    notifyMagic(playerId, CANT_ATTACK_YOURSELF);
+                    notifyMagic(playerId, Messages.CANT_ATTACK_YOURSELF);
                     return;
                 }
-                notifyMagic(playerId, spell.getOwnerMsg());
+                notifyMagic(playerId, Messages.OWNER_MSG, spell.getOwnerMsg());
             } else {
-                notifyMagic(playerId, spell.getOriginMsg() + SPACE + getName(target));
-                notifyMagic(target, getName(playerId) + SPACE + spell.getTargetMsg());
+                notifyMagic(playerId, Messages.ORIGIN_MSG, spell.getOriginMsg(), getName(target));
+                notifyMagic(target, Messages.TARGET_MSG, getName(playerId), spell.getTargetMsg());
             }
 
             int fxGrh = spell.getFxGrh();
@@ -129,16 +126,16 @@ public class MagicCombatSystem extends BaseSystem {
                 victimUpdateToAllBuilder.withComponents(CombatMessage.magic(damage > 0 ? "+" : "-" + Math.abs(damage)));
                 victimUpdateBuilder.withComponents(health);
                 if (damage > 0) {
-                    notifyMagic(playerId, format(HEAL_TO, getName(target), Math.abs(damage)));
-                    notifyMagic(target, format(HEAL_BY, getName(playerId), Math.abs(damage)));
+                    notifyMagic(playerId, Messages.HEAL_TO, getName(target), Integer.toString(Math.abs(damage)));
+                    notifyMagic(target, Messages.HEAL_BY, getName(playerId), Integer.toString(Math.abs(damage)));
                 } else {
-                    notifyMagic(playerId, format(DAMAGE_TO, Math.abs(damage), getName(target)));
-                    notifyMagic(target, format(DAMAGED_BY, getName(playerId), Math.abs(damage)));
+                    notifyMagic(playerId, Messages.DAMAGE_TO, Integer.toString(Math.abs(damage)), getName(target));
+                    notifyMagic(target, Messages.DAMAGED_BY, getName(playerId), Integer.toString(Math.abs(damage)));
                 }
                 if (health.min <= 0) {
                     getWorldManager().entityDie(target);
-                    notifyMagic(playerId, format(KILL, getName(target)));
-                    notifyMagic(target, format(KILLED, getName(playerId)));
+                    notifyMagic(playerId, Messages.KILL, getName(target));
+                    notifyMagic(target, Messages.KILLED, getName(playerId));
                 }
             }
             if (spell.isImmobilize()) {
@@ -149,7 +146,7 @@ public class MagicCombatSystem extends BaseSystem {
                     targetEntity.immobile(false);
                     victimUpdateToAllBuilder.remove(Immobile.class);
                 } else {
-                    notifyInfo(playerId, NOT_PARALYSIS);
+                    notifyInfo(playerId, Messages.NOT_PARALYSIS);
                     return;
                 }
             }
@@ -171,7 +168,7 @@ public class MagicCombatSystem extends BaseSystem {
             if (fxGrh > 0) {
                 int fxE = world.create();
                 EntityUpdateBuilder fxUpdate = EntityUpdateBuilder.of(fxE);
-                Effect effect = new EffectBuilder().attachTo(target).withLoops(Math.max(1, spell.getLoops())).withFX(fxGrh - 1).build();
+                Effect effect = new EffectBuilder().attachTo(target).withLoops(Math.max(1, spell.getLoops())).withFX(fxGrh).build();
                 fxUpdate.withComponents(effect).build();
                 if (targetEntity.hasWorldPos()) {
                     WorldPos worldPos = targetEntity.getWorldPos();
@@ -193,7 +190,7 @@ public class MagicCombatSystem extends BaseSystem {
             getWorldManager().notifyUpdate(playerId, playerUpdateBuilder
                     .withComponents(magicWords).build());
         } else {
-            notifyInfo(playerId, NOT_ENOUGHT_MANA);
+            notifyInfo(playerId, Messages.NOT_ENOUGHT_MANA);
         }
     }
 
@@ -240,11 +237,10 @@ public class MagicCombatSystem extends BaseSystem {
         int spellTarget = spell.getTarget();
         switch (spellTarget) {
             case 1:
+            case 3:
                 return targetEntity.isCharacter() || (targetEntity.hasNPC() && targetEntity.isHostile());
             case 2:
                 return (targetEntity.hasNPC() && targetEntity.isHostile());
-            case 3:
-                return targetEntity.isCharacter() || (targetEntity.hasNPC() && targetEntity.isHostile());
             case 4:
                 return targetEntity == null;
         }
@@ -252,13 +248,13 @@ public class MagicCombatSystem extends BaseSystem {
         return false;
     }
 
-    private void notifyInfo(int userId, String message) {
-        final ConsoleMessage combat = ConsoleMessage.info(message);
+    private void notifyInfo(int userId, Messages messageId, String... messageParams) {
+        final ConsoleMessage combat = ConsoleMessage.info(messageId, messageParams);
         getWorldManager().sendEntityUpdate(userId, combat);
     }
 
-    private void notifyMagic(int userId, String message) {
-        final ConsoleMessage combat = ConsoleMessage.combat(message);
+    private void notifyMagic(int userId, Messages messageId, String... messageParams) {
+        final ConsoleMessage combat = ConsoleMessage.combat(messageId, messageParams);
         getWorldManager().sendEntityUpdate(userId, combat);
     }
 

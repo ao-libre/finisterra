@@ -11,7 +11,7 @@ import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static design.designers.TileSetDesigner.*;
+import static design.designers.TileSetDesigner.TileSetParameters;
 import static design.utils.FileUtils.openDialog;
 
 public class TileSetDesigner implements IDesigner<TileSet, TileSetParameters> {
@@ -77,7 +77,8 @@ public class TileSetDesigner implements IDesigner<TileSet, TileSetParameters> {
     }
 
     @Override
-    public void modify(TileSet element, Stage stage) {}
+    public void modify(TileSet element, Stage stage) {
+    }
 
     @Override
     public void delete(TileSet element) {
@@ -95,7 +96,9 @@ public class TileSetDesigner implements IDesigner<TileSet, TileSetParameters> {
     }
 
     @Override
-    public void markUsedImages() {}
+    public void markUsedImages() {
+    }
 
-    static class TileSetParameters implements Parameters<TileSet> {}
+    static class TileSetParameters implements Parameters<TileSet> {
+    }
 }

@@ -17,8 +17,10 @@ import entity.character.status.*;
 import entity.combat.AttackPower;
 import entity.combat.EvasionPower;
 import entity.npc.*;
-import entity.world.Object;
-import entity.world.*;
+import entity.world.CombatMessage;
+import entity.world.Dialog;
+import entity.world.Footprint;
+import entity.world.Ground;
 import graphics.Effect;
 import graphics.FX;
 import graphics.RenderBefore;
@@ -82,6 +84,7 @@ import shared.objects.factory.ObjectFactory;
 import shared.objects.types.*;
 import shared.objects.types.common.*;
 import shared.util.MapHelper;
+import shared.util.Messages;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -120,6 +123,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 DropItem.class,
                 ConsoleMessage.class,
                 ConsoleMessage.Kind.class,
+                Messages.class,
 
                 // Lobby
                 Lobby.class,
@@ -157,6 +161,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 int[][].class,
                 int[].class,
                 Integer[].class,
+                java.lang.String[].class,
                 ConcurrentHashMap.class,
                 HashMap.class,
                 HashSet.class,
@@ -258,7 +263,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Navigating.class,
                 Resting.class,
                 Writing.class,
-                Object.class,
+                entity.world.Object.class,
                 Ground.class,
                 PotionKind.class,
                 Criminal.class,

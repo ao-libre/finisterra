@@ -10,8 +10,6 @@ import design.dialogs.AnimationFromImages;
 import design.dialogs.SplitImage;
 import design.editors.ImageEditor;
 import design.screens.ScreenEnum;
-import design.screens.ScreenManager;
-import design.screens.views.AnimationView;
 import design.screens.views.ImageView;
 import design.screens.views.View;
 import game.AssetManagerHolder;
@@ -40,15 +38,15 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
     private AOJson json = new AOJson();
     private Map<Integer, AOImage> images;
 
+    public ImageDesigner(ImageParameters parameters) {
+        load(parameters);
+    }
+
     public int getFreeId() {
         AnimationDesigner designer = (AnimationDesigner) ScreenEnum.ANIMATION_VIEW.getScreen().getDesigner();
         int freeAnimation = designer.get().values().stream().max(Comparator.comparingInt(AOAnimation::getId)).get().getId() + 1;
         int freeImage = images.values().stream().max(Comparator.comparingInt(AOImage::getId)).get().getId() + 1;
         return Math.max(freeAnimation, freeImage);
-    }
-
-    public ImageDesigner(ImageParameters parameters) {
-        load(parameters);
     }
 
     @Override
