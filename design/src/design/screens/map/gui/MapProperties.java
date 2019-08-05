@@ -1,6 +1,9 @@
 package design.screens.map.gui;
 
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import design.editors.fields.BooleanEditor;
 import design.editors.fields.IntegerEditor;
 import design.editors.fields.StringEditor;
@@ -11,24 +14,30 @@ import static launcher.DesignCenter.SKIN;
 public class MapProperties extends Window {
 
     private Map current;
+    private ClickListener mouseListener;
+    private Table content;
 
     public MapProperties() {
         super("Map Properties", SKIN, "main");
         setMovable(true);
         defaults().growX().space(3);
+        addListener(mouseListener = new ClickListener());
+        content = new Table();
+        content.defaults().growX().space(3);
+        add(new ScrollPane(content)).growX();
     }
 
     public void show(Map map) {
-        clear();
+        content.clear();
         current = map;
-        add(StringEditor.simple("Map Name", map::setName, map::getName, () -> {})).row();
+        content.add(StringEditor.simple("Map Name", map::setName, map::getName, () -> {})).row();
         int[] neighbours = map.getNeighbours();
         for (int i = 0; i < 4; i++) {
             int finalI = i;
-            add(IntegerEditor.create(getNeighbourDisplay(i), id -> map.setNeighbour(finalI, id), () -> neighbours[finalI], () -> {
+            content.add(IntegerEditor.create(getNeighbourDisplay(i), id -> map.setNeighbour(finalI, id), () -> neighbours[finalI], () -> {
             })).row();
         }
-        add(BooleanEditor.simple("Secure", map::setSecureZone, () -> current.isSecureZone(), () -> { })).row();
+        content.add(BooleanEditor.simple("Secure", map::setSecureZone, () -> current.isSecureZone(), () -> { })).row();
     }
 
     private String getNeighbourDisplay(int i) {
@@ -51,5 +60,9 @@ public class MapProperties extends Window {
 
     public Map getCurrent() {
         return current;
+    }
+
+    public boolean isOver() {
+        return mouseListener.isOver();
     }
 }

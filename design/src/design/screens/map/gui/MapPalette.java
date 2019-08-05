@@ -7,16 +7,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static launcher.DesignCenter.SKIN;
 
 public class MapPalette extends Window {
 
+    private final ClickListener mouseListener;
     // palette
     private int layer;
     private Selection selection = Selection.NONE;
+    private List<SelectionListener> listeners = new ArrayList<>();
 
     public MapPalette() {
         super("Palette", SKIN, "main");
+        addListener(mouseListener = new ClickListener());
         setMovable(true);
 
         ButtonGroup layers = new ButtonGroup();
@@ -25,6 +31,7 @@ public class MapPalette extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 layer = 0;
+                notifySelection(selection);
             }
         });
         add(fst).growX().row();
@@ -33,6 +40,7 @@ public class MapPalette extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 layer = 1;
+                notifySelection(selection);
             }
         });
         add(snd).growX().row();
@@ -41,6 +49,7 @@ public class MapPalette extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 layer = 2;
+                notifySelection(selection);
             }
         });
         add(third).growX().row();
@@ -49,6 +58,7 @@ public class MapPalette extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 layer = 3;
+                notifySelection(selection);
             }
         });
         add(forth).growX().row();
@@ -60,6 +70,7 @@ public class MapPalette extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 selection = block.isChecked() ? Selection.BLOCK : Selection.NONE;
+                notifySelection(selection);
             }
         });
         add(block).row();
@@ -68,6 +79,7 @@ public class MapPalette extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 selection = clean.isChecked() ? Selection.CLEAN : Selection.NONE;
+                notifySelection(selection);
             }
         });
         add(clean).row();
@@ -77,6 +89,7 @@ public class MapPalette extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 selection = tileExit.isChecked() ? Selection.TILE_EXIT : Selection.NONE;
+                notifySelection(selection);
             }
         });
         add(tileExit).row();
@@ -86,6 +99,7 @@ public class MapPalette extends Window {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 selection = tileSet.isChecked() ? Selection.TILE_SET : Selection.NONE;
+                notifySelection(selection);
             }
         });
         add(tileSet).row();
@@ -97,6 +111,14 @@ public class MapPalette extends Window {
 
     }
 
+    public void addListener(SelectionListener listener) {
+        listeners.add(listener);
+    }
+
+    private void notifySelection(Selection selection) {
+        listeners.forEach(listener -> listener.selectionChange(selection, layer));
+    }
+
     public int getLayer() {
         return layer;
     }
@@ -105,11 +127,20 @@ public class MapPalette extends Window {
         return selection;
     }
 
+    public boolean isOver() {
+        return mouseListener.isOver();
+    }
+
     public enum Selection {
         NONE,
         BLOCK,
         CLEAN,
         TILE_EXIT,
         TILE_SET
+    }
+
+    public interface SelectionListener {
+
+        void selectionChange(Selection selection, int layer);
     }
 }

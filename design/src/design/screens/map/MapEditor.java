@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.esotericsoftware.minlog.Log;
 import com.google.common.base.Objects;
 import design.screens.DesignScreen;
 import design.screens.ScreenEnum;
@@ -26,10 +25,8 @@ import design.screens.map.gui.MapAssetChooser;
 import design.screens.map.gui.MapPalette;
 import design.screens.map.gui.MapPalette.Selection;
 import design.screens.map.gui.MapProperties;
-import design.screens.map.model.TileSet;
 import design.screens.map.systems.MapDesignRenderingSystem;
 import design.screens.views.TileSetView;
-import design.screens.views.View;
 import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
 import game.handlers.ObjectHandler;
@@ -96,7 +93,6 @@ public class MapEditor extends DesignScreen {
     public MapEditor() {
         stage = new Stage() {
 
-
             @Override
             public boolean touchDragged(int screenX, int screenY, int pointer) {
                 if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
@@ -112,6 +108,10 @@ public class MapEditor extends DesignScreen {
 
             @Override
             public boolean scrolled(int amount) {
+                boolean result = super.scrolled(amount);
+                if (isOverGUI()) {
+                    return result;
+                }
                 if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
                     CameraSystem system = world.getSystem(CameraSystem.class);
                     system.zoom(amount, CameraSystem.ZOOM_TIME);
@@ -124,7 +124,7 @@ public class MapEditor extends DesignScreen {
                     y *= 2;
                     world.getSystem(CameraSystem.class).camera.translate(x, y);
                 }
-                return super.scrolled(amount);
+                return result;
             }
 
             @Override
@@ -135,7 +135,9 @@ public class MapEditor extends DesignScreen {
             }
 
             void setTile() {
-                mouseToWorldPos().ifPresent(MapEditor.this::setTile);
+                if (!isOverGUI()) {
+                    mouseToWorldPos().ifPresent(MapEditor.this::setTile);
+                }
             }
 
             @Override
@@ -158,6 +160,10 @@ public class MapEditor extends DesignScreen {
         Gdx.input.setInputProcessor(stage);
         createUI();
         createWorld();
+    }
+
+    private boolean isOverGUI() {
+        return mapPalette.isOver() || mapProperties.isOver() || assetChooser.isOver();
     }
 
     private void setTile(int x, int y) {
@@ -209,7 +215,7 @@ public class MapEditor extends DesignScreen {
                     view.getDesigner().get(tileset).ifPresent(tileSet -> {
                         for (int x = 0; x < tileSet.getCols(); x++) {
                             for (int y = 0; y < tileSet.getRows(); y++) {
-                                putTileSet(pos.x + x, pos.y + y, pos.map, map, tileSet.getImage(x,y));
+                                putTileSet(pos.x + x, pos.y + y, pos.map, map, tileSet.getImage(x, y));
                             }
                         }
                     });
@@ -228,7 +234,6 @@ public class MapEditor extends DesignScreen {
                 break;
         }
         if (saveUndo) {
-            Log.info("Save tile action. Tile: " + undo.tile.toString() + " in pos: " + undo.pos);
             undoableActions.push(undo);
         }
 
@@ -237,7 +242,7 @@ public class MapEditor extends DesignScreen {
     private void putTileSet(int x, int y, int mapId, Map map, int image) {
         Tile tile = MapHelper.getTile(map, new WorldPos(x, y, mapId));
         if (tile != null) {
-            undoableActions.push(new Undo(new Tile(tile), new WorldPos(x,y, mapId)));
+            undoableActions.push(new Undo(new Tile(tile), new WorldPos(x, y, mapId)));
             tile.getGraphic()[mapPalette.getLayer()] = image;
         }
     }
@@ -378,18 +383,20 @@ public class MapEditor extends DesignScreen {
 
     private void createBottomPane(Table table) {
         mapProperties = new MapProperties();
-        table.add(mapProperties).bottom().prefWidth(450).expandX();
+        table.add(mapProperties).bottom().prefWidth(500).prefHeight(100).expandX();
     }
 
     private void createRightPane(Table table) {
         assetChooser = new MapAssetChooser();
         table.add(assetChooser).right().width(200).expandY();
+        mapPalette.addListener(assetChooser);
     }
 
     private void createLeftPane(Table table) {
         mapPalette = new MapPalette();
         table.add(mapPalette).left().expandY();
     }
+
 
     @Override
     public World getWorld() {
@@ -410,4 +417,5 @@ public class MapEditor extends DesignScreen {
             getStage().draw();
         }
     }
+
 }
