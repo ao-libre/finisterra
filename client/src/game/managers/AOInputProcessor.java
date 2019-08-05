@@ -39,8 +39,7 @@ public class AOInputProcessor extends Stage {
 
     public AOInputProcessor(GUI gui) {
         this.gui = gui;
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        assetManager = game.getAssetManager();
+        this.assetManager = AOGame.getGlobalAssetManager();
     }
 
     @Override
@@ -88,9 +87,9 @@ public class AOInputProcessor extends Stage {
                         .map(entity -> E(entity).getName().text)
                         .findFirst();
                 if (name.isPresent()) {
-                    gui.getConsole().addInfo("Ves a " + name.get());
+                    gui.getConsole().addInfo(assetManager.getMessages(Messages.SEE_SOMEONE, name.get()));
                 } else {
-                    gui.getConsole().addInfo("No ves nada interesante");
+                    gui.getConsole().addInfo(assetManager.getMessages(Messages.SEE_NOTHING));
                 }
 
             }
