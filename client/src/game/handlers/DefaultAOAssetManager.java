@@ -305,7 +305,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         }
 
         if (params.length > 0) {
-            return i18.format(key.name(), params);
+            return i18.format(key.name(), (Object) params);
         } else {
             return i18.get(key.name());
         }

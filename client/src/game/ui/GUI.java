@@ -13,10 +13,12 @@ import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import game.AOGame;
+import game.handlers.AOAssetManager;
 import game.managers.AOInputProcessor;
 import game.screens.GameScreen;
 import game.ui.user.UserInformation;
 import game.utils.Skins;
+import shared.util.Messages;
 
 import java.time.LocalDateTime;
 
@@ -32,7 +34,6 @@ public class GUI extends BaseSystem implements Disposable {
     private DialogText dialog;
     private AOConsole console;
     private OrthographicCamera camera;
-    private AOAssetManager assetManager;
 
     public GUI() {
         this.stage = new AOInputProcessor(this);
@@ -40,7 +41,6 @@ public class GUI extends BaseSystem implements Disposable {
         this.userTable = new UserInformation();
         this.dialog = new DialogText();
         this.console = new AOConsole();
-        this.assetManager = AOGame.getGlobalAssetManager();
     }
 
     @Override
@@ -79,10 +79,10 @@ public class GUI extends BaseSystem implements Disposable {
     }
 
     public void takeScreenshot() {
+        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
         String screenshotPath = "Screenshots/Screenshot-" + LocalDateTime.now() + ".png";
 
         byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
-
         // this loop makes sure the whole screenshot is opaque and looks exactly like what the user is seeing
         for (int i = 4; i < pixels.length; i += 4) {
             pixels[i - 1] = (byte) 255;
@@ -91,7 +91,7 @@ public class GUI extends BaseSystem implements Disposable {
         Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
         BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
         PixmapIO.writePNG(Gdx.files.local(screenshotPath), pixmap);
-        getConsole().addInfo(assetManager.getMessages(Messages.SCREENSHOT), screenshotPath);
+        getConsole().addInfo(assetManager.getMessages(Messages.SCREENSHOT, screenshotPath));
         pixmap.dispose();
     }
 
