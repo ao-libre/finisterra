@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import game.AOGame;
-import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import game.screens.GameScreen;
 import game.systems.camera.CameraSystem;
