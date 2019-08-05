@@ -11,8 +11,10 @@ public class ConsoleMessage implements INotification {
     private Messages messageId;
     private Object[] messageParams;
     private Kind kind;
-
-    private ConsoleMessage(Messages messageId, Kind kind, Object... messageParams) {
+	
+	public ConsoleMessage() {}
+	
+    public ConsoleMessage(Messages messageId, Kind kind, Object... messageParams) {
         this.messageId = messageId;
         this.messageParams = messageParams;
         this.kind = kind;

@@ -35,6 +35,7 @@ import javax.sound.midi.Sequencer;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static game.loaders.DescriptorsLoader.*;
 import static game.loaders.DescriptorsLoader.DescriptorParameter.descriptor;
@@ -291,6 +292,14 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         return weapons;
     }
 
+    private String paramsToString(Object parameter) {
+        if (parameter instanceof Integer) {
+            return Integer.toString((Integer) parameter);
+        } else if (parameter instanceof Float) {
+            return Float.toString((Float) parameter);
+        }
+    }
+
     public String getMessages(Messages key, Object... params) {
 
         if (!isLoaded(languagesFile)) {
@@ -304,8 +313,10 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
             Gdx.app.error("Internationalization", "Error trying to get message: " + key.name());
         }
 
+        String[] stringParams = Stream.of(params).map(this::paramsToString).toArray(String[]::new);
+
         if (params.length > 0) {
-            return i18.format(key.name(), params);
+            return i18.format(key.name(), stringParams);
         } else {
             return i18.get(key.name());
         }
