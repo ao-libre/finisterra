@@ -13,17 +13,19 @@ import shared.model.map.Tile;
 public class CameraSystem extends BaseSystem {
 
     public final static float ZOOM_TIME = 0.5f;
-    private final float zoom;
     public OrthographicCamera camera;
     public OrthographicCamera guiCamera;
     private float desiredZoom = AOGame.GAME_SCREEN_ZOOM;
+    private final float minZoom;
+    private final float maxZoom;
 
     // member variables:
     private float timeToCameraZoomTarget, cameraZoomOrigin, cameraZoomDuration;
 
 
-    public CameraSystem(float zoom, float width, float height) {
-        this.zoom = zoom;
+    public CameraSystem(float zoom, float maxZoom, float width, float height) {
+        this.maxZoom = maxZoom;
+        this.minZoom = zoom;
         float zoomFactorInverter = 1f / zoom;
         setupViewport(width * zoomFactorInverter,
                 height * zoomFactorInverter);
@@ -33,7 +35,11 @@ public class CameraSystem extends BaseSystem {
      * @param zoom How much
      */
     public CameraSystem(float zoom) {
-        this(zoom, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this(zoom, AOGame.GAME_SCREEN_MAX_ZOOM);
+    }
+
+    public CameraSystem(float zoom, float maxZoom) {
+        this(zoom, maxZoom, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     private void setupViewport(float width, float height) {
@@ -66,7 +72,7 @@ public class CameraSystem extends BaseSystem {
     public void zoom(int inout, float duration) {
         cameraZoomOrigin = camera.zoom;
         desiredZoom += inout * 0.025f;
-        desiredZoom = MathUtils.clamp(desiredZoom, AOGame.GAME_SCREEN_ZOOM, AOGame.GAME_SCREEN_MAX_ZOOM);
+        desiredZoom = MathUtils.clamp(desiredZoom, AOGame.GAME_SCREEN_ZOOM, maxZoom);
         timeToCameraZoomTarget = cameraZoomDuration = duration;
     }
 }

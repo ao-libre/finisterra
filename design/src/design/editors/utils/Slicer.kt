@@ -130,12 +130,12 @@ class Slicer(val file: FileHandle) {
         val spriteBoundsList = ArrayList<Rectangle>()
         val width = spriteSheet.width
         val height = spriteSheet.height
+        val white = Color(0f, 0f, 0f, 1f)
 
         for (x in 0..width) {
             for (y in 0..height) {
                 val pixel = Color(spriteSheet.getPixel(x, y))
-
-                if (pixel.a > 0f) {
+                if (pixel.a > 0f && !pixel.equals(white)) {
                     Log.info("Found a sprite starting at ($x, $y) with color $pixel")
                     val spritePlot = plotSprite(spriteSheet, Point(x, y), backgroundColor)
                     val spriteBounds = constructSpriteBoundsFromPlot(spritePlot)
@@ -160,7 +160,8 @@ class Slicer(val file: FileHandle) {
 
     fun erasePoints(spriteSheet: Pixmap, spritePlot: List<Point>, backgroundColor: Color) {
         spriteSheet.blending = Pixmap.Blending.None
-        spritePlot.forEach { p -> spriteSheet.drawPixel(p.x, p.y, backgroundColor.toIntBits().shl(8)) }
+        val clearPixel = backgroundColor.toIntBits().shl(8)
+        spritePlot.forEach { p -> spriteSheet.drawPixel(p.x, p.y, clearPixel) }
     }
 
 

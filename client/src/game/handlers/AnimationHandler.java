@@ -145,7 +145,7 @@ public class AnimationHandler extends PassiveSystem {
     private AOTexture saveTexture(int id) {
         AOImage image = assetManager.getImage(id);
         if (image == null) {
-            Log.info("Fail to create AO Image: " + id);
+//            Log.info("Fail to create AO Image: " + id);
             return textures.get(0);
         }
         return saveTexture(image);

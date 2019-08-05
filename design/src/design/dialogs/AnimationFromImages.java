@@ -55,7 +55,7 @@ public class AnimationFromImages {
             this.designer = designer;
             this.animationHandler = animationHandler;
             this.images = images;
-            columns = images.size() / 4;
+            columns = Math.max(images.size() / 4, 1);
             createContent();
         }
 
@@ -101,7 +101,7 @@ public class AnimationFromImages {
         private void createContent() {
             Table content = new Table(SKIN);
             List<AOImage> selected = getAoImages(content);
-            add(content).growX();
+            add(new ScrollPane(content)).growX();
 
             Table buttons = getButtons(selected);
             add(buttons).growX();

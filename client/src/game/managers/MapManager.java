@@ -3,15 +3,12 @@ package game.managers;
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import game.handlers.AOAssetManager;
 import game.handlers.AnimationHandler;
-import model.textures.AOAnimation;
-import model.textures.AOImage;
 import model.textures.AOTexture;
 import model.textures.BundledAnimation;
 import shared.model.map.Map;
 import shared.model.map.Tile;
+import shared.model.map.WorldPosition;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,19 +25,42 @@ public class MapManager extends BaseSystem {
     public static final int MIN_MAP_SIZE_HEIGHT = 1;
     private AnimationHandler animationHandler;
 
-    public void drawTile(Map map, SpriteBatch batch, float delta, int layer, int y, int x) {
-        int graphic = map.getTile(x, y).getGraphic(layer);
-        if (graphic == 0) {
-            return;
-        }
-
-        doTileDraw(batch, delta, y, x, graphic);
+    public void drawLayer(Map map, SpriteBatch batch, float delta, int layer, boolean drawExit, boolean drawBlock) {
+            for (int x = 0; x < map.getWidth(); x++) {
+                for (int y = map.getHeight() - 1; y >= 0; y--) {
+                    Tile tile = map.getTile(x, y);
+                    if (tile == null) {
+                        continue;
+                    }
+                    int graphic = tile.getGraphic(layer);
+                    if (graphic == 0) {
+                        continue;
+                    }
+                    doTileDrawFlipped(batch, delta, x, y, graphic);
+                    if (drawBlock && tile.isBlocked()) {
+                        // draw block
+                        doTileDraw(batch, delta, x, y, 4);
+                    }
+                    if (drawExit && tile.getTileExit() != null && !(new WorldPosition().equals(tile.getTileExit()))) {
+                        // draw exit
+                        doTileDraw(batch, delta, x, y, 3);
+                    }
+                }
+            }
     }
 
-    public void doTileDraw(SpriteBatch batch, float delta, int x, int y, int graphic) {
+    public void doTileDrawFlipped(SpriteBatch batch, float delta, int x, int y, int graphic) {
         // TODO Refactor maps layers to have animations separated
-        TextureRegion tileRegion = null;
         AOTexture texture = animationHandler.getTexture(graphic);
+        TextureRegion tileRegion = getTextureRegion(delta, graphic, texture);
+        if (tileRegion != null && !tileRegion.isFlipY()) {
+            tileRegion.flip(false, true);
+        }
+        doTileDraw(batch, y, x, tileRegion);
+    }
+
+    public TextureRegion getTextureRegion(float delta, int graphic, AOTexture texture) {
+        TextureRegion tileRegion = null;
         if (texture != null) {
             // TODO CACHE
             tileRegion = texture.getTexture();
@@ -51,6 +71,14 @@ public class MapManager extends BaseSystem {
                 tileRegion = animation.getGraphic();
             }
         }
+        return tileRegion;
+    }
+
+    public void doTileDraw(SpriteBatch batch, float delta, int x, int y, int graphic) {
+        // TODO Refactor maps layers to have animations separated
+        TextureRegion tileRegion = null;
+        AOTexture texture = animationHandler.getTexture(graphic);
+        tileRegion = getTextureRegion(delta, graphic, texture);
 
         doTileDraw(batch, y, x, tileRegion);
     }

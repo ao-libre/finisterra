@@ -16,9 +16,10 @@ public class Map {
     protected Tile tiles[][];
     private boolean secureZone;
     private int[] neighbours = new int[4];
+    private String name;
 
     public Map() {
-        this.tiles = new Tile[MAX_MAP_SIZE_WIDTH + 1][MAX_MAP_SIZE_HEIGHT + 1];
+        this.tiles = new Tile[MAX_MAP_SIZE_WIDTH][MAX_MAP_SIZE_HEIGHT];
     }
 
     public Map(int width, int height) {
@@ -46,10 +47,14 @@ public class Map {
     }
 
     public void setNeighbours(int left, int up, int right, int down) {
-        neighbours[LEFT] = left;
-        neighbours[UP] = up;
-        neighbours[RIGHT] = right;
-        neighbours[DOWN] = down;
+        setNeighbour(LEFT, left);
+        setNeighbour(UP, up);
+        setNeighbour(RIGHT, right);
+        setNeighbour(DOWN, down);
+    }
+
+    public void setNeighbour(int dir, int id) {
+        neighbours[dir] = id;
     }
 
     public int getNeighbour(Dir dir) {
@@ -79,5 +84,15 @@ public class Map {
         this.secureZone = secureZone;
     }
 
+    public int[] getNeighbours() {
+        return neighbours;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

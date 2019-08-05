@@ -112,6 +112,11 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
         return npcs.containsKey(id);
     }
 
+    @Override
+    public void markUsedImages() {
+
+    }
+
 
     public static class NPCParameters implements Parameters<NPC> {
         enum NPCModel {

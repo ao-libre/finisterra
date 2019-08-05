@@ -2,11 +2,12 @@ package design.designers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import design.screens.ScreenEnum;
+import design.screens.views.ImageView;
 import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import game.loaders.DescriptorsLoader;
 import model.descriptors.*;
-import model.textures.AOAnimation;
 import org.jetbrains.annotations.NotNull;
 import shared.util.AOJson;
 
@@ -143,7 +144,25 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
     }
 
     @Override
-    public void modify(Descriptor element, Stage stage) {}
+    public void markUsedImages() {
+        if (tClass.equals(HelmetDescriptor.class) ||
+                tClass.equals(HeadDescriptor.class)) {
+            ImageView view = (ImageView) ScreenEnum.IMAGE_VIEW.getScreen();
+            descriptors.values().forEach(descriptor -> {
+                int[] indexs = descriptor.getIndexs();
+                for (int i = 0; i < indexs.length; i++) {
+                    if (indexs[i] > 0) {
+                        view.imageUsed(indexs[i]);
+                    }
+                }
+            });
+        }
+
+    }
+
+    @Override
+    public void modify(Descriptor element, Stage stage) {
+    }
 
     @Override
     public void delete(Descriptor element) {

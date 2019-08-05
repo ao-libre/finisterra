@@ -3,6 +3,7 @@ package design.screens.views;
 import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -113,13 +114,19 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
             button.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    Gdx.app.postRunnable(() -> {
-                        ScreenManager.getInstance().showScreen(screen);
-                    });
+                    Gdx.app.postRunnable(() -> ScreenManager.getInstance().showScreen(screen));
                 }
             });
             table.add(button);
         }
+        Button mapButton = new TextButton("Map Editor", SKIN, "menu-button");
+        mapButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.postRunnable(() -> ScreenManager.getInstance().toMapEditorScreen());
+            }
+        });
+        table.add(mapButton);
         return table;
     }
 
@@ -167,6 +174,8 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         return designer;
     }
 
+    public void filesDropped(java.util.List<FileHandle> files) {}
+
     abstract Preview<T> createPreview();
 
     abstract Editor<T> createItemView();
@@ -174,11 +183,18 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
     private Table createButtons() {
         Table buttons = new Table(SKIN);
         buttons.defaults().space(5);
+        addButtons(buttons);
+        return buttons;
+    }
+
+    protected void addButtons(Table buttons) {
         Button create = new Button(SKIN, "new");
         create.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                loadItems(designer.create());
+                Optional<T> newItem = designer.create();
+                newItem.ifPresent(item -> getItemView().set(item));
+                loadItems(newItem);
             }
         });
         modify = new TextButton("Modify", SKIN);
@@ -208,7 +224,6 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         buttons.add(create).left();
         buttons.add(delete).left();
         buttons.add(save).expandX().right();
-        return buttons;
     }
 
     private void onSelect(T select) {
@@ -218,6 +233,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
                 public void result(Object obj) {
                     if ((Boolean) obj && select instanceof ID) {
                         listener.select((ID) select);
+                        clearListener();
                     }
                 }
             };
@@ -227,6 +243,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
             dialog.key(Input.Keys.ENTER, true); //sends "true" when the ENTER key is pressed
             dialog.show(getStage());
         });
+
     }
 
     @Override

@@ -1,9 +1,9 @@
 package design.screens.views;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import design.designers.AnimationDesigner;
@@ -59,6 +59,20 @@ public class AnimationView extends View<AOAnimation, AnimationDesigner> implemen
 
     public void createAnimation(List<AOImage> images) {
         AnimationFromImages.show(images);
+    }
+
+    @Override
+    protected void addButtons(Table buttons) {
+        Button fromFile = new ImageButton(SKIN, "grid-dark");
+        fromFile.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                getDesigner().createFromFile();
+            }
+        });
+        fromFile.addListener(new TextTooltip("Create animation from sprite sheet file", SKIN));
+        buttons.add(fromFile).left();
+        super.addButtons(buttons);
     }
 
     class AnimationItem extends Editor<AOAnimation> {

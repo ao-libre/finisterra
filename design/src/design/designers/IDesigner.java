@@ -28,5 +28,7 @@ public interface IDesigner<T, P extends IDesigner.Parameters<T>> {
 
     boolean contains(int id);
 
+    void markUsedImages();
+
     interface Parameters<T> {}
 }

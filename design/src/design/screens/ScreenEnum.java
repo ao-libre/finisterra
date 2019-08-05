@@ -3,7 +3,6 @@ package design.screens;
 import com.esotericsoftware.minlog.Log;
 import design.editors.fields.Listener;
 import design.screens.views.*;
-
 import java.lang.reflect.InvocationTargetException;
 
 public enum ScreenEnum {
@@ -15,7 +14,8 @@ public enum ScreenEnum {
     SHIELDS_VIEW("Shields", ShieldsView.class),
     WEAPONS_VIEW("Weapons", WeaponsView.class),
     HELMETS_VIEW ("Helmets", HelmetsView.class),
-    FXS_VIEW("FXs", FXsView.class);
+    FXS_VIEW("FXs", FXsView.class),
+    TILE_SET_VIEW("Tile Set", TileSetView.class);
 
     private String title;
     private Class<? extends View> type;
@@ -30,10 +30,8 @@ public enum ScreenEnum {
         if (view == null) {
             try {
                 view = type.getDeclaredConstructor().newInstance();
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 Log.error("View not implemented", e);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
             }
         }
         readParams(view, params);
