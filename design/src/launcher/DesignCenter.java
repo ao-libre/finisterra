@@ -21,6 +21,7 @@ import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
 import design.screens.views.View;
 import game.AssetManagerHolder;
+import game.ClientConfiguration;
 import game.handlers.*;
 import game.screens.WorldScreen;
 import game.utils.Skins;
@@ -45,7 +46,7 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
     public void create() {
         SKIN = new Skins.AOSkin(Gdx.files.internal("skin/skin-composer-ui.json"));
         loadingAnimation = new AnimationDrawable(SKIN, "loading-animation", 1 / 30f);
-        assetManager = getGlobalAssetManager();
+        assetManager = new DefaultAOAssetManager(ClientConfiguration.createConfig());
         assetManager.load();
         Table t = new Table();
         t.setFillParent(true);
@@ -60,11 +61,6 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
         stage = new Stage(new ScreenViewport());
         stage.addActor(t);
         Gdx.input.setInputProcessor(stage);
-    }
-
-    public static AOAssetManager getGlobalAssetManager() {
-        AssetManagerHolder app = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        return app.getAssetManager();
     }
 
     public void show() {
@@ -91,7 +87,7 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
         }
     }
 
-    protected World createWorld() {
+    private World createWorld() {
         WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
         builder
                 .with(new SuperMapper())
