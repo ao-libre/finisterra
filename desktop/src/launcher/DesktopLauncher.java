@@ -62,7 +62,7 @@ public class DesktopLauncher {
             FileHandle fileHandle = new HeadlessFileHandle(Resources.CLIENT_ICON, FileType.Internal);
             try (InputStream is = fileHandle.read()) {
                 BufferedImage image = ImageIO.read(is);
-                Taskbar.getTaskbar().setIconImage(image);
+//                Taskbar.getTaskbar().setIconImage(image);
             } catch (IOException e) {
                 Log.error("Failed to load icon", e);
             }

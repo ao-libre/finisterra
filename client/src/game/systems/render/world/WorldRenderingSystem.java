@@ -28,6 +28,7 @@ import static graphics.Effect.NO_REF;
 @Wire
 public class WorldRenderingSystem extends BaseSystem {
 
+    public static final int EXTRA_TILES = 7;
     private MapManager mapManager;
     private AnimationHandler animationHandler;
     private SpriteBatch batch;
@@ -127,10 +128,10 @@ public class WorldRenderingSystem extends BaseSystem {
         int halfWindowTileWidth = (int) ((this.cameraSystem.camera.viewportWidth / Tile.TILE_PIXEL_WIDTH) / 2f);
         int halfWindowTileHeight = (int) ((this.cameraSystem.camera.viewportHeight / Tile.TILE_PIXEL_HEIGHT) / 2f);
 
-        range.minAreaX = cameraPosX - halfWindowTileWidth - 7;
-        range.maxAreaX = cameraPosX + halfWindowTileWidth + 7;
-        range.minAreaY = cameraPosY - halfWindowTileHeight - 7;
-        range.maxAreaY = cameraPosY + halfWindowTileHeight + 7;
+        range.minAreaX = cameraPosX - halfWindowTileWidth - EXTRA_TILES;
+        range.maxAreaX = cameraPosX + halfWindowTileWidth + EXTRA_TILES;
+        range.minAreaY = cameraPosY - halfWindowTileHeight - EXTRA_TILES;
+        range.maxAreaY = cameraPosY + halfWindowTileHeight + EXTRA_TILES;
 
         return range;
     }

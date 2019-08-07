@@ -25,7 +25,11 @@ public class MapManager extends BaseSystem {
     public static final int MIN_MAP_SIZE_HEIGHT = 1;
     private AnimationHandler animationHandler;
 
-    public void drawLayer(Map map, SpriteBatch batch, float delta, int layer, boolean drawExit, boolean drawBlock) {
+    public void drawLayer(Map map, SpriteBatch batch, int layer) {
+        drawLayer(map, batch, 0, layer, false, false, false);
+    }
+
+    public void drawLayer(Map map, SpriteBatch batch, float delta, int layer, boolean drawExit, boolean drawBlock, boolean flip) {
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = map.getHeight() - 1; y >= 0; y--) {
                 Tile tile = map.getTile(x, y);
@@ -36,7 +40,11 @@ public class MapManager extends BaseSystem {
                 if (graphic == 0) {
                     continue;
                 }
-                doTileDrawFlipped(batch, delta, x, y, graphic);
+                if (flip) {
+                    doTileDrawFlipped(batch, delta, x, y, graphic);
+                } else {
+                    doTileDraw(batch, delta, x, y, graphic);
+                }
                 if (drawBlock && tile.isBlocked()) {
                     // draw block
                     doTileDraw(batch, delta, x, y, 4);
@@ -47,6 +55,10 @@ public class MapManager extends BaseSystem {
                 }
             }
         }
+    }
+
+    public void drawLayer(Map map, SpriteBatch batch, float delta, int layer, boolean drawExit, boolean drawBlock) {
+        drawLayer(map, batch, delta, layer, drawExit, drawBlock, true);
     }
 
     public void doTileDrawFlipped(SpriteBatch batch, float delta, int x, int y, int graphic) {
@@ -76,9 +88,8 @@ public class MapManager extends BaseSystem {
 
     public void doTileDraw(SpriteBatch batch, float delta, int x, int y, int graphic) {
         // TODO Refactor maps layers to have animations separated
-        TextureRegion tileRegion = null;
         AOTexture texture = animationHandler.getTexture(graphic);
-        tileRegion = getTextureRegion(delta, graphic, texture);
+        TextureRegion tileRegion = getTextureRegion(delta, graphic, texture);
 
         doTileDraw(batch, y, x, tileRegion);
     }
@@ -92,7 +103,6 @@ public class MapManager extends BaseSystem {
             batch.draw(tileRegion, tileOffsetX, tileOffsetY);
         }
     }
-
 
     @Override
     protected void processSystem() {

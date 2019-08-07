@@ -12,6 +12,7 @@ import game.systems.map.TiledMapSystem;
 import game.systems.render.world.WorldRenderingSystem.UserRange;
 import position.WorldPos;
 import shared.model.map.Map;
+import shared.util.MapHelper;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,8 +34,11 @@ public class MapLayerRenderingSystem extends RenderingSystem {
     private void renderWorld() {
         final Map map = this.mapSystem.map;
         if (map == null) return;
-        UserRange range = worldRenderingSystem.getRange();
+        doRender(map);
+    }
 
+    protected void doRender(Map map) {
+        UserRange range = worldRenderingSystem.getRange();
         drawRange(map, range);
     }
 
@@ -51,7 +55,7 @@ public class MapLayerRenderingSystem extends RenderingSystem {
     }
 
     private void drawGraphicInLayer(int layer, int x, int y, Map map, WorldPos pos) {
-        Optional.ofNullable(MapHandler.getHelper().getTile(map, pos)).ifPresent(tile -> {
+        Optional.ofNullable(MapHelper.getTile(map, pos)).ifPresent(tile -> {
             int graphic = tile.getGraphic(layer);
             if (graphic == 0) {
                 return;

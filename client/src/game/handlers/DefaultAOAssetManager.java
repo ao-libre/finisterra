@@ -292,6 +292,10 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     }
 	
     public String getMessages(Messages key, String... params) {
+        if (key == null) {
+            Gdx.app.error("Internationalization", "Error trying to get message");
+            return "";
+        }
 
         if (!isLoaded(languagesFile)) {
             load(languagesFile, I18NBundle.class);
@@ -299,9 +303,9 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         }
 
         I18NBundle i18 = get(languagesFile);
-
-        if (key == null) {
+        if (i18 == null) {
             Gdx.app.error("Internationalization", "Error trying to get message: " + key.name());
+            return "";
         }
 
         if (params.length > 0) {
