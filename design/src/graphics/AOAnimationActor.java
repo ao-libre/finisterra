@@ -81,7 +81,8 @@ public class AOAnimationActor extends DescriptorActor {
     public void setAnimation(Descriptor descriptor) {
         int graphic = descriptor instanceof FXDescriptor ? descriptor.getGraphic(0) : descriptor.getGraphic(heading);
         if (graphic > 0) {
-            this.animation = animationHandler.getAnimation(graphic);
+            Effect effect = new Effect.EffectBuilder().withFX(graphic).withLoops(1).build();
+            this.animation = animationHandler.getFX(effect);
         } else {
             Log.info("Failed to preview descriptor: " + descriptor);
         }
