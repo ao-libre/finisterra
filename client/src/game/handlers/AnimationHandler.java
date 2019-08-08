@@ -1,15 +1,19 @@
 package game.handlers;
 
+import com.artemis.BaseSystem;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import entity.Index;
 import entity.character.equipment.Helmet;
 import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
 import entity.character.parts.Body;
 import entity.character.parts.Head;
+import graphics.Effect;
 import model.descriptors.*;
 import model.textures.AOAnimation;
 import model.textures.AOImage;
@@ -20,37 +24,83 @@ import shared.objects.types.HelmetObj;
 import shared.objects.types.ShieldObj;
 import shared.objects.types.WeaponObj;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 @Wire
-public class AnimationHandler extends PassiveSystem {
+public class AnimationHandler extends BaseSystem {
 
-    // TODO change maps to caches
-    private static Map<Body, List<BundledAnimation>> bodyAnimations = new HashMap<>();
-    private static Map<Head, List<AOTexture>> headAnimations = new HashMap<>();
-    private static Map<Helmet, List<BundledAnimation>> helmetAnimations = new HashMap<>();
-    private static Map<Weapon, List<BundledAnimation>> weaponAnimations = new HashMap<>();
-    private static Map<Shield, List<BundledAnimation>> shieldAnimations = new HashMap<>();
-    private static Map<Integer, BundledAnimation> bundledAnimations = new ConcurrentHashMap<>();
-    private static Map<Integer, AOTexture> textures = new ConcurrentHashMap<>();
-    private LoadingCache<AOAnimation, BundledAnimation> previews = CacheBuilder
-            .newBuilder()
-            .expireAfterAccess(3, TimeUnit.MINUTES)
-            .build(new CacheLoader<AOAnimation, BundledAnimation>() {
-                @Override
-                public BundledAnimation load(AOAnimation animation) {
-                    return new BundledAnimation(animation);
-                }
-            });
-
-    private AOAssetManager assetManager;
+    // Injected Systems
     private DescriptorHandler descriptorHandler;
     private ObjectHandler objectHandler;
 
+    private AOAssetManager assetManager;
+
+    private static LoadingCache<Integer, AOTexture> textures;
+
+    private static LoadingCache<Index, List<AOTexture>> headAnimations;
+
+    private static LoadingCache<Index, List<BundledAnimation>> helmetAnimations;
+    private static LoadingCache<Index, List<BundledAnimation>> weaponAnimations;
+    private static LoadingCache<Index, List<BundledAnimation>> shieldAnimations;
+    private static LoadingCache<Index, List<BundledAnimation>> bodyAnimations;
+    private static LoadingCache<Index, List<BundledAnimation>> fxAnimations;
+
+    private static LoadingCache<Integer, BundledAnimation> tiledAnimations;
+
+    private LoadingCache<AOAnimation, BundledAnimation> previews = CacheBuilder
+            .newBuilder()
+            .expireAfterAccess(3, TimeUnit.MINUTES)
+            .build(CacheLoader.from(BundledAnimation::new));
+
     public AnimationHandler(AOAssetManager assetManager) {
         this.assetManager = assetManager;
+
+        tiledAnimations = CacheBuilder
+                .newBuilder()
+                .expireAfterAccess(1, TimeUnit.MINUTES)
+                .build(CacheLoader.from(key -> {
+                    AOAnimation animation = assetManager.getAnimation(key);
+                    return new BundledAnimation(animation);
+                }));
+
+        headAnimations = CacheBuilder.newBuilder().expireAfterAccess(3, TimeUnit.MINUTES)
+                .build(CacheLoader.from(head -> {
+                    HeadDescriptor descriptor = descriptorHandler.getHead(head.getIndex());
+                    return createTextures(descriptor);
+                }));
+        bodyAnimations = createCache((body) -> descriptorHandler.getBody(body.getIndex()));
+        helmetAnimations = createCache((helmet) -> {
+            HelmetObj helmetObj = (HelmetObj) objectHandler.getObject(helmet.getIndex()).get();
+            return descriptorHandler.getHelmet(Math.max(helmetObj.getAnimationId(), 0));
+        });
+        weaponAnimations = createCache((weapon) -> {
+            WeaponObj weaponObj = (WeaponObj) objectHandler.getObject(weapon.getIndex()).get();
+            return descriptorHandler.getWeapon(Math.max(weaponObj.getAnimationId(), 0));
+        });
+        shieldAnimations = createCache((shield) -> {
+            ShieldObj shieldObj = (ShieldObj) objectHandler.getObject(shield.getIndex()).get();
+            return descriptorHandler.getShield(Math.max(shieldObj.getAnimationId(), 0));
+        });
+        fxAnimations = createCache((fx) -> descriptorHandler.getFX(fx.getIndex()));
+
+        textures = CacheBuilder.newBuilder()
+                .expireAfterAccess(3, TimeUnit.MINUTES)
+                .build(CacheLoader.from(this::createTexture));
+    }
+
+    private LoadingCache<Index, List<BundledAnimation>> createCache(Function<Index, IDescriptor> fun) {
+        return CacheBuilder
+                .newBuilder()
+                .expireAfterAccess(3, TimeUnit.MINUTES)
+                .build(CacheLoader.from(object -> {
+                    assert object != null;
+                    IDescriptor descriptor = fun.apply(object);
+                    return createAnimations(descriptor);
+                }));
     }
 
     private List<BundledAnimation> createAnimations(IDescriptor descriptor) {
@@ -59,7 +109,7 @@ public class AnimationHandler extends PassiveSystem {
         int[] indexes = descriptor.getIndexs();
         for (int grhIndex : indexes) {
             if (grhIndex > 0) {
-                animations.add(saveAnimation(grhIndex));
+                animations.add(createAnimation(grhIndex));
             }
         }
         return animations;
@@ -69,90 +119,69 @@ public class AnimationHandler extends PassiveSystem {
         List<AOTexture> heads = new ArrayList<>();
         int[] indexes = descriptor.getIndexs();
         for (int id : indexes) {
-            AOTexture aoTexture = saveTexture(id);
+            AOTexture aoTexture = textures.getUnchecked(id);
             heads.add(aoTexture);
         }
         return heads;
     }
 
     public AOTexture getHeadAnimation(Head head, int current) {
-        return headAnimations.computeIfAbsent(head, h -> {
-            HeadDescriptor descriptor = descriptorHandler.getHead(h.index);
-            return createTextures(descriptor);
-        }).get(current);
+        return headAnimations.getUnchecked(head).get(current);
     }
 
     public BundledAnimation getBodyAnimation(Body body, int current) {
-        return bodyAnimations.computeIfAbsent(body, b -> {
-            BodyDescriptor descriptor = descriptorHandler.getBody(b.index);
-            return createAnimations(descriptor);
-        }).get(current);
+        return bodyAnimations.getUnchecked(body).get(current);
     }
 
     public BundledAnimation getWeaponAnimation(Weapon weapon, int current) {
-        return weaponAnimations.computeIfAbsent(weapon, w -> {
-            WeaponObj weaponObj = (WeaponObj) objectHandler.getObject(w.index).get();
-            WeaponDescriptor descriptor = descriptorHandler.getWeapon(Math.max(weaponObj.getAnimationId(), 0));
-            return createAnimations(descriptor);
-        }).get(current);
+        return weaponAnimations.getUnchecked(weapon).get(current);
     }
 
     public BundledAnimation getHelmetsAnimation(Helmet helmet, int current) {
-        return helmetAnimations.computeIfAbsent(helmet, h -> {
-            HelmetObj helmetObj = (HelmetObj) objectHandler.getObject(h.index).get();
-            HelmetDescriptor descriptor = descriptorHandler.getHelmet(Math.max(helmetObj.getAnimationId(), 0));
-            return createAnimations(descriptor);
-        }).get(current);
+        return helmetAnimations.getUnchecked(helmet).get(current);
     }
 
     public BundledAnimation getShieldAnimation(Shield shield, int current) {
-        return shieldAnimations.computeIfAbsent(shield, s -> {
-            ShieldObj shieldObj = (ShieldObj) objectHandler.getObject(s.index).get();
-            ShieldDescriptor descriptor = descriptorHandler.getShield(Math.max(shieldObj.getAnimationId(), 0));
-            return createAnimations(descriptor);
-        }).get(current);
+        return shieldAnimations.getUnchecked(shield).get(current);
     }
 
     public AOTexture getTexture(int id) {
-        return Optional.ofNullable(textures.get(id)).orElseGet(() -> saveTexture(id));
+        return textures.getUnchecked(id);
     }
 
-    public BundledAnimation getAnimation(int id) {
-        return Optional.ofNullable(bundledAnimations.get(id)).orElseGet(() -> saveAnimation(id));
+    public BundledAnimation getFX(Effect e) {
+        return fxAnimations.getUnchecked(e).get(0);
+    }
+
+    public BundledAnimation getTiledAnimation(int id) {
+        return tiledAnimations.getUnchecked(id);
     }
 
     public BundledAnimation getPreviewAnimation(AOAnimation animation) {
         return previews.getUnchecked(animation);
     }
 
-    private BundledAnimation saveAnimation(int id) {
+    private BundledAnimation createAnimation(int id) {
         AOAnimation animation = assetManager.getAnimation(id);
         if (animation == null) {
             Log.info("Fail to create animation for: " + id);
-            return bundledAnimations.get(0);
+            return null;
         }
-        return saveAnimation(animation);
+        return new BundledAnimation(animation);
     }
 
-    private BundledAnimation saveAnimation(AOAnimation animation) {
-        BundledAnimation bundledAnimation = new BundledAnimation(animation);
-        bundledAnimations.put(animation.getId(), bundledAnimation);
-        return bundledAnimation;
-    }
 
-    private AOTexture saveTexture(int id) {
+    private AOTexture createTexture(int id) {
         AOImage image = assetManager.getImage(id);
         if (image == null) {
-//            Log.info("Fail to create AO Image: " + id);
-            return textures.get(0);
+            Log.info("Fail to create AO Image: " + id);
+            return null;
         }
-        return saveTexture(image);
+        return new AOTexture(image);
     }
 
-    private AOTexture saveTexture(AOImage image) {
-        AOTexture aoTexture = new AOTexture(image);
-        textures.put(image.getId(), aoTexture);
-        return aoTexture;
+    public boolean hasTexture(int id) {
+        return assetManager.getImage(id) != null;
     }
 
     public void clearAnimation(AOAnimation animation) {
@@ -160,6 +189,13 @@ public class AnimationHandler extends PassiveSystem {
     }
 
     public void clearImage(AOImage image) {
-        textures.remove(image.getId());
+        textures.invalidate(image.getId());
+    }
+
+    @Override
+    protected void processSystem() {
+        tiledAnimations.asMap().forEach((id, anim) -> {
+            anim.setAnimationTime(anim.getAnimationTime() + world.getDelta());
+        });
     }
 }

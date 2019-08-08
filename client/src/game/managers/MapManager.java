@@ -62,35 +62,36 @@ public class MapManager extends BaseSystem {
     }
 
     public void doTileDrawFlipped(SpriteBatch batch, float delta, int x, int y, int graphic) {
-        // TODO Refactor maps layers to have animations separated
-        AOTexture texture = animationHandler.getTexture(graphic);
-        TextureRegion tileRegion = getTextureRegion(delta, graphic, texture);
+        TextureRegion tileRegion = animationHandler.hasTexture(graphic) ?
+                getTextureRegion(animationHandler.getTexture(graphic)) :
+                getAnimation(delta, graphic);
         if (tileRegion != null && !tileRegion.isFlipY()) {
             tileRegion.flip(false, true);
         }
         doTileDraw(batch, y, x, tileRegion);
     }
 
-    public TextureRegion getTextureRegion(float delta, int graphic, AOTexture texture) {
+    private TextureRegion getAnimation(float delta, int graphic) {
+        TextureRegion tileRegion = null;
+        BundledAnimation animation = animationHandler.getTiledAnimation(graphic);
+        if (animation != null) {
+            tileRegion = animation.getGraphic();
+        }
+        return tileRegion;
+    }
+
+    private TextureRegion getTextureRegion(AOTexture texture) {
         TextureRegion tileRegion = null;
         if (texture != null) {
-            // TODO CACHE
             tileRegion = texture.getTexture();
-        } else {
-            BundledAnimation animation = animationHandler.getAnimation(graphic);
-            if (animation != null) {
-                animation.setAnimationTime(animation.getAnimationTime() + delta);
-                tileRegion = animation.getGraphic();
-            }
         }
         return tileRegion;
     }
 
     public void doTileDraw(SpriteBatch batch, float delta, int x, int y, int graphic) {
-        // TODO Refactor maps layers to have animations separated
-        AOTexture texture = animationHandler.getTexture(graphic);
-        TextureRegion tileRegion = getTextureRegion(delta, graphic, texture);
-
+        TextureRegion tileRegion = animationHandler.hasTexture(graphic) ?
+                getTextureRegion(animationHandler.getTexture(graphic)) :
+                getAnimation(delta, graphic);
         doTileDraw(batch, y, x, tileRegion);
     }
 

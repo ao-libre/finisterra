@@ -2,11 +2,12 @@ package entity.character.parts;
 
 import com.artemis.Component;
 import com.artemis.annotations.PooledWeaver;
+import entity.Index;
 
 import java.io.Serializable;
 
 @PooledWeaver
-public class Body extends Component implements Serializable {
+public class Body extends Component implements Serializable, Index {
 
     public int index;
 
