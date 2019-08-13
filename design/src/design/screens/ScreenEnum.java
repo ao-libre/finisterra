@@ -17,6 +17,7 @@ public enum ScreenEnum {
     WEAPONS_VIEW("Weapons", WeaponsView.class),
     HELMETS_VIEW("Helmets", HelmetsView.class),
     FXS_VIEW("FXs", FXsView.class),
+    SPELL_VIEW("Spells", SpellView.class),
     TILE_SET_VIEW("Tile Set", TileSetView.class);
 
     private String title;

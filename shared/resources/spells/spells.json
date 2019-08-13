@@ -1,5 +1,6 @@
 {
   "1": {
+    "id": 1,
     "name": "Antídoto Mágico",
     "magicWords": "NIHIL VED",
     "originMsg": "Le has detenido el envenenamiento a",
@@ -18,6 +19,7 @@
     "roledesc": "Con este conjuro podrás mutar los fluidos tóxicos de tu cuerpo para detener su vil accionar, contrarrestando los efectos nocivos de todo tipo de ponzoñas y venenos. Se trata de un conjuro tan simple como necesario, puesto que, además de los magos que provocan envenenamiento, son varias las criaturas que lanzan veneno en estas tierras."
   },
   "2": {
+    "id": 2,
     "name": "Dardo Mágico",
     "magicWords": "OHL VOR PEK",
     "originMsg": "Has lanzado un dardo mágico sobre",
@@ -38,6 +40,7 @@
     "roledesc": "Éste es uno de los más elementales y sencillos hechizos de ataque que podrás aprender. No causa un gran daño a la víctima, pero al consumir muy pocos recursos, resulta una herramienta muy útil para el entrenamiento de los jóvenes hechiceros."
   },
   "3": {
+    "id": 3,
     "name": "Curar Heridas Leves",
     "magicWords": "CORP SANC",
     "originMsg": "Le has curado algunas pequeñas heridas a",
@@ -57,6 +60,7 @@
     "roledesc": "Con este sencillo conjuro podrás efectuar la sanación inmediata de pequeñas heridas y devolver lentamente la salud a quien se lo lances. Suele ser de gran utilidad para los jóvenes aprendices de magia, para poder entrenar al resguardo del ataque de las fieras salvajes."
   },
   "4": {
+    "id": 4,
     "name": "Toxina",
     "magicWords": "SERP XON IN",
     "originMsg": "Has envenenado a",
@@ -76,6 +80,7 @@
     "roledesc": "Con este hechizo de aprendizaje simple y veloz, podrás inundar el cuerpo de la víctima de un mortal veneno, con el que lentamente irá perdiendo la vida hasta sucumbir. Por ser un hechizo que requiere poco conocimiento, resulta de gran utilidad en las primeras etapas, fundamentalmente como modo de defensa personal e incluso para el entrenamiento."
   },
   "5": {
+    "id": 5,
     "name": "Curar Heridas Graves",
     "magicWords": "EN CORP SANCTIS",
     "originMsg": "Le has sanado graves heridas a",
@@ -95,6 +100,7 @@
     "roledesc": "Con esta milagrosa sanación para las heridas más profundas y dolorosas, podrás rápidamente devolver la salud a quienes agonizan. Se trata de un conjuro de una complejidad intermedia, pero que suele resultar fundamental para los jóvenes aventureros que desean recorrer el mundo y enfrentarse con sus peligros"
   },
   "6": {
+    "id": 6,
     "name": "Flecha Mágica",
     "magicWords": "VAX PER",
     "originMsg": "Has lanzado una flecha mágica sobre",
@@ -114,6 +120,7 @@
     "roledesc": "Con este sortilegio lograrás que una inmaterial flecha impacte en la víctima produciéndole heridas de mediana gravedad. Su aprendizaje es medianamente fácil, y puede resultar de mucha utilidad para combatir contra las criaturas menores que suelen habitar los suburbios de las ciudades."
   },
   "7": {
+    "id": 7,
     "name": "Flecha Eléctrica",
     "magicWords": "SUN VAP",
     "originMsg": "Has lanzado una flecha eléctrica sobre",
@@ -133,6 +140,7 @@
     "roledesc": "Éste es un interesante hechizo que te permitirá canalizar las elergías eléctricas del mundo en ataques direccionados a un determinado objetivo. Si bien el daño que causa no es muy grande, es seguramente la mejor herramienta para el entrenamiento y la defensa de los hechiceros menos experimentad"
   },
   "8": {
+    "id": 8,
     "name": "Proyectil Mágico",
     "magicWords": "VAX IN TAR",
     "originMsg": "Has lanzado un proyectil mágico sobre",
@@ -153,6 +161,7 @@
     "roledesc": "Este rentable hechizo de ataque resulta el ideal para los niveles intermedios, pues les permitirá un gran poder de ataque que no sólo facilitará entrenar velozmente, si no que además, puede ser utilizado como una respetable arma en los combates contra tus adversarios."
   },
   "9": {
+    "id": 9,
     "name": "Paralizar",
     "magicWords": "HOAX VORP",
     "originMsg": "Has paralizado a",
@@ -170,6 +179,7 @@
     "roledesc": ""
   },
   "10": {
+    "id": 10,
     "name": "Devolver Movilidad",
     "magicWords": "AN HOAX VORP",
     "originMsg": "Le has devuelto la movilidad a",
@@ -187,6 +197,7 @@
     "roledesc": "Conjuro con el cual podrás contrarrestar los efectos tanto de la parálisis como de la inmovilización. En virtud de que los hechizos de estatismo son usados con mucha frecuencia por todos las clases mágicas que habitan estas tierras, éste conjuro se vuelve prácticamente vital para cualquier valiente que esté dispuesto a combatir."
   },
   "11": {
+    "id": 11,
     "name": "Resucitar",
     "magicWords": "AHIL KNÄ XÄR",
     "originMsg": "Has resucitado a",
@@ -203,6 +214,7 @@
     "roledesc": ""
   },
   "12": {
+    "id": 12,
     "name": "Ataque de Hambre",
     "magicWords": "ÔL AEX",
     "originMsg": "Le has generado un fuerte hambre a",
@@ -221,6 +233,7 @@
     "roledesc": ""
   },
   "13": {
+    "id": 13,
     "name": "Terrible hambre de Igôr",
     "magicWords": "ÛX'ÔL AEX",
     "originMsg": "Le has lanzado terrible hambre de Igôr a",
@@ -239,6 +252,7 @@
     "roledesc": ""
   },
   "14": {
+    "id": 14,
     "name": "Invisibilidad",
     "originMsg": "Has vuelto invisible a",
     "ownerMsg": "Te has vuelto invisible.",
@@ -254,6 +268,7 @@
     "roledesc": ""
   },
   "15": {
+    "id": 15,
     "name": "Tormenta de Fuego",
     "magicWords": "EN VAX ON TAR",
     "originMsg": "Has lanzado una tormenta de fuego sobre",
@@ -275,6 +290,7 @@
     "roledesc": "Poderoso hechizo de ataque. Su costo en relación al daño que provoca lo convierte en un arma más propia para el combate que para el entrenamiento. Es ideal para aquellos aprendices de magia que todavía no alcanzaron a conocer el secreto de los hechizos mayores y necesitan estar bien equipados para la guerra."
   },
   "16": {
+    "id": 16,
     "name": "Llamado a la Naturaleza",
     "magicWords": "Nature et worg",
     "originMsg": "Has Llamado a la naturaleza contra",
@@ -292,6 +308,7 @@
     "roledesc": ""
   },
   "17": {
+    "id": 17,
     "name": "Llamado Nigromante",
     "magicWords": "MoÎ cámus",
     "originMsg": "Has invocado la ayuda de los muertos contra",
@@ -310,6 +327,7 @@
     "roledesc": ""
   },
   "18": {
+    "id": 18,
     "name": "Celeridad",
     "magicWords": "YUP A'INC",
     "originMsg": "Has aumentado la agilidad de",
@@ -330,6 +348,7 @@
     "roledesc": ""
   },
   "19": {
+    "id": 19,
     "name": "Torpeza",
     "magicWords": "ASYNC YUP A'INC",
     "originMsg": "Has lanzado torpeza sobre",
@@ -348,6 +367,7 @@
     "roledesc": ""
   },
   "20": {
+    "id": 20,
     "name": "Fuerza",
     "magicWords": "Ar A'kron",
     "originMsg": "Has lanzado fuerza sobre",
@@ -368,6 +388,7 @@
     "roledesc": ""
   },
   "21": {
+    "id": 21,
     "name": "Debilidad",
     "magicWords": "Xoom varp",
     "originMsg": "Has lanzado Debilidad sobre",
@@ -386,6 +407,7 @@
     "roledesc": ""
   },
   "22": {
+    "id": 22,
     "name": "Llamado a Uhkrul",
     "magicWords": "Arg Zagañarak",
     "originMsg": "Llamado a Uhkrul.",
@@ -402,6 +424,7 @@
     "roledesc": ""
   },
   "23": {
+    "id": 23,
     "name": "Descarga Eléctrica",
     "magicWords": "T'HY KOOOL",
     "originMsg": "Has lanzado una descarga eléctrica sobre",
@@ -423,6 +446,7 @@
     "roledesc": "Éste es uno de los hechizos de daño más poderoso de todo el Argentum. Al controlarlo podrás manipular las fuerzas de la naturaleza de modo tal que del cielo mismo caiga una fuerte descarga de electricidad sobre el objetivo. El daño que provoca en sus vícitimas puede ser mortal frente a principiantes o aprendices."
   },
   "24": {
+    "id": 24,
     "name": "Inmovilizar",
     "magicWords": "Är Prop s'uo",
     "originMsg": "Has inmovilizado a",
@@ -441,6 +465,7 @@
     "roledesc": "Este valioso sortilegio te permitirá dejar a la víctima sin la capacidad de desplazarse, tendrá la sensación de que una poderosa fuerza lo atrae hacia el piso, y si bien podrá mover sus miembros, no podrá dejar el lugar en el que se encuentra."
   },
   "25": {
+    "id": 25,
     "name": "Apocalipsis",
     "magicWords": "Rahma Nañarak O'al",
     "originMsg": "Has lanzado Apocalipsis sobre",
@@ -462,6 +487,7 @@
     "roledesc": "El ataque mágico más letal de estas tierras. Sólo aquellos avezados en el arte de la magia pueden aprender este temible hechizo. Su poder es fulminante y suele ser mortal para quien es víctima de él. "
   },
   "26": {
+    "id": 26,
     "name": "Invocar Elemental de Fuego",
     "magicWords": "Fir Yur'rax",
     "originMsg": "Has invocado un elemental de fuego contra",
@@ -480,6 +506,7 @@
     "roledesc": ""
   },
   "27": {
+    "id": 27,
     "name": "Invocar Elemental de Agua",
     "magicWords": "Wata Mantra'rax",
     "originMsg": "Has invocado un elemental de agua contra",
@@ -502,6 +529,7 @@
     "roledesc": ""
   },
   "28": {
+    "id": 28,
     "name": "Invocar Elemental de Tierra",
     "magicWords": "Mu Mantra'rax",
     "originMsg": "Has invocado un elemental de tierra contra",
@@ -521,6 +549,7 @@
     "roledesc": ""
   },
   "29": {
+    "id": 29,
     "name": "Implorar Ayuda",
     "magicWords": "Ar'Cos Mantra'rax",
     "originMsg": "Has implorado ayuda a los dioses!",
@@ -538,6 +567,7 @@
     "roledesc": ""
   },
   "30": {
+    "id": 30,
     "name": "Ceguera",
     "magicWords": "CAE' XitA",
     "originMsg": "Has lanzado ceguera sobre",
@@ -554,6 +584,7 @@
     "roledesc": ""
   },
   "31": {
+    "id": 31,
     "name": "Aturdir",
     "magicWords": "ASYNC GAM ALÛ",
     "originMsg": "Has aturdido a",
@@ -570,6 +601,7 @@
     "roledesc": ""
   },
   "32": {
+    "id": 32,
     "name": "Ira de Dios",
     "magicWords": "La IRA de Dios",
     "originMsg": "Has lanzado la IRA de Dios sobre",
@@ -588,6 +620,7 @@
     "roledesc": ""
   },
   "33": {
+    "id": 33,
     "name": "Invocación de Ultratumba",
     "magicWords": "Cörpse Dûm Ex",
     "originMsg": "Has invocado al guerrero de ultratumba contra",
@@ -606,6 +639,7 @@
     "roledesc": ""
   },
   "34": {
+    "id": 34,
     "name": "Por el culo",
     "magicWords": "P'ER LE CÙ|_0",
     "originMsg": "Se la has dado por el culo a",
@@ -625,6 +659,7 @@
     "roledesc": ""
   },
   "35": {
+    "id": 35,
     "name": "Flecha",
     "magicWords": "",
     "originMsg": "",
@@ -638,6 +673,7 @@
     "roledesc": ""
   },
   "36": {
+    "id": 36,
     "name": "Tormenta Pretoriana",
     "magicWords": "EN VAX ON TAR",
     "originMsg": "Has lanzado tormenta sobre",
@@ -653,6 +689,7 @@
     "roledesc": ""
   },
   "37": {
+    "id": 37,
     "name": "Flecha Cazador Pretoriano",
     "magicWords": "",
     "originMsg": "Has lanzado una flecha sobre",
@@ -671,6 +708,7 @@
     "roledesc": ""
   },
   "38": {
+    "id": 38,
     "name": "Remover Invisibilidad",
     "magicWords": "AN ROHL ÙX MAÏO",
     "wav": 16,
@@ -681,6 +719,7 @@
     "roledesc": ""
   },
   "39": {
+    "id": 39,
     "name": "Paralizar NPCs",
     "magicWords": "HOAX MANTRA",
     "wav": 16,
@@ -690,6 +729,7 @@
     "roledesc": ""
   },
   "40": {
+    "id": 40,
     "name": "Bendición de Sortilego",
     "magicWords": "In Nomine Patris et Fili et Spiritus Sancti, Amén.",
     "originMsg": "Has lanzado tu bendición de Sortilego sobre",
@@ -710,6 +750,7 @@
     "roledesc": ""
   },
   "41": {
+    "id": 41,
     "name": "Desaturdir",
     "magicWords": "AN ASYNC GAM ALÛ",
     "originMsg": "Le has quitado su aturdimiento a",
@@ -726,6 +767,7 @@
     "roledesc": ""
   },
   "42": {
+    "id": 42,
     "name": "Mimetismo",
     "magicWords": "Cimim Ux Maïo",
     "originMsg": "Haz adquirido la apariencia de",
@@ -742,6 +784,7 @@
     "roledesc": ""
   },
   "43": {
+    "id": 43,
     "name": "El Ojo del Demiurgo",
     "magicWords": "An MaÏo naq vïká",
     "originMsg": "Has invocado el Ojo del Demiurgo para ver lo invisible.",
@@ -760,6 +803,7 @@
     "roledesc": ""
   },
   "44": {
+    "id": 44,
     "name": "Flecha Elfica",
     "magicWords": "",
     "originMsg": "Has lanzado una flecha elfica sobre",
@@ -779,6 +823,7 @@
     "roledesc": ""
   },
   "45": {
+    "id": 45,
     "name": "Drenar",
     "magicWords": "",
     "originMsg": "Has drenado vida de",

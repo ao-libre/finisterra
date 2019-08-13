@@ -27,11 +27,13 @@ package graphics;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.esotericsoftware.minlog.Log;
+import design.screens.ScreenEnum;
 import design.screens.views.DescriptorActor;
 import entity.character.states.Heading;
 import game.handlers.AnimationHandler;
 import model.descriptors.Descriptor;
 import model.descriptors.FXDescriptor;
+import model.textures.AOAnimation;
 import model.textures.BundledAnimation;
 
 public class AOAnimationActor extends DescriptorActor {
@@ -44,6 +46,15 @@ public class AOAnimationActor extends DescriptorActor {
     public AOAnimationActor(AnimationHandler animationHandler) {
         super();
         this.animationHandler = animationHandler;
+    }
+
+    public AOAnimationActor(AOAnimation animation) {
+        this(new BundledAnimation(animation));
+    }
+
+    public AOAnimationActor(BundledAnimation animation) {
+        super();
+        this.animation = animation;
     }
 
     @Override
@@ -80,9 +91,16 @@ public class AOAnimationActor extends DescriptorActor {
 
     public void setAnimation(Descriptor descriptor) {
         int graphic = descriptor instanceof FXDescriptor ? descriptor.getGraphic(0) : descriptor.getGraphic(heading);
+        setAnimationID(graphic);
+    }
+
+    public void setAnimationID(int graphic) {
         if (graphic > 0) {
-            Effect effect = new Effect.EffectBuilder().withFX(graphic).withLoops(1).build();
-            this.animation = animationHandler.getFX(effect);
+            ScreenEnum.ANIMATION_VIEW
+                    .getScreen()
+                    .getDesigner()
+                    .get(graphic)
+                    .ifPresent(anim -> this.animation = new BundledAnimation((AOAnimation) anim));
         } else {
             Log.info("Failed to preview descriptor: " + descriptor);
         }

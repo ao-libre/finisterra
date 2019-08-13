@@ -96,7 +96,7 @@ public class SpellLoader extends Loader<Map<Integer, Spell>> {
             if (section == null) {
                 continue;
             }
-            Spell spell = new Spell();
+            Spell spell = new Spell(i);
             setters.forEach(setter -> setter.accept(spell, section));
             spells.put(i, spell);
         }

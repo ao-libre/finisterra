@@ -1,6 +1,9 @@
 package shared.model;
 
 public class Spell {
+
+    int id;
+
     String name;
     String desc;
     String magicWords;
@@ -85,6 +88,78 @@ public class Spell {
     boolean needStaff;
     boolean resis;
 
+    public Spell() {
+
+    }
+
+    public Spell(int id) {
+        this.id = id;
+    }
+
+    public Spell(Spell other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.desc = other.desc;
+        this.magicWords = other.magicWords;
+        this.originMsg = other.originMsg;
+        this.ownerMsg = other.ownerMsg;
+        this.targetMsg = other.targetMsg;
+        this.type = other.type;
+        this.wav = other.wav;
+        this.fxGrh = other.fxGrh;
+        this.loops = other.loops;
+        this.minSkill = other.minSkill;
+        this.requiredMana = other.requiredMana;
+        this.requiredStamina = other.requiredStamina;
+        this.target = other.target;
+        this.iconGrh = other.iconGrh;
+        this.sumHP = other.sumHP;
+        this.minHP = other.minHP;
+        this.maxHP = other.maxHP;
+        this.sumMana = other.sumMana;
+        this.maxMana = other.maxMana;
+        this.minMana = other.minMana;
+        this.sumStamina = other.sumStamina;
+        this.minSta = other.minSta;
+        this.maxSta = other.maxSta;
+        this.sumHangry = other.sumHangry;
+        this.minHangry = other.minHangry;
+        this.maxHangry = other.maxHangry;
+        this.sumThirsty = other.sumThirsty;
+        this.minThirsty = other.minThirsty;
+        this.maxThirsty = other.maxThirsty;
+        this.sumAgility = other.sumAgility;
+        this.minAgility = other.minAgility;
+        this.maxAgility = other.maxAgility;
+        this.agilityDuration = other.agilityDuration;
+        this.sumStrength = other.sumStrength;
+        this.minStrength = other.minStrength;
+        this.maxStrength = other.maxStrength;
+        this.strengthDuration = other.strengthDuration;
+        this.sumCA = other.sumCA;
+        this.minCA = other.minCA;
+        this.maxCA = other.maxCA;
+        this.invisibility = other.invisibility;
+        this.paralyze = other.paralyze;
+        this.immobilize = other.immobilize;
+        this.removeParalysis = other.removeParalysis;
+        this.removeStupid = other.removeStupid;
+        this.removeParcialInvisibility = other.removeParcialInvisibility;
+        this.healPoison = other.healPoison;
+        this.poison = other.poison;
+        this.revive = other.revive;
+        this.blindness = other.blindness;
+        this.stupid = other.stupid;
+        this.invokes = other.invokes;
+        this.numNpc = other.numNpc;
+        this.count = other.count;
+        this.mimetize = other.mimetize;
+        this.materialize = other.materialize;
+        this.itemIndex = other.itemIndex;
+        this.staffAffected = other.staffAffected;
+        this.needStaff = other.needStaff;
+        this.resis = other.resis;
+    }
 
     public String getName() {
         return name;
@@ -573,5 +648,13 @@ public class Spell {
     @Override
     public String toString() {
         return getName();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
