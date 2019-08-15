@@ -35,7 +35,7 @@ public class SpellDesigner implements IDesigner<Spell, SpellParameter> {
     @Override
     public void save() {
         ArrayList<Spell> spells = new ArrayList<>(this.spells.values());
-        FileHandle output = Gdx.files.local("output/" + SharedResources.SPELLS_FOLDER);
+        FileHandle output = Gdx.files.local("output/" + SharedResources.SPELLS_JSON_FILE);
         new AOJson().toJson(spells, ArrayList.class, Spell.class, output);
     }
 

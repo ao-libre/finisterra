@@ -115,6 +115,7 @@ public class GenericEditor extends Dialog {
     public static FieldProvider getFieldProvider(String field) {
         switch (field) {
             case "grhIndex":
+                return FieldProvider.FX;
             case "iconGrh":
                 return FieldProvider.IMAGE;
             case "bodyNumber":
