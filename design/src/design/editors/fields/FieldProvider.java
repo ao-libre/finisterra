@@ -55,6 +55,12 @@ public enum FieldProvider {
             return ScreenEnum.TILE_SET_VIEW;
         }
     },
+    FX {
+        @Override
+        public ScreenEnum getScreen() {
+            return ScreenEnum.FXS_VIEW;
+        }
+    },
     NONE {
         @Override
         public ScreenEnum getScreen() {
