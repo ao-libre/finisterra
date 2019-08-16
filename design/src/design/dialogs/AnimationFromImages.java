@@ -1,5 +1,6 @@
 package design.dialogs;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -97,7 +98,10 @@ public class AnimationFromImages {
         private void createContent() {
             Table content = new Table(SKIN);
             List<AOImage> selected = getAoImages(content);
-            add(new ScrollPane(content)).growX();
+            ScrollPane scroll = new ScrollPane(content);
+            scroll.setForceScroll(true, true);
+            scroll.setScrollbarsVisible(true);
+            add(scroll).maxWidth(Gdx.graphics.getWidth() * 0.8f).maxHeight(Gdx.graphics.getHeight() * 0.7f).growX();
 
             Table buttons = getButtons(selected);
             add(buttons).growX();
