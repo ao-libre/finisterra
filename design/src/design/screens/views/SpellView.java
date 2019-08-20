@@ -9,7 +9,6 @@ import design.screens.ScreenEnum;
 import graphics.AOAnimationActor;
 import graphics.Effect;
 import model.descriptors.FXDescriptor;
-import model.textures.AOAnimation;
 import model.textures.BundledAnimation;
 import org.jetbrains.annotations.NotNull;
 import shared.model.Spell;
@@ -42,7 +41,7 @@ public class SpellView extends View<Spell, SpellDesigner> {
 
     class SpellItemView extends Editor<Spell> {
 
-        public SpellItemView() {
+        SpellItemView() {
             super(SKIN);
         }
 
@@ -62,7 +61,7 @@ public class SpellView extends View<Spell, SpellDesigner> {
 
         private Spell spell;
 
-        public SpellPreview() {
+        SpellPreview() {
             super(SKIN);
         }
 
