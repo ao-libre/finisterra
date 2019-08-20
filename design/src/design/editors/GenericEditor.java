@@ -19,7 +19,7 @@ public class GenericEditor extends Dialog {
 
     Object obj;
 
-    public GenericEditor(Obj obj) {
+    public GenericEditor(Object obj) {
         super("Object Editor", SKIN);
         this.obj = obj;
         addTable();

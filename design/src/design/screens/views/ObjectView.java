@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 import design.designers.ImageDesigner;
 import design.designers.ObjectDesigner;
-import design.editors.ObjectEditor;
+import design.editors.GenericEditor;
 import design.editors.fields.FieldEditor;
 import design.screens.ScreenEnum;
 import graphics.AOImageActor;
@@ -77,7 +77,7 @@ public class ObjectView extends View<Obj, ObjectDesigner> {
         @NotNull
         @Override
         protected Table getTable(FieldEditor.FieldListener listener) {
-            return ObjectEditor.getTable(current, listener);
+            return GenericEditor.getTable(current, listener);
         }
 
         @Override
