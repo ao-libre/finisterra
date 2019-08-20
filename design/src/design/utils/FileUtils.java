@@ -44,4 +44,8 @@ public class FileUtils {
         }
     }
 
+    public static String selectFolder(String title) {
+        return TinyFileDialogs.tinyfd_selectFolderDialog(title, "");
+    }
+
 }
