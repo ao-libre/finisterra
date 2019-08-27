@@ -9,6 +9,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -25,8 +26,10 @@ import design.screens.map.gui.MapAssetChooser;
 import design.screens.map.gui.MapPalette;
 import design.screens.map.gui.MapPalette.Selection;
 import design.screens.map.gui.MapProperties;
+import design.screens.map.model.TileSet;
 import design.screens.map.systems.MapDesignRenderingSystem;
 import design.screens.views.TileSetView;
+import design.utils.FileUtils;
 import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
 import game.handlers.ObjectHandler;
@@ -42,6 +45,7 @@ import shared.util.AOJson;
 import shared.util.MapHelper;
 import shared.util.Util;
 
+import java.io.File;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Deque;
@@ -73,6 +77,9 @@ public class MapEditor extends DesignScreen {
                     float x = Gdx.input.getDeltaX();
                     float y = Gdx.input.getDeltaY();
                     world.getSystem(CameraSystem.class).camera.translate(-x, -y);
+                    Vector3 position = world.getSystem(CameraSystem.class).camera.position;
+                    position.x = MathUtils.clamp(position.x, 0, 64000);
+                    position.y = MathUtils.clamp(position.y, 0, 64000);
                 } else {
                     dragging = true;
                     setTile();
@@ -251,11 +258,16 @@ public class MapEditor extends DesignScreen {
 
         WorldConfiguration config = builder.build();
         world = new World(config);
+        createNewMap();
         int camera = world.create();
-        E(camera).pos2D().aOCamera();
+        E(camera)
+                .pos2D()
+                .aOCamera()
+                .worldPos();
         viewer = world.create();
-        E(viewer).focused();
-        initMap(1);
+        E(viewer)
+                .focused()
+                .worldPos();
     }
 
     @Override
@@ -287,30 +299,46 @@ public class MapEditor extends DesignScreen {
                 .spaceLeft(5);
 
         menus.add(createButton("New", "default", () -> {
-            Map map = new Map();
-            Arrays.stream(map.getTiles()).forEach(tiles -> {
-                for (int i = 0; i < tiles.length; i++) {
-                    tiles[i] = new Tile();
-                }
-            });
-            world.getSystem(MapDesignRenderingSystem.class).setMap(map);
-            mapProperties.show(map);
+            createNewMap();
         }, "Create new empty map")).spaceLeft(5);
 
         menus.add(createButton("Fill", "default", () -> {
             Map current = mapProperties.getCurrent();
-            for (int i = 0; i < current.getWidth(); i++) {
-                for (int j = 0; j < current.getHeight(); j++) {
-                    setTile(i, j);
+            int x = 1, y = 1, i = 1, j = 1;
+            Selection selection = mapPalette.getSelection();
+            if (selection.equals(Selection.TILE_SET)) {
+                int tileset = assetChooser.getTileset();
+                if (tileset > 0) {
+                    TileSetView view = (TileSetView) ScreenEnum.TILE_SET_VIEW.getScreen();
+                    Optional<TileSet> tileSet = view.getDesigner().get(tileset);
+                    if (tileSet.isPresent()) {
+                        TileSet tileSet1 = tileSet.get();
+                        i = tileSet1.getCols();
+                        j = tileSet1.getRows();
+                    }
                 }
+            }
+            while (x < current.getWidth()) {
+                while (y < current.getHeight()) {
+                    setTile(x, y);
+                    y += j;
+                }
+                x += i;
+                y = 1;
             }
         }, "All tiles will be set with current configuration (layer & selection)"))
                 .spaceLeft(5);
 
         menus.add(createButton("Load", "default",
                 () -> {
-                    int map = 1;
-                    initMap(map);
+                    File file = FileUtils.openDialog("Select map (.json)", "output/maps/", new String[0], "");
+                    if (file != null) {
+                        Map loadedMap = new AOJson().fromJson(Map.class, new FileHandle(file));
+                        if (loadedMap != null) {
+                            world.getSystem(MapDesignRenderingSystem.class).setMap(loadedMap);
+                            mapProperties.show(loadedMap);
+                        }
+                    }
                 }, "Load map"))
                 .spaceLeft(5);
 
@@ -324,6 +352,18 @@ public class MapEditor extends DesignScreen {
                 .spaceLeft(5);
 
         return menus;
+    }
+
+    private void createNewMap() {
+        Map map = new Map();
+        Arrays.stream(map.getTiles()).forEach(tiles -> {
+            for (int i = 0; i < tiles.length; i++) {
+                tiles[i] = new Tile();
+            }
+        });
+        world.getSystem(MapDesignRenderingSystem.class).setMap(map);
+        mapProperties.show(map);
+
     }
 
     private Button createButton(String label, String style, Runnable listener, String tooltip) {
