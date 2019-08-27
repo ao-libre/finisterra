@@ -7,10 +7,8 @@ import entity.character.states.Heading;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import position.WorldPos;
 import server.database.model.attributes.Attributes;
-import server.systems.manager.NPCManager;
-import server.systems.manager.ObjectManager;
-import server.systems.manager.SpellManager;
-import server.systems.manager.WorldManager;
+import server.systems.ai.PathFindingSystem;
+import server.systems.manager.*;
 import shared.interfaces.CharClass;
 import shared.interfaces.Hero;
 import shared.interfaces.Race;
@@ -19,6 +17,7 @@ import shared.model.lobby.Team;
 import shared.model.npcs.NPC;
 import shared.model.npcs.NPCToEntity;
 import shared.objects.types.*;
+import shared.util.MapHelper;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -33,18 +32,20 @@ public class EntityFactorySystem extends PassiveSystem {
     private static final int INITIAL_EXP_TO_NEXT_LEVEL = 300;
     private static final int ATTR_BASE_VALUE = 18;
 
+    private MapManager mapManager;
     private WorldManager worldManager;
     private ObjectManager objectManager;
     private SpellManager spellManager;
+    private PathFindingSystem pathFindingSystem;
 
 
     public void createObject(int objIndex, int objCount, WorldPos pos) {
         int objId = world.create();
-        E(objId).worldPosMap(pos.map)
-                .worldPosX(pos.x)
-                .worldPosY(pos.y)
+        E object = E(objId);
+        object
                 .objectIndex(objIndex)
                 .objectCount(objCount);
+        setWorldPosition(object, pos, true);
         worldManager.registerEntity(objId);
     }
 
@@ -70,7 +71,7 @@ public class EntityFactorySystem extends PassiveSystem {
         }
         entity.charHeroHeroId(hero.ordinal());
         // set position
-        setEntityPosition(entity);
+        setEntityPosition(entity, team);
         // set head and body
         setHeadAndBody(name, entity);
         // set class
@@ -491,29 +492,97 @@ public class EntityFactorySystem extends PassiveSystem {
     }
 
 
-    private void setEntityPosition(E entity) {
-        setworldPosInitial(entity);
-        //TODO getValidPosition
-    }
-
-    private void setworldPosInitial(E entity) {
-        switch (Race.of(entity)) {
-            case DROW:
-                entity.worldPosX(62).worldPosY(68).worldPosMap(1);
+    private void setEntityPosition(E entity, Team team) {
+        WorldPos spot = null;
+        switch (team) {
+            case REAL_ARMY:
+                spot = new WorldPos(10, 10, 290);
                 break;
-            case ELF:
-                entity.worldPosX(43).worldPosY(16).worldPosMap(2);
+            case CAOS_ARMY:
+                spot = new WorldPos(90, 90, 290);
                 break;
-            case DWARF:
-                entity.worldPosX(46).worldPosY(9).worldPosMap(40);
-                break;
-            case GNOME:
-                entity.worldPosX(33).worldPosY(49).worldPosMap(1);
-                break;
-            case HUMAN:
-                entity.worldPosX(65).worldPosY(17).worldPosMap(1);
+            case NO_TEAM:
+                spot = new WorldPos(50, 50, 290);
                 break;
         }
+        setWorldPosition(entity, spot);
     }
-    //private worldPos getValidPosition(int map) { return new worldPos(50, 50, map); }
+
+    private void setWorldPosition(E entity, WorldPos spot) {
+        setWorldPosition(entity, spot, false);
+    }
+
+    private void setWorldPosition(E entity, WorldPos spot, boolean item) {
+        shared.model.map.Map map = mapManager.getHelper().getMap(spot.getMap());
+        for (int i = 0; i < 12; i++) {
+            Optional<WorldPos> candidate = rhombLegalPos(spot, i, map, item);
+            if (candidate.isPresent()) {
+                setPosition(entity, candidate.get());
+                break;
+            }
+        }
+
+    }
+
+    private void setPosition(E entity, WorldPos worldPos) {
+        entity
+                .worldPosMap(worldPos.map)
+                .worldPosX(worldPos.x)
+                .worldPosY(worldPos.y);
+    }
+
+    private Optional<WorldPos> rhombLegalPos(WorldPos spot, int i, shared.model.map.Map map, boolean item) {
+        WorldPos newSpot = new WorldPos(spot);
+        newSpot.x -= i;
+        for (int j = 0; j < i; j++) {
+            newSpot.x += j;
+            newSpot.y -= j;
+            if (isNotBusy(map, newSpot, item)) {
+                return Optional.of(newSpot);
+            }
+        }
+
+        newSpot = new WorldPos(spot);
+        newSpot.y -= i;
+        for (int j = 0; j < i; j++) {
+            newSpot.x += j;
+            newSpot.y += j;
+            if (isNotBusy(map, newSpot, item)) {
+                return Optional.of(newSpot);
+            }
+        }
+
+        newSpot = new WorldPos(spot);
+        newSpot.x += i;
+        for (int j = 0; j < i; j++) {
+            newSpot.x -= j;
+            newSpot.y += j;
+            if (isNotBusy(map, newSpot, item)) {
+                return Optional.of(newSpot);
+            }
+        }
+
+        newSpot = new WorldPos(spot);
+        newSpot.y += i;
+        for (int j = 0; j < i; j++) {
+            newSpot.x -= j;
+            newSpot.y -= j;
+            if (isNotBusy(map, newSpot, item)) {
+                return Optional.of(newSpot);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    private boolean isNotBusy(shared.model.map.Map map, WorldPos newSpot, boolean item) {
+        MapHelper helper = mapManager.getHelper();
+        if (helper.isBlocked(map, newSpot)) {
+            return false;
+        }
+        boolean hasItem = (item && helper.isObjTileBusy(mapManager.getEntities(newSpot), newSpot));
+        boolean hasEntity = helper.hasEntity(mapManager.getEntities(newSpot), newSpot);
+
+        return !hasEntity && !hasItem;
+    }
 }

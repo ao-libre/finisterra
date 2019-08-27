@@ -179,4 +179,8 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
 
         return aMap;
     }
+
+    public AStarMap getMap(int map) {
+        return maps.get(map);
+    }
 }

@@ -2,6 +2,7 @@ package shared.model.lobby;
 
 import shared.interfaces.Hero;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class Player {
@@ -34,7 +35,7 @@ public class Player {
     }
 
     public Team getTeam() {
-        return Optional.ofNullable(team).orElse(Team.NO_TEAM);
+        return Optional.ofNullable(team).orElse(Team.CAOS_ARMY);
     }
 
     public void setTeam(Team team) {
@@ -60,5 +61,18 @@ public class Player {
     @Override
     public String toString() {
         return getPlayerName() + " Team: " + getTeam().toString() + " Ready: " + isReady();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return connectionId == player.connectionId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(connectionId);
     }
 }

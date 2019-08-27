@@ -7,6 +7,9 @@ import shared.network.interaction.TakeItemRequest;
 import shared.network.interaction.TalkRequest;
 import shared.network.inventory.ItemActionRequest;
 import shared.network.lobby.*;
+import shared.network.lobby.player.ChangeHeroRequest;
+import shared.network.lobby.player.ChangeReadyStateRequest;
+import shared.network.lobby.player.ChangeTeamRequest;
 import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.movement.MovementRequest;
 import shared.network.time.TimeSyncRequest;
@@ -40,4 +43,10 @@ public interface IRequestProcessor {
     void processRequest(PlayerLoginRequest playerLoginRequest, int connectionId);
 
     void processRequest(TimeSyncRequest timeSyncRequest, int connectionId);
+
+    void processRequest(ChangeTeamRequest changeTeamRequest, int connectionId);
+
+    void processRequest(ChangeReadyStateRequest changeReadyStateRequest, int connectionId);
+
+    void processRequest(ChangeHeroRequest changeHeroRequest, int connectionId);
 }

@@ -5,9 +5,7 @@ import shared.network.interaction.DropItem;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.lobby.JoinRoomNotification;
 import shared.network.lobby.NewRoomNotification;
-import shared.network.lobby.player.ChangeHeroNotification;
-import shared.network.lobby.player.ChangeTeamNotification;
-import shared.network.lobby.player.ReadyNotification;
+import shared.network.lobby.player.ChangePlayerNotification;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
@@ -57,27 +55,17 @@ public class DefaultNotificationProcessor extends BaseSystem implements INotific
     }
 
     @Override
-    public void processNotification(ChangeTeamNotification changeTeamNotification) {
-
-    }
-
-    @Override
-    public void processNotification(ChangeHeroNotification changeHeroNotification) {
-
-    }
-
-    @Override
-    public void processNotification(ReadyNotification readyNotification) {
-
-    }
-
-    @Override
     public void processNotification(ConsoleMessage consoleMessage) {
 
     }
 
     @Override
     public void processNotification(SoundNotification soundNotification) {
+
+    }
+
+    @Override
+    public void processNotification(ChangePlayerNotification changePlayerNotification) {
 
     }
 

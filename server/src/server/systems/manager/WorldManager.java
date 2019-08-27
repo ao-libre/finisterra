@@ -7,6 +7,7 @@ import com.artemis.annotations.Wire;
 import entity.character.states.CanWrite;
 import entity.npc.OriginPos;
 import physics.AOPhysics;
+import position.WorldPos;
 import server.systems.EntityFactorySystem;
 import server.systems.ServerSystem;
 import shared.model.lobby.Player;
@@ -83,6 +84,7 @@ public class WorldManager extends DefaultManager {
                     .respawnPos(originPos);
 
             unregisterEntity(e.id());
+            npc.getDrops().forEach(itemPair -> dropItem(itemPair.getKey(), itemPair.getValue(), e.getWorldPos()));
         } else {
             // RESET USER. TODO implement ghost
             // reset health
@@ -97,6 +99,10 @@ public class WorldManager extends DefaultManager {
             sendEntityUpdate(entityId, resetUpdate.build());
             notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(e.getWorldPos()).build());
         }
+    }
+
+    private void dropItem(Integer key, Integer value, WorldPos worldPos) {
+        entityFactorySystem.createObject(key, value, worldPos);
     }
 
     public void login(int connectionId, Player player) {

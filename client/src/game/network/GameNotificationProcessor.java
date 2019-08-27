@@ -19,10 +19,12 @@ import game.screens.RoomScreen;
 import game.systems.camera.CameraShakeSystem;
 import game.ui.AOConsole;
 import game.ui.GUI;
+import shared.model.lobby.Player;
 import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.lobby.JoinRoomNotification;
 import shared.network.lobby.NewRoomNotification;
+import shared.network.lobby.player.ChangePlayerNotification;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
@@ -146,6 +148,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
                 room.getRoom().remove(joinRoomNotification.getPlayer());
             }
             room.updatePlayers();
+            room.checkStart();
         }
     }
 
@@ -186,5 +189,19 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     public void processNotification(SoundNotification soundNotification) {
         int soundNumber = soundNotification.getSoundNumber();
         soundsHandler.playSound(soundNumber);
+    }
+
+    @Override
+    public void processNotification(ChangePlayerNotification changePlayerNotification) {
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        if (game.getScreen() instanceof RoomScreen) {
+            Player player = changePlayerNotification.getPlayer();
+            RoomScreen room = (RoomScreen) game.getScreen();
+            room.getRoom().getPlayers().remove(player);
+            room.getRoom().getPlayers().add(player);
+            room.updatePlayers();
+            room.checkStart();
+        }
+
     }
 }
