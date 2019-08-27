@@ -95,8 +95,8 @@ public class MapHelper {
     }
 
     public boolean isBlocked(Map map, int x, int y) {
-        Tile tile = map.getTile(x, y);
-        return tile != null && tile.isBlocked();
+        Tile tile = getTile(map, new WorldPos(x, y, 0));
+        return tile == null || tile.isBlocked();
     }
 
     public boolean hasEntity(Set<Integer> entities, WorldPos pos) {
@@ -106,11 +106,21 @@ public class MapHelper {
                 .map(E::E)
                 .filter(e -> !e.hasObject())
                 .filter(e -> !e.hasFootprint())
+                .filter(E::hasWorldPos)
                 .anyMatch(entity -> {
-                    boolean samePos = entity.hasWorldPos() && pos.equals(entity.getWorldPos());
+                    boolean samePos = pos.equals(entity.getWorldPos());
                     boolean hasSameDestination = entity.hasMovement() && entity.getMovement().destinations.stream().anyMatch(destination -> destination.worldPos.equals(pos));
                     return (samePos || hasSameDestination);
                 });
+    }
+
+    public boolean isObjTileBusy(Set<Integer> entities, WorldPos pos) {
+        Set<Integer> copy = new HashSet<>(entities);
+        return copy
+                .stream()
+                .map(E::E)
+                .filter(E::hasObject)
+                .anyMatch(entity -> entity.hasWorldPos() && pos.equals(entity.getWorldPos()));
     }
 
     /**

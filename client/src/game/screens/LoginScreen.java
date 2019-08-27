@@ -5,13 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Array;
 import game.ClientConfiguration;
 import game.network.ClientResponseProcessor;
 import game.network.GameNotificationProcessor;
 import game.systems.network.ClientSystem;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
-import shared.interfaces.Hero;
 import shared.network.lobby.JoinLobbyRequest;
 
 import static game.utils.Resources.CLIENT_CONFIG;
@@ -22,7 +20,6 @@ public class LoginScreen extends AbstractScreen {
     private ClientConfiguration config;
 
     private TextField username;
-    private SelectBox<Hero> heroSelect;
     private List<ClientConfiguration.Network.Server> serverList;
 
     private boolean canConnect = true;
@@ -60,12 +57,6 @@ public class LoginScreen extends AbstractScreen {
         this.username = new TextField("", getSkin());
         username.setMessageText("User Name");
 
-        Label heroLabel = new Label("Hero", getSkin());
-        this.heroSelect = new SelectBox<>(getSkin());
-        final Array<Hero> heroes = new Array<>();
-        Hero.getHeroes().forEach(heroes::add);
-        heroSelect.setItems(heroes);
-
         Table connectionTable = new Table((getSkin()));
 
         this.serverList = new List<>(getSkin());
@@ -85,10 +76,6 @@ public class LoginScreen extends AbstractScreen {
         loginWindow.row();
         loginWindow.add(username).width(200);
         loginWindow.row();
-        loginWindow.add(heroLabel).padTop(20);
-        loginWindow.row();
-        loginWindow.add(heroSelect).width(200);
-        loginWindow.row();
         loginWindow.add(loginButton).padTop(20).expandX().row();
         getMainTable().add(loginWindow).width(400).height(300).row();
 
@@ -103,7 +90,7 @@ public class LoginScreen extends AbstractScreen {
 
         if (this.canConnect) {
             String user = username.getText();
-            Hero hero = heroSelect.getSelected();
+
             ClientConfiguration.Network.Server server = serverList.getSelected();
             if (server == null)
                 return;
@@ -120,7 +107,7 @@ public class LoginScreen extends AbstractScreen {
 
                     clientSystem.start();
                     if (clientSystem.getState() == MarshalState.STARTED) {
-                        clientSystem.getKryonetClient().sendToAll(new JoinLobbyRequest(user, hero));
+                        clientSystem.getKryonetClient().sendToAll(new JoinLobbyRequest(user));
                         this.canConnect = false;
                     } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
                         Dialog dialog = new Dialog("Network error", getSkin());

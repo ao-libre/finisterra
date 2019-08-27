@@ -4,9 +4,7 @@ import shared.network.interaction.DropItem;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.lobby.JoinRoomNotification;
 import shared.network.lobby.NewRoomNotification;
-import shared.network.lobby.player.ChangeHeroNotification;
-import shared.network.lobby.player.ChangeTeamNotification;
-import shared.network.lobby.player.ReadyNotification;
+import shared.network.lobby.player.ChangePlayerNotification;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
@@ -31,13 +29,9 @@ public interface INotificationProcessor {
 
     void processNotification(NewRoomNotification newRoomNotification);
 
-    void processNotification(ChangeTeamNotification changeTeamNotification);
-
-    void processNotification(ChangeHeroNotification changeHeroNotification);
-
-    void processNotification(ReadyNotification readyNotification);
-
     void processNotification(ConsoleMessage consoleMessage);
 
     void processNotification(SoundNotification soundNotification);
+
+    void processNotification(ChangePlayerNotification changePlayerNotification);
 }

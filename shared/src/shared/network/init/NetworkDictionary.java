@@ -67,10 +67,7 @@ import shared.network.interfaces.IResponseProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
 import shared.network.lobby.*;
-import shared.network.lobby.player.ChangeHeroNotification;
-import shared.network.lobby.player.ChangeTeamNotification;
-import shared.network.lobby.player.PlayerLoginRequest;
-import shared.network.lobby.player.ReadyNotification;
+import shared.network.lobby.player.*;
 import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
@@ -133,9 +130,10 @@ public class NetworkDictionary extends MarshalDictionary {
                 Team.class,
 
                 // Lobby Player
-                ChangeHeroNotification.class,
-                ChangeTeamNotification.class,
-                ReadyNotification.class,
+                ChangeHeroRequest.class,
+                ChangeReadyStateRequest.class,
+                ChangeTeamRequest.class,
+                ChangePlayerNotification.class,
 
                 // Lobby Requests
                 CreateRoomRequest.class,
@@ -151,7 +149,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 JoinRoomResponse.class,
                 StartGameResponse.class,
 
-                // Lobby Notificaitons
+                // Lobby Notifications
                 JoinRoomNotification.class,
                 NewRoomNotification.class,
 

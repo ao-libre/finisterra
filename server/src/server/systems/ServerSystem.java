@@ -2,6 +2,7 @@ package server.systems;
 
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
+import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import server.core.ServerStrategy;
@@ -44,10 +45,14 @@ public class ServerSystem extends MarshalSystem {
     private void processJob(NetworkJob job) {
         int connectionId = job.connectionId;
         Object object = job.receivedObject;
-        if (object instanceof IRequest) {
-            ((IRequest) object).accept(requestProcessor, connectionId);
-        } else if (object instanceof INotification) {
-            ((INotification) object).accept(notificationProcessor);
+        try {
+            if (object instanceof IRequest) {
+                ((IRequest) object).accept(requestProcessor, connectionId);
+            } else if (object instanceof INotification) {
+                ((INotification) object).accept(notificationProcessor);
+            }
+        } catch (Exception e) {
+            Log.error("Failed to process Job", e);
         }
     }
 

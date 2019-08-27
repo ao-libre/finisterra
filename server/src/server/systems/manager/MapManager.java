@@ -12,6 +12,8 @@ import shared.util.MapHelper;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.artemis.E.E;
 import static server.utils.WorldUtils.WorldUtils;
@@ -83,6 +85,16 @@ public class MapManager extends DefaultManager {
      */
     public Set<Integer> getNearEntities(int entityId) {
         return nearEntities.getOrDefault(entityId, ConcurrentHashMap.newKeySet());
+    }
+
+    public Set<Integer> getEntities(WorldPos pos) {
+        return entitiesByMap.get(pos.map)
+                .stream()
+                .map(E::E)
+                .filter(E::hasWorldPos)
+                .filter(e -> e.getWorldPos().equals(pos))
+                .map(E::id)
+                .collect(Collectors.toSet());
     }
 
     /**
