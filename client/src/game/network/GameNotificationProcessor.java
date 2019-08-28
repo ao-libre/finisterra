@@ -197,6 +197,9 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         if (game.getScreen() instanceof RoomScreen) {
             Player player = changePlayerNotification.getPlayer();
             RoomScreen room = (RoomScreen) game.getScreen();
+            if (player.equals(room.getPlayer())) {
+                room.setPlayer(player);
+            }
             room.getRoom().getPlayers().remove(player);
             room.getRoom().getPlayers().add(player);
             room.updatePlayers();

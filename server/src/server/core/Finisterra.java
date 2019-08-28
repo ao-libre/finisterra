@@ -20,8 +20,7 @@ import shared.util.MapHelper;
 
 import java.net.InetAddress;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static shared.util.MapHelper.CacheStrategy.NEVER_EXPIRE;
@@ -31,7 +30,7 @@ public class Finisterra implements ApplicationListener {
     private final int tcpPort;
     private final int udpPort;
     private boolean shouldUseLocalHost;
-    private Set<Server> servers = new HashSet<>();
+    private HashMap<Integer, Server> servers = new HashMap<>();
     private int lastPort;
     private Lobby lobby;
     private World world;
@@ -84,13 +83,10 @@ public class Finisterra implements ApplicationListener {
     }
 
     public void startGame(Room room) {
-        Server roomServer = servers.stream().filter(server -> server.getRoomId() == room.getId()).findFirst().orElseGet(() -> {
+        Server roomServer = servers.computeIfAbsent(room.getId(), (id) -> {
             int tcpPort = getNextPort();
             int udpPort = getNextPort();
-            Server server = new Server(room.getId(), tcpPort, udpPort, objectManager, spellManager, maps);
-            server.addPlayers(room.getPlayers());
-            servers.add(server);
-            return server;
+            return new Server(id, tcpPort, udpPort, objectManager, spellManager, maps);
         });
         room.getPlayers().stream().mapToInt(player -> getNetworkManager().getConnectionByPlayer(player)).forEach(connectionId -> {
             try {
@@ -118,6 +114,18 @@ public class Finisterra implements ApplicationListener {
         return world.getSystem(FinisterraSystem.class);
     }
 
+    public Optional<Server> getServer(int roomId) {
+        return Optional.ofNullable(servers.get(roomId));
+    }
+
+    public Optional<Room> getRoom(Server server) {
+        return getLobby().getRoom(server.getRoomId());
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
     @Override
     public void resize(int width, int height) {
     }
@@ -125,7 +133,7 @@ public class Finisterra implements ApplicationListener {
     @Override
     public void render() {
         world.process();
-        servers.forEach(Server::update);
+        servers.values().forEach(Server::update);
     }
 
     @Override

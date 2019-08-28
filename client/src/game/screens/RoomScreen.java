@@ -37,6 +37,10 @@ public class RoomScreen extends AbstractScreen {
         return me;
     }
 
+    public void setPlayer(Player me) {
+        this.me = me;
+    }
+
     public void updatePlayers() {
         criminalList.setItems(room.getPlayers().stream().filter(player -> player.getTeam().equals(Team.CAOS_ARMY)).toArray(Player[]::new));
         armyList.setItems(room.getPlayers().stream().filter(player -> player.getTeam().equals(Team.REAL_ARMY)).toArray(Player[]::new));

@@ -4,16 +4,17 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.FluidIteratingSystem;
 import com.artemis.annotations.Wire;
+import entity.npc.NPC;
 import entity.npc.Respawn;
 import server.systems.EntityFactorySystem;
 
 @Wire
-public class RespawnSystem extends FluidIteratingSystem {
+public class NPCRespawnSystem extends FluidIteratingSystem {
 
     private EntityFactorySystem entityFactorySystem;
 
-    public RespawnSystem() {
-        super(Aspect.all(Respawn.class));
+    public NPCRespawnSystem() {
+        super(Aspect.all(Respawn.class, NPC.class));
     }
 
     @Override
