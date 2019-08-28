@@ -11,16 +11,16 @@ import server.network.ServerRequestProcessor;
 import server.systems.*;
 import server.systems.ai.NPCAttackSystem;
 import server.systems.ai.PathFindingSystem;
-import server.systems.ai.RespawnSystem;
+import server.systems.ai.NPCRespawnSystem;
+import server.systems.battle.PlayerRespawnSystem;
+import server.systems.battle.SpotRegenerationSystem;
 import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.combat.RangedCombatSystem;
 import server.systems.manager.*;
-import shared.model.lobby.Player;
 import shared.model.map.Map;
 
 import java.util.HashMap;
-import java.util.Set;
 
 import static server.systems.Intervals.*;
 
@@ -32,6 +32,10 @@ public class Server {
     private ObjectManager objectManager;
     private SpellManager spellManager;
     private World world;
+    private ServerStrategy strategy;
+    private float tickTime;
+
+    private final static float TICK_RATE = 0.0166f; // 60 ticks per second
 
     public Server(int roomId, int tcpPort, int udpPort, ObjectManager objectManager, SpellManager spellManager, HashMap<Integer, Map> maps) {
         this.roomId = roomId;
@@ -70,7 +74,7 @@ public class Server {
         ServerStrategy strategy = new ServerStrategy(tcpPort, udpPort);
         builder
                 .with(new FluidEntityPlugin())
-                .with(new ServerSystem(strategy))
+                .with(new ServerSystem(roomId, strategy))
                 .with(new ServerNotificationProcessor())
                 .with(new ServerRequestProcessor())
                 .with(new EntityFactorySystem())
@@ -91,19 +95,29 @@ public class Server {
                 .with(new MeditateSystem(MEDITATE_INTERVAL))
                 .with(new FootprintSystem(FOOTPRINT_LIVE_TIME))
                 .with(new RandomMovementSystem())
+<<<<<<< HEAD
                 .with(new RespawnSystem())
                 .with(new BuffSystem())
                 .with(new CommandSystem());
         world = new World(builder.build());
         Log.info("World created successfully!");
+=======
+                .with(new NPCRespawnSystem())
+                .with(new PlayerRespawnSystem())
+                .with(new SpotRegenerationSystem())
+                .with(new BuffSystem());
+        world = new World(builder.build());
+        System.out.println("World created!");
+>>>>>>> Adding ghost body when die and respawn system for players
     }
 
     public void update() {
-        world.setDelta(MathUtils.clamp(Gdx.graphics.getDeltaTime(), 0, 1 / 16f));
-        world.process();
-    }
-
-    void addPlayers(Set<Player> players) {
-        // TODO
+        float deltaTime = Gdx.graphics.getDeltaTime();
+        tickTime += deltaTime;
+        if (tickTime > TICK_RATE) {
+            world.setDelta(deltaTime);
+            world.process();
+            tickTime = tickTime - TICK_RATE;
+        }
     }
 }

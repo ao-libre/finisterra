@@ -4,6 +4,9 @@ import camera.Focused;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
+import entity.character.equipment.Helmet;
+import entity.character.equipment.Shield;
+import entity.character.equipment.Weapon;
 import entity.character.states.CanWrite;
 import entity.npc.OriginPos;
 import physics.AOPhysics;
@@ -87,17 +90,14 @@ public class WorldManager extends DefaultManager {
             npc.getDrops().forEach(itemPair -> dropItem(itemPair.getKey(), itemPair.getValue(), e.getWorldPos()));
         } else {
             // RESET USER. TODO implement ghost
-            // reset health
-            e.getHealth().min = e.getHealth().max;
-            // reset mana
-            EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(entityId);
-            resetUpdate.withComponents(e.getHealth());
-            if (e.hasMana()) {
-                e.getMana().min = e.getMana().max;
-                resetUpdate.withComponents(e.getMana());
-            }
-            sendEntityUpdate(entityId, resetUpdate.build());
-            notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(e.getWorldPos()).build());
+            EntityUpdateBuilder deadUpdate = EntityUpdateBuilder.of(entityId);
+            e.respawnTime(10);
+            e.bodyIndex(8);
+            e.headIndex(500);
+            deadUpdate
+                    .withComponents(e.getBody(), e.getHead())
+                    .remove(Shield.class, Helmet.class, Weapon.class);
+            notifyUpdate(entityId, deadUpdate.build());
         }
     }
 
@@ -113,5 +113,6 @@ public class WorldManager extends DefaultManager {
         components.add(new CanWrite());
         networkManager.sendTo(connectionId, EntityUpdateBuilder.of(entity).withComponents(components.toArray(new Component[0])).build());
         registerEntity(connectionId, entity);
+        networkManager.registerPlayer(connectionId, player);
     }
 }

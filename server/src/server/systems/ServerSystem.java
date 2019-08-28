@@ -6,10 +6,12 @@ import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import server.core.ServerStrategy;
+import server.network.NetworkJob;
 import server.network.ServerNotificationProcessor;
 import server.network.ServerRequestProcessor;
 import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
+import shared.model.lobby.Player;
 import shared.network.init.NetworkDictionary;
 import shared.network.interfaces.INotification;
 import shared.network.interfaces.IRequest;
@@ -32,8 +34,12 @@ public class ServerSystem extends MarshalSystem {
     private Map<Integer, Integer> playerByConnection = new ConcurrentHashMap<>();
     private Map<Integer, Integer> connectionByPlayer = new ConcurrentHashMap<>();
 
-    public ServerSystem(MarshalStrategy strategy) {
+    private Map<Integer, Player> lobbyPlayers = new ConcurrentHashMap<>();
+    private int roomId;
+
+    public ServerSystem(int roomId, MarshalStrategy strategy) {
         super(new NetworkDictionary(), strategy);
+        this.roomId = roomId;
         start();
     }
 
@@ -43,8 +49,8 @@ public class ServerSystem extends MarshalSystem {
     }
 
     private void processJob(NetworkJob job) {
-        int connectionId = job.connectionId;
-        Object object = job.receivedObject;
+        int connectionId = job.getConnectionId();
+        Object object = job.getReceivedObject();
         try {
             if (object instanceof IRequest) {
                 ((IRequest) object).accept(requestProcessor, connectionId);
@@ -93,7 +99,9 @@ public class ServerSystem extends MarshalSystem {
 
     public void unregisterUserConnection(int playerId) {
         if (playerHasConnection(playerId)) {
-            playerByConnection.remove(getConnectionByPlayer(playerId));
+            int connectionId = getConnectionByPlayer(playerId);
+            playerByConnection.remove(connectionId);
+            lobbyPlayers.remove(connectionId);
             connectionByPlayer.remove(playerId);
         }
     }
@@ -114,18 +122,16 @@ public class ServerSystem extends MarshalSystem {
         return connectionByPlayer.get(playerId);
     }
 
-    public int getAmountConnections() { return connectionByPlayer.size(); }
+    public int getRoomId() {
+        return roomId;
+    }
 
-}
+    public void registerPlayer(int connectionId, Player player) {
+        lobbyPlayers.put(connectionId, player);
+    }
 
-final class NetworkJob {
-
-    final int connectionId;
-    final Object receivedObject;
-
-    NetworkJob(int connectionId, Object receivedObject) {
-        this.connectionId = connectionId;
-        this.receivedObject = receivedObject;
+    public Player getLobbyPlayer(int connectionId) {
+        return lobbyPlayers.get(connectionId);
     }
 }
 

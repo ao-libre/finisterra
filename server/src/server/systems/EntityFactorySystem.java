@@ -3,6 +3,8 @@ package server.systems;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
+import entity.character.equipment.Helmet;
+import entity.character.info.Inventory;
 import entity.character.states.Heading;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import position.WorldPos;
@@ -31,6 +33,10 @@ public class EntityFactorySystem extends PassiveSystem {
 
     private static final int INITIAL_EXP_TO_NEXT_LEVEL = 300;
     private static final int ATTR_BASE_VALUE = 18;
+
+    private static final WorldPos REAL_ARMY_SPOT = new WorldPos(10, 10, 290);
+    private static final WorldPos CHAOS_ARMY_SPOT = new WorldPos(90, 90, 290);
+    private static final WorldPos NEUTRAL_SPOT = new WorldPos(50, 50, 290);
 
     private MapManager mapManager;
     private WorldManager worldManager;
@@ -82,6 +88,11 @@ public class EntityFactorySystem extends PassiveSystem {
         setSpells(player, hero);
 
         return player;
+    }
+
+    public void resetPlayer(E entity, Team team) {
+        equipPlayer(entity);
+        setEntityPosition(entity, team);
     }
 
 
@@ -235,6 +246,27 @@ public class EntityFactorySystem extends PassiveSystem {
             E(player).shieldIndex(shield.getId());
             E(player).getInventory().add(shield.getId(), true);
         });
+    }
+
+    private void equipPlayer(E e) {
+        if (!e.hasInventory()) {
+            return;
+        }
+        Inventory inventory = e.getInventory();
+        for (int i = 0; i < inventory.items.length; i++) {
+            objectManager.getObject(inventory.items[i].objId).ifPresent(obj -> {
+                if (obj instanceof WeaponObj) {
+                    e.weaponIndex(obj.getId());
+                } else if (obj instanceof ShieldObj) {
+                    e.shieldIndex(obj.getId());
+                } else if (obj instanceof HelmetObj) {
+                    e.helmetIndex(obj.getId());
+                } else if (obj instanceof ArmorObj) {
+                    e.armorIndex(obj.getId());
+                    e.bodyIndex(((ArmorObj) obj).getBodyNumber());
+                }
+            });
+        }
     }
 
     private void setHeadAndBody(String name, E entity) {
@@ -498,13 +530,13 @@ public class EntityFactorySystem extends PassiveSystem {
         WorldPos spot = null;
         switch (team) {
             case REAL_ARMY:
-                spot = new WorldPos(10, 10, 290);
+                spot = REAL_ARMY_SPOT;
                 break;
             case CAOS_ARMY:
-                spot = new WorldPos(90, 90, 290);
+                spot = CHAOS_ARMY_SPOT;
                 break;
             case NO_TEAM:
-                spot = new WorldPos(50, 50, 290);
+                spot = NEUTRAL_SPOT;
                 break;
         }
         setWorldPosition(entity, spot);

@@ -4,6 +4,7 @@ import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import server.core.ServerStrategy;
 import server.network.FinisterraRequestProcessor;
+import server.network.NetworkJob;
 import shared.model.lobby.Player;
 import shared.network.init.NetworkDictionary;
 import shared.network.interfaces.IRequest;
@@ -33,9 +34,9 @@ public class FinisterraSystem extends MarshalSystem {
     }
 
     private void processJob(NetworkJob networkJob) {
-        Object object = networkJob.receivedObject;
+        Object object = networkJob.getReceivedObject();
         if (object instanceof IRequest) {
-            ((IRequest) object).accept(requestProcessor, networkJob.connectionId);
+            ((IRequest) object).accept(requestProcessor, networkJob.getConnectionId());
         }
     }
 
@@ -92,17 +93,6 @@ public class FinisterraSystem extends MarshalSystem {
         super.disconnected(connectionId);
         requestProcessor.processRequest(new ExitRoomRequest(), connectionId);
         unregisterUserConnection(connectionId);
-    }
-
-    private static class NetworkJob {
-
-        private final int connectionId;
-        private final Object receivedObject;
-
-        private NetworkJob(int connectionId, Object receivedObject) {
-            this.connectionId = connectionId;
-            this.receivedObject = receivedObject;
-        }
     }
 
 }

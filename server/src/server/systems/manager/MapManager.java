@@ -142,7 +142,7 @@ public class MapManager extends DefaultManager {
      *
      * @param entity id
      */
-    void removeEntity(int entity) {
+    public void removeEntity(int entity) {
         final E e = E(entity);
         if (e == null || !e.hasWorldPos()) {
             return;
@@ -162,7 +162,7 @@ public class MapManager extends DefaultManager {
      *
      * @param player id
      */
-    void updateEntity(int player) {
+    public void updateEntity(int player) {
         WorldPos pos = E(player).getWorldPos();
         int map = pos.map;
         Set<Integer> entities = entitiesByMap.computeIfAbsent(map, (it) -> new HashSet<>());
