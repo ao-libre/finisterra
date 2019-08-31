@@ -1,6 +1,6 @@
 package game.systems.sound;
 
-import Sound.AOSound;
+import sound.AOSound;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
