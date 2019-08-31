@@ -21,6 +21,7 @@ import game.systems.camera.CameraShakeSystem;
 import game.ui.AOConsole;
 import game.ui.GUI;
 import shared.model.lobby.Player;
+import shared.network.battle.DominationNotification;
 import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.lobby.JoinRoomNotification;
@@ -57,7 +58,6 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         } else {
             Log.info("Network entity exists: " + entityUpdate.entityId + ". Updating");
             updateActions(entityUpdate.entityId, () -> updateEntity(entityUpdate));
-
         }
         assetManager = AOGame.getGlobalAssetManager();
     }
@@ -105,7 +105,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
             }
         });
         // @todo fix
-        gui.getInventory().updateUserInventory(0);
+        gui.getInventory().updateUserInventory();
     }
 
     @Override
@@ -209,6 +209,10 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
             room.updatePlayers();
             room.checkStart();
         }
+    }
 
+    @Override
+    public void processNotification(DominationNotification dominationNotification) {
+        // TODO update UI
     }
 }

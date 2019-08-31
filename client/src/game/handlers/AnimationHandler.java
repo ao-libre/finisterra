@@ -38,7 +38,8 @@ public class AnimationHandler extends BaseSystem {
     private static LoadingCache<Index, List<BundledAnimation>> weaponAnimations;
     private static LoadingCache<Index, List<BundledAnimation>> shieldAnimations;
     private static LoadingCache<Index, List<BundledAnimation>> bodyAnimations;
-    private static LoadingCache<Index, List<BundledAnimation>> fxAnimations;
+    private static LoadingCache<Effect, BundledAnimation> fxAnimations;
+
     private static LoadingCache<Integer, BundledAnimation> tiledAnimations;
     // Injected Systems
     private DescriptorHandler descriptorHandler;
@@ -78,7 +79,7 @@ public class AnimationHandler extends BaseSystem {
             ShieldObj shieldObj = (ShieldObj) objectHandler.getObject(shield.getIndex()).get();
             return descriptorHandler.getShield(Math.max(shieldObj.getAnimationId(), 0));
         });
-        fxAnimations = createCache((fx) -> descriptorHandler.getFX(fx.getIndex()));
+        fxAnimations = createFXCache();
 
         textures = CacheBuilder.newBuilder()
                 .expireAfterAccess(3, TimeUnit.MINUTES)
@@ -96,6 +97,16 @@ public class AnimationHandler extends BaseSystem {
                 }));
     }
 
+    private LoadingCache<Effect, BundledAnimation> createFXCache() {
+        return CacheBuilder
+                .newBuilder()
+                .expireAfterAccess(3, TimeUnit.MINUTES)
+                .build(CacheLoader.from(effect -> {
+                    assert effect != null;
+                    return createFX(effect);
+                }));
+    }
+
     private List<BundledAnimation> createAnimations(IDescriptor descriptor) {
         Log.info("Animation created: " + Arrays.toString(descriptor.getIndexs()));
         List<BundledAnimation> animations = new ArrayList<>();
@@ -106,6 +117,14 @@ public class AnimationHandler extends BaseSystem {
             }
         }
         return animations;
+    }
+
+    private BundledAnimation createFX(Effect effect) {
+        FXDescriptor descriptor = descriptorHandler.getFX(effect.getIndex());
+        int grhIndex = descriptor.getIndexs()[0];
+        BundledAnimation animation = createAnimation(grhIndex);
+        animation.setLoops(effect.loops);
+        return animation;
     }
 
     private List<AOTexture> createTextures(HeadDescriptor descriptor) {
@@ -143,7 +162,7 @@ public class AnimationHandler extends BaseSystem {
     }
 
     public BundledAnimation getFX(Effect e) {
-        return fxAnimations.getUnchecked(e).get(0);
+        return fxAnimations.getUnchecked(e);
     }
 
     public BundledAnimation getTiledAnimation(int id) {
@@ -162,7 +181,6 @@ public class AnimationHandler extends BaseSystem {
         }
         return new BundledAnimation(animation);
     }
-
 
     private AOTexture createTexture(int id) {
         AOImage image = assetManager.getImage(id);

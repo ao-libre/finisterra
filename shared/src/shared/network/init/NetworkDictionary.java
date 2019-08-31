@@ -55,6 +55,7 @@ import shared.model.lobby.Team;
 import shared.model.readers.DescriptorsReader;
 import shared.model.readers.Loader;
 import shared.model.readers.Reader;
+import shared.network.battle.DominationNotification;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.DropItem;
@@ -153,6 +154,9 @@ public class NetworkDictionary extends MarshalDictionary {
                 // Lobby Notifications
                 JoinRoomNotification.class,
                 NewRoomNotification.class,
+
+                // Battle
+                DominationNotification.class,
 
                 // Other
                 boolean[][].class,
@@ -306,7 +310,8 @@ public class NetworkDictionary extends MarshalDictionary {
                 Commerce.class,
                 Domable.class,
                 Hostile.class,
-                Respawn.class
+                Respawn.class,
+                Regeneration.class
         );
     }
 

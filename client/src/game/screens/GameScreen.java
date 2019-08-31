@@ -8,7 +8,7 @@ import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -38,13 +38,13 @@ import game.systems.render.ui.CoordinatesRenderingSystem;
 import game.systems.render.world.*;
 import game.systems.sound.SoundSytem;
 import game.ui.GUI;
+import net.mostlyoriginal.api.system.render.ClearScreenSystem;
 import shared.model.map.Tile;
 
 import java.util.concurrent.TimeUnit;
 
 import static com.artemis.E.E;
 import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
-import com.esotericsoftware.minlog.Log;
 
 public class GameScreen extends ScreenAdapter implements WorldScreen {
 
@@ -58,11 +58,10 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public static World world;
     public static int player = -1;
     private final ClientConfiguration clientConfiguration;
-    private final FPSLogger logger;
-    private final SpriteBatch spriteBatch;
+    private FPSLogger logger;
+    private SpriteBatch spriteBatch;
     private WorldConfigurationBuilder worldConfigBuilder;
-    private final AOAssetManager assetManager;
-    private final Music backgroundMusic = MusicHandler.BACKGROUNDMUSIC;
+    private AOAssetManager assetManager;
 
     public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
         this.clientConfiguration = clientConfiguration;
@@ -71,7 +70,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         this.logger = new FPSLogger();
         long start = System.currentTimeMillis();
         initWorldConfiguration();
-        Log.info("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
+        Gdx.app.log("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
     }
 
     public static int getPlayer() {
@@ -82,15 +81,12 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         GameScreen.player = player;
         world.getSystem(GUI.class).getInventory().updateUserInventory(0);
         world.getSystem(GUI.class).getSpellView().updateSpells();
-        world.getSystem(GUI.class).getSpellViewExpanded ().updateSpells();
-
     }
 
     public static KryonetClientMarshalStrategy getClient() {
         return world.getSystem(ClientSystem.class).getKryonetClient();
     }
 
-    @Override
     public World getWorld() {
         return world;
     }
@@ -127,6 +123,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .with(HANDLER_PRIORITY, new SpellHandler())
                 .with(HANDLER_PRIORITY, new FontsHandler())
                 // Rendering
+                .with(PRE_ENTITY_RENDER_PRIORITY, new ClearScreenSystem(new Color(0,0,0,0)))
                 .with(PRE_ENTITY_RENDER_PRIORITY, new MapGroundRenderingSystem(spriteBatch))
                 .with(PRE_ENTITY_RENDER_PRIORITY, new ObjectRenderingSystem(spriteBatch))
                 .with(PRE_ENTITY_RENDER_PRIORITY, new TargetRenderingSystem(spriteBatch))
@@ -167,8 +164,11 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .pos2D();
 
         // for testing
-        backgroundMusic.setVolume ( 0.20f );
-        backgroundMusic.play ();
+        world.getSystem(SoundSytem.class).setVolume(0);
+        world.getSystem(MusicHandler.class).setVolume(0);
+
+        world.getSystem(MusicHandler.class).fadeOutMusic(101, 0.02f);
+        world.getSystem(MusicHandler.class).playMIDI(1);
     }
 
     protected void update(float deltaTime) {
@@ -208,7 +208,6 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public void dispose() {
         world.getSystem(ClientSystem.class).stop();
         world.getSystem(GUI.class).dispose();
-        backgroundMusic.stop ();
     }
 
 }

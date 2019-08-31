@@ -1,6 +1,7 @@
 package shared.network.interfaces;
 
 import com.artemis.BaseSystem;
+import shared.network.battle.DominationNotification;
 import shared.network.interaction.DropItem;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.lobby.JoinRoomNotification;
@@ -66,6 +67,11 @@ public class DefaultNotificationProcessor extends BaseSystem implements INotific
 
     @Override
     public void processNotification(ChangePlayerNotification changePlayerNotification) {
+
+    }
+
+    @Override
+    public void processNotification(DominationNotification dominationNotification) {
 
     }
 

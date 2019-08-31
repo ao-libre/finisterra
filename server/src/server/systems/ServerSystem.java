@@ -92,6 +92,12 @@ public class ServerSystem extends MarshalSystem {
         marshal.sendTo(id, packet);
     }
 
+    public void sendToEntity(int entityId, Object packet) {
+        if (playerHasConnection(entityId)) {
+            sendTo(getConnectionByPlayer(entityId), packet);
+        }
+    }
+
     public void registerUserConnection(int playerId, int connectionId) {
         playerByConnection.put(connectionId, playerId);
         connectionByPlayer.put(playerId, connectionId);
@@ -132,6 +138,11 @@ public class ServerSystem extends MarshalSystem {
 
     public Player getLobbyPlayer(int connectionId) {
         return lobbyPlayers.get(connectionId);
+    }
+
+    public Player getLobbyPlayerWithEntityId(int id) {
+        int connectionByPlayer = getConnectionByPlayer(id);
+        return getLobbyPlayer(connectionByPlayer);
     }
 }
 

@@ -377,7 +377,10 @@ public class AOInputProcessor extends Stage {
     private void equip() {
         gui.getInventory()
                 .getSelected()
-                .ifPresent(slot -> GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getInventory().selectedIndex())));
+                .ifPresent(slot -> {
+                    int inventoryIndex = gui.getInventory().selectedIndex();
+                    GameScreen.getClient().sendToAll(new ItemActionRequest(inventoryIndex));
+                });
     }
 
     private void takeItem() {

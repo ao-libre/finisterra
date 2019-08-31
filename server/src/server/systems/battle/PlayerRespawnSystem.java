@@ -40,7 +40,6 @@ public class PlayerRespawnSystem extends FluidIteratingSystem {
         if (respawnTime <= 0) {
             // Respawn player
             mapManager.removeEntity(e.id());
-            Finisterra finisterra = (Finisterra) Gdx.app.getApplicationListener();
             int connectionId = serverSystem.getConnectionByPlayer(e.id());
             Player lobbyPlayer = serverSystem.getLobbyPlayer(connectionId);
             entityFactorySystem.resetPlayer(e, lobbyPlayer.getTeam());

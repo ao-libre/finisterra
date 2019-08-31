@@ -1,5 +1,6 @@
 package shared.network.interfaces;
 
+import shared.network.battle.DominationNotification;
 import shared.network.interaction.DropItem;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.lobby.JoinRoomNotification;
@@ -34,4 +35,6 @@ public interface INotificationProcessor {
     void processNotification(SoundNotification soundNotification);
 
     void processNotification(ChangePlayerNotification changePlayerNotification);
+
+    void processNotification(DominationNotification dominationNotification);
 }

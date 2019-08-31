@@ -57,10 +57,15 @@ public class TileSetDesigner implements IDesigner<TileSet, TileSetParameters> {
 
     @Override
     public Optional<TileSet> create() {
-        Optional<TileSet> result = Optional.empty();
+        TileSet tileSet = new TileSet(getFreeId(), 0, 0);
+        add(tileSet);
+        return Optional.of(tileSet);
+    }
+
+    public Optional<TileSet> createFromFile() {
         File file = openDialog("Choose tile set", "", new String[]{"*.png"}, "");
         if (file == null) {
-            return result;
+            return Optional.empty();
         }
         FileHandle fileHandle = new FileHandle(file);
         return Optional.of(create(fileHandle));

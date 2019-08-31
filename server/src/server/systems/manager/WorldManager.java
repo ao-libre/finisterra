@@ -47,7 +47,7 @@ public class WorldManager extends DefaultManager {
         getWorld().delete(entityId);
     }
 
-    void sendEntityRemove(int user, int entity) {
+    public void sendEntityRemove(int user, int entity) {
         if (networkManager.playerHasConnection(user)) {
             networkManager
                     .sendTo(networkManager.getConnectionByPlayer(user), new RemoveEntity(entity));

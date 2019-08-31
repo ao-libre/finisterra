@@ -66,7 +66,6 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                     particleEffects.put(entityId, particle);
                     break;
                 case FX:
-                    FXDescriptor fxDescriptor = descriptorHandler.getFX(effectId);
                     BundledAnimation bundledAnimation = animationHandler.getFX(effect);
                     fxs.put(entityId, bundledAnimation);
                     break;

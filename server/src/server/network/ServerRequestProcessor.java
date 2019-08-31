@@ -12,6 +12,7 @@ import position.WorldPos;
 import server.systems.CommandSystem;
 import server.systems.MeditateSystem;
 import server.systems.ServerSystem;
+import server.systems.battle.SpotRegenerationSystem;
 import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.combat.RangedCombatSystem;
@@ -65,6 +66,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     private MeditateSystem meditateSystem;
     private RangedCombatSystem rangedCombatSystem;
     private CommandSystem commandSystem;
+    private SpotRegenerationSystem spotRegenerationSystem;
+
 
     private List<WorldPos> getArea(WorldPos worldPos, int range /*impar*/) {
         List<WorldPos> positions = new ArrayList<>();
@@ -122,6 +125,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         }
 
         mapManager.movePlayer(playerId, Optional.of(oldPos));
+        spotRegenerationSystem.process(player);
 
         // notify near users
         if (!nextPos.equals(oldPos)) {

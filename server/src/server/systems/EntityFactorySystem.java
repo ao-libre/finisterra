@@ -10,6 +10,8 @@ import net.mostlyoriginal.api.system.core.PassiveSystem;
 import position.WorldPos;
 import server.database.model.attributes.Attributes;
 import server.systems.ai.PathFindingSystem;
+import server.systems.battle.SpotDominationSystem;
+import server.systems.battle.SpotRegenerationSystem;
 import server.systems.manager.*;
 import shared.interfaces.CharClass;
 import shared.interfaces.Hero;
@@ -43,6 +45,7 @@ public class EntityFactorySystem extends PassiveSystem {
     private ObjectManager objectManager;
     private SpellManager spellManager;
     private PathFindingSystem pathFindingSystem;
+    private SpotDominationSystem spotDominationSystem;
 
 
     public void createObject(int objIndex, int objCount, WorldPos pos) {
@@ -254,18 +257,21 @@ public class EntityFactorySystem extends PassiveSystem {
         }
         Inventory inventory = e.getInventory();
         for (int i = 0; i < inventory.items.length; i++) {
-            objectManager.getObject(inventory.items[i].objId).ifPresent(obj -> {
-                if (obj instanceof WeaponObj) {
-                    e.weaponIndex(obj.getId());
-                } else if (obj instanceof ShieldObj) {
-                    e.shieldIndex(obj.getId());
-                } else if (obj instanceof HelmetObj) {
-                    e.helmetIndex(obj.getId());
-                } else if (obj instanceof ArmorObj) {
-                    e.armorIndex(obj.getId());
-                    e.bodyIndex(((ArmorObj) obj).getBodyNumber());
-                }
-            });
+            Inventory.Item item = inventory.items[i];
+            if (item != null) {
+                objectManager.getObject(item.objId).ifPresent(obj -> {
+                    if (obj instanceof WeaponObj) {
+                        e.weaponIndex(obj.getId());
+                    } else if (obj instanceof ShieldObj) {
+                        e.shieldIndex(obj.getId());
+                    } else if (obj instanceof HelmetObj) {
+                        e.helmetIndex(obj.getId());
+                    } else if (obj instanceof ArmorObj) {
+                        e.armorIndex(obj.getId());
+                        e.bodyIndex(((ArmorObj) obj).getBodyNumber());
+                    }
+                });
+            }
         }
     }
 
@@ -530,10 +536,10 @@ public class EntityFactorySystem extends PassiveSystem {
         WorldPos spot = null;
         switch (team) {
             case REAL_ARMY:
-                spot = REAL_ARMY_SPOT;
+                spot = SpotRegenerationSystem.Spot.REAL.getPos();
                 break;
             case CAOS_ARMY:
-                spot = CHAOS_ARMY_SPOT;
+                spot = SpotRegenerationSystem.Spot.CHAOS.getPos();
                 break;
             case NO_TEAM:
                 spot = NEUTRAL_SPOT;

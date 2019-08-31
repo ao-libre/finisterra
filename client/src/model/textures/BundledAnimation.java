@@ -55,6 +55,10 @@ public class BundledAnimation {
         this.animation = animation;
     }
 
+    public void setLoops(int loops) {
+        this.loops = loops;
+    }
+
     public TextureRegion getGraphic() {
         return this.animation.getKeyFrame(this.getAnimationTime());
     }
@@ -93,7 +97,7 @@ public class BundledAnimation {
     }
 
     public boolean isAnimationFinished() {
-        return times >= loops;
+        return loops > 0 && times >= loops;
     }
 
     public void setFrameDuration(float duration) {

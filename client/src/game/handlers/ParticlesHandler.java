@@ -16,8 +16,11 @@ public class ParticlesHandler extends PassiveSystem {
     @Override
     protected void initialize() {
         super.initialize();
-        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
-        PARTICLES.put(1, new ParticleEffectPool(assetManager.getParticle("blue-meditation.p"), 1, 100));
-        PARTICLES.put(2, new ParticleEffectPool(assetManager.getParticle("aura1.party"), 1, 100));
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        assetManager = game.getAssetManager();
+        particles.put(1, new ParticleEffectPool(assetManager.getParticle("blue-meditation.p"), 1, 100));
+        particles.put(2, new ParticleEffectPool(assetManager.getParticle("aura1.party"), 1, 100));
+        particles.put(3, new ParticleEffectPool(assetManager.getParticle("healing-2.p"), 20, 100));
+        particles.put(4, new ParticleEffectPool(assetManager.getParticle("healing-2.p"), 20, 100));
     }
 }

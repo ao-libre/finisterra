@@ -6,7 +6,7 @@ import com.artemis.annotations.PooledWeaver;
 import java.io.Serializable;
 
 @PooledWeaver
-public class Hit extends Component implements Serializable {
+public class Hit extends Component implements Serializable, Stat {
 
     private int min;
     private int max;

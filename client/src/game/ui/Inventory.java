@@ -173,6 +173,10 @@ public class Inventory extends Window {
         updateUserInventory(base);
     }
 
+    public void updateUserInventory() {
+        updateUserInventory(base);
+    }
+
     public void updateUserInventory(int base) {
         if (base < 0) {
             base = this.base;

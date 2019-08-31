@@ -6,7 +6,7 @@ import com.artemis.annotations.PooledWeaver;
 import java.io.Serializable;
 
 @PooledWeaver
-public class Mana extends Component implements Serializable {
+public class Mana extends Component implements Serializable, Stat {
 
     public int min;
     public int max;
