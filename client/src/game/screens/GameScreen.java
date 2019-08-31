@@ -8,6 +8,7 @@ import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -37,6 +38,7 @@ import game.systems.render.ui.CoordinatesRenderingSystem;
 import game.systems.render.world.*;
 import game.systems.sound.SoundSytem;
 import game.ui.GUI;
+import net.mostlyoriginal.api.system.render.ClearScreenSystem;
 import shared.model.map.Tile;
 
 import java.util.concurrent.TimeUnit;
@@ -121,6 +123,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .with(HANDLER_PRIORITY, new SpellHandler())
                 .with(HANDLER_PRIORITY, new FontsHandler())
                 // Rendering
+                .with(PRE_ENTITY_RENDER_PRIORITY, new ClearScreenSystem(new Color(0,0,0,0)))
                 .with(PRE_ENTITY_RENDER_PRIORITY, new MapGroundRenderingSystem(spriteBatch))
                 .with(PRE_ENTITY_RENDER_PRIORITY, new ObjectRenderingSystem(spriteBatch))
                 .with(PRE_ENTITY_RENDER_PRIORITY, new TargetRenderingSystem(spriteBatch))

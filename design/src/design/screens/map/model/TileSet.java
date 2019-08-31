@@ -18,8 +18,8 @@ public class TileSet implements ID {
         this.id = other.id;
         this.rows = other.rows;
         this.cols = other.cols;
-        this.images = new int[rows][cols];
-        for (int i = 0; i < other.rows; i++) {
+        this.images = new int[cols][rows];
+        for (int i = 0; i < other.cols; i++) {
             this.images[i] = Arrays.copyOf(other.images[i], other.images[i].length);
         }
     }

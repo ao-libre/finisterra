@@ -155,6 +155,10 @@ public class Inventory extends Window {
         updateUserInventory(base);
     }
 
+    public void updateUserInventory() {
+        updateUserInventory(base);
+    }
+
     public void updateUserInventory(int base) {
         if (base < 0) {
             base = this.base;
@@ -187,12 +191,12 @@ public class Inventory extends Window {
 
     public int selectedIndex() {
         assert (selected.isPresent());
-        return slots.indexOf(selected.get());
+        return base + slots.indexOf(selected.get());
     }
 
     private int draggingIndex() {
         assert (dragging.isPresent());
-        return slots.indexOf(dragging.get());
+        return base + slots.indexOf(dragging.get());
     }
 
     public boolean isOver() {

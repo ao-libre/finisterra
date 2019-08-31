@@ -5,6 +5,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
 import position.WorldPos;
 import server.systems.EntityFactorySystem;
+import server.systems.battle.SpotRegenerationSystem;
 import shared.model.map.Tile;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
@@ -173,6 +174,7 @@ public class MapManager extends DefaultManager {
         candidates.stream()
                 .filter(entity -> entity != player)
                 .forEach(entity -> addNearEntities(player, entity));
+
     }
 
     // TODO improve performance

@@ -70,7 +70,7 @@ public class IntegerEditor extends FieldEditor<Integer> {
 
     @Override
     protected Actor createSimpleEditor() {
-        return createIntegerField(getSupplier(), getConsumer());
+        return createIntegerField();
     }
 
     @Override
@@ -87,14 +87,14 @@ public class IntegerEditor extends FieldEditor<Integer> {
     }
 
     @NotNull
-    private TextField createIntegerField(Supplier<Integer> integer, Consumer<Integer> consumer) {
-        TextField text = new TextField("" + integer.get(), SKIN);
+    private TextField createIntegerField() {
+        TextField text = new TextField("" + getSupplier().get(), SKIN);
 
         text.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 timer.clear();
-                timer.schedule(new Timer.Task() {
+                timer.scheduleTask(new Timer.Task() {
                     public void run() {
                         Gdx.app.postRunnable(() -> {
                             Screen current = ScreenManager.getInstance().getCurrent();
@@ -103,7 +103,8 @@ public class IntegerEditor extends FieldEditor<Integer> {
                                 try {
                                     int t = Integer.parseInt(text.getText());
                                     if (!getFieldProvider().equals(FieldProvider.NONE)) {
-                                        if (!validInput(t, view.getDesigner())) {
+                                        IDesigner designer = getFieldProvider().getScreen().getScreen().getDesigner();
+                                        if (!validInput(t, designer)) {
                                             showWarning(t, text, getFieldProvider(), view.getStage());
                                             text.setText(getSupplier().get().toString());
                                             return;
@@ -120,9 +121,9 @@ public class IntegerEditor extends FieldEditor<Integer> {
                     }
 
                     private boolean validInput(int ref, IDesigner designer) {
-                        return designer.contains(ref);
+                        return ref == 0 || designer.contains(ref);
                     }
-                }, 0.5f);
+                }, 1f);
             }
         });
         return text;

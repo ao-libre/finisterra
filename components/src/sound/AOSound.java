@@ -1,4 +1,4 @@
-package Sound;
+package sound;
 
 import com.artemis.Component;
 import com.artemis.annotations.PooledWeaver;

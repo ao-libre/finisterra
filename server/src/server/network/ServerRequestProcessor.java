@@ -11,6 +11,7 @@ import movement.Destination;
 import position.WorldPos;
 import server.systems.MeditateSystem;
 import server.systems.ServerSystem;
+import server.systems.battle.SpotRegenerationSystem;
 import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.manager.ItemManager;
@@ -60,6 +61,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     private ItemManager itemManager;
     private SpellManager spellManager;
     private MeditateSystem meditateSystem;
+    private SpotRegenerationSystem spotRegenerationSystem;
 
 
     private List<WorldPos> getArea(WorldPos worldPos, int range /*impar*/) {
@@ -118,6 +120,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         }
 
         mapManager.movePlayer(playerId, Optional.of(oldPos));
+        spotRegenerationSystem.process(player);
 
         // notify near users
         if (!nextPos.equals(oldPos)) {

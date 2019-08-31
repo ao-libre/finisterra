@@ -14,7 +14,6 @@ import server.systems.manager.SpellManager;
 import server.utils.IpChecker;
 import shared.model.lobby.Lobby;
 import shared.model.lobby.Room;
-import shared.model.map.Map;
 import shared.network.lobby.StartGameResponse;
 import shared.util.MapHelper;
 
@@ -36,12 +35,11 @@ public class Finisterra implements ApplicationListener {
     private World world;
     private ObjectManager objectManager;
     private SpellManager spellManager;
-    private HashMap<Integer, Map> maps = new HashMap<>();
 
     public Finisterra(ServerConfiguration config) {
 
-        /**
-         * Fetch ports configuration from Server.json
+        /*
+          Fetch ports configuration from Server.json
          */
         ServerConfiguration.Network.Ports currentPorts = config.getNetwork().getPorts();
 
@@ -86,7 +84,7 @@ public class Finisterra implements ApplicationListener {
         Server roomServer = servers.computeIfAbsent(room.getId(), (id) -> {
             int tcpPort = getNextPort();
             int udpPort = getNextPort();
-            return new Server(id, tcpPort, udpPort, objectManager, spellManager, maps);
+            return new Server(id, tcpPort, udpPort, objectManager, spellManager);
         });
         room.getPlayers().stream().mapToInt(player -> getNetworkManager().getConnectionByPlayer(player)).forEach(connectionId -> {
             try {
@@ -94,8 +92,8 @@ public class Finisterra implements ApplicationListener {
                     System.out.println("Using localhost...");
                 }
                 getNetworkManager().sendTo(connectionId, new StartGameResponse(
-                                shouldUseLocalHost ? InetAddress.getLocalHost().getHostAddress() : IpChecker.getIp(),
-                                roomServer.getTcpPort(), roomServer.getUdpPort()));
+                        shouldUseLocalHost ? InetAddress.getLocalHost().getHostAddress() : IpChecker.getIp(),
+                        roomServer.getTcpPort(), roomServer.getUdpPort()));
             } catch (Exception e) {
                 e.printStackTrace();
             }

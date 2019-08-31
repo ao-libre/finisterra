@@ -22,5 +22,7 @@ public class ParticlesHandler extends PassiveSystem {
         assetManager = game.getAssetManager();
         particles.put(1, new ParticleEffectPool(assetManager.getParticle("blue-meditation.p"), 1, 100));
         particles.put(2, new ParticleEffectPool(assetManager.getParticle("aura1.party"), 1, 100));
+        particles.put(3, new ParticleEffectPool(assetManager.getParticle("healing-2.p"), 20, 100));
+        particles.put(4, new ParticleEffectPool(assetManager.getParticle("healing-2.p"), 20, 100));
     }
 }

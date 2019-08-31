@@ -4,21 +4,20 @@ import com.artemis.FluidEntityPlugin;
 import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.MathUtils;
 import server.network.ServerNotificationProcessor;
 import server.network.ServerRequestProcessor;
 import server.systems.*;
 import server.systems.ai.NPCAttackSystem;
-import server.systems.ai.PathFindingSystem;
 import server.systems.ai.NPCRespawnSystem;
+import server.systems.ai.PathFindingSystem;
 import server.systems.battle.PlayerRespawnSystem;
+import server.systems.battle.SpotDominationSystem;
 import server.systems.battle.SpotRegenerationSystem;
 import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
+import server.systems.fx.FXSystem;
 import server.systems.manager.*;
-import shared.model.map.Map;
-
-import java.util.HashMap;
+import server.systems.regeneration.RegenerationSystem;
 
 import static server.systems.Intervals.*;
 
@@ -30,12 +29,11 @@ public class Server {
     private ObjectManager objectManager;
     private SpellManager spellManager;
     private World world;
-    private ServerStrategy strategy;
     private float tickTime;
 
     private final static float TICK_RATE = 0.0166f; // 60 ticks per second
 
-    public Server(int roomId, int tcpPort, int udpPort, ObjectManager objectManager, SpellManager spellManager, HashMap<Integer, Map> maps) {
+    Server(int roomId, int tcpPort, int udpPort, ObjectManager objectManager, SpellManager spellManager) {
         this.roomId = roomId;
         this.tcpPort = tcpPort;
         this.udpPort = udpPort;
@@ -69,10 +67,9 @@ public class Server {
     private void initWorld() {
         System.out.println("Initializing systems...");
         final WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
-        strategy = new ServerStrategy(tcpPort, udpPort);
         builder
                 .with(new FluidEntityPlugin())
-                .with(new ServerSystem(roomId, strategy))
+                .with(new ServerSystem(roomId, new ServerStrategy(tcpPort, udpPort)))
                 .with(new ServerNotificationProcessor())
                 .with(new ServerRequestProcessor())
                 .with(new EntityFactorySystem())
@@ -88,12 +85,14 @@ public class Server {
                 .with(new MagicCombatSystem())
                 .with(new PathFindingSystem(PATH_FINDING_INTERVAL))
                 .with(new NPCAttackSystem(NPC_ATTACK_INTERVAL))
-                .with(new EnergyRegenerationSystem(ENERGY_REGENERATION_INTERVAL))
+                .with(new RegenerationSystem(REGENERATION_INTERVAL))
                 .with(new MeditateSystem(MEDITATE_INTERVAL))
                 .with(new FootprintSystem(FOOTPRINT_LIVE_TIME))
                 .with(new RandomMovementSystem())
                 .with(new NPCRespawnSystem())
                 .with(new PlayerRespawnSystem())
+                .with(new FXSystem())
+                .with(new SpotDominationSystem())
                 .with(new SpotRegenerationSystem())
                 .with(new BuffSystem());
         world = new World(builder.build());

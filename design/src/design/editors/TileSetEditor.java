@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import design.editors.fields.FieldEditor.FieldListener;
+import design.editors.fields.FieldProvider;
 import design.editors.fields.IntegerEditor;
 import design.screens.map.model.TileSet;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +52,7 @@ public class TileSetEditor extends Dialog {
             Table row = new Table();
             for (int j = 0; j < tileSet.getCols(); j++) {
                 int finalJ = j;
-                row.add(IntegerEditor.create("", id -> tileSet.setImage(finalI, finalJ, id), () -> tileSet.getImage(finalI, finalJ), listener));
+                row.add(IntegerEditor.create("", FieldProvider.IMAGE, id -> tileSet.setImage(finalJ, finalI, id), () -> tileSet.getImage(finalJ, finalI), listener));
             }
             table.add(row).row();
         }

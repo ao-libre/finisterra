@@ -13,7 +13,7 @@ public class Effect extends Component implements Serializable, Index {
 
     public int entityReference = NO_REF;
     public int effectId;
-    public int loops;
+    public int loops = -1;
     public Type type;
 
     public Effect() {
