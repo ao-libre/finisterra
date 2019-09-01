@@ -1,5 +1,7 @@
 package design.screens.map.gui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
@@ -128,7 +130,13 @@ public class MapPalette extends Window {
     }
 
     public boolean isOver() {
-        return mouseListener.isOver();
+        return mouseListener.isOver() || actualHit() != null;
+    }
+
+    private Actor actualHit() {
+        int x = Gdx.app.getInput().getX();
+        int y = Gdx.app.getInput().getY();
+        return hit(x, y, false);
     }
 
     public enum Selection {

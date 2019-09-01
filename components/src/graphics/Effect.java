@@ -15,6 +15,8 @@ public class Effect extends Component implements Serializable, Index {
     public int effectId;
     public int loops = -1;
     public Type type;
+    public boolean renderBefore;
+    public boolean renderAfter;
 
     public Effect() {
     }

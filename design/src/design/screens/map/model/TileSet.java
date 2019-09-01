@@ -26,8 +26,8 @@ public class TileSet implements ID {
 
     public TileSet(int id, int cols, int rows) {
         this.id = id;
-        this.rows = cols;
-        this.cols = rows;
+        this.cols = cols;
+        this.rows = rows;
         this.images = new int[cols][rows];
     }
 
@@ -52,13 +52,13 @@ public class TileSet implements ID {
         return rows;
     }
 
-    public void setRows(int rows) {
-        int diff = rows - this.rows;
-        this.rows = rows;
-        images = Arrays.copyOf(images, rows);
+    public void setCols(int cols) {
+        int diff = cols - this.cols;
+        this.cols = cols;
+        images = Arrays.copyOf(images, cols);
         if (diff > 0) {
             for (int j = 0; j < diff; j++) {
-                images[rows - j - 1] = new int[cols];
+                images[cols - j - 1] = new int[this.rows];
             }
         }
     }
@@ -67,17 +67,17 @@ public class TileSet implements ID {
         return cols;
     }
 
-    public void setCols(int cols) {
-        int diff = cols - this.cols;
-        this.cols = cols;
-        for (int i = 0; i < rows; i++) {
-            images[i] = Arrays.copyOf(images[i], cols);
+    public void setRows(int rows) {
+        int diff = rows - this.rows;
+        this.rows = rows;
+        for (int i = 0; i < cols; i++) {
+            images[i] = Arrays.copyOf(images[i], rows);
         }
         // hace falta?
         if (diff > 0) {
-            for (int i = 0; i < rows; i++) {
+            for (int i = 0; i < cols; i++) {
                 for (int j = 0; j < diff; j++) {
-                    images[i][cols - j - 1] = 0;
+                    images[i][rows - j - 1] = 0;
                 }
 
             }

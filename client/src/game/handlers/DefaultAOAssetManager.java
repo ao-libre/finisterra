@@ -361,6 +361,8 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         load(Resources.GAME_PARTICLES_PATH + "thunder.p", ParticleEffect.class, params);
         load(Resources.GAME_PARTICLES_PATH + "healing.p", ParticleEffect.class, params);
         load(Resources.GAME_PARTICLES_PATH + "healing-2.p", ParticleEffect.class, params);
+        load(Resources.GAME_PARTICLES_PATH + "aura-blue.p", ParticleEffect.class, params);
+        load(Resources.GAME_PARTICLES_PATH + "aura-red.p", ParticleEffect.class, params);
     }
 
     private void loadMusic() {

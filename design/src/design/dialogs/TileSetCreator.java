@@ -43,17 +43,17 @@ public class TileSetCreator {
 
         TileSet tileSet = new TileSet(id, cols, rows);
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
+        for (int i = 0; i < cols; i++) {
+            for (int j = 0; j < rows; j++) {
                 AOImage newImage = new AOImage();
-                newImage.setX((j * tilePixelWidth));
-                newImage.setY((i * tilePixelHeight));
+                newImage.setX((i * tilePixelWidth));
+                newImage.setY((j * tilePixelHeight));
                 newImage.setWidth(tilePixelWidth);
                 newImage.setHeight(tilePixelHeight);
                 newImage.setFileNum(fileId);
                 newImage.setId(designer.getFreeId());
                 designer.add(newImage);
-                tileSet.setImage(j, i, newImage.getId());
+                tileSet.setImage(i, j, newImage.getId());
             }
         }
 

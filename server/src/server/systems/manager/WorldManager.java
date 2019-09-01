@@ -13,7 +13,9 @@ import physics.AOPhysics;
 import position.WorldPos;
 import server.systems.EntityFactorySystem;
 import server.systems.ServerSystem;
+import server.systems.fx.FXSystem;
 import shared.model.lobby.Player;
+import shared.model.lobby.Team;
 import shared.model.npcs.NPC;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.notifications.RemoveEntity;
@@ -31,8 +33,10 @@ public class WorldManager extends DefaultManager {
     private SpellManager spellManager;
     private ObjectManager objectManager;
     private EntityFactorySystem entityFactorySystem;
+    private FXSystem fxSystem;
 
     public void registerEntity(int id) {
+        mapManager.registerEntity(id);
         mapManager.updateEntity(id);
     }
 
@@ -61,9 +65,7 @@ public class WorldManager extends DefaultManager {
     }
 
     public void notifyToNearEntities(int entityId, Object update) {
-        mapManager.getNearEntities(entityId).forEach(nearPlayer -> {
-            sendEntityUpdate(nearPlayer, update);
-        });
+        mapManager.getNearEntities(entityId).forEach(nearPlayer -> sendEntityUpdate(nearPlayer, update));
     }
 
     public void notifyUpdate(int entityId, Object update) {
@@ -72,7 +74,6 @@ public class WorldManager extends DefaultManager {
     }
 
     public void entityDie(int entityId) {
-
         final E e = E(entityId);
         if (e.hasNPC()) {
             int npcId = e.nPCId();
@@ -113,6 +114,7 @@ public class WorldManager extends DefaultManager {
         components.add(new CanWrite());
         networkManager.sendTo(connectionId, EntityUpdateBuilder.of(entity).withComponents(components.toArray(new Component[0])).build());
         registerEntity(connectionId, entity);
+        fxSystem.attachParticle(entity, player.getTeam().equals(Team.CAOS_ARMY) ? 5 : 6, false);
         networkManager.registerPlayer(connectionId, player);
     }
 }

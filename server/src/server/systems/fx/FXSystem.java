@@ -3,6 +3,7 @@ package server.systems.fx;
 import com.artemis.annotations.Wire;
 import graphics.Effect;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
+import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 
@@ -12,6 +13,7 @@ import static com.artemis.E.E;
 public class FXSystem extends PassiveSystem {
 
     private WorldManager worldManager;
+    private MapManager mapManager;
 
     public int attachFX(int id, int fx) {
         return attachFX(id, fx, -1);
@@ -29,11 +31,13 @@ public class FXSystem extends PassiveSystem {
 
     public int notifyEffect(int id, Effect effect, boolean front) {
         int fxE = world.create();
+        world.edit(fxE).add(effect);
         EntityUpdateBuilder fxUpdate = EntityUpdateBuilder.of(fxE).withComponents(effect);
         if (!front) {
             E(fxE).renderBefore();
             fxUpdate.withComponents(E(fxE).getRenderBefore());
         }
+        mapManager.attachEntityTo(id, fxE);
         worldManager.notifyUpdate(id, fxUpdate.build());
         return fxE;
     }

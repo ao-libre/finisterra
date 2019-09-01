@@ -12,6 +12,7 @@ import server.database.model.attributes.Attributes;
 import server.systems.ai.PathFindingSystem;
 import server.systems.battle.SpotDominationSystem;
 import server.systems.battle.SpotRegenerationSystem;
+import server.systems.fx.FXSystem;
 import server.systems.manager.*;
 import shared.interfaces.CharClass;
 import shared.interfaces.Hero;
@@ -36,9 +37,7 @@ public class EntityFactorySystem extends PassiveSystem {
     private static final int INITIAL_EXP_TO_NEXT_LEVEL = 300;
     private static final int ATTR_BASE_VALUE = 18;
 
-    private static final WorldPos REAL_ARMY_SPOT = new WorldPos(10, 10, 290);
-    private static final WorldPos CHAOS_ARMY_SPOT = new WorldPos(90, 90, 290);
-    private static final WorldPos NEUTRAL_SPOT = new WorldPos(50, 50, 290);
+    private static final WorldPos NEUTRAL_SPOT = new WorldPos(50, 50, 291);
 
     private MapManager mapManager;
     private WorldManager worldManager;
@@ -46,6 +45,7 @@ public class EntityFactorySystem extends PassiveSystem {
     private SpellManager spellManager;
     private PathFindingSystem pathFindingSystem;
     private SpotDominationSystem spotDominationSystem;
+    private FXSystem fxSystem;
 
 
     public void createObject(int objIndex, int objCount, WorldPos pos) {

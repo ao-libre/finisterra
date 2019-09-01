@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.esotericsoftware.minlog.Log;
 import com.google.common.base.Objects;
 import design.screens.DesignScreen;
 import design.screens.ScreenEnum;
@@ -67,6 +69,7 @@ public class MapEditor extends DesignScreen {
     private MapProperties mapProperties;
     private MapPalette mapPalette;
     private Deque<Undo> undoableActions = new ArrayDeque<>(50);
+    private Table menu;
 
     public MapEditor() {
         stage = new Stage() {
@@ -144,7 +147,12 @@ public class MapEditor extends DesignScreen {
     }
 
     private boolean isOverGUI() {
-        return mapPalette.isOver() || mapProperties.isOver() || assetChooser.isOver();
+        int x = Gdx.app.getInput().getX();
+        int y = Gdx.app.getInput().getY();
+        Actor hit = menu.hit(x, y, true);
+        boolean overGUI = mapPalette.isOver() || mapProperties.isOver() || assetChooser.isOver() || hit != null;
+        Log.info("Touching GUI: " + overGUI);
+        return overGUI;
     }
 
     private void setTile(int x, int y) {
@@ -152,6 +160,9 @@ public class MapEditor extends DesignScreen {
     }
 
     private void setTile(WorldPos pos) {
+        if (isOverGUI()) {
+            return;
+        }
         Map map = mapProperties.getCurrent();
         Tile tile = map.getTile(pos.x, pos.y);
         Undo undo = new Undo(new Tile(tile), pos);
@@ -276,7 +287,7 @@ public class MapEditor extends DesignScreen {
 
     @Override
     protected Table createMenuButtons() {
-        Table menus = new Table();
+        menu = new Table();
         Button back = new Button(SKIN, "close");
         back.addListener(new ClickListener() {
             @Override
@@ -284,25 +295,25 @@ public class MapEditor extends DesignScreen {
                 ScreenManager.getInstance().showScreen(ScreenEnum.IMAGE_VIEW);
             }
         });
-        menus.add(back).left().expandX();
+        menu.add(back).left().expandX();
 
-        menus.add(createButton("Show Exits", "switch",
+        menu.add(createButton("Show Exits", "switch",
                 () -> world.getSystem(MapDesignRenderingSystem.class).toggleExits(), "Toggle exit tiles draw"))
                 .spaceLeft(5);
 
-        menus.add(createButton("Show Blocks", "switch",
+        menu.add(createButton("Show Blocks", "switch",
                 () -> world.getSystem(MapDesignRenderingSystem.class).toggleBlocks(), "Toggle blocks draw"))
                 .spaceLeft(5);
 
-        menus.add(createButton("Show Grid", "switch",
+        menu.add(createButton("Show Grid", "switch",
                 () -> world.getSystem(MapDesignRenderingSystem.class).toggleGrid(), "Toggle blocks draw"))
                 .spaceLeft(5);
 
-        menus.add(createButton("New", "default", () -> {
+        menu.add(createButton("New", "default", () -> {
             createNewMap();
         }, "Create new empty map")).spaceLeft(5);
 
-        menus.add(createButton("Fill", "default", () -> {
+        menu.add(createButton("Fill", "default", () -> {
             Map current = mapProperties.getCurrent();
             int x = 1, y = 1, i = 1, j = 1;
             Selection selection = mapPalette.getSelection();
@@ -329,7 +340,7 @@ public class MapEditor extends DesignScreen {
         }, "All tiles will be set with current configuration (layer & selection)"))
                 .spaceLeft(5);
 
-        menus.add(createButton("Load", "default",
+        menu.add(createButton("Load", "default",
                 () -> {
                     File file = FileUtils.openDialog("Select map (.json)", "output/maps/", new String[0], "");
                     if (file != null) {
@@ -342,7 +353,7 @@ public class MapEditor extends DesignScreen {
                 }, "Load map"))
                 .spaceLeft(5);
 
-        menus.add(createButton("Save", "default",
+        menu.add(createButton("Save", "default",
                 () -> {
                     Map current = mapProperties.getCurrent();
                     FileHandle folder = Gdx.files.local("output/maps/");
@@ -350,7 +361,7 @@ public class MapEditor extends DesignScreen {
                 }, "Save map in output folder"))
                 .spaceLeft(5);
 
-        return menus;
+        return menu;
     }
 
     private void createNewMap() {
@@ -362,7 +373,6 @@ public class MapEditor extends DesignScreen {
         });
         world.getSystem(MapDesignRenderingSystem.class).setMap(map);
         mapProperties.show(map);
-
     }
 
     private Button createButton(String label, String style, Runnable listener, String tooltip) {
@@ -402,7 +412,7 @@ public class MapEditor extends DesignScreen {
 
     private void createRightPane(Table table) {
         assetChooser = new MapAssetChooser();
-        table.add(assetChooser).right().width(200).expandY();
+        table.add(assetChooser).right().prefWidth(200).expandY();
         mapPalette.addListener(assetChooser);
     }
 

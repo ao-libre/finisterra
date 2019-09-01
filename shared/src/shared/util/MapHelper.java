@@ -128,7 +128,7 @@ public class MapHelper {
      */
     public void loadAll() {
         Gdx.app.log("Server initialization", "Loading maps...");
-        for (int i = 1; i <= 290; i++) {
+        for (int i = 1; i <= 291; i++) {
             maps.getUnchecked(i);
         }
     }
