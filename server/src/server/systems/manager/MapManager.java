@@ -5,7 +5,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
 import position.WorldPos;
 import server.systems.EntityFactorySystem;
-import server.systems.battle.SpotRegenerationSystem;
+import server.utils.WorldUtils;
 import shared.model.map.Tile;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
@@ -32,6 +32,7 @@ public class MapManager extends DefaultManager {
     private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesByMap = new ConcurrentHashMap<>();
     private Map<Integer, Set<Integer>> entitiesFootprints = new ConcurrentHashMap<>();
+    private Map<Integer, Set<Integer>> attachedEntities = new ConcurrentHashMap<>();
 
     public MapManager() {
         helper = MapHelper.instance(NEVER_EXPIRE);
@@ -144,6 +145,7 @@ public class MapManager extends DefaultManager {
      * @param entity id
      */
     public void removeEntity(int entity) {
+        unregisterEntity(entity);
         final E e = E(entity);
         if (e == null || !e.hasWorldPos()) {
             return;
@@ -173,7 +175,6 @@ public class MapManager extends DefaultManager {
         candidates.stream()
                 .filter(entity -> entity != player)
                 .forEach(entity -> addNearEntities(player, entity));
-
     }
 
     // TODO improve performance
@@ -256,6 +257,7 @@ public class MapManager extends DefaultManager {
         }
         // always notify that this entity is not longer in range
         worldManager.sendEntityRemove(entity1, entity2);
+        attachedEntities.get(entity1).forEach(id -> worldManager.sendEntityRemove(entity1, id));
     }
 
 
@@ -268,12 +270,37 @@ public class MapManager extends DefaultManager {
     private void linkEntities(int entity1, int entity2) {
         Set<Integer> near = nearEntities.computeIfAbsent(entity1, (i) -> new HashSet<>());
         if (near.add(entity2)) {
-            EntityUpdate update = EntityUpdateBuilder.of(entity2).withComponents(WorldUtils(world).getComponents(entity2)).build();
-            worldManager.sendEntityUpdate(entity1, update);
+            sendEntityTo(entity1, entity2);
+            attachedEntities.get(entity2).forEach(id -> sendEntityTo(entity1, id));
         }
+    }
+
+    private void sendEntityTo(int entityReceiver, int entityToSend) {
+        if (!world.getEntityManager().isActive(entityToSend)) {
+            return;
+        }
+        WorldUtils worldUtils = WorldUtils(world);
+        EntityUpdate update = EntityUpdateBuilder.of(entityToSend).withComponents(worldUtils.getComponents(entityToSend)).build();
+        worldManager.sendEntityUpdate(entityReceiver, update);
+    }
+
+    public void attachEntityTo(int entity, int entityToAttach) {
+        attachedEntities.get(entity).add(entityToAttach);
+    }
+
+    public void detachEntity(int entity, int entityToDetach) {
+        attachedEntities.get(entity).remove(entityToDetach);
     }
 
     public Map<Integer, Set<Integer>> getEntitiesFootprints() {
         return entitiesFootprints;
+    }
+
+    public void registerEntity(int id) {
+        attachedEntities.put(id, new HashSet<>());
+    }
+
+    public void unregisterEntity(int id) {
+        attachedEntities.remove(id);
     }
 }

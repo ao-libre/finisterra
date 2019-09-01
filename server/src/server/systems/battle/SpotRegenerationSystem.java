@@ -3,11 +3,11 @@ package server.systems.battle;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import entity.character.status.Regeneration;
-import graphics.Effect;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import position.WorldPos;
 import server.systems.ServerSystem;
 import server.systems.fx.FXSystem;
+import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
 import server.utils.WorldUtils;
 import shared.interfaces.FXs;
@@ -37,6 +37,7 @@ public class SpotRegenerationSystem extends PassiveSystem {
     private ServerSystem serverSystem;
     private FXSystem fxSystem;
     private WorldManager worldManager;
+    private MapManager mapManager;
 
     public void process(E e) {
         WorldPos worldPos = e.getWorldPos();
@@ -76,10 +77,9 @@ public class SpotRegenerationSystem extends PassiveSystem {
             inSpot.remove(e.id());
             Set<Integer> fxE = fxs.get(e.id());
             fxE.forEach(fx -> {
+                mapManager.detachEntity(e.id(), fx);
                 worldManager.notifyUpdate(e.id(), new RemoveEntity(fx));
-                getWorld().delete(fx);
             });
-
         }
         if (!update.isEmpty()) {
             serverSystem.sendToEntity(e.id(), update.build());
@@ -87,8 +87,8 @@ public class SpotRegenerationSystem extends PassiveSystem {
     }
 
     public enum Spot {
-        CHAOS(new WorldPos(15, 15, 290)),
-        REAL(new WorldPos(85, 85, 290));
+        CHAOS(new WorldPos(15, 15, 291)),
+        REAL(new WorldPos(30, 30, 291));
 
         private WorldPos pos;
 

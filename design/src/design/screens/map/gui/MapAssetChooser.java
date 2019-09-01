@@ -1,5 +1,8 @@
 package design.screens.map.gui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import design.editors.fields.FieldProvider;
@@ -42,12 +45,19 @@ public class MapAssetChooser extends Window implements MapPalette.SelectionListe
     }
 
     public boolean isOver() {
-        return mouseListener.isOver();
+        return mouseListener.isOver() || actualHit() != null;
+    }
+
+    private Actor actualHit() {
+        int x = Gdx.app.getInput().getX();
+        int y = Gdx.app.getInput().getY();
+        return hit(x, y, false);
     }
 
     @Override
     public void selectionChange(Selection selection, int layer) {
         clear();
+        addListener(mouseListener);
         switch (selection) {
             case CLEAN:
             case BLOCK:
