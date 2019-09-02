@@ -23,6 +23,7 @@ public class RoomScreen extends AbstractScreen {
     private List<Player> criminalList;
     private List<Player> armyList;
     private TextButton start;
+    private SelectBox<Hero> heroSelect;
 
     public RoomScreen(ClientSystem clientSystem, Room room, Player me) {
         super();
@@ -39,6 +40,7 @@ public class RoomScreen extends AbstractScreen {
 
     public void setPlayer(Player me) {
         this.me = me;
+        updateHero(me);
     }
 
     public void updatePlayers() {
@@ -101,7 +103,7 @@ public class RoomScreen extends AbstractScreen {
         });
 
 
-        SelectBox<Hero> heroSelect = new SelectBox<>(getSkin());
+        heroSelect = new SelectBox<>(getSkin());
         final Array<Hero> heroes = new Array<>();
         Hero.getHeroes().forEach(heroes::add);
         heroSelect.setItems(heroes);
@@ -112,6 +114,7 @@ public class RoomScreen extends AbstractScreen {
                 clientSystem.getKryonetClient().sendToAll(new ChangeHeroRequest(hero));
             }
         });
+        updateHero(me);
 
         Table topMenu = new Table(getSkin());
         topMenu.defaults().space(5);
@@ -129,6 +132,9 @@ public class RoomScreen extends AbstractScreen {
         start.setDisabled(!room.getPlayers().stream().allMatch(Player::isReady));
     }
 
+    private void updateHero(Player player) {
+        heroSelect.setSelected(player.getHero());
+    }
     @Override
     public void dispose() {
         clientSystem.stop();

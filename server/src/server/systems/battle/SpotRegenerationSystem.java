@@ -27,8 +27,7 @@ import static shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 public class SpotRegenerationSystem extends PassiveSystem {
 
     private static final int ZONE_SIZE = 5;
-    private static final int REGEN_FX = FXs.FX_BLOOD; // TODO change
-    public static final float REGENERATION_FACTOR = 200f;
+    public static final float REGENERATION_FACTOR = 0.5f;
     private Map<Integer, Set<Integer>> fxs = new HashMap<>();
 
     private Set<Integer> chaosInSpot = new ConcurrentSkipListSet<>();

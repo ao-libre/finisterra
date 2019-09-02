@@ -20,8 +20,8 @@ public class RegenerationSystem extends IntervalFluidIteratingSystem {
         // TODO extract percent to component
         float percent = e.hasRegeneration() ? e.getRegeneration().getMultiplier() : Regeneration.DEFAULT;
         recoverStat(e, e.getHealth(), e.hasStrength() ? e.getStrength().getCurrentValue() : 15 * percent / 100f);
-        recoverStat(e, e.getMana(), e.hasIntelligence() ? e.getIntelligence().getCurrentValue() : 15 * percent  / 10f);
-        recoverStat(e, e.getStamina(), e.hasAgility() ? e.getAgility().getCurrentValue() : 15 * percent / 10f);
+        recoverStat(e, e.getMana(), e.hasIntelligence() ? e.getIntelligence().getCurrentValue() : 15 * percent  / 100f);
+        recoverStat(e, e.getStamina(), e.hasAgility() ? e.getAgility().getCurrentValue() : 15 * percent / 100f);
     }
 
     private void recoverStat(E e, Stat stat, float percent) {

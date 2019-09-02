@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.esotericsoftware.minlog.Log;
 import entity.character.parts.Body;
 import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
@@ -126,7 +127,10 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                 break;
             case PARTICLE:
                 ParticleEffect particleEffect = particleEffects.get(entityId);
-                float x = particleEffect.getBoundingBox().getWidth();
+                if (particleEffect == null) {
+                    Log.info("WEIRD: " + entityId + " should have a particle"); // TODO: hack
+                    return;
+                }
                 particleEffect.setPosition(screenPos.x + Tile.TILE_PIXEL_WIDTH / 2, screenPos.y);
                 particleEffect.draw(getBatch(), world.getDelta());
                 break;
