@@ -11,6 +11,7 @@ import entity.character.states.CanWrite;
 import entity.npc.OriginPos;
 import physics.AOPhysics;
 import position.WorldPos;
+import server.systems.CharacterTrainingSystem;
 import server.systems.EntityFactorySystem;
 import server.systems.ServerSystem;
 import server.systems.fx.FXSystem;
@@ -34,10 +35,10 @@ public class WorldManager extends DefaultManager {
     private ObjectManager objectManager;
     private EntityFactorySystem entityFactorySystem;
     private FXSystem fxSystem;
+    private CharacterTrainingSystem characterTrainingSystem;
 
     public void registerEntity(int id) {
-        mapManager.registerEntity(id);
-        mapManager.updateEntity(id);
+        mapManager.addEntity(id);
     }
 
     public void registerEntity(int connectionId, int id) {
@@ -116,5 +117,8 @@ public class WorldManager extends DefaultManager {
         registerEntity(connectionId, entity);
         fxSystem.attachParticle(entity, player.getTeam().equals(Team.CAOS_ARMY) ? 5 : 6, false);
         networkManager.registerPlayer(connectionId, player);
+        for (int i = 0; i < 44; i++) {
+            characterTrainingSystem.levelUp(entity);
+        }
     }
 }

@@ -55,7 +55,7 @@ public class Player {
 
     @Override
     public String toString() {
-        return getPlayerName() + " Team: " + getTeam().toString() + " Ready: " + isReady();
+        return getPlayerName() + " is a " + getHero().name() + " and is " + (isReady() ? " ready :D! " : "not ready :(");
     }
 
     @Override

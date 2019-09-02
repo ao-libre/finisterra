@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Regeneration extends Component implements Serializable {
 
-    public static final float DEFAULT = 2f;
+    public static final float DEFAULT = 0.1f;
 
     private float multiplier;
 

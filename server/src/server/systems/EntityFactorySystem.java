@@ -95,6 +95,7 @@ public class EntityFactorySystem extends PassiveSystem {
 
     public void resetPlayer(E entity, Team team) {
         equipPlayer(entity);
+        setHead(entity);
         setEntityPosition(entity, team);
     }
 
@@ -102,8 +103,6 @@ public class EntityFactorySystem extends PassiveSystem {
     private void setClassAndAttributes(Hero hero, E entity) {
         // set body and head
         Race race = Race.of(entity);
-        setNakedBody(entity, race);
-        setHead(entity, race);
         entity.charHeroHeroId(hero.ordinal());
         setAttributesAndStats(entity, race);
     }
@@ -141,7 +140,8 @@ public class EntityFactorySystem extends PassiveSystem {
         entity.hitMax(2).hitMin(1);
     }
 
-    private void setHead(E entity, Race race) {
+    private void setHead(E entity) {
+        Race race = Race.of(entity);
         ThreadLocalRandom random = ThreadLocalRandom.current();
         //TODO onlyWoman desde init.json
         int headIndex = 0;
@@ -165,7 +165,8 @@ public class EntityFactorySystem extends PassiveSystem {
         entity.headIndex(headIndex);
     }
 
-    public void setNakedBody(E entity, Race race) {
+    public void setNakedBody(E entity) {
+        Race race = Race.of(entity);
         int bodyIndex = 1;
         switch (race) {
             case GNOME:
@@ -188,7 +189,7 @@ public class EntityFactorySystem extends PassiveSystem {
 
     private void setMana(E entity) {
         CharClass charClass = CharClass.of(entity);
-        int mana = 300; //Bonus 300 mana para tirar inmovilizar
+        int mana = 50;
         switch (charClass) {
             case MAGICIAN:
                 mana = entity.intelligenceBaseValue() * 3 + mana;
@@ -280,6 +281,8 @@ public class EntityFactorySystem extends PassiveSystem {
                 .headingCurrent(Heading.HEADING_SOUTH)
                 .character()
                 .nameText(name);
+        setNakedBody(entity);
+        setHead(entity);
     }
 
 

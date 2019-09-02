@@ -36,8 +36,7 @@ public class ItemConsumers extends DefaultManager {
                 entity.removeWeapon();
                 worldManager.notifyUpdate(player, EntityUpdateBuilder.of(player).remove(Weapon.class).build());
             } else if (obj instanceof ArmorObj) {
-                Hero hero = Hero.getHeroes().get(entity.getCharHero().heroId);
-                entityFactorySystem.setNakedBody(entity, Race.values()[hero.getRaceId()]);
+                entityFactorySystem.setNakedBody(entity);
                 worldManager.notifyUpdate(player, EntityUpdateBuilder.of(player).withComponents(entity.getBody()).build());
             } else if (obj instanceof HelmetObj) {
                 entity.removeHelmet();

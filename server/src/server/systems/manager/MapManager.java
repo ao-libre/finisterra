@@ -145,7 +145,6 @@ public class MapManager extends DefaultManager {
      * @param entity id
      */
     public void removeEntity(int entity) {
-        unregisterEntity(entity);
         final E e = E(entity);
         if (e == null || !e.hasWorldPos()) {
             return;
@@ -158,6 +157,12 @@ public class MapManager extends DefaultManager {
             return null;
         });
         entitiesByMap.get(map).remove(entity);
+        unregisterEntity(entity);
+    }
+
+    public void addEntity(int player) {
+        registerEntity(player);
+        updateEntity(player);
     }
 
     /**
@@ -257,9 +262,8 @@ public class MapManager extends DefaultManager {
         }
         // always notify that this entity is not longer in range
         worldManager.sendEntityRemove(entity1, entity2);
-        attachedEntities.get(entity1).forEach(id -> worldManager.sendEntityRemove(entity1, id));
+        attachedEntities.get(entity2).forEach(id -> worldManager.sendEntityRemove(entity1, id));
     }
-
 
     /**
      * Link entities

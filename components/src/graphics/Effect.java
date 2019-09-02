@@ -1,12 +1,14 @@
 package graphics;
 
 import com.artemis.Component;
+import com.artemis.annotations.DelayedComponentRemoval;
 import com.artemis.annotations.PooledWeaver;
 import entity.Index;
 
 import java.io.Serializable;
 
 @PooledWeaver
+@DelayedComponentRemoval
 public class Effect extends Component implements Serializable, Index {
 
     public static final int NO_REF = -1;

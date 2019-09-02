@@ -98,8 +98,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
 
     }
 
-    private void levelUp(int userId) {
-        world.getSystem(WorldManager.class).notifyUpdate ( userId, new SoundNotification ( 3 ) );
+    public void levelUp(int userId) {
         // set new experience
         Level level = E(userId).getLevel();
         level.exp -= level.expToNextLevel;
@@ -114,6 +113,8 @@ public class CharacterTrainingSystem extends PassiveSystem {
         notifyUpgrade(userId, mana, health, hit, stamina);
         // Log.info("hp: "+ health + "mAna" + mana + "hit: " + hit);
     }
+
+
 
     private void notifyUpgrade(int userId, int mana, float health, Pair<Integer, Integer> hit, int stamina) {
         E e = E(userId);
