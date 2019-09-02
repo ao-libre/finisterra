@@ -29,10 +29,6 @@ public class RoomScreen extends AbstractScreen {
     private List<Player> armyList;
     private TextButton start;
     private SelectBox<Hero> heroSelect;
-<<<<<<< HEAD
-    private LoginScreen loginScreen;
-=======
->>>>>>> Fixing player respawn
 
     public RoomScreen(ClientSystem clientSystem, Room room, Player me) {
         super();
@@ -126,7 +122,6 @@ public class RoomScreen extends AbstractScreen {
                 clientSystem.getKryonetClient().sendToAll(new ChangeHeroRequest(hero));
             }
         });
-        updateHero(me);
 
         Table topMenu = new Table(getSkin());
         topMenu.defaults().space(5);

@@ -129,7 +129,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                 ParticleEffect particleEffect = particleEffects.get(entityId);
                 if (particleEffect == null) {
                     Log.info("WEIRD: " + entityId + " should have a particle"); // TODO: hack
-                    return;
+                    break;
                 }
                 particleEffect.setPosition(screenPos.x + Tile.TILE_PIXEL_WIDTH / 2, screenPos.y);
                 particleEffect.draw(getBatch(), world.getDelta());

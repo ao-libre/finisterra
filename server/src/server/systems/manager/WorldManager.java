@@ -7,6 +7,7 @@ import com.artemis.annotations.Wire;
 import entity.character.equipment.Helmet;
 import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
+import entity.character.parts.Head;
 import entity.character.states.CanWrite;
 import entity.npc.OriginPos;
 import physics.AOPhysics;
@@ -93,12 +94,11 @@ public class WorldManager extends DefaultManager {
         } else {
             // RESET USER. TODO implement ghost
             EntityUpdateBuilder deadUpdate = EntityUpdateBuilder.of(entityId);
-            e.respawnTime(10);
+            e.respawnTime(3);
             e.bodyIndex(8);
-            e.headIndex(500);
             deadUpdate
-                    .withComponents(e.getBody(), e.getHead())
-                    .remove(Shield.class, Helmet.class, Weapon.class);
+                    .withComponents(e.getBody())
+                    .remove(Head.class, Shield.class, Helmet.class, Weapon.class);
             notifyUpdate(entityId, deadUpdate.build());
         }
     }
