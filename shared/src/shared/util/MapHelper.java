@@ -30,7 +30,7 @@ public class MapHelper {
     private static final int LEFT_BORDER_TILE = 10;
     private static final int RIGHT_BORDER_TILE = 91;
 
-    private static final int MAX_MAPS = 290;
+    private static final int MAX_MAPS = 292;
 
     private static final AOJson JSON = new AOJson();
     private static MapHelper instance;

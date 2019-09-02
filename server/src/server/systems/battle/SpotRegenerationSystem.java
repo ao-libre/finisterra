@@ -87,7 +87,7 @@ public class SpotRegenerationSystem extends PassiveSystem {
 
     public enum Spot {
         CHAOS(new WorldPos(15, 15, 291)),
-        REAL(new WorldPos(30, 30, 291));
+        REAL(new WorldPos(30, 30, 292));
 
         private WorldPos pos;
 
