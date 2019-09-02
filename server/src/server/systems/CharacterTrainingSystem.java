@@ -173,6 +173,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
         }
         int manaUp = (int) (e.intelligenceBaseValue() * manaPerLvlFactor);
         e.getMana().max += manaUp;
+        e.getMana().min = e.getMana().max;
         return manaUp;
     }
 
@@ -183,6 +184,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
         float average = healthModifier - (21 - constitution) * 0.5f;
         int hpUp = ThreadLocalRandom.current().nextInt(getMinHealth(average), getMaxHealth(average));
         e.getHealth().max += hpUp;
+        e.getHealth().min = e.getHealth().max;
         return hpUp;
     }
 

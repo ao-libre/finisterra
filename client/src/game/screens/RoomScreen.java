@@ -30,6 +30,7 @@ public class RoomScreen extends AbstractScreen {
         this.clientSystem = clientSystem;
         this.room = room;
         this.me = me;
+        updateHero(me);
         updatePlayers();
         checkStart();
     }
@@ -114,7 +115,6 @@ public class RoomScreen extends AbstractScreen {
                 clientSystem.getKryonetClient().sendToAll(new ChangeHeroRequest(hero));
             }
         });
-        updateHero(me);
 
         Table topMenu = new Table(getSkin());
         topMenu.defaults().space(5);
