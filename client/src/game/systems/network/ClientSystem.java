@@ -8,6 +8,7 @@ import game.network.ClientResponseProcessor;
 import game.network.GameNotificationProcessor;
 import game.network.KryonetClientMarshalStrategy;
 import game.screens.GameScreen;
+import game.screens.LoginScreen;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import shared.network.init.NetworkDictionary;
 import shared.network.interfaces.INotification;
@@ -41,6 +42,9 @@ public class ClientSystem extends MarshalSystem {
         AOGame game = (AOGame) Gdx.app.getApplicationListener();
         if (game.getScreen() instanceof GameScreen) {
             Gdx.app.postRunnable(game::toLogin);
+        }
+        if (game.getScreen() instanceof LoginScreen) {
+            ((LoginScreen) game.getScreen()).resetConnect();
         }
     }
 

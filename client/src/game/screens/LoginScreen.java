@@ -70,50 +70,49 @@ public class LoginScreen extends AbstractScreen {
         clientSystem = new ClientSystem("127.0.0.1", 7666); // @todo implement empty constructor
         clientSystem.setNotificationProcessor(new GameNotificationProcessor());
         clientSystem.setResponseProcessor(new ClientResponseProcessor());
-
         // TODO MusicHandler.playMusic(101);
     }
 
     @Override
     void createContent() {
-        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); // @todo hotfix
+        config = ClientConfiguration.loadConfig(CLIENT_CONFIG); // @todo hotfix
+        addTitle().row();
+        Window loginWindow = new Window("", getSkin(), "content");
+        loginWindow.pad(20);
 
-        Window loginWindow = new Window("", getSkin());
-        Label userLabel = new Label("User", getSkin());
-        this.username = new TextField("", getSkin());
+        Table userLogin = new Table(getSkin());
+        userLogin.pad(20);
+        this.username = new TextField("", getSkin(), "ui");
         username.setMessageText("User Name");
 
-        Table connectionTable = new Table((getSkin()));
-
-        this.serverList = new List<>(getSkin());
-        serverList.setItems(config.getNetwork().getServers());
-
-        TextButton loginButton = new TextButton("Connect", getSkin());
+        TextButton loginButton = new TextButton("Connect", getSkin(), "ui");
         loginButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 connectThenLogin();
             }
-
         });
 
-        loginWindow.getColor().a = 0.8f;
-        loginWindow.add(userLabel);
-        loginWindow.row();
-        loginWindow.add(username).width(200);
-        loginWindow.row();
-        loginWindow.add(loginButton).padTop(20).expandX().row();
-        getMainTable().add(loginWindow).width(400).height(300).row();
+        userLogin.add(new Label("User", getSkin(), "ui")).row();
+        userLogin.add(username).growX().row();
+        userLogin.add(loginButton).growX();
 
-        connectionTable.add(serverList).width(300);
-        connectionTable.align(Align.center);
-        connectionTable.setVisible(true);
-        getMainTable().add(connectionTable);
+        Table connectionTable = new Table((getSkin()));
+        connectionTable.pad(20);
+        connectionTable.add(new Label("Servers", getSkin(), "ui")).row();
+        this.serverList = new List<>(getSkin(), "ui");
+        serverList.setItems(config.getNetwork().getServers());
+        connectionTable.add(new ScrollPane(serverList, getSkin(), "ui")).growX();
+
+        loginWindow.add(userLogin).growX().row();
+        loginWindow.add(connectionTable).padTop(40).growX();
+
+        getMainTable().add(loginWindow).prefHeight(350);
+
         getStage().setKeyboardFocus(username);
     }
 
     private void connectThenLogin() {
-
         if (this.canConnect) {
             String user = username.getText();
 
@@ -149,5 +148,13 @@ public class LoginScreen extends AbstractScreen {
 
     public ClientSystem getClientSystem() {
         return clientSystem;
+    }
+
+    public void resetConnect() {
+        Dialog dialog = new Dialog("Network error", getSkin(), "ui");
+        dialog.text("Wrong client-server communication");
+        dialog.button("OK");
+        dialog.show(getStage());
+        this.canConnect = true;
     }
 }
