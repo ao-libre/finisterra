@@ -1,9 +1,7 @@
 package game.screens;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.List;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import game.systems.network.ClientSystem;
@@ -48,10 +46,12 @@ public class LobbyScreen extends AbstractScreen {
 
     @Override
     void createContent() {
-        roomList = new List<>(getSkin());
+        Window table = new Window("", getSkin(), "body");
+        roomList = new List<>(getSkin(), "ui");
 
         Table container = new Table(getSkin());
-        TextButton createRoomButton = new TextButton("CREATE ROOM", getSkin());
+        container.pad(20);
+        TextButton createRoomButton = new TextButton("CREATE ROOM", getSkin(), "ui");
         createRoomButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -60,7 +60,7 @@ public class LobbyScreen extends AbstractScreen {
             }
         });
 
-        TextButton joinRoomButton = new TextButton("JOIN ROOM", getSkin());
+        TextButton joinRoomButton = new TextButton("JOIN ROOM", getSkin(), "ui");
         joinRoomButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -72,13 +72,11 @@ public class LobbyScreen extends AbstractScreen {
             }
         });
 
-        container.add(roomList).width(400).height(400);
-        container.row();
-        container.add(joinRoomButton);
-        container.row();
-        container.add(createRoomButton);
-        container.getColor().a = 0.8f;
-        getMainTable().add(container);
+        container.add(new ScrollPane(roomList, getSkin(), "ui")).grow().row();
+        container.add(joinRoomButton).growX().row();
+        container.add(createRoomButton).growX().row();
+        table.add(container).grow();
+        getMainTable().add(table);
 
     }
 

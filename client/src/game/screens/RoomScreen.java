@@ -11,6 +11,8 @@ import shared.interfaces.Hero;
 import shared.model.lobby.Player;
 import shared.model.lobby.Room;
 import shared.model.lobby.Team;
+import shared.network.lobby.ExitRoomRequest;
+import shared.network.lobby.JoinLobbyRequest;
 import shared.network.lobby.StartGameRequest;
 import shared.network.lobby.player.ChangeHeroRequest;
 import shared.network.lobby.player.ChangeReadyStateRequest;
@@ -60,34 +62,11 @@ public class RoomScreen extends AbstractScreen {
 
     @Override
     void createContent() {
-        Window table = new Window("", getSkin());
-        table.setColor(1, 1, 1, 0.8f);
+        Table table = new Table(getSkin());
+
         Table teams = new Table(getSkin());
         teams.defaults().space(5);
-
-        Table army = new Table(getSkin());
-        Label armyLabel = new Label("REAL ARMY", getSkin());
-        armyList = new List<>(getSkin());
-        army.add(armyLabel).growX().row();
-        army.add(armyList).minHeight(150).growX().row();
-        teams.add(army).pad(20).grow().row();
-
-        Table chaos = new Table(getSkin());
-        Label chaosLabel = new Label("CHAOS ARMY", getSkin());
-        criminalList = new List<>(getSkin());
-        chaos.add(chaosLabel).growX().row();
-        chaos.add(criminalList).minHeight(150).growX().row();
-        teams.add(chaos).pad(20).grow();
-
-        start = new TextButton("START", getSkin());
-        start.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                clientSystem.getKryonetClient().sendToAll(new StartGameRequest(room.getId()));
-            }
-        });
-
-        Button changeTeam = new TextButton("Change Team", getSkin());
+        Button changeTeam = new TextButton("Change Team", getSkin(), "ui");
         changeTeam.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -95,7 +74,38 @@ public class RoomScreen extends AbstractScreen {
             }
         });
 
-        Button readyButton = new CheckBox("Ready", getSkin());
+        Table army = new Window("", getSkin(), "ui");
+        armyList = new List<>(getSkin(), "ui");
+        army.add(new Label("Army", getSkin(), "ui")).left().row();
+        army.add(new ScrollPane(armyList, getSkin(), "ui")).grow().row();
+
+        Table chaos = new Window("", getSkin(), "ui");
+        criminalList = new List<>(getSkin(), "ui");
+        chaos.add(new Label("Chaos", getSkin(), "ui")).left().row();
+        chaos.add(new ScrollPane(criminalList, getSkin(), "ui")).grow().row();
+
+        teams.add(army).pad(20).minHeight(100).growX().row();
+        teams.add(changeTeam).left().growX().row();
+        teams.add(chaos).pad(20).minHeight(100).grow();
+
+        start = new TextButton("Start", getSkin(), "ui");
+        start.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                clientSystem.getKryonetClient().sendToAll(new StartGameRequest(room.getId()));
+            }
+        });
+
+        Button exit = new TextButton("Back", getSkin(), "ui");
+        exit.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                clientSystem.getKryonetClient().sendToAll(new ExitRoomRequest());
+                clientSystem.getKryonetClient().sendToAll(new JoinLobbyRequest(me.getPlayerName()));
+            }
+        });
+
+        Button readyButton = new CheckBox("Ready", getSkin(), "ui");
         readyButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -103,8 +113,7 @@ public class RoomScreen extends AbstractScreen {
             }
         });
 
-
-        heroSelect = new SelectBox<>(getSkin());
+        heroSelect = new SelectBox<>(getSkin(), "ui");
         final Array<Hero> heroes = new Array<>();
         Hero.getHeroes().forEach(heroes::add);
         heroSelect.setItems(heroes);
@@ -116,16 +125,17 @@ public class RoomScreen extends AbstractScreen {
             }
         });
 
-        Table topMenu = new Table(getSkin());
-        topMenu.defaults().space(5);
-        topMenu.add(changeTeam);
-        topMenu.add(heroSelect);
-        topMenu.add(readyButton);
+        Table bottomMenu = new Table(getSkin());
+        bottomMenu.pad(20).defaults().space(5);
+        bottomMenu.add(exit).left();
+        bottomMenu.add(heroSelect).expandX().center();
+        bottomMenu.add(readyButton).expandX().center();
+        bottomMenu.add(start).expandX().right();
 
-        table.add(topMenu).center().expandX().row();
         table.add(teams).growX().row();
-        table.add(start).expandX().right();
-        getMainTable().add(table).pad(30).grow();
+        table.add(bottomMenu).growX();
+
+        getMainTable().add(table).grow();
     }
 
     public void checkStart() {
@@ -135,6 +145,7 @@ public class RoomScreen extends AbstractScreen {
     private void updateHero(Player player) {
         heroSelect.setSelected(player.getHero());
     }
+
     @Override
     public void dispose() {
         clientSystem.stop();

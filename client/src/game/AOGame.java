@@ -42,7 +42,7 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
     public void create() {
         super.create();
         Gdx.app.debug("AOGame", "Creating AOGame...");
-        setTransition(new ColorFadeTransition(Color.BLACK, Interpolation.exp10), 1.0f);
+//        setTransition(new ColorFadeTransition(Color.BLACK, Interpolation.exp10), 1.0f);
         Cursors.setCursor("hand");
         ScreenManager.getInstance().initialize(this);
         toLoading();
