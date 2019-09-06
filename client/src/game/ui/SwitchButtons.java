@@ -9,7 +9,7 @@ import game.utils.Skins;
 import java.util.ArrayList;
 import java.util.List;
 
-class SwitchButtons extends Table {
+public class SwitchButtons extends Table {
 
     private ImageButton inventory;
     private ImageButton spells;
@@ -41,7 +41,7 @@ class SwitchButtons extends Table {
         listeners.add(listener);
     }
 
-    private void toggle(State state) {
+    public void toggle(State state) {
         if (this.state == state) {
             return;
         }
@@ -71,7 +71,11 @@ class SwitchButtons extends Table {
 
     }
 
-    enum State {
+    public State getState() {
+        return state;
+    }
+
+    public enum State {
         INVENTORY,
         SPELLS
     }

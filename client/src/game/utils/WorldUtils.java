@@ -1,11 +1,16 @@
 package game.utils;
 
+import camera.Focused;
 import com.artemis.E;
+import com.artemis.EBag;
 import com.artemis.World;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import entity.character.states.Heading;
 import game.screens.GameScreen;
 import game.screens.WorldScreen;
@@ -15,9 +20,11 @@ import position.Pos2D;
 import position.WorldPos;
 import shared.util.Util;
 
+import java.util.Iterator;
 import java.util.Optional;
 
 import static com.artemis.E.E;
+import static game.systems.render.world.TargetRenderingSystem.MAX_TARGET_CONTROLLER;
 
 public class WorldUtils {
 
@@ -51,6 +58,48 @@ public class WorldUtils {
         });
     }
 
+    public static Optional<WorldPos> controllerToWorldPos() {
+        return getWorld().map(world -> {
+            Array<Controller> controllers = Controllers.getControllers();
+            if (!controllers.isEmpty()) {
+                EBag es = E.withComponent(Focused.class);
+                E e = es.iterator().next();
+                WorldPos worldPos = e.getWorldPos();
+
+                Controller controller = controllers.get(0);
+                float axisX = controller.getAxis(2);
+                float axisY = controller.getAxis(5);
+
+                int x = Math.round(axisX * MAX_TARGET_CONTROLLER);
+                int y = Math.round(axisY * MAX_TARGET_CONTROLLER);
+
+                if (x > 0 || y > 0) {
+                    WorldPos pos = new WorldPos(worldPos.x + x, worldPos.y + y, worldPos.map);
+                    refinePos(pos);
+                    return pos;
+                }
+            }
+            return null;
+        });
+    }
+
+    private static void refinePos(WorldPos pos) {
+        Iterator<E> iterator = E.withComponent(WorldPos.class).iterator();
+        while (iterator.hasNext()) {
+            E next = iterator.next();
+            if (next.isFocused()) {
+                continue;
+            }
+            WorldPos worldPos = next.getWorldPos();
+            if (distance(worldPos, pos) <= 1) {
+                pos.x = worldPos.x;
+                pos.y = worldPos.y;
+                break;
+            }
+        }
+    }
+    
+
     public static int getHeading(AOPhysics.Movement movement) {
         return movement == AOPhysics.Movement.UP ? Heading.HEADING_NORTH : movement == AOPhysics.Movement.DOWN ? Heading.HEADING_SOUTH : movement == AOPhysics.Movement.LEFT ? Heading.HEADING_WEST : Heading.HEADING_EAST;
     }
@@ -62,10 +111,14 @@ public class WorldUtils {
         if (pos1.map != pos2.map) {
             return -1;
         }
-        return Math.abs(getDistanceX(pos1, pos2) + (pos1.y - pos2.y));
+        return Math.abs(pos1.x - pos2.x + (pos1.y - pos2.y));
     }
 
     public static int getDistanceX(WorldPos pos1, WorldPos pos2) {
-        return pos1.x - pos2.x;
+        return Math.abs(pos1.x - pos2.x);
+    }
+
+    public static int getDistanceY(WorldPos pos1, WorldPos pos2) {
+        return Math.abs(pos1.y - pos2.y);
     }
 }

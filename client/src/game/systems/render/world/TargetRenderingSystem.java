@@ -5,9 +5,13 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
+import game.screens.GameScreen;
 import game.ui.GUI;
 import game.utils.Colors;
 import game.utils.WorldUtils;
@@ -23,6 +27,7 @@ public class TargetRenderingSystem extends RenderingSystem {
 
     private static Texture target = new Texture(Gdx.files.local("data/ui/images/target.png"));
     private GUI gui;
+    public static int MAX_TARGET_CONTROLLER = 7;
 
     public TargetRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(Focused.class), batch, CameraKind.WORLD);
@@ -31,14 +36,19 @@ public class TargetRenderingSystem extends RenderingSystem {
     @Override
     protected void process(E e) {
         if (gui.getSpellView().toCast.isPresent()) {
-            Optional<WorldPos> worldPos = WorldUtils.mouseToWorldPos();
+            Optional<WorldPos> worldPos = WorldUtils.controllerToWorldPos().or(WorldUtils::mouseToWorldPos);
             if (worldPos.isPresent()) {
-                Color prevColor = new Color(getBatch().getColor());
-                getBatch().setColor(Colors.rgba(255, 255, 255, 0.5f));
                 Pos2D mousePos = Util.toScreen(worldPos.get());
-                getBatch().draw(target, mousePos.x, mousePos.y, Tile.TILE_PIXEL_WIDTH, Tile.TILE_PIXEL_HEIGHT);
-                getBatch().setColor(prevColor);
+                drawInPos(mousePos);
             }
         }
     }
+
+    private void drawInPos(Pos2D pos) {
+        Color prevColor = new Color(getBatch().getColor());
+        getBatch().setColor(Colors.rgba(255, 255, 255, 0.5f));
+        getBatch().draw(target, pos.x, pos.y, Tile.TILE_PIXEL_WIDTH, Tile.TILE_PIXEL_HEIGHT);
+        getBatch().setColor(prevColor);
+    }
+
 }
