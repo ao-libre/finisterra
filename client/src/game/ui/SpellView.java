@@ -96,6 +96,10 @@ public class SpellView extends Table {
         changeCursor();
     }
 
+    public void cast() {
+        selected.ifPresent(this::preparedToCast);
+    }
+
     public boolean isOver() {
         return Stream.of(spellTable.getChildren().items)
                 .filter(SpellSlot.class::isInstance)
@@ -121,4 +125,39 @@ public class SpellView extends Table {
         toCast = Optional.empty();
         castButton.setChecked(false);
     }
+
+    public void selectDown() {
+        if (!selected.isPresent()) {
+            selected = Optional.ofNullable(slots.get(0).getSpell());
+            return;
+        }
+        selected.ifPresent(spell -> {
+            for (int i = 0; i < slots.size(); i++) {
+                if (spell.equals(slots.get(i).getSpell())) {
+                    // found selected
+                    if (i+1 < slots.size()) {
+                        selected = Optional.ofNullable(slots.get(i+1).getSpell());
+                    }
+                }
+            }
+        });
+    }
+
+    public void selectUp() {
+        if (!selected.isPresent()) {
+            selected = Optional.ofNullable(slots.get(0).getSpell());
+            return;
+        }
+        selected.ifPresent(spell -> {
+            for (int i = 0; i < slots.size(); i++) {
+                if (spell.equals(slots.get(i).getSpell())) {
+                    // found selected
+                    if (i-1 >= 0) {
+                        selected = Optional.ofNullable(slots.get(i-1).getSpell());
+                    }
+                }
+            }
+        });
+    }
+
 }

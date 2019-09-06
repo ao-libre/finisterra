@@ -107,6 +107,10 @@ public final class ActionBar extends Table implements ActionSwitchListener {
     }
 
 
+    public SwitchButtons getButtons() {
+        return buttons;
+    }
+
     public void scrolled(int amount) {
         if (getInventory().isOver()) {
             getInventory().scrolled(amount);

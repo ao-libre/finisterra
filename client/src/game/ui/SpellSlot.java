@@ -49,6 +49,10 @@ public class SpellSlot extends ImageButton {
         addListener(tooltip);
     }
 
+    public Spell getSpell() {
+        return spell;
+    }
+
     private Tooltip getTooltip(Spell spell) {
         Actor content = createTooltipContent(spell);
 <<<<<<< HEAD

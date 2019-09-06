@@ -6,5 +6,5 @@ dependencies {
     implementation (group: "com.badlogicgames.gdx", name: "gdx-tools", version: "$gdxVersion") {
         exclude group: "com.badlogicgames.gdx", module: "gdx-backend-lwjgl"
     }
-	implementation group: "org.reflections", name: "reflections", version: "$reflectionsVersion"
+	api group: "org.reflections", name: "reflections", version: "$reflectionsVersion"
 }
