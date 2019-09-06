@@ -41,7 +41,6 @@ public class NameRenderingSystem extends RenderingSystem {
                     String text = e.getName().text;
                     Label label = new Label(text, Skins.COMODORE_SKIN, "flipped");
                     label.getStyle().font.setUseIntegerPositions(false);
-                    label.setFontScale(1.1f);
                     float prefWidth = label.getPrefWidth();
                     label.setWrap(true);
                     label.setAlignment(Align.center);

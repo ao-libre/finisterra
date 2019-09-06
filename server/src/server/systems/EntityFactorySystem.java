@@ -47,7 +47,6 @@ public class EntityFactorySystem extends PassiveSystem {
     private SpotDominationSystem spotDominationSystem;
     private FXSystem fxSystem;
 
-
     public void createObject(int objIndex, int objCount, WorldPos pos) {
         int objId = world.create();
         E object = E(objId);

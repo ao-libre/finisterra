@@ -25,9 +25,8 @@ public class Bar extends Actor {
 
     Bar(Kind kind) {
         this.kind = kind;
-        points = new Label("", Skins.COMODORE_SKIN);
+        points = new Label("", Skins.COMODORE_SKIN, "bar");
         points.setAlignment(Align.right);
-        points.setFontScale(0.6f);
     }
 
     @Override
@@ -82,7 +81,7 @@ public class Bar extends Actor {
     private void drawText(Batch batch, int min, int max, float barX, float barY) {
         points.setText(min + "/" + max);
         points.setWidth(getWidth() - ORIGINAL_BORDER * 2);
-        points.setPosition(barX, barY + ORIGINAL_BORDER + 3.5f);
+        points.setPosition(barX, barY + ORIGINAL_BORDER + 2.5f);
         points.draw(batch, 1);
     }
 

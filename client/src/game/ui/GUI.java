@@ -35,6 +35,7 @@ public class GUI extends BaseSystem implements Disposable {
     private DialogText dialog;
     private AOConsole console;
     private OrthographicCamera camera;
+    private Table table;
 
     public GUI() {
         this.stage = new AOInputProcessor(this);
@@ -134,14 +135,28 @@ public class GUI extends BaseSystem implements Disposable {
         Skins.COMODORE_SKIN.getFont("flipped").setUseIntegerPositions(false);
         Skins.COMODORE_SKIN.getFont("flipped-with-border").setUseIntegerPositions(false);
 
-        Table table = new Table();
+        table = new Table();
         table.setFillParent(true);
+        fillTable();
+        stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
+
+        table.addListener(new StageResizeListener() {
+            @Override
+            public void resized(int width, int height) {
+                table.clear();
+                fillTable();
+                getInventory().updateUserInventory();
+                getSpellView().updateSpells();
+            }
+        });
+    }
+
+    public void fillTable() {
         createConsole(table);
         createUserStatus(table);
         createActionBar(table);
         createDialogContainer(table);
-        stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
     }
 
     public OrthographicCamera getCamera() {
@@ -193,7 +208,10 @@ public class GUI extends BaseSystem implements Disposable {
         stage.draw();
     }
 
-    @Override
+    public Table getTable() {
+        return table;
+    }
+
     public void dispose() {
         stage.dispose();
     }

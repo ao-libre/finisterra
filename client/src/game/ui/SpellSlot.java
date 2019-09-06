@@ -16,8 +16,8 @@ import shared.model.Spell;
 public class SpellSlot extends ImageButton {
 
     static final int SIZE = 64;
-    private static final float ICON_ALPHA = 0.5f;
-    private static final Drawable selection = Skins.COMODORE_SKIN.getDrawable("slot-selected2");
+    private static final float ICON_ALPHA = 0.9f;
+    private static Drawable selection = Skins.COMODORE_SKIN.getDrawable("slot-selected2");
     private final SpellView spellView;
     private final ClickListener clickListener;
     private Spell spell;
@@ -51,7 +51,13 @@ public class SpellSlot extends ImageButton {
 
     private Tooltip getTooltip(Spell spell) {
         Actor content = createTooltipContent(spell);
+<<<<<<< HEAD
         return new Tooltip<>(content);
+=======
+        Tooltip tooltip = new Tooltip(content);
+
+        return tooltip;
+>>>>>>> Clean ao java skin. Changing spells icons
     }
 
     private Actor createTooltipContent(Spell spell) {
@@ -63,26 +69,23 @@ public class SpellSlot extends ImageButton {
         int requiredSkills = spell.getMinSkill();
 
         Table table = new Window("", Skins.COMODORE_SKIN);
+        table.defaults().growX();
+        table.pad(10);
+        Skins.COMODORE_SKIN.getFont("info").getData().markupEnabled = true;
+        Label title = new Label(name, Skins.COMODORE_SKIN, "title-no-background");
+        Label magic = new Label("Requiere [GRAY]" + requiredSkills + "[] puntos de Magia.", Skins.COMODORE_SKIN, "desc-no-background");
+        Label mana = new Label("Requiere [CYAN]" + requiredMana + "[] puntos de Maná.", Skins.COMODORE_SKIN, "desc-no-background");
+        Label damage = new Label("Inflinge entre [RED]" + minhp + " [](+DañoBase)" + "/[RED]" + maxhp + "[] (+DañoBase)", Skins.COMODORE_SKIN, "desc-no-background");
+        Label description = new Label(desc, Skins.COMODORE_SKIN, "desc-no-background");
+        description.setWrap(true);
 
-        table.pad(0, 10, 10, 0);
-        table.add //    LabelNombre
-                (new Label(name, Skins.COMODORE_SKIN, "title-no-background"))
-                .left().pad(10, 15, 10, 10).row();
-        table.add //    LabelSkills
-                (new Label("Requiere " + requiredSkills + " puntos de Magia.", Skins.COMODORE_SKIN, "desc-no-background"))
-                .pad(0, 20, 0, 10).left().row();
-        table.add //    LabelMana
-                (new Label("Requiere " + requiredMana + " puntos de Maná.", Skins.COMODORE_SKIN, "desc-no-background"))
-                .pad(0, 20, 0, 10).left().row();
-        table.add //    LabelDaño TODO Llamar daño base desde el character
-                (new Label("Inflinge entre " + minhp + " (+DañoBase)" + "/" + maxhp + " (+DañoBase)", Skins.COMODORE_SKIN, "desc-no-background"))
-                .pad(0, 20, 0, 10).left().row();
-        table.add //    LabelDescripcion TODO hacer que el texto se ajuste a un tamaño fijo
-                (new Label(desc,
-                        Skins.COMODORE_SKIN,
-                        "desc-no-background"
-                ))
-                .pad(10, 20, 0, 10).row();
+        table.add(title).row();
+        table.add(magic).row();
+        table.add(mana).left().row();
+        table.add(damage).left().row();
+        description.setWidth(table.getPrefWidth());
+        table.add(description).row();
+
         return table;
     }
 
@@ -118,7 +121,9 @@ public class SpellSlot extends ImageButton {
     }
 
     private Texture getSpellIcon() {
-        Texture icon = new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getId() + ".png"));
+        if (icon == null) {
+            icon = new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getId() + ".png"));
+        }
         return icon;
     }
 }

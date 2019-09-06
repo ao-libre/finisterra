@@ -18,6 +18,7 @@ import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.network.lobby.JoinLobbyRequest;
 import shared.util.Messages;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import static game.utils.Resources.CLIENT_CONFIG;
 
 public class LoginScreen extends AbstractScreen {
@@ -76,7 +77,15 @@ public class LoginScreen extends AbstractScreen {
     @Override
     void createContent() {
         config = ClientConfiguration.loadConfig(CLIENT_CONFIG); // @todo hotfix
-        addTitle().row();
+        Cell<Image> imageCell = addTitle();
+        Image logo = imageCell.getActor();
+        imageCell.row();
+        logo.addAction(
+                sequence(
+                        fadeOut(0),
+                        moveBy(0, 20f, 0),
+                        parallel(fadeIn(2),
+                                moveBy(0, -20, 0.5f))));
         Window loginWindow = new Window("", getSkin(), "content");
         loginWindow.pad(20);
 
@@ -106,9 +115,9 @@ public class LoginScreen extends AbstractScreen {
 
         loginWindow.add(userLogin).growX().row();
         loginWindow.add(connectionTable).padTop(40).growX();
-
+        userLogin.addAction(sequence(fadeOut(0), fadeIn(2f)));
+        connectionTable.addAction(sequence(fadeOut(0), fadeIn(2f)));
         getMainTable().add(loginWindow).prefHeight(350);
-
         getStage().setKeyboardFocus(username);
     }
 
