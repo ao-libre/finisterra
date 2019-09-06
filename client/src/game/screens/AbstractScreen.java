@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -66,7 +67,8 @@ public abstract class AbstractScreen extends ScreenAdapter {
     }
 
     protected Cell<Image> addTitle() {
-        return mainTable.add(new Image(logoTexture)).pad(5).top();
+        Image logo = new Image(logoTexture);
+        return mainTable.add(logo).pad(5).top();
     }
 
     @Override

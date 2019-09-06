@@ -16,7 +16,7 @@ public class Resources {
     public static final String GAME_IMAGES_PATH = GAME_UI_PATH + "images/";
     public static final String GAME_SPELL_ICONS_PATH = GAME_UI_PATH + "spells/";
     public static final String GAME_SPELLS_PATH = "spells/";
-    public static final String SKIN_FILE_PATH = "ao-skin-2/";
+    public static final String SKIN_FILE_PATH = "ao-skin/";
 
     // Files
     public static final String GAME_SHADERS_LIGHT = "light.png";

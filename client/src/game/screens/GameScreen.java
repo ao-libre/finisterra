@@ -38,6 +38,7 @@ import game.systems.render.ui.CoordinatesRenderingSystem;
 import game.systems.render.world.*;
 import game.systems.sound.SoundSytem;
 import game.ui.GUI;
+import game.ui.StageResizeEvent;
 import net.mostlyoriginal.api.system.render.ClearScreenSystem;
 import shared.model.map.Tile;
 
@@ -200,6 +201,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         cameraSystem.camera.update();
 
         getWorld().getSystem(GUI.class).getStage().getViewport().update(width, height);
+        getWorld().getSystem(GUI.class).getTable().fire(new StageResizeEvent(width, height));
 
         getWorld().getSystem(LightRenderingSystem.class).resize(width, height);
     }
