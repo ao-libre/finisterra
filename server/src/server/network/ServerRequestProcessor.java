@@ -143,7 +143,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     }
 
     /**
-     * Attack and notify, if it was effective or not, to near users
+     * AttackInterval and notify, if it was effective or not, to near users
      *
      * @param attackRequest attack type
      * @param connectionId  user connection id

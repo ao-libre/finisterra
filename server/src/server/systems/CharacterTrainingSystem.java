@@ -180,9 +180,8 @@ public class CharacterTrainingSystem extends PassiveSystem {
 
     private float addHealth(int userId) {
         E e = E(userId);
-        int constitution = e.constitutionBaseValue();
         float healthModifier = Modifiers.HEALTH.of(CharClass.of(e));
-        float average = healthModifier - (21 - constitution) * 0.5f;
+        float average = healthModifier - (21 - 20) * 0.5f;
         int hpUp = ThreadLocalRandom.current().nextInt(getMinHealth(average), getMaxHealth(average));
         e.getHealth().max += hpUp;
         e.getHealth().min = e.getHealth().max;

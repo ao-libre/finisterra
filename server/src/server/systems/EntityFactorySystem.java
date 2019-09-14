@@ -110,8 +110,6 @@ public class EntityFactorySystem extends PassiveSystem {
         // set attributes
         entity.agilityBaseValue(ATTR_BASE_VALUE + Attributes.AGILITY.of(race));
         entity.agilityCurrentValue(ATTR_BASE_VALUE + Attributes.AGILITY.of(race));
-        entity.charismaBaseValue(ATTR_BASE_VALUE + Attributes.CHARISMA.of(race));
-        entity.constitutionBaseValue(ATTR_BASE_VALUE + Attributes.CONSTITUTION.of(race));
         entity.intelligenceBaseValue(ATTR_BASE_VALUE + Attributes.INTELLIGENCE.of(race));
         entity.strengthBaseValue(ATTR_BASE_VALUE + Attributes.STRENGTH.of(race));
         entity.strengthCurrentValue(ATTR_BASE_VALUE + Attributes.STRENGTH.of(race));
@@ -208,7 +206,7 @@ public class EntityFactorySystem extends PassiveSystem {
     }
 
     private void setHP(E entity) {
-        int random = ThreadLocalRandom.current().nextInt(1, entity.constitutionBaseValue() / 3);
+        int random = 20; // @todo guidota
         entity.healthMax(DEFAULT_STAMINA + random);
         entity.healthMin(DEFAULT_STAMINA + random);
     }

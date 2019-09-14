@@ -80,6 +80,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
         if (userEntity.hasStamina()) {
             Stamina stamina = userEntity.getStamina();
             stamina.min = Math.max(0, stamina.min - stamina.max * STAMINA_REQUIRED_PERCENT / 100);
+
             EntityUpdate update = EntityUpdateBuilder.of(entityId).withComponents(stamina).build();
             getWorld().getSystem(WorldManager.class).sendEntityUpdate(entityId, update);
         }

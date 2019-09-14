@@ -8,13 +8,13 @@ import java.io.Serializable;
 
 @PooledWeaver
 @DelayedComponentRemoval
-public class Attack extends Component implements Serializable {
+public class AttackInterval extends Component implements Serializable {
 
     public static float DEFAULT_INTERVAL = 1.2f;
 
     public float interval = DEFAULT_INTERVAL;
 
-    public Attack() {
+    public AttackInterval() {
     }
 
     public float getInterval() {

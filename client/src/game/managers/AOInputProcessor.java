@@ -163,7 +163,7 @@ public class AOInputProcessor extends Stage implements ControllerListener {
         if (toCast.isPresent()) {
             Spell spell = toCast.get();
             E player = E.E(GameScreen.getPlayer());
-            if (!player.hasAttack() || player.getAttack().interval - world.getDelta() < 0) {
+            if (!player.hasAttack() || player.getAttackInterval().interval - world.getDelta() < 0) {
                 TimeSync timeSyncSystem = world.getSystem(TimeSync.class);
                 long rtt = timeSyncSystem.getRtt();
                 long timeOffset = timeSyncSystem.getTimeOffset();
@@ -413,7 +413,7 @@ public class AOInputProcessor extends Stage implements ControllerListener {
     private void attack() {
         E player = E(GameScreen.getPlayer());
         WorldUtils.getWorld().ifPresent(world -> {
-            if (!player.hasAttack() || player.getAttack().interval - world.getDelta() <= 0) {
+            if (!player.hasAttack() || player.getAttackInterval().interval - world.getDelta() <= 0) {
                 GameScreen.getClient().sendToAll(new AttackRequest(AttackType.PHYSICAL));
                 player.attack();
             }

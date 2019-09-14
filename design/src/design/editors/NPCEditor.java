@@ -48,7 +48,7 @@ public class NPCEditor extends Dialog {
         table.add(IntegerEditor.create("Def", npc::setDef, npc::getDef, listener)).row();
         table.add(IntegerEditor.create("Magic Def", npc::setDefM, npc::getDefM, listener)).row();
         table.add(IntegerEditor.create("Evasion", npc::setEvasionPower, npc::getEvasionPower, listener)).row();
-        table.add(IntegerEditor.create("Attack", npc::setAttackPower, npc::getAttackPower, listener)).row();
+        table.add(IntegerEditor.create("AttackInterval", npc::setAttackPower, npc::getAttackPower, listener)).row();
         table.add(IntegerEditor.create("Gold", npc::setGiveGLD, npc::getGiveGLD, listener)).row();
         table.add(IntegerEditor.create("Exp", npc::setGiveEXP, npc::getGiveEXP, listener)).row();
         table.add(IntegerEditor.create("Attack Sound N.", npc::setAttackSnd, npc::getAttackSnd, listener)).row ();
