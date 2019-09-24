@@ -60,7 +60,6 @@ public class CameraSystem extends BaseSystem {
 
     @Override
     protected void processSystem() {
-        // in render():
         if (timeToCameraZoomTarget >= 0) {
             timeToCameraZoomTarget -= getWorld().getDelta();
             float progress = timeToCameraZoomTarget < 0 ? 1 : 1f - timeToCameraZoomTarget / cameraZoomDuration;
@@ -71,7 +70,7 @@ public class CameraSystem extends BaseSystem {
     public void zoom(int inout, float duration) {
         cameraZoomOrigin = camera.zoom;
         desiredZoom += inout * 0.025f;
-        desiredZoom = MathUtils.clamp(desiredZoom, AOGame.GAME_SCREEN_ZOOM, maxZoom);
+        desiredZoom = MathUtils.clamp(desiredZoom, minZoom, maxZoom);
         timeToCameraZoomTarget = cameraZoomDuration = duration;
     }
 }
