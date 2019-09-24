@@ -413,7 +413,7 @@ public class AOInputProcessor extends Stage implements ControllerListener {
     private void attack() {
         E player = E(GameScreen.getPlayer());
         WorldUtils.getWorld().ifPresent(world -> {
-            if (!player.hasAttack() || player.getAttackInterval().interval - world.getDelta() <= 0) {
+            if (!player.hasAttackInterval() || player.getAttackInterval().interval - world.getDelta() <= 0) {
                 GameScreen.getClient().sendToAll(new AttackRequest(AttackType.PHYSICAL));
                 player.attack();
             }
