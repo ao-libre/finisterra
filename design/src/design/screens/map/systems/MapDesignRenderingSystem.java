@@ -4,6 +4,7 @@ import camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import game.handlers.MapHandler;
@@ -14,6 +15,7 @@ import position.WorldPos;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.util.MapHelper;
+import shared.util.Pair;
 
 @Wire(injectInherited = true)
 public class MapDesignRenderingSystem extends RenderingSystem {
@@ -26,11 +28,12 @@ public class MapDesignRenderingSystem extends RenderingSystem {
     private boolean showExit;
     private boolean showBlocks;
     private boolean showGrid;
+    private Pair<WorldPos, WorldPos> tilesSelection;
 
     public MapDesignRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(Focused.class, WorldPos.class), batch, CameraKind.WORLD);
         helper = MapHandler.getHelper();
-        sr.setColor(Colors.TRANSPARENT_RED);
+
         sr.setAutoShapeType(true);
     }
 
@@ -66,6 +69,7 @@ public class MapDesignRenderingSystem extends RenderingSystem {
             }
             if (showGrid) {
                 sr.begin();
+                sr.setColor(Colors.TRANSPARENT_RED);
                 float start = Tile.TILE_PIXEL_HEIGHT;
                 for (int i = 0; i < map.getHeight(); i++) {
                     // draw col
@@ -76,8 +80,29 @@ public class MapDesignRenderingSystem extends RenderingSystem {
                 }
                 sr.end();
             }
+            if (tilesSelection != null) {
+                drawSelection();
+            }
         }
         // draw tiles lines
+    }
+
+    private void drawSelection() {
+        sr.begin();
+        sr.setColor(Colors.CITIZEN);
+        WorldPos origin = tilesSelection.getKey();
+        WorldPos target = tilesSelection.getValue();
+        float minX = Math.min(origin.x, target.x) * Tile.TILE_PIXEL_WIDTH;
+        float minY = Math.min(origin.y, target.y) * Tile.TILE_PIXEL_HEIGHT;
+
+        float maxX = Math.max(origin.x, target.x) * Tile.TILE_PIXEL_WIDTH;
+        float maxY = Math.max(origin.y, target.y) * Tile.TILE_PIXEL_HEIGHT;
+        sr.rect(minX, minY, (maxX - minX) + Tile.TILE_PIXEL_WIDTH, (maxY - minY) + Tile.TILE_PIXEL_HEIGHT);
+        sr.end();
+    }
+
+    public void setTilesSelection(Pair<WorldPos, WorldPos> tilesSelection) {
+        this.tilesSelection = tilesSelection;
     }
 
     public void setMap(Map map) {

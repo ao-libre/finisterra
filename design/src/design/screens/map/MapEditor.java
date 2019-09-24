@@ -45,6 +45,7 @@ import shared.model.map.Tile;
 import shared.model.map.WorldPosition;
 import shared.util.AOJson;
 import shared.util.MapHelper;
+import shared.util.Pair;
 import shared.util.Util;
 
 import java.io.File;
@@ -70,6 +71,8 @@ public class MapEditor extends DesignScreen {
     private MapPalette mapPalette;
     private Deque<Undo> undoableActions = new ArrayDeque<>(50);
     private Table menu;
+    private Pair<WorldPos, WorldPos> tilesSelection;
+    private WorldPos origin;
 
     public MapEditor() {
         stage = new Stage() {
@@ -85,9 +88,25 @@ public class MapEditor extends DesignScreen {
                     position.y = MathUtils.clamp(position.y, 0, 64000);
                 } else {
                     dragging = true;
-                    setTile();
+                    Selection selection = mapPalette.getSelection();
+                    if (selection != Selection.SELECTION) {
+                        setTile();
+                    } else {
+                        mouseToWorldPos().ifPresent(pos -> {
+                            tilesSelection = new Pair(origin, pos);
+                            world.getSystem(MapDesignRenderingSystem.class).setTilesSelection(tilesSelection);
+                        });
+                    }
                 }
                 return true;
+            }
+
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                boolean b = super.touchDown(screenX, screenY, pointer, button);
+                Optional<WorldPos> worldPos = mouseToWorldPos();
+                worldPos.ifPresent(pos -> origin = pos);
+                return b;
             }
 
             @Override
@@ -113,7 +132,19 @@ public class MapEditor extends DesignScreen {
 
             @Override
             public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-                setTile();
+                Selection selection = mapPalette.getSelection();
+                if (selection == Selection.SELECTION && dragging && origin != null) {
+                    mouseToWorldPos().ifPresent(pos -> {
+                        tilesSelection = new Pair(origin, pos);
+                        world.getSystem(MapDesignRenderingSystem.class).setTilesSelection(tilesSelection);
+                    });
+                    origin = null;
+                } else if(tilesSelection != null && !dragging && !isOverGUI()) {
+                    world.getSystem(MapDesignRenderingSystem.class).setTilesSelection(null);
+                    tilesSelection = null;
+                } else {
+                    setTile();
+                }
                 dragging = false;
                 return super.touchUp(screenX, screenY, pointer, button);
             }
@@ -163,6 +194,10 @@ public class MapEditor extends DesignScreen {
         if (isOverGUI()) {
             return;
         }
+        doSetTile(pos);
+    }
+
+    private void doSetTile(WorldPos pos) {
         Map map = mapProperties.getCurrent();
         Tile tile = map.getTile(pos.x, pos.y);
         Undo undo = new Undo(new Tile(tile), pos);
@@ -228,7 +263,6 @@ public class MapEditor extends DesignScreen {
         if (saveUndo) {
             undoableActions.push(undo);
         }
-
     }
 
     private void putTileSet(int x, int y, int mapId, Map map, int image) {
@@ -261,7 +295,7 @@ public class MapEditor extends DesignScreen {
         builder
                 .with(new SuperMapper())
                 .with(new ObjectHandler())
-                .with(new CameraSystem(0.1f, 2f))
+                .with(new CameraSystem(1f, 5f))
                 .with(animationHandler)
                 .with(descriptorHandler)
                 .with(new MapDesignRenderingSystem(new SpriteBatch()))
@@ -315,7 +349,7 @@ public class MapEditor extends DesignScreen {
 
         menu.add(createButton("Fill", "default", () -> {
             Map current = mapProperties.getCurrent();
-            int x = 1, y = 1, i = 1, j = 1;
+            int x = 1, y = 1, i = 1, j = 1, maxX, maxY;
             Selection selection = mapPalette.getSelection();
             if (selection.equals(Selection.TILE_SET)) {
                 int tileset = assetChooser.getTileset();
@@ -329,13 +363,25 @@ public class MapEditor extends DesignScreen {
                     }
                 }
             }
-            while (x < current.getWidth()) {
-                while (y < current.getHeight()) {
-                    setTile(x, y);
+            if (tilesSelection != null) {
+                WorldPos origin = tilesSelection.getKey();
+                WorldPos target = tilesSelection.getValue();
+                x = Math.min(origin.x, target.x);
+                y = Math.min(origin.y, target.y);
+                maxX = Math.max(origin.x, target.x) + 1;
+                maxY = Math.max(origin.y, target.y) + 1;
+            } else {
+                maxX = current.getWidth();
+                maxY = current.getHeight();
+            }
+            int initialY = y;
+            while (x < maxX) {
+                while (y < maxY) {
+                    doSetTile(new WorldPos(x, y, 0));
                     y += j;
                 }
                 x += i;
-                y = 1;
+                y = initialY;
             }
         }, "All tiles will be set with current configuration (layer & selection)"))
                 .spaceLeft(5);
