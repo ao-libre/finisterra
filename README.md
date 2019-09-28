@@ -39,8 +39,12 @@ To avoid recompiling shared module and regeneration of .class files, which will 
 * Create run configurations using gradle tasks (desktop:run, server:run)
 
 Here is an image showing how it should look like:
-![imagen](https://media.discordapp.net/attachments/573645939663699988/585399360037322777/Screen_Shot_2019-06-04_at_9.25.56_PM.png)
-
+#### Server
+https://cdn.discordapp.com/attachments/573645939663699988/620037001122414606/Captura_de_pantalla_de_2019-09-07_20-23-53.png
+#### Client
+https://cdn.discordapp.com/attachments/573645939663699988/620037006545649669/Captura_de_pantalla_de_2019-09-07_20-23-37.png
+#### Game Design Center
+https://cdn.discordapp.com/attachments/573645939663699988/620037009829789698/Captura_de_pantalla_de_2019-09-07_20-23-08.png
 
 #### How to change Java Version?
 If you have another version of Java already installed, please change: 
