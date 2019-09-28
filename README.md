@@ -1,4 +1,5 @@
 # ao-java [![Build Status](https://travis-ci.org/ao-libre/ao-java.svg?branch=master)](https://travis-ci.org/ao-libre/ao-java) [![Chat](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/GpX3zzZ)
+
 Rewriting Argentum Online in Java, using Artemis, Kryonet and libGDX.
 
 ## ECS (entity-component-system)
@@ -19,7 +20,8 @@ git clone https://github.com/ao-libre/ao-java.git
 ```
 ## Requirements
 
-Important: you need to use [OpenJDK 12](http://jdk.java.net/12/) to make it run.
+1 - Important: you need to use [OpenJDK 12](http://jdk.java.net/12/) to make it run o SE edition https://www.oracle.com/technetwork/java/javase/downloads/jdk12-downloads-5295953.html
+2 - Intel IJ versión comunidad https://www.jetbrains.com/idea/download/index.html
 
 ### Run
 * Go to folder and use following commands to run client ```./gradlew desktop:run``` or server ```./gradlew server:run```
@@ -40,11 +42,11 @@ To avoid recompiling shared module and regeneration of .class files, which will 
 
 Here is an image showing how it should look like:
 #### Server
-https://cdn.discordapp.com/attachments/573645939663699988/620037001122414606/Captura_de_pantalla_de_2019-09-07_20-23-53.png
+![imageserverconfig](https://cdn.discordapp.com/attachments/573645939663699988/620037001122414606/Captura_de_pantalla_de_2019-09-07_20-23-53.png)
 #### Client
-https://cdn.discordapp.com/attachments/573645939663699988/620037006545649669/Captura_de_pantalla_de_2019-09-07_20-23-37.png
+![imageclientconfig](https://cdn.discordapp.com/attachments/573645939663699988/620037006545649669/Captura_de_pantalla_de_2019-09-07_20-23-37.png)
 #### Game Design Center
-https://cdn.discordapp.com/attachments/573645939663699988/620037009829789698/Captura_de_pantalla_de_2019-09-07_20-23-08.png
+![imageclientconfig](https://cdn.discordapp.com/attachments/573645939663699988/620037009829789698/Captura_de_pantalla_de_2019-09-07_20-23-08.png)
 
 #### How to change Java Version?
 If you have another version of Java already installed, please change: 
@@ -54,7 +56,7 @@ If you use IntelliJ, use the JDK that comes with the project if is not working c
 
 `IntelliJ IDEA -> Preferences -> Build, Execution, Deployment -> Build Tools -> Gradle `
 
-![imagenintellij](https://media.discordapp.net/attachments/519531620064296971/543934316233883669/Screen_Shot_2019-02-10_at_12.20.01_PM.png)
+![imagenintellij](https://cdn.discordapp.com/attachments/580487031197794313/627486688574308392/Captura_de_pantalla_de_2019-09-28_09-39-58.png)
 
 
 ## Modules
