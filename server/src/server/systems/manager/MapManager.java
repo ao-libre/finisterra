@@ -89,7 +89,7 @@ public class MapManager extends DefaultManager {
     }
 
     public Set<Integer> getEntities(WorldPos pos) {
-        return entitiesByMap.get(pos.map)
+        return getEntitiesInMap(pos.map)
                 .stream()
                 .map(E::E)
                 .filter(E::hasWorldPos)

@@ -37,7 +37,7 @@ public class EntityFactorySystem extends PassiveSystem {
     private static final int INITIAL_EXP_TO_NEXT_LEVEL = 300;
     private static final int ATTR_BASE_VALUE = 18;
 
-    private static final WorldPos NEUTRAL_SPOT = new WorldPos(50, 50, 291);
+    private static final WorldPos NEUTRAL_SPOT = new WorldPos(50, 50, 293);
 
     private MapManager mapManager;
     private WorldManager worldManager;
@@ -533,7 +533,7 @@ public class EntityFactorySystem extends PassiveSystem {
 
 
     private void setEntityPosition(E entity, Team team) {
-        WorldPos spot = null;
+        WorldPos spot = NEUTRAL_SPOT;
         switch (team) {
             case REAL_ARMY:
                 spot = SpotRegenerationSystem.Spot.REAL.getPos();
