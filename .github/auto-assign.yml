@@ -1,0 +1,12 @@
+# A list of members able to review PRs (github users)
+teamMembers:
+  - guidota
+  - jopiortiz
+  - Derillo
+  - cucsijuan
+  - cpbeto
+  - RecoX
+
+# A list of keywords to be skipped the process that add reviewers if pull requests include it
+skipKeywords:
+  - wip
