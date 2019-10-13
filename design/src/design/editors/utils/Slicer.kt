@@ -165,7 +165,7 @@ class Slicer(val file: FileHandle) {
     }
 
 
-    private fun plotSprite(spriteSheet: Pixmap, point: Point, backgroundColor: Color): List<Point> {
+    private fun plotSprite(spriteSheet: Pixmap, point: Point, @Suppress("UNUSED_PARAMETER") backgroundColor: Color): List<Point> {
         val unvisited = LinkedList<Point>()
         val visited = hashSetOf(point)
 
