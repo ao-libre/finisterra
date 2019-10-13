@@ -2,7 +2,7 @@ import org.gradle.internal.jvm.Jvm
 
 plugins {
     id 'application'
-    id 'de.undercouch.download' version '4.0.0'
+    id 'de.undercouch.download'
 }
 
 sourceSets {
