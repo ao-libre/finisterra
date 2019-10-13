@@ -43,9 +43,9 @@ public class SpellLoader extends Loader<Map<Integer, Spell>> {
         setters.add(new SpellSetter<>("SubeSta", Spell::setSumStamina));
         setters.add(new SpellSetter<>("MinSta", Spell::setMinSta));
         setters.add(new SpellSetter<>("MaxSta", Spell::setMaxSta));
-        setters.add(new SpellSetter<>("SubeHam", Spell::setSumHangry));
-        setters.add(new SpellSetter<>("MinHam", Spell::setMinHangry));
-        setters.add(new SpellSetter<>("MaxHam", Spell::setMaxHangry));
+        setters.add(new SpellSetter<>("SubeHam", Spell::setSumHungry));
+        setters.add(new SpellSetter<>("MinHam", Spell::setMinHungry));
+        setters.add(new SpellSetter<>("MaxHam", Spell::setMaxHungry));
         setters.add(new SpellSetter<>("SubeSed", Spell::setSumThirsty));
         setters.add(new SpellSetter<>("MinSed", Spell::setMinThirsty));
         setters.add(new SpellSetter<>("MaxSed", Spell::setMaxThirsty));
@@ -63,7 +63,7 @@ public class SpellLoader extends Loader<Map<Integer, Spell>> {
         setters.add(new SpellSetter<>("Inmoviliza", Spell::setImmobilize));
         setters.add(new SpellSetter<>("RemoverParalisis", Spell::setRemoveParalysis));
         setters.add(new SpellSetter<>("RemoverEstupidez", Spell::setRemoveStupid));
-        setters.add(new SpellSetter<>("RemueveInvisibilidadParcial", Spell::setRemoveParcialInvisibility));
+        setters.add(new SpellSetter<>("RemueveInvisibilidadParcial", Spell::setRemovePartialInvisibility));
         setters.add(new SpellSetter<>("CuraVeneno", Spell::setHealPoison));
         setters.add(new SpellSetter<>("Envenena", Spell::setPoison));
         setters.add(new SpellSetter<>("Revivir", Spell::setRevive));

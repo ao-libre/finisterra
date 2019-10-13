@@ -216,7 +216,7 @@ public class MagicCombatSystem extends BaseSystem {
             // TODO anillos
             damage = -damage;
         }
-        return (int) (damage);
+        return damage;
     }
 
     private void updateMana(int playerId, int requiredMana, Mana mana) {
