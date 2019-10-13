@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.esotericsoftware.minlog.Log;
 import design.editors.fields.*;
 import org.jetbrains.annotations.NotNull;
-import shared.objects.types.Obj;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;

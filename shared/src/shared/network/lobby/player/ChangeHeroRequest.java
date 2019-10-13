@@ -8,7 +8,8 @@ public class ChangeHeroRequest implements IRequest {
 
     private Hero hero;
 
-    public ChangeHeroRequest() { }
+    public ChangeHeroRequest() {
+    }
 
     public ChangeHeroRequest(Hero hero) {
         this.hero = hero;

@@ -2,7 +2,6 @@ package game.handlers;
 
 import com.artemis.BaseSystem;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -14,12 +13,12 @@ import entity.character.equipment.Weapon;
 import entity.character.parts.Body;
 import entity.character.parts.Head;
 import graphics.Effect;
-import model.descriptors.*;
+import model.descriptors.HeadDescriptor;
+import model.descriptors.IDescriptor;
 import model.textures.AOAnimation;
 import model.textures.AOImage;
 import model.textures.AOTexture;
 import model.textures.BundledAnimation;
-import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.objects.types.HelmetObj;
 import shared.objects.types.ShieldObj;
 import shared.objects.types.WeaponObj;
@@ -33,24 +32,18 @@ import java.util.function.Function;
 @Wire
 public class AnimationHandler extends BaseSystem {
 
-    // Injected Systems
-    private DescriptorHandler descriptorHandler;
-    private ObjectHandler objectHandler;
-
-    private AOAssetManager assetManager;
-
     private static LoadingCache<Integer, AOTexture> textures;
-
     private static LoadingCache<Index, List<AOTexture>> headAnimations;
-
     private static LoadingCache<Index, List<BundledAnimation>> helmetAnimations;
     private static LoadingCache<Index, List<BundledAnimation>> weaponAnimations;
     private static LoadingCache<Index, List<BundledAnimation>> shieldAnimations;
     private static LoadingCache<Index, List<BundledAnimation>> bodyAnimations;
     private static LoadingCache<Index, List<BundledAnimation>> fxAnimations;
-
     private static LoadingCache<Integer, BundledAnimation> tiledAnimations;
-
+    // Injected Systems
+    private DescriptorHandler descriptorHandler;
+    private ObjectHandler objectHandler;
+    private AOAssetManager assetManager;
     private LoadingCache<AOAnimation, BundledAnimation> previews = CacheBuilder
             .newBuilder()
             .expireAfterAccess(3, TimeUnit.MINUTES)
