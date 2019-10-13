@@ -25,11 +25,10 @@ import java.util.concurrent.TimeUnit;
 @Wire(injectInherited = true)
 public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
 
+    private static final List<Integer> LOWER_LAYERS = Collections.singletonList(1);
     // injected systems
     private MapManager mapManager;
     private WorldRenderingSystem worldRenderingSystem;
-
-    private static final List<Integer> LOWER_LAYERS = Collections.singletonList(1);
     private SpriteBatch mapBatch;
     private LoadingCache<Map, Texture> bufferedLayers = CacheBuilder
             .newBuilder()

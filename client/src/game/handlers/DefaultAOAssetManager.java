@@ -290,7 +290,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         }
         return weapons;
     }
-	
+
     public String getMessages(Messages key, String... params) {
         if (key == null) {
             Gdx.app.error("Internationalization", "Error trying to get message");

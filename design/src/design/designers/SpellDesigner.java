@@ -8,7 +8,10 @@ import shared.util.AOJson;
 import shared.util.SharedResources;
 import shared.util.SpellJson;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import static design.designers.SpellDesigner.SpellParameter;
 

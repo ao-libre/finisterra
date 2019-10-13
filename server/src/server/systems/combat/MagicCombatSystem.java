@@ -85,7 +85,7 @@ public class MagicCombatSystem extends BaseSystem {
     // TODO refactor what elements/components to send
     private void castSpell(int playerId, int target, Spell spell) {
         int requiredMana = spell.getRequiredMana();
-        int requiredStamina = spell.getRequiredStamina(); // TODO check stamina
+        int requiredStamina = spell.getRequiredStamina();
         Mana mana = E(playerId).getMana();
         Stamina stamina = E(playerId).getStamina();
 
@@ -195,7 +195,7 @@ public class MagicCombatSystem extends BaseSystem {
     }
 
     private int calculateMagicDamage(int user, int target, Spell spell) {
-        int damage = 0;
+        int damage;
         final int minHP = spell.getMinHP();
         final int maxHP = spell.getMaxHP();
         damage = ThreadLocalRandom.current().nextInt(minHP, maxHP + 1);
@@ -204,7 +204,6 @@ public class MagicCombatSystem extends BaseSystem {
         if (spell.getSumHP() == 1) { // HEAL
             // TODO
         } else if (spell.getSumHP() == 2) {
-            int magicDefense;
             if (E(target).hasHelmet()) {
                 final Optional<Obj> obj = objectManager.getObject(E(target).getHelmet().index);
                 obj
@@ -217,7 +216,7 @@ public class MagicCombatSystem extends BaseSystem {
             // TODO anillos
             damage = -damage;
         }
-        return (int) (damage);
+        return damage;
     }
 
     private void updateMana(int playerId, int requiredMana, Mana mana) {

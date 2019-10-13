@@ -2,94 +2,93 @@ package shared.model;
 
 public class Spell {
 
-    int id;
+    private int id;
 
-    String name;
-    String desc;
-    String magicWords;
-    String originMsg;
-    String ownerMsg;
-    String targetMsg;
-    int type;
-    int wav;
-    int fxGrh;
-    int loops;
-    int minSkill;
-    int requiredMana;
-    int requiredStamina;
-    int target;
-    int iconGrh;
+    private String name;
+    private String desc;
+    private String magicWords;
+    private String originMsg;
+    private String ownerMsg;
+    private String targetMsg;
+    private int type;
+    private int wav;
+    private int fxGrh;
+    private int loops;
+    private int minSkill;
+    private int requiredMana;
+    private int requiredStamina;
+    private int target;
+    private int iconGrh;
 
     // HP
-    int sumHP;
-    int minHP;
-    int maxHP;
+    private int sumHP;
+    private int minHP;
+    private int maxHP;
 
     // MANA
-    boolean sumMana;
-    int maxMana;
-    int minMana;
+    private boolean sumMana;
+    private int maxMana;
+    private int minMana;
 
     // STAMINA
-    boolean sumStamina;
-    int minSta;
-    int maxSta;
+    private boolean sumStamina;
+    private int minSta;
+    private int maxSta;
 
     // HANGRY
-    boolean sumHangry;
-    int minHangry;
-    int maxHangry;
+    private boolean sumHungry;
+    private int minHungry;
+    private int maxHungry;
 
     // THIRSTY
-    boolean sumThirsty;
-    int minThirsty;
-    int maxThirsty;
+    private boolean sumThirsty;
+    private int minThirsty;
+    private int maxThirsty;
 
     // AGILITY
-    boolean sumAgility;
-    int minAgility;
-    int maxAgility;
-    float agilityDuration;
+    private boolean sumAgility;
+    private int minAgility;
+    private int maxAgility;
+    private float agilityDuration;
 
     // STRENGTH
-    boolean sumStrength;
-    int minStrength;
-    int maxStrength;
-    float strengthDuration;
+    private boolean sumStrength;
+    private int minStrength;
+    private int maxStrength;
+    private float strengthDuration;
 
     // CA?
-    boolean sumCA;
-    int minCA;
-    int maxCA;
+    private boolean sumCA;
+    private int minCA;
+    private int maxCA;
 
-    boolean invisibility;
-    boolean paralyze;
-    boolean immobilize;
+    private boolean invisibility;
+    private boolean paralyze;
+    private boolean immobilize;
 
-    boolean removeParalysis;
-    boolean removeStupid;
-    boolean removeParcialInvisibility;
-    boolean healPoison;
-    boolean poison;
-    boolean revive;
-    boolean blindness;
-    boolean stupid;
+    private boolean removeParalysis;
+    private boolean removeStupid;
+    private boolean removePartialInvisibility;
+    private boolean healPoison;
+    private boolean poison;
+    private boolean revive;
+    private boolean blindness;
+    private boolean stupid;
 
     // INVOKE
-    boolean invokes;
-    int numNpc;
-    int count;
+    private boolean invokes;
+    private int numNpc;
+    private  int count;
 
-    boolean mimetize;
-    boolean materialize;
+    private boolean mimetize;
+    private boolean materialize;
 
-    int itemIndex;
-    boolean staffAffected;
-    boolean needStaff;
-    boolean resis;
+    private int itemIndex;
+    private boolean staffAffected;
+    private boolean needStaff;
+    private boolean resis;
 
     public Spell() {
-
     }
 
     public Spell(int id) {
@@ -122,9 +121,9 @@ public class Spell {
         this.sumStamina = other.sumStamina;
         this.minSta = other.minSta;
         this.maxSta = other.maxSta;
-        this.sumHangry = other.sumHangry;
-        this.minHangry = other.minHangry;
-        this.maxHangry = other.maxHangry;
+        this.sumHungry = other.sumHungry;
+        this.minHungry = other.minHungry;
+        this.maxHungry = other.maxHungry;
         this.sumThirsty = other.sumThirsty;
         this.minThirsty = other.minThirsty;
         this.maxThirsty = other.maxThirsty;
@@ -144,7 +143,7 @@ public class Spell {
         this.immobilize = other.immobilize;
         this.removeParalysis = other.removeParalysis;
         this.removeStupid = other.removeStupid;
-        this.removeParcialInvisibility = other.removeParcialInvisibility;
+        this.removePartialInvisibility = other.removePartialInvisibility;
         this.healPoison = other.healPoison;
         this.poison = other.poison;
         this.revive = other.revive;
@@ -349,28 +348,28 @@ public class Spell {
         this.maxSta = Integer.parseInt(maxSta);
     }
 
-    public boolean isSumHangry() {
-        return sumHangry;
+    public boolean isSumHungry() {
+        return sumHungry;
     }
 
-    public void setSumHangry(String sumHangry) {
-        this.sumHangry = sumHangry.equals("1");
+    public void setSumHungry(String sumHungry) {
+        this.sumHungry = sumHungry.equals("1");
     }
 
-    public int getMinHangry() {
-        return minHangry;
+    public int getMinHungry() {
+        return minHungry;
     }
 
-    public void setMinHangry(String minHangry) {
-        this.minHangry = Integer.parseInt(minHangry);
+    public void setMinHungry(String minHungry) {
+        this.minHungry = Integer.parseInt(minHungry);
     }
 
-    public int getMaxHangry() {
-        return maxHangry;
+    public int getMaxHungry() {
+        return maxHungry;
     }
 
-    public void setMaxHangry(String maxHangry) {
-        this.maxHangry = Integer.parseInt(maxHangry);
+    public void setMaxHungry(String maxHungry) {
+        this.maxHungry = Integer.parseInt(maxHungry);
     }
 
     public boolean isSumThirsty() {
@@ -509,12 +508,12 @@ public class Spell {
         this.removeStupid = removeStupid.equals("1");
     }
 
-    public boolean isRemoveParcialInvisibility() {
-        return removeParcialInvisibility;
+    public boolean isRemovePartialInvisibility() {
+        return removePartialInvisibility;
     }
 
-    public void setRemoveParcialInvisibility(String removeParcialInvisibility) {
-        this.removeParcialInvisibility = removeParcialInvisibility.equals("1");
+    public void setRemovePartialInvisibility(String removePartialInvisibility) {
+        this.removePartialInvisibility = removePartialInvisibility.equals("1");
     }
 
     public boolean isHealPoison() {
