@@ -29,6 +29,7 @@ def inputPath = "${projectDir}/build/input/"
 def jpackagePath = osName().contains('mac') ? "${jdkFolder}/jdk-14.jdk/Contents/Home/bin/jpackage" : "${jdkFolder}/jdk-14/bin/jpackage"
 def jdkPath = osName().contains('mac') ? "${jdkFolder}/jdk-14.jdk" : "${jdkFolder}/jdk-14"
 
+
 if (osName().contains('mac')) {
     run {
         jvmArgs += '-XstartOnFirstThread'
@@ -100,7 +101,7 @@ task jlink(type: Exec, dependsOn: prepareInput) {
 
     // Overwrite previous bundled jre.
     if (file(runtimePath).exists()) {
-        delete(file(runtimePath))
+        delete(files(runtimePath))
     }
 
     commandLine = [
@@ -116,12 +117,6 @@ task jlink(type: Exec, dependsOn: prepareInput) {
             '--output', runtimePath
     ]
 
-    doLast {
-        // Final debloat for jpackage
-        delete(file("${runtimePath}/conf"))
-        delete(file("${runtimePath}/legal"))
-        delete fileTree("${runtimePath}/bin").matching { include "api*.dll" }
-    }
 }
 
 // creates application bundle (executable + runtime)
@@ -134,13 +129,15 @@ task appBundle(type: Exec, dependsOn: jlink) {
         System.out.println("Jpackage Path: " + jpackagePath)
         System.out.println("Jdk Path: " + jdkPath)
     }
+
     def mainJarFileName = "${project.name}-${project.version}.jar"
     def commands = [
             jpackagePath,
+            '--package-type', 'app-image',
             '--name', project.appName,
             '--vendor', "Argentum Online Libre",
             '--app-version', "${project.version}",
-            '--output', distributionPath,
+            '--dest', distributionPath,
             '--runtime-image', runtimePath,
             '--input', inputPath,
             '--main-class', project.mainClassName,
@@ -171,10 +168,6 @@ task appBundle(type: Exec, dependsOn: jlink) {
                 into("${distributionPath}${project.appName}/app")
             }
         }
-
-        // Debloat for Windows users.
-        delete fileTree("${distributionPath}/${project.appName}/bin").matching { include "*.dll" exclude "applauncher.dll" }
-        delete fileTree("${distributionPath}/${project.appName}/app").matching { include "api*.dll" }
 
         System.out.println("Application '${project.appName}' packaged.")
         System.out.println(" -> location: ${distributionPath}${project.appName}/")
