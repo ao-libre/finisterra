@@ -169,6 +169,7 @@ task appBundle(type: Exec, dependsOn: jlink) {
 		// Debloat for Windows users.
         delete fileTree("${distributionPath}/${project.appName}/bin").matching { include "*.dll" exclude "applauncher.dll" }
         delete fileTree("${distributionPath}/${project.appName}/app").matching { include "api*.dll" }
+		delete file("${distributionPath}/${project.appName}/.jpackage.xml")
 
         System.out.println("Application '${project.appName}' packaged.")
         System.out.println(" -> location: ${distributionPath}${project.appName}/")
