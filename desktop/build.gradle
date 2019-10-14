@@ -48,17 +48,8 @@ task dist(type: Jar) {
 dist.dependsOn classes
 run.dependsOn classes
 
-task prepareInput(dependsOn: dist) {
-    copy {
-        from files(sourceSets.main.resources.srcDirs)
-        from("${buildDir}/libs/" + "${project.name}-${project.version}.jar")
-
-        into inputPath
-    }
-}
-
 // creates a replacement runtime via jlink command (much smaller than jpackage)
-task jlink(type: Exec, dependsOn: prepareInput) {
+task jlink(type: Exec, dependsOn: dist) {
 
     doFirst {
         download {
@@ -130,7 +121,6 @@ task appBundle(type: Exec, dependsOn: jlink) {
         System.out.println("Jdk Path: " + jdkPath)
     }
 
-    def mainJarFileName = "${project.name}-${project.version}.jar"
     def commands = [
             jpackagePath,
             '--package-type', 'app-image',
@@ -139,9 +129,9 @@ task appBundle(type: Exec, dependsOn: jlink) {
             '--app-version', "${project.version}",
             '--dest', distributionPath,
             '--runtime-image', runtimePath,
-            '--input', inputPath,
+            '--input', "${buildDir}/libs",
             '--main-class', project.mainClassName,
-            '--main-jar', mainJarFileName
+            '--main-jar', "${project.name}-${project.version}.jar"
     ]
 
     if (osName().contains('windows')) {
@@ -162,6 +152,7 @@ task appBundle(type: Exec, dependsOn: jlink) {
     doLast() {
         copy {
             from("${projectDir}/Config.json")
+			from files("${projectDir}/assets")
             if (osName().contains('mac')) {
                 into("${distributionPath}${project.appName}.app/Contents/Resources/")
             } else {
