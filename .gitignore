@@ -9,6 +9,8 @@ out/
 **/out/
 desktop/*.tar.gz
 desktop/*.zip
-desktop/jdk*
+desktop/jdk-14
+desktop/jre
+desktop/openjdk-14-jpackage*.zip
 desktop/desktop*
 desktop/Screenshots*
