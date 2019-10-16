@@ -21,6 +21,14 @@ static def getJDK() { Jvm.current().getJavaHome().path }
 
 mainClassName = "launcher.DesktopLauncher"
 
+// Determine where the JDK is going to be (Windows/Linux and Mac)
+def jdkFolder = "${projectDir}/build/jdk"
+def runtimePath = osName().contains('mac') ? "${buildDir}/jre/contents/plugins/Java.runtime/Contents/Home" : "${buildDir}/jre"
+def distributionPath = "${buildDir}/distribution/"
+def inputPath = "${projectDir}/build/input/"
+def jpackagePath = osName().contains('mac') ? "${jdkFolder}/jdk-14.jdk/Contents/Home/bin/jpackage" : "${jdkFolder}/jdk-14/bin/jpackage"
+def jdkPath = osName().contains('mac') ? "${jdkFolder}/jdk-14.jdk" : "${jdkFolder}/jdk-14"
+
 if (osName().contains('mac')) {
     run {
         jvmArgs += '-XstartOnFirstThread'
@@ -36,56 +44,63 @@ task dist(type: Jar) {
     }
 }
 
-tasks.dist.doLast {
+dist.dependsOn classes
+run.dependsOn classes
 
-    // We copy all the dependencies .JAR into the input folder for JPackage.
-	copy {
-        from configurations.runtime
-		into "${buildDir}/libs"
-	}
+task prepareInput(dependsOn: dist) {
+    copy {
+        from files(sourceSets.main.resources.srcDirs)
+        from("${buildDir}/libs/" + "${project.name}-${project.version}.jar")
 
+        into inputPath
+    }
 }
 
-dist.dependsOn(classes)
-run.dependsOn(classes)
+// creates a replacement runtime via jlink command (much smaller than jpackage)
+task jlink(type: Exec, dependsOn: prepareInput) {
 
-// Determine where the JDK is going to be (Windows/Linux and Mac)
-def JPackagePath = "${projectDir}/jdk-14"
-def prebuiltJRE = "${projectDir}/bundled-JRE"
-def releasePath = "${buildDir}/releases"
+    doFirst {
+        download {
 
-// Downloads the JPackage binary and decompresses it.
-task downloadJPackage(type: Download, dependsOn: dist) {
+            if (osName().contains('windows')) {
+                src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-49_windows-x64_bin.zip'
+            } else if (osName().contains('linux')) {
+                src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-49_linux-x64_bin.tar.gz'
+            } else if (osName().contains('mac')) {
+                src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-49_osx-x64_bin.tar.gz'
+            }
 
-    if (osName().contains('windows')) {
-        src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-49_windows-x64_bin.zip'
-    } else if (osName().contains('linux')) {
-        src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-49_linux-x64_bin.tar.gz'
-    } else if (osName().contains('mac')) {
-        src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-49_osx-x64_bin.tar.gz'
-    }
+            if (!file(jdkFolder).exists()) {
+                file(jdkFolder).mkdirs()
+            }
+            dest jdkFolder
+            overwrite false
+        }
 
-    dest(new File(projectDir, 'jpackage.zip'))
-    overwrite(false)
-
-    // We put it in a doLast{} block because otherwise it (the task) auto-executes.
-    doLast {
-        if (!file(JPackagePath).exists()) {
+        if (!file(jdkPath).exists()) {
             copy {
-                from zipTree("${projectDir}/jpackage.zip")
-                into "${projectDir}"
+
+                if (osName().contains('windows')) {
+                    from zipTree("${jdkFolder}/openjdk-14-jpackage+1-49_windows-x64_bin.zip")
+                } else if (osName().contains('linux')) {
+                    from tarTree("${jdkFolder}/openjdk-14-jpackage+1-49_linux-x64_bin.tar.gz")
+                } else if (osName().contains('mac')) {
+                    from tarTree("${jdkFolder}/openjdk-14-jpackage+1-49_osx-x64_bin.tar.gz")
+                }
+
+                into jdkFolder
             }
         }
     }
 
-}
-
-// creates a replacement runtime via jlink command (much smaller than JPackage. Up to 38MB)
-task jlink(type: Exec, dependsOn: downloadJPackage) {
+    // Overwrite previous packaged application.
+    if (file("${buildDir}/distribution/${project.appName}").exists()) {
+        delete(file("${buildDir}/distribution/${project.appName}"))
+    }
 
     // Overwrite previous bundled jre.
-    if (file(prebuiltJRE).exists()) {
-        delete(file(prebuiltJRE))
+    if (file(runtimePath).exists()) {
+        delete(file(runtimePath))
     }
 
     commandLine = [
@@ -98,39 +113,38 @@ task jlink(type: Exec, dependsOn: downloadJPackage) {
             '--strip-native-commands',
             '--vm=server',
             '--compress=2',
-            '--output', prebuiltJRE
-    ] as List<String>
+            '--output', runtimePath
+    ]
 
     doLast {
-        // Some extra debloat.
-        delete(file("${prebuiltJRE}/conf"))
-        delete(file("${prebuiltJRE}/legal"))
-        delete fileTree("${prebuiltJRE}/bin").matching { include "api*.dll" }
+        // Final debloat for jpackage
+        delete(file("${runtimePath}/conf"))
+        delete(file("${runtimePath}/legal"))
+        delete fileTree("${runtimePath}/bin").matching { include "api*.dll" }
     }
-
 }
 
 // creates application bundle (executable + runtime)
 task appBundle(type: Exec, dependsOn: jlink) {
 
-    // Overwrite previous bundled application.
-    if (file(releasePath).exists()) {
-        delete(file(releasePath))
-    } else {
-        file(releasePath).mkdirs()
+    doFirst {
+        System.out.println("Runtime Path: " + runtimePath)
+        System.out.println("Distribution Path: " + distributionPath)
+        System.out.println("Input Path: " + inputPath)
+        System.out.println("Jpackage Path: " + jpackagePath)
+        System.out.println("Jdk Path: " + jdkPath)
     }
-
+    def mainJarFileName = "${project.name}-${project.version}.jar"
     def commands = [
-            JPackagePath.concat("/bin/jpackage"),
-            '--package-type', 'app-image',
+            jpackagePath,
             '--name', project.appName,
             '--vendor', "Argentum Online Libre",
             '--app-version', "${project.version}",
-            '--dest', releasePath,
-            '--runtime-image', prebuiltJRE,
-            '--input', "${buildDir}/libs",
+            '--output', distributionPath,
+            '--runtime-image', runtimePath,
+            '--input', inputPath,
             '--main-class', project.mainClassName,
-            '--main-jar', "${project.name}-${project.version}.jar"
+            '--main-jar', mainJarFileName
     ]
 
     if (osName().contains('windows')) {
@@ -149,24 +163,20 @@ task appBundle(type: Exec, dependsOn: jlink) {
     commandLine = commands
 
     doLast() {
-
         copy {
-            from("${projectDir}/assets")
             from("${projectDir}/Config.json")
             if (osName().contains('mac')) {
-                into("${releasePath}/${project.appName}/Contents/Resources/")
+                into("${distributionPath}${project.appName}.app/Contents/Resources/")
             } else {
-                into("${releasePath}/${project.appName}")
+                into("${distributionPath}${project.appName}/app")
             }
         }
 
         // Debloat for Windows users.
-        delete fileTree("${releasePath}/${project.appName}/bin").matching { include "*.dll" exclude "applauncher.dll" }
-        delete fileTree("${releasePath}/${project.appName}/app").matching { include "api*.dll" }
-        delete file("${releasePath}/${project.appName}/.jpackage.xml")
+        delete fileTree("${distributionPath}/${project.appName}/bin").matching { include "*.dll" exclude "applauncher.dll" }
+        delete fileTree("${distributionPath}/${project.appName}/app").matching { include "api*.dll" }
 
         System.out.println("Application '${project.appName}' packaged.")
-        System.out.println(" -> location: ${releasePath}/${project.appName}/")
+        System.out.println(" -> location: ${distributionPath}${project.appName}/")
     }
-
 }
