@@ -163,8 +163,10 @@ task appBundle(type: Exec, dependsOn: jlink) {
             from("${projectDir}/Config.json")
             if (osName().contains('mac')) {
                 into("${releasePath}/${project.appName}/Contents/Resources/")
-            } else {
+            } else if (osName().contains('windows')) {
                 into("${releasePath}/${project.appName}")
+            } else if (osName().contains('linux')) {
+            	into("${releasePath}/${project.appName}/bin")
             }
         }
 
