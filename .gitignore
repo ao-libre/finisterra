@@ -12,3 +12,4 @@ desktop/*.tar.gz
 desktop/*.zip
 desktop/jdk*
 desktop/Screenshots*
+server/bundled-APP
