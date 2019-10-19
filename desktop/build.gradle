@@ -53,6 +53,7 @@ run.dependsOn(classes)
 def JPackagePath = "${projectDir}/jdk-14"
 def prebuiltJRE = "${projectDir}/bundled-JRE"
 def releasePath = "${buildDir}/releases"
+def JPackageCompressed = osName().contains('windows') ? "jpackage.zip" : "jpackage.tar.gz"
 
 // Downloads the JPackage binary and decompresses it.
 task downloadJPackage(type: Download, dependsOn: dist) {
@@ -65,15 +66,22 @@ task downloadJPackage(type: Download, dependsOn: dist) {
         src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-49_osx-x64_bin.tar.gz'
     }
 
-    dest(new File(projectDir, 'jpackage.zip'))
+    dest(new File(projectDir, JPackageCompressed))
     overwrite(false)
 
     // We put it in a doLast{} block because otherwise it (the task) auto-executes.
     doLast {
         if (!file(JPackagePath).exists()) {
             copy {
-                from zipTree("${projectDir}/jpackage.zip")
-                into "${projectDir}"
+
+                if (osName().contains('windows')) {
+                    from zipTree("${projectDir}/${JPackageCompressed}")
+				} else {
+				    from tarTree("${projectDir}/${JPackageCompressed}")
+				}
+                
+				into "${projectDir}"
+
             }
         }
     }
