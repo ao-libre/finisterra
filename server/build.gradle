@@ -55,3 +55,73 @@ tasks.withType(JavaExec) {
 }
 
 dist.dependsOn classes
+
+tasks.dist.doLast {
+
+    // We copy all the dependencies .JAR into the input folder for JPackage.
+    copy {
+        from configurations.runtime
+        into "${buildDir}/libs"
+    }
+
+}
+
+// Determine where the bundled application is going to be.
+def releasePath = "${projectDir}/bundled-APP"
+
+// creates application bundle (executable + runtime)
+task appBundle(type: Exec, dependsOn: [dist, jlink]) {
+
+    // Overwrite previous bundled application.
+    if (file(releasePath).exists()) {
+        delete(file(releasePath))
+    } else {
+        file(releasePath).mkdirs()
+    }
+
+    def commands = [
+            JPackagePath.concat("/jdk-14/bin/jpackage"),
+            '--package-type', 'app-image',
+            '--name', project.appName,
+            '--vendor', "Argentum Online Libre",
+            '--app-version', "${project.version}",
+            '--dest', releasePath,
+            '--runtime-image', prebuiltJRE,
+            '--input', "${buildDir}/libs",
+            '--main-class', project.mainClassName,
+            '--main-jar', "${project.name}-${project.version}.jar"
+    ]
+
+    if (osName.contains('mac')) {
+        commands << "--java-options"
+        commands << "-XstartOnFirstThread"
+    }
+
+    commandLine = commands
+
+    doLast() {
+
+        copy {
+
+            from files(sourceSets.main.output.resourcesDir)
+
+            if (osName.contains('mac')) {
+                into("${releasePath}/${project.appName}/Contents/Resources/")
+            } else if (osName.contains('windows')) {
+                into("${releasePath}/${project.appName}")
+            } else if (osName.contains('linux')) {
+                into("${releasePath}/${project.appName}/bin")
+            }
+
+        }
+
+        // Debloat for Windows users.
+        delete fileTree("${releasePath}/${project.appName}/bin").matching { include "*.dll" exclude "applauncher.dll" }
+        delete fileTree("${releasePath}/${project.appName}/app").matching { include "api*.dll" }
+        delete file("${releasePath}/${project.appName}/.jpackage.xml")
+
+        System.out.println("Application '${project.appName}' packaged.")
+        System.out.println(" -> location: ${releasePath}/${project.appName}/")
+    }
+
+}

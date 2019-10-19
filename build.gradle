@@ -1,3 +1,5 @@
+import org.gradle.internal.jvm.Jvm
+
 buildscript {
     ext {
         kotlin_version = '1.3.50'
@@ -50,6 +52,7 @@ allprojects {
 }
 
 subprojects {
+
     apply plugin: "java-library"
 
     sourceCompatibility = JavaVersion.VERSION_12
@@ -60,4 +63,80 @@ subprojects {
 		//options.compilerArgs << '-Xlint:unchecked'
 		//options.deprecation = true
 	}
+}
+
+configure(subprojects.findAll {it.name == 'server' || it.name == 'desktop'}) {
+    
+    apply plugin: "de.undercouch.download"
+
+    ext {
+        osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
+        jdkPath = Jvm.current().getJavaHome().path
+        JPackagePath = "${rootDir}/JPackage"
+        prebuiltJRE = "${rootDir}/JPackage/bundled-JRE"
+        JPackageCompressed = osName.contains('windows') ? "jpackage.zip" : "jpackage.tar.gz"
+    }
+
+    // Downloads the JPackage binary and decompresses it.
+    task downloadJPackage(type: Download) {
+
+        if (osName.contains('windows')) {
+            src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-49_windows-x64_bin.zip'
+        } else if (osName.contains('linux')) {
+            src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-49_linux-x64_bin.tar.gz'
+        } else if (osName.contains('mac')) {
+            src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-49_osx-x64_bin.tar.gz'
+        }
+
+        dest(new File(JPackagePath, JPackageCompressed))
+        overwrite(false)
+
+        // We put it in a doLast{} block because otherwise it (the task) auto-executes.
+        doLast {
+            if (!file(JPackagePath.concat("/jdk-14")).exists()) {
+                copy {
+
+                    if (osName.contains('windows')) {
+                        from zipTree("${JPackagePath}/${JPackageCompressed}")
+                    } else {
+                        from tarTree("${JPackagePath}/${JPackageCompressed}")
+                    }
+                    
+                    into JPackagePath
+
+                }
+            }
+        }
+
+    }
+
+    // creates a replacement runtime via jlink command (much smaller than JPackage. Up to 38MB)
+    task jlink(type: Exec, dependsOn: downloadJPackage) {
+
+        // Overwrite previous bundled jre.
+        if (file(prebuiltJRE).exists()) {
+            delete(file(prebuiltJRE))
+        }
+
+        commandLine = [
+                jdkPath.concat("/bin/jlink"),
+                '--module-path', jdkPath.concat("/jmods"),
+                '--add-modules', 'java.base,java.desktop,jdk.unsupported,java.logging',
+                '--strip-debug',
+                '--no-header-files',
+                '--no-man-pages',
+                '--strip-native-commands',
+                '--vm=server',
+                '--compress=2',
+                '--output', prebuiltJRE
+        ] as List<String>
+
+        doLast {
+            // Some extra debloat.
+            delete(file("${prebuiltJRE}/conf"))
+            delete(file("${prebuiltJRE}/legal"))
+            delete fileTree("${prebuiltJRE}/bin").matching { include "api*.dll" }
+        }
+
+    }
 }

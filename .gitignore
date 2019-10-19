@@ -7,8 +7,8 @@ old/
 **/gradle.properties
 out/
 **/out/
+JPackage/
 desktop/*.tar.gz
 desktop/*.zip
 desktop/jdk*
-desktop/bundled-JRE
 desktop/Screenshots*

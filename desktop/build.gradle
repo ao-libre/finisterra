@@ -2,7 +2,6 @@ import org.gradle.internal.jvm.Jvm
 
 plugins {
     id 'application'
-    id 'de.undercouch.download'
 }
 
 sourceSets {
@@ -16,12 +15,9 @@ dependencies {
 	api group: "com.badlogicgames.gdx", name: "gdx-freetype-platform", version: "$gdxVersion", classifier: "natives-desktop"
 }
 
-static def osName() { System.getProperty('os.name').toLowerCase(Locale.ROOT) }
-static def getJDK() { Jvm.current().getJavaHome().path }
-
 mainClassName = "launcher.DesktopLauncher"
 
-if (osName().contains('mac')) {
+if (osName.contains('mac')) {
     run {
         jvmArgs += '-XstartOnFirstThread'
     }
@@ -33,93 +29,27 @@ task dist(type: Jar) {
 
     manifest {
         attributes 'Main-Class': project.mainClassName
-    }
-}
-
-tasks.dist.doLast {
-
-    // We copy all the dependencies .JAR into the input folder for JPackage.
-	copy {
-        from configurations.runtime
-		into "${buildDir}/libs"
-	}
-
+    }  
 }
 
 dist.dependsOn(classes)
 run.dependsOn(classes)
 
-// Determine where the JDK is going to be (Windows/Linux and Mac)
-def JPackagePath = "${projectDir}/jdk-14"
-def prebuiltJRE = "${projectDir}/bundled-JRE"
+tasks.dist.doLast {
+
+    // We copy all the dependencies .JAR into the input folder for JPackage.
+    copy {
+        from configurations.runtime
+        into "${buildDir}/libs"
+    }
+
+}
+
+// Determine where the bundled application is going to be.
 def releasePath = "${buildDir}/releases"
-def JPackageCompressed = osName().contains('windows') ? "jpackage.zip" : "jpackage.tar.gz"
-
-// Downloads the JPackage binary and decompresses it.
-task downloadJPackage(type: Download, dependsOn: dist) {
-
-    if (osName().contains('windows')) {
-        src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-49_windows-x64_bin.zip'
-    } else if (osName().contains('linux')) {
-        src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-49_linux-x64_bin.tar.gz'
-    } else if (osName().contains('mac')) {
-        src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-49_osx-x64_bin.tar.gz'
-    }
-
-    dest(new File(projectDir, JPackageCompressed))
-    overwrite(false)
-
-    // We put it in a doLast{} block because otherwise it (the task) auto-executes.
-    doLast {
-        if (!file(JPackagePath).exists()) {
-            copy {
-
-                if (osName().contains('windows')) {
-                    from zipTree("${projectDir}/${JPackageCompressed}")
-				} else {
-				    from tarTree("${projectDir}/${JPackageCompressed}")
-				}
-                
-				into "${projectDir}"
-
-            }
-        }
-    }
-
-}
-
-// creates a replacement runtime via jlink command (much smaller than JPackage. Up to 38MB)
-task jlink(type: Exec, dependsOn: downloadJPackage) {
-
-    // Overwrite previous bundled jre.
-    if (file(prebuiltJRE).exists()) {
-        delete(file(prebuiltJRE))
-    }
-
-    commandLine = [
-            getJDK().concat("/bin/jlink"),
-            '--module-path', getJDK().concat("/jmods"),
-            '--add-modules', 'java.base,java.desktop,jdk.unsupported,java.logging',
-            '--strip-debug',
-            '--no-header-files',
-            '--no-man-pages',
-            '--strip-native-commands',
-            '--vm=server',
-            '--compress=2',
-            '--output', prebuiltJRE
-    ] as List<String>
-
-    doLast {
-        // Some extra debloat.
-        delete(file("${prebuiltJRE}/conf"))
-        delete(file("${prebuiltJRE}/legal"))
-        delete fileTree("${prebuiltJRE}/bin").matching { include "api*.dll" }
-    }
-
-}
 
 // creates application bundle (executable + runtime)
-task appBundle(type: Exec, dependsOn: jlink) {
+task appBundle(type: Exec, dependsOn: [dist, jlink]) {
 
     // Overwrite previous bundled application.
     if (file(releasePath).exists()) {
@@ -129,7 +59,7 @@ task appBundle(type: Exec, dependsOn: jlink) {
     }
 
     def commands = [
-            JPackagePath.concat("/bin/jpackage"),
+            JPackagePath.concat("/jdk-14/bin/jpackage"),
             '--package-type', 'app-image',
             '--name', project.appName,
             '--vendor', "Argentum Online Libre",
@@ -141,13 +71,13 @@ task appBundle(type: Exec, dependsOn: jlink) {
             '--main-jar', "${project.name}-${project.version}.jar"
     ]
 
-    if (osName().contains('windows')) {
+    if (osName.contains('windows')) {
         commands << "--icon"
         commands << "${projectDir}/assets/data/icons/ao.ico"
-    } else if (osName().contains('linux')) {
+    } else if (osName.contains('linux')) {
         commands << "--icon"
         commands << "${projectDir}/assets/data/icons/ao.png"
-    } else if (osName().contains('mac')) {
+    } else if (osName.contains('mac')) {
         commands << "--icon"
         commands << "${projectDir}/assets/data/icons/ao.icns"
         commands << "--java-options"
@@ -161,11 +91,11 @@ task appBundle(type: Exec, dependsOn: jlink) {
         copy {
             from("${projectDir}/assets")
             from("${projectDir}/Config.json")
-            if (osName().contains('mac')) {
+            if (osName.contains('mac')) {
                 into("${releasePath}/${project.appName}/Contents/Resources/")
-            } else if (osName().contains('windows')) {
+            } else if (osName.contains('windows')) {
                 into("${releasePath}/${project.appName}")
-            } else if (osName().contains('linux')) {
+            } else if (osName.contains('linux')) {
             	into("${releasePath}/${project.appName}/bin")
             }
         }
