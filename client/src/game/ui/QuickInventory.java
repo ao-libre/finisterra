@@ -1,22 +1,13 @@
 package game.ui;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import entity.character.info.Inventory.Item;
-import game.handlers.ObjectHandler;
 import game.screens.GameScreen;
 import game.utils.Skins;
-import game.utils.WorldUtils;
-import shared.network.interaction.DropItem;
-import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
-import shared.objects.types.Obj;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -24,83 +15,75 @@ import java.util.stream.Stream;
 
 import static com.artemis.E.E;
 
-public class Inventory extends Window {
+public class QuickInventory extends Window {
 
-//    static final int COLUMNS = 6;
-//    private static final int ROWS = 1;
-    static final int COLUMNS = 5;
-    private static final int ROWS = 4;
+    static final int COLUMNS = 6;
+    private static final int ROWS = 1;
     private static final int SIZE = COLUMNS * ROWS;
     private final ClickListener mouseListener;
     private int base;
-    private QuickInventory quickInventory; //asd
+    private  int x;
+    private Inventory inventory;
 
     private ArrayList<Slot> slots;
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
-    private int j = 1;//asd
+    private ArrayList<Integer> gBases;
 
-    Inventory() {
+    QuickInventory() {
         super("", Skins.COMODORE_SKIN, "inventory");
         setMovable(false);
         slots = new ArrayList<>();
+
         for (int i = 0; i < SIZE; i++) {
-            Slot newSlot = new Slot();
-            slots.add(newSlot);
-            //add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
-            add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE);
-            /*
+            Slot nuevoSlot = new Slot();
+            slots.add(nuevoSlot);
+            add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
             if (i < SIZE - 1) {
                 add(new Image(getSkin().getDrawable("separator"))).row();
             }
-             */
-            //asd
-            if (j > ROWS -1) {
-                row();
-                j = 0;
-            }
-            j++;
-            //asdf
+
         }
         mouseListener = getMouseListener();
         addListener(mouseListener);
+        gBases = new ArrayList<Integer>();
+        for (int i = 0; i < 6; i++){
+            gBases.add(i);
+        }
     }
 
     private ClickListener getMouseListener() {
-        return new ClickListener() {
-
-            @Override
-            public boolean scrolled(InputEvent event, float x, float y, int amount) {
-                Inventory.this.scrolled(amount);
-                return false;
-            }
+        return new ClickListener ( ) {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                selected.ifPresent(slot -> slot.setSelected(false));
-                selected = getSlot(x, y);
-                selected.ifPresent(slot -> {
-                    slot.setSelected(true);
-                    slot.getItem().ifPresent(item -> {
-                        if (getTapCount() >= 2) {
-                            GameScreen.getClient().sendToAll(new ItemActionRequest(slots.indexOf(slot)));
+                selected.ifPresent ( slot -> slot.setSelected ( false ) );
+                selected = getSlot ( x, y );
+                selected.ifPresent ( slot -> {
+                    slot.setSelected ( true );
+                    slot.getItem ( ).ifPresent ( item -> {
+                        if (getTapCount ( ) >= 2) {
+                            GameScreen.getClient ( ).sendToAll ( new ItemActionRequest (gBases.get (slots.indexOf (slot))));
                         }
-                    });
-                });
+                    } );
+                } );
+
+
             }
 
-            private Optional<Slot> getSlot(float x, float y) {
-                return Stream.of(getChildren().items)
-                        .filter(Slot.class::isInstance)
-                        .filter(actor -> {
-                            if (x > actor.getX() && x < actor.getWidth() + actor.getX()) {
-                                return y > actor.getY() && y < actor.getHeight() + actor.getY();
+            private Optional< Slot > getSlot(float x, float y) {
+                return Stream.of ( getChildren ( ).items )
+                        .filter ( Slot.class::isInstance )
+                        .filter ( actor -> {
+                            if (x > actor.getX ( ) && x < actor.getWidth ( ) + actor.getX ( )) {
+                                return y > actor.getY ( ) && y < actor.getHeight ( ) + actor.getY ( );
                             }
                             return false;
-                        })
-                        .map(Slot.class::cast).findFirst();
+                        } )
+                        .map ( Slot.class::cast ).findFirst ( );
             }
+            /*
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -121,7 +104,6 @@ public class Inventory extends Window {
                 }
             }
 
-            @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchUp(event, x, y, pointer, button);
                 if (dragging.isPresent()) {
@@ -145,14 +127,12 @@ public class Inventory extends Window {
                             userItems[originIndex] = null;
                         }
                         GameScreen.getClient().sendToAll(update);
-                        updateUserInventory(base);
-                    } else {
-                        WorldUtils.mouseToWorldPos().ifPresent(worldPos -> GameScreen.getClient().sendToAll(new DropItem(E(GameScreen.getPlayer()).getNetwork().id, draggingIndex(), worldPos)));
+
                     }
                 }
                 dragging = Optional.empty();
             }
-
+            */
             final <T> void swap(T[] a, int i, int j) {
                 T t = a[i];
                 a[i] = a[j];
@@ -162,13 +142,26 @@ public class Inventory extends Window {
         };
     }
 
-    protected void scrolled(int amount) {
-        base += amount;
-        base = MathUtils.clamp(base, 0, entity.character.info.Inventory.SIZE - Inventory.SIZE);
-        updateUserInventory(base);
+
+
+    public void agregarCosas(int base, int x) {
+        Item[] userItems = E(GameScreen.getPlayer()).getInventory().items;
+        Item item = base  < userItems.length ? userItems[base] : null;
+
+        if (x>0 && x<6){
+            slots.get(x).setItem(item);
+            gBases.set(x, base);
+            x++;
+        } else{
+            x = 0;
+            slots.get(x).setItem(item);
+            gBases.set(x, base);
+            x++;
+        }
     }
 
-    public void updateUserInventory(int base) {
+/*
+    public void updateUserQuickInventory(int base) {
         if (base < 0) {
             base = this.base;
         }
@@ -177,30 +170,8 @@ public class Inventory extends Window {
             Item item = base + i < userItems.length ? userItems[base + i] : null;
             slots.get(i).setItem(item);
         }
-/*
-
-        ArrayList<Integer> feo = new ArrayList<> ();
-        for (int i = 0; i<6; i++){
-            feo.add(i);
-        }
-        for (int x = 0; x < 6; x++){
-                for (int i = 0; i < SIZE; i++) {
-                        if (slots.get(i).getItem () == quickInventory.comparator ( x )){
-                            feo.set ( x, slots.indexOf ( i ) ) ;
-                        }
-
-                }
-
-        }
-
-        for (int i = 0; i < 6 ; i++){
-            if (feo.get(i) != null ) {
-                quickInventory.agregarCosas (i, feo.get(i) );
-            }
-        }
-
-*/
     }
+
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
@@ -216,6 +187,11 @@ public class Inventory extends Window {
             });
         }));
     }
+*/
+
+    public int getGBases(int x) {
+        return gBases.get(x);
+    }
 
     public Optional<Slot> getSelected() {
         return selected;
@@ -223,14 +199,15 @@ public class Inventory extends Window {
 
     public int selectedIndex() {
         assert (selected.isPresent());
-        return base + slots.indexOf(selected.get());
+        return slots.indexOf(selected.get());
     }
+    /*
+        private int draggingIndex() {
+            assert (dragging.isPresent());
+            return slots.indexOf(dragging.get());
+        }
 
-    private int draggingIndex() {
-        assert (dragging.isPresent());
-        return base + slots.indexOf(dragging.get());
-    }
-
+    */
     public boolean isOver() {
         return mouseListener.isOver();
     }

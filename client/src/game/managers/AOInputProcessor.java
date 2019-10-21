@@ -35,7 +35,10 @@ public class AOInputProcessor extends Stage {
 
     private GUI gui;
     private AOAssetManager assetManager;
-
+    //asd
+    private int x;
+    private int base;
+    //asdf
     public AOInputProcessor(GUI gui) {
         this.gui = gui;
         this.assetManager = AOGame.getGlobalAssetManager();
@@ -163,6 +166,30 @@ public class AOInputProcessor extends Stage {
                 // Toggle between Windowed Mode and Fullscreen.
                 gui.toggleFullscreen();
                 break;
+            //asd
+            case Input.Keys.NUM_1:
+                useq1();
+                break;
+            case Input.Keys.NUM_2:
+                useq2();
+                break;
+            case Input.Keys.NUM_3:
+                useq3();
+                break;
+            case Input.Keys.NUM_4:
+                useq4();
+                break;
+            case Input.Keys.NUM_5:
+                useq5();
+                break;
+            case Input.Keys.NUM_6:
+                useq6();
+                break;
+            case Input.Keys.Q:
+                asigQI ();
+                break;
+
+//asdf
         }
     }
 
@@ -208,8 +235,156 @@ public class AOInputProcessor extends Stage {
                 // Toggle between Windowed Mode and Fullscreen.
                 gui.toggleFullscreen();
                 break;
+            //asd
+            case Input.Keys.NUM_1:
+                useq1();
+                break;
+            case Input.Keys.NUM_2:
+                useq2();
+                break;
+            case Input.Keys.NUM_3:
+                useq3();
+                break;
+            case Input.Keys.NUM_4:
+                useq4();
+                break;
+            case Input.Keys.NUM_5:
+                useq5();
+                break;
+            case Input.Keys.NUM_6:
+                useq6();
+                break;
+            case Input.Keys.Q:
+                asigQI ();
+                break;
+
+//asdf
         }
     }
+//asd
+    private void useq1() {
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+            x = 0;
+            if (!gui.getInventory ( ).getSelected ( ).isPresent ( )){
+                base = 0;
+                gui.getConsole().addInfo(assetManager.getMessages(Messages.ATTACK_FAILED));
+            } else {
+                base = gui.getInventory ( ).selectedIndex ( );
+            }
+            gui.getQuickInventory().agregarCosas(base, x);
+        }else {
+            GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getQuickInventory().getGBases(0)));
+        }
+
+    }
+
+    private void useq2() {
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+            x = 1;
+            if (gui.getInventory ( ).getSelected ( ).isEmpty ( )){
+                base = 0;
+                System.out.println ( "no se seleciono" );
+            } else {
+                base = gui.getInventory ( ).selectedIndex ( );
+            }
+            gui.getQuickInventory().agregarCosas(base, x);
+
+        }else {
+            GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getQuickInventory().getGBases(1)));
+        }
+    }
+
+    private void useq3() {
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+            x = 2;
+            if (gui.getInventory ( ).getSelected ( ).isEmpty ( )){
+                base = 0;
+            } else {
+                base = gui.getInventory ( ).selectedIndex ( );
+            }
+            gui.getQuickInventory().agregarCosas(base, x);
+        }else {
+            GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getQuickInventory().getGBases(2)));
+        }
+    }
+
+    private void useq4() {
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+            x = 3;
+            if (gui.getInventory ( ).getSelected ( ).isEmpty ( )){
+                base = 0;
+            } else {
+                base = gui.getInventory ( ).selectedIndex ( );
+            }
+            gui.getQuickInventory().agregarCosas(base, x);
+
+        }else {
+            GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getQuickInventory().getGBases(3)));
+        }
+    }
+
+    private void useq5() {
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+            x = 4;
+            if (gui.getInventory ( ).getSelected ( ).isEmpty ( )){
+                base = 0;
+            } else {
+                base = gui.getInventory ( ).selectedIndex ( );
+            }
+            gui.getQuickInventory().agregarCosas(base, x);
+
+        }else {
+            GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getQuickInventory().getGBases(4)));
+        }
+    }
+
+    private void useq6() {
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+            x = 5;
+            if (gui.getInventory ( ).getSelected ( ).isEmpty ( )){
+                base = 0;
+            } else {
+                base = gui.getInventory ( ).selectedIndex ( );
+            }
+            gui.getQuickInventory().agregarCosas(base, x);
+        }else {
+            GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getQuickInventory().getGBases(5)));
+        }
+    }
+
+    private void asigQI() {
+    /*
+        int x = 0;
+
+        int base = gui.getInventory().selectedIndex();
+
+        if (Gdx.input.isKeyPressed(Input.Keys.NUM_1)){
+            x = 0;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.NUM_2)){
+            x = 1;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.NUM_3)){
+            x = 2;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.NUM_4)){
+            x = 3;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.NUM_5)){
+            x = 4;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.NUM_6)){
+            x = 5;
+        }
+        if (base >= 0 && base <= 20 ){
+            gui.getQuickInventory().agregarCosas(base, x);
+        }
+     */
+        gui.getQuickInventory().setVisible(!gui.getQuickInventory().isVisible());
+
+    }
+
+    // fin asd
 
     private void use() {
         gui.getInventory()
