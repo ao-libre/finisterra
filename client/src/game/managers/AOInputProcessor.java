@@ -35,10 +35,10 @@ public class AOInputProcessor extends Stage {
 
     private GUI gui;
     private AOAssetManager assetManager;
-    //asd
+
     private int x;
     private int base;
-    //asdf
+
     public AOInputProcessor(GUI gui) {
         this.gui = gui;
         this.assetManager = AOGame.getGlobalAssetManager();
@@ -166,7 +166,6 @@ public class AOInputProcessor extends Stage {
                 // Toggle between Windowed Mode and Fullscreen.
                 gui.toggleFullscreen();
                 break;
-            //asd
             case Input.Keys.NUM_1:
                 useq1();
                 break;
@@ -189,7 +188,6 @@ public class AOInputProcessor extends Stage {
                 asigQI ();
                 break;
 
-//asdf
         }
     }
 
@@ -235,7 +233,6 @@ public class AOInputProcessor extends Stage {
                 // Toggle between Windowed Mode and Fullscreen.
                 gui.toggleFullscreen();
                 break;
-            //asd
             case Input.Keys.NUM_1:
                 useq1();
                 break;
@@ -257,11 +254,9 @@ public class AOInputProcessor extends Stage {
             case Input.Keys.Q:
                 asigQI ();
                 break;
-
-//asdf
         }
     }
-//asd
+
     private void useq1() {
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
             x = 0;
@@ -353,38 +348,10 @@ public class AOInputProcessor extends Stage {
     }
 
     private void asigQI() {
-    /*
-        int x = 0;
-
-        int base = gui.getInventory().selectedIndex();
-
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_1)){
-            x = 0;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_2)){
-            x = 1;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_3)){
-            x = 2;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_4)){
-            x = 3;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_5)){
-            x = 4;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_6)){
-            x = 5;
-        }
-        if (base >= 0 && base <= 20 ){
-            gui.getQuickInventory().agregarCosas(base, x);
-        }
-     */
+   
         gui.getQuickInventory().setVisible(!gui.getQuickInventory().isVisible());
 
     }
-
-    // fin asd
 
     private void use() {
         gui.getInventory()
