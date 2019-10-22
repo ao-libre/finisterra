@@ -35,10 +35,10 @@ public class AOInputProcessor extends Stage {
 
     private GUI gui;
     private AOAssetManager assetManager;
-    //asd
+
     private int x;
     private int base;
-    //asdf
+
     public AOInputProcessor(GUI gui) {
         this.gui = gui;
         this.assetManager = AOGame.getGlobalAssetManager();
@@ -166,7 +166,6 @@ public class AOInputProcessor extends Stage {
                 // Toggle between Windowed Mode and Fullscreen.
                 gui.toggleFullscreen();
                 break;
-            //asd
             case Input.Keys.NUM_1:
                 useq1();
                 break;
@@ -189,7 +188,6 @@ public class AOInputProcessor extends Stage {
                 asigQI ();
                 break;
 
-//asdf
         }
     }
 
@@ -235,7 +233,6 @@ public class AOInputProcessor extends Stage {
                 // Toggle between Windowed Mode and Fullscreen.
                 gui.toggleFullscreen();
                 break;
-            //asd
             case Input.Keys.NUM_1:
                 useq1();
                 break;
@@ -257,11 +254,9 @@ public class AOInputProcessor extends Stage {
             case Input.Keys.Q:
                 asigQI ();
                 break;
-
-//asdf
         }
     }
-//asd
+
     private void useq1() {
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
             x = 0;

@@ -11,10 +11,10 @@ public class ActionBar extends Table implements ActionSwitchListener {
     private static final float PAD_TOP = -17f;
     private final ClickListener mouseListener;
     private SwitchButtons buttons;
-    private SwitchButtons relleno;//asd
+    private SwitchButtons relleno;
     private SpellView spellView;
     private Inventory inventory;
-    private QuickInventory quickInventory;//asd
+    private QuickInventory quickInventory;
 
     ActionBar() {
         super(Skins.COMODORE_SKIN);
@@ -22,18 +22,16 @@ public class ActionBar extends Table implements ActionSwitchListener {
         buttons = new SwitchButtons();
         buttons.addListener(this);
         buttons.addListener(mouseListener);
-        relleno = new SwitchButtons (  ); //asd
+        relleno = new SwitchButtons (  );
         spellView = new SpellView();
         inventory = new Inventory();
-        quickInventory =new QuickInventory ();//asd
+        quickInventory =new QuickInventory ();
 
-        //asd
         add(relleno).top();
         relleno.setVisible(false);
         add(buttons).top().row();
         add(inventory).padTop(PAD_TOP);
         add(quickInventory).padTop(PAD_TOP);
-        //asdf
     }
 
     @Override
@@ -46,19 +44,17 @@ public class ActionBar extends Table implements ActionSwitchListener {
                 break;
             case INVENTORY:
                 clear();
-                //asd
                 add(relleno).top();
                 relleno.setVisible(false);
                 add(buttons).top().right ().row();
                 add(inventory).padTop(PAD_TOP).right ();
                 add(quickInventory).padTop(PAD_TOP);
-                //asdf
                 break;
         }
     }
 
     public boolean isOver() {
-        return getInventory().isOver() || getSpellView().isOver() || getQuickInventory().isOver() || mouseListener.isOver();//asd
+        return getInventory().isOver() || getSpellView().isOver() || getQuickInventory().isOver() || mouseListener.isOver();
     }
 
     public void toggle() {
@@ -72,11 +68,11 @@ public class ActionBar extends Table implements ActionSwitchListener {
     protected SpellView getSpellView() {
         return spellView;
     }
-    //asd
+
     public QuickInventory getQuickInventory() {
         return quickInventory;
     }
-    //asdf
+
     public void scrolled(int amount) {
         if (getInventory().isOver()) {
             getInventory().scrolled(amount);

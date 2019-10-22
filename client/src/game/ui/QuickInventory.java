@@ -63,9 +63,7 @@ public class QuickInventory extends Window {
                 selected.ifPresent ( slot -> {
                     slot.setSelected ( true );
                     slot.getItem ( ).ifPresent ( item -> {
-                        if (getTapCount ( ) >= 2) {
                             GameScreen.getClient ( ).sendToAll ( new ItemActionRequest (gBases.get (slots.indexOf (slot))));
-                        }
                     } );
                 } );
 
@@ -83,56 +81,6 @@ public class QuickInventory extends Window {
                         } )
                         .map ( Slot.class::cast ).findFirst ( );
             }
-            /*
-
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                boolean result = super.touchDown(event, x, y, pointer, button);
-                if (result) {
-                    origin = getSlot(x, y);
-                }
-                return result;
-            }
-
-            @Override
-            public void touchDragged(InputEvent event, float x, float y, int pointer) {
-                super.touchDragged(event, x, y, pointer);
-                if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
-                    dragging = origin;
-                } else {
-                    dragging = Optional.empty();
-                }
-            }
-
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                super.touchUp(event, x, y, pointer, button);
-                if (dragging.isPresent()) {
-                    Item[] userItems = E(GameScreen.getPlayer()).getInventory().items;
-                    // notify server
-                    Optional<Slot> slot = getSlot(x, y);
-                    if (slot.isPresent()) {
-                        Slot target = slot.get();
-                        InventoryUpdate update = new InventoryUpdate(E(GameScreen.getPlayer()).getNetwork().id);
-                        int targetIndex = base + slots.indexOf(target);
-                        int originIndex = base + slots.indexOf(dragging.get());
-                        Item originItem = userItems[originIndex];
-                        if (userItems[targetIndex] != null) {
-                            update.add(targetIndex, originItem);
-                            update.add(originIndex, userItems[targetIndex]);
-                            swap(userItems, originIndex, targetIndex);
-                        } else {
-                            update.add(targetIndex, originItem);
-                            update.remove(originIndex);
-                            userItems[targetIndex] = originItem;
-                            userItems[originIndex] = null;
-                        }
-                        GameScreen.getClient().sendToAll(update);
-
-                    }
-                }
-                dragging = Optional.empty();
-            }
-            */
             final <T> void swap(T[] a, int i, int j) {
                 T t = a[i];
                 a[i] = a[j];
@@ -160,34 +108,6 @@ public class QuickInventory extends Window {
         }
     }
 
-/*
-    public void updateUserQuickInventory(int base) {
-        if (base < 0) {
-            base = this.base;
-        }
-        Item[] userItems = E(GameScreen.getPlayer()).getInventory().items;
-        for (int i = 0; i < SIZE; i++) {
-            Item item = base + i < userItems.length ? userItems[base + i] : null;
-            slots.get(i).setItem(item);
-        }
-    }
-
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-        dragging.ifPresent(slot -> slot.getItem().ifPresent(item -> {
-            ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
-            Optional<Obj> object = objectHandler.getObject(item.objId);
-            object.ifPresent(obj -> {
-                TextureRegion graphic = objectHandler.getGraphic(obj);
-                int x1 = Gdx.input.getX() - (graphic.getRegionWidth() / 2);
-                int y1 = Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2);
-                batch.draw(graphic, x1, y1);
-            });
-        }));
-    }
-*/
 
     public int getGBases(int x) {
         return gBases.get(x);
@@ -201,13 +121,7 @@ public class QuickInventory extends Window {
         assert (selected.isPresent());
         return slots.indexOf(selected.get());
     }
-    /*
-        private int draggingIndex() {
-            assert (dragging.isPresent());
-            return slots.indexOf(dragging.get());
-        }
 
-    */
     public boolean isOver() {
         return mouseListener.isOver();
     }

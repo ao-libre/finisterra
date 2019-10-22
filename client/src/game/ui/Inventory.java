@@ -26,20 +26,17 @@ import static com.artemis.E.E;
 
 public class Inventory extends Window {
 
-//    static final int COLUMNS = 6;
-//    private static final int ROWS = 1;
     static final int COLUMNS = 5;
     private static final int ROWS = 4;
     private static final int SIZE = COLUMNS * ROWS;
     private final ClickListener mouseListener;
     private int base;
-    private QuickInventory quickInventory; //asd
 
     private ArrayList<Slot> slots;
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
-    private int j = 1;//asd
+    private int j = 1;
 
     Inventory() {
         super("", Skins.COMODORE_SKIN, "inventory");
@@ -48,20 +45,12 @@ public class Inventory extends Window {
         for (int i = 0; i < SIZE; i++) {
             Slot newSlot = new Slot();
             slots.add(newSlot);
-            //add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
             add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE);
-            /*
-            if (i < SIZE - 1) {
-                add(new Image(getSkin().getDrawable("separator"))).row();
-            }
-             */
-            //asd
             if (j > ROWS -1) {
                 row();
                 j = 0;
             }
             j++;
-            //asdf
         }
         mouseListener = getMouseListener();
         addListener(mouseListener);
@@ -177,29 +166,6 @@ public class Inventory extends Window {
             Item item = base + i < userItems.length ? userItems[base + i] : null;
             slots.get(i).setItem(item);
         }
-/*
-
-        ArrayList<Integer> feo = new ArrayList<> ();
-        for (int i = 0; i<6; i++){
-            feo.add(i);
-        }
-        for (int x = 0; x < 6; x++){
-                for (int i = 0; i < SIZE; i++) {
-                        if (slots.get(i).getItem () == quickInventory.comparator ( x )){
-                            feo.set ( x, slots.indexOf ( i ) ) ;
-                        }
-
-                }
-
-        }
-
-        for (int i = 0; i < 6 ; i++){
-            if (feo.get(i) != null ) {
-                quickInventory.agregarCosas (i, feo.get(i) );
-            }
-        }
-
-*/
     }
 
     @Override

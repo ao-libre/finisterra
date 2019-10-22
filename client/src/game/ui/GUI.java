@@ -57,11 +57,9 @@ public class GUI extends BaseSystem implements Disposable {
     public Inventory getInventory() {
         return actionBar.getInventory();
     }
-    //asd
     public QuickInventory getQuickInventory() {
         return actionBar.getQuickInventory();
     }
-    //asdf
 
     public DialogText getDialog() {
         return dialog;
@@ -154,7 +152,7 @@ public class GUI extends BaseSystem implements Disposable {
 
     private Table createActionBar(Table table) {
         actionBar = new ActionBar();
-        table.add(actionBar).right().expandY().expandX (); //asd
+        table.add(actionBar).right().expandY().expandX ();
         return actionBar;
     }
 
