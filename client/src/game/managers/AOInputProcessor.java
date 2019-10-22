@@ -348,38 +348,10 @@ public class AOInputProcessor extends Stage {
     }
 
     private void asigQI() {
-    /*
-        int x = 0;
-
-        int base = gui.getInventory().selectedIndex();
-
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_1)){
-            x = 0;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_2)){
-            x = 1;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_3)){
-            x = 2;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_4)){
-            x = 3;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_5)){
-            x = 4;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_6)){
-            x = 5;
-        }
-        if (base >= 0 && base <= 20 ){
-            gui.getQuickInventory().agregarCosas(base, x);
-        }
-     */
+   
         gui.getQuickInventory().setVisible(!gui.getQuickInventory().isVisible());
 
     }
-
-    // fin asd
 
     private void use() {
         gui.getInventory()
