@@ -338,6 +338,3 @@ public class AOInputProcessor extends Stage {
     }
 
 }
-
-
-}
