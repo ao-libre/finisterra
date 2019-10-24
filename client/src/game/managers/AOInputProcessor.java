@@ -36,8 +36,6 @@ public class AOInputProcessor extends Stage {
     private GUI gui;
     private AOAssetManager assetManager;
 
-    private int x;
-    private int base;
     public AOInputProcessor(GUI gui) {
         this.gui = gui;
         this.assetManager = AOGame.getGlobalAssetManager();
@@ -165,31 +163,6 @@ public class AOInputProcessor extends Stage {
                 // Toggle between Windowed Mode and Fullscreen.
                 gui.toggleFullscreen();
                 break;
-            case Input.Keys.NUM_1:
-                useq(0);
-                break;
-            case Input.Keys.NUM_2:
-                useq(1);
-                break;
-            case Input.Keys.NUM_3:
-                useq(2);
-                break;
-            case Input.Keys.NUM_4:
-                useq(3);
-                break;
-            case Input.Keys.NUM_5:
-                useq(4);
-                break;
-            case Input.Keys.NUM_6:
-                useq(5);
-                break;
-            case Input.Keys.Q:
-                asigQI ();
-                break;
-            case Input.Keys.R:
-                System.out.println ("*****SOS UN PINCHE *******:" + E(GameScreen.getPlayer()).getCharHero ().heroId);
-                break;
-
         }
     }
 
@@ -235,49 +208,7 @@ public class AOInputProcessor extends Stage {
                 // Toggle between Windowed Mode and Fullscreen.
                 gui.toggleFullscreen();
                 break;
-            case Input.Keys.NUM_1:
-                useq(0);
-                break;
-            case Input.Keys.NUM_2:
-                useq(1);
-                break;
-            case Input.Keys.NUM_3:
-                useq(2);
-                break;
-            case Input.Keys.NUM_4:
-                useq(3);
-                break;
-            case Input.Keys.NUM_5:
-                useq(4);
-                break;
-            case Input.Keys.NUM_6:
-                useq(5);
-                break;
-            case Input.Keys.Q:
-                asigQI ();
-                break;
         }
-    }
-
-  
-    private void useq(int x) {
-        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
-            if (gui.getInventory ( ).getSelected ( ).isEmpty ( )){
-                base = 0;
-            } else {
-                base = gui.getInventory ( ).selectedIndex ( );
-            }
-            gui.getQuickInventory().agregarCosas(base, x);
-        }else {
-            GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getQuickInventory().getGBases(x)));
-        }
-    }
-
-
-    private void asigQI() {
-   
-        gui.getQuickInventory().setVisible(!gui.getQuickInventory().isVisible());
-
     }
 
     private void use() {

@@ -11,10 +11,8 @@ public class ActionBar extends Table implements ActionSwitchListener {
     private static final float PAD_TOP = -17f;
     private final ClickListener mouseListener;
     private SwitchButtons buttons;
-    private SwitchButtons relleno;
     private SpellView spellView;
     private Inventory inventory;
-    private QuickInventory quickInventory;
 
     ActionBar() {
         super(Skins.COMODORE_SKIN);
@@ -22,16 +20,11 @@ public class ActionBar extends Table implements ActionSwitchListener {
         buttons = new SwitchButtons();
         buttons.addListener(this);
         buttons.addListener(mouseListener);
-        relleno = new SwitchButtons (  );
         spellView = new SpellView();
         inventory = new Inventory();
-        quickInventory =new QuickInventory ();
 
-        add(relleno).top();
-        relleno.setVisible(false);
         add(buttons).top().row();
         add(inventory).padTop(PAD_TOP);
-        add(quickInventory).padTop(PAD_TOP);
     }
 
     @Override
@@ -44,17 +37,14 @@ public class ActionBar extends Table implements ActionSwitchListener {
                 break;
             case INVENTORY:
                 clear();
-                add(relleno).top();
-                relleno.setVisible(false);
-                add(buttons).top().right ().row();
-                add(inventory).padTop(PAD_TOP).right ();
-                add(quickInventory).padTop(PAD_TOP);
+                add(buttons).top().row();
+                add(inventory).padTop(PAD_TOP);
                 break;
         }
     }
 
     public boolean isOver() {
-        return getInventory().isOver() || getSpellView().isOver() || getQuickInventory().isOver() || mouseListener.isOver();
+        return getInventory().isOver() || getSpellView().isOver() || mouseListener.isOver();
     }
 
     public void toggle() {
@@ -67,10 +57,6 @@ public class ActionBar extends Table implements ActionSwitchListener {
 
     protected SpellView getSpellView() {
         return spellView;
-    }
-
-    public QuickInventory getQuickInventory() {
-        return quickInventory;
     }
 
     public void scrolled(int amount) {
