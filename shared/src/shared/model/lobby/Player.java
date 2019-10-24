@@ -60,7 +60,7 @@ public class Player {
 
     @Override
     public String toString() {
-        return getPlayerName() + " es un " + getHero().name() + " y " + (isReady() ? "esta listo :D! " : "no esta listo :´(");
+        return getPlayerName() + " Team: " + getTeam().toString() + " Ready: " + isReady();
     }
 
     @Override
