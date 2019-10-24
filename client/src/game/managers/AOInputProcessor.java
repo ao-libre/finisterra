@@ -14,6 +14,7 @@ import game.utils.AOKeys;
 import game.utils.AlternativeKeys;
 import game.utils.Cursors;
 import game.utils.WorldUtils;
+import shared.interfaces.Hero;
 import shared.model.AttackType;
 import shared.model.Spell;
 import shared.network.combat.AttackRequest;
@@ -162,6 +163,10 @@ public class AOInputProcessor extends Stage {
             case Input.Keys.F11:
                 // Toggle between Windowed Mode and Fullscreen.
                 gui.toggleFullscreen();
+                break;
+            case Input.Keys.R:
+                System.out.println (E(GameScreen.getPlayer()).nameText () +" *****SOS UN PINCHE *******:"
+                        + Hero.VALUES.get(E(GameScreen.getPlayer()).getCharHero ().heroId));
                 break;
         }
     }
