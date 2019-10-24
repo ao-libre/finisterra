@@ -6,8 +6,8 @@ git clone https://github.com/ao-libre/ao-java.git
 ```
 ## Requirements
 
-1 - Important: you need to use [OpenJDK 12](http://jdk.java.net/12/) to make it run o SE edition https://www.oracle.com/technetwork/java/javase/downloads/jdk12-downloads-5295953.html
-2 - Intel IJ versión comunidad https://www.jetbrains.com/idea/download/index.html
+1. Important: you need to use [OpenJDK 12](http://jdk.java.net/12/) to make it run o SE edition https://www.oracle.com/technetwork/java/javase/downloads/jdk12-downloads-5295953.html
+2. Intel IJ versión comunidad https://www.jetbrains.com/idea/download/index.html
 
 ### Import in IntelliJ
 * Select 'Import Project'

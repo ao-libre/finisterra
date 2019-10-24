@@ -10,6 +10,3 @@ git clone https://github.com/ao-libre/ao-java.git
 ### Conflicts running Client and Server in same machine
 To avoid recompiling shared module and regeneration of .class files, which will probably bring some execution errors like ClassNotFoundException, you can add this argument to skip `fluid` task in both client and server run configurations:
 * ```-x :shared:fluid```
-
-### Key Config To Play
-*

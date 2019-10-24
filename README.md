@@ -17,11 +17,11 @@ It allows us to create application game logic, create screens and render all tha
 ![game preview image](https://cdn.discordapp.com/attachments/580487031197794313/636899837354442755/readme-repo.png)
 
 ## Get Started
-[* Download Stable Versión App (incoming)](https://github.com/ao-libre/ao-java/releases)
-[* Run on console](docs/get-started/run-on-console.md)
-[* Development Environment](docs/get-started/development-environment.md)
-[* Workflow to collaborating on Github](docs/get-started/workflow-github.md)
-[* Key Config to Play](docs/get-started/key-config-to-play.md)
+* [Download Stable Versión App (incoming)](https://github.com/ao-libre/ao-java/releases)
+* [Run on console](docs/get-started/run-on-console.md)
+* [Development Environment](docs/get-started/development-environment.md)
+* [Workflow to collaborating on Github](docs/get-started/workflow-github.md)
+* [Key Config to Play](docs/get-started/key-config-to-play.md)
 
 ## Networks
 [Web](https://finisterra.argentumonline.org/) [Youtube](https://www.youtube.com/channel/UCftJ6hBfoovJY6nfmXTBD0g)
