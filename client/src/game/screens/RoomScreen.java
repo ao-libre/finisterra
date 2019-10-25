@@ -15,6 +15,7 @@ import shared.network.lobby.StartGameRequest;
 import shared.network.lobby.player.ChangeHeroRequest;
 import shared.network.lobby.player.ChangeReadyStateRequest;
 import shared.network.lobby.player.ChangeTeamRequest;
+import shared.util.Messages;
 
 public class RoomScreen extends AbstractScreen {
     private ClientSystem clientSystem;
@@ -57,9 +58,8 @@ public class RoomScreen extends AbstractScreen {
         table.setColor(1, 1, 1, 0.8f);
         Table teams = new Table(getSkin());
         teams.defaults().space(5);
-
         Table army = new Table(getSkin());
-        Label armyLabel = new Label("REAL ARMY", getSkin());
+        Label armyLabel = new Label (Messages.LEGION_ARMY, getSkin());
         armyList = new List<>(getSkin());
         army.add(armyLabel).growX().row();
         army.add(armyList).minHeight(150).growX().row();
