@@ -81,6 +81,10 @@ public class GUI extends BaseSystem implements Disposable {
         return getActionBar().getSpellView();
     }
 
+    public EchisosCompletos getEchisosCompletos(){
+        return getActionBar ().getEchisosCompletos ();
+    }
+
     public void takeScreenshot() {
         AOAssetManager assetManager = AOGame.getGlobalAssetManager();
         String screenshotPath = "Screenshots/Screenshot-" + LocalDateTime.now() + ".png";

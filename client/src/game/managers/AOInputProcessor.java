@@ -275,9 +275,8 @@ public class AOInputProcessor extends Stage {
 
 
     private void asigQI() {
-   
-        gui.getQuickInventory().setVisible(!gui.getQuickInventory().isVisible());
 
+        gui.getQuickInventory().setVisible(!gui.getQuickInventory().isVisible());
     }
 
     private void use() {

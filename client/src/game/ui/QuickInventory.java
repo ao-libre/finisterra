@@ -25,7 +25,7 @@ public class QuickInventory extends Window {
     private  int x;
     private Inventory inventory;
 
-    private ArrayList<Slot> slots;
+    private ArrayList<Slot> slotsq;
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
@@ -34,12 +34,12 @@ public class QuickInventory extends Window {
     QuickInventory() {
         super("", Skins.COMODORE_SKIN, "inventory");
         setMovable(false);
-        slots = new ArrayList<>();
+        slotsq = new ArrayList<>();
 
         for (int i = 0; i < SIZE; i++) {
             Slot nuevoSlot = new Slot();
-            slots.add(nuevoSlot);
-            add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
+            slotsq.add(nuevoSlot);
+            add(slotsq.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
             if (i < SIZE - 1) {
                 add(new Image(getSkin().getDrawable("separator"))).row();
             }
@@ -63,7 +63,7 @@ public class QuickInventory extends Window {
                 selected.ifPresent ( slot -> {
                     slot.setSelected ( true );
                     slot.getItem ( ).ifPresent ( item -> {
-                            GameScreen.getClient ( ).sendToAll ( new ItemActionRequest (gBases.get (slots.indexOf (slot))));
+                            GameScreen.getClient ( ).sendToAll ( new ItemActionRequest (gBases.get (slotsq.indexOf (slot))));
                     } );
                 } );
 
@@ -97,17 +97,16 @@ public class QuickInventory extends Window {
         Item item = base  < userItems.length ? userItems[base] : null;
 
         if (x>0 && x<6){
-            slots.get(x).setItem(item);
+            slotsq.get(x).setItem(item);
             gBases.set(x, base);
             x++;
         } else{
             x = 0;
-            slots.get(x).setItem(item);
+            slotsq.get(x).setItem(item);
             gBases.set(x, base);
             x++;
         }
     }
-
 
     public int getGBases(int x) {
         return gBases.get(x);
@@ -119,7 +118,7 @@ public class QuickInventory extends Window {
 
     public int selectedIndex() {
         assert (selected.isPresent());
-        return slots.indexOf(selected.get());
+        return slotsq.indexOf(selected.get());
     }
 
     public boolean isOver() {

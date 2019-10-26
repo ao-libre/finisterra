@@ -13,6 +13,7 @@ public class ActionBar extends Table implements ActionSwitchListener {
     private SwitchButtons buttons;
     private SwitchButtons relleno;
     private SpellView spellView;
+    private EchisosCompletos echisosCompletos;
     private Inventory inventory;
     private QuickInventory quickInventory;
 
@@ -26,6 +27,7 @@ public class ActionBar extends Table implements ActionSwitchListener {
         spellView = new SpellView();
         inventory = new Inventory();
         quickInventory =new QuickInventory ();
+        echisosCompletos = new EchisosCompletos ();
 
         add(relleno).top();
         relleno.setVisible(false);
@@ -39,7 +41,10 @@ public class ActionBar extends Table implements ActionSwitchListener {
         switch (state) {
             case SPELLS:
                 clear();
+                add(relleno).top();
+                relleno.setVisible(false);
                 add(buttons).top().right().row();
+                add(echisosCompletos).padTop(PAD_TOP).right ();
                 add(spellView).padTop(PAD_TOP).right();
                 break;
             case INVENTORY:
@@ -54,7 +59,7 @@ public class ActionBar extends Table implements ActionSwitchListener {
     }
 
     public boolean isOver() {
-        return getInventory().isOver() || getSpellView().isOver() || getQuickInventory().isOver() || mouseListener.isOver();
+        return getInventory().isOver() || getSpellView().isOver() || getQuickInventory().isOver()  || mouseListener.isOver();
     }
 
     public void toggle() {
@@ -71,6 +76,10 @@ public class ActionBar extends Table implements ActionSwitchListener {
 
     public QuickInventory getQuickInventory() {
         return quickInventory;
+    }
+
+    public EchisosCompletos getEchisosCompletos(){
+        return echisosCompletos;
     }
 
     public void scrolled(int amount) {

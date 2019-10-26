@@ -37,6 +37,7 @@ public class Inventory extends Window {
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
     private int j = 1;
+    private QuickInventory quickInventory;
 
     Inventory() {
         super("", Skins.COMODORE_SKIN, "inventory");
