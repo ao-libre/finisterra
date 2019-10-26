@@ -186,9 +186,6 @@ public class AOInputProcessor extends Stage {
             case Input.Keys.Q:
                 asigQI ();
                 break;
-            case Input.Keys.R:
-                System.out.println ("*****SOS UN PINCHE *******:" + E(GameScreen.getPlayer()).getCharHero ().heroId);
-                break;
 
         }
     }
