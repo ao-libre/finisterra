@@ -165,8 +165,10 @@ public class AOInputProcessor extends Stage {
                 gui.toggleFullscreen();
                 break;
             case Input.Keys.R:
-                System.out.println (E(GameScreen.getPlayer()).nameText () +" *****SOS UN PINCHE *******:"
-                        + Hero.VALUES.get(E(GameScreen.getPlayer()).getCharHero ().heroId));
+                WorldUtils.getWorld().ifPresent(world -> {
+                    world.getSystem(GUI.class).getConsole().addInfo( (E(GameScreen.getPlayer()).nameText () +" SOS UN :"
+                        + Hero.VALUES.get(E(GameScreen.getPlayer()).getCharHero ().heroId)));
+                });
                 break;
         }
     }
