@@ -164,7 +164,8 @@ public class AOInputProcessor extends Stage {
                 // Toggle between Windowed Mode and Fullscreen.
                 gui.toggleFullscreen();
                 break;
-            case Input.Keys.R:
+            case Input.Keys.F3:
+                // TODO muestra las cualidades del personaje
                 WorldUtils.getWorld().ifPresent(world -> {
                     world.getSystem(GUI.class).getConsole().addInfo( (E(GameScreen.getPlayer()).nameText () +" SOS UN :"
                         + Hero.VALUES.get(E(GameScreen.getPlayer()).getCharHero ().heroId)));
@@ -214,6 +215,13 @@ public class AOInputProcessor extends Stage {
             case Input.Keys.F11:
                 // Toggle between Windowed Mode and Fullscreen.
                 gui.toggleFullscreen();
+                break;
+            case Input.Keys.F3:
+                // TODO muestra las cualidades del personaje
+                WorldUtils.getWorld().ifPresent(world -> {
+                    world.getSystem(GUI.class).getConsole().addInfo( (E(GameScreen.getPlayer()).nameText () +" SOS UN :"
+                            + Hero.VALUES.get(E(GameScreen.getPlayer()).getCharHero ().heroId)));
+                });
                 break;
         }
     }
