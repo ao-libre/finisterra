@@ -13,7 +13,7 @@ Read more [here](https://github.com/EsotericSoftware/kryonet)
 ### libGDX
 It allows us to create application game logic, create screens and render all that we need using OpenGL.
 
-## Images 
+## Collaborators
 ![game preview image](https://cdn.discordapp.com/attachments/580487031197794313/636899837354442755/readme-repo.png)
 
 ## Get Started
@@ -23,6 +23,9 @@ It allows us to create application game logic, create screens and render all tha
 * [Workflow to collaborating on Github](docs/get-started/workflow-github.md)
 * [Key Config to Play](docs/get-started/key-config-to-play.md)
 
+## ChangeLog (in process)
+[Commits Link](https://github.com/ao-libre/ao-java/commits/master)
+
 ## Networks
-[Web](https://finisterra.argentumonline.org/) - [Youtube](https://www.youtube.com/channel/UCftJ6hBfoovJY6nfmXTBD0g) - 
+[Web](https://finisterra.argentumonline.org/) - [Youtube](https://www.youtube.com/watch?v=rXinaWXErwo&list=PLnBfSTXOshh7Ndf_53CxLk76vhyzEXOdR) - 
 [Whatsapp](https://api.whatsapp.com/send?phone=5492216822760) -  [Discord](https://discord.gg/qCJPGbY)

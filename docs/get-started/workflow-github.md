@@ -9,3 +9,6 @@
         - Creamos el Pull Request al repositorio de Finisterra desde la Web de Github.
     - Si somos colaboradores, pusheamos el branch directamente sobre el repositorio de Finisterra.
         - Creamos el Pull Request al Repositorio de Finisterra desde la Web de Github
+        
+### Mini trucos Github
+https://gist.github.com/jelcaf/1404619
