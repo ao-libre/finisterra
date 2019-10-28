@@ -1,16 +1,16 @@
-# ao-java [![Build Status](https://travis-ci.org/ao-libre/ao-java.svg?branch=master)](https://travis-ci.org/ao-libre/ao-java) [![Chat](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/GpX3zzZ)
+# Finisterra [![Build Status](https://travis-ci.org/ao-libre/ao-java.svg?branch=master)](https://travis-ci.org/ao-libre/ao-java) 
 
-Rewriting Argentum Online in Java, using Artemis, Kryonet and libGDX.
+MMORPG Open Source based on Argentum Online. Written in Java, using Artemis, Kryonet and libGDX.
 
-## ECS (entity-component-system)
+### ECS (entity-component-system)
 To understand ECS, I recommend to read [this](https://github.com/junkdog/artemis-odb/wiki/Introduction-to-Entity-Systems).
 Using [artemis](https://github.com/junkdog/artemis-odb) framework has been really useful to start rewriting this game.
 
-## Kryonet
+### Kryonet
 Avoid creating huge game protocol since we can use Requests and Responses, which can be processed easily with 'visitor' design pattern. 
 Read more [here](https://github.com/EsotericSoftware/kryonet)
 
-## libGDX
+### libGDX
 It allows us to create application game logic, create screens and render all that we need using OpenGL.
 
 ## Images 
@@ -24,4 +24,5 @@ It allows us to create application game logic, create screens and render all tha
 * [Key Config to Play](docs/get-started/key-config-to-play.md)
 
 ## Networks
-[Web](https://finisterra.argentumonline.org/) [Youtube](https://www.youtube.com/channel/UCftJ6hBfoovJY6nfmXTBD0g)
+[Web](https://finisterra.argentumonline.org/) - [Youtube](https://www.youtube.com/channel/UCftJ6hBfoovJY6nfmXTBD0g) - 
+[Whatsapp](https://api.whatsapp.com/send?phone=5492216822760) -  [Discord](https://discord.gg/qCJPGbY)
