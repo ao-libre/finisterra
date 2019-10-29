@@ -32,9 +32,7 @@ If you use IntelliJ, use the JDK that comes with the project if is not working c
 
 ![imagenintellij](https://cdn.discordapp.com/attachments/580487031197794313/627486688574308392/Captura_de_pantalla_de_2019-09-28_09-39-58.png)
 
-
 ## Modules
-
 ### components
 Contains all components (ECS related)
 ### core
@@ -45,4 +43,5 @@ Contains assets and desktop game launcher.
 Server logic and systems (ECS), database connection (TBD), etc.
 ### shared
 All stuff shared between client and server, like network requests and responses, objects, maps, etc.
-
+### design
+Frontend game design editor, graphics viewer and animation manager, json manager, world editor, spells manager and more.
