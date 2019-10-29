@@ -94,8 +94,8 @@ public class MapEditor extends DesignScreen {
                     int y = !(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ||
                             Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) ?
                             amount : 0;
-                    x *= 2;
-                    y *= 2;
+                    x *= 70;
+                    y *= 70;
                     world.getSystem(CameraSystem.class).camera.translate(x, y);
                 }
                 return result;
