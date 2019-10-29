@@ -319,6 +319,7 @@ public class MapEditor extends DesignScreen {
                     Map current = mapProperties.getCurrent();
                     FileHandle folder = Gdx.files.local("output/maps/");
                     new AOJson().toJson(current, folder.child(current.getName() + ".json"));
+                    //TODO que guarde también los mapas limitrofes
                 }, "Save map in output folder"))
                 .spaceLeft(5);
 
@@ -357,7 +358,7 @@ public class MapEditor extends DesignScreen {
 
     private void createBottomPane(Table table) {
         mapProperties = new MapProperties();
-        table.add(mapProperties).bottom().prefWidth(500).prefHeight(100).expandX();
+        table.add(mapProperties).left().bottom().prefWidth(270).prefHeight(240).expandX();
     }
 
     private void createRightPane(Table table) {
@@ -368,7 +369,7 @@ public class MapEditor extends DesignScreen {
 
     private void createLeftPane(Table table) {
         mapPalette = new MapPalette();
-        table.add(mapPalette).left().expandY();
+        table.add(mapPalette).left().top().expandY();
     }
 
     @Override
