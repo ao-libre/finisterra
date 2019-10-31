@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import entity.character.info.Inventory.Item;
@@ -27,8 +26,8 @@ import static com.artemis.E.E;
 
 public class Inventory extends Window {
 
-    static final int COLUMNS = 6;
-    private static final int ROWS = 1;
+    static final int COLUMNS = 5;
+    private static final int ROWS = 4;
     private static final int SIZE = COLUMNS * ROWS;
     private final ClickListener mouseListener;
     private int base;
@@ -37,6 +36,8 @@ public class Inventory extends Window {
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
+    private int rowsCounter = 1;
+    private InventoryQuickBar inventoryQuickBar;
 
     Inventory() {
         super("", Skins.COMODORE_SKIN, "inventory");
@@ -45,10 +46,12 @@ public class Inventory extends Window {
         for (int i = 0; i < SIZE; i++) {
             Slot newSlot = new Slot();
             slots.add(newSlot);
-            add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
-            if (i < SIZE - 1) {
-                add(new Image(getSkin().getDrawable("separator"))).row();
+            add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE);
+            if (rowsCounter > ROWS -1) {
+                row();
+                rowsCounter = 0;
             }
+            rowsCounter++;
         }
         mouseListener = getMouseListener();
         addListener(mouseListener);
@@ -187,12 +190,12 @@ public class Inventory extends Window {
 
     public int selectedIndex() {
         assert (selected.isPresent());
-        return slots.indexOf(selected.get());
+        return base + slots.indexOf(selected.get());
     }
 
     private int draggingIndex() {
         assert (dragging.isPresent());
-        return slots.indexOf(dragging.get());
+        return base + slots.indexOf(dragging.get());
     }
 
     public boolean isOver() {

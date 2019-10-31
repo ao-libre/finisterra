@@ -57,6 +57,9 @@ public class GUI extends BaseSystem implements Disposable {
     public Inventory getInventory() {
         return actionBar.getInventory();
     }
+    public InventoryQuickBar getInventoryQuickBar() {
+        return actionBar.getInventoryQuickBar ();
+    }
 
     public DialogText getDialog() {
         return dialog;
@@ -76,6 +79,10 @@ public class GUI extends BaseSystem implements Disposable {
 
     public SpellView getSpellView() {
         return getActionBar().getSpellView();
+    }
+
+    public SpellViewExpanded getSpellViewExpanded(){
+        return getActionBar ().getSpellViewExpanded ();
     }
 
     public void takeScreenshot() {
@@ -149,7 +156,7 @@ public class GUI extends BaseSystem implements Disposable {
 
     private Table createActionBar(Table table) {
         actionBar = new ActionBar();
-        table.add(actionBar).right().expandY();
+        table.add(actionBar).right().expandY().expandX ();
         return actionBar;
     }
 

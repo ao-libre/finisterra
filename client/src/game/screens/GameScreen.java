@@ -79,6 +79,8 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         GameScreen.player = player;
         world.getSystem(GUI.class).getInventory().updateUserInventory(0);
         world.getSystem(GUI.class).getSpellView().updateSpells();
+        world.getSystem(GUI.class).getSpellViewExpanded ().updateSpells();
+
     }
 
     public static KryonetClientMarshalStrategy getClient() {
