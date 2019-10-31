@@ -5,4 +5,5 @@ jdk:
   - openjdk12
 
 script:
+  - ./gradlew clean
   - ./gradlew compileJava
