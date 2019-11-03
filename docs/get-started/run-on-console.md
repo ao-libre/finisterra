@@ -1,12 +1,24 @@
-### Clone repo
+### Step 1. Get Source Code to run
+* Option A: Use this command in CMD or TERMINAL to clone repository
 ```
 git clone https://github.com/ao-libre/ao-java.git
 ```
-### Run on console
-* Use CMD o TERMINAL for run
-* Go to folder and use following commands to run client on console ```./gradlew desktop:run``` or server ```./gradlew server:run```
-* Or generate distribution jars ``` ./gradlew desktop:dist ``` ``` ./gradlew server:dist ```
+* Option B: Download https://github.com/ao-libre/ao-java/archive/master.zip
+* Option C: Clone this repository https://github.com/ao-libre/ao-java.git with [GitHub Desktop](https://desktop.github.com/)
+### Step 2. Run on console
+#### Windows:
+* Use CMD for run
+   1. Go to folder ```/ao-java``` and use following commands to run client on console ```gradlew.bat desktop:run -x :shared:fluid```** or server ```gradlew.bat server:run```
+#### Linux o Mac    
+* Use TERMINAL for run
+   1. Go to folder ```/ao-java``` and use following commands to run client on console ```./gradlew desktop:run -x :shared:fluid```** or server ```./gradlew server:run```
+
+** To avoid recompiling shared module and regeneration of .class files, which will probably bring some execution errors like ClassNotFoundException, you can add this argument to skip `fluid` task in both client and server run configurations: ```-x :shared:fluid```
 
 ### Conflicts running Client and Server in same machine
-To avoid recompiling shared module and regeneration of .class files, which will probably bring some execution errors like ClassNotFoundException, you can add this argument to skip `fluid` task in both client and server run configurations:
-* ```-x :shared:fluid```
+- If occurred error on ***Windows***, test this command ```gradlew.bat desktop:build``` or server ```gradlew.bat server:build``` before repeat [step i](#windows).
+- If occurred error on ***Linux or Mac*** , test this command ```./gradlew desktop:build``` or server ```./gradlew server:build``` before repeat [step i](#linux-o-mac).
+
+### Generate distribution jars:
+This step is not necessary, use it only if you want to create an executable to share with a friend. ``` ./gradlew desktop:dist ``` ``` ./gradlew server:dist ```
+
