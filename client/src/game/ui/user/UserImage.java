@@ -40,15 +40,15 @@ public class UserImage extends ImageButton {
 
     private void paintCircle(Batch batch, Level level) {
         float percent = getPercent(level);
-        float angle = 360 - (360 * percent % 360);
+        float angle = (360 * percent);
         radialSprite.setAngle(angle);
-        radialSprite.setScale(0.8f, 0.8f);
-//        radialSprite.draw(batch, getX() + 15, getY() + 15, getWidth() - 15, getHeight() - 15);
+        radialSprite.setScale(1.5f, 1.5f);
+        radialSprite.draw(batch, getX() + 15, getY() + 15, getWidth() - 16, getHeight() - 15);
 
     }
 
     private float getPercent(Level level) {
-        return (float) level.exp / (float) level.expToNextLevel * 100f;
+         return (float) level.exp / (float) level.expToNextLevel;
     }
 
     private void drawLevel(Batch batch, Level level) {
