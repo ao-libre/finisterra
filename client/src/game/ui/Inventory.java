@@ -17,6 +17,8 @@ import shared.network.interaction.DropItem;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
 import shared.objects.types.Obj;
+import shared.objects.types.SpellObj;
+import shared.objects.types.Type;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -31,6 +33,7 @@ public class Inventory extends Window {
     private static final int SIZE = COLUMNS * ROWS;
     private final ClickListener mouseListener;
     private int base;
+    private GUI gui;
 
     private ArrayList<Slot> slots;
     private Optional<Slot> selected = Optional.empty();
@@ -75,6 +78,7 @@ public class Inventory extends Window {
                     slot.getItem().ifPresent(item -> {
                         if (getTapCount() >= 2) {
                             GameScreen.getClient().sendToAll(new ItemActionRequest(slots.indexOf(slot)));
+                            addSpellSVE(slot);
                         }
                     });
                 });
@@ -196,6 +200,22 @@ public class Inventory extends Window {
     private int draggingIndex() {
         assert (dragging.isPresent());
         return base + slots.indexOf(dragging.get());
+    }
+
+
+    private void addSpellSVE(Slot slot){ //funcion provisoria hasta q encuentre como hacerlo a desde el servidor
+        Optional< Item > item = slot.getItem ();
+        int objID = item.map ( item1 -> item1.objId ).orElse ( -1 );
+        ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
+        Optional<Obj> object = objectHandler.getObject(objID);
+        object.ifPresent(obj -> {
+            if (obj.getType().equals (Type.SPELL)) {
+                SpellObj spellObj = (SpellObj) obj;
+                if (E (GameScreen.getPlayer ()).charHeroHeroId () != 0 ) {
+                    GameScreen.world.getSystem (GUI.class).getSpellViewExpanded ().newSpellAdd (spellObj.getSpellIndex ());
+                }
+            }
+        });
     }
 
     public boolean isOver() {

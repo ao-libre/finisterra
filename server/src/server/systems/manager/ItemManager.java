@@ -3,6 +3,7 @@ package server.systems.manager;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
+import com.esotericsoftware.minlog.Log;
 import entity.character.attributes.Agility;
 import entity.character.attributes.Attribute;
 import entity.character.attributes.Strength;
@@ -13,10 +14,7 @@ import entity.character.status.Mana;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
-import shared.objects.types.Obj;
-import shared.objects.types.ObjWithClasses;
-import shared.objects.types.PotionObj;
-import shared.objects.types.Type;
+import shared.objects.types.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +55,7 @@ public class ItemManager extends DefaultManager {
 
     public boolean isUsable(Inventory.Item item) {
         Optional<Obj> object = objectManager.getObject(item.objId);
-        return object.map(obj -> obj.getType().equals(Type.POTION)).orElse(false);
+        return object.map(obj -> (obj.getType().equals(Type.POTION) || obj.getType ().equals (Type.SPELL )) ).orElse(false);
     }
 
     public void use(int player, Inventory.Item item) {
@@ -100,6 +98,13 @@ public class ItemManager extends DefaultManager {
                 EntityUpdate update = EntityUpdateBuilder.of(player).withComponents(components.toArray(new Component[0])).build();
                 worldManager.sendEntityUpdate(player, update);
                 // TODO remove from inventory
+            }
+            if (obj.getType().equals(Type.SPELL)){
+                SpellObj spellObj = (SpellObj) obj;
+                if (E (player).charHeroHeroId () != 0 ) {
+                    E (player).spellBookAddSpell ( spellObj.getSpellIndex ( ) );
+                }
+                Log.info( E ( player ).nameText () + " " +E ( player ).getSpellBook ( ).getMsj() );
             }
         });
     }

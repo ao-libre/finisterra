@@ -15,15 +15,15 @@ import shared.model.Spell;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Stream;
 
 import static com.artemis.E.E;
 
 public class SpellViewExpanded extends Table {
 
     public static final int MAX_SPELLS = 25;
-    public Optional<Spell> toCast = Optional.empty();
     public Optional<Spell> selected = Optional.empty();
-    private Spell spell;
     private Window spellTable;
     private List<SpellSlotEC> slotsEC = new ArrayList<>(MAX_SPELLS);
     private int base;
@@ -45,22 +45,57 @@ public class SpellViewExpanded extends Table {
             j++;
         }
         add(spellTable);
+        spellTable.toFront();
     }
 
 
     public void updateSpells() {
-
         WorldUtils.getWorld().ifPresent(world -> {
             SpellHandler spellHandler = world.getSystem( SpellHandler.class);
             Spell[] spells = spellHandler.getSpells();
             Spell[] spellsToShow = new Spell[MAX_SPELLS];
-            System.arraycopy(spells, base, spellsToShow, 0, Math.min(MAX_SPELLS, spells.length));
+            System.arraycopy(spells, 0, spellsToShow, 0, Math.min(MAX_SPELLS, spells.length));
             for (int i = 0; i < MAX_SPELLS; i++) {
                 slotsEC.get(i).setSpell(spellsToShow[i]);
             }
         });
+    }
 
-
+    public void newSpellAdd(int spellNum){
+        AtomicBoolean present = new AtomicBoolean ( false );
+        WorldUtils.getWorld().ifPresent(world -> {
+            SpellHandler spellHandler = world.getSystem ( SpellHandler.class );
+            Spell[] spells = spellHandler.getSpells();
+            Spell[] spellsToShow = new Spell[MAX_SPELLS];
+            Optional< Spell > newSpell = spellHandler.getSpell ( spellNum );
+            newSpell.ifPresent ( spell1 -> {
+                if(spells.length <= MAX_SPELLS ) {
+                    for (int i = 0; i < spells.length; i++) {
+                        if (spells[i].equals ( spell1 )) {
+                            present.set ( true );
+                        }
+                    }
+                    if (!present.get ( )) {
+                        for (int i = 0; i < spells.length; i++) {
+                            spellsToShow[i] = spells[i];
+                        }
+                        spellsToShow[spells.length] = spell1;
+                        for (int i = 0; i < MAX_SPELLS; i++) {
+                            slotsEC.get ( i ).setSpell ( spellsToShow[i] );
+                        }
+                        world.getSystem ( GUI.class ).getConsole ( ).addInfo ( "Se ha agregado el hechizo " + spell1 + " en el espacio "
+                                + (spells.length +1) + " de tu libro de hecizos." );
+                    } else {
+                        world.getSystem ( GUI.class ).getConsole ( ).addInfo ( "Ya conoses el hechiso " + spell1 +".");
+                    }
+                }
+                else {
+                    world.getSystem ( GUI.class ).getConsole ( ).addInfo ( "Tu libro de hechisos esta lleno." );
+                }
+            });
+        });
+        E (GameScreen.getPlayer ()).getSpellBook ().addSpell ( spellNum );
+        updateSpells ();
     }
 
     void selected(Spell spell) {
@@ -82,8 +117,14 @@ public class SpellViewExpanded extends Table {
         batch.setColor(backup);
     }
 
+    public boolean isOver() {
+        return Stream.of(spellTable.getChildren().items)
+                .filter(SpellSlotEC.class::isInstance)
+                .map(SpellSlotEC.class::cast)
+                .anyMatch(SpellSlotEC::isOver);
+    }
 
-
-
-
+    public Spell getSelected() {
+        return selected.get ();
+    }
 }
