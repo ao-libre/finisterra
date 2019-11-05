@@ -118,7 +118,7 @@ public class SpellSlot extends ImageButton {
     }
 
     private Texture getSpellIcon() {
-            icon = new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getIconGrh() + ".png"));
+            icon = new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getId () + ".png"));
         return icon;
     }
 }
