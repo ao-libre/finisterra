@@ -25,7 +25,7 @@ import static com.artemis.E.E;
 
 public class SpellViewExpanded extends Table {
 
-    public static final int MAX_SPELLS = 25;
+    private static final int MAX_SPELLS = 25;
     public Optional<Spell> selected = Optional.empty();
     private Window spellTable;
     private List<SpellSlotEC> slotsEC = new ArrayList<>(MAX_SPELLS);
@@ -75,15 +75,13 @@ public class SpellViewExpanded extends Table {
             Optional< Spell > newSpell = spellHandler.getSpell ( spellNum );
             newSpell.ifPresent ( spell1 -> {
                 if(spells.length <= MAX_SPELLS ) {
-                    for (int i = 0; i < spells.length; i++) {
-                        if (spells[i].equals ( spell1 )) {
-                            present.set ( true );
+                    for (Spell spell : spells) {
+                        if (spell.equals(spell1)) {
+                            present.set(true);
                         }
                     }
                     if (!present.get ( )) {
-                        for (int i = 0; i < spells.length; i++) {
-                            spellsToShow[i] = spells[i];
-                        }
+                        System.arraycopy(spells, 0, spellsToShow, 0, spells.length);
                         spellsToShow[spells.length] = spell1;
                         for (int i = 0; i < MAX_SPELLS; i++) {
                             slotsEC.get ( i ).setSpell ( spellsToShow[i] );
@@ -129,6 +127,6 @@ public class SpellViewExpanded extends Table {
     }
 
     public Spell getSelected() {
-        return selected.get ();
+        return selected.orElse(null);
     }
 }
