@@ -5,12 +5,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import game.AOGame;
+import game.handlers.AOAssetManager;
 import game.handlers.SpellHandler;
 import game.screens.GameScreen;
 import game.utils.Colors;
 import game.utils.Skins;
 import game.utils.WorldUtils;
 import shared.model.Spell;
+import shared.util.Messages;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +31,11 @@ public class SpellViewExpanded extends Table {
     private List<SpellSlotEC> slotsEC = new ArrayList<>(MAX_SPELLS);
     private int base;
     private int j = 1;
+    private AOAssetManager assetManager;
 
     public SpellViewExpanded() {
         super(Skins.COMODORE_SKIN);
+        assetManager = AOGame.getGlobalAssetManager();
         spellTable = new Window("", Skins.COMODORE_SKIN, "inventory");
         for (int i = 0; i < MAX_SPELLS; i++) {
             SpellSlotEC slot = new SpellSlotEC(this, null);
@@ -51,7 +56,7 @@ public class SpellViewExpanded extends Table {
 
     public void updateSpells() {
         WorldUtils.getWorld().ifPresent(world -> {
-            SpellHandler spellHandler = world.getSystem( SpellHandler.class);
+            SpellHandler spellHandler = world.getSystem(SpellHandler.class);
             Spell[] spells = spellHandler.getSpells();
             Spell[] spellsToShow = new Spell[MAX_SPELLS];
             System.arraycopy(spells, 0, spellsToShow, 0, Math.min(MAX_SPELLS, spells.length));
@@ -83,14 +88,13 @@ public class SpellViewExpanded extends Table {
                         for (int i = 0; i < MAX_SPELLS; i++) {
                             slotsEC.get ( i ).setSpell ( spellsToShow[i] );
                         }
-                        world.getSystem ( GUI.class ).getConsole ( ).addInfo ( "Se ha agregado el hechizo " + spell1 + " en el espacio "
-                                + (spells.length +1) + " de tu libro de hecizos." );
+                        world.getSystem ( GUI.class ).getConsole ( ).addInfo ( assetManager.getMessages( Messages.SPELLS_ADD, spell1.getName(), Integer.toString(spells.length + 1) ) );
                     } else {
-                        world.getSystem ( GUI.class ).getConsole ( ).addInfo ( "Ya conoses el hechiso " + spell1 +".");
+                        world.getSystem ( GUI.class ).getConsole ( ).addInfo ( assetManager.getMessages( Messages.SPELLS_ALREDY_KNOWN, spell1.getName() ) );
                     }
                 }
                 else {
-                    world.getSystem ( GUI.class ).getConsole ( ).addInfo ( "Tu libro de hechisos esta lleno." );
+                    world.getSystem ( GUI.class ).getConsole ( ).addInfo ( assetManager.getMessages( Messages.SPELLS_FULL ) );
                 }
             });
         });
