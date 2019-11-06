@@ -21,6 +21,7 @@ public class ActionBar extends Table implements ActionSwitchListener {
     private Inventory inventory;
     private InventoryQuickBar inventoryQuickBar;
     private ImageTextButton expandButton;
+    private String currentState = "INVENTORY";
 
     ActionBar() {
         super(Skins.COMODORE_SKIN);
@@ -67,6 +68,7 @@ public class ActionBar extends Table implements ActionSwitchListener {
                 add();
                 add( expandButton ).padTop (-10f).right ();
                 expandButton.setVisible(spellView.isVisible ());
+                currentState = "SPELL";
                 break;
             case INVENTORY:
                 clear();
@@ -77,6 +79,7 @@ public class ActionBar extends Table implements ActionSwitchListener {
                 add();
                 add( expandButton ).padTop (-10f).right () ;
                 expandButton.setVisible(inventoryQuickBar.isVisible ());
+                currentState = "INVENTORY";
                 break;
         }
     }
@@ -116,5 +119,9 @@ public class ActionBar extends Table implements ActionSwitchListener {
 
     public void setExpandButtonVisible() {
         expandButton.setVisible (!expandButton.isVisible ());
+    }
+
+    public String getState() {
+        return currentState;
     }
 }

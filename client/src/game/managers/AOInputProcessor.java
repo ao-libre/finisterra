@@ -249,17 +249,19 @@ public class AOInputProcessor extends Stage {
     }
 
     private void useq(int x) {
-        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
-            if (gui.getInventory ( ).getSelected ( ).isEmpty ( )){
-                base = 0;
-            } else {
-                base = gui.getInventory ( ).selectedIndex ( );
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT )) {
+            if (gui.getActionBar ().getState().equals("INVENTORY")) {
+                if (gui.getInventory ( ).getSelected ( ).isEmpty ( )) {
+                    base = 0;
+                } else {
+                    base = gui.getInventory ( ).selectedIndex ( );
+                }
+                gui.getInventoryQuickBar ( ).addItemsIQB ( base, x );
             }
-            gui.getInventoryQuickBar ().addItemsIQB (base, x);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)){
-            gui.getSpellView().addSpelltoSpellview ( gui.getSpellViewExpanded().getSelected(),x );
-        }
-        else {
+            if (gui.getActionBar ().getState().equals("SPELL")) {
+                gui.getSpellView ( ).addSpelltoSpellview ( gui.getSpellViewExpanded ( ).getSelected ( ), x );
+            }
+        } else {
             GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getInventoryQuickBar ().getGBases(x)));
         }
     }
