@@ -52,5 +52,8 @@ public enum Messages {
 
     // RoomScreen
     LEGION_CHAOS,
-    LEGION_ARMY;
+    LEGION_ARMY,
+    START,
+    CHANGE_TEAM,
+    READY
 }

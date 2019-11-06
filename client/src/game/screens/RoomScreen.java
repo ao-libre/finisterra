@@ -6,6 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import game.AOGame;
+import game.handlers.AOAssetManager;
 import game.systems.network.ClientSystem;
 import shared.interfaces.Hero;
 import shared.model.lobby.Player;
@@ -49,30 +51,32 @@ public class RoomScreen extends AbstractScreen {
 
     @Override
     protected void keyPressed(int keyCode) {
-
     }
 
     @Override
     void createContent() {
+        // Load translations.
+        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
+
         Window table = new Window("", getSkin());
         table.setColor(1, 1, 1, 0.8f);
         Table teams = new Table(getSkin());
         teams.defaults().space(5);
         Table army = new Table(getSkin());
-        Label armyLabel = new Label (Messages.LEGION_ARMY, getSkin());
+        Label armyLabel = new Label(assetManager.getMessages(Messages.LEGION_ARMY), getSkin());
         armyList = new List<>(getSkin());
         army.add(armyLabel).growX().row();
         army.add(armyList).minHeight(150).growX().row();
         teams.add(army).pad(20).grow().row();
 
         Table chaos = new Table(getSkin());
-        Label chaosLabel = new Label("CHAOS ARMY", getSkin());
+        Label chaosLabel = new Label(assetManager.getMessages(Messages.LEGION_CHAOS), getSkin());
         criminalList = new List<>(getSkin());
         chaos.add(chaosLabel).growX().row();
         chaos.add(criminalList).minHeight(150).growX().row();
         teams.add(chaos).pad(20).grow();
 
-        start = new TextButton("START", getSkin());
+        start = new TextButton(assetManager.getMessages(Messages.START), getSkin());
         start.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -80,7 +84,7 @@ public class RoomScreen extends AbstractScreen {
             }
         });
 
-        Button changeTeam = new TextButton("Change Team", getSkin());
+        Button changeTeam = new TextButton(assetManager.getMessages(Messages.CHANGE_TEAM), getSkin());
         changeTeam.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -88,7 +92,7 @@ public class RoomScreen extends AbstractScreen {
             }
         });
 
-        Button readyButton = new CheckBox("Ready", getSkin());
+        Button readyButton = new CheckBox(assetManager.getMessages(Messages.READY), getSkin());
         readyButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
