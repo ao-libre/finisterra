@@ -20,7 +20,7 @@ It allows us to create application game logic, create screens and render all tha
 * [Download Stable Versión App (incoming)](https://github.com/ao-libre/ao-java/releases)
 * [Run on console](docs/get-started/run-on-console.md)
 * [Development Environment](docs/get-started/development-environment.md)
-* [Workflow to collaborating on Github](docs/get-started/workflow-github.md)
+* [Workflow to collaborating on Github](docs/get-started/flujo-de-trabajo.md)
 * [Key Config to Play](docs/get-started/key-config-to-play.md)
 
 ## ChangeLog (in process)
