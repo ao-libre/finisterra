@@ -48,5 +48,12 @@ public enum Messages {
     // SPELLS
     ORIGIN_MSG,
     OWNER_MSG,
-    TARGET_MSG
+    TARGET_MSG,
+
+    // RoomScreen
+    LEGION_CHAOS,
+    LEGION_ARMY,
+    START,
+    CHANGE_TEAM,
+    READY
 }
