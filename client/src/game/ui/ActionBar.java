@@ -16,7 +16,6 @@ public class ActionBar extends Table implements ActionSwitchListener {
     private static final float PAD_TOP = -17f;
     private final ClickListener mouseListener;
     private SwitchButtons buttons;
-    private SwitchButtons relleno;
     private SpellView spellView;
     private SpellViewExpanded spellViewExpanded;
     private Inventory inventory;
@@ -29,7 +28,6 @@ public class ActionBar extends Table implements ActionSwitchListener {
         buttons = new SwitchButtons();
         buttons.addListener(this);
         buttons.addListener(mouseListener);
-        relleno = new SwitchButtons (  );
         spellView = new SpellView();
         inventory = new Inventory();
         inventoryQuickBar =new InventoryQuickBar ();
@@ -49,12 +47,11 @@ public class ActionBar extends Table implements ActionSwitchListener {
             }
         });
 
-        add(relleno).top();
-        relleno.setVisible(false);
+        add().top();
         add(buttons).top().right ().row();
         add(inventory).padTop(PAD_TOP);
         add( inventoryQuickBar ).padTop(PAD_TOP).right ().row ();
-        add(relleno).top();
+        add().top();
         add( expandButton ).right ().padTop (-10f);
     }
 
@@ -63,23 +60,21 @@ public class ActionBar extends Table implements ActionSwitchListener {
         switch (state) {
             case SPELLS:
                 clear();
-                add(relleno).top();
-                relleno.setVisible(false);
+                add().top();
                 add(buttons).top().right().row();
                 add( spellViewExpanded ).padTop(PAD_TOP).right ();
                 add(spellView).padTop(PAD_TOP).right().row ();
-                add(relleno);
+                add();
                 add( expandButton ).padTop (-10f).right ();
                 expandButton.setVisible(spellView.isVisible ());
                 break;
             case INVENTORY:
                 clear();
-                add(relleno).top();
-                relleno.setVisible(false);
+                add().top();
                 add(buttons).top().right ().row();
                 add(inventory).padTop(PAD_TOP).right ();
                 add( inventoryQuickBar ).padTop(PAD_TOP).right ().row ();
-                add(relleno);
+                add();
                 add( expandButton ).padTop (-10f).right () ;
                 expandButton.setVisible(inventoryQuickBar.isVisible ());
                 break;
@@ -87,7 +82,7 @@ public class ActionBar extends Table implements ActionSwitchListener {
     }
 
     public boolean isOver() {
-        return getInventory().isOver() || getSpellView().isOver() || getInventoryQuickBar ().isOver()  || mouseListener.isOver();
+        return getInventory().isOver() || getSpellView().isOver() || getInventoryQuickBar ().isOver() || getSpellViewExpanded ().isOver () || mouseListener.isOver() || expandButton.isOver ();
     }
 
     public void toggle() {
