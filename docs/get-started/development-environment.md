@@ -10,11 +10,16 @@ git clone https://github.com/ao-libre/ao-java.git
 2. Intel IJ versión comunidad https://www.jetbrains.com/idea/download/index.html
 
 ### Import in IntelliJ
-* Select 'Import Project'
+* Open IntelliJ
+* Select 'Import Project' or File>New>Project From existing source
 * Find and select ```build.gradle``` file
-* Create run configurations using gradle tasks (desktop:run, server:run)
+* Create run configurations using gradle tasks (desktop:run, server:run and design:run)
 
 Here is an image showing how it should look like:
+* ***IMPORTANTE*** el campo de configuración Gradle project, ud debe utilizar el ícono de la Carpeta y seleccionar en todos los casos el Proyecto Raíz como se muestra en la siguiente imagen.
+
+![imageConfigGradleProject](https://media.discordapp.net/attachments/580487031197794313/641723423890079745/unknown.png)
+
 #### Server
 ![imageserverconfig](https://cdn.discordapp.com/attachments/573645939663699988/620037001122414606/Captura_de_pantalla_de_2019-09-07_20-23-53.png)
 #### Client
