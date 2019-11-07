@@ -30,24 +30,25 @@ public class SpellViewExpanded extends Table {
     private Window spellTable;
     private List<SpellSlotEC> slotsEC = new ArrayList<>(MAX_SPELLS);
     private int base;
-    private int j = 1;
+
     private AOAssetManager assetManager;
 
     public SpellViewExpanded() {
         super(Skins.COMODORE_SKIN);
         assetManager = AOGame.getGlobalAssetManager();
         spellTable = new Window("", Skins.COMODORE_SKIN, "inventory");
+        int columnsCounter = 1;
         for (int i = 0; i < MAX_SPELLS; i++) {
             SpellSlotEC slot = new SpellSlotEC(this, null);
             slotsEC.add(slot);
 
-            if (j < 5) {
+            if (columnsCounter < 5) {
                 spellTable.add(slot).width(SpellSlotEC.SIZE).height(SpellSlotEC.SIZE);
             } else {
                 spellTable.add(slot).width(SpellSlotEC.SIZE).height(SpellSlotEC.SIZE).row();
-                j = 0;
+                columnsCounter = 0;
             }
-            j++;
+            columnsCounter++;
         }
         add(spellTable);
         spellTable.toFront();

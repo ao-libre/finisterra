@@ -36,7 +36,6 @@ public class AOInputProcessor extends Stage {
     private GUI gui;
     private AOAssetManager assetManager;
 
-    private int base;
     public AOInputProcessor(GUI gui) {
         this.gui = gui;
         this.assetManager = AOGame.getGlobalAssetManager();
@@ -249,6 +248,7 @@ public class AOInputProcessor extends Stage {
     }
 
     private void useq(int x) {
+        int base;
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT )) {
             if (gui.getActionBar ().getState().equals("INVENTORY")) {
                 if (gui.getInventory ( ).getSelected ( ).isEmpty ( )) {

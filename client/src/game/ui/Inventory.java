@@ -39,22 +39,22 @@ public class Inventory extends Window {
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
-    private int rowsCounter = 1;
     private InventoryQuickBar inventoryQuickBar;
 
     Inventory() {
         super("", Skins.COMODORE_SKIN, "inventory");
+        int columnsCounter = 1;
         setMovable(false);
         slots = new ArrayList<>();
         for (int i = 0; i < SIZE; i++) {
             Slot newSlot = new Slot();
             slots.add(newSlot);
             add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE);
-            if (rowsCounter > ROWS -1) {
+            if (columnsCounter > ROWS -1) {
                 row();
-                rowsCounter = 0;
+                columnsCounter = 0;
             }
-            rowsCounter++;
+            columnsCounter++;
         }
         mouseListener = getMouseListener();
         addListener(mouseListener);
