@@ -1,49 +1,64 @@
 ## Flujo de trabajo (en constante optimización)
 ### Introducción
-Desde el momento que concibes la posibilidad de realizar un aporte, más allá si tus conocimientos son suficientes, ten en cuenta que el 
-objetivo principal del proyecto es el desarrollo, que implica tu propio desarrollo y el de los demás.
-Usa nuestros medios de comunicación
-si necesitas un apoyo, fuera lo que fuera, pierde el miedo y comunicate.
+El proceso cooperativo consta de pautas y pasos con el fin de mantener una organización. 
 
-Comprende también que el proceso colaborativo consta de pautas y pasos para que mantenga una organización. 
+Desde el momento que concibes la posibilidad de realizar un aporte, más allá de tus previos conocimientos, ten en cuenta que el 
+objetivo principal del proyecto es el desarrollo, lo que implica aprendizaje y adaptación. 
+Usa nuestros medios de comunicación si necesitas un apoyo, fuera lo que fuera, pierde el miedo y comunícate.
 
-Tómalo como un aprendizaje y mantén tu corazón abierto para lo que puedas enfrentarte.
+Y por último mantén tu corazón abierto para enfrentar los desafíos que se presenten.
 
-## ¿Cuales son los pasos?
+## Pasos y circuntancias
 Los pasos son distintos en función de la situación que te encuentres.
 ### Caso A - Aún no eres colaborador del repositorio 
 Eso significa que aún no tiene permisos de Lectura o escritura en el repositorio principal
-Trabajarás en lo que llamamos un Fork. Pierde el miedo porque allí nada puedes romper. 
+Trabajarás en lo que llamamos un Fork. Vuelve a perder el miedo y prueba todo lo que necesites, allí nada puedes romper. 
 El proceso para realizar un aporte, será el siguiente:
 
 ### Flujo
-1. Hacer un Fork del repositorio (lo cual creará una copia en tu cuenta personal de github)
-2. Puedes elegir si crear un branch en tu fork para una mejor organización o directamente realizar los cambios.
-3. Creas los cambios que consideres, te recomendamos hacer cosas pequeñas que impliquen una sola mejora.
-4. Luego crearás un Pull Request con destino al repositorio principal. 
-5. A partir de acá, los colaboradores del proyecto podrán sumar/editar tu aporte. Harán observaciones y te brindarán apoyo para que puedas solucionar cualquier inconsistencia que se presente(en el mejor de los casos).
-6. Una vez que el aporte sea considerado y optimizado, se integrará al repositorio principal.
-7. Llegues o no llegues a este paso ¡Gracias por tu interés!
+1. Hacemos un Fork del repositorio (lo cual creará una copia en tu cuenta personal de github)
+2. Podemos elegir si crear un rama en tu fork para una mejor organización o directamente realizar los cambios.
+3. Creamos los cambios que consideres, te recomendamos hacer cosas pequeñas que impliquen una sola mejora.
+4. Luego crearemos un Pull Request con destino al repositorio principal. 
+5. A partir de acá, los colaboradores del proyecto sumarán/editarán a tu aporte. Harán observaciones y te brindarán apoyo para que puedas solucionar cualquier inconsistencia que se presente.
+6. Una vez que hayamos optimizado el aporte, lo integraremos al repositorio principal.
+7. Lleguemos o no a este paso ¡Gracias por tu interés!
 
-### Caso B - Eres colaborador del proyecto
+#### Caso B - Eres colaborador del proyecto
 En este caso consideremos:
-* Es preferible varios Pull Request con pequeños cambios a uno con muchos.
-* Se lo más claro posible con el título de los commits y en las descripciones comenta todo lo posible que hagas, si no estás seguro que estás haciendo lo correcto, todo lo que creas necesario.
-* Agrupamos las modificaciones (archivos) en un commit para organizar cada commit.
-* Mantén actualizado tu Rama.
+* Es preferible hacer varios Pull Request con pequeños cambios a uno con muchos.
+* Se lo más claro posible con el título de los commits y en las descripciones comenta todo lo posible.
+* Crearemos nombres de rama asociados al asunto, puedes usar - o / (guiones o barras) para jerarquizar. Ej: interfaz/libro-hechizos
+* En lo posible agrupamos las modificaciones que corresponden a un cambio(archivos) en un commit para organizar cada commit. 
+* Mantenemos actualizada la rama en el caso que el aporte demore en integrarse ```git pull origin master```
 
-### Flujo
-1. Creas un branch basado en el Branch Master o según corresponda para dicho aporte
+#### Flujo
+1. Creamos una rama basado en el Branch Master o según corresponda para dicho aporte.
 2. Hacemos las modificaciones
 3. Creamos los commit respectivos considerando:
     El comentario del commit debe ser claro y especificar que hace dicha modificación.
-4. Hacemos un push del nuevo branch
+4. Hacemos un push de la nueva rama
 5. Creamos el Pull Request desde la página de Github
-6. Una vez que el aporte sea considerado y optimizado, se integrará al repositorio principal.
-7. Llegues o no llegues a este paso ¡Gracias por tu interés!
+6. Una vez que hayamos optimizado el aporte, lo integraremos al repositorio principal.
+7. Lleguemos o no a este paso ¡Gracias por tu interés!
 
+#### Flujo por comandos
+```
+git checkout master
+git pull origin master
+git checkout -b nombre-de-la-nueva-rama
+git commit -a -m "Mi mensaje claro y explicito"
+git push origin nombre-de-la-nueva-rama
+```
 ### Otros casos
-
-        
+#### Necesito actualizar la rama en la cual trabajo en función del master u otra rama 
+```git pull origin master```
+```git pull origin otra-rama```
+#### Por confusión realize cambios en el master y quiero llevarlos a otra rama
+```
+git stash
+git checkout -b nombre-de-la-nueva-rama
+git stash pop
+```        
 ### Mini trucos Github
 https://gist.github.com/jelcaf/1404619
