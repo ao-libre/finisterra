@@ -3,7 +3,6 @@ sourceSets.main.java.srcDirs = ["src/"]
 dependencies {
     api project(":shared")
 	api group: "com.badlogicgames.gdx", name: "gdx-freetype", version: "$gdxVersion"
-	compileOnly group: "com.badlogicgames.gdx", name: "gdx-backend-lwjgl3", version: "$gdxVersion"
     api("com.badlogicgames.gdx:gdx-tools:$gdxVersion") {
         exclude group: "com.badlogicgames.gdx", module: "gdx-backend-lwjgl"
     }
