@@ -11,13 +11,13 @@ sourceSets {
 mainClassName = "launcher.DesignCenterLauncher"
 
 dependencies {
-    compile project(":desktop")
-    compile "com.soywiz:kaifu2x:$kaifu2xVersion"
-    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
-    compile "org.lwjgl:lwjgl-tinyfd:$tinyfdVersion"
-    compile "org.lwjgl:lwjgl-tinyfd:$tinyfdVersion:natives-windows"
-    compile "org.lwjgl:lwjgl-tinyfd:$tinyfdVersion:natives-linux"
-    compile "org.lwjgl:lwjgl-tinyfd:$tinyfdVersion:natives-macos"
+    implementation project(":desktop")
+	implementation group: "com.soywiz", name: "kaifu2x", version: "$kaifu2xVersion"
+	implementation group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: "$kotlinxCoroutinesVersion"
+	implementation group: "org.lwjgl", name: "lwjgl-tinyfd", version: "$tinyfdVersion"
+	implementation group: "org.lwjgl", name: "lwjgl-tinyfd", version: "$tinyfdVersion", classifier: "natives-windows"
+	implementation group: "org.lwjgl", name: "lwjgl-tinyfd", version: "$tinyfdVersion", classifier: "natives-linux"
+	implementation group: "org.lwjgl", name: "lwjgl-tinyfd", version: "$tinyfdVersion", classifier: "natives-macos"
 }
 
 run.dependsOn classes

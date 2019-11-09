@@ -50,7 +50,7 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: "java"
+    apply plugin: "java-library"
 
     sourceCompatibility = JavaVersion.VERSION_12
     targetCompatibility = JavaVersion.VERSION_12

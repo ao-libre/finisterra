@@ -11,9 +11,9 @@ sourceSets {
 }
 
 dependencies {
-    compile project(":client")
-    compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
-    compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+    implementation project(":client")
+	api group: "com.badlogicgames.gdx", name: "gdx-backend-lwjgl3", version: "$gdxVersion"
+	api group: "com.badlogicgames.gdx", name: "gdx-freetype-platform", version: "$gdxVersion", classifier: "natives-desktop"
 }
 
 static def osName() { System.getProperty('os.name').toLowerCase(Locale.ROOT) }
