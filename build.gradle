@@ -21,11 +21,11 @@ buildscript {
 allprojects {
     apply plugin: "idea"
 
-    group = 'AO-Java'
+    group = 'Finisterra'
     version = '0.1.12'
 
     ext {
-    appName = 'ao-Java'
+    appName = 'Finisterra'
     gdxVersion = '1.9.11-SNAPSHOT' //graphic library
     kryonetVersion = '2.22.0-RC1' //protocol tcp-ip udp
     artemisVersion = '2.2.0'  //Artemis EntityCompomentSystem
