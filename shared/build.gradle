@@ -5,13 +5,13 @@ plugins {
 
 dependencies {
     compile project(":components")
-    compile 'org.ini4j:ini4j:0.5.1'
+    compile "org.ini4j:ini4j:$ini4jVersion"
     compile "net.mostlyoriginal.artemis-odb:contrib-core:$artemisContribVersion"
     compile "net.mostlyoriginal.artemis-odb:contrib-jam:$artemisContribVersion"
     compile "net.mostlyoriginal.artemis-odb:contrib-eventbus:$artemisContribVersion"
     compile "net.mostlyoriginal.artemis-odb:contrib-network:$artemisContribVersion"
     compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-    compile 'com.google.guava:guava:27.1-jre'
+    compile "com.google.guava:guava:$guavaVersion"
 }
 
 ext {

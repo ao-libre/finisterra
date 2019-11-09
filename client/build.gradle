@@ -2,10 +2,10 @@ sourceSets.main.java.srcDirs = ["src/"]
 
 dependencies {
     compile project(":shared")
-    compile "com.badlogicgames.gdx:gdx-freetype:$freetypeVersion"
+    compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
     compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
     compile("com.badlogicgames.gdx:gdx-tools:$gdxVersion") {
-        exclude group: 'com.badlogicgames.gdx', module: 'gdx-backend-lwjgl'
+        exclude group: "com.badlogicgames.gdx", module: "gdx-backend-lwjgl"
     }
-    compile "org.reflections:reflections:0.9.11"
+    compile "org.reflections:reflections:$reflectionsVersion"
 }
