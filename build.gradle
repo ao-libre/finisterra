@@ -25,12 +25,12 @@ allprojects {
     version = '0.1.12'
 
     ext {
-        appName = 'ao-java'
-        gdxVersion = '1.9.11-SNAPSHOT'
-        kryonetVersion = '2.22.0-RC1'
-        artemisVersion = '2.2.0'
-        artemisContribVersion = '2.2.0'
-        gdxAIVersion = '1.8.2'
+    appName = 'ao-Java'
+    gdxVersion = '1.9.11-SNAPSHOT' //graphic library
+    kryonetVersion = '2.22.0-RC1' //protocol tcp-ip udp
+    artemisVersion = '2.2.0'  //ECS Artemis
+    artemisContribVersion = '2.2.0'
+    gdxAIVersion = '1.8.2' //artificial intelligence
 	tinyfdVersion = '3.2.3'
 	jupiterVersion = '5.5.2'
 	guavaVersion = '28.1-jre'
