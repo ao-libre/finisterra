@@ -35,7 +35,7 @@ import static com.artemis.E.E;
 
 public class Inventory extends Window {
 
-    static final int COLUMNS = 6;
+    private static final int COLUMNS = 6;
     private static final int ROWS = 1;
     private static final int SIZE = COLUMNS * ROWS;
     private final ClickListener mouseListener;
@@ -43,6 +43,7 @@ public class Inventory extends Window {
     public boolean toShoot = false;
 
     private ArrayList<Slot> slots;
+    private AOAssetManager assetManager;
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
@@ -50,7 +51,7 @@ public class Inventory extends Window {
     Inventory() {
         super("", Skins.COMODORE_SKIN, "inventory");
         setMovable(false);
-        slots = new ArrayList<>();
+        this.slots = new ArrayList<>();
         for (int i = 0; i < SIZE; i++) {
             Slot newSlot = new Slot();
             slots.add(newSlot);
@@ -59,8 +60,9 @@ public class Inventory extends Window {
                 add(new Image(getSkin().getDrawable("separator"))).row();
             }
         }
-        mouseListener = getMouseListener();
+        this.mouseListener = getMouseListener();
         addListener(mouseListener);
+        this.assetManager = AOGame.getGlobalAssetManager();
     }
 
     private ClickListener getMouseListener() {
@@ -158,7 +160,7 @@ public class Inventory extends Window {
         };
     }
 
-    protected void scrolled(int amount) {
+    void scrolled(int amount) {
         base += amount;
         base = MathUtils.clamp(base, 0, entity.character.info.Inventory.SIZE - Inventory.SIZE);
         updateUserInventory(base);
@@ -176,7 +178,6 @@ public class Inventory extends Window {
     }
 
     public void GetShoot (){
-        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
         ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
         Item[] items = E(GameScreen.getPlayer()).getInventory().items;
 
@@ -189,11 +190,11 @@ public class Inventory extends Window {
                     if (items[inventoryIndex].equipped && obj.getType().equals( Type.WEAPON)) {
                         WeaponObj weaponObj = (WeaponObj) obj;
                         if (weaponObj.getName ().equals ( "Arco Simple" )
-                                || weaponObj.getName ().equals ( "Arco Compuesto")
-                                || weaponObj.getName ().equals ( "Arco de Cazador")
-                                || weaponObj.getName ().equals ( "Arco Simple Reforzado"  )
-                                || weaponObj.getName ().equals ( "Arco Compuesto Reforzado" )
-                                || weaponObj.getName ().equals ( "Arco (Newbie)" )) {
+                                || weaponObj.getName().equals ( "Arco Compuesto")
+                                || weaponObj.getName().equals ( "Arco de Cazador")
+                                || weaponObj.getName().equals ( "Arco Simple Reforzado"  )
+                                || weaponObj.getName().equals ( "Arco Compuesto Reforzado" )
+                                || weaponObj.getName().equals ( "Arco (Newbie)" )) {
                             bowPresent.set ( true );
                         }
                     }
