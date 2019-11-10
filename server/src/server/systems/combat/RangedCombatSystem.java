@@ -33,9 +33,8 @@ import static com.artemis.E.E;
 @Wire
 public class RangedCombatSystem extends AbstractCombatSystem {
 
-    private static final String MISS = "Fallas!";
-    private static final int TIME_TO_MOVE_1_TILE = 200;
     private Optional<Integer> target;
+    private static final int TIME_TO_MOVE_1_TILE = 200;
 
     // Injected Systems
     private MapManager mapManager;
@@ -68,7 +67,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     }
     @Override
     protected void failed(int entityId, Optional<Integer> targetId) {
-        notify(targetId.isPresent() ? targetId.get() : entityId, CombatMessage.physic(MISS));
+        notifyCombat(targetId.orElse(entityId), Messages.ATTACK_FAILED));
     }
     private boolean isValidTarget(WorldPos worldPos, long timestamp, E entity) {
         return entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos, timestamp);
@@ -91,7 +90,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
             notifyCombat(entityId, Messages.DEAD_CANT_ATTACK);
             return false;
         }
-        if (e.getName ().text.equals ( getName ( target.get () ) )){
+        if (e.getName().text.equals ( getName ( target.get () ) )){
             notifyCombat ( entityId, Messages.CANT_ATTACK_YOURSELF);
             return false;
         }
@@ -159,7 +158,6 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     Optional< Integer > getTarget(int userId) {
         return target;
     }
-
 
     private int getBodyDefense(int entityId) {
         int min = 0, max = 1;

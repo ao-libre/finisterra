@@ -41,7 +41,6 @@ public class Inventory extends Window {
     private final ClickListener mouseListener;
     private int base;
     public boolean toShoot = false;
-    private AOAssetManager assetManager;
 
     private ArrayList<Slot> slots;
     private Optional<Slot> selected = Optional.empty();
@@ -177,7 +176,7 @@ public class Inventory extends Window {
     }
 
     public void GetShoot (){
-        assetManager = AOGame.getGlobalAssetManager();
+        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
         ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
         Item[] items = E(GameScreen.getPlayer()).getInventory().items;
 
