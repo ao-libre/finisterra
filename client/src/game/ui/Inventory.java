@@ -223,7 +223,7 @@ public class Inventory extends Window {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        dragging.ifPresent(slot -> slot.getItem().ifPresent(item -> {
+        dragging.flatMap(Slot::getItem).ifPresent(item -> {
             ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
             Optional<Obj> object = objectHandler.getObject(item.objId);
             object.ifPresent(obj -> {
@@ -232,7 +232,7 @@ public class Inventory extends Window {
                 int y1 = Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2);
                 batch.draw(graphic, x1, y1);
             });
-        }));
+        });
     }
 
     public Optional<Slot> getSelected() {
