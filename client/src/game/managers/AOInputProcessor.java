@@ -60,39 +60,60 @@ public class AOInputProcessor extends Stage {
         if (gui.getActionBar().isOver()) {
             return result;
         }
+        if (button == 1) {
+            shoot ();
+        }
+        if (button == 0) {
 
-        WorldUtils.getWorld().ifPresent(world -> WorldUtils.mouseToWorldPos().ifPresent(worldPos -> {
-            final Optional<Spell> toCast = gui.getSpellView().toCast;
-            if (toCast.isPresent()) {
-                Spell spell = toCast.get();
-                E player = E.E(GameScreen.getPlayer());
-                if (!player.hasAttack() || player.getAttack().interval - world.getDelta() < 0) {
-                    TimeSync timeSyncSystem = world.getSystem(TimeSync.class);
-                    long rtt = timeSyncSystem.getRtt();
-                    long timeOffset = timeSyncSystem.getTimeOffset();
-                    GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos, rtt + timeOffset));
-                    player.attack();
+            WorldUtils.getWorld ( ).ifPresent ( world -> WorldUtils.mouseToWorldPos ( ).ifPresent ( worldPos -> {
+                final Optional< Spell > toCast = gui.getSpellView ( ).toCast;
+                final boolean toShoot = gui.getInventory ( ).toShoot;
+                if (toCast.isPresent ( )) {
+                    Spell spell = toCast.get ( );
+                    E player = E.E ( GameScreen.getPlayer ( ) );
+                    if (!player.hasAttack ( ) || player.getAttack ( ).interval - world.getDelta ( ) < 0) {
+                        TimeSync timeSyncSystem = world.getSystem ( TimeSync.class );
+                        long rtt = timeSyncSystem.getRtt ( );
+                        long timeOffset = timeSyncSystem.getTimeOffset ( );
+                        GameScreen.getClient ( ).sendToAll ( new SpellCastRequest ( spell, worldPos, rtt + timeOffset ) );
+                        player.attack ( );
+                    } else {
+                        gui.getConsole ( ).addWarning ( assetManager.getMessages ( Messages.CANT_ATTACK ) );
+                    }
+                    Cursors.setCursor ( "hand" );
+                    gui.getSpellView ( ).cleanCast ( );
+                } else if (toShoot) {
+                    E player = E.E ( GameScreen.getPlayer ( ) );
+                    if (!player.hasAttack ( ) || player.getAttack ( ).interval - world.getDelta ( ) < 0) {
+                        TimeSync timeSyncSystem = world.getSystem ( TimeSync.class );
+                        long rtt = timeSyncSystem.getRtt ( );
+                        long timeOffset = timeSyncSystem.getTimeOffset ( );
+                        if (!player.hasAttack ( ) || player.getAttack ( ).interval - world.getDelta ( ) <= 0) {
+                            GameScreen.getClient ( ).sendToAll ( new AttackRequest ( AttackType.RANGED, worldPos, rtt + timeOffset ) );
+                            player.attack ( );
+                        }
+                    } else {
+                        gui.getConsole ( ).addWarning ( assetManager.getMessages ( Messages.CANT_ATTACK ) );
+                    }
+                    Cursors.setCursor ( "hand" );
+                    gui.getInventory().cleanShoot();
                 } else {
-                    gui.getConsole().addWarning(assetManager.getMessages(Messages.CANT_ATTACK));
-                }
-                Cursors.setCursor("hand");
-                gui.getSpellView().cleanCast();
-            } else {
-                WorldManager worldManager = world.getSystem(WorldManager.class);
-                Optional<String> name = worldManager.getEntities()
-                        .stream()
-                        .filter(entity -> E(entity).hasWorldPos() && E(entity).getWorldPos().equals(worldPos))
-                        .filter(entity -> E(entity).hasName())
-                        .map(entity -> E(entity).getName().text)
-                        .findFirst();
-                if (name.isPresent()) {
-                    gui.getConsole().addInfo(assetManager.getMessages(Messages.SEE_SOMEONE, name.get()));
-                } else {
-                    gui.getConsole().addInfo(assetManager.getMessages(Messages.SEE_NOTHING));
-                }
+                    WorldManager worldManager = world.getSystem ( WorldManager.class );
+                    Optional< String > name = worldManager.getEntities ( )
+                            .stream ( )
+                            .filter ( entity -> E ( entity ).hasWorldPos ( ) && E ( entity ).getWorldPos ( ).equals ( worldPos ) )
+                            .filter ( entity -> E ( entity ).hasName ( ) )
+                            .map ( entity -> E ( entity ).getName ( ).text )
+                            .findFirst ( );
+                    if (name.isPresent ( )) {
+                        gui.getConsole ( ).addInfo ( assetManager.getMessages ( Messages.SEE_SOMEONE, name.get ( ) ) );
+                    } else {
+                        gui.getConsole ( ).addInfo ( assetManager.getMessages ( Messages.SEE_NOTHING ) );
+                    }
 
-            }
-        }));
+                }
+            } ) );
+        }
         return result;
     }
 
@@ -225,6 +246,9 @@ public class AOInputProcessor extends Stage {
                 player.attack();
             }
         });
+    }
+    private void shoot() {
+        gui.getInventory ().GetShoot ();
     }
 
     private void equip() {

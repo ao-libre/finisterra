@@ -1,5 +1,6 @@
 package game.ui;
 
+import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -10,17 +11,24 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import entity.character.info.Inventory.Item;
+import game.AOGame;
+import game.handlers.AOAssetManager;
 import game.handlers.ObjectHandler;
 import game.screens.GameScreen;
+import game.utils.Cursors;
 import game.utils.Skins;
 import game.utils.WorldUtils;
 import shared.network.interaction.DropItem;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
 import shared.objects.types.Obj;
+import shared.objects.types.Type;
+import shared.objects.types.WeaponObj;
+import shared.util.Messages;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import static com.artemis.E.E;
@@ -32,6 +40,8 @@ public class Inventory extends Window {
     private static final int SIZE = COLUMNS * ROWS;
     private final ClickListener mouseListener;
     private int base;
+    public boolean toShoot = false;
+    private AOAssetManager assetManager;
 
     private ArrayList<Slot> slots;
     private Optional<Slot> selected = Optional.empty();
@@ -164,6 +174,50 @@ public class Inventory extends Window {
             Item item = base + i < userItems.length ? userItems[base + i] : null;
             slots.get(i).setItem(item);
         }
+    }
+
+    public void GetShoot (){
+        assetManager = AOGame.getGlobalAssetManager();
+        ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
+        Item[] items = E(GameScreen.getPlayer()).getInventory().items;
+
+        AtomicBoolean bowPresent = new AtomicBoolean ( false );
+        AtomicBoolean arrowPresent = new AtomicBoolean ( false );
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] != null) {
+                int inventoryIndex = i;
+                objectHandler.getObject(items[i].objId).ifPresent(obj -> {
+                    if (items[inventoryIndex].equipped && obj.getType().equals( Type.WEAPON)) {
+                        WeaponObj weaponObj = (WeaponObj) obj;
+                        if (weaponObj.getName ().equals ( "Arco Simple" )
+                                || weaponObj.getName ().equals ( "Arco Compuesto")
+                                || weaponObj.getName ().equals ( "Arco de Cazador")
+                                || weaponObj.getName ().equals ( "Arco Simple Reforzado"  )
+                                || weaponObj.getName ().equals ( "Arco Compuesto Reforzado" )
+                                || weaponObj.getName ().equals ( "Arco (Newbie)" )) {
+                            bowPresent.set ( true );
+                        }
+                    }
+                    if (items[inventoryIndex].equipped && obj.getType().equals(Type.ARROW)) {
+                        arrowPresent.set ( true );
+                    }
+                });
+            }
+        }
+        if (bowPresent.get ( ) && arrowPresent.get ( )){
+            WorldUtils.getWorld().ifPresent(world -> {
+                world.getSystem(GUI.class).getConsole().addInfo(assetManager.getMessages(Messages.CLICK_TO_SHOOT));
+                Cursors.setCursor("select");
+                toShoot = true;
+            });
+        } else {
+            WorldUtils.getWorld().ifPresent(world -> {
+                world.getSystem(GUI.class).getConsole().addInfo(assetManager.getMessages(Messages.DONT_HAVE_BOW_AND_ARROW));
+            });
+        }
+    }
+    public void cleanShoot() {
+        toShoot = false;
     }
 
     @Override

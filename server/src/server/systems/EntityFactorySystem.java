@@ -202,6 +202,7 @@ public class EntityFactorySystem extends PassiveSystem {
     private void setInventory(int player, Hero hero, Team team) {
         E(player).inventory();
         addPotion(player, PotionKind.HP);
+        E(player).getInventory().add(480, true);// flechas)
 
         if (E(player).manaMax() > 0) {
             addPotion(player, PotionKind.MANA);
@@ -393,6 +394,7 @@ public class EntityFactorySystem extends PassiveSystem {
             default:
                 break;
         }
+        objectManager.getObject(665).ifPresent(result::add);// arco
         return result;
     }
 

@@ -55,5 +55,10 @@ public enum Messages {
     LEGION_ARMY,
     START,
     CHANGE_TEAM,
-    READY
+    READY,
+
+    // ranged attack
+    CLICK_TO_SHOOT,
+    DONT_HAVE_BOW_AND_ARROW
+
 }
