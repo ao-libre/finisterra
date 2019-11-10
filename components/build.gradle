@@ -2,6 +2,6 @@
 sourceSets.main.java.srcDirs = ["src/"]
 
 dependencies {
-    compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-    compile "net.onedaybeard.artemis:artemis-odb:$artemisVersion"
+	api group: "com.badlogicgames.gdx", name: "gdx", version: "$gdxVersion"
+	api group: "net.onedaybeard.artemis", name: "artemis-odb", version: "$artemisVersion"
 }

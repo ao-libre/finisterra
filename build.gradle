@@ -21,17 +21,23 @@ buildscript {
 allprojects {
     apply plugin: "idea"
 
-    group = 'AO-Java'
+    group = 'Finisterra'
     version = '0.1.12'
 
     ext {
-        appName = 'ao-java'
-        gdxVersion = '1.9.10'
-        kryonetVersion = '2.22.0-RC1'
-        freetypeVersion = '1.9.9'
-        artemisVersion = '2.2.0'
-        artemisContribVersion = '2.2.0'
-        gdxAIVersion = '1.8.1'
+    appName = 'Finisterra'
+    gdxVersion = '1.9.11-SNAPSHOT' //graphic library
+    kryonetVersion = '2.22.0-RC1' //protocol tcp-ip udp
+    artemisVersion = '2.2.0'  //Artemis EntityCompomentSystem
+    artemisContribVersion = '2.2.0'
+    gdxAIVersion = '1.8.2' //artificial intelligence
+	tinyfdVersion = '3.2.3'
+	jupiterVersion = '5.5.2' //test used for cache to map
+	guavaVersion = '28.1-jre' //collection types used for map information
+	ini4jVersion = '0.5.4'
+	kotlinxCoroutinesVersion = '1.3.2' //currently only used to scale images
+	kaifu2xVersion = '0.4.0'
+	reflectionsVersion = '0.9.11' //load indexed file information to reuse
     }
 
     repositories {
@@ -44,7 +50,7 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: "java"
+    apply plugin: "java-library"
 
     sourceCompatibility = JavaVersion.VERSION_12
     targetCompatibility = JavaVersion.VERSION_12

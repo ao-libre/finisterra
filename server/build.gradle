@@ -27,12 +27,12 @@ test {
 
 dependencies {
     implementation project(":shared")
-    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
-    implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
-    implementation "com.badlogicgames.gdx:gdx-ai:$gdxAIVersion"
+	runtimeOnly group: "com.badlogicgames.gdx", name: "gdx-backend-lwjgl3", version: "$gdxVersion"
+	implementation group: "com.badlogicgames.gdx", name: "gdx-backend-headless", version: "$gdxVersion"
+	implementation group: "com.badlogicgames.gdx", name: "gdx-ai", version: "$gdxAIVersion"
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+	testImplementation group: "org.junit.jupiter", name: "junit-jupiter-api", version: "$jupiterVersion"
+	testRuntimeOnly group: "org.junit.jupiter", name: "junit-jupiter-engine", version: "$jupiterVersion"
 }
 
 task dist(type: Jar) {
