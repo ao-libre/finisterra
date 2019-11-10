@@ -67,7 +67,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     }
     @Override
     protected void failed(int entityId, Optional<Integer> targetId) {
-        notifyCombat(targetId.orElse(entityId), Messages.ATTACK_FAILED));
+        notifyCombat(targetId.orElse(entityId), Messages.ATTACK_FAILED);
     }
     private boolean isValidTarget(WorldPos worldPos, long timestamp, E entity) {
         return entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos, timestamp);
