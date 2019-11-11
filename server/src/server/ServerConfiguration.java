@@ -147,13 +147,19 @@ public class ServerConfiguration {
 
     public static class Rooms {
         private int limitCreation;
+        private int maxPlayers;
 
         public int getLimitCreation() {
             return limitCreation;
         }
 
-        public void setLimitCreation(int limitCreation) {
+        private void setLimitCreation(int limitCreation) {
             this.limitCreation = limitCreation;
         }
+
+        public int getMaxPlayers() { return maxPlayers; }
+
+        private void setMaxPlayers(int maxPlayers) { this.maxPlayers = maxPlayers; }
+
     }
 }
