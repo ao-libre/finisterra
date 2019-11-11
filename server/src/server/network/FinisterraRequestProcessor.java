@@ -45,17 +45,22 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
 
     @Override
     public void processRequest(CreateRoomRequest createRoomRequest, int connectionId) {
+        Player player = networkManager.getPlayerByConnection(connectionId);
+
         Lobby lobby = getLobby();
         Room room = lobby.createRoom(createRoomRequest);
-        Player player = networkManager.getPlayerByConnection(connectionId);
-        lobby.joinRoom(room.getId(), player);
-        networkManager.sendTo(connectionId,
-                new CreateRoomResponse(room, player));
-        lobby.getWaitingPlayers()
-                .stream()
-                .filter(waitingPlayer -> !player.equals(waitingPlayer))
-                .filter(waitingPlayer -> networkManager.playerHasConnection(waitingPlayer))
-                .forEach(waitingPlayer -> networkManager.sendTo(networkManager.getConnectionByPlayer(waitingPlayer), new NewRoomNotification(room)));
+
+        CreateRoomResponse response = new CreateRoomResponse(room, player);
+        networkManager.sendTo(connectionId, response);
+
+        if (response.getStatus() == CreateRoomResponse.Status.CREATED) {
+            lobby.joinRoom(room.getId(), player);
+            lobby.getWaitingPlayers()
+                    .stream()
+                    .filter(waitingPlayer -> !player.equals(waitingPlayer))
+                    .filter(waitingPlayer -> networkManager.playerHasConnection(waitingPlayer))
+                    .forEach(waitingPlayer -> networkManager.sendTo(networkManager.getConnectionByPlayer(waitingPlayer), new NewRoomNotification(room)));
+        }
     }
 
     @Override
