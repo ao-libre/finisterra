@@ -12,6 +12,6 @@
 	},
 	"rooms": {
 		"limitCreation": 2,
-		"maxPlayers": 5
+		"maxPlayers": 10
 	}
 }
