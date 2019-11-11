@@ -8,8 +8,17 @@ public class Lobby {
 
     private Map<Integer, Room> rooms = new HashMap<>();
     private Set<Player> waitingPlayers = new HashSet<>();
+    private int limitRooms;
+
+    public Lobby(int limitRooms) {
+        this.limitRooms = limitRooms;
+    }
 
     public Room createRoom(CreateRoomRequest roomRequest) {
+        if (rooms.size() >= limitRooms) {
+            return null;
+        }
+
         Room room = new Room(roomRequest.getMaxPlayers());
         rooms.put(room.getId(), room);
         return room;

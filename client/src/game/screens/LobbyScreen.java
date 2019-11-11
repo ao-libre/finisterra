@@ -1,6 +1,7 @@
 package game.screens;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -39,6 +40,13 @@ public class LobbyScreen extends AbstractScreen {
     public void roomClosed(Room room) {
         rooms.remove(room);
         updateRooms();
+    }
+
+    public void roomMaxLimit() {
+        Dialog dialog = new Dialog("Máximo de salas", getSkin());
+        dialog.text("Se llegó al máximo de salas permitidas");
+        dialog.button("OK");
+        dialog.show(getStage());
     }
 
     @Override
