@@ -47,8 +47,12 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
     @Override
     public void processResponse(JoinRoomResponse joinRoomResponse) {
         AOGame game = (AOGame) Gdx.app.getApplicationListener();
-        LobbyScreen lobby = (LobbyScreen) game.getScreen();
-        game.toRoom(lobby.getClientSystem(), joinRoomResponse.getRoom(), joinRoomResponse.getPlayer());
+        if (game.getScreen() instanceof LoginScreen) {
+            LoginScreen login = (LoginScreen) game.getScreen();
+            game.toLobby(joinRoomResponse.getPlayer(), joinRoomResponse.getRoom(), login.getClientSystem());
+        } else if (game.getScreen() instanceof RoomScreen) {
+            game.toLogin();
+        }
     }
 
     @Override

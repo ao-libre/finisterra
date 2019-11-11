@@ -9,6 +9,8 @@ import com.badlogic.gdx.utils.Array;
 import game.AOGame;
 import game.handlers.AOAssetManager;
 import game.systems.network.ClientSystem;
+import shared.network.lobby.ExitRoomRequest;
+import shared.network.lobby.JoinLobbyRequest;
 import shared.interfaces.Hero;
 import shared.model.lobby.Player;
 import shared.model.lobby.Room;
@@ -26,14 +28,20 @@ public class RoomScreen extends AbstractScreen {
     private List<Player> criminalList;
     private List<Player> armyList;
     private TextButton start;
+    private SelectBox<Hero> heroSelect;
 
     public RoomScreen(ClientSystem clientSystem, Room room, Player me) {
         super();
         this.clientSystem = clientSystem;
         this.room = room;
         this.me = me;
+        updateHero(me);
         updatePlayers();
         checkStart();
+    }
+    public void setPlayer(Player me) {
+        this.me = me;
+        updateHero(me);
     }
 
     public Player getPlayer() {
@@ -101,8 +109,7 @@ public class RoomScreen extends AbstractScreen {
         });
 
 
-        SelectBox<Hero> heroSelect = new SelectBox<>(getSkin());
-        final Array<Hero> heroes = new Array<>();
+        heroSelect = new SelectBox<>(getSkin());        final Array<Hero> heroes = new Array<>();
         Hero.getHeroes().forEach(heroes::add);
         heroSelect.setItems(heroes);
         heroSelect.addListener(new ChangeListener() {
@@ -127,6 +134,10 @@ public class RoomScreen extends AbstractScreen {
 
     public void checkStart() {
         start.setDisabled(!room.getPlayers().stream().allMatch(Player::isReady));
+    }
+
+    private void updateHero(Player player) {
+        heroSelect.setSelected(player.getHero());
     }
 
     @Override
