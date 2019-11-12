@@ -19,8 +19,6 @@ import shared.network.lobby.player.ChangeReadyStateRequest;
 import shared.network.lobby.player.ChangeTeamRequest;
 import shared.util.Messages;
 
-import java.util.Random;
-
 public class RoomScreen extends AbstractScreen {
     private ClientSystem clientSystem;
     private Room room;
@@ -134,10 +132,7 @@ public class RoomScreen extends AbstractScreen {
     }
 
     private void selectRandomHero() {
-        Random rnd = new Random();
-        int index = rnd.nextInt(heroSelect.getItems().size);
-
-        Hero defaultHero = heroSelect.getItems().get(index);
+        Hero defaultHero = Hero.getRandom();
         heroSelect.setSelected(defaultHero);
         me.setHero(defaultHero);
         clientSystem.getKryonetClient().sendToAll(new ChangeHeroRequest(defaultHero));
