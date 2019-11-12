@@ -65,10 +65,10 @@ subprojects {
 	}
 }
 
-configure(subprojects.findAll {it.name == 'server' || it.name == 'desktop'}) {
+configure(subprojects.findAll { it.name == 'server' || it.name == 'desktop' }) {
     
-    apply plugin: "de.undercouch.download"
-
+	apply plugin: "de.undercouch.download"
+	
     ext {
         osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
         jdkPath = Jvm.current().getJavaHome().path
