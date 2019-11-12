@@ -24,26 +24,25 @@ if (osName.contains('mac')) {
 }
 
 task dist(type: Jar) {
-    from files(sourceSets.main.output.classesDirs)
-    from { configurations.compile.collect { zipTree(it) } }
+	dependsOn classes
+	from files(sourceSets.main.output.classesDirs)
+	from configurations.compileClasspath
+	from configurations.runtimeClasspath
 
     manifest {
         attributes 'Main-Class': project.mainClassName
-    }  
-}
-
-dist.dependsOn(classes)
-run.dependsOn(classes)
-
-tasks.dist.doLast {
-
-    // We copy all the dependencies .JAR into the input folder for JPackage.
-    copy {
-        from configurations.runtime
-        into "${buildDir}/libs"
     }
-
+	
+	doLast {
+		copy {
+			from configurations.runtimeClasspath
+			into("$buildDir/libs")
+		}
+	}
+	
 }
+
+run.dependsOn(classes)
 
 // Determine where the bundled application is going to be.
 def releasePath = "${buildDir}/releases"
