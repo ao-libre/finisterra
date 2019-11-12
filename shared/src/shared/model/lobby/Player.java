@@ -16,14 +16,9 @@ public class Player {
     public Player() {
     }
 
-    public Player(int connectionId, String playerName, Hero hero) {
+    public Player(int connectionId, String playerName) {
         this.connectionId = connectionId;
         this.playerName = playerName;
-        this.hero = hero;
-    }
-
-    public Player(int connectionId, String playerName) {
-        this(connectionId, playerName, Hero.getRandom());
     }
 
     public String getPlayerName() {

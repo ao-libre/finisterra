@@ -30,7 +30,7 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(JoinLobbyRequest joinLobbyRequest, int connectionId) {
         String playerName = joinLobbyRequest.getPlayerName();
-        Player player = new Player(connectionId, playerName, Hero.getRandom());
+        Player player = new Player(connectionId, playerName);
         Lobby lobby = getLobby();
         lobby.addWaitingPlayer(player);
         networkManager.registerUserConnection(player, connectionId);
@@ -107,7 +107,6 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         Player player = networkManager.getPlayerByConnection(connectionId);
         player.setHero(hero);
         notifyPlayerChanged(player);
-
     }
 
     public void notifyPlayerChanged(Player player) {

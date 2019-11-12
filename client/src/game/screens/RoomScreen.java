@@ -19,6 +19,8 @@ import shared.network.lobby.player.ChangeReadyStateRequest;
 import shared.network.lobby.player.ChangeTeamRequest;
 import shared.util.Messages;
 
+import java.util.Random;
+
 public class RoomScreen extends AbstractScreen {
     private ClientSystem clientSystem;
     private Room room;
@@ -26,12 +28,14 @@ public class RoomScreen extends AbstractScreen {
     private List<Player> criminalList;
     private List<Player> armyList;
     private TextButton start;
+    private SelectBox<Hero> heroSelect;
 
     public RoomScreen(ClientSystem clientSystem, Room room, Player me) {
         super();
         this.clientSystem = clientSystem;
         this.room = room;
         this.me = me;
+        selectRandomHero();
         updatePlayers();
         checkStart();
     }
@@ -100,11 +104,11 @@ public class RoomScreen extends AbstractScreen {
             }
         });
 
-
-        SelectBox<Hero> heroSelect = new SelectBox<>(getSkin());
+        heroSelect = new SelectBox<>(getSkin());
         final Array<Hero> heroes = new Array<>();
         Hero.getHeroes().forEach(heroes::add);
         heroSelect.setItems(heroes);
+
         heroSelect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -127,6 +131,16 @@ public class RoomScreen extends AbstractScreen {
 
     public void checkStart() {
         start.setDisabled(!room.getPlayers().stream().allMatch(Player::isReady));
+    }
+
+    private void selectRandomHero() {
+        Random rnd = new Random();
+        int index = rnd.nextInt(heroSelect.getItems().size);
+
+        Hero defaultHero = heroSelect.getItems().get(index);
+        heroSelect.setSelected(defaultHero);
+        me.setHero(defaultHero);
+        clientSystem.getKryonetClient().sendToAll(new ChangeHeroRequest(defaultHero));
     }
 
     @Override
