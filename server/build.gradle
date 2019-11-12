@@ -38,7 +38,8 @@ dependencies {
 task dist(type: Jar) {
     from files(sourceSets.main.output.classesDirs)
     from files(sourceSets.main.output.resourcesDir)
-    from { configurations.compile.collect { zipTree(it) } }
+    from configurations.compileClasspath
+	from configurations.runtimeClasspath
 
     manifest {
         attributes 'Main-Class': mainClassName
@@ -60,7 +61,7 @@ tasks.dist.doLast {
 
     // We copy all the dependencies .JAR into the input folder for JPackage.
     copy {
-        from configurations.runtime
+        from configurations.runtimeClasspath
         into "${buildDir}/libs"
     }
 
@@ -70,7 +71,7 @@ tasks.dist.doLast {
 def releasePath = "${projectDir}/bundled-APP"
 
 // creates application bundle (executable + runtime)
-task appBundle(type: Exec, dependsOn: [dist, jlink]) {
+task bundle(type: Exec, dependsOn: [dist, jlink]) {
 
     // Overwrite previous bundled application.
     if (file(releasePath).exists()) {
@@ -104,7 +105,8 @@ task appBundle(type: Exec, dependsOn: [dist, jlink]) {
         copy {
 
             from files(sourceSets.main.output.resourcesDir)
-
+			from file("$projectDir/Server.json")
+			
             if (osName.contains('mac')) {
                 into("${releasePath}/${project.appName}/Contents/Resources/")
             } else if (osName.contains('windows')) {

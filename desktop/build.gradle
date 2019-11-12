@@ -48,7 +48,7 @@ run.dependsOn(classes)
 def releasePath = "${buildDir}/releases"
 
 // creates application bundle (executable + runtime)
-task appBundle(type: Exec, dependsOn: [dist, jlink]) {
+task bundle(type: Exec, dependsOn: [dist, jlink]) {
 
     // Overwrite previous bundled application.
     if (file(releasePath).exists()) {
