@@ -34,6 +34,7 @@ public class Finisterra implements ApplicationListener {
     private Set<Server> servers = new HashSet<>();
     private int lastPort;
     private int limitRooms;
+    private int maxPlayers;
     private Lobby lobby;
     private World world;
     private ObjectManager objectManager;
@@ -53,6 +54,7 @@ public class Finisterra implements ApplicationListener {
         this.shouldUseLocalHost = config.getNetwork().getuseLocalHost();
 
         this.limitRooms = config.getRooms().getLimitCreation();
+        this.maxPlayers = config.getRooms().getMaxPlayers();
     }
 
     @Override
@@ -71,7 +73,7 @@ public class Finisterra implements ApplicationListener {
         thread.setDaemon(true);
         thread.start();
 
-        lobby = new Lobby(limitRooms);
+        lobby = new Lobby(limitRooms, maxPlayers);
         WorldConfigurationBuilder worldConfigurationBuilder = new WorldConfigurationBuilder();
         ServerStrategy strategy = new ServerStrategy(tcpPort, udpPort);
 

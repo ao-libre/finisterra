@@ -48,7 +48,7 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         Player player = networkManager.getPlayerByConnection(connectionId);
 
         Lobby lobby = getLobby();
-        Room room = lobby.createRoom(createRoomRequest);
+        Room room = lobby.createRoom();
 
         CreateRoomResponse response = new CreateRoomResponse(room, player);
         networkManager.sendTo(connectionId, response);
