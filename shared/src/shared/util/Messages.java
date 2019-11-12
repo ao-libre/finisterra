@@ -59,7 +59,7 @@ public enum Messages {
 
     // Ranged Combat
     CLICK_TO_SHOOT,
-    DONT_HAVE_BOW_AND_ARROW
+    DONT_HAVE_BOW_AND_ARROW,
 
     // LOG IN MESSAGES
     FAILED_TO_CONNECT_TITLE,
