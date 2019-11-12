@@ -8,6 +8,7 @@ import shared.util.AOJson;
 public class ServerConfiguration {
 
     private Network network;
+    private Rooms rooms;
 
     static ServerConfiguration loadConfig(String path) {
         Json configObject = new AOJson();
@@ -43,6 +44,10 @@ public class ServerConfiguration {
         defApi.setApiPort(1337);
         configOutput.getNetwork().setApi(defApi);
 
+        // Default values for room creation
+        configOutput.setRooms(new Rooms());
+        configOutput.getRooms().setLimitCreation(1);
+
         return configOutput;
     }
 
@@ -58,6 +63,14 @@ public class ServerConfiguration {
 
     public void setNetwork(Network network) {
         this.network = network;
+    }
+
+    public Rooms getRooms() {
+        return this.rooms;
+    }
+
+    public void setRooms(Rooms rooms) {
+        this.rooms = rooms;
     }
 
     public static class Network {
@@ -130,5 +143,23 @@ public class ServerConfiguration {
                 this.apiPort = apiPort;
             }
         }
+    }
+
+    public static class Rooms {
+        private int limitCreation;
+        private int maxPlayers;
+
+        public int getLimitCreation() {
+            return limitCreation;
+        }
+
+        private void setLimitCreation(int limitCreation) {
+            this.limitCreation = limitCreation;
+        }
+
+        public int getMaxPlayers() { return maxPlayers; }
+
+        private void setMaxPlayers(int maxPlayers) { this.maxPlayers = maxPlayers; }
+
     }
 }

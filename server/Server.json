@@ -9,5 +9,9 @@
 			"apiURL":"https://localhost",
 			"apiPort":1337
 		}
+	},
+	"rooms": {
+		"limitCreation": 2,
+		"maxPlayers": 10
 	}
 }

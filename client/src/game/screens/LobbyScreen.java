@@ -1,16 +1,20 @@
 package game.screens;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import game.AOGame;
+import game.handlers.AOAssetManager;
 import game.systems.network.ClientSystem;
 import shared.model.lobby.Player;
 import shared.model.lobby.Room;
 import shared.network.lobby.CreateRoomRequest;
 import shared.network.lobby.JoinRoomRequest;
+import shared.util.Messages;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -41,6 +45,15 @@ public class LobbyScreen extends AbstractScreen {
         updateRooms();
     }
 
+    public void roomMaxLimit() {
+        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
+
+        Dialog dialog = new Dialog(assetManager.getMessages(Messages.MAX_ROOM_LIMIT_CREATION_TITLE), getSkin());
+        dialog.text(assetManager.getMessages(Messages.MAX_ROOM_LIMIT_CREATION_DESCRIPTION));
+        dialog.button("OK");
+        dialog.show(getStage());
+    }
+
     @Override
     protected void keyPressed(int keyCode) {
 
@@ -56,7 +69,7 @@ public class LobbyScreen extends AbstractScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                clientSystem.getKryonetClient().sendToAll(new CreateRoomRequest(10));
+                clientSystem.getKryonetClient().sendToAll(new CreateRoomRequest());
             }
         });
 
@@ -83,7 +96,7 @@ public class LobbyScreen extends AbstractScreen {
     }
 
     private void updateRooms() {
-        roomList.setItems(new Array(rooms.toArray()));
+        roomList.setItems(new Array<>(rooms.toArray()));
     }
 
     public ClientSystem getClientSystem() {

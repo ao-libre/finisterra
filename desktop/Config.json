@@ -9,18 +9,24 @@
     },
     "resizeable": true,
     "disableAudio": true,
-    "startMaximized": false
+    "startMaximized": false,
+    "tutorialTodo": "checkbox true false"
   },
   "network": {
     "servers": [
       {
-        "name": "Testing VPS",
+        "name": "localhost",
+        "hostname":"127.0.0.1",
+        "port": 7666
+      },
+      {
+        "name": "Argentina - JopiOrtiz",
         "hostname": "35.198.1.253",
         "port": 7666
       },
       {
-        "name": "localhost",
-        "hostname":"127.0.0.1",
+        "name": "NewYork - Zephyr",
+        "hostname": "167.172.231.16",
         "port": 7666
       }
     ]
