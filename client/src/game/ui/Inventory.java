@@ -1,5 +1,6 @@
 package game.ui;
 
+import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -9,25 +10,34 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import entity.character.info.Inventory.Item;
+import game.AOGame;
+import game.handlers.AOAssetManager;
 import game.handlers.ObjectHandler;
 import game.screens.GameScreen;
+import game.utils.Cursors;
 import game.utils.Skins;
 import game.utils.WorldUtils;
 import shared.network.interaction.DropItem;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
 import shared.objects.types.Obj;
+import shared.objects.types.Type;
+import shared.objects.types.WeaponKind;
+import shared.objects.types.WeaponObj;
+import shared.util.Messages;
 import shared.objects.types.SpellObj;
 import shared.objects.types.Type;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 import static com.artemis.E.E;
 
 public class Inventory extends Window {
 
+    public boolean toShoot = false;
     static final int COLUMNS = 5;
     private static final int ROWS = 4;
     private static final int SIZE = COLUMNS * ROWS;
@@ -36,6 +46,7 @@ public class Inventory extends Window {
     private GUI gui;
 
     private ArrayList<Slot> slots;
+    private AOAssetManager assetManager;
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
@@ -45,7 +56,7 @@ public class Inventory extends Window {
         super("", Skins.COMODORE_SKIN, "inventory");
         int columnsCounter = 1;
         setMovable(false);
-        slots = new ArrayList<>();
+        this.slots = new ArrayList<>();
         for (int i = 0; i < SIZE; i++) {
             Slot newSlot = new Slot();
             slots.add(newSlot);
@@ -56,8 +67,9 @@ public class Inventory extends Window {
             }
             columnsCounter++;
         }
-        mouseListener = getMouseListener();
+        this.mouseListener = getMouseListener();
         addListener(mouseListener);
+        this.assetManager = AOGame.getGlobalAssetManager();
     }
 
     private ClickListener getMouseListener() {
@@ -156,7 +168,7 @@ public class Inventory extends Window {
         };
     }
 
-    protected void scrolled(int amount) {
+    void scrolled(int amount) {
         base += amount;
         base = MathUtils.clamp(base, 0, entity.character.info.Inventory.SIZE - Inventory.SIZE);
         updateUserInventory(base);
@@ -173,10 +185,48 @@ public class Inventory extends Window {
         }
     }
 
+    public void getShoot (){
+        ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
+        Item[] items = E(GameScreen.getPlayer()).getInventory().items;
+
+        AtomicBoolean bowPresent = new AtomicBoolean ( false );
+        AtomicBoolean arrowPresent = new AtomicBoolean ( false );
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] != null) {
+                int inventoryIndex = i;
+                objectHandler.getObject(items[i].objId).ifPresent(obj -> {
+                    if (items[inventoryIndex].equipped && obj.getType().equals( Type.WEAPON)) {
+                        WeaponObj weaponObj = (WeaponObj) obj;
+                        if (weaponObj.getKind ().equals ( WeaponKind.BOW )){
+                            bowPresent.set ( true );
+                        }
+                    }
+                    if (items[inventoryIndex].equipped && obj.getType().equals(Type.ARROW)) {
+                        arrowPresent.set ( true );
+                    }
+                });
+            }
+        }
+        if (bowPresent.get ( ) && arrowPresent.get ( )){
+            WorldUtils.getWorld().ifPresent(world -> {
+                world.getSystem(GUI.class).getConsole().addInfo(assetManager.getMessages(Messages.CLICK_TO_SHOOT));
+                Cursors.setCursor("select");
+                toShoot = true;
+            });
+        } else {
+            WorldUtils.getWorld().ifPresent(world -> {
+                world.getSystem(GUI.class).getConsole().addInfo(assetManager.getMessages(Messages.DONT_HAVE_BOW_AND_ARROW));
+            });
+        }
+    }
+    public void cleanShoot() {
+        toShoot = false;
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        dragging.ifPresent(slot -> slot.getItem().ifPresent(item -> {
+        dragging.flatMap(Slot::getItem).ifPresent(item -> {
             ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
             Optional<Obj> object = objectHandler.getObject(item.objId);
             object.ifPresent(obj -> {
@@ -185,7 +235,7 @@ public class Inventory extends Window {
                 int y1 = Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2);
                 batch.draw(graphic, x1, y1);
             });
-        }));
+        });
     }
 
     public Optional<Slot> getSelected() {

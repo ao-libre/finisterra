@@ -57,6 +57,10 @@ public enum Messages {
     CHANGE_TEAM,
     READY,
 
+    // Ranged Combat
+    CLICK_TO_SHOOT,
+    DONT_HAVE_BOW_AND_ARROW,
+
     // LOG IN MESSAGES
     FAILED_TO_CONNECT_TITLE,
     FAILED_TO_CONNECT_DESCRIPTION,
