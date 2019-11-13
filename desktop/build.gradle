@@ -58,7 +58,7 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
     }
 
     def commands = [
-            JPackagePath.concat("/jdk-14/bin/jpackage"),
+            osName.contains('mac') ? JPackagePath.concat("/Contents/Home/bin/jpackage") : JPackagePath.concat("/jdk-14/bin/jpackage"),
             '--type', 'app-image',
             '--name', project.appName,
             '--vendor', "Argentum Online Libre",
