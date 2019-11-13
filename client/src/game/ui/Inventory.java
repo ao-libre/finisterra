@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import entity.character.info.Inventory.Item;
@@ -26,6 +25,8 @@ import shared.objects.types.Type;
 import shared.objects.types.WeaponKind;
 import shared.objects.types.WeaponObj;
 import shared.util.Messages;
+import shared.objects.types.SpellObj;
+import shared.objects.types.Type;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -36,30 +37,35 @@ import static com.artemis.E.E;
 
 public class Inventory extends Window {
 
-    private static final int COLUMNS = 6;
-    private static final int ROWS = 1;
+    public boolean toShoot = false;
+    static final int COLUMNS = 5;
+    private static final int ROWS = 4;
     private static final int SIZE = COLUMNS * ROWS;
     private final ClickListener mouseListener;
     private int base;
-    public boolean toShoot = false;
+    private GUI gui;
 
     private ArrayList<Slot> slots;
     private AOAssetManager assetManager;
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
+    private InventoryQuickBar inventoryQuickBar;
 
     Inventory() {
         super("", Skins.COMODORE_SKIN, "inventory");
+        int columnsCounter = 1;
         setMovable(false);
         this.slots = new ArrayList<>();
         for (int i = 0; i < SIZE; i++) {
             Slot newSlot = new Slot();
             slots.add(newSlot);
-            add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
-            if (i < SIZE - 1) {
-                add(new Image(getSkin().getDrawable("separator"))).row();
+            add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE);
+            if (columnsCounter > ROWS -1) {
+                row();
+                columnsCounter = 0;
             }
+            columnsCounter++;
         }
         this.mouseListener = getMouseListener();
         addListener(mouseListener);
@@ -84,6 +90,7 @@ public class Inventory extends Window {
                     slot.getItem().ifPresent(item -> {
                         if (getTapCount() >= 2) {
                             GameScreen.getClient().sendToAll(new ItemActionRequest(slots.indexOf(slot)));
+                            addSpellSVE(slot);
                         }
                     });
                 });
@@ -237,12 +244,28 @@ public class Inventory extends Window {
 
     public int selectedIndex() {
         assert (selected.isPresent());
-        return slots.indexOf(selected.get());
+        return base + slots.indexOf(selected.get());
     }
 
     private int draggingIndex() {
         assert (dragging.isPresent());
-        return slots.indexOf(dragging.get());
+        return base + slots.indexOf(dragging.get());
+    }
+
+
+    private void addSpellSVE(Slot slot){ //funcion provisoria hasta q encuentre como hacerlo a desde el servidor
+        Optional< Item > item = slot.getItem ();
+        int objID = item.map ( item1 -> item1.objId ).orElse ( -1 );
+        ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
+        Optional<Obj> object = objectHandler.getObject(objID);
+        object.ifPresent(obj -> {
+            if (obj.getType().equals (Type.SPELL)) {
+                SpellObj spellObj = (SpellObj) obj;
+                if (E (GameScreen.getPlayer ()).charHeroHeroId () != 0 ) {
+                    GameScreen.world.getSystem (GUI.class).getSpellViewExpanded ().newSpellAdd (spellObj.getSpellIndex ());
+                }
+            }
+        });
     }
 
     public boolean isOver() {
