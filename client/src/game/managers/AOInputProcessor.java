@@ -163,6 +163,24 @@ public class AOInputProcessor extends Stage {
                 // Toggle between Windowed Mode and Fullscreen.
                 gui.toggleFullscreen();
                 break;
+            case Input.Keys.NUM_1:
+                useq(0);
+                break;
+            case Input.Keys.NUM_2:
+                useq(1);
+                break;
+            case Input.Keys.NUM_3:
+                useq(2);
+                break;
+            case Input.Keys.NUM_4:
+                useq(3);
+                break;
+            case Input.Keys.NUM_5:
+                useq(4);
+                break;
+            case Input.Keys.NUM_6:
+                useq(5);
+                break;
         }
     }
 
@@ -208,6 +226,43 @@ public class AOInputProcessor extends Stage {
                 // Toggle between Windowed Mode and Fullscreen.
                 gui.toggleFullscreen();
                 break;
+            case Input.Keys.NUM_1:
+                useq(0);
+                break;
+            case Input.Keys.NUM_2:
+                useq(1);
+                break;
+            case Input.Keys.NUM_3:
+                useq(2);
+                break;
+            case Input.Keys.NUM_4:
+                useq(3);
+                break;
+            case Input.Keys.NUM_5:
+                useq(4);
+                break;
+            case Input.Keys.NUM_6:
+                useq(5);
+                break;
+        }
+    }
+
+    private void useq(int x) {
+        int base;
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT )) {
+            if (gui.getActionBar ().getState().equals("INVENTORY")) {
+                if (gui.getInventory ( ).getSelected ( ).isEmpty ( )) {
+                    base = 0;
+                } else {
+                    base = gui.getInventory ( ).selectedIndex ( );
+                }
+                gui.getInventoryQuickBar ( ).addItemsIQB ( base, x );
+            }
+            if (gui.getActionBar ().getState().equals("SPELL")) {
+                gui.getSpellView ( ).addSpelltoSpellview ( gui.getSpellViewExpanded ( ).getSelected ( ), x );
+            }
+        } else {
+            GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getInventoryQuickBar ().getGBases(x)));
         }
     }
 
@@ -261,11 +316,13 @@ public class AOInputProcessor extends Stage {
     }
 
     private void toggleInventory() {
-        gui.getInventory().setVisible(!gui.getInventory().isVisible());
+        gui.getInventoryQuickBar ().setVisible(!gui.getInventoryQuickBar ().isVisible());
+        gui.getActionBar ().setExpandButtonVisible();
     }
 
     private void toggleSpells() {
         gui.getSpellView().setVisible(!gui.getSpellView().isVisible());
+        gui.getActionBar ().setExpandButtonVisible();
     }
 
 }
