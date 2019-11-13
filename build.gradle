@@ -72,7 +72,7 @@ configure(subprojects.findAll { it.name == 'server' || it.name == 'desktop' }) {
     ext {
         osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
         jdkPath = Jvm.current().getJavaHome().path
-        JPackagePath = "${rootDir}/JPackage"
+		JPackagePath = osName.contains('mac') ? "${rootDir}/JPackage/jdk-14.jdk/Contents/Home/bin/jpackage" : "${rootDir}/JPackage"
         prebuiltJRE = "${rootDir}/JPackage/bundled-JRE"
         JPackageCompressed = osName.contains('windows') ? "jpackage.zip" : "jpackage.tar.gz"
     }
