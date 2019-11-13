@@ -16,7 +16,8 @@
     "animationId": 21,
     "dwarfAnimationId": 72,
     "minHit": 1,
-    "maxHit": 8
+    "maxHit": 8,
+    "kind" : "SWORD"
   },
   {
     "id": 3,
@@ -35,7 +36,8 @@
     },
     "animationId": 25,
     "minHit": 2,
-    "maxHit": 6
+    "maxHit": 6,
+    "kind" : "AXE"
   },
   {
     "id": 9,
@@ -54,7 +56,8 @@
     },
     "animationId": 26,
     "minHit": 1,
-    "maxHit": 2
+    "maxHit": 2,
+    "kind" : "POLE"
   },
   {
     "id": 15,
@@ -66,7 +69,8 @@
     "animationId": 12,
     "dwarfAnimationId": 48,
     "minHit": 1,
-    "maxHit": 2
+    "maxHit": 2,
+    "kind" : "DAGGER"
   },
   {
     "id": 19,
@@ -86,7 +90,8 @@
     "animationId": 1,
     "dwarfAnimationId": 66,
     "minHit": 4,
-    "maxHit": 9
+    "maxHit": 9,
+    "kind" : "SWORD"
   },
   {
     "id": 123,
@@ -108,7 +113,8 @@
     "animationId": 22,
     "dwarfAnimationId": 55,
     "minHit": 6,
-    "maxHit": 17
+    "maxHit": 17,
+    "kind" : "SWORD"
   },
   {
     "id": 124,
@@ -126,7 +132,8 @@
     "animationId": 27,
     "dwarfAnimationId": 54,
     "minHit": 5,
-    "maxHit": 15
+    "maxHit": 15,
+    "kind" : "SWORD"
   },
   {
     "id": 125,
@@ -150,7 +157,8 @@
     "animationId": 56,
     "dwarfAnimationId": 57,
     "minHit": 6,
-    "maxHit": 17
+    "maxHit": 17,
+    "kind" : "SWORD"
   },
   {
     "id": 126,
@@ -172,7 +180,8 @@
     "animationId": 3,
     "dwarfAnimationId": 67,
     "minHit": 10,
-    "maxHit": 18
+    "maxHit": 18,
+    "kind" : "AXE"
   },
   {
     "id": 127,
@@ -182,7 +191,8 @@
     "forbiddenClasses": {},
     "animationId": 23,
     "minHit": 2,
-    "maxHit": 3
+    "maxHit": 3,
+    "kind" : "WORK"
   },
   {
     "id": 129,
@@ -203,7 +213,8 @@
     },
     "animationId": 24,
     "minHit": 7,
-    "maxHit": 20
+    "maxHit": 20,
+    "kind" : "AXE"
   },
   {
     "id": 138,
@@ -214,7 +225,8 @@
     "animationId": 20,
     "dwarfAnimationId": 76,
     "minHit": 1,
-    "maxHit": 1
+    "maxHit": 1,
+    "kind" : "WORK"
   },
   {
     "id": 159,
@@ -235,7 +247,8 @@
     },
     "animationId": 19,
     "minHit": 6,
-    "maxHit": 19
+    "maxHit": 19,
+    "kind" : "AXE"
   },
   {
     "id": 164,
@@ -247,7 +260,8 @@
     "animationId": 14,
     "dwarfAnimationId": 64,
     "minHit": 1,
-    "maxHit": 5
+    "maxHit": 5,
+    "kind" : "SWORD"
   },
   {
     "id": 165,
@@ -260,7 +274,8 @@
     "animationId": 34,
     "dwarfAnimationId": 49,
     "minHit": 2,
-    "maxHit": 4
+    "maxHit": 4,
+    "kind" : "DAGGER"
   },
   {
     "id": 187,
@@ -271,7 +286,8 @@
     "animationId": 30,
     "dwarfAnimationId": 74,
     "minHit": 2,
-    "maxHit": 3
+    "maxHit": 3,
+    "kind" : "WORK"
   },
   {
     "id": 198,
@@ -282,7 +298,8 @@
     "animationId": 31,
     "dwarfAnimationId": 73,
     "minHit": 1,
-    "maxHit": 2
+    "maxHit": 2,
+    "kind" : "WORK"
   },
   {
     "id": 365,
@@ -295,7 +312,8 @@
     "animationId": 35,
     "dwarfAnimationId": 50,
     "minHit": 3,
-    "maxHit": 6
+    "maxHit": 6,
+    "kind" : "DAGGER"
   },
   {
     "id": 366,
@@ -313,7 +331,8 @@
     "animationId": 36,
     "dwarfAnimationId": 51,
     "minHit": 4,
-    "maxHit": 7
+    "maxHit": 7,
+    "kind" : "DAGGER"
   },
   {
     "id": 367,
@@ -339,7 +358,8 @@
     "animationId": 52,
     "dwarfAnimationId": 53,
     "minHit": 5,
-    "maxHit": 8
+    "maxHit": 8,
+    "kind" : "DAGGER"
   },
   {
     "id": 389,
@@ -350,7 +370,8 @@
     "animationId": 29,
     "dwarfAnimationId": 75,
     "minHit": 2,
-    "maxHit": 2
+    "maxHit": 2,
+    "kind" : "WORK"
   },
   {
     "id": 398,
@@ -368,7 +389,8 @@
     "animationId": 4,
     "dwarfAnimationId": 70,
     "minHit": 1,
-    "maxHit": 3
+    "maxHit": 3,
+    "kind" : "MACE"
   },
   {
     "id": 399,
@@ -387,7 +409,8 @@
     "animationId": 5,
     "dwarfAnimationId": 71,
     "minHit": 7,
-    "maxHit": 13
+    "maxHit": 13,
+    "kind" : "SWORD"
   },
   {
     "id": 400,
@@ -412,7 +435,8 @@
     "animationId": 6,
     "dwarfAnimationId": 58,
     "minHit": 5,
-    "maxHit": 15
+    "maxHit": 15,
+    "kind" : "STAFF"
   },
   {
     "id": 401,
@@ -429,7 +453,8 @@
     },
     "animationId": 28,
     "minHit": 6,
-    "maxHit": 11
+    "maxHit": 11,
+    "kind" : "MACE"
   },
   {
     "id": 402,
@@ -448,7 +473,8 @@
     "animationId": 15,
     "dwarfAnimationId": 65,
     "minHit": 100,
-    "maxHit": 100
+    "maxHit": 100,
+    "kind" : "SWORD"
   },
   {
     "id": 403,
@@ -472,7 +498,8 @@
     "animationId": 13,
     "dwarfAnimationId": 63,
     "minHit": 13,
-    "maxHit": 20
+    "maxHit": 20,
+    "kind" : "SWORD"
   },
   {
     "id": 460,
@@ -485,7 +512,8 @@
     "animationId": 12,
     "dwarfAnimationId": 48,
     "minHit": 1,
-    "maxHit": 3
+    "maxHit": 3,
+    "kind" : "DAGGER"
   },
   {
     "id": 478,
@@ -502,7 +530,8 @@
     "animationId": 41,
     "dwarfAnimationId": 40,
     "minHit": 1,
-    "maxHit": 4
+    "maxHit": 4,
+    "kind" : "BOW"
   },
   {
     "id": 479,
@@ -520,7 +549,8 @@
     "animationId": 7,
     "dwarfAnimationId": 59,
     "minHit": 4,
-    "maxHit": 10
+    "maxHit": 10,
+    "kind" : "BOW"
   },
   {
     "id": 543,
@@ -528,7 +558,8 @@
     "grhIndex": 844,
     "value": 5000,
     "crucial": false,
-    "forbiddenClasses": {}
+    "forbiddenClasses": {},
+    "kind" : "WORK"
   },
   {
     "id": 556,
@@ -540,7 +571,8 @@
     "animationId": 15,
     "dwarfAnimationId": 65,
     "minHit": 1000,
-    "maxHit": 1000
+    "maxHit": 1000,
+    "kind" : "SWORD"
   },
   {
     "id": 559,
@@ -556,7 +588,8 @@
     "stab": true,
     "animationId": 12,
     "minHit": 6,
-    "maxHit": 8
+    "maxHit": 8,
+    "kind" : "DAGGER"
   },
   {
     "id": 561,
@@ -567,7 +600,8 @@
     "forbiddenClasses": {},
     "animationId": 23,
     "minHit": 1,
-    "maxHit": 2
+    "maxHit": 2,
+    "kind" : "WORK"
   },
   {
     "id": 562,
@@ -579,7 +613,8 @@
     "animationId": 30,
     "dwarfAnimationId": 74,
     "minHit": 1,
-    "maxHit": 2
+    "maxHit": 2,
+    "kind" : "WORK"
   },
   {
     "id": 563,
@@ -591,7 +626,8 @@
     "animationId": 20,
     "dwarfAnimationId": 76,
     "minHit": 1,
-    "maxHit": 2
+    "maxHit": 2,
+    "kind" : "WORK"
   },
   {
     "id": 564,
@@ -603,7 +639,8 @@
     "animationId": 31,
     "dwarfAnimationId": 73,
     "minHit": 1,
-    "maxHit": 2
+    "maxHit": 2,
+    "kind" : "WORK"
   },
   {
     "id": 565,
@@ -615,7 +652,8 @@
     "animationId": 29,
     "dwarfAnimationId": 75,
     "minHit": 1,
-    "maxHit": 2
+    "maxHit": 2,
+    "kind" : "WORK"
   },
   {
     "id": 619,
@@ -626,7 +664,8 @@
     "stab": true,
     "animationId": 12,
     "minHit": 2,
-    "maxHit": 3
+    "maxHit": 3,
+    "kind" : "DAGGER"
   },
   {
     "id": 658,
@@ -650,7 +689,8 @@
     "animationId": 8,
     "dwarfAnimationId": 60,
     "minHit": 1,
-    "maxHit": 1
+    "maxHit": 1,
+    "kind" : "STAFF"
   },
   {
     "id": 659,
@@ -674,7 +714,8 @@
     "animationId": 9,
     "dwarfAnimationId": 61,
     "minHit": 1,
-    "maxHit": 1
+    "maxHit": 1,
+    "kind" : "STAFF"
   },
   {
     "id": 660,
@@ -699,7 +740,8 @@
     "animationId": 10,
     "dwarfAnimationId": 62,
     "minHit": 1,
-    "maxHit": 1
+    "maxHit": 1,
+    "kind" : "STAFF"
   },
   {
     "id": 663,
@@ -716,7 +758,8 @@
     "animationId": 43,
     "dwarfAnimationId": 42,
     "minHit": 2,
-    "maxHit": 4
+    "maxHit": 4,
+    "kind" : "BOW"
   },
   {
     "id": 664,
@@ -739,7 +782,8 @@
     "animationId": 45,
     "dwarfAnimationId": 44,
     "minHit": 5,
-    "maxHit": 10
+    "maxHit": 10,
+    "kind" : "BOW"
   },
   {
     "id": 665,
@@ -764,7 +808,8 @@
     "animationId": 47,
     "dwarfAnimationId": 46,
     "minHit": 6,
-    "maxHit": 11
+    "maxHit": 11,
+    "kind" : "BOW"
   },
   {
     "id": 753,
@@ -781,7 +826,8 @@
     },
     "animationId": 1,
     "minHit": 1,
-    "maxHit": 5
+    "maxHit": 5,
+    "kind" : "POLE"
   },
   {
     "id": 859,
@@ -799,7 +845,8 @@
     "animationId": 41,
     "dwarfAnimationId": 40,
     "minHit": 1,
-    "maxHit": 2
+    "maxHit": 2,
+    "kind" : "BOW"
   },
   {
     "id": 861,
@@ -818,7 +865,8 @@
     },
     "animationId": 21,
     "minHit": 1,
-    "maxHit": 3
+    "maxHit": 3,
+    "kind" : "SWORD"
   },
   {
     "id": 862,
@@ -842,7 +890,8 @@
     },
     "animationId": 8,
     "minHit": 1,
-    "maxHit": 1
+    "maxHit": 1,
+    "kind" : "STAFF"
   },
   {
     "id": 990,
@@ -864,7 +913,8 @@
     "animationId": 32,
     "dwarfAnimationId": 68,
     "minHit": 5,
-    "maxHit": 16
+    "maxHit": 16,
+    "kind" : "MACE"
   },
   {
     "id": 1000,
@@ -876,7 +926,8 @@
     "animationId": 33,
     "dwarfAnimationId": 69,
     "minHit": 1,
-    "maxHit": 8
+    "maxHit": 8,
+    "kind" : "MACE"
   },
   {
     "id": 1005,
@@ -886,7 +937,8 @@
     "forbiddenClasses": {},
     "animationId": 37,
     "minHit": 3,
-    "maxHit": 8
+    "maxHit": 8,
+    "kind" : "WORK"
   },
   {
     "id": 1009,
@@ -911,6 +963,7 @@
     "animationId": 38,
     "dwarfAnimationId": 39,
     "minHit": 7,
-    "maxHit": 16
+    "maxHit": 16,
+    "kind" : "DAGGER"
   }
 ]

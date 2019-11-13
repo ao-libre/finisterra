@@ -23,6 +23,7 @@ import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
 import shared.objects.types.Obj;
 import shared.objects.types.Type;
+import shared.objects.types.WeaponKind;
 import shared.objects.types.WeaponObj;
 import shared.util.Messages;
 
@@ -177,7 +178,7 @@ public class Inventory extends Window {
         }
     }
 
-    public void GetShoot (){
+    public void getShoot (){
         ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
         Item[] items = E(GameScreen.getPlayer()).getInventory().items;
 
@@ -189,12 +190,7 @@ public class Inventory extends Window {
                 objectHandler.getObject(items[i].objId).ifPresent(obj -> {
                     if (items[inventoryIndex].equipped && obj.getType().equals( Type.WEAPON)) {
                         WeaponObj weaponObj = (WeaponObj) obj;
-                        if (weaponObj.getName ().equals ( "Arco Simple" )
-                                || weaponObj.getName().equals ( "Arco Compuesto")
-                                || weaponObj.getName().equals ( "Arco de Cazador")
-                                || weaponObj.getName().equals ( "Arco Simple Reforzado"  )
-                                || weaponObj.getName().equals ( "Arco Compuesto Reforzado" )
-                                || weaponObj.getName().equals ( "Arco (Newbie)" )) {
+                        if (weaponObj.getKind ().equals ( WeaponKind.BOW )){
                             bowPresent.set ( true );
                         }
                     }

@@ -5,6 +5,7 @@ import shared.objects.factory.ObjectFactory;
 
 public class WeaponObj extends ObjWithClasses {
 
+    private WeaponKind kind;
     private boolean stab;
     private int animationId;
     private int dwarfAnimationId;
@@ -47,6 +48,10 @@ public class WeaponObj extends ObjWithClasses {
 
     public void setMaxHit(int maxHit) {
         this.maxHit = maxHit;
+    }
+
+    public WeaponKind getKind() {
+        return kind;
     }
 
     @Override
