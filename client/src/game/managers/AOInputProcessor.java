@@ -68,34 +68,24 @@ public class AOInputProcessor extends Stage {
             WorldUtils.getWorld ( ).ifPresent ( world -> WorldUtils.mouseToWorldPos ( ).ifPresent ( worldPos -> {
                 final Optional< Spell > toCast = gui.getSpellView ( ).toCast;
                 final boolean toShoot = gui.getInventory ( ).toShoot;
-                if (toCast.isPresent ( )) {
-                    Spell spell = toCast.get ( );
+                if (toCast.isPresent ( )|| toShoot) {
                     E player = E.E ( GameScreen.getPlayer ( ) );
                     if (!player.hasAttack ( ) || player.getAttack ( ).interval - world.getDelta ( ) < 0) {
                         TimeSync timeSyncSystem = world.getSystem ( TimeSync.class );
                         long rtt = timeSyncSystem.getRtt ( );
                         long timeOffset = timeSyncSystem.getTimeOffset ( );
-                        GameScreen.getClient ( ).sendToAll ( new SpellCastRequest ( spell, worldPos, rtt + timeOffset ) );
+                        if (toShoot) {
+                            GameScreen.getClient ( ).sendToAll ( new AttackRequest ( AttackType.RANGED, worldPos, rtt + timeOffset ) );
+                        } else {
+                            Spell spell = toCast.get ( );
+                            GameScreen.getClient ( ).sendToAll ( new SpellCastRequest ( spell, worldPos, rtt + timeOffset ) );
+                        }
                         player.attack ( );
                     } else {
                         gui.getConsole ( ).addWarning ( assetManager.getMessages ( Messages.CANT_ATTACK ) );
                     }
                     Cursors.setCursor ( "hand" );
                     gui.getSpellView ( ).cleanCast ( );
-                } else if (toShoot) {
-                    E player = E.E ( GameScreen.getPlayer ( ) );
-                    if (!player.hasAttack ( ) || player.getAttack ( ).interval - world.getDelta ( ) < 0) {
-                        TimeSync timeSyncSystem = world.getSystem ( TimeSync.class );
-                        long rtt = timeSyncSystem.getRtt ( );
-                        long timeOffset = timeSyncSystem.getTimeOffset ( );
-                        if (!player.hasAttack ( ) || player.getAttack ( ).interval - world.getDelta ( ) <= 0) {
-                            GameScreen.getClient ( ).sendToAll ( new AttackRequest ( AttackType.RANGED, worldPos, rtt + timeOffset ) );
-                            player.attack ( );
-                        }
-                    } else {
-                        gui.getConsole ( ).addWarning ( assetManager.getMessages ( Messages.CANT_ATTACK ) );
-                    }
-                    Cursors.setCursor ( "hand" );
                     gui.getInventory().cleanShoot();
                 } else {
                     WorldManager worldManager = world.getSystem ( WorldManager.class );
@@ -248,7 +238,7 @@ public class AOInputProcessor extends Stage {
         });
     }
     private void shoot() {
-        gui.getInventory ().GetShoot ();
+        gui.getInventory ().getShoot ();
     }
 
     private void equip() {
