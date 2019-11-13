@@ -4,13 +4,12 @@
 private/
 build/
 old/
+JPackage/
 **/gradle.properties
 out/
 **/out/
-JPackage/
 desktop/*.tar.gz
 desktop/*.zip
 desktop/jdk*
 desktop/Screenshots*
 server/bundled-APP
-JPackage/
