@@ -111,6 +111,7 @@ public class RoomScreen extends AbstractScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Hero hero = heroSelect.getSelected();
+                me.setHero(hero);
                 clientSystem.getKryonetClient().sendToAll(new ChangeHeroRequest(hero));
             }
         });
