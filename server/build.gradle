@@ -82,7 +82,7 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
 
     def commands = [
             JPackagePath.concat("/jdk-14/bin/jpackage"),
-            '--package-type', 'app-image',
+            '--type', 'app-image',
             '--name', project.appName,
             '--vendor', "Argentum Online Libre",
             '--app-version', "${project.version}",
