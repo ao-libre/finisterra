@@ -82,7 +82,12 @@ public class AOInputProcessor extends Stage {
                         }
                         player.attack ( );
                     } else {
-                        gui.getConsole ( ).addWarning ( assetManager.getMessages ( Messages.CANT_ATTACK ) );
+                        if (toShoot) {
+                            gui.getConsole ( ).addWarning ( assetManager.getMessages ( Messages.CANT_SHOOT_THAT_FAST ) );
+                        } else {
+                            gui.getConsole ( ).addWarning ( assetManager.getMessages ( Messages.CANT_ATTACK) );
+                        }
+
                     }
                     Cursors.setCursor ( "hand" );
                     gui.getSpellView ( ).cleanCast ( );
