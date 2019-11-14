@@ -60,6 +60,7 @@ public enum Messages {
     // Ranged Combat
     CLICK_TO_SHOOT,
     DONT_HAVE_BOW_AND_ARROW,
+    CANT_SHOOT_THAT_FAST,
 
     // LOG IN MESSAGES
     FAILED_TO_CONNECT_TITLE,
@@ -72,5 +73,5 @@ public enum Messages {
     // SPELLS EXTENDED
     SPELLS_ADD,
     SPELLS_ALREDY_KNOWN,
-    SPELLS_FULL
+    SPELLS_FULL;
 }
