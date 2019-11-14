@@ -210,7 +210,7 @@ public class Inventory extends Window {
         if (bowPresent.get ( ) && arrowPresent.get ( )){
             WorldUtils.getWorld().ifPresent(world -> {
                 world.getSystem(GUI.class).getConsole().addInfo(assetManager.getMessages(Messages.CLICK_TO_SHOOT));
-                Cursors.setCursor("select");
+                Cursors.setCursor("arrow");
                 toShoot = true;
             });
         } else {
