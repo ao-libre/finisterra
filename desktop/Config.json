@@ -4,7 +4,7 @@
     "video": {
       "width": 1280,
       "height": 720,
-      "vSync": true,
+      "vSync": false,
       "HiDPI_Mode": "Logical"
     },
     "resizeable": true,
@@ -20,9 +20,14 @@
         "port": 7666
       },
       {
-        "name": "Argentina - JopiOrtiz",
+        "name": "Argentina (Alpha Server) - JopiOrtiz",
         "hostname": "35.198.1.253",
         "port": 7666
+      },
+	  {
+        "name": "Argentina (Release Server) - JopiOrtiz",
+        "hostname": "35.198.1.253",
+        "port": 9000
       },
       {
         "name": "NewYork - Zephyr",
