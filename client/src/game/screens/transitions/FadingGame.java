@@ -28,7 +28,7 @@ public class FadingGame extends Game {
     private ScreenTransition screenTransition;
 
     public FadingGame() {
-        this.listeners = new Array();
+        this.listeners = new Array<>();
     }
 
     public void create() {
