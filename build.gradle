@@ -60,11 +60,11 @@ subprojects {
     sourceCompatibility = JavaVersion.VERSION_12
     targetCompatibility = JavaVersion.VERSION_12
 
-	tasks.withType(JavaCompile) {
-		options.encoding = "UTF-8"
-		//options.compilerArgs << '-Xlint:unchecked'
-		//options.deprecation = true
-	}
+    tasks.withType(JavaCompile) {
+	options.encoding = "UTF-8"
+	//options.compilerArgs << '-Xlint:unchecked'
+	//options.deprecation = true
+    }
 }
 
 configure(subprojects.findAll { it.name == 'server' || it.name == 'desktop' }) {
@@ -74,7 +74,7 @@ configure(subprojects.findAll { it.name == 'server' || it.name == 'desktop' }) {
     ext {
         osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
         jdkPath = Jvm.current().getJavaHome().path
-		JPackagePath = "${rootDir}/JPackage"
+	JPackagePath = "${rootDir}/JPackage"
         prebuiltJRE = "${rootDir}/JPackage/bundled-JRE"
         JPackageCompressed = osName.contains('windows') ? "jpackage.zip" : "jpackage.tar.gz"
     }
