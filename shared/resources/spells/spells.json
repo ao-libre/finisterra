@@ -841,5 +841,24 @@
     "resis": true,
     "desc": "",
     "roledesc": ""
+  },
+  "46": {
+    "id": 46,
+    "name": "Invocar Mascota",
+    "magicWords": "Tsälo Kai'Tor",
+    "originMsg": "Has invocado a tu mascota",
+    "targetMsg": "ha invocado a su mascota sobre ti.",
+    "type": 4,
+    "wav": 17,
+    "minSkill": 0,
+    "requiredMana": 0,
+    "requiredStamina": 60,
+    "target": 4,
+    "invokes": true,
+    "numNpc": 501,
+    "count": 1,
+    "needStaff": true,
+    "desc": "Podrás lograr que tu más lejana mascota regrese a tí.",
+    "roledesc": ""
   }
 }
