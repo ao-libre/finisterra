@@ -1,3 +1,9 @@
+matrix:
+  include:
+    os: linux
+    dist: bionic
+    group: travis_latest
+
 language: java
 install: true
 
