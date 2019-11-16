@@ -48,7 +48,7 @@ public class UserImage extends ImageButton {
     }
 
     private float getPercent(Level level) {
-         return (float) level.exp / (float) level.expToNextLevel;
+        return (float) level.exp / (float) level.expToNextLevel;
     }
 
     private void drawLevel(Batch batch, Level level) {

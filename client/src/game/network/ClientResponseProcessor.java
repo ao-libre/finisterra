@@ -24,7 +24,6 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
 
     private TimeSync timeSync;
 
-
     @Override
     public void processResponse(MovementResponse movementResponse) {
         MovementProcessorSystem.validateRequest(movementResponse.requestNumber, movementResponse.destination);
@@ -34,7 +33,15 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
     public void processResponse(CreateRoomResponse createRoomResponse) {
         AOGame game = (AOGame) Gdx.app.getApplicationListener();
         LobbyScreen lobby = (LobbyScreen) game.getScreen();
-        game.toRoom(lobby.getClientSystem(), createRoomResponse.getRoom(), createRoomResponse.getPlayer());
+
+        switch (createRoomResponse.getStatus()) {
+            case CREATED:
+                game.toRoom(lobby.getClientSystem(), createRoomResponse.getRoom(), createRoomResponse.getPlayer());
+                break;
+            case MAX_ROOM_LIMIT:
+                lobby.roomMaxLimit();
+                break;
+        }
     }
 
     @Override

@@ -5,12 +5,15 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import game.AOGame;
 import game.ClientConfiguration;
+import game.handlers.AOAssetManager;
 import game.network.ClientResponseProcessor;
 import game.network.GameNotificationProcessor;
 import game.systems.network.ClientSystem;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.network.lobby.JoinLobbyRequest;
+import shared.util.Messages;
 
 import static game.utils.Resources.CLIENT_CONFIG;
 
@@ -110,8 +113,10 @@ public class LoginScreen extends AbstractScreen {
                         clientSystem.getKryonetClient().sendToAll(new JoinLobbyRequest(user));
                         this.canConnect = false;
                     } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
-                        Dialog dialog = new Dialog("Network error", getSkin());
-                        dialog.text("Failed to connect! :(");
+                        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
+
+                        Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
+                        dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
                         dialog.button("OK");
                         dialog.show(getStage());
                         this.canConnect = true;

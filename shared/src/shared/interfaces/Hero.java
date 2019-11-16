@@ -32,7 +32,7 @@ public enum Hero {
     }
 
     public static List<Hero> getHeroes() {
-        return VALUES.stream().filter(h -> !ARQUERO.equals(h)).collect(Collectors.toList());
+        return VALUES.stream().collect(Collectors.toList());
     }
 
     public int getClassId() {

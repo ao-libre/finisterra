@@ -13,11 +13,13 @@ import server.systems.MeditateSystem;
 import server.systems.ServerSystem;
 import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
+import server.systems.combat.RangedCombatSystem;
 import server.systems.manager.ItemManager;
 import server.systems.manager.MapManager;
 import server.systems.manager.SpellManager;
 import server.systems.manager.WorldManager;
 import server.utils.WorldUtils;
+import shared.model.AttackType;
 import shared.model.lobby.Player;
 import shared.model.map.Map;
 import shared.model.map.Tile;
@@ -60,6 +62,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     private ItemManager itemManager;
     private SpellManager spellManager;
     private MeditateSystem meditateSystem;
+    private RangedCombatSystem rangedCombatSystem;
 
 
     private List<WorldPos> getArea(WorldPos worldPos, int range /*impar*/) {
@@ -143,7 +146,12 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(AttackRequest attackRequest, int connectionId) {
         int playerId = networkManager.getPlayerByConnection(connectionId);
-        physicalCombatSystem.entityAttack(playerId, Optional.empty());
+        AttackType type = attackRequest.type();
+        if (type.equals ( AttackType.RANGED )) {
+            rangedCombatSystem.shoot ( playerId, attackRequest );
+        }else {
+            physicalCombatSystem.entityAttack ( playerId, Optional.empty ( ) );
+        }
     }
 
     /**

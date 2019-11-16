@@ -145,6 +145,7 @@ public class NetworkDictionary extends MarshalDictionary {
 
                 // Lobby Responses
                 CreateRoomResponse.class,
+                CreateRoomResponse.Status.class,
                 JoinLobbyResponse.class,
                 JoinRoomResponse.class,
                 StartGameResponse.class,

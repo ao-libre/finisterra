@@ -13,6 +13,7 @@ import server.systems.ai.PathFindingSystem;
 import server.systems.ai.RespawnSystem;
 import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
+import server.systems.combat.RangedCombatSystem;
 import server.systems.manager.*;
 import shared.model.lobby.Player;
 import shared.model.map.Map;
@@ -81,6 +82,7 @@ public class Server {
                 .with(objectManager)
                 .with(new WorldManager())
                 .with(new PhysicalCombatSystem())
+                .with(new RangedCombatSystem())
                 .with(new CharacterTrainingSystem())
                 .with(new MagicCombatSystem())
                 .with(new PathFindingSystem(PATH_FINDING_INTERVAL))

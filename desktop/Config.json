@@ -4,23 +4,34 @@
     "video": {
       "width": 1280,
       "height": 720,
-      "vSync": true,
+      "vSync": false,
       "HiDPI_Mode": "Logical"
     },
     "resizeable": true,
     "disableAudio": true,
-    "startMaximized": false
+    "startMaximized": false,
+    "tutorialTodo": "checkbox true false"
   },
   "network": {
     "servers": [
       {
-        "name": "Testing VPS",
-        "hostname": "35.198.1.253",
+        "name": "localhost",
+        "hostname":"127.0.0.1",
         "port": 7666
       },
       {
-        "name": "localhost",
-        "hostname":"127.0.0.1",
+        "name": "Argentina (Alpha Server) - JopiOrtiz",
+        "hostname": "35.198.1.253",
+        "port": 7666
+      },
+	  {
+        "name": "Argentina (Release Server) - JopiOrtiz",
+        "hostname": "35.198.1.253",
+        "port": 9000
+      },
+      {
+        "name": "NewYork - Zephyr",
+        "hostname": "167.172.231.16",
         "port": 7666
       }
     ]
