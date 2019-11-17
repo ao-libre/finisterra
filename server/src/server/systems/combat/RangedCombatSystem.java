@@ -193,11 +193,8 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         int baseDamage = 0;
         if (entity.hasCharHero()) {
             CharClass clazz = CharClass.of(entity);
-            RangedCombatSystem.AttackKind kind = RangedCombatSystem.AttackKind.getKind(entity);
             ThreadLocalRandom random = ThreadLocalRandom.current();
-            float modifier = kind == RangedCombatSystem.AttackKind.PROJECTILE ?
-                    Modifiers.PROJECTILE_DAMAGE.of(clazz) :
-                    kind == RangedCombatSystem.AttackKind.WEAPON ? Modifiers.WEAPON_DAMAGE.of(clazz) : Modifiers.WRESTLING_DAMAGE.of(clazz);
+            float modifier = Modifiers.PROJECTILE_DAMAGE.of(clazz);
             Log.info("Modifier: " + modifier);
             int weaponDamage =
                     weapon.map(weaponObj -> random.nextInt(weaponObj.getMinHit(), weaponObj.getMaxHit() + 1))
@@ -303,17 +300,6 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         world.delete(fxE);
     }
 
-    private enum AttackKind {
-        WEAPON,
-        PROJECTILE,
-        WRESTLING;
-
-        protected static RangedCombatSystem.AttackKind getKind(E entity) {
-            return entity.hasWeapon() ? WEAPON : WRESTLING;
-        }
-    }
-
-
     private enum AttackPlace {
         HEAD,
         BODY;
@@ -325,11 +311,6 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         public static RangedCombatSystem.AttackPlace getRandom() {
             return VALUES.get(RANDOM.nextInt(SIZE));
         }
-    }
-
-    private void notifyInfo(int userId, Messages messageId, String... messageParams) {
-        final ConsoleMessage combat = ConsoleMessage.info(messageId, messageParams);
-        getWorldManager().sendEntityUpdate(userId, combat);
     }
 
     private String getName(int userId) {

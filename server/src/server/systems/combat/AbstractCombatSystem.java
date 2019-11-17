@@ -51,7 +51,14 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
 
     @Override
     public int projectileAttackPower(int userId) {
-        return 0;
+        E e = E(userId);
+        int power = 0;
+        if (e.hasCharHero()) {
+            power = (int) (100 + 3 * e.getAgility().getBaseValue() * Modifiers.PROJECTILE.of(CharClass.of(e)));
+        } else if (e.hasAttackPower()) {
+            power = e.getAttackPower().value;
+        }
+        return power;
     }
 
     @Override
