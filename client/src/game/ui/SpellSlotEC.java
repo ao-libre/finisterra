@@ -52,7 +52,7 @@ public class SpellSlotEC extends ImageButton {
 
     private Tooltip getTooltip(Spell spell) {
         Actor content = createTooltipContent(spell);
-        return new Tooltip(content);
+        return new Tooltip<>(content);
     }
 
     private Actor createTooltipContent(Spell spell) {

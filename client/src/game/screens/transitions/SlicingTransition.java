@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Array;
 public class SlicingTransition implements ScreenTransition {
     private SlicingTransition.Direction direction;
     private Interpolation interpolation;
-    private Array<Integer> slices = new Array();
+    private Array<Integer> slices = new Array<>();
 
     public SlicingTransition(SlicingTransition.Direction direction, int numSlices, Interpolation interpolation) {
         this.direction = direction;
@@ -27,6 +27,7 @@ public class SlicingTransition implements ScreenTransition {
         this.slices.shuffle();
     }
 
+    @Override
     public void render(Batch batch, Texture currentScreenTexture, Texture nextScreenTexture, float percent) {
         float width = (float) currentScreenTexture.getWidth();
         float height = (float) currentScreenTexture.getHeight();

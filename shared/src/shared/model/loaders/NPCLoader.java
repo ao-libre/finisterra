@@ -59,7 +59,7 @@ public class NPCLoader extends Loader<Map<Integer, NPC>> {
     }
 
     private static void add(String field, BiConsumer<NPC, String> setter) {
-        setters.add(new NPCSetter(field, setter));
+        setters.add(new NPCSetter<>(field, setter));
     }
 
     @Override
