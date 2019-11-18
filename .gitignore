@@ -1,15 +1,58 @@
+### Operating System ###
 .DS_Store
-.idea/
-.gradle/
+
+### Project-Specific ###
 private/
 build/
 old/
 JPackage/
-**/gradle.properties
-out/
-**/out/
 desktop/*.tar.gz
 desktop/*.zip
 desktop/jdk*
 desktop/Screenshots*
 server/bundled-APP
+
+### Gradle ###
+.gradle/
+**/gradle.properties
+
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+.externalToolBuilders/
+*.launch
+*.pydevproject
+.cproject
+.autotools
+.factorypath
+.buildpath
+.target
+.tern-project
+.texlipse
+.springBeans
+.recommenders/
+.apt_generated/
+.cache-main
+.scala_dependencies
+.worksheet
+.project
+.classpath
+.apt_generated
+.sts4-cache/
+
+### Intellij ###
+*.iws
+.idea/
+*.iml
+*.ipr
+out/
+**/out/
