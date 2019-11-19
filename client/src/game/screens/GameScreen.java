@@ -163,11 +163,14 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .pos2D();
 
         // for testing
+        /*
         world.getSystem(SoundSytem.class).setVolume(0);
         world.getSystem(MusicHandler.class).setVolume(0);
 
         world.getSystem(MusicHandler.class).fadeOutMusic(101, 0.02f);
         world.getSystem(MusicHandler.class).playMIDI(1);
+
+         */
     }
 
     protected void update(float deltaTime) {
