@@ -3,6 +3,7 @@ package game.managers;
 import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
@@ -26,6 +27,7 @@ import shared.network.interaction.TalkRequest;
 import shared.network.inventory.ItemActionRequest;
 import shared.util.Messages;
 
+import javax.sound.midi.Sequencer;
 import java.util.Optional;
 
 import static com.artemis.E.E;
@@ -275,28 +277,19 @@ public class AOInputProcessor extends Stage {
 
     private void test(int number){
         if (number == 7){
-            Log.info("*******reproducir musica******");
-            assetManager.getMusic ( 101 ).setVolume (1.0f);
-            assetManager.getMusic ( 101 ).play ();
-            assetManager.getMusic ( 101 ).setLooping ( true );
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                assetManager.getMusic ( 101 ).stop ();
+            assetManager.getMusic ( 1 ).stop ();
+            assetManager.getMusic ( 1 ).play ();
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
+                assetManager.getMusic ( 1 ).stop ();
             }
         }
         if (number == 8){
-            Log.info("*******reproducir midi******");
-            assetManager.getMidi ( 1 ).start ();
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                assetManager.getMidi ( 1 ).stop ();
-            }
+            float volum = assetManager.getMusic ( 1 ).getVolume () + 0.01f;
+            assetManager.getMusic ( 1 ).setVolume ( volum );
         }
         if (number == 9){
-            Log.info("*******reproducir sonido******");
-            assetManager.getSound ( 1 ).setLooping ( 1,true );
-            assetManager.getSound ( 1 ).play ( 1.0f );
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)) {
-                assetManager.getSound ( 1 ).stop ();
-            }
+            float volum = assetManager.getMusic ( 1 ).getVolume () - 0.01f;
+            assetManager.getMusic ( 1 ).setVolume ( volum );
         }
     }
 
