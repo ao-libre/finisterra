@@ -371,7 +371,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     private void loadSounds() {
         Reflections reflections = new Reflections("", new ResourcesScanner());
-        Set<String> sounds = reflections.getResources(Pattern.compile(".*\\.wav"));
+        Set<String> sounds = reflections.getResources(Pattern.compile(".*\\.ogg"));
         sounds.forEach(sound -> load(sound, Sound.class));
     }
 }

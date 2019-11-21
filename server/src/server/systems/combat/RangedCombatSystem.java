@@ -68,6 +68,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         stamina.min = Math.max(0, stamina.min - stamina.max * STAMINA_REQUIRED_PERCENT / 120);
         EntityUpdate update = EntityUpdateBuilder.of(userId).withComponents(stamina).build();
         getWorld().getSystem(WorldManager.class).sendEntityUpdate(userId, update);
+        getWorldManager ( ).notifyUpdate ( userId, new SoundNotification ( 65 ) );
     }
 
 
@@ -252,12 +253,14 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         sendFX(entityId);
         if (health.min > 0) {
             update(entityId);
+            getWorldManager ( ).notifyUpdate ( userId, new SoundNotification ( 10 ) );
         } else {
             // TODO die
             characterTrainingSystem.takeGold(userId, entityId);
             notifyCombat(userId, Messages.KILL, getName(entityId));
             notifyCombat(entityId, Messages.KILLED, getName(userId));
             worldManager.entityDie(entityId);
+            getWorldManager ( ).notifyUpdate ( userId, new SoundNotification ( 126 ) );
         }
     }
 

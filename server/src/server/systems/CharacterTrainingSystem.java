@@ -17,6 +17,7 @@ import shared.model.npcs.NPC;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.network.sound.SoundNotification;
 import shared.util.Messages;
 import shared.util.Pair;
 
@@ -111,6 +112,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
         // notify user
         notifyUpgrade(userId, mana, health, hit, stamina);
         // Log.info("hp: "+ health + "mAna" + mana + "hit: " + hit);
+        world.getSystem(WorldManager.class).notifyUpdate ( userId, new SoundNotification ( 65 ) );
     }
 
     private void notifyUpgrade(int userId, int mana, float health, Pair<Integer, Integer> hit, int stamina) {
