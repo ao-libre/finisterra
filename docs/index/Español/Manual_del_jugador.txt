@@ -11,6 +11,10 @@ Creation-Date: 2019-11-11T11:44:50-03:00
 
 ===== Configuración de teclas Default =====
 
+==== Música y sonidos ====
+Control de volumen de la música de fondo 8 y 9
+Encendido y apagado de la música de fondo 7 y Shift7
+
 ==== Combat ====
 * Ataque cuerpo a cuerpo = CONTROL_LEFT
 * Ataque cuerpo a cuerpo con canalización  = CONTROL_RIGHT (no implementado)
