@@ -1,5 +1,12 @@
-## Default
-### Combat
+Content-Type: text/x-zim-wiki
+Wiki-Format: zim 0.4
+Creation-Date: 2019-11-11T11:44:32-03:00
+
+====== Key config to play ======
+
+===== Default =====
+
+==== Combat ====
 * ATTACK_1 = CONTROL_LEFT
 * ATTACK_2 = CONTROL_RIGHT
 * MEDITATE = M
@@ -12,14 +19,16 @@
 * TAKE = A
 * EQUIP = E
 
-### Move
+==== Move ====
 * MOVE_LEFT = LEFT
 * MOVE_RIGHT = RIGHT
 * MOVE_UP = UP
 * MOVE_DOWN = DOWN
 
-## Alternative wasd - Activate with F1
-### Combat
+
+===== Alternative wasd - Activate with F1 =====
+
+==== Combat ====
 * ATTACK_1 = SPACE
 * ATTACK_2 = SHIFT_RIGHT
 * MEDITATE = M
@@ -32,7 +41,7 @@
 * TAKE = L
 * EQUIP = E
 
-### MOVE
+==== MOVE ====
 * MOVE_LEFT = A
 * MOVE_RIGHT = D
 * MOVE_UP = W
