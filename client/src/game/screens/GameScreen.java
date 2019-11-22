@@ -164,10 +164,10 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .pos2D();
 
         // for testing
-        Music backmusic = assetManager.getMusic ( 1 );
-        backmusic.setVolume ( 0.20f );
-        backmusic.setLooping ( true );
-        backmusic.play ();
+        Music backgroundMusic = assetManager.getMusic ( 1 );
+        backgroundMusic.setVolume ( 0.20f );
+        backgroundMusic.setLooping ( true );
+        backgroundMusic.play ();
     }
 
     protected void update(float deltaTime) {
