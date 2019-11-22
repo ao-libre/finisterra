@@ -13,6 +13,7 @@ import shared.interfaces.Constants;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.notifications.RemoveEntity;
+import shared.network.sound.SoundNotification;
 import shared.util.Messages;
 
 import java.util.HashMap;
@@ -33,10 +34,10 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
     }
 
     @Override
-    protected void process(E e) {
-        Mana mana = e.getMana();
-        EntityUpdateBuilder update = EntityUpdateBuilder.of(e.id());
-        EntityUpdateBuilder notify = EntityUpdateBuilder.of(e.id());
+    protected void process(E player) {
+        Mana mana = player.getMana();
+        EntityUpdateBuilder update = EntityUpdateBuilder.of(player.id());
+        EntityUpdateBuilder notify = EntityUpdateBuilder.of(player.id());
         if (mana.min < mana.max) {
             int manaMin = mana.min;
             int prob = ThreadLocalRandom.current().nextInt(2);
@@ -49,23 +50,23 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
                 update.withComponents(mana);
                 notify.withComponents(manaMessage);
                 ConsoleMessage consoleMessage = ConsoleMessage.info(Messages.MANA_RECOVERED, Integer.toString(recoveredMana));
-                worldManager.sendEntityUpdate(e.id(), consoleMessage);
+                worldManager.sendEntityUpdate(player.id(), consoleMessage);
             }
         }
 
         if (mana.min >= mana.max) {
             notify.remove(Meditating.class);
             ConsoleMessage consoleMessage = ConsoleMessage.info(Messages.MEDITATE_STOP);
-            worldManager.sendEntityUpdate(e.id(), consoleMessage);
-            stopMeditationEffect(e.id());
+            worldManager.sendEntityUpdate(player.id(), consoleMessage);
+            stopMeditationEffect(player.id());
         }
 
         if (!update.isEmpty()) {
-            worldManager.notifyUpdate(e.id(), update.build());
+            worldManager.notifyUpdate(player.id(), update.build());
         }
 
         if (!notify.isEmpty()) {
-            worldManager.notifyUpdate(e.id(), notify.build());
+            worldManager.notifyUpdate(player.id(), notify.build());
         }
     }
 
@@ -93,6 +94,7 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
                 player.meditating();
                 consoleMessage = ConsoleMessage.info(Messages.MEDITATE_START);
                 update.withComponents(player.getMeditating());
+                getWorldManager().notifyUpdate(player.id () , new SoundNotification (18));
             }
         }
         worldManager.sendEntityUpdate(userId, consoleMessage);
@@ -100,11 +102,16 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
     }
 
     private void stopMeditationEffect(int userId) {
-        Integer e = userMeditations.get(userId);
-        worldManager.notifyUpdate(userId, new RemoveEntity(e));
+        Integer entityId = userMeditations.get(userId);
+        worldManager.notifyUpdate(userId, new RemoveEntity(entityId));
         userMeditations.remove(userId);
-        E(e).deleteFromWorld();
+        E(entityId).deleteFromWorld();
         E(userId).removeMeditating();
+        getWorldManager().notifyUpdate(userId , new SoundNotification (18, "stop"));
+    }
+
+    private WorldManager getWorldManager() {
+        return world.getSystem(WorldManager.class);
     }
 
 }

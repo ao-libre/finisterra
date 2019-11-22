@@ -68,7 +68,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         stamina.min = Math.max(0, stamina.min - stamina.max * STAMINA_REQUIRED_PERCENT / 120);
         EntityUpdate update = EntityUpdateBuilder.of(userId).withComponents(stamina).build();
         getWorld().getSystem(WorldManager.class).sendEntityUpdate(userId, update);
-        getWorldManager ( ).notifyUpdate ( userId, new SoundNotification ( 65 ) );
+        getWorldManager ( ).notifyUpdate ( userId, new SoundNotification ( 68 ) );
     }
 
 
