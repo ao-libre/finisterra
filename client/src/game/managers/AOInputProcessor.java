@@ -65,27 +65,27 @@ public class AOInputProcessor extends Stage {
         }
         if (button == 0) {
 
-            WorldUtils.getWorld ( ).ifPresent ( world -> WorldUtils.mouseToWorldPos ( ).ifPresent ( worldPos -> {
-                final Optional< Spell > toCast = gui.getSpellView ( ).toCast;
-                final boolean toShoot = gui.getInventory ( ).toShoot;
-                if (toCast.isPresent ( )|| toShoot) {
-                    E player = E.E ( GameScreen.getPlayer ( ) );
-                    if (!player.hasAttack ( ) || player.getAttack ( ).interval - world.getDelta ( ) < 0) {
+            WorldUtils.getWorld().ifPresent ( world -> WorldUtils.mouseToWorldPos().ifPresent ( worldPos -> {
+                final Optional< Spell > toCast = gui.getSpellView ().toCast;
+                final boolean toShoot = gui.getInventory ().toShoot;
+                if (toCast.isPresent ()|| toShoot) {
+                    E player = E.E ( GameScreen.getPlayer() );
+                    if (!player.hasAttack() || player.getAttack().interval - world.getDelta () < 0) {
                         TimeSync timeSyncSystem = world.getSystem ( TimeSync.class );
-                        long rtt = timeSyncSystem.getRtt ( );
-                        long timeOffset = timeSyncSystem.getTimeOffset ( );
+                        long rtt = timeSyncSystem.getRtt();
+                        long timeOffset = timeSyncSystem.getTimeOffset();
                         if (toShoot) {
-                            GameScreen.getClient ( ).sendToAll ( new AttackRequest ( AttackType.RANGED, worldPos, rtt + timeOffset ) );
+                            GameScreen.getClient().sendToAll ( new AttackRequest ( AttackType.RANGED, worldPos, rtt + timeOffset ) );
                         } else {
-                            Spell spell = toCast.get ( );
-                            GameScreen.getClient ( ).sendToAll ( new SpellCastRequest ( spell, worldPos, rtt + timeOffset ) );
+                            Spell spell = toCast.get ();
+                            GameScreen.getClient().sendToAll ( new SpellCastRequest ( spell, worldPos, rtt + timeOffset ) );
                         }
-                        player.attack ( );
+                        player.attack();
                     } else {
                         if (toShoot) {
-                            gui.getConsole ( ).addWarning ( assetManager.getMessages ( Messages.CANT_SHOOT_THAT_FAST ) );
+                            gui.getConsole().addWarning ( assetManager.getMessages ( Messages.CANT_SHOOT_THAT_FAST ) );
                         } else {
-                            gui.getConsole ( ).addWarning ( assetManager.getMessages ( Messages.CANT_ATTACK) );
+                            gui.getConsole().addWarning ( assetManager.getMessages ( Messages.CANT_ATTACK ) );
                         }
 
                     }

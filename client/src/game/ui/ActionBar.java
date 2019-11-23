@@ -19,7 +19,7 @@ public final class ActionBar extends Table implements ActionSwitchListener {
     private final Inventory inventory;
     private final InventoryQuickBar inventoryQuickBar;
     private ImageTextButton expandButton;
-    public String currentState = "INVENTORY";
+    private String currentState = "INVENTORY";
 
     ActionBar() {
         super(Skins.COMODORE_SKIN);

@@ -33,9 +33,9 @@ public class AnimationLoader extends AsynchronousAssetLoader<ArrayList<AOAnimati
 
     @Override
     public ArrayList<AOAnimation> loadSync(AssetManager manager, String fileName, FileHandle file, DescriptorParameter parameter) {
-        ArrayList<AOAnimation> syncronizedDescriptors = this.descriptors;
+        ArrayList<AOAnimation> synchronizedDescriptors = this.descriptors;
         this.descriptors = null;
-        return syncronizedDescriptors;
+        return synchronizedDescriptors;
     }
 
     @Override

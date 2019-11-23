@@ -31,9 +31,9 @@ public class ObjectsLoader extends AsynchronousAssetLoader<HashMap<Integer, Obj>
 
     @Override
     public HashMap<Integer, Obj> loadSync(AssetManager manager, String fileName, FileHandle file, ObjectParameter parameter) {
-        HashMap<Integer, Obj> syncronizedResult = this.result;
+        HashMap<Integer, Obj> synchronizedResult = this.result;
         this.result = null;
-        return syncronizedResult;
+        return synchronizedResult;
     }
 
     @Override

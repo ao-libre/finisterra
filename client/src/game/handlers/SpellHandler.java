@@ -1,6 +1,5 @@
 package game.handlers;
 
-import com.badlogic.gdx.Gdx;
 import entity.character.info.SpellBook;
 import game.AOGame;
 import game.screens.GameScreen;
@@ -19,7 +18,7 @@ public class SpellHandler extends PassiveSystem {
     @Override
     protected void initialize() {
         super.initialize();
-        assetManager = AOGame.getGlobalAssetManager();
+        this.assetManager = AOGame.getGlobalAssetManager();
     }
 
     public Optional<Spell> getSpell(int id) {

@@ -25,11 +25,11 @@ public class BodyDescriptorSerializer implements Json.Serializer {
 
     private void readDescriptor(JsonValue jsonData, Descriptor descriptor) {
         descriptor.setId(jsonData.getInt("id", 0));
-        int[] indexs = new int[4];
-        indexs[0] = jsonData.getInt("up");
-        indexs[1] = jsonData.getInt("right");
-        indexs[2] = jsonData.getInt("down");
-        indexs[3] = jsonData.getInt("left");
-        descriptor.setIndexs(indexs);
+        int[] indexes = new int[4];
+        indexes[0] = jsonData.getInt("up");
+        indexes[1] = jsonData.getInt("right");
+        indexes[2] = jsonData.getInt("down");
+        indexes[3] = jsonData.getInt("left");
+        descriptor.setIndexs(indexes);
     }
 }

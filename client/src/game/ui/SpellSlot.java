@@ -21,7 +21,6 @@ public class SpellSlot extends ImageButton {
     private final SpellView spellView;
     private final ClickListener clickListener;
     private Spell spell;
-    private Texture icon;
     private Tooltip tooltip;
 
     SpellSlot(SpellView spellView, Spell spell) {
@@ -119,7 +118,7 @@ public class SpellSlot extends ImageButton {
     }
 
     private Texture getSpellIcon() {
-            icon = new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getId () + ".png"));
+        Texture icon = new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getId() + ".png"));
         return icon;
     }
 }

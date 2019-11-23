@@ -11,7 +11,7 @@ public class WorldManager extends BaseSystem {
 
     private final Map<Integer, Integer> networkedEntities = new HashMap<>();
 
-    public boolean entityExsists(int networkId) {
+    public boolean entityExists(int networkId) {
         return networkedEntities.containsKey(networkId);
     }
 

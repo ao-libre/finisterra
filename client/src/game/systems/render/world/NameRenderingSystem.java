@@ -88,16 +88,12 @@ public class NameRenderingSystem extends RenderingSystem {
             clanOrHero = Hero.values()[player.getCharHero().heroId].name();
         }
         if (clanOrHero == null) {
-            return;
         }
     }
 
     private Color setColor(E player, Label label) {
         Color previous = new Color(label.getStyle().fontColor);
-        Color color = //player.hasGM() ? Colors.GM :
-//                player.hasLevel() && player.getLevel().level < 13 ? Colors.NEWBIE :
-                player.hasCriminal() ? Colors.CRIMINAL : Colors.CITIZEN;
-        label.getStyle().fontColor = color;
+        label.getStyle().fontColor = player.hasCriminal() ? Colors.CRIMINAL : Colors.CITIZEN;
         return previous;
     }
 

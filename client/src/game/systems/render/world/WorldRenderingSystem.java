@@ -27,7 +27,7 @@ import static graphics.Effect.NO_REF;
 @Wire
 public class WorldRenderingSystem extends BaseSystem {
 
-    public static final int EXTRA_TILES = 7;
+    private static final int EXTRA_TILES = 7;
     private MapManager mapManager;
     private final SpriteBatch batch;
     private CameraSystem cameraSystem;

@@ -6,7 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.BufferUtils;
@@ -142,31 +141,27 @@ public class GUI extends BaseSystem implements Disposable {
         return camera;
     }
 
-    private Actor createConsole(Table table) {
+    private void createConsole(Table table) {
         console = new AOConsole();
         table.add(console).left().top();
-        return console;
     }
 
-    private Table createUserStatus(Table table) {
+    private void createUserStatus(Table table) {
         userTable = new UserInformation();
         table.add(userTable).prefWidth(400).left().bottom().expandX();
-        return userTable;
     }
 
-    private Table createActionBar(Table table) {
+    private void createActionBar(Table table) {
         actionBar = new ActionBar();
         table.add(actionBar).right().expandY().expandX ();
-        return actionBar;
     }
 
-    private Table createDialogContainer(Table table) {
+    private void createDialogContainer(Table table) {
         dialog = new DialogText();
         float width = getWidth() * 0.8f;
         dialog.setSize(width, dialog.getHeight());
         dialog.setPosition((getWidth() - width) / 2, getHeight() / 2);
         stage.addActor(dialog);
-        return dialog;
     }
 
     private float getHeight() {
