@@ -7,7 +7,6 @@ import com.artemis.EBag;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import game.handlers.AnimationHandler;
 import game.handlers.MapHandler;
 import game.managers.MapManager;
 import game.managers.WorldManager;
@@ -30,8 +29,7 @@ public class WorldRenderingSystem extends BaseSystem {
 
     public static final int EXTRA_TILES = 7;
     private MapManager mapManager;
-    private AnimationHandler animationHandler;
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
     private CameraSystem cameraSystem;
     private TiledMapSystem tiledMapSystem;
     private CharacterRenderingSystem characterRenderingSystem;

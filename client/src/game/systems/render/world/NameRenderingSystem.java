@@ -29,7 +29,7 @@ import static com.artemis.E.E;
 @Wire(injectInherited = true)
 public class NameRenderingSystem extends RenderingSystem {
 
-    private LoadingCache<Integer, Table> names = CacheBuilder
+    private final LoadingCache<Integer, Table> names = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
             .build(new CacheLoader<Integer, Table>() {

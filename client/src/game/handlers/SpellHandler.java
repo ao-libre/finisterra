@@ -19,8 +19,7 @@ public class SpellHandler extends PassiveSystem {
     @Override
     protected void initialize() {
         super.initialize();
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
-        assetManager = game.getAssetManager();
+        assetManager = AOGame.getGlobalAssetManager();
     }
 
     public Optional<Spell> getSpell(int id) {

@@ -9,7 +9,7 @@ import static com.artemis.E.E;
 
 public class WorldManager extends BaseSystem {
 
-    private Map<Integer, Integer> networkedEntities = new HashMap<>();
+    private final Map<Integer, Integer> networkedEntities = new HashMap<>();
 
     public boolean entityExsists(int networkId) {
         return networkedEntities.containsKey(networkId);

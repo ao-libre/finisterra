@@ -56,10 +56,10 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public static World world;
     public static int player = -1;
     private final ClientConfiguration clientConfiguration;
-    private FPSLogger logger;
-    private SpriteBatch spriteBatch;
+    private final FPSLogger logger;
+    private final SpriteBatch spriteBatch;
     private WorldConfigurationBuilder worldConfigBuilder;
-    private AOAssetManager assetManager;
+    private final AOAssetManager assetManager;
 
     public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
         this.clientConfiguration = clientConfiguration;

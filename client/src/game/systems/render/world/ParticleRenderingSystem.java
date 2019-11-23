@@ -21,12 +21,13 @@ import java.util.Map;
 @Wire(injectInherited = true)
 public class ParticleRenderingSystem extends RenderingSystem {
 
-    private Map<Integer, Map<Integer, ParticleEffect>> particles = new HashMap<>();
+    private final Map<Integer, Map<Integer, ParticleEffect>> particles;
     private int srcFunc;
     private int dstFunc;
 
     public ParticleRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(FX.class, WorldPos.class), batch, CameraKind.WORLD);
+        this.particles = new HashMap<>();
     }
 
     @Override

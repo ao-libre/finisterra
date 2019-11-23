@@ -33,8 +33,8 @@ public class AOInputProcessor extends Stage {
 
     public static boolean alternativeKeys = false;
 
-    private GUI gui;
-    private AOAssetManager assetManager;
+    private final GUI gui;
+    private final AOAssetManager assetManager;
 
     public AOInputProcessor(GUI gui) {
         this.gui = gui;
@@ -180,22 +180,22 @@ public class AOInputProcessor extends Stage {
                 gui.toggleFullscreen();
                 break;
             case Input.Keys.NUM_1:
-                useq(0);
+                useQ(0);
                 break;
             case Input.Keys.NUM_2:
-                useq(1);
+                useQ(1);
                 break;
             case Input.Keys.NUM_3:
-                useq(2);
+                useQ(2);
                 break;
             case Input.Keys.NUM_4:
-                useq(3);
+                useQ(3);
                 break;
             case Input.Keys.NUM_5:
-                useq(4);
+                useQ(4);
                 break;
             case Input.Keys.NUM_6:
-                useq(5);
+                useQ(5);
                 break;
         }
     }
@@ -243,27 +243,27 @@ public class AOInputProcessor extends Stage {
                 gui.toggleFullscreen();
                 break;
             case Input.Keys.NUM_1:
-                useq(0);
+                useQ(0);
                 break;
             case Input.Keys.NUM_2:
-                useq(1);
+                useQ(1);
                 break;
             case Input.Keys.NUM_3:
-                useq(2);
+                useQ(2);
                 break;
             case Input.Keys.NUM_4:
-                useq(3);
+                useQ(3);
                 break;
             case Input.Keys.NUM_5:
-                useq(4);
+                useQ(4);
                 break;
             case Input.Keys.NUM_6:
-                useq(5);
+                useQ(5);
                 break;
         }
     }
 
-    private void useq(int x) {
+    private void useQ(int x) {
         int base;
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT )) {
             if (gui.getActionBar ().getState().equals("INVENTORY")) {

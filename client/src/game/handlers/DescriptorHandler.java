@@ -5,7 +5,7 @@ import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 public class DescriptorHandler extends PassiveSystem {
 
-    private AOAssetManager assetManager;
+    private final AOAssetManager assetManager;
 
     public DescriptorHandler(AOAssetManager assetManager) {
         this.assetManager = assetManager;

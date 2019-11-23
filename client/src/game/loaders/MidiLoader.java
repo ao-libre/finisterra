@@ -32,9 +32,9 @@ public class MidiLoader extends AsynchronousAssetLoader<Sequencer, MidiLoader.Mi
 
     @Override
     public Sequencer loadSync(AssetManager manager, String fileName, FileHandle file, MidiParameter parameter) {
-        Sequencer result = this.result;
+        Sequencer syncronizedResult = this.result;
         this.result = null;
-        return result;
+        return syncronizedResult;
     }
 
     private Sequencer loadSequencer(FileHandle file) {

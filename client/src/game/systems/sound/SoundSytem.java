@@ -32,10 +32,11 @@ public class SoundSytem extends IteratingSystem {
 
     public static float volume = 1.0f;
     private SoundsHandler soundsHandler;
-    private Map<Integer, SoundIndexPair> sounds = new HashMap<>();
+    private final Map<Integer, SoundIndexPair> sounds;
 
     public SoundSytem() {
         super(Aspect.all(AOSound.class));
+        this.sounds = new HashMap<>();
     }
 
     public void setVolume(float volume) {

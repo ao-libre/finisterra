@@ -7,7 +7,6 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.handlers.MapHandler;
 import game.managers.MapManager;
-import game.systems.camera.CameraSystem;
 import game.systems.map.TiledMapSystem;
 import game.systems.render.world.WorldRenderingSystem.UserRange;
 import position.WorldPos;
@@ -22,9 +21,8 @@ public class MapLayerRenderingSystem extends RenderingSystem {
 
     private MapManager mapManager;
     private TiledMapSystem mapSystem;
-    private CameraSystem cameraSystem;
     private WorldRenderingSystem worldRenderingSystem;
-    private List<Integer> layers;
+    private final List<Integer> layers;
 
     public MapLayerRenderingSystem(SpriteBatch spriteBatch, List<Integer> layers) {
         super(Aspect.all(Focused.class), spriteBatch, CameraKind.WORLD);

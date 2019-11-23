@@ -15,15 +15,15 @@ import static com.artemis.E.E;
 
 public class Bar extends Actor {
 
-    private static final int ORIGINAL_WIDTH = 212;
+    //private static final int ORIGINAL_WIDTH = 212;
     private static final int ORIGINAL_HEIGHT = 32;
     private static final int ORIGINAL_BORDER = 9;
-    private static Drawable background = Skins.COMODORE_SKIN.getDrawable("bar-frame");
+    private static final Drawable background = Skins.COMODORE_SKIN.getDrawable("bar-frame");
     private final Label points;
-    private Drawable bar = Skins.COMODORE_SKIN.getDrawable("bar");
-    private Kind kind;
+    private final Drawable bar = Skins.COMODORE_SKIN.getDrawable("bar");
+    private final Kind kind;
 
-    public Bar(Kind kind) {
+    Bar(Kind kind) {
         this.kind = kind;
         points = new Label("", Skins.COMODORE_SKIN);
         points.setAlignment(Align.right);
@@ -91,7 +91,7 @@ public class Bar extends Actor {
         MANA(Colors.MANA),
         ENERGY(Colors.YELLOW);
 
-        private Color color;
+        private final Color color;
 
         Kind(Color color) {
             this.color = color;

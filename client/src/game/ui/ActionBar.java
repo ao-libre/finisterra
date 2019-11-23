@@ -1,8 +1,6 @@
 package game.ui;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.actions.VisibleAction;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -11,35 +9,35 @@ import game.ui.SwitchButtons.State;
 import game.utils.Skins;
 
 
-public class ActionBar extends Table implements ActionSwitchListener {
+public final class ActionBar extends Table implements ActionSwitchListener {
 
     private static final float PAD_TOP = -17f;
     private final ClickListener mouseListener;
-    private SwitchButtons buttons;
-    private SpellView spellView;
-    private SpellViewExpanded spellViewExpanded;
-    private Inventory inventory;
-    private InventoryQuickBar inventoryQuickBar;
+    private final SwitchButtons buttons;
+    private final SpellView spellView;
+    private final SpellViewExpanded spellViewExpanded;
+    private final Inventory inventory;
+    private final InventoryQuickBar inventoryQuickBar;
     private ImageTextButton expandButton;
-    private String currentState = "INVENTORY";
+    public String currentState = "INVENTORY";
 
     ActionBar() {
         super(Skins.COMODORE_SKIN);
-        mouseListener = new ClickListener();
-        buttons = new SwitchButtons();
-        buttons.addListener(this);
-        buttons.addListener(mouseListener);
-        spellView = new SpellView();
-        inventory = new Inventory();
-        inventoryQuickBar =new InventoryQuickBar ();
-        spellViewExpanded = new SpellViewExpanded ();
-        expandButton = new ImageTextButton ("-", Skins.COMODORE_SKIN, "inventory-expand-collapse");
-        expandButton.addListener(new ClickListener() {
+        this.mouseListener = new ClickListener();
+        this.buttons = new SwitchButtons();
+        this.buttons.addListener(this);
+        this.buttons.addListener(mouseListener);
+        this.spellView = new SpellView();
+        this.inventory = new Inventory();
+        this.inventoryQuickBar = new InventoryQuickBar();
+        this.spellViewExpanded = new SpellViewExpanded();
+        this.expandButton = new ImageTextButton ("-", Skins.COMODORE_SKIN, "inventory-expand-collapse");
+        this.expandButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 getInventory ().setVisible(!getInventory ().isVisible ());
-                getSpellViewExpanded ().setVisible ( !getSpellViewExpanded ().isVisible () );
-                if (getInventory ().isVisible ()){
+                getSpellViewExpanded ().setVisible ( !getSpellViewExpanded().isVisible() );
+                if (getInventory().isVisible()){
                     expandButton.setText ( "-" );
                 }else{
                     expandButton.setText ( "+" );
@@ -49,13 +47,13 @@ public class ActionBar extends Table implements ActionSwitchListener {
         });
 
         add().top();
-        add(buttons).top().right ().row();
-        add(inventory).padTop(PAD_TOP);
-        add( inventoryQuickBar ).padTop(PAD_TOP).right ().row ();
+        add( buttons ).top().right ().row();
+        add( inventory ).padTop( PAD_TOP );
+        add( inventoryQuickBar ).padTop( PAD_TOP ).right ().row ();
         add().top();
-        add( expandButton ).right ().padTop (-10f);
+        add( expandButton ).right().padTop (-10f);
     }
-
+    
     @Override
     public void notify(State state) {
         switch (state) {

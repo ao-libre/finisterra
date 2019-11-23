@@ -31,12 +31,14 @@ public class FadingGame extends Game {
         this.listeners = new Array<>();
     }
 
+    @Override
     public void create() {
         this.batch = new SpriteBatch();
         this.currentScreenFBO = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
         this.nextScreenFBO = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
     }
 
+    @Override
     public void dispose() {
         if (this.screen != null) {
             this.screen.hide();
@@ -50,6 +52,7 @@ public class FadingGame extends Game {
         this.nextScreenFBO.dispose();
     }
 
+    @Override
     public void pause() {
         if (this.screen != null) {
             this.screen.pause();
@@ -61,6 +64,7 @@ public class FadingGame extends Game {
 
     }
 
+    @Override
     public void resume() {
         if (this.screen != null) {
             this.screen.resume();
@@ -72,6 +76,7 @@ public class FadingGame extends Game {
 
     }
 
+    @Override
     public void render() {
         float delta = Gdx.graphics.getDeltaTime();
         if (this.nextScreen == null) {
@@ -124,6 +129,7 @@ public class FadingGame extends Game {
         }
     }
 
+    @Override
     public Screen getScreen() {
         return this.screen;
     }

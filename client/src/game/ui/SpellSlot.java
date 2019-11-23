@@ -17,7 +17,7 @@ public class SpellSlot extends ImageButton {
 
     static final int SIZE = 64;
     private static final float ICON_ALPHA = 0.5f;
-    private static Drawable selection = Skins.COMODORE_SKIN.getDrawable("slot-selected2");
+    private static final Drawable selection = Skins.COMODORE_SKIN.getDrawable("slot-selected2");
     private final SpellView spellView;
     private final ClickListener clickListener;
     private Spell spell;
@@ -113,6 +113,7 @@ public class SpellSlot extends ImageButton {
         spellView.selected(spell);
     }
 
+    @Override
     public boolean isOver() {
         return clickListener != null && clickListener.isOver();
     }

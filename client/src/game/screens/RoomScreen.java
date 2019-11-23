@@ -20,9 +20,9 @@ import shared.network.lobby.player.ChangeTeamRequest;
 import shared.util.Messages;
 
 public class RoomScreen extends AbstractScreen {
-    private ClientSystem clientSystem;
-    private Room room;
-    private Player me;
+    private final ClientSystem clientSystem;
+    private final Room room;
+    private final Player me;
     private List<Player> criminalList;
     private List<Player> armyList;
     private TextButton start;
@@ -41,7 +41,7 @@ public class RoomScreen extends AbstractScreen {
     public Player getPlayer() {
         return me;
     }
-
+    
     public void updatePlayers() {
         criminalList.setItems(room.getPlayers().stream().filter(player -> player.getTeam().equals(Team.CAOS_ARMY)).toArray(Player[]::new));
         armyList.setItems(room.getPlayers().stream().filter(player -> player.getTeam().equals(Team.REAL_ARMY)).toArray(Player[]::new));
