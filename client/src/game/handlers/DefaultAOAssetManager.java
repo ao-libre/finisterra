@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.I18NBundle;
+import com.esotericsoftware.minlog.Log;
 import game.ClientConfiguration;
 import game.loaders.*;
 import game.loaders.ObjectsLoader.ObjectParameter;
@@ -110,11 +111,15 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     }
 
     private void loadFonts() {
+        Log.info ( "loading font..." );
         // TODO
+        Log.info ( "font   loaded" );
     }
 
     private void loadMessages() {
+        Log.info ( "loading msj..." );
         load(languagesFile, I18NBundle.class, new I18NBundleLoader.I18NBundleParameter(new Locale(languagesLocale[0], languagesLocale[1])));
+        Log.info ( "msj  loaded" );
     }
 
     private void loadSkins() {
@@ -170,7 +175,8 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     @Override
     public Music getMusic(int key) {
         if (Gdx.files.internal(Resources.GAME_MUSIC_PATH + key + Resources.GAME_MUSIC_EXTENSION).exists()) {
-            return get(Resources.GAME_MUSIC_PATH + key + Resources.GAME_MUSIC_EXTENSION);
+            return Gdx.audio.newMusic ( Gdx.files.internal
+                    (Resources.GAME_MUSIC_PATH + key + Resources.GAME_MUSIC_EXTENSION ) );
         } else {
             return null;
         }
@@ -179,8 +185,11 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     @Override
     public Sound getSound(int key) {
         if (Gdx.files.internal(Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION).exists()) {
-            return get(Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION);
+            Log.info ( "return filepath " );
+            return Gdx.audio.newSound (Gdx.files.internal
+                    (Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION));
         } else {
+            Log.info ( "return null " );
             return null;
         }
     }
@@ -316,6 +325,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     }
 
     private void loadTexture(String fileName) {
+        Log.info ( "loading texture" );
         TextureParameter param = new TextureParameter();
         param.minFilter = TextureFilter.Linear;
         param.magFilter = TextureFilter.Linear;
@@ -323,9 +333,11 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         param.wrapU = Texture.TextureWrap.Repeat;
         param.wrapV = Texture.TextureWrap.Repeat;
         load(fileName, Texture.class, param);
+        Log.info ( "finish" );
     }
 
     private void loadObjects() {
+        Log.info ( "loading objects..." );
         Arrays.stream(Type.values()).forEach(type -> {
             ObjectParameter<HashMap<Integer, Obj>> param = new ObjectParameter<>(type);
             String fileName = SharedResources.OBJECTS_FOLDER + type.name().toLowerCase() + JSON_EXTENSION;
@@ -333,13 +345,17 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
                 load(fileName, OBJS_CLASS, param);
             }
         });
+        Log.info ( "finish" );
     }
 
     private void loadSpells() {
+        Log.info ( "loading spells..." );
         load(SharedResources.SPELLS_JSON_FILE, SPELLS_CLASS);
+        Log.info ( "finish" );
     }
 
     private void loadDescriptors() {
+        Log.info ( "loading descriptors" );
         load(GAME_DESCRIPTORS_FOLDER + WEAPONS + JSON_EXTENSION, DESCRIPTORS_CLASS, descriptor(WeaponDescriptor.class));
         load(GAME_DESCRIPTORS_FOLDER + SHIELDS + JSON_EXTENSION, DESCRIPTORS_CLASS, descriptor(ShieldDescriptor.class));
         load(GAME_DESCRIPTORS_FOLDER + HEADS + JSON_EXTENSION, DESCRIPTORS_CLASS, descriptor(HeadDescriptor.class));
@@ -348,9 +364,11 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         load(GAME_DESCRIPTORS_FOLDER + BODIES + JSON_EXTENSION, DESCRIPTORS_CLASS, descriptor(BodyDescriptor.class));
         load(GAME_DESCRIPTORS_FOLDER + IMAGES + JSON_EXTENSION, IMAGE_CLASS);
         load(GAME_DESCRIPTORS_FOLDER + ANIMATIONS + JSON_EXTENSION, ANIMATION_CLASS);
+        Log.info ( "finish" );
     }
 
     private void loadParticles() {
+        Log.info ( "loading particles...." );
         load(Resources.GAME_PARTICLES_PATH + "meditate1.party", ParticleEffect.class);
         ParticleEffectParameter params = new ParticleEffectParameter();
         params.imagesDir = Gdx.files.internal(Resources.GAME_PARTICLES_PATH + "images/");
@@ -359,19 +377,26 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         load(Resources.GAME_PARTICLES_PATH + "level-up.p", ParticleEffect.class, params);
         load(Resources.GAME_PARTICLES_PATH + "magic-projectile.p", ParticleEffect.class, params);
         load(Resources.GAME_PARTICLES_PATH + "thunder.p", ParticleEffect.class, params);
+        Log.info ( "finish" );
     }
 
     private void loadMusic() {
+        Log.info ( "loading music ... " );
         Reflections reflections = new Reflections("", new ResourcesScanner());
         Set<String> mp3Files = reflections.getResources(Pattern.compile(".*\\.mp3"));
-        Set<String> midiFiles = reflections.getResources(Pattern.compile(".*\\.mid"));
+        //Set<String> midiFiles = reflections.getResources(Pattern.compile(".*\\.mid"));
         mp3Files.forEach(mp3 -> load(mp3, Music.class));
-        midiFiles.forEach(midi -> load(midi, Sequencer.class));
+        mp3Files.forEach(mp3 -> Log.info("loading music: " + mp3));
+        //midiFiles.forEach(midi -> load(midi, Sequencer.class));
+        Log.info ( "finish" );
     }
 
     private void loadSounds() {
+        Log.info ( "loading sounds ...." );
         Reflections reflections = new Reflections("", new ResourcesScanner());
         Set<String> sounds = reflections.getResources(Pattern.compile(".*\\.ogg"));
         sounds.forEach(sound -> load(sound, Sound.class));
+        sounds.forEach(sound -> Log.info("loading sound: " + sound));
+        Log.info ( "finish" );
     }
 }
