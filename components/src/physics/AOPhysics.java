@@ -14,7 +14,7 @@ public class AOPhysics extends Component implements Serializable {
     public final static float MAX_VELOCITY = Float.MAX_VALUE;
     public final static float WALKING_VELOCITY = 165.0f;
 
-    public Deque<Movement> intentions = new ConcurrentLinkedDeque<Movement>();
+    public Deque<Movement> intentions = new ConcurrentLinkedDeque<>();
     public float velocity = WALKING_VELOCITY;
 
     public AOPhysics() {
