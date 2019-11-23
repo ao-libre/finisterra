@@ -57,7 +57,11 @@ public class NPC {
     private List<Pair<Integer, Integer>> drops = new ArrayList<>();
     private List<Integer> spells = new ArrayList<>();
     private List<Pair<Integer, String>> npcSpanwer = new ArrayList<>();
-    private List<Integer> sounds = new ArrayList<>();
+    //private List<Integer> sounds = new ArrayList<>();
+    private int attackSnd;
+    private int walkSnd;
+    private int dieSound;
+    private int gHitSnd;
     private List<String> expressions = new ArrayList<>();
 
     public NPC(int id) {
@@ -104,7 +108,10 @@ public class NPC {
         this.drops = other.drops;
         this.spells = other.spells;
         this.npcSpanwer = other.npcSpanwer;
-        this.sounds = other.sounds;
+        this.attackSnd = other.attackSnd;
+        this.walkSnd = other.walkSnd;
+        this.dieSound = other.dieSound;
+        this.gHitSnd = other.gHitSnd;
         this.expressions = other.expressions;
     }
 
@@ -124,8 +131,20 @@ public class NPC {
         npcSpanwer.add(new Pair<>(id, name));
     }
 
-    public void addSound(int id) {
-        sounds.add(id);
+    public void setAttackSnd(int id) {
+        this.attackSnd = id;
+    }
+
+    public void setWalkSnd(int id) {
+        this.walkSnd = id;
+    }
+
+    public void setDieSound(int id) {
+        this.dieSound = id;
+    }
+
+    public void setGHitSnd(int id) {
+        this.gHitSnd = id;
     }
 
     public void addExpression(String expression) {
@@ -148,9 +167,22 @@ public class NPC {
         return npcSpanwer;
     }
 
-    public List<Integer> getSounds() {
-        return sounds;
+    public int getAttackSnd(){
+        return attackSnd;
     }
+
+    public int getWalkSnd(){
+        return walkSnd;
+    }
+
+    public int getDieSound(){
+        return dieSound;
+    }
+
+    public int getGHitSnd() {
+        return gHitSnd;
+    }
+
 
     public List<String> getExpressions() {
         return expressions;
