@@ -8,7 +8,7 @@
       "HiDPI_Mode": "Logical"
     },
     "resizeable": true,
-    "disableAudio": true,
+    "disableAudio": false,
     "startMaximized": false,
     "tutorialTodo": "checkbox true false"
   },
