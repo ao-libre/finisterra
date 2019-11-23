@@ -158,8 +158,6 @@ public class AOInputProcessor extends Stage {
                 use();
                 break;
             case AOKeys.ATTACK_1:
-                attack();
-                break;
             case AOKeys.ATTACK_2:
                 attack();
                 break;
