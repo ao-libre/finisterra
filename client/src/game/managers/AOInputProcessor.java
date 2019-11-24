@@ -287,20 +287,23 @@ public class AOInputProcessor extends Stage {
 
     private void musicControl(int number){
         Music backGroundMusic = MusicHandler.BACKGROUNDMUSIC;
-        if (number == 7){
-            if (!backGroundMusic.isPlaying ()) {
-                backGroundMusic.play ();
-            } else {
-                backGroundMusic.stop ();
-            }
-        }
-        if (number == 8){
-            float volum = backGroundMusic.getVolume () - 0.01f;
-            backGroundMusic.setVolume ( volum );
-        }
-        if (number == 9){
-            float volum = backGroundMusic.getVolume () + 0.01f;
-            backGroundMusic.setVolume ( volum );
+        float volum;
+        switch (number) {
+            case 7:
+                if (!backGroundMusic.isPlaying ( )) {
+                    backGroundMusic.play ( );
+                } else {
+                    backGroundMusic.stop ( );
+                }
+                break;
+            case 8:
+                volum = backGroundMusic.getVolume ( ) - 0.01f;
+                backGroundMusic.setVolume ( volum );
+                break;
+            case 9:
+                volum = backGroundMusic.getVolume ( ) + 0.01f;
+                backGroundMusic.setVolume ( volum );
+                break;
         }
     }
 
