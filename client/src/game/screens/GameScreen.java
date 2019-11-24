@@ -209,8 +209,8 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public void dispose() {
         world.getSystem(ClientSystem.class).stop();
         world.getSystem(GUI.class).dispose();
-        backGroundMusic.setLooping ( false );
-        backGroundMusic.stop ();
+        backgroundMusic.setLooping ( false );
+        backgroundMusic.stop ();
     }
 
 }
