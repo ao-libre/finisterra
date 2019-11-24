@@ -8,6 +8,7 @@ import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -60,6 +61,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     private SpriteBatch spriteBatch;
     private WorldConfigurationBuilder worldConfigBuilder;
     private AOAssetManager assetManager;
+    private Music backGroundMusic;
 
     public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
         this.clientConfiguration = clientConfiguration;
@@ -163,11 +165,10 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .pos2D();
 
         // for testing
-        world.getSystem(SoundSytem.class).setVolume(0);
-        world.getSystem(MusicHandler.class).setVolume(0);
-
-        world.getSystem(MusicHandler.class).fadeOutMusic(101, 0.02f);
-        world.getSystem(MusicHandler.class).playMIDI(1);
+        backGroundMusic = assetManager.getMusic ( 101 );
+        backGroundMusic.setVolume ( 0.25f );
+        backGroundMusic.play ();
+        backGroundMusic.setLooping ( true );
     }
 
     protected void update(float deltaTime) {
@@ -207,6 +208,8 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public void dispose() {
         world.getSystem(ClientSystem.class).stop();
         world.getSystem(GUI.class).dispose();
+        backGroundMusic.setLooping ( false );
+        backGroundMusic.stop ();
     }
 
 }
