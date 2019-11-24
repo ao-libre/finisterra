@@ -34,6 +34,10 @@ public class LoginScreen extends AbstractScreen {
     public LoginScreen() {
         super();
         init();
+        /* utilice bgmusic primero usa un timer para subir gradualmente el sonido y luego otro,
+         * a falta de imaginacion de como hacer, para parar la musica de fondo luego de bandonar la Room
+         * porque de las otras forma que intente no funcionaban.
+         */
         bGMusic ();
     }
 
@@ -42,6 +46,7 @@ public class LoginScreen extends AbstractScreen {
         firstBGMusic.setVolume ( 0 );
         firstBGMusic.play ( );
         firstBGMusic.setLooping ( true );
+        // incrementa el sonido gradualmente hasta llegar al 34%
         float MUSIC_FADE_STEP = 0.01f;
         Timer.schedule ( new Timer.Task ( ) {
             @Override
@@ -53,7 +58,7 @@ public class LoginScreen extends AbstractScreen {
                 }
             }
         }, 0, 0.6f );
-
+        // pone un timer que luego de 10 s revisa cada segundo si se entro al mundo para detener la primera musica de fondo
         Timer.schedule ( new Timer.Task ( ) {
             @Override
             public void run() {
