@@ -107,7 +107,7 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
         userMeditations.remove(userId);
         E(entityId).deleteFromWorld();
         E(userId).removeMeditating();
-        getWorldManager().notifyUpdate(userId , new SoundNotification (18, "stop"));
+        getWorldManager().notifyUpdate(userId , new SoundNotification (18, SoundNotification.SoundState.STOPPED));
     }
 
     private WorldManager getWorldManager() {
