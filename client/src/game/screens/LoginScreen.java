@@ -1,10 +1,13 @@
 package game.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Timer;
 import game.AOGame;
 import game.ClientConfiguration;
 import game.handlers.AOAssetManager;
@@ -26,10 +29,42 @@ public class LoginScreen extends AbstractScreen {
     private List<ClientConfiguration.Network.Server> serverList;
 
     private boolean canConnect = true;
+    Music firstBGMusic;
 
     public LoginScreen() {
         super();
         init();
+        bGMusic ();
+    }
+
+    void bGMusic() {
+        this.firstBGMusic = Gdx.audio.newMusic ( Gdx.files.internal ( "data/music/101.mp3" ) );
+        firstBGMusic.setVolume ( 0 );
+        firstBGMusic.play ( );
+        firstBGMusic.setLooping ( true );
+        float MUSIC_FADE_STEP = 0.01f;
+        Timer.schedule ( new Timer.Task ( ) {
+            @Override
+            public void run() {
+                if (firstBGMusic.getVolume ( ) < 0.34f)
+                    firstBGMusic.setVolume ( firstBGMusic.getVolume ( ) + MUSIC_FADE_STEP );
+                else {
+                    this.cancel ( );
+                }
+            }
+        }, 0, 0.6f );
+
+        Timer.schedule ( new Timer.Task ( ) {
+            @Override
+            public void run() {
+                AOGame game = (AOGame) Gdx.app.getApplicationListener();
+                if (game.getScreen() instanceof GameScreen) {
+                    firstBGMusic.setLooping ( false );
+                    firstBGMusic.stop ( );
+                    this.cancel ( );
+                }
+            }
+        }, 10 ,1 );
     }
 
     @Override

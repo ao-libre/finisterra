@@ -119,8 +119,7 @@ public class EntityFactorySystem extends PassiveSystem {
 
     private void setStamina(E entity) {
         // set stamina
-        //int stamina = 20 * entity.agilityCurrentValue() / 6;
-        int stamina = 2000; //bonus para poder probar los sonidos de los hechizos
+        int stamina = 20 * entity.agilityCurrentValue() / 6;
         entity.staminaMax(stamina).staminaMin(stamina);
     }
 
@@ -175,7 +174,7 @@ public class EntityFactorySystem extends PassiveSystem {
 
     private void setMana(E entity) {
         CharClass charClass = CharClass.of(entity);
-        int mana = 2000; //Bonus 2000 mana para probar los sonidos de los hechizos
+        int mana = 300; //Bonus 300 mana para tirar inmovilizar
         switch (charClass) {
             case MAGICIAN:
                 mana = entity.intelligenceBaseValue() * 3 + mana;
