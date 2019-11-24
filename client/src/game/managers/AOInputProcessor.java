@@ -3,9 +3,7 @@ package game.managers;
 import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.handlers.AOAssetManager;
 import game.screens.GameScreen;
@@ -27,7 +25,6 @@ import shared.network.interaction.TalkRequest;
 import shared.network.inventory.ItemActionRequest;
 import shared.util.Messages;
 
-import javax.sound.midi.Sequencer;
 import java.util.Optional;
 
 import static com.artemis.E.E;
@@ -201,13 +198,13 @@ public class AOInputProcessor extends Stage {
                 useq(5);
                 break;
             case Input.Keys.NUM_7:
-                test(7);
+                musicControl (7);
                 break;
             case Input.Keys.NUM_8:
-                test(8);
+                musicControl (8);
                 break;
             case Input.Keys.NUM_9:
-                test(9);
+                musicControl (9);
                 break;
         }
     }
@@ -272,10 +269,20 @@ public class AOInputProcessor extends Stage {
             case Input.Keys.NUM_6:
                 useq(5);
                 break;
+            case Input.Keys.NUM_7:
+                musicControl (7);
+                break;
+            case Input.Keys.NUM_8:
+                musicControl (8);
+                break;
+            case Input.Keys.NUM_9:
+                musicControl (9);
+                break;
+
         }
     }
 
-    private void test(int number){
+    private void musicControl(int number){
         if (number == 7){
             assetManager.getMusic ( 1 ).stop ();
             assetManager.getMusic ( 1 ).play ();
