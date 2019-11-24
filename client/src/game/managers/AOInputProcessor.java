@@ -3,9 +3,12 @@ package game.managers;
 import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.handlers.AOAssetManager;
+import game.handlers.MusicHandler;
 import game.screens.GameScreen;
 import game.systems.camera.CameraSystem;
 import game.systems.network.TimeSync;
@@ -270,33 +273,34 @@ public class AOInputProcessor extends Stage {
                 useq(5);
                 break;
             case Input.Keys.NUM_7:
-                musicControl (7);
+                musicControl (7);//play / stop
                 break;
             case Input.Keys.NUM_8:
-                musicControl (8);
+                musicControl (8);//bajar volumen
                 break;
             case Input.Keys.NUM_9:
-                musicControl (9);
+                musicControl (9);//subir volumen
                 break;
 
         }
     }
 
     private void musicControl(int number){
+        Music backGroundMusic = MusicHandler.BACKGROUNDMUSIC;
         if (number == 7){
-            assetManager.getMusic ( 1 ).stop ();
-            assetManager.getMusic ( 1 ).play ();
-            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT)){
-                assetManager.getMusic ( 1 ).stop ();
+            if (!backGroundMusic.isPlaying ()) {
+                backGroundMusic.play ();
+            } else {
+                backGroundMusic.stop ();
             }
         }
         if (number == 8){
-            float volum = assetManager.getMusic ( 1 ).getVolume () + 0.01f;
-            assetManager.getMusic ( 1 ).setVolume ( volum );
+            float volum = backGroundMusic.getVolume () - 0.01f;
+            backGroundMusic.setVolume ( volum );
         }
         if (number == 9){
-            float volum = assetManager.getMusic ( 1 ).getVolume () - 0.01f;
-            assetManager.getMusic ( 1 ).setVolume ( volum );
+            float volum = backGroundMusic.getVolume () + 0.01f;
+            backGroundMusic.setVolume ( volum );
         }
     }
 

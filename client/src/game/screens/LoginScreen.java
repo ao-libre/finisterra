@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Timer;
 import game.AOGame;
 import game.ClientConfiguration;
 import game.handlers.AOAssetManager;
+import game.handlers.MusicHandler;
 import game.network.ClientResponseProcessor;
 import game.network.GameNotificationProcessor;
 import game.systems.network.ClientSystem;
@@ -29,20 +30,16 @@ public class LoginScreen extends AbstractScreen {
     private List<ClientConfiguration.Network.Server> serverList;
 
     private boolean canConnect = true;
-    Music firstBGMusic;
 
     public LoginScreen() {
         super();
         init();
-        /* utilice bgmusic primero usa un timer para subir gradualmente el sonido y luego otro,
-         * a falta de imaginacion de como hacer, para parar la musica de fondo luego de bandonar la Room
-         * porque de las otras forma que intente no funcionaban.
-         */
+        // utilice bgmusic  para subir gradualmente el sonido.
         bGMusic ();
     }
 
     void bGMusic() {
-        this.firstBGMusic = Gdx.audio.newMusic ( Gdx.files.internal ( "data/music/101.mp3" ) );
+        Music firstBGMusic = MusicHandler.FIRSTBGM;
         firstBGMusic.setVolume ( 0 );
         firstBGMusic.play ( );
         firstBGMusic.setLooping ( true );
@@ -58,18 +55,6 @@ public class LoginScreen extends AbstractScreen {
                 }
             }
         }, 0, 0.6f );
-        // pone un timer que luego de 10 s revisa cada segundo si se entro al mundo para detener la primera musica de fondo
-        Timer.schedule ( new Timer.Task ( ) {
-            @Override
-            public void run() {
-                AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                if (game.getScreen() instanceof GameScreen) {
-                    firstBGMusic.setLooping ( false );
-                    firstBGMusic.stop ( );
-                    this.cancel ( );
-                }
-            }
-        }, 10 ,1 );
     }
 
     @Override
