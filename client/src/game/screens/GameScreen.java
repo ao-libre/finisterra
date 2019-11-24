@@ -63,6 +63,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     private AOAssetManager assetManager;
     private Music backgroundMusic;
 
+
     public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
         this.clientConfiguration = clientConfiguration;
         this.assetManager = assetManager;
@@ -208,8 +209,8 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public void dispose() {
         world.getSystem(ClientSystem.class).stop();
         world.getSystem(GUI.class).dispose();
-        backgroundMusic.setLooping ( false );
-        backgroundMusic.stop ();
+        backGroundMusic.setLooping ( false );
+        backGroundMusic.stop ();
     }
 
 }
