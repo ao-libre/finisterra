@@ -183,22 +183,22 @@ public class AOInputProcessor extends Stage {
                 gui.toggleFullscreen();
                 break;
             case Input.Keys.NUM_1:
-                useQ(0);
+                useActionBarSlot(0);
                 break;
             case Input.Keys.NUM_2:
-                useQ(1);
+                useActionBarSlot(1);
                 break;
             case Input.Keys.NUM_3:
-                useQ(2);
+                useActionBarSlot(2);
                 break;
             case Input.Keys.NUM_4:
-                useQ(3);
+                useActionBarSlot(3);
                 break;
             case Input.Keys.NUM_5:
-                useQ(4);
+                useActionBarSlot(4);
                 break;
             case Input.Keys.NUM_6:
-                useQ(5);
+                useActionBarSlot(5);
                 break;
             case Input.Keys.NUM_7:
                 musicControl (7);
@@ -255,22 +255,22 @@ public class AOInputProcessor extends Stage {
                 gui.toggleFullscreen();
                 break;
             case Input.Keys.NUM_1:
-                useQ(0);
+                useActionBarSlot(0);
                 break;
             case Input.Keys.NUM_2:
-                useQ(1);
+                useActionBarSlot(1);
                 break;
             case Input.Keys.NUM_3:
-                useQ(2);
+                useActionBarSlot(2);
                 break;
             case Input.Keys.NUM_4:
-                useQ(3);
+                useActionBarSlot(3);
                 break;
             case Input.Keys.NUM_5:
-                useQ(4);
+                useActionBarSlot(4);
                 break;
             case Input.Keys.NUM_6:
-                useQ(5);
+                useActionBarSlot(5);
                 break;
             case Input.Keys.NUM_7:
                 musicControl (7);//play / stop
@@ -307,7 +307,7 @@ public class AOInputProcessor extends Stage {
         }
     }
 
-    private void useQ(int x) {
+    private void useActionBarSlot(int x) {
         int base;
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT )) {
             if (gui.getActionBar ().getState().equals("INVENTORY")) {
