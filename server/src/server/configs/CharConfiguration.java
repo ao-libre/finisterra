@@ -6,7 +6,7 @@ import shared.util.Pair;
 
 import java.util.ArrayList;
 
-public class CharClassConfiguration extends BaseConfiguration {
+public class CharConfiguration extends BaseConfiguration {
 
     // Default values
     public static final String PATH = "Chars.json";
@@ -28,7 +28,7 @@ public class CharClassConfiguration extends BaseConfiguration {
 
     private ArrayList<CharType> charClasses;
 
-    public CharClassConfiguration() {
+    public CharConfiguration() {
         super(PATH);
     }
 

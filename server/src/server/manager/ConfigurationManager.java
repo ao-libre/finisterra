@@ -3,7 +3,7 @@ package server.manager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
-import server.configs.CharClassConfiguration;
+import server.configs.CharConfiguration;
 import server.configs.ServerConfiguration;
 import shared.util.AOJson;
 
@@ -16,14 +16,14 @@ public class ConfigurationManager {
     private static ConfigurationManager manager;
 
     private ServerConfiguration serverConfiguration;
-    private CharClassConfiguration charClassConfiguration;
+    private CharConfiguration charConfiguration;
 
     public ServerConfiguration getServerConfig() {
         return serverConfiguration;
     }
 
-    public CharClassConfiguration getCharClassConfig() {
-        return charClassConfiguration;
+    public CharConfiguration getCharConfig() {
+        return charConfiguration;
     }
 
     private ConfigurationManager() {
@@ -49,12 +49,12 @@ public class ConfigurationManager {
         Json json = new AOJson();
 
         try {
-            charClassConfiguration = json.fromJson(CharClassConfiguration.class, new FileHandle(CharClassConfiguration.PATH));
+            charConfiguration = json.fromJson(CharConfiguration.class, new FileHandle(CharConfiguration.PATH));
         } catch (Exception ex) {
             Log.debug("Char class configuration file not found! Creating default...");
-            charClassConfiguration = new CharClassConfiguration();
-            charClassConfiguration.loadDefaultValues();
-            charClassConfiguration.save();
+            charConfiguration = new CharConfiguration();
+            charConfiguration.loadDefaultValues();
+            charConfiguration.save();
         }
     }
 

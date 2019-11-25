@@ -15,7 +15,7 @@ public enum Modifiers {
     HEALTH;
 
     public float of(CharClass clazz) {
-        return ConfigurationManager.getInstance().getCharClassConfig().getCharClass(clazz)
+        return ConfigurationManager.getInstance().getCharConfig().getCharClass(clazz)
                 .getModifier().getValue(this);
     }
 }
