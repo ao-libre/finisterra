@@ -17,25 +17,25 @@ import static com.artemis.E.E;
 
 public class InventoryQuickBar extends Window {
 
-    static final int COLUMNS = 6;
+    private static final int COLUMNS = 6;
     private static final int ROWS = 1;
     private static final int SIZE = COLUMNS * ROWS;
     private final ClickListener mouseListener;
 
 
-    private ArrayList<Slot> slotsq;
+    private ArrayList<Slot> slotsQ;
     private Optional<Slot> selected = Optional.empty();
     private ArrayList<Integer> gBases;
 
     InventoryQuickBar() {
         super("", Skins.COMODORE_SKIN, "inventory");
         setMovable(false);
-        slotsq = new ArrayList<>();
+        slotsQ = new ArrayList<>();
 
         for (int i = 0; i < SIZE; i++) {
             Slot nuevoSlot = new Slot();
-            slotsq.add(nuevoSlot);
-            add(slotsq.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
+            slotsQ.add(nuevoSlot);
+            add(slotsQ.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
             if (i < SIZE - 1) {
                 add(new Image(getSkin().getDrawable("separator"))).row();
             }
@@ -59,7 +59,7 @@ public class InventoryQuickBar extends Window {
                 selected.ifPresent ( slot -> {
                     slot.setSelected ( true );
                     slot.getItem ( ).ifPresent ( item -> {
-                            GameScreen.getClient ( ).sendToAll ( new ItemActionRequest (gBases.get (slotsq.indexOf (slot))));
+                            GameScreen.getClient ( ).sendToAll ( new ItemActionRequest (gBases.get (slotsQ.indexOf (slot))));
                     } );
                 } );
 
@@ -93,12 +93,12 @@ public class InventoryQuickBar extends Window {
         Item item = base  < userItems.length ? userItems[base] : null;
 
         if (x>0 && x<6){
-            slotsq.get(x).setItem(item);
+            slotsQ.get(x).setItem(item);
             gBases.set(x, base);
             x++;
         } else{
             x = 0;
-            slotsq.get(x).setItem(item);
+            slotsQ.get(x).setItem(item);
             gBases.set(x, base);
             x++;
         }
@@ -114,7 +114,7 @@ public class InventoryQuickBar extends Window {
 
     public int selectedIndex() {
         assert (selected.isPresent());
-        return slotsq.indexOf(selected.get());
+        return slotsQ.indexOf(selected.get());
     }
 
     public boolean isOver() {

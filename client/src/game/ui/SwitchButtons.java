@@ -11,9 +11,9 @@ import java.util.List;
 
 class SwitchButtons extends Table {
 
-    private ImageButton inventory;
-    private ImageButton spells;
-    private List<ActionSwitchListener> listeners = new ArrayList<>();
+    private final ImageButton inventory;
+    private final ImageButton spells;
+    private final List<ActionSwitchListener> listeners = new ArrayList<>();
     private State state = State.INVENTORY;
 
     SwitchButtons() {

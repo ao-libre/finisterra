@@ -35,8 +35,7 @@ public class DialogRenderingSystem extends RenderingSystem {
     private static final float TIME = 0.3f;
     private static final float VELOCITY = DISTANCE_TO_TOP / TIME * SCALE;
     private DescriptorHandler descriptorHandler;
-    private FontsHandler fontsHandler;
-    private LoadingCache<Dialog, Table> labels = CacheBuilder
+    private final LoadingCache<Dialog, Table> labels = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
             .build(new CacheLoader<Dialog, Table>() {

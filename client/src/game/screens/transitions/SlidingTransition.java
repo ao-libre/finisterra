@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Interpolation;
 
 public class SlidingTransition implements ScreenTransition {
-    private SlidingTransition.Direction direction;
-    private boolean slideOut;
-    private Interpolation interpolation;
+    private final SlidingTransition.Direction direction;
+    private final boolean slideOut;
+    private final Interpolation interpolation;
 
     public SlidingTransition(SlidingTransition.Direction direction, Interpolation interpolation, boolean slideOut) {
         this.direction = direction;
@@ -20,6 +20,7 @@ public class SlidingTransition implements ScreenTransition {
         this.slideOut = slideOut;
     }
 
+    @Override
     public void render(Batch batch, Texture currentScreenTexture, Texture nextScreenTexture, float percent) {
         float width = (float) currentScreenTexture.getWidth();
         float height = (float) currentScreenTexture.getHeight();

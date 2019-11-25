@@ -29,8 +29,8 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
     // injected systems
     private MapManager mapManager;
     private WorldRenderingSystem worldRenderingSystem;
-    private SpriteBatch mapBatch;
-    private LoadingCache<Map, Texture> bufferedLayers = CacheBuilder
+    private final SpriteBatch mapBatch;
+    private final LoadingCache<Map, Texture> bufferedLayers = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
             .build(new CacheLoader<>() {

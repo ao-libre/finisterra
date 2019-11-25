@@ -27,11 +27,11 @@ public class SpellViewExpanded extends Table {
 
     private static final int MAX_SPELLS = 25;
     public Optional<Spell> selected = Optional.empty();
-    private Window spellTable;
-    private List<SpellSlotEC> slotsEC = new ArrayList<>(MAX_SPELLS);
+    private final Window spellTable;
+    private final List<SpellSlotEC> slotsEC = new ArrayList<>(MAX_SPELLS);
     private int base;
 
-    private AOAssetManager assetManager;
+    private final AOAssetManager assetManager;
 
     public SpellViewExpanded() {
         super(Skins.COMODORE_SKIN);

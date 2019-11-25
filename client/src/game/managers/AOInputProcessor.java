@@ -36,8 +36,8 @@ public class AOInputProcessor extends Stage {
 
     public static boolean alternativeKeys = false;
 
-    private GUI gui;
-    private AOAssetManager assetManager;
+    private final GUI gui;
+    private final AOAssetManager assetManager;
 
     public AOInputProcessor(GUI gui) {
         this.gui = gui;
@@ -68,27 +68,27 @@ public class AOInputProcessor extends Stage {
         }
         if (button == 0) {
 
-            WorldUtils.getWorld ( ).ifPresent ( world -> WorldUtils.mouseToWorldPos ( ).ifPresent ( worldPos -> {
-                final Optional< Spell > toCast = gui.getSpellView ( ).toCast;
-                final boolean toShoot = gui.getInventory ( ).toShoot;
-                if (toCast.isPresent ( )|| toShoot) {
-                    E player = E.E ( GameScreen.getPlayer ( ) );
-                    if (!player.hasAttack ( ) || player.getAttack ( ).interval - world.getDelta ( ) < 0) {
+            WorldUtils.getWorld().ifPresent ( world -> WorldUtils.mouseToWorldPos().ifPresent ( worldPos -> {
+                final Optional< Spell > toCast = gui.getSpellView ().toCast;
+                final boolean toShoot = gui.getInventory ().toShoot;
+                if (toCast.isPresent ()|| toShoot) {
+                    E player = E.E ( GameScreen.getPlayer() );
+                    if (!player.hasAttack() || player.getAttack().interval - world.getDelta () < 0) {
                         TimeSync timeSyncSystem = world.getSystem ( TimeSync.class );
-                        long rtt = timeSyncSystem.getRtt ( );
-                        long timeOffset = timeSyncSystem.getTimeOffset ( );
+                        long rtt = timeSyncSystem.getRtt();
+                        long timeOffset = timeSyncSystem.getTimeOffset();
                         if (toShoot) {
-                            GameScreen.getClient ( ).sendToAll ( new AttackRequest ( AttackType.RANGED, worldPos, rtt + timeOffset ) );
+                            GameScreen.getClient().sendToAll ( new AttackRequest ( AttackType.RANGED, worldPos, rtt + timeOffset ) );
                         } else {
-                            Spell spell = toCast.get ( );
-                            GameScreen.getClient ( ).sendToAll ( new SpellCastRequest ( spell, worldPos, rtt + timeOffset ) );
+                            Spell spell = toCast.get ();
+                            GameScreen.getClient().sendToAll ( new SpellCastRequest ( spell, worldPos, rtt + timeOffset ) );
                         }
-                        player.attack ( );
+                        player.attack();
                     } else {
                         if (toShoot) {
-                            gui.getConsole ( ).addWarning ( assetManager.getMessages ( Messages.CANT_SHOOT_THAT_FAST ) );
+                            gui.getConsole().addWarning ( assetManager.getMessages ( Messages.CANT_SHOOT_THAT_FAST ) );
                         } else {
-                            gui.getConsole ( ).addWarning ( assetManager.getMessages ( Messages.CANT_ATTACK) );
+                            gui.getConsole().addWarning ( assetManager.getMessages ( Messages.CANT_ATTACK ) );
                         }
 
                     }
@@ -183,22 +183,22 @@ public class AOInputProcessor extends Stage {
                 gui.toggleFullscreen();
                 break;
             case Input.Keys.NUM_1:
-                useq(0);
+                useActionBarSlot(0);
                 break;
             case Input.Keys.NUM_2:
-                useq(1);
+                useActionBarSlot(1);
                 break;
             case Input.Keys.NUM_3:
-                useq(2);
+                useActionBarSlot(2);
                 break;
             case Input.Keys.NUM_4:
-                useq(3);
+                useActionBarSlot(3);
                 break;
             case Input.Keys.NUM_5:
-                useq(4);
+                useActionBarSlot(4);
                 break;
             case Input.Keys.NUM_6:
-                useq(5);
+                useActionBarSlot(5);
                 break;
             case Input.Keys.NUM_7:
                 musicControl (7);
@@ -255,22 +255,22 @@ public class AOInputProcessor extends Stage {
                 gui.toggleFullscreen();
                 break;
             case Input.Keys.NUM_1:
-                useq(0);
+                useActionBarSlot(0);
                 break;
             case Input.Keys.NUM_2:
-                useq(1);
+                useActionBarSlot(1);
                 break;
             case Input.Keys.NUM_3:
-                useq(2);
+                useActionBarSlot(2);
                 break;
             case Input.Keys.NUM_4:
-                useq(3);
+                useActionBarSlot(3);
                 break;
             case Input.Keys.NUM_5:
-                useq(4);
+                useActionBarSlot(4);
                 break;
             case Input.Keys.NUM_6:
-                useq(5);
+                useActionBarSlot(5);
                 break;
             case Input.Keys.NUM_7:
                 musicControl (7);//play / stop
@@ -307,7 +307,7 @@ public class AOInputProcessor extends Stage {
         }
     }
 
-    private void useq(int x) {
+    private void useActionBarSlot(int x) {
         int base;
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT )) {
             if (gui.getActionBar ().getState().equals("INVENTORY")) {
