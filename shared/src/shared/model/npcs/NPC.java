@@ -57,7 +57,6 @@ public class NPC {
     private List<Pair<Integer, Integer>> drops = new ArrayList<>();
     private List<Integer> spells = new ArrayList<>();
     private List<Pair<Integer, String>> npcSpanwer = new ArrayList<>();
-    //private List<Integer> sounds = new ArrayList<>();
     private int attackSnd;
     private int walkSnd;
     private int dieSound;
