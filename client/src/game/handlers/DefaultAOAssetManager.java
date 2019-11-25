@@ -168,7 +168,8 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     @Override
     public Music getMusic(int key) {
         if (Gdx.files.internal(Resources.GAME_MUSIC_PATH + key + Resources.GAME_MUSIC_EXTENSION).exists()) {
-            return get(Resources.GAME_MUSIC_PATH + key + Resources.GAME_MUSIC_EXTENSION);
+            return Gdx.audio.newMusic ( Gdx.files.internal
+                    (Resources.GAME_MUSIC_PATH + key + Resources.GAME_MUSIC_EXTENSION ) );
         } else {
             return null;
         }
@@ -177,7 +178,8 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     @Override
     public Sound getSound(int key) {
         if (Gdx.files.internal(Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION).exists()) {
-            return get(Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION);
+            return Gdx.audio.newSound (Gdx.files.internal
+                    (Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION));
         } else {
             return null;
         }
@@ -369,7 +371,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     private void loadSounds() {
         Reflections reflections = new Reflections("", new ResourcesScanner());
-        Set<String> sounds = reflections.getResources(Pattern.compile(".*\\.wav"));
+        Set<String> sounds = reflections.getResources(Pattern.compile(".*\\.ogg"));
         sounds.forEach(sound -> load(sound, Sound.class));
     }
 }
