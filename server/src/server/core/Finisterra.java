@@ -6,7 +6,7 @@ import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import server.ServerConfiguration;
+import server.configs.ServerConfiguration;
 import server.network.FinisterraRequestProcessor;
 import server.systems.FinisterraSystem;
 import server.systems.manager.ObjectManager;

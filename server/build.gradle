@@ -106,6 +106,7 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
 
             from files(sourceSets.main.output.resourcesDir)
 			from file("$projectDir/Server.json")
+            from file("$projectDir/Chars.json")
 			
             if (osName.contains('mac')) {
                 into("${releasePath}/${project.appName}/Contents/Resources/")
