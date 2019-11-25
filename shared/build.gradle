@@ -6,9 +6,9 @@ plugins {
 dependencies {
     api project(":components")
 	api group: "com.badlogicgames.gdx", name: "gdx-platform", version: "$gdxVersion", classifier: "natives-desktop"
-	api group: "net.mostlyoriginal.artemis-odb", name: "contrib-core", version: "$artemisContribVersion"
-	api group: "net.mostlyoriginal.artemis-odb", name: "contrib-jam", version: "$artemisContribVersion"
-	api group: "net.mostlyoriginal.artemis-odb", name: "contrib-eventbus", version: "$artemisContribVersion"
+	api group: "net.mostlyoriginal.artemis-odb", name: "contrib-core", version: "$artemisVersion"
+	api group: "net.mostlyoriginal.artemis-odb", name: "contrib-jam", version: "$artemisVersion"
+	api group: "net.mostlyoriginal.artemis-odb", name: "contrib-eventbus", version: "$artemisVersion"
 	api ("net.mostlyoriginal.artemis-odb:contrib-network:$artemisVersion") {
         exclude group: "net.esotericsoftware", module: "kryo"
     }
