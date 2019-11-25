@@ -109,11 +109,11 @@ public class NPC {
     }
 
     public void addObj(int id, int count) {
-        objs.add(new Pair(id, count));
+        objs.add(new Pair<>(id, count));
     }
 
     public void addDrops(int id, int count) {
-        drops.add(new Pair(id, count));
+        drops.add(new Pair<>(id, count));
     }
 
     public void addSpells(int id) {
@@ -121,7 +121,7 @@ public class NPC {
     }
 
     public void addNPCtoSpawn(int id, String name) {
-        npcSpanwer.add(new Pair(id, name));
+        npcSpanwer.add(new Pair<>(id, name));
     }
 
     public void addSound(int id) {

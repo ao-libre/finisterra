@@ -27,7 +27,7 @@ public class ImageLoader extends AsynchronousAssetLoader<ArrayList<AOImage>, Ima
     public static final String IMAGES = "images";
     public static final String ANIMATIONS = "animations";
 
-    private Json json = new AOJson();
+    private final Json json = new AOJson();
     private ArrayList<AOImage> descriptors;
 
     public ImageLoader() {
@@ -37,15 +37,15 @@ public class ImageLoader extends AsynchronousAssetLoader<ArrayList<AOImage>, Ima
 
     @Override
     public void loadAsync(AssetManager manager, String fileName, FileHandle file, DescriptorParameter parameter) {
-        descriptors = null;
+        this.descriptors = null;
         descriptors = json.fromJson(ArrayList.class, AOImage.class, file);
     }
 
     @Override
     public ArrayList<AOImage> loadSync(AssetManager manager, String fileName, FileHandle file, DescriptorParameter parameter) {
-        ArrayList<AOImage> descriptors = this.descriptors;
+        ArrayList<AOImage> syncronizedDescriptors = this.descriptors;
         this.descriptors = null;
-        return descriptors;
+        return syncronizedDescriptors;
     }
 
     @Override

@@ -11,9 +11,9 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.Array;
 
 public class SlicingTransition implements ScreenTransition {
-    private SlicingTransition.Direction direction;
-    private Interpolation interpolation;
-    private Array<Integer> slices = new Array();
+    private final SlicingTransition.Direction direction;
+    private final Interpolation interpolation;
+    private final Array<Integer> slices = new Array<>();
 
     public SlicingTransition(SlicingTransition.Direction direction, int numSlices, Interpolation interpolation) {
         this.direction = direction;
@@ -27,10 +27,11 @@ public class SlicingTransition implements ScreenTransition {
         this.slices.shuffle();
     }
 
+    @Override
     public void render(Batch batch, Texture currentScreenTexture, Texture nextScreenTexture, float percent) {
         float width = (float) currentScreenTexture.getWidth();
         float height = (float) currentScreenTexture.getHeight();
-        float x = 0.0F;
+        float x;
         float y = 0.0F;
         int sliceWidth = (int) (width / (float) this.slices.size);
         batch.begin();
@@ -41,7 +42,7 @@ public class SlicingTransition implements ScreenTransition {
 
         for (int i = 0; i < this.slices.size; ++i) {
             x = (float) (i * sliceWidth);
-            float offsetY = height * (1.0F + (float) (Integer) this.slices.get(i) / (float) this.slices.size);
+            float offsetY = height * (1.0F + (float) this.slices.get(i) / (float) this.slices.size);
             switch (this.direction) {
                 case UP:
                     y = -offsetY + offsetY * percent;

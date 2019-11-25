@@ -27,7 +27,7 @@ public abstract class OrderedEntityProcessingSystem extends BaseEntitySystem
         implements EntitySubscription.SubscriptionListener {
 
     private boolean shouldSyncEntities;
-    private ArrayList<Entity> entities = new ArrayList<Entity>();
+    private final ArrayList<Entity> entities = new ArrayList<>();
 
     public OrderedEntityProcessingSystem(Aspect.Builder aspect) {
         super(aspect);

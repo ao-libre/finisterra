@@ -17,11 +17,10 @@ public class SpellSlot extends ImageButton {
 
     static final int SIZE = 64;
     private static final float ICON_ALPHA = 0.5f;
-    private static Drawable selection = Skins.COMODORE_SKIN.getDrawable("slot-selected2");
+    private static final Drawable selection = Skins.COMODORE_SKIN.getDrawable("slot-selected2");
     private final SpellView spellView;
     private final ClickListener clickListener;
     private Spell spell;
-    private Texture icon;
     private Tooltip tooltip;
 
     SpellSlot(SpellView spellView, Spell spell) {
@@ -52,7 +51,7 @@ public class SpellSlot extends ImageButton {
 
     private Tooltip getTooltip(Spell spell) {
         Actor content = createTooltipContent(spell);
-        return new Tooltip(content);
+        return new Tooltip<>(content);
     }
 
     private Actor createTooltipContent(Spell spell) {
@@ -113,12 +112,13 @@ public class SpellSlot extends ImageButton {
         spellView.selected(spell);
     }
 
+    @Override
     public boolean isOver() {
         return clickListener != null && clickListener.isOver();
     }
 
     private Texture getSpellIcon() {
-            icon = new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getId () + ".png"));
+        Texture icon = new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getId() + ".png"));
         return icon;
     }
 }

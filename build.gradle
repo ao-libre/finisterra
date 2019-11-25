@@ -22,17 +22,19 @@ buildscript {
 
 allprojects {
     apply plugin: "idea"
-
+    apply plugin: "eclipse"
+	
     group = 'Finisterra'
     version = '0.1.12'
 
     ext {
-    appName = 'Finisterra'
-    gdxVersion = '1.9.11-SNAPSHOT' //graphic library
-    kryonetVersion = '2.22.0-RC1' //protocol tcp-ip udp
-    artemisVersion = '2.2.0'  //Artemis EntityCompomentSystem
-    artemisContribVersion = '2.2.0'
-    gdxAIVersion = '1.8.2' //artificial intelligence
+        appName = 'Finisterra'
+        
+        gdxVersion = '1.9.11-SNAPSHOT' //graphic library
+        kryonetVersion = '2.22.0-RC1' //protocol tcp-ip udp
+        artemisVersion = '2.2.0'  //Artemis EntityCompomentSystem
+        artemisContribVersion = '2.2.0'
+        gdxAIVersion = '1.8.2' //artificial intelligence
 	tinyfdVersion = '3.2.3'
 	jupiterVersion = '5.5.2' //test used for cache to map
 	guavaVersion = '28.1-jre' //collection types used for map information
@@ -58,21 +60,21 @@ subprojects {
     sourceCompatibility = JavaVersion.VERSION_12
     targetCompatibility = JavaVersion.VERSION_12
 
-	tasks.withType(JavaCompile) {
-		options.encoding = "UTF-8"
-		//options.compilerArgs << '-Xlint:unchecked'
-		//options.deprecation = true
-	}
+    tasks.withType(JavaCompile) {
+	options.encoding = "UTF-8"
+	//options.compilerArgs << '-Xlint:unchecked'
+	//options.deprecation = true
+    }
 }
 
 configure(subprojects.findAll { it.name == 'server' || it.name == 'desktop' }) {
     
-	apply plugin: "de.undercouch.download"
+    apply plugin: "de.undercouch.download"
 	
     ext {
         osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
         jdkPath = Jvm.current().getJavaHome().path
-		JPackagePath = "${rootDir}/JPackage"
+	JPackagePath = "${rootDir}/JPackage"
         prebuiltJRE = "${rootDir}/JPackage/bundled-JRE"
         JPackageCompressed = osName.contains('windows') ? "jpackage.zip" : "jpackage.tar.gz"
     }

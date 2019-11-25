@@ -50,7 +50,7 @@ public class AutoTiler {
             throw new IllegalArgumentException("Invalid tile height");
         }
 
-        return new Pair(tileWidth, tileHeight);
+        return new Pair<>(tileWidth, tileHeight);
     }
 
     private static String loadTexturePath(TilesetConfig conf) {
@@ -113,7 +113,7 @@ public class AutoTiler {
             terrainTypes.get(firstTerrainId).getTransitions().add(secondTerrainId);
             terrainTypes.get(secondTerrainId).getTransitions().add(firstTerrainId);
         }
-        return new Pair(terrainTypes, tileRowTerrains);
+        return new Pair<>(terrainTypes, tileRowTerrains);
     }
 
 }

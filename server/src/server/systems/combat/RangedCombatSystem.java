@@ -5,6 +5,7 @@ import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
 import entity.character.status.Health;
+import entity.character.status.Stamina;
 import entity.world.CombatMessage;
 import graphics.Effect;
 import physics.AttackAnimation;
@@ -47,11 +48,30 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         final WorldPos targetPos = attackRequest.getWorldPos();
         final long timestamp = attackRequest.getTimestamp();
         target = getTargetx(userId, targetPos, timestamp);
+
+        if (!target.isPresent ( )) {
+            energyUse ( userId );
+            worldManager.notifyUpdate ( userId, EntityUpdateBuilder.of ( userId ).withComponents ( new AttackAnimation ( ) ).build ( ) );
+            final ConsoleMessage combat = ConsoleMessage.combat(Messages.ATTACK_FAILED);
+            worldManager.sendEntityUpdate(userId, combat);
+            notify(userId, CombatMessage.physic( "Fallas!"));
+        }else
         if (canAttack ( userId, target )) {
+            energyUse ( userId );
             worldManager.notifyUpdate ( userId, EntityUpdateBuilder.of ( userId ).withComponents ( new AttackAnimation ( ) ).build ( ) );
             doHit ( userId, target.get ( ), damageCalculation ( userId, target.get ( ) ) );
         }
     }
+
+    private void energyUse(int userId) {
+        E e = E(userId);
+        Stamina stamina = e.getStamina();
+        stamina.min = Math.max(0, stamina.min - stamina.max * STAMINA_REQUIRED_PERCENT / 120);
+        EntityUpdate update = EntityUpdateBuilder.of(userId).withComponents(stamina).build();
+        getWorld().getSystem(WorldManager.class).sendEntityUpdate(userId, update);
+        getWorldManager ( ).notifyUpdate ( userId, new SoundNotification ( 68 ) );
+    }
+
 
     Optional<Integer> getTargetx(int userId, WorldPos worldPos, long timestamp) {
         Set<Integer> entities = new HashSet<>(mapManager.getNearEntities(userId));
@@ -122,6 +142,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
             if (ThreadLocalRandom.current().nextInt(101) <= prob) {
                 return true;
             } else {
+                energyUse ( entityId );
                 int skills = 200;
                 prob = Math.max(10, Math.min(90, 100 * 100 / skills));
 
@@ -253,12 +274,14 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         sendFX(entityId);
         if (health.min > 0) {
             update(entityId);
+            getWorldManager ( ).notifyUpdate ( userId, new SoundNotification ( 10 ) );
         } else {
             // TODO die
             characterTrainingSystem.takeGold(userId, entityId);
             notifyCombat(userId, Messages.KILL, getName(entityId));
             notifyCombat(entityId, Messages.KILLED, getName(userId));
             worldManager.entityDie(entityId);
+            getWorldManager ( ).notifyUpdate ( userId, new SoundNotification ( 126 ) );
         }
     }
 

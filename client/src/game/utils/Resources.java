@@ -2,10 +2,10 @@ package game.utils;
 
 public class Resources {
 	
-	// Paths
+    // Paths
     private static final String GAME_DATA_PATH = "data/";
     public static final String GAME_UI_PATH = GAME_DATA_PATH + "ui/";
-	public static final String SKIN_FILE_PATH = "ao-skin-2/";
+    public static final String SKIN_FILE_PATH = "ao-skin-2/";
     public static final String GAME_IMAGES_PATH = GAME_UI_PATH + "images/";
     public static final String GAME_SPELL_ICONS_PATH = GAME_UI_PATH + "spells/";
     public static final String GAME_SKIN_FILE = GAME_UI_PATH + SKIN_FILE_PATH + "ao-skin.json";
@@ -27,7 +27,7 @@ public class Resources {
 	
     // Extensions
     public static final String GAME_GRAPHICS_EXTENSION = ".png";
-    public static final String GAME_SOUNDS_EXTENSION = ".wav";
+    public static final String GAME_SOUNDS_EXTENSION = ".ogg";
     public static final String GAME_MUSIC_EXTENSION = ".mp3";
     public static final String GAME_MIDI_EXTENSION = ".mid";
     

@@ -38,19 +38,17 @@ import static com.artemis.E.E;
 public class Inventory extends Window {
 
     public boolean toShoot = false;
-    static final int COLUMNS = 5;
+    private static final int COLUMNS = 5;
     private static final int ROWS = 4;
     private static final int SIZE = COLUMNS * ROWS;
     private final ClickListener mouseListener;
     private int base;
-    private GUI gui;
 
     private ArrayList<Slot> slots;
     private AOAssetManager assetManager;
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
-    private InventoryQuickBar inventoryQuickBar;
 
     Inventory() {
         super("", Skins.COMODORE_SKIN, "inventory");

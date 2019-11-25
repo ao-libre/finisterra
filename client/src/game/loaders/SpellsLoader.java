@@ -29,9 +29,9 @@ public class SpellsLoader extends AsynchronousAssetLoader<HashMap<Integer, Spell
 
     @Override
     public HashMap<Integer, Spell> loadSync(AssetManager manager, String fileName, FileHandle file, SpellParameter parameter) {
-        HashMap<Integer, Spell> result = this.result;
+        HashMap<Integer, Spell> syncronizedResult = this.result;
         this.result = null;
-        return result;
+        return syncronizedResult;
     }
 
     @Override

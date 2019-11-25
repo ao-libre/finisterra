@@ -8,6 +8,7 @@ import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -56,10 +57,11 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public static World world;
     public static int player = -1;
     private final ClientConfiguration clientConfiguration;
-    private FPSLogger logger;
-    private SpriteBatch spriteBatch;
+    private final FPSLogger logger;
+    private final SpriteBatch spriteBatch;
     private WorldConfigurationBuilder worldConfigBuilder;
-    private AOAssetManager assetManager;
+    private final AOAssetManager assetManager;
+    private Music backgroundMusic = MusicHandler.BACKGROUNDMUSIC;
 
     public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
         this.clientConfiguration = clientConfiguration;
@@ -163,11 +165,8 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .pos2D();
 
         // for testing
-        world.getSystem(SoundSytem.class).setVolume(0);
-        world.getSystem(MusicHandler.class).setVolume(0);
-
-        world.getSystem(MusicHandler.class).fadeOutMusic(101, 0.02f);
-        world.getSystem(MusicHandler.class).playMIDI(1);
+        backgroundMusic.setVolume ( 0.20f );
+        backgroundMusic.play ();
     }
 
     protected void update(float deltaTime) {
@@ -207,6 +206,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public void dispose() {
         world.getSystem(ClientSystem.class).stop();
         world.getSystem(GUI.class).dispose();
+        backgroundMusic.stop ();
     }
 
 }

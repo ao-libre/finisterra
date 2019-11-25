@@ -69,17 +69,17 @@ public class CharacterRenderingSystem extends RenderingSystem {
 
     public static class CharacterDrawer {
         private boolean shouldFlip;
-        private Batch batch;
-        private E player;
-        private Heading heading;
-        private Pos2D screenPos;
+        private final Batch batch;
+        private final E player;
+        private final Heading heading;
+        private final Pos2D screenPos;
         private float headOffsetY;
 
         // body
         private float bodyPixelOffsetX;
         private float bodyPixelOffsetY;
-        private DescriptorHandler descriptorHandler;
-        private AnimationHandler animationHandler;
+        private final DescriptorHandler descriptorHandler;
+        private final AnimationHandler animationHandler;
         private TextureRegion bodyRegion;
         private BundledAnimation bodyAnimation;
         private float idle;
@@ -176,8 +176,8 @@ public class CharacterRenderingSystem extends RenderingSystem {
         }
 
         private float getMovementOffsetY() {
-            BundledAnimation bodyAnimation = this.bodyAnimation;
-            return getMovementOffset(bodyAnimation);
+            BundledAnimation bodyAnimationOffsetY = this.bodyAnimation;
+            return getMovementOffset(bodyAnimationOffsetY);
         }
 
         void drawHelmet() {
