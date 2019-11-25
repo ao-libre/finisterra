@@ -221,12 +221,18 @@ public class RangedCombatSystem extends AbstractCombatSystem {
 
     private Optional< ArrowObj> getarrow(E entity) {
         Inventory.Item[] items = entity.getInventory ().items;
-        ArrowObj arrowObj = (ArrowObj) objectManager.getObject ( 860 ).get ();
+        // el objeto 860 corresponde a la Flecha newbie la cual utilise en el calculo de la formula por si se desequipa antes de 
+        // seleccionar el objetivo no se si en ese caso daria como resultado nullpointer execpcion pero para prevenir ese problema
+        // inicialice la variable arrowObj con ella. 
+        int arrowObjNumber = 860; 
+        ArrowObj arrowObj = (ArrowObj) objectManager.getObject ( arrowObjNumber ).get ();      
         for (int i=0; i < items.length; i++ ){
             if (items[i] != null) {
                 if (items[i].equipped) {
                     Obj obj = objectManager.getObject ( items[i].objId ).get ( );
                     if (obj.getType ( ).equals ( Type.ARROW )) {
+                        //obtiene el valor que reemplaza a 860 por el de la flecha que tengamos equipado y es el que se utiliza en 
+                        //la formula si todo sale bien.
                         arrowObj = (ArrowObj) objectManager.getObject ( items[i].objId ).get ( );
                     }
                 }
