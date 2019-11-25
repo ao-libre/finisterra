@@ -26,7 +26,7 @@ public class CharClassConfiguration extends BaseConfiguration {
         DEF_MODIFIERS.add(new Pair<>(CharClass.ARCHER, new float[]{0.75f, 0.65f, 1.1f, 1.1f, 0.7f, 0.75f, 0.4f, 0.75f, 8.5f}));
     }
 
-    public ArrayList<CharType> charClasses;
+    private ArrayList<CharType> charClasses;
 
     public CharClassConfiguration() {
         super(PATH);
