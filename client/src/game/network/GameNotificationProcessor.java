@@ -6,6 +6,7 @@ import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
 import game.AOGame;
@@ -187,8 +188,12 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     @Override
     public void processNotification(SoundNotification soundNotification) {
-        int soundNumber = soundNotification.getSoundNumber();
-        soundsHandler.playSound(soundNumber);
+        int soundNumber = soundNotification.getSoundNumber ( );
+        if (soundNotification.getState ( ).equals ( SoundNotification.SoundState.STOPPED )) {
+            soundsHandler.stopSound ( soundNumber );
+        }else {
+            soundsHandler.playSound ( soundNumber );
+        }
     }
 
     @Override

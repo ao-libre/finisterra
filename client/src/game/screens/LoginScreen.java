@@ -1,13 +1,17 @@
 package game.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Timer;
 import game.AOGame;
 import game.ClientConfiguration;
 import game.handlers.AOAssetManager;
+import game.handlers.MusicHandler;
 import game.network.ClientResponseProcessor;
 import game.network.GameNotificationProcessor;
 import game.systems.network.ClientSystem;
@@ -30,6 +34,27 @@ public class LoginScreen extends AbstractScreen {
     public LoginScreen() {
         super();
         init();
+        // utilice bgmusic  para subir gradualmente el sonido.
+        bGMusic ();
+    }
+
+    void bGMusic() {
+        Music firstBGMusic = MusicHandler.FIRSTBGM;
+        firstBGMusic.setVolume ( 0 );
+        firstBGMusic.play ( );
+        firstBGMusic.setLooping ( true );
+        // incrementa el sonido gradualmente hasta llegar al 34%
+        float MUSIC_FADE_STEP = 0.01f;
+        Timer.schedule ( new Timer.Task ( ) {
+            @Override
+            public void run() {
+                if (firstBGMusic.getVolume ( ) < 0.34f)
+                    firstBGMusic.setVolume ( firstBGMusic.getVolume ( ) + MUSIC_FADE_STEP );
+                else {
+                    this.cancel ( );
+                }
+            }
+        }, 0, 0.6f );
     }
 
     @Override

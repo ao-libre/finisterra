@@ -25,6 +25,7 @@ import shared.network.combat.SpellCastRequest;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.network.sound.SoundNotification;
 import shared.objects.types.HelmetObj;
 import shared.objects.types.Obj;
 import shared.util.Messages;
@@ -136,6 +137,7 @@ public class MagicCombatSystem extends BaseSystem {
                     getWorldManager().entityDie(target);
                     notifyMagic(playerId, Messages.KILL, getName(target));
                     notifyMagic(target, Messages.KILLED, getName(playerId));
+                    getWorldManager ( ).notifyUpdate ( playerId, new SoundNotification ( 126 ) );
                 }
             }
             if (spell.isImmobilize()) {
@@ -185,6 +187,8 @@ public class MagicCombatSystem extends BaseSystem {
             Dialog magicWords = new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS);
 
             Log.info("Magic attack " + spell.getMagicWords());
+            int spellSound = spell.getWav ();
+            getWorldManager().notifyUpdate(playerId, new SoundNotification (spellSound));
             getWorldManager().sendEntityUpdate(target, victimUpdateBuilder.build());
             getWorldManager().notifyUpdate(target, victimUpdateToAllBuilder.build());
             getWorldManager().notifyUpdate(playerId, playerUpdateBuilder
