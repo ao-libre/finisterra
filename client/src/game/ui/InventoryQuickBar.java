@@ -22,7 +22,6 @@ public class InventoryQuickBar extends Window {
     private static final int SIZE = COLUMNS * ROWS;
     private final ClickListener mouseListener;
 
-
     private ArrayList<Slot> slotsq;
     private Optional<Slot> selected = Optional.empty();
     private ArrayList<Integer> gBases;
@@ -59,11 +58,10 @@ public class InventoryQuickBar extends Window {
                 selected.ifPresent ( slot -> {
                     slot.setSelected ( true );
                     slot.getItem ( ).ifPresent ( item -> {
-                            GameScreen.getClient ( ).sendToAll ( new ItemActionRequest (gBases.get (slotsq.indexOf (slot))));
+                        GameScreen.getClient ( ).sendToAll ( new ItemActionRequest (gBases.get (slotsq.indexOf (slot))));
+                        GameScreen.world.getSystem( GUI.class ).getInventory().isBowORArrow( slot );
                     } );
                 } );
-
-
             }
 
             private Optional< Slot > getSlot(float x, float y) {

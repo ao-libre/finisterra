@@ -54,6 +54,7 @@ public class SpellView extends Table {
     private void changeCursor() {
         WorldUtils.getWorld().ifPresent(world -> {
             world.getSystem(GUI.class).getConsole().addInfo("Haz click para lanzar el hechizo");
+            world.getSystem(GUI.class).getInventory().cleanShoot();
         });
         Cursors.setCursor("select");
     }
