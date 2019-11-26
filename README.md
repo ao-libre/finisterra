@@ -5,6 +5,15 @@ MMORPG Java Open Source based on Argentum Online. Written in Java, using Artemis
 ## Collaborators
 ![game preview image](https://cdn.discordapp.com/attachments/580487031197794313/636899837354442755/readme-repo.png)
 
+### How to start the project:
+
+```
+git clone https://github.com/ao-libre/finisterra.git
+cd finisterra
+./gradlew desktop:run -x :shared:fluid  
+```
+To know more in details about the different modules of the project please refer to the `Docu-Wiki`
+
 ## Documentación
 - [Docu-Wiki](https://docu-amigable-finisterra.000webhostapp.com/)
 - [Source Code](https://github.com/ao-libre/finisterra/tree/master/docs)
