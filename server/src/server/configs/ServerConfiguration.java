@@ -1,67 +1,52 @@
-package server;
+package server.configs;
 
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Json;
-import com.esotericsoftware.minlog.Log;
-import shared.util.AOJson;
+public class ServerConfiguration extends BaseConfiguration {
 
-public class ServerConfiguration {
+    // Default values
+    public static final String PATH = "Server.json";
+
+    private static final int TCP_PORT = 9000;
+    private static final int UDP_PORT = 9001;
+    private static final String API_URL = "https://localhost";
+    private static final int API_PORT = 1337;
+    private static final int ROOM_LIMIT = 1;
 
     private Network network;
     private Rooms rooms;
 
-    static ServerConfiguration loadConfig(String path) {
-        Json configObject = new AOJson();
-        try {
-            // DO NOT USE 'Gdx.Files', because 'Gdx.Files' in the launcher is always NULL!
-            return configObject.fromJson(ServerConfiguration.class, new FileHandle(path));
-
-        } catch (Exception ex) {
-            Log.debug("Server configuration file not found!");
-        }
-
-        return null;
+    public ServerConfiguration() {
+        super(PATH);
     }
 
-    // useful for client json sample creation
-    static ServerConfiguration createConfig() {
-        // Default values will not be written down
-        ServerConfiguration configOutput = new ServerConfiguration();
-
+    @Override
+    public void loadDefaultValues() {
         // Default values of `Network`
-        configOutput.setNetwork(new Network());
-        configOutput.getNetwork().setUseLocalHost(true);
+        setNetwork(new Network());
+        getNetwork().setUseLocalHost(true);
 
         // Default values of `Network.Ports`
-        Network.Ports defNetwork = new Network.Ports();
-        defNetwork.setTcpPort(9000);
-        defNetwork.setUdpPort(9001);
-        configOutput.getNetwork().setPorts(defNetwork);
+        ServerConfiguration.Network.Ports defNetwork = new Network.Ports();
+        defNetwork.setTcpPort(TCP_PORT);
+        defNetwork.setUdpPort(UDP_PORT);
+
+        network.setPorts(defNetwork);
 
         // Default values of `Network.Api`
-        Network.Api defApi = new Network.Api();
-        defApi.setapiURL("https://localhost");
-        defApi.setApiPort(1337);
-        configOutput.getNetwork().setApi(defApi);
+        ServerConfiguration.Network.Api defApi = new ServerConfiguration.Network.Api();
+        defApi.setapiURL(API_URL);
+        defApi.setApiPort(API_PORT);
+        network.setApi(defApi);
 
         // Default values for room creation
-        configOutput.setRooms(new Rooms());
-        configOutput.getRooms().setLimitCreation(1);
-
-        return configOutput;
+        setRooms(new ServerConfiguration.Rooms());
+        getRooms().setLimitCreation(ROOM_LIMIT);
     }
-
-    void save() {
-        Json json = new AOJson();
-        json.toJson(this, new FileHandle("Server.json"));
-    }
-
 
     public Network getNetwork() {
         return network;
     }
 
-    public void setNetwork(Network network) {
+    private void setNetwork(Network network) {
         this.network = network;
     }
 
@@ -69,11 +54,12 @@ public class ServerConfiguration {
         return this.rooms;
     }
 
-    public void setRooms(Rooms rooms) {
+    private void setRooms(Rooms rooms) {
         this.rooms = rooms;
     }
 
     public static class Network {
+
         private boolean useLocalHost;
         private Ports ports;
         private Api api;
@@ -90,7 +76,7 @@ public class ServerConfiguration {
             return ports;
         }
 
-        void setPorts(Ports ports) {
+        private void setPorts(Ports ports) {
             this.ports = ports;
         }
 
@@ -98,11 +84,12 @@ public class ServerConfiguration {
             return api;
         }
 
-        void setApi(Api api) {
+        private void setApi(Api api) {
             this.api = api;
         }
 
         public static class Ports {
+
             private int tcpPort;
             private int udpPort;
 
@@ -124,6 +111,7 @@ public class ServerConfiguration {
         }
 
         public static class Api {
+
             private String apiURL;
             private int apiPort;
 
@@ -146,6 +134,7 @@ public class ServerConfiguration {
     }
 
     public static class Rooms {
+
         private int limitCreation;
         private int maxPlayers;
 
