@@ -7,6 +7,10 @@ MMORPG Java Open Source based on Argentum Online. Written in Java, using Artemis
 
 ### How to start the project:
 
+To use the project the requirement is OpenJDK 12.0.2 (build 12.0.2+10)
+
+Download: https://jdk.java.net/archive/
+
 ```
 git clone https://github.com/ao-libre/finisterra.git
 cd finisterra
