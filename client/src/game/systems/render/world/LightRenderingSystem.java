@@ -96,7 +96,7 @@ public class LightRenderingSystem extends RenderingSystem {
     }
 
     public void resize(float width, float height) {
-        // Fakedlight system (alpha blending)
+        // Faked light system (alpha blending)
         // if lightBuffer was created before, dispose, we recreate a new one
         if (lightBuffer != null)
             lightBuffer.dispose();

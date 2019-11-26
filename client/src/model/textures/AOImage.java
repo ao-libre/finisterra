@@ -72,6 +72,7 @@ public class AOImage implements ID {
         this.height = height;
     }
 
+    @Override
     public int getId() {
         return id;
     }

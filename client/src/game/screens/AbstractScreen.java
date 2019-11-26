@@ -13,8 +13,8 @@ import game.utils.Skins;
 
 public abstract class AbstractScreen extends ScreenAdapter {
     private static final Skin SKIN = Skins.COMODORE_SKIN;
-    private static Texture backgroundTexture = new Texture(Gdx.files.internal(Resources.GAME_IMAGES_PATH + "background.jpg"));
-    private static final SpriteDrawable background = new SpriteDrawable(new Sprite(backgroundTexture));
+    private static final Texture BACKGROUND_TEXTURE = new Texture(Gdx.files.internal(Resources.GAME_IMAGES_PATH + "background.jpg"));
+    private static final SpriteDrawable BACKGROUND = new SpriteDrawable(new Sprite(BACKGROUND_TEXTURE));
     private final Stage stage;
     private Table mainTable;
 
@@ -57,7 +57,7 @@ public abstract class AbstractScreen extends ScreenAdapter {
     private void createUI() {
         mainTable = new Table(Skins.COMODORE_SKIN);
         mainTable.setFillParent(true);
-        mainTable.setBackground(background);
+        mainTable.setBackground(BACKGROUND);
         createContent();
         getStage().addActor(getMainTable());
     }

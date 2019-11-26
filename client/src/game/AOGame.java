@@ -25,8 +25,8 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
     public static final float GAME_SCREEN_ZOOM = 1f;
     public static final float GAME_SCREEN_MAX_ZOOM = 1.3f;
 
-    private AOAssetManager assetManager;
-    private ClientConfiguration clientConfiguration;
+    private final AOAssetManager assetManager;
+    private final ClientConfiguration clientConfiguration;
 
     public AOGame(ClientConfiguration clientConfiguration) {
         this.clientConfiguration = clientConfiguration;

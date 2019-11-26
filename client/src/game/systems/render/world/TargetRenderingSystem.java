@@ -21,7 +21,7 @@ import java.util.Optional;
 @Wire(injectInherited = true)
 public class TargetRenderingSystem extends RenderingSystem {
 
-    private static Texture target = new Texture(Gdx.files.local("data/ui/images/target.png"));
+    private static final Texture TARGET = new Texture(Gdx.files.local("data/ui/images/target.png"));
     private GUI gui;
 
     public TargetRenderingSystem(SpriteBatch batch) {
@@ -36,7 +36,7 @@ public class TargetRenderingSystem extends RenderingSystem {
                 Color prevColor = new Color(getBatch().getColor());
                 getBatch().setColor(Colors.rgba(255, 255, 255, 0.5f));
                 Pos2D mousePos = Util.toScreen(worldPos.get());
-                getBatch().draw(target, mousePos.x, mousePos.y, Tile.TILE_PIXEL_WIDTH, Tile.TILE_PIXEL_HEIGHT);
+                getBatch().draw(TARGET, mousePos.x, mousePos.y, Tile.TILE_PIXEL_WIDTH, Tile.TILE_PIXEL_HEIGHT);
                 getBatch().setColor(prevColor);
             }
         }

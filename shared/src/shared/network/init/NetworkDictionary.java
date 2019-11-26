@@ -178,6 +178,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Reader.class,
                 FluidIteratingSystem.class,
                 SoundNotification.class,
+                SoundNotification.SoundState.class,
 
                 ObjectLoader.class,
                 SpellLoader.class,

@@ -1,5 +1,6 @@
 package game.screens;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import game.AOGame;
 import game.handlers.AOAssetManager;
+import game.handlers.MusicHandler;
 import game.systems.network.ClientSystem;
 import shared.interfaces.Hero;
 import shared.model.lobby.Player;
@@ -20,13 +22,14 @@ import shared.network.lobby.player.ChangeTeamRequest;
 import shared.util.Messages;
 
 public class RoomScreen extends AbstractScreen {
-    private ClientSystem clientSystem;
-    private Room room;
-    private Player me;
+    private final ClientSystem clientSystem;
+    private final Room room;
+    private final Player me;
     private List<Player> criminalList;
     private List<Player> armyList;
     private TextButton start;
     private SelectBox<Hero> heroSelect;
+    private LoginScreen loginScreen;
 
     public RoomScreen(ClientSystem clientSystem, Room room, Player me) {
         super();
@@ -41,7 +44,7 @@ public class RoomScreen extends AbstractScreen {
     public Player getPlayer() {
         return me;
     }
-
+    
     public void updatePlayers() {
         criminalList.setItems(room.getPlayers().stream().filter(player -> player.getTeam().equals(Team.CAOS_ARMY)).toArray(Player[]::new));
         armyList.setItems(room.getPlayers().stream().filter(player -> player.getTeam().equals(Team.REAL_ARMY)).toArray(Player[]::new));
@@ -142,6 +145,7 @@ public class RoomScreen extends AbstractScreen {
     @Override
     public void dispose() {
         clientSystem.stop();
+        MusicHandler.FIRSTBGM.stop ();
         super.dispose();
     }
 }

@@ -19,8 +19,8 @@ public abstract class RenderingSystem extends OrderedEntityProcessingSystem {
 
     public static final float SCALE = 2;
 
-    private SpriteBatch batch;
-    private CameraKind kind;
+    private final SpriteBatch batch;
+    private final CameraKind kind;
     private CameraSystem cameraSystem;
 
     public RenderingSystem(Aspect.Builder aspect, SpriteBatch batch, CameraKind kind) {

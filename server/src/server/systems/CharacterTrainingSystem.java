@@ -17,6 +17,7 @@ import shared.model.npcs.NPC;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.network.sound.SoundNotification;
 import shared.util.Messages;
 import shared.util.Pair;
 
@@ -98,6 +99,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
     }
 
     private void levelUp(int userId) {
+        world.getSystem(WorldManager.class).notifyUpdate ( userId, new SoundNotification ( 3 ) );
         // set new experience
         Level level = E(userId).getLevel();
         level.exp -= level.expToNextLevel;

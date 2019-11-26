@@ -13,7 +13,6 @@ import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
 import game.handlers.ParticlesHandler;
 import game.managers.WorldManager;
-import game.systems.camera.CameraSystem;
 import graphics.Effect;
 import model.descriptors.BodyDescriptor;
 import model.descriptors.FXDescriptor;
@@ -32,19 +31,20 @@ import static com.artemis.E.E;
 @Wire
 public class EffectRenderingSystem extends FluidIteratingSystem {
 
-    private CameraSystem cameraSystem;
     private WorldManager worldManager;
     private DescriptorHandler descriptorHandler;
     private AnimationHandler animationHandler;
 
     private int srcFunc;
     private int dstFunc;
-    private SpriteBatch batch;
-    private Map<Integer, BundledAnimation> fxs = new HashMap<>();
-    private Map<Integer, ParticleEffect> particleEffects = new HashMap<>();
+    private final SpriteBatch batch;
+    private final Map<Integer, BundledAnimation> fxs;
+    private final Map<Integer, ParticleEffect> particleEffects;
 
     public EffectRenderingSystem(SpriteBatch batch) {
         super(Aspect.all(Effect.class));
+        this.particleEffects = new HashMap<>();
+        this.fxs = new HashMap<>();
         this.batch = batch;
     }
 

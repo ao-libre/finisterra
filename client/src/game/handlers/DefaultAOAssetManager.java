@@ -68,7 +68,6 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     private final String languagesFile;
     private final String[] languagesLocale;
-    private ClientConfiguration clientConfiguration;
     private Map<Integer, AOImage> images;
     private Map<Integer, AOAnimation> animations;
     private Map<Integer, ShieldDescriptor> shields;
@@ -79,7 +78,6 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     private Map<Integer, BodyDescriptor> bodies;
 
     public DefaultAOAssetManager(ClientConfiguration clientConfiguration) {
-        this.clientConfiguration = clientConfiguration;
         this.languagesFile = SharedResources.LANGUAGES_FOLDER + "messages";
         this.languagesLocale = clientConfiguration.getInitConfig().getLanguage().split("_");
         setLoader(Sequencer.class, new MidiLoader());
@@ -373,7 +371,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
 
     private void loadSounds() {
         Reflections reflections = new Reflections("", new ResourcesScanner());
-        Set<String> sounds = reflections.getResources(Pattern.compile(".*\\.wav"));
+        Set<String> sounds = reflections.getResources(Pattern.compile(".*\\.ogg"));
         sounds.forEach(sound -> load(sound, Sound.class));
     }
 }

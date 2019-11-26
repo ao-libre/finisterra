@@ -3,6 +3,7 @@ package game.handlers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.Timer;
+import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
@@ -17,6 +18,9 @@ public class MusicHandler extends PassiveSystem {
 
     private static float volume = 1.0f;
     private AOAssetManager assetManager;
+
+    public final static Music FIRSTBGM = Gdx.audio.newMusic ( Gdx.files.internal ( "data/music/101.mp3" ) );
+    public final static Music BACKGROUNDMUSIC = Gdx.audio.newMusic ( Gdx.files.internal ( "data/music/1.mp3" ) );
 
     public static void setVolume(float volume) {
         MusicHandler.volume = volume;
@@ -110,7 +114,7 @@ public class MusicHandler extends PassiveSystem {
 
     public void stopMIDI(int midiID) {
         Sequencer sequencer = assetManager.getMidi(midiID);
-        ;
+    
         if (sequencer == null) {
             Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
             return;

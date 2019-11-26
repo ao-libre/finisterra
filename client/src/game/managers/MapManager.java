@@ -29,7 +29,7 @@ public class MapManager extends BaseSystem {
         drawLayer(map, batch, 0, layer, false, false, false);
     }
 
-    public void drawLayer(Map map, SpriteBatch batch, float delta, int layer, boolean drawExit, boolean drawBlock, boolean flip) {
+    private void drawLayer(Map map, SpriteBatch batch, float delta, int layer, boolean drawExit, boolean drawBlock, boolean flip) {
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = map.getHeight() - 1; y >= 0; y--) {
                 Tile tile = map.getTile(x, y);
@@ -61,7 +61,7 @@ public class MapManager extends BaseSystem {
         drawLayer(map, batch, delta, layer, drawExit, drawBlock, true);
     }
 
-    public void doTileDrawFlipped(SpriteBatch batch, float delta, int x, int y, int graphic) {
+    private void doTileDrawFlipped(SpriteBatch batch, float delta, int x, int y, int graphic) {
         TextureRegion tileRegion = animationHandler.hasTexture(graphic) ?
                 getTextureRegion(animationHandler.getTexture(graphic)) :
                 getAnimation(delta, graphic);
@@ -95,7 +95,7 @@ public class MapManager extends BaseSystem {
         doTileDraw(batch, y, x, tileRegion);
     }
 
-    public void doTileDraw(SpriteBatch batch, int y, int x, TextureRegion tileRegion) {
+    private void doTileDraw(SpriteBatch batch, int y, int x, TextureRegion tileRegion) {
         if (tileRegion != null) {
             final float mapPosX = (x * Tile.TILE_PIXEL_WIDTH);
             final float mapPosY = (y * Tile.TILE_PIXEL_HEIGHT);

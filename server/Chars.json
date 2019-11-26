@@ -1,0 +1,158 @@
+{
+  "charClasses":  [
+    {
+      "name": "ASSASSIN",
+      "modifier": {
+        "weapon": 0.9,
+        "weaponDamage": 0.9,
+        "projectile":  0.75,
+        "projectileDamage": 0.8,
+        "wrestling": 0.9,
+        "wrestlingDamage": 0.9,
+        "evasion": 1.1,
+        "shield": 0.8,
+        "health": 8.5
+      }
+    },
+    {
+      "name": "ROGUE",
+      "modifier": {
+        "weapon": 0.85,
+        "weaponDamage": 0.77,
+        "projectile":  0.8,
+        "projectileDamage": 0.7,
+        "wrestling": 0.95,
+        "wrestlingDamage": 1.05,
+        "evasion": 0.7,
+        "shield": 2,
+        "health": 9.5
+      }
+    },
+    {
+      "name": "BARDIC",
+      "modifier": {
+        "weapon": 0.7,
+        "weaponDamage": 0.7,
+        "projectile":  0.7,
+        "projectileDamage": 0.7,
+        "wrestling": 0.4,
+        "wrestlingDamage": 0.4,
+        "evasion": 1.075,
+        "shield": 0.8,
+        "health": 8.5
+      }
+    },
+    {
+      "name": "CLERIC",
+      "modifier": {
+        "weapon": 0.85,
+        "weaponDamage": 0.8,
+        "projectile":  0.7,
+        "projectileDamage": 0.7,
+        "wrestling": 0.4,
+        "wrestlingDamage": 0.4,
+        "evasion": 0.8,
+        "shield": 0.85,
+        "health": 35.6
+      }
+    },
+    {
+      "name": "DRUID",
+      "modifier": {
+        "weapon": 0.65,
+        "weaponDamage": 0.7,
+        "projectile":  0.75,
+        "projectileDamage": 0.75,
+        "wrestling": 0.4,
+        "wrestlingDamage": 0.4,
+        "evasion": 0.75,
+        "shield": 0,
+        "health": 8.5
+      }
+    },
+    {
+      "name": "WARRIOR",
+      "modifier": {
+        "weapon": 1.025,
+        "weaponDamage": 1,
+        "projectile":  1,
+        "projectileDamage": 1.1,
+        "wrestling": 1,
+        "wrestlingDamage": 0.9,
+        "evasion": 1,
+        "shield": 1,
+        "health": 10
+      }
+    },
+    {
+      "name": "THIEF",
+      "modifier": {
+        "weapon": 0.9,
+        "weaponDamage": 0.8,
+        "projectile":  1,
+        "projectileDamage": 0.95,
+        "wrestling": 1,
+        "wrestlingDamage": 1.075,
+        "evasion": 1,
+        "shield": 1.1,
+        "health": 10
+      }
+    },
+    {
+      "name": "MAGICIAN",
+      "modifier": {
+        "weapon": 0.5,
+        "weaponDamage": 0.7,
+        "projectile":  0.5,
+        "projectileDamage": 0.5,
+        "wrestling": 0.3,
+        "wrestlingDamage": 0.4,
+        "evasion": 0.4,
+        "shield": 0,
+        "health": 7.5
+      }
+    },
+    {
+      "name": "PALADIN",
+      "modifier": {
+        "weapon": 0.95,
+        "weaponDamage": 0.925,
+        "projectile":  0.75,
+        "projectileDamage": 0.8,
+        "wrestling": 0.95,
+        "wrestlingDamage": 0.9,
+        "evasion": 0.9,
+        "shield": 1,
+        "health": 9.5
+      }
+    },
+    {
+      "name": "PIRATE",
+      "modifier": {
+        "weapon": 1,
+        "weaponDamage": 1.1,
+        "projectile":  0.8,
+        "projectileDamage": 1.1,
+        "wrestling": 0.95,
+        "wrestlingDamage": 0.95,
+        "evasion": 0.8,
+        "shield": 0.86,
+        "health": 11
+      }
+    },
+    {
+      "name": "ARCHER",
+      "modifier": {
+        "weapon": 0.75,
+        "weaponDamage": 0.65,
+        "projectile":  1.1,
+        "projectileDamage": 1.1,
+        "wrestling": 0.7,
+        "wrestlingDamage": 0.75,
+        "evasion": 0.4,
+        "shield": 0.75,
+        "health": 8.5
+      }
+    }
+  ]
+}

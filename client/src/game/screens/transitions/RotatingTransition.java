@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Interpolation;
 
 public class RotatingTransition implements ScreenTransition {
-    private Interpolation interpolation;
-    private float angle;
-    private RotatingTransition.TransitionScaling scaling;
+    private final Interpolation interpolation;
+    private final float angle;
+    private final RotatingTransition.TransitionScaling scaling;
 
     public RotatingTransition(Interpolation interpolation, float angle, RotatingTransition.TransitionScaling scaling) {
         this.interpolation = interpolation;
@@ -20,6 +20,7 @@ public class RotatingTransition implements ScreenTransition {
         this.scaling = scaling;
     }
 
+    @Override
     public void render(Batch batch, Texture currentScreenTexture, Texture nextScreenTexture, float percent) {
         float width = (float) currentScreenTexture.getWidth();
         float height = (float) currentScreenTexture.getHeight();

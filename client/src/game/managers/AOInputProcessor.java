@@ -3,11 +3,13 @@ package game.managers;
 import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.handlers.AOAssetManager;
 import game.handlers.ObjectHandler;
+import game.handlers.MusicHandler;
 import game.screens.GameScreen;
 import game.systems.camera.CameraSystem;
 import game.systems.network.TimeSync;
@@ -36,8 +38,8 @@ public class AOInputProcessor extends Stage {
 
     public static boolean alternativeKeys = false;
 
-    private GUI gui;
-    private AOAssetManager assetManager;
+    private final GUI gui;
+    private final AOAssetManager assetManager;
 
     public AOInputProcessor(GUI gui) {
         this.gui = gui;
@@ -68,7 +70,6 @@ public class AOInputProcessor extends Stage {
                 WorldUtils.getWorld().ifPresent( world -> WorldUtils.mouseToWorldPos().ifPresent( worldPos -> {
                     final Optional< Spell > toCast = gui.getSpellView().toCast;
                     final boolean toShoot = gui.getInventory().toShoot;
-
                     if(toCast.isPresent() || toShoot) {
                         E player = E.E( GameScreen.getPlayer() );
                         if(!player.hasAttack() || player.getAttack().interval - world.getDelta() < 0) {
@@ -196,22 +197,31 @@ public class AOInputProcessor extends Stage {
                 gui.toggleFullscreen();
                 break;
             case Input.Keys.NUM_1:
-                useq(0);
+                useActionBarSlot(0);
                 break;
             case Input.Keys.NUM_2:
-                useq(1);
+                useActionBarSlot(1);
                 break;
             case Input.Keys.NUM_3:
-                useq(2);
+                useActionBarSlot(2);
                 break;
             case Input.Keys.NUM_4:
-                useq(3);
+                useActionBarSlot(3);
                 break;
             case Input.Keys.NUM_5:
-                useq(4);
+                useActionBarSlot(4);
                 break;
             case Input.Keys.NUM_6:
-                useq(5);
+                useActionBarSlot(5);
+                break;
+            case Input.Keys.NUM_7:
+                musicControl (7);
+                break;
+            case Input.Keys.NUM_8:
+                musicControl (8);
+                break;
+            case Input.Keys.NUM_9:
+                musicControl (9);
                 break;
         }
     }
@@ -259,27 +269,59 @@ public class AOInputProcessor extends Stage {
                 gui.toggleFullscreen();
                 break;
             case Input.Keys.NUM_1:
-                useq(0);
+                useActionBarSlot(0);
                 break;
             case Input.Keys.NUM_2:
-                useq(1);
+                useActionBarSlot(1);
                 break;
             case Input.Keys.NUM_3:
-                useq(2);
+                useActionBarSlot(2);
                 break;
             case Input.Keys.NUM_4:
-                useq(3);
+                useActionBarSlot(3);
                 break;
             case Input.Keys.NUM_5:
-                useq(4);
+                useActionBarSlot(4);
                 break;
             case Input.Keys.NUM_6:
-                useq(5);
+                useActionBarSlot(5);
+                break;
+            case Input.Keys.NUM_7:
+                musicControl (7);//play / stop
+                break;
+            case Input.Keys.NUM_8:
+                musicControl (8);//bajar volumen
+                break;
+            case Input.Keys.NUM_9:
+                musicControl (9);//subir volumen
+                break;
+
+        }
+    }
+
+    private void musicControl(int number){
+        Music backGroundMusic = MusicHandler.BACKGROUNDMUSIC;
+        float volum;
+        switch (number) {
+            case 7:
+                if (!backGroundMusic.isPlaying ( )) {
+                    backGroundMusic.play ( );
+                } else {
+                    backGroundMusic.stop ( );
+                }
+                break;
+            case 8:
+                volum = backGroundMusic.getVolume ( ) - 0.01f;
+                backGroundMusic.setVolume ( volum );
+                break;
+            case 9:
+                volum = backGroundMusic.getVolume ( ) + 0.01f;
+                backGroundMusic.setVolume ( volum );
                 break;
         }
     }
 
-    private void useq(int x) {
+    private void useActionBarSlot(int x) {
         int base;
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT )) {
             if (gui.getActionBar ().getState().equals("INVENTORY")) {
@@ -295,6 +337,8 @@ public class AOInputProcessor extends Stage {
             }
         } else {
             GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getInventoryQuickBar ().getGBases(x)));
+            gui.getInventory().cleanShoot();
+            Cursors.setCursor ( "hand" );
         }
     }
 
@@ -330,6 +374,7 @@ public class AOInputProcessor extends Stage {
     // drop selected item (count 1 for the time being)
     private void dropItem() {
         gui.getInventory().getSelected().ifPresent(selected -> {
+            gui.getInventory().isBowORArrow( gui.getInventory().getSelected().get() );
             int player = GameScreen.getPlayer();
             GameScreen
                     .getClient()

@@ -26,7 +26,7 @@ import static com.artemis.E.E;
 
 public class SpellView extends Table {
 
-    public static final int MAX_SPELLS = 6;
+    private static final int MAX_SPELLS = 6;
     public Optional<Spell> toCast = Optional.empty();
     public Optional<Spell> selected = Optional.empty();
     private ImageButton castButton;
@@ -54,6 +54,7 @@ public class SpellView extends Table {
     private void changeCursor() {
         WorldUtils.getWorld().ifPresent(world -> {
             world.getSystem(GUI.class).getConsole().addInfo("Haz click para lanzar el hechizo");
+            world.getSystem(GUI.class).getInventory().cleanShoot();
         });
         Cursors.setCursor("select");
     }

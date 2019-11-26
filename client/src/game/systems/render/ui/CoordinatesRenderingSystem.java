@@ -22,7 +22,7 @@ public class CoordinatesRenderingSystem extends OrderedEntityProcessingSystem {
     public static final float ALPHA = 0.5f;
     private static final int BORDER = 6;
     private final Label coordLabel;
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
     private CameraSystem cameraSystem;
 
     public CoordinatesRenderingSystem(SpriteBatch batch) {

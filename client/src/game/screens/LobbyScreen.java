@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
 public class LobbyScreen extends AbstractScreen {
 
     private final Player player;
-    private ClientSystem clientSystem;
-    private Set<Room> rooms;
+    private final ClientSystem clientSystem;
+    private final Set<Room> rooms;
     private List<Room> roomList;
 
     public LobbyScreen(ClientSystem clientSystem, Player player, Room[] rooms) {

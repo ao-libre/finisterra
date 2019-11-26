@@ -27,12 +27,13 @@ public class RadialSprite implements Drawable {
     private final static int BOTTOMRIGHT3 = 45;
     private final static int BOTTOMLEFT3 = 50;
     private final static int TOPLEFT3 = 55;
+    private final static float ANGLE_OFFSET = 270f;
     private final float[] verts = new float[60];
+    private final float du, dv;
     private Texture texture;
-    private float x, y, angle, width, height, u1, u2, v1, v2, du, dv;
+    private float x, y, angle, width, height, u1, u2, v1, v2;
     private boolean dirty = true;
     private int draw = 0;
-    private float angleOffset = 270f;
     private float originX, originY;
     private float scaleX = 1f, scaleY = 1f;
     private float leftWidth = 0;
@@ -64,13 +65,13 @@ public class RadialSprite implements Drawable {
         setColor(color.toFloatBits());
     }
 
-    private final void vert(final float[] verts, final int offset, final float x, final float y) {
+    private void vert(final float[] verts, final int offset, final float x, final float y) {
         final float u = u1 + du * ((x - this.x) / this.width);
         final float v = v1 + dv * (1f - ((y - this.y) / this.height));
         vert(verts, offset, x, y, u, v);
     }
 
-    private final void vert(final float[] verts, final int offset, final float x, final float y, final float u, final float v) {
+    private void vert(final float[] verts, final int offset, final float x, final float y, final float u, final float v) {
         verts[offset] = this.x + originX + (x - this.x - originX) * scaleX;
         verts[offset + 1] = this.y + originY + (y - this.y - originY) * scaleY;
         verts[offset + 3] = u;
@@ -96,8 +97,8 @@ public class RadialSprite implements Drawable {
         final float y2 = y + height;
         final float xc = x + centerX;
         final float yc = y + centerY;
-        final float ax = MathUtils.cosDeg(angle + angleOffset); // positive right, negative left
-        final float ay = MathUtils.sinDeg(angle + angleOffset); // positive top, negative bottom
+        final float ax = MathUtils.cosDeg(angle + ANGLE_OFFSET); // positive right, negative left
+        final float ay = MathUtils.sinDeg(angle + ANGLE_OFFSET); // positive top, negative bottom
         final float txa = ax != 0f ? Math.abs(centerX / ax) : 99999999f; // intersection on left or right "wall"
         final float tya = ay != 0f ? Math.abs(centerY / ay) : 99999999f; // intersection on top or bottom "wall"
         final float t = Math.min(txa, tya);

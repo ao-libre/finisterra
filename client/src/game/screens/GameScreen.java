@@ -57,11 +57,11 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public static World world;
     public static int player = -1;
     private final ClientConfiguration clientConfiguration;
-    private FPSLogger logger;
-    private SpriteBatch spriteBatch;
+    private final FPSLogger logger;
+    private final SpriteBatch spriteBatch;
     private WorldConfigurationBuilder worldConfigBuilder;
-    private AOAssetManager assetManager;
-    private Music backGroundMusic;
+    private final AOAssetManager assetManager;
+    private Music backgroundMusic = MusicHandler.BACKGROUNDMUSIC;
 
     public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
         this.clientConfiguration = clientConfiguration;
@@ -165,10 +165,8 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .pos2D();
 
         // for testing
-        backGroundMusic = assetManager.getMusic ( 101 );
-        backGroundMusic.setVolume ( 0.25f );
-        backGroundMusic.play ();
-        backGroundMusic.setLooping ( true );
+        backgroundMusic.setVolume ( 0.20f );
+        backgroundMusic.play ();
     }
 
     protected void update(float deltaTime) {
@@ -208,8 +206,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public void dispose() {
         world.getSystem(ClientSystem.class).stop();
         world.getSystem(GUI.class).dispose();
-        backGroundMusic.setLooping ( false );
-        backGroundMusic.stop ();
+        backgroundMusic.stop ();
     }
 
 }
