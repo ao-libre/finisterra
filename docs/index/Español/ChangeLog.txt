@@ -61,7 +61,7 @@ Release 0.1.12
 	- Arrastrando y soltando indexamos cualquier archivo seteado en columnas y filas simetricas.
 	- Arrastrando y soltando creamos un tile set
 
-- Nueva barra circular de experiencia. (#206 )
+- Nueva barra circular de experiencia. (#206 ) 
 - Limitada creación de salas mediante Server.json. (#219 )
 - Limite de personajes conectados en una sala mediante Server.json. (#223 )
 - Fix - Elección aleatoria de clase al crear un personaje. (#224 )
@@ -71,7 +71,17 @@ Release 0.1.12
 - 
 -
 -
-25/11/2019 [client] Aplicamos buenas prácticas de programaciòn (#244)
+25/11/2019 [client] Aplicamos buenas prácticas de programaciòn (#244) @jopiortiz
 * Mejoras de sintaxis
 * Mejoras al rango de visibilidad de variales (scope)
 * Refactor useQ por useActionBarSlot
+
+25/11/2019 [ranged-combat-equation] Cambiamos la formula de daño a distancia (#242) @bestiardo
+* Cambiamos la forma de calcular el daño a distancia 
+* Actualizamos AbstractCombatSystem.java 
+* Agregamos el daño de las flechas a la formula 
+* Agregamos comprobaciones antes de disparar("toShot" pierde estado) :
+	* al usar los numeros 1 al 6 de a quick bar.
+	* al usar  los objetos flechas o armas desde el inventario o la quickbar.
+	* al prepararse para tirar un hechizo.
+	* al "dropear" un arma o flecha desde el inventario.

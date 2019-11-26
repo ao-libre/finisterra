@@ -323,6 +323,8 @@ public class AOInputProcessor extends Stage {
             }
         } else {
             GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getInventoryQuickBar ().getGBases(x)));
+            gui.getInventory().cleanShoot();
+            Cursors.setCursor ( "hand" );
         }
     }
 
@@ -358,6 +360,7 @@ public class AOInputProcessor extends Stage {
     // drop selected item (count 1 for the time being)
     private void dropItem() {
         gui.getInventory().getSelected().ifPresent(selected -> {
+            gui.getInventory().isBowORArrow( gui.getInventory().getSelected().get() );
             int player = GameScreen.getPlayer();
             GameScreen
                     .getClient()

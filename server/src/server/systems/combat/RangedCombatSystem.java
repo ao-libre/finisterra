@@ -3,6 +3,7 @@ package server.systems.combat;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
+import entity.character.info.Inventory;
 import entity.character.status.Health;
 import entity.character.status.Stamina;
 import entity.world.CombatMessage;
@@ -101,36 +102,36 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     }
     @Override
     public boolean canAttack(int entityId, Optional<Integer> target) {
-        final E e = E(entityId);
-        if (e != null && e.hasStamina() && e.getStamina().min < e.getStamina().max * STAMINA_REQUIRED_PERCENT / 100) {
+        final E userEntity = E(entityId);
+        if (userEntity != null && userEntity.hasStamina() && userEntity.getStamina().min < userEntity.getStamina().max * STAMINA_REQUIRED_PERCENT / 100) {
             notifyCombat(entityId, Messages.NOT_ENOUGH_ENERGY);
             return false;
         }
-        if (e != null && e.hasHealth() && e.getHealth().min == 0) {
+        if (userEntity != null && userEntity.hasHealth() && userEntity.getHealth().min == 0) {
             notifyCombat(entityId, Messages.DEAD_CANT_ATTACK);
             return false;
         }
-        if (e.getName().text.equals ( getName ( target.get () ) )){
+        if (userEntity.getName().text.equals ( getName ( target.get () ) )){
             notifyCombat ( entityId, Messages.CANT_ATTACK_YOURSELF);
             return false;
         }
 
         if (target.isPresent()) {
             int targetId = target.get();
-            E t = E(targetId);
-            if (t == null) {
+            E targetEnity = E(targetId);
+            if (targetEnity == null) {
                 Log.info("Can't find target");
                 return false;
             }
 
-            if (t.hasHealth() && t.getHealth().min == 0) {
+            if (targetEnity.hasHealth() && targetEnity.getHealth().min == 0) {
                 // no podes atacar un muerto
                 notifyCombat(entityId, Messages.CANT_ATTACK_DEAD);
                 return false;
             }
 
             // es del otro team? ciuda - crimi
-            if (!e.isCriminal() && !t.isCriminal() /* TODO agregar seguro */) {
+            if (!userEntity.isCriminal() && !targetEnity.isCriminal() /* TODO agregar seguro */) {
                 // notifyCombat(userId, CANT_ATTACK_CITIZEN);
                 // TODO descomentar: return false;
             }
@@ -214,12 +215,14 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         int baseDamage = 0;
         if (entity.hasCharHero()) {
             CharClass clazz = CharClass.of(entity);
-            RangedCombatSystem.AttackKind kind = RangedCombatSystem.AttackKind.getKind(entity);
             ThreadLocalRandom random = ThreadLocalRandom.current();
-            float modifier = kind == RangedCombatSystem.AttackKind.PROJECTILE ?
-                    Modifiers.PROJECTILE_DAMAGE.of(clazz) :
-                    kind == RangedCombatSystem.AttackKind.WEAPON ? Modifiers.WEAPON_DAMAGE.of(clazz) : Modifiers.WRESTLING_DAMAGE.of(clazz);
+            float modifier = Modifiers.PROJECTILE_DAMAGE.of(clazz);
             Log.info("Modifier: " + modifier);
+            Optional<ArrowObj> arrow = getarrow(entity);
+            int arrowDamage =
+                        arrow.map( arrowObj -> random.nextInt( arrowObj.getMinHit(), arrowObj.getMaxHit() + 1 ) )
+                                .orElse( 0 );
+            Log.info("Arrow Damage: " + arrowDamage);
             int weaponDamage =
                     weapon.map(weaponObj -> random.nextInt(weaponObj.getMinHit(), weaponObj.getMaxHit() + 1))
                             .orElseGet(() -> random.nextInt(4, 9));
@@ -228,13 +231,31 @@ public class RangedCombatSystem extends AbstractCombatSystem {
             Log.info("Max Weapon Damage: " + maxWeaponDamage);
             int userDamage = random.nextInt(entity.getHit().getMin() - 10, entity.getHit().getMax() + 1);
             Log.info("User damage: " + userDamage);
-            baseDamage = (int) ((3 * weaponDamage + ((maxWeaponDamage) / 5) * Math.max(0, entity.strengthCurrentValue() - 15) + userDamage)
+            baseDamage = (int) ((3 * weaponDamage + arrowDamage
+                    + ((maxWeaponDamage) / 5) * Math.max(0, entity.strengthCurrentValue() - 15) + userDamage)
                     * modifier);
         } else if (entity.hasHit()) {
             baseDamage = ThreadLocalRandom.current().nextInt(Math.max(0, entity.getHit().getMin()), entity.getHit().getMax() + 1);
         }
         return baseDamage;
     }
+    //obtiene el tipo de flecha
+    private Optional< ArrowObj> getarrow(E entity) {
+        Inventory.Item[] items = entity.getInventory ().items;
+        Optional<ArrowObj> arrowObj = Optional.empty();
+        for (int i=0; i < items.length; i++ ){
+            if (items[i] != null) {
+                if (items[i].equipped) {
+                    Obj obj = objectManager.getObject ( items[i].objId ).get ( );
+                    if (obj.getType ( ).equals ( Type.ARROW )) {
+                        arrowObj = Optional.of( (ArrowObj) objectManager.getObject( items[i].objId ).get() );
+                    }
+                }
+            }
+        }
+        return arrowObj;
+    }
+
 
     void doHit(int userId, int entityId, int damage) {
         int result =
@@ -326,17 +347,6 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         world.delete(fxE);
     }
 
-    private enum AttackKind {
-        WEAPON,
-        PROJECTILE,
-        WRESTLING;
-
-        protected static RangedCombatSystem.AttackKind getKind(E entity) {
-            return entity.hasWeapon() ? WEAPON : WRESTLING;
-        }
-    }
-
-
     private enum AttackPlace {
         HEAD,
         BODY;
@@ -348,11 +358,6 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         public static RangedCombatSystem.AttackPlace getRandom() {
             return VALUES.get(RANDOM.nextInt(SIZE));
         }
-    }
-
-    private void notifyInfo(int userId, Messages messageId, String... messageParams) {
-        final ConsoleMessage combat = ConsoleMessage.info(messageId, messageParams);
-        getWorldManager().sendEntityUpdate(userId, combat);
     }
 
     private String getName(int userId) {
