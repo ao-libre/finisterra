@@ -74,7 +74,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         left.add(createButtons()).right().growX().row();
         List<T> list = createList();
         list.setTouchable(Touchable.enabled);
-        ScrollPane listScroll = new ScrollPane(list);
+        ScrollPane listScroll = new ScrollPane( list , SKIN );
         listScroll.setFlickScroll(false);
         listScroll.setFadeScrollBars(false);
         listScroll.setScrollbarsVisible(true);
