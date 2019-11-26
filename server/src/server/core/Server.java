@@ -92,7 +92,8 @@ public class Server {
                 .with(new FootprintSystem(FOOTPRINT_LIVE_TIME))
                 .with(new RandomMovementSystem())
                 .with(new RespawnSystem())
-                .with(new BuffSystem());
+                .with(new BuffSystem())
+                .with(new CommandSystem());
         world = new World(builder.build());
         System.out.println("WORLD CREATED");
     }

@@ -9,6 +9,7 @@ import entity.world.Dialog;
 import entity.world.Object;
 import movement.Destination;
 import position.WorldPos;
+import server.systems.CommandSystem;
 import server.systems.MeditateSystem;
 import server.systems.ServerSystem;
 import server.systems.combat.MagicCombatSystem;
@@ -63,7 +64,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     private SpellManager spellManager;
     private MeditateSystem meditateSystem;
     private RangedCombatSystem rangedCombatSystem;
-
+    private CommandSystem commandSystem;
 
     private List<WorldPos> getArea(WorldPos worldPos, int range /*impar*/) {
         List<WorldPos> positions = new ArrayList<>();
@@ -194,7 +195,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     }
 
     /**
-     * Notify near users that user talked
+     * If the talk request starts with '/' it means is a command
+     * If not, notify near users that user talked
      *
      * @param talkRequest  talk request with message
      * @param connectionId user connection id
@@ -202,7 +204,13 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(TalkRequest talkRequest, int connectionId) {
         int playerId = networkManager.getPlayerByConnection(connectionId);
-        worldManager.notifyUpdate(playerId, EntityUpdateBuilder.of(playerId).withComponents(new Dialog(talkRequest.getMessage())).build());
+
+        if (talkRequest.getMessage().startsWith("/")) {
+            commandSystem.handleCommand(talkRequest.getMessage(), playerId);
+        } else {
+            worldManager.notifyUpdate(playerId, EntityUpdateBuilder.of(playerId)
+                    .withComponents(new Dialog(talkRequest.getMessage())).build());
+        }
     }
 
     /**

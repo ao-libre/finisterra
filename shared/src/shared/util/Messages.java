@@ -73,5 +73,8 @@ public enum Messages {
     // SPELLS EXTENDED
     SPELLS_ADD,
     SPELLS_ALREDY_KNOWN,
-    SPELLS_FULL;
+    SPELLS_FULL,
+
+    // COMMAND USAGE
+    PLAYERS_ONLINE
 }
