@@ -92,3 +92,7 @@ Release 0.1.12
 * Agregamos campos de sonidos de npc al Desing Center NPCEditor
 * Agregamos los campos de sonidos "walk", "die", "get hit" y "attack" para los numeros de sonidos correspondientes a caminar, morir, recibir impacto y atacar.
 
+26/11/2019 Agregamos mensaje en consola al clickear un objeto (#249) @bestiardo
+* Envíamos a consola el nombre y la cantidad de los objetos en la posicion del piso donde se hace click.
+* Enviamos a consola si hay un npc o personaje. Sobre un objeto solo dice el nombre del npc o personaje.
+
