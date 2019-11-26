@@ -38,19 +38,17 @@ import static com.artemis.E.E;
 public class Inventory extends Window {
 
     public boolean toShoot = false;
-    static final int COLUMNS = 5;
+    private static final int COLUMNS = 5;
     private static final int ROWS = 4;
     private static final int SIZE = COLUMNS * ROWS;
     private final ClickListener mouseListener;
     private int base;
-    private GUI gui;
 
     private ArrayList<Slot> slots;
     private AOAssetManager assetManager;
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
-    private InventoryQuickBar inventoryQuickBar;
 
     Inventory() {
         super("", Skins.COMODORE_SKIN, "inventory");
@@ -91,6 +89,7 @@ public class Inventory extends Window {
                         if (getTapCount() >= 2) {
                             GameScreen.getClient().sendToAll(new ItemActionRequest(slots.indexOf(slot)));
                             addSpellSVE(slot);
+                            isBowORArrow( slot );
                         }
                     });
                 });
@@ -222,6 +221,16 @@ public class Inventory extends Window {
     public void cleanShoot() {
         toShoot = false;
     }
+    //chequea si es arco o flecha
+    public void isBowORArrow(Slot slot){
+        Optional<Obj> object = slotToObject( slot );
+        object.ifPresent(obj -> {
+            if (obj.getType().equals( Type.WEAPON ) || obj.getType().equals( Type.ARROW )){
+                cleanShoot();
+                Cursors.setCursor ( "hand" );
+            }
+        });
+    }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
@@ -252,12 +261,18 @@ public class Inventory extends Window {
         return base + slots.indexOf(dragging.get());
     }
 
-
-    private void addSpellSVE(Slot slot){ //funcion provisoria hasta q encuentre como hacerlo a desde el servidor
+    //recupera el objeto de un slot
+    private Optional<Obj> slotToObject(Slot slot){
         Optional< Item > item = slot.getItem ();
         int objID = item.map ( item1 -> item1.objId ).orElse ( -1 );
         ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
         Optional<Obj> object = objectHandler.getObject(objID);
+        return object;
+    }
+
+
+    private void addSpellSVE(Slot slot){ //funcion provisoria hasta q encuentre como hacerlo a desde el servidor
+        Optional<Obj> object = slotToObject( slot );
         object.ifPresent(obj -> {
             if (obj.getType().equals (Type.SPELL)) {
                 SpellObj spellObj = (SpellObj) obj;

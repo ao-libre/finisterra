@@ -13,6 +13,7 @@ public class AlphaFadingTransition implements ScreenTransition {
     public AlphaFadingTransition() {
     }
 
+    @Override
     public void render(Batch batch, Texture currentScreenTexture, Texture nextScreenTexture, float alpha) {
         alpha = Interpolation.fade.apply(alpha);
         batch.begin();

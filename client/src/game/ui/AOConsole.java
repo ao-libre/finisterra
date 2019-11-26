@@ -14,10 +14,11 @@ public class AOConsole extends Actor {
 
     private static final int LINE_HEIGHT = 20;
     private static final float MAX_MESSAGES = 9;
-    private LinkedList<Actor> messages = new LinkedList<>();
+    private final LinkedList<Actor> messages;
 
     AOConsole() {
         super();
+        this.messages = new LinkedList<>();
     }
 
     public void addInfo(String message) {

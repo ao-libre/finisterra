@@ -43,9 +43,9 @@ public class ImageLoader extends AsynchronousAssetLoader<ArrayList<AOImage>, Ima
 
     @Override
     public ArrayList<AOImage> loadSync(AssetManager manager, String fileName, FileHandle file, DescriptorParameter parameter) {
-        ArrayList<AOImage> descriptors = this.descriptors;
+        ArrayList<AOImage> syncronizedDescriptors = this.descriptors;
         this.descriptors = null;
-        return descriptors;
+        return syncronizedDescriptors;
     }
 
     @Override

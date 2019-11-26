@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 public class ObjectHandler extends PassiveSystem {
 
     private Map<Integer, Obj> objects = new HashMap<>();
-    private Map<Obj, AOTexture> textures = new HashMap<>();
-    private Map<Obj, AOTexture> flipped = new HashMap<>();
+    private final Map<Obj, AOTexture> textures = new HashMap<>();
+    private final Map<Obj, AOTexture> flipped = new HashMap<>();
     private AOAssetManager assetManager;
 
     @Override
@@ -40,6 +40,7 @@ public class ObjectHandler extends PassiveSystem {
             int grhIndex = presentObj.getGrhIndex();
             return new AOTexture(getAOImage(grhIndex), false);
         }).getTexture();
+        
     }
 
     private AOImage getAOImage(int grhIndex) {

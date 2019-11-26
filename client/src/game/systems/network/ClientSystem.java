@@ -40,9 +40,7 @@ public class ClientSystem extends MarshalSystem {
         super.disconnected(connectionId);
         AOGame game = (AOGame) Gdx.app.getApplicationListener();
         if (game.getScreen() instanceof GameScreen) {
-            Gdx.app.postRunnable(() -> {
-                game.toLogin();
-            });
+            Gdx.app.postRunnable(game::toLogin);
         }
     }
 

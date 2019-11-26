@@ -43,8 +43,7 @@ public class CombatRenderingSystem extends RenderingSystem {
                     LabelStyle labelStyle = new LabelStyle(Skins.COMODORE_SKIN.getFont("flipped-with-border"), getColor(message));
                     labelStyle.font.setUseIntegerPositions(false);
                     Label label = new Label(text, labelStyle);
-                    float originalScale = message.kind == CombatMessage.Kind.STAB ? 1.3f : 1f;
-                    message.originalScale = originalScale;
+                    message.originalScale = message.kind == CombatMessage.Kind.STAB ? 1.3f : 1f;
                     float prefWidth = label.getPrefWidth();
                     label.setWrap(true);
                     label.setAlignment(Align.center);

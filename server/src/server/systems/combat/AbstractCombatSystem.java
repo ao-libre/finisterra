@@ -8,6 +8,7 @@ import server.systems.manager.WorldManager;
 import shared.interfaces.CharClass;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.network.sound.SoundNotification;
 
 import java.util.Optional;
 
@@ -19,39 +20,46 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
 
     @Override
     public int shieldEvasionPower(int userId) {
-        E e = E(userId);
-        float shieldModifier = Modifiers.SHIELD.of(CharClass.of(e));
+        E userEntity = E(userId);
+        float shieldModifier = Modifiers.SHIELD.of(CharClass.of(userEntity));
         return (int) (100 * shieldModifier / 2);
     }
 
     @Override
     public int evasionPower(int userId) {
-        E e = E(userId);
+        E userEntity = E(userId);
         int power = 0;
-        if (e.hasCharHero()) {
-            float temp = 100 + 100 / 33 * e.getAgility().getBaseValue() * Modifiers.EVASION.of(CharClass.of(e));
-            power = (int) (temp + 2.5f * Math.max(e.getLevel().level - 12, 0));
-        } else if (e.hasEvasionPower()) {
-            power = e.getEvasionPower().value;
+        if (userEntity.hasCharHero()) {
+            float temp = 100 + 100 / 33 * userEntity.getAgility().getBaseValue() * Modifiers.EVASION.of(CharClass.of(userEntity));
+            power = (int) (temp + 2.5f * Math.max(userEntity.getLevel().level - 12, 0));
+        } else if (userEntity.hasEvasionPower()) {
+            power = userEntity.getEvasionPower().value;
         }
         return power;
     }
 
     @Override
     public int weaponAttackPower(int userId) {
-        E e = E(userId);
+        E userEntity = E(userId);
         int power = 0;
-        if (e.hasCharHero()) {
-            power = (int) (100 + 3 * e.getAgility().getBaseValue() * Modifiers.WEAPON.of(CharClass.of(e)));
-        } else if (e.hasAttackPower()) {
-            power = e.getAttackPower().value;
+        if (userEntity.hasCharHero()) {
+            power = (int) (100 + 3 * userEntity.getAgility().getBaseValue() * Modifiers.WEAPON.of(CharClass.of(userEntity)));
+        } else if (userEntity.hasAttackPower()) {
+            power = userEntity.getAttackPower().value;
         }
         return power;
     }
 
     @Override
     public int projectileAttackPower(int userId) {
-        return 0;
+        E userEntity = E(userId);
+        int power = 0;
+        if (userEntity.hasCharHero()) {
+            power = (int) (100 + 3 * userEntity.getAgility().getBaseValue() * Modifiers.PROJECTILE.of(CharClass.of(userEntity)));
+        } else if (userEntity.hasAttackPower()) {
+            power = userEntity.getAttackPower().value;
+        }
+        return power;
     }
 
     @Override
@@ -62,14 +70,15 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
     @Override
     public void entityAttack(int entityId, Optional<Integer> targetId) {
         Optional<Integer> realTargetId = targetId.isPresent() ? targetId : getTarget(entityId);
+        getWorldManager ( ).notifyUpdate ( entityId, new SoundNotification ( 2 ) );
         if (canAttack(entityId, realTargetId)) {
             hit(entityId, realTargetId.get());
         } else {
             failed(entityId, realTargetId);
         }
-        E e = E(entityId);
-        if (e.hasStamina()) {
-            Stamina stamina = e.getStamina();
+        E userEntity = E(entityId);
+        if (userEntity.hasStamina()) {
+            Stamina stamina = userEntity.getStamina();
             stamina.min = Math.max(0, stamina.min - stamina.max * STAMINA_REQUIRED_PERCENT / 100);
             EntityUpdate update = EntityUpdateBuilder.of(entityId).withComponents(stamina).build();
             getWorld().getSystem(WorldManager.class).sendEntityUpdate(entityId, update);
@@ -98,5 +107,8 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
 
     @Override
     protected void processSystem() {
+    }
+    private WorldManager getWorldManager() {
+        return world.getSystem(WorldManager.class);
     }
 }

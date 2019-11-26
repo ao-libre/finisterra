@@ -26,6 +26,7 @@ public class AOAnimation implements ID {
         this.speed = other.speed;
     }
 
+    @Override
     public int getId() {
         return id;
     }

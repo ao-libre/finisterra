@@ -17,7 +17,7 @@ public class AnimationLoader extends AsynchronousAssetLoader<ArrayList<AOAnimati
 
     public static final String ANIMATIONS = "animations";
 
-    private Json json = new AOJson();
+    private final Json json = new AOJson();
     private ArrayList<AOAnimation> descriptors;
 
     public AnimationLoader() {
@@ -33,9 +33,9 @@ public class AnimationLoader extends AsynchronousAssetLoader<ArrayList<AOAnimati
 
     @Override
     public ArrayList<AOAnimation> loadSync(AssetManager manager, String fileName, FileHandle file, DescriptorParameter parameter) {
-        ArrayList<AOAnimation> descriptors = this.descriptors;
+        ArrayList<AOAnimation> synchronizedDescriptors = this.descriptors;
         this.descriptors = null;
-        return descriptors;
+        return synchronizedDescriptors;
     }
 
     @Override
