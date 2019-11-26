@@ -85,3 +85,10 @@ Release 0.1.12
 	* al usar  los objetos flechas o armas desde el inventario o la quickbar.
 	* al prepararse para tirar un hechizo.
 	* al "dropear" un arma o flecha desde el inventario.
+
+25/11/2019 [design-NPCeditor] Agregamos campos de sonidos a los NPC (#243) @bestiardo
+* Cambiamos la forma en que se recuperan los sonidos de los npc para su uso
+* Ahora almacenamos en variables separada para identificar que funcion cumpliran cada uno de ellos.
+* Agregamos campos de sonidos de npc al Desing Center NPCEditor
+* Agregamos los campos de sonidos "walk", "die", "get hit" y "attack" para los numeros de sonidos correspondientes a caminar, morir, recibir impacto y atacar.
+
