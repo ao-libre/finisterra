@@ -67,10 +67,50 @@ Release 0.1.12
 - Fix - Elección aleatoria de clase al crear un personaje. (#224 )
 - Implementado sistema de combate a distancia junto con la clase nueva Arquero. (#214 )
 --------------------
-14/11/19
-- 
--
--
+- 17/11/2019 [docs] @Derillo
+Agregamos la documentación inicial basada en zim-wiki
+- Limpiamos los archivos previos de documentación .md
+- Agregamos la plantilla de exportación [[/template-export]]
+- Agregamos paginas y directorios de la documentación. 
+- Agregamos el archivo de importación para zim-wki [[/notebook.zim]]
+- Agregamos readme.md con instrucciones
+17/11/2019 [server] @Bestiardo
+Restamos energía y mostramos mensaje al fallar con arcos
+
+17/11/2018 [Client][Shared] @jopi
+Arreglamos expresiones no verificadas usando el operador diamond
+
+17/11/2019 [Compatibilidad][Netbeans][Eclipse] @jopiortiz
+Soporte inicial para Eclipse y Netbeans IDE (#235)
+* Soportamos Eclipse y Netbeans IDE
+* Reorganizamos y agregamos exclusiones a .gitignore
+* Borramos Archivos específicos IntelliJ sin usar .
+* Corregimos identaciones
+
+17/11/2019  [Server] @bestiardo
+Agregamos consumir energía al usar proyectiles (#240)
+* Arreglamos la falta de uso de energia al disparar las flechas.
+* Consideramos como ataque fallado donde no haya un objetivo (espacio libre) y cuando evaden el objetivo.
+
+24/11/2019 [refactor] Sistema de sonido (#246) @Bestiardo
+* Agregamos archivos multimedia de sonido. Tomados de la VB6.
+* Cambiamos el formato de los archivos de .wav a .ogg debido a errores producidos por la extesión wav.
+* Modificamos el código para cargar los ogg en lugar de los wav.
+* Agregamos Música de fondo para las pantallas LoginScreen hasta RoomScreen (pre GameScreen).
+* Agregamos Música de fondo en el juego (GameScreen)
+* Agregamos configuración para el Control de volumen de la música de fondo 8 y 9 (presionar varias veces, su sensibilidad es mínima)
+* Agregamos configuración Encendido y apagado de la música de fondo 7 y Shift + 7
+* Usamos el mismo sonido de ataque para npc como para usuarios
+
+* Sonidos que agregamos:
+- subir de nivel
+- atacar cuerpo a cuerpo
+- atacar a distancia
+- acertar ataques
+- hechizos
+- derribar al objetivo
+- meditar
+
 25/11/2019 [client] Aplicamos buenas prácticas de programaciòn (#244) @jopiortiz
 * Mejoras de sintaxis
 * Mejoras al rango de visibilidad de variales (scope)
@@ -92,7 +132,21 @@ Release 0.1.12
 * Agregamos campos de sonidos de npc al Desing Center NPCEditor
 * Agregamos los campos de sonidos "walk", "die", "get hit" y "attack" para los numeros de sonidos correspondientes a caminar, morir, recibir impacto y atacar.
 
-26/11/2019 Agregamos mensaje en consola al clickear un objeto (#249) @bestiardo
+25/11/2019  Updated Kryo version 2.24.0 -> 4.0.2 (#248) @jopiortiz
+* Actualizamos la version de la api que serializa los datos de los objetos.
+
+26/11/2019 Agregamos mensaje en consola al clickear un objeto (#249) @bestiardo 
 * Envíamos a consola el nombre y la cantidad de los objetos en la posicion del piso donde se hace click.
 * Enviamos a consola si hay un npc o personaje. Sobre un objeto solo dice el nombre del npc o personaje.
 
+26/11/2019 [server] Movemos los modificadores de clases a un archivo de configuración  (#247) @lukdlt92
+* Se agrega un ConfigurationManager (singleton) del lado del servidor como responsable de proveer las configuraciones (así como también generar una default si la operación IO no se pudo completar)
+* Se distinguen 2 archivos de configuración: Server.json (ya estaba) y Chars.json (donde se encuentra la información de los modifiers)
+* Modifiers busca los valores default en el ConfigurationManager, siendo transparente para el resto del código que haga uso de los valor
+
+26/11/2019 [server] Implementación de comandos (básico)   (#251) @lukdlt92 
+* Se envía un mensaje por consola que comienza con el caracter '/' (significa que es un comando). Ese mensaje es un TalkRequest.
+* Del lado del servidor, se corrobora si el mensaje empieza con '/' identificando si es un comando.
+* En caso de ser un comando, es handleado por el CommandSystem, devolviendo una respuesta (si es que aplica, lógicamente).
+
+27/11/2019 [Design] Reparamos la barra de scroll para la vista ImageView y view.java (#253) @bestiardo
