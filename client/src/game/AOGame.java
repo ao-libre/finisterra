@@ -41,7 +41,7 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
     @Override
     public void create() {
         super.create();
-        Gdx.app.debug("AOGame", "Creating AOGame...");
+        Log.info("AOGame", "Creating AOGame...");
         setTransition(new ColorFadeTransition(Color.BLACK, Interpolation.exp10), 1.0f);
         Cursors.setCursor("hand");
         ScreenManager.getInstance().initialize(this);
@@ -79,7 +79,7 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
     }
 
     public void dispose() {
-        Log.info("Closing client...");
+        Log.info("AOGame","Closing client...");
         screen.dispose();
         getAssetManager().dispose();
         Gdx.app.exit();

@@ -3,6 +3,7 @@ package design.designers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.esotericsoftware.minlog.Log;
 import design.editors.NPCEditor;
 import shared.model.loaders.NPCLoader;
 import shared.model.npcs.NPC;
@@ -45,7 +46,7 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
                 try {
                     npcs = new NPCLoader().load(new DataInputStream(file.read()));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.error("NPC's I/O", "Error loading NPCs.dat", e);
                 }
                 break;
             case JSON:
