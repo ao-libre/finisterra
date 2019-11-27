@@ -115,8 +115,9 @@ public class ImageView extends View<AOImage, ImageDesigner> implements WorldScre
                 scrollableContent.row();
             }
         });
-        ScrollPane scrollPa = new ScrollPane(scrollableContent);
-        scrollPa.setDebug(true);
+        ScrollPane scrollPa = new ScrollPane(scrollableContent, SKIN );
+        scrollPa.setFlickScroll(false);
+        scrollPa.setFadeScrollBars(false);
         scrollPa.setScrollbarsVisible(true);
         content.add(scrollPa);
         return content;
