@@ -7,6 +7,7 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.glutils.HdpiMode;
 import com.esotericsoftware.minlog.Log;
+import shared.util.LogSystem;
 import game.AOGame;
 import game.ClientConfiguration;
 import game.ClientConfiguration.Init;
@@ -23,13 +24,15 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
         System.setProperty("org.lwjgl.opengl.Display.enableOSXFullscreenModeAPI", "true");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Finisterra");
-
+        
+        Log.setLogger(new LogSystem());
+        
         /**
          * Load desktop config.json or create default.
          */
         ClientConfiguration config = ClientConfiguration.loadConfig(Resources.CLIENT_CONFIG);
         if (config == null) {
-            Log.info("DesktopLauncher", "Desktop config.json not found, creating default.");
+            Log.warn("DesktopLauncher", "Desktop config.json not found, creating default.");
             config = ClientConfiguration.createConfig();
             config.save(Resources.CLIENT_CONFIG);
         }
@@ -71,7 +74,7 @@ public class DesktopLauncher {
         }
 
         // Log in console. Un-comment the rest if you wish to debug Config.json's I/O
-        Log.info("Initializing game...");
+        Log.info("AOGame", "Initializing game...");
         //Log.info("[Parameters - Window] Width: " + video.getWidth());
         //Log.info("[Parameters - Window] Height: " + video.getHeight());
         //Log.info("[Parameters - Window] Start Maximized: " + initConfig.isStartMaximized());

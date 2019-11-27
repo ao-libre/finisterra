@@ -33,10 +33,10 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
     protected void connectEndpoint() {
         try {
             ((Client) endpoint).connect(CONNECTION_TIMEOUT, host, port, port + 1);
-            Log.info("Connected to " + host + ":" + port);
+            Log.info("Network", "Connected to " + host + ":" + port);
             state = MarshalState.STARTED;
         } catch (IOException e) {
-            Log.info("Failed to connect!");
+            Log.error("Network", "Failed to connect!", e);
             state = MarshalState.FAILED_TO_START;
         }
     }

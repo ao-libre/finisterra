@@ -6,16 +6,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Date;
 
 public class LogSystem extends Log.Logger {
     @Override
     public void log (int level, String category, String message, Throwable ex) {
 
         StringBuilder builder = new StringBuilder(256);
-        builder.append(new Date());
-        builder.append(' ');
-        builder.append(level);
+        builder.append('[');
+        builder.append(getLevelName(level));
+        builder.append(']');
         builder.append('[');
         builder.append(category);
         builder.append("] ");
@@ -41,5 +40,25 @@ public class LogSystem extends Log.Logger {
         // We keep printing the logs in the console.
         System.out.println(builder);
 
+    }
+    
+    private String getLevelName(int level){
+        switch(level){
+            case Log.LEVEL_INFO:
+                return "INFO";
+                
+            case Log.LEVEL_ERROR:
+                return "ERROR";
+                
+            case Log.LEVEL_DEBUG:
+                return "DEBUG";
+                
+            case Log.LEVEL_TRACE:
+                return "TRACE";
+                
+            case Log.LEVEL_WARN:
+                return "WARNING";         
+        }
+        return "NONE";
     }
 }

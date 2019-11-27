@@ -59,8 +59,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
             updateActions(entityUpdate.entityId, () -> updateEntity(entityUpdate));
 
         }
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        assetManager = game.getAssetManager();
+        assetManager = AOGame.getGlobalAssetManager();
     }
 
     private void updateActions(int id, Runnable update) {
