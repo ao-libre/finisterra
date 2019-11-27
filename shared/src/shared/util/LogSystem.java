@@ -28,7 +28,7 @@ public class LogSystem extends Log.Logger {
         }
 
         // We only print ERROR logs into Errores.log
-        if (level != Log.LEVEL_INFO) {
+        if (level != Log.LEVEL_INFO || level != Log.LEVEL_DEBUG) {
             try (FileOutputStream file = new FileOutputStream("Errores.log", true)) {
                 byte[] output = builder.toString().getBytes();
                 file.write(output);
