@@ -28,7 +28,7 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
     private final String OUTPUT_FOLDER = "output/";
 
     private Map<Integer, NPC> npcs;
-    private AOJson json = new AOJson();
+    private final AOJson json = new AOJson();
 
     public NPCDesigner(NPCParameters parameters) {
         load(parameters);

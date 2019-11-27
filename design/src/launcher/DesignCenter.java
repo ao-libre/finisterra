@@ -17,6 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.esotericsoftware.minlog.Log;
+import shared.util.LogSystem;
 import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
 import design.screens.views.View;
@@ -44,6 +46,7 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
 
     @Override
     public void create() {
+        Log.setLogger(new LogSystem());
         SKIN = new Skins.AOSkin(Gdx.files.internal("skin/skin-composer-ui.json"));
         loadingAnimation = new AnimationDrawable(SKIN, "loading-animation", 1 / 30f);
         assetManager = new DefaultAOAssetManager(ClientConfiguration.createConfig());
