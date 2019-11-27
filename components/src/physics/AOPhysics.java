@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 @PooledWeaver
 public class AOPhysics extends Component implements Serializable {
 
-    public final static float MAX_VELOCITY = Float.MAX_VALUE;
     public final static float WALKING_VELOCITY = 165.0f;
 
     public Deque<Movement> intentions = new ConcurrentLinkedDeque<>();
