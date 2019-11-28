@@ -184,13 +184,6 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
         assetManager.dispose();
         // esta si se que hay que ponerla para al final de un programa que use Gdx
         Gdx.app.exit();
-        /*
-         * Al poner lo siguente me tira mensaje en rojo por consola
-         * AL lib: (EE) alc_cleanup: 1 device not closed
-         * la dejo comentada para que la descomenten si es necesaria. ya ni recuerdo que era lo que hacial el numero
-         * en el exit() XD
-         */
-
-        // System.exit(0);
+        System.exit(0);
     }
 }
