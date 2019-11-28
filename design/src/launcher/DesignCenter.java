@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.esotericsoftware.minlog.Log;
 import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
 import design.screens.views.View;
@@ -153,7 +154,8 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
 
     @Override
     public boolean closeRequested() {
-        return false;
+        // no tengo idea de porque lo pusieron como false por esto era que no se podia cerrar
+        return true;
     }
 
     @Override
@@ -168,5 +170,27 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
     @Override
     public void refreshRequested() {
 
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        Log.info("Saliendo de Finisterra Design Center ");
+        // como no se si el super.dispose() cubre lo de abajo tambien lo puse
+        screen.dispose();
+        SKIN.dispose();
+        world.dispose();
+        stage.dispose();
+        assetManager.dispose();
+        // esta si se que hay que ponerla para al final de un programa que use Gdx
+        Gdx.app.exit();
+        /*
+         * Al poner lo siguente me tira mensaje en rojo por consola
+         * AL lib: (EE) alc_cleanup: 1 device not closed
+         * la dejo comentada para que la descomenten si es necesaria. ya ni recuerdo que era lo que hacial el numero
+         * en el exit() XD
+         */
+
+        // System.exit(0);
     }
 }
