@@ -14,10 +14,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.esotericsoftware.minlog.Log;
 import entity.character.equipment.Shield;
+import game.AOGame;
+import game.handlers.AOAssetManager;
 import game.handlers.ObjectHandler;
 import game.utils.Skins;
 import game.utils.WorldUtils;
 import shared.objects.types.*;
+import shared.util.Messages;
 
 import java.util.Optional;
 
@@ -103,6 +106,7 @@ public class Slot extends ImageButton {
         return new Tooltip<>(content);
     }
     private Actor createTooltipContent(Obj obj) {
+        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
         String name = obj.getName();
         Type objType = obj.getType ();
 
@@ -120,41 +124,76 @@ public class Slot extends ImageButton {
         switch (objType){
             case WEAPON:
                 WeaponObj weaponObj = (WeaponObj) obj;
-                table.add("kind = " + weaponObj.getKind ().toString ()).left().row();
-                table.add("Max hit = " + weaponObj.getMaxHit ()).left().row();
-                table.add("Min hit = " + weaponObj.getMinHit ()).left().row();
+                WeaponKind weaponKind = weaponObj.getKind();
+                switch (weaponKind) {
+                    case AXE:
+                        table.add( assetManager.getMessages( Messages.OBJ_kIND )
+                                + assetManager.getMessages( Messages.WEAPON_AXE ) ).left().row();
+                        break;
+                    case BOW:
+                        table.add( assetManager.getMessages( Messages.OBJ_kIND )
+                                + assetManager.getMessages( Messages.WEAPON_BOW ) ).left().row();
+                        break;
+                    case DAGGER:
+                        table.add( assetManager.getMessages( Messages.OBJ_kIND )
+                                + assetManager.getMessages( Messages.WEAPON_DAGGER) ).left().row();
+                        break;
+                    case MACE:
+                        table.add( assetManager.getMessages( Messages.OBJ_kIND )
+                                + assetManager.getMessages( Messages.WEAPON_MACE) ).left().row();
+                        break;
+                    case POLE:
+                        table.add( assetManager.getMessages( Messages.OBJ_kIND )
+                                + assetManager.getMessages( Messages.WEAPON_POLE ) ).left().row();
+                        break;
+                    case WORK:
+                        table.add( assetManager.getMessages( Messages.OBJ_kIND )
+                                + assetManager.getMessages( Messages.WEAPON_WORK) ).left().row();
+                        break;
+                    case STAFF:
+                        table.add( assetManager.getMessages( Messages.OBJ_kIND )
+                                + assetManager.getMessages( Messages.WEAPON_STAFF) ).left().row();
+                        break;
+                    case SWORD:
+                        table.add( assetManager.getMessages( Messages.OBJ_kIND )
+                                + assetManager.getMessages( Messages.WEAPON_SWORD) ).left().row();
+                        break;
+                }
+                table.add(assetManager.getMessages( Messages.OBJ_MAXHIT ) + weaponObj.getMaxHit ()).left().row();
+                table.add(assetManager.getMessages( Messages.OBJ_MINHIT ) + weaponObj.getMinHit ()).left().row();
                 break;
             case POTION:
                 PotionObj potionObj = (PotionObj) obj;
-                table.add("Kind = " +potionObj.getKind ().toString ()).left().row();
-                table.add("Max = " + potionObj.getMax ()).left().row();
-                table.add("Min = " + potionObj.getMin ()).left().row();
-                table.add("EffectTime = " + potionObj.getEffecTime ()).left().row();
+                table.add(assetManager.getMessages( Messages.OBJ_kIND ) +potionObj.getKind ().toString ()).left().row();
+                table.add(assetManager.getMessages( Messages.POTION_Max ) + potionObj.getMax ()).left().row();
+                table.add(assetManager.getMessages( Messages.POTION_MIN ) + potionObj.getMin ()).left().row();
+                table.add(assetManager.getMessages( Messages.POTION_ET ) + potionObj.getEffecTime ()).left().row();
                 break;
             case ARMOR:
                 ArmorObj armorObj = (ArmorObj) obj;
-                table.add("Max Def = " + armorObj.getMaxDef()).left().row();
-                table.add("Min Def = " + armorObj.getMinDef()).left().row();
+                table.add(assetManager.getMessages( Messages.OBJ_MAXDEF ) + armorObj.getMaxDef()).left().row();
+                table.add(assetManager.getMessages( Messages.OBJ_MINDEF ) + armorObj.getMinDef()).left().row();
                 break;
             case HELMET:
                 HelmetObj helmetObj = (HelmetObj) obj;
-                table.add("Max Def = " + helmetObj.getMaxDef()).left().row();
-                table.add("Min Def = " + helmetObj.getMinDef()).left().row();
+                table.add(assetManager.getMessages( Messages.OBJ_MAXDEF ) + helmetObj.getMaxDef()).left().row();
+                table.add(assetManager.getMessages( Messages.OBJ_MINDEF ) + helmetObj.getMinDef()).left().row();
                 break;
             case ARROW:
                 ArrowObj arrowObj = (ArrowObj) obj;
-                table.add("Max Hit = " + arrowObj.getMaxHit()).left().row();
-                table.add("Min Hit = " + arrowObj.getMinHit()).left().row();
+                table.add(assetManager.getMessages( Messages.OBJ_MAXHIT ) + arrowObj.getMaxHit()).left().row();
+                table.add(assetManager.getMessages( Messages.OBJ_MINHIT ) + arrowObj.getMinHit()).left().row();
                 break;
             case SHIELD:
                 ShieldObj shieldObj = (ShieldObj) obj;
-                table.add("Max Def = " + shieldObj.getMaxDef()).left().row();
-                table.add("Min Def = " + shieldObj.getMinDef()).left().row();
+                table.add(assetManager.getMessages( Messages.OBJ_MAXDEF ) + shieldObj.getMaxDef()).left().row();
+                table.add(assetManager.getMessages( Messages.OBJ_MAXDEF ) + shieldObj.getMinDef()).left().row();
 
                 break;
         }
-        table.add("Value = " + obj.getValue()).left().row();
-        table.add("Count = " + item.map(item1 -> item1.count).orElse(1) ).left().row();
+        table.add(assetManager.getMessages( Messages.OBJ_VALUE ) + obj.getValue()).left().row();
+        table.add(assetManager.getMessages( Messages.OBJ_COUNT ) + item.map(item1 -> item1.count).orElse(1) )
+                .left().row();
         table.add("").row();
         return table;
     }
