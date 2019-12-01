@@ -5,6 +5,7 @@ import shared.objects.factory.ObjectFactory;
 
 public class WeaponObj extends ObjWithClasses {
 
+    private WorkKind workKind;
     private WeaponKind kind;
     private boolean stab;
     private int animationId;
@@ -52,6 +53,10 @@ public class WeaponObj extends ObjWithClasses {
 
     public WeaponKind getKind() {
         return kind;
+    }
+
+    public WorkKind getWorkKind(){
+        return workKind;
     }
 
     @Override
