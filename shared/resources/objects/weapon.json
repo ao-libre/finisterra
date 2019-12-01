@@ -228,7 +228,7 @@
     "minHit": 1,
     "maxHit": 1,
     "kind" : "WORK",
-    "workKind": "PESCA"
+    "workKind": "FISHING"
   },
   {
     "id": 159,
@@ -565,7 +565,7 @@
     "crucial": false,
     "forbiddenClasses": {},
     "kind" : "WORK",
-    "workKind": "PESCA"
+    "workKind": "FISHING"
   },
   {
     "id": 556,
@@ -636,7 +636,7 @@
     "minHit": 1,
     "maxHit": 2,
     "kind" : "WORK",
-    "workKind": "PESCA"
+    "workKind": "FISHING"
   },
   {
     "id": 564,
