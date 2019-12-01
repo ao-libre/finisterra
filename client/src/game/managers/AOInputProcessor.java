@@ -112,9 +112,9 @@ public class AOInputProcessor extends Stage {
                             } else if(entity.hasName()) {
                                 gui.getConsole().addInfo( assetManager.getMessages( Messages.SEE_SOMEONE,
                                         entity.getName().text ) );
-                            } else {
-                                gui.getConsole().addInfo( assetManager.getMessages( Messages.SEE_NOTHING ) );
                             }
+                        }else {
+                            gui.getConsole().addInfo( assetManager.getMessages( Messages.SEE_NOTHING ) );
                         }
                     }
                 } ) );
