@@ -192,7 +192,8 @@
     "animationId": 23,
     "minHit": 2,
     "maxHit": 3,
-    "kind" : "WORK"
+    "kind" : "WORK",
+    "workKind": "CUT"
   },
   {
     "id": 129,
@@ -226,7 +227,8 @@
     "dwarfAnimationId": 76,
     "minHit": 1,
     "maxHit": 1,
-    "kind" : "WORK"
+    "kind" : "WORK",
+    "workKind": "PESCA"
   },
   {
     "id": 159,
@@ -287,7 +289,8 @@
     "dwarfAnimationId": 74,
     "minHit": 2,
     "maxHit": 3,
-    "kind" : "WORK"
+    "kind" : "WORK",
+    "workKind": "MINE"
   },
   {
     "id": 198,
@@ -299,7 +302,8 @@
     "dwarfAnimationId": 73,
     "minHit": 1,
     "maxHit": 2,
-    "kind" : "WORK"
+    "kind" : "WORK",
+    "workKind": "SAW"
   },
   {
     "id": 365,
@@ -371,7 +375,8 @@
     "dwarfAnimationId": 75,
     "minHit": 2,
     "maxHit": 2,
-    "kind" : "WORK"
+    "kind" : "WORK",
+    "workKind": "FORGE"
   },
   {
     "id": 398,
@@ -559,7 +564,8 @@
     "value": 5000,
     "crucial": false,
     "forbiddenClasses": {},
-    "kind" : "WORK"
+    "kind" : "WORK",
+    "workKind": "PESCA"
   },
   {
     "id": 556,
@@ -601,7 +607,8 @@
     "animationId": 23,
     "minHit": 1,
     "maxHit": 2,
-    "kind" : "WORK"
+    "kind" : "WORK",
+    "workKind": "CUT"
   },
   {
     "id": 562,
@@ -614,7 +621,8 @@
     "dwarfAnimationId": 74,
     "minHit": 1,
     "maxHit": 2,
-    "kind" : "WORK"
+    "kind" : "WORK",
+    "workKind": "MINE"
   },
   {
     "id": 563,
@@ -627,7 +635,8 @@
     "dwarfAnimationId": 76,
     "minHit": 1,
     "maxHit": 2,
-    "kind" : "WORK"
+    "kind" : "WORK",
+    "workKind": "PESCA"
   },
   {
     "id": 564,
@@ -640,7 +649,8 @@
     "dwarfAnimationId": 73,
     "minHit": 1,
     "maxHit": 2,
-    "kind" : "WORK"
+    "kind" : "WORK",
+    "workKind": "SAW"
   },
   {
     "id": 565,
@@ -653,7 +663,8 @@
     "dwarfAnimationId": 75,
     "minHit": 1,
     "maxHit": 2,
-    "kind" : "WORK"
+    "kind" : "WORK",
+    "workKind": "FORGE"
   },
   {
     "id": 619,
@@ -938,7 +949,8 @@
     "animationId": 37,
     "minHit": 3,
     "maxHit": 8,
-    "kind" : "WORK"
+    "kind" : "WORK",
+    "workKind": "CUT"
   },
   {
     "id": 1009,
