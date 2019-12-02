@@ -1,7 +1,8 @@
 package game.systems;
 
 import com.artemis.E;
-import com.badlogic.gdx.audio.Sound;
+import com.esotericsoftware.minlog.Log;
+import entity.character.info.Inventory;
 import entity.character.states.Heading;
 import game.AOGame;
 import game.handlers.*;
@@ -15,6 +16,7 @@ import position.WorldPos;
 import shared.interfaces.Constants;
 import shared.model.map.Map;
 import shared.model.map.Tile;
+import shared.network.inventory.InventoryUpdate;
 import shared.network.notifications.EntityUpdate;
 import shared.network.sound.SoundNotification;
 import shared.objects.types.*;
@@ -30,6 +32,7 @@ public class WorkSystem {
     private final AOAssetManager assetManager;
     private WorldManager worldManager;
     private GameNotificationProcessor gameNotificationProcessor;
+    private ObjectHandler objectHandler;
 
     public WorkSystem(GUI gui) {
         this.gui = gui;
@@ -71,21 +74,14 @@ public class WorkSystem {
                                 gui.getConsole().addInfo( "trabajando ....." );
                                 ThreadLocalRandom random = ThreadLocalRandom.current();
                                 int woody = random.nextInt(0, 10);
-                                //TODO revisar si existen los objetos antes de agregarlos y que el inventario no este lleno
                                 if (woody > 6) {
                                     if(targetobj.getId() == 1008) {
-                                        gui.getConsole().addInfo( "Has obtenido 1 Leña Elfica" );
-                                        player.getInventory().add( 1006, 1, false );
-                                        gui.getInventory().updateUserInventory( 0 );
+                                        addResourse( 1006, player );
                                     } else {
-                                        gui.getConsole().addInfo( "Has obtenido 1 Leña" );
-                                        player.getInventory().add( 58, 1, false );
-                                        gui.getInventory().updateUserInventory( 0 );
+                                        addResourse( 58, player );
                                     }
                                 }else {
-                                    gui.getConsole().addInfo( "Has obtenido 1 ramita" );
-                                    player.getInventory().add( 136, 1, false );
-                                    gui.getInventory().updateUserInventory( 0 );
+                                    addResourse( 136, player );
                                 }
                             } else {
                                 gui.getConsole().addInfo( "el recurso no es el correcto" );
@@ -111,7 +107,18 @@ public class WorkSystem {
                                         .EntityUpdateBuilder.of ( userId )
                                         .withComponents ( new AttackAnimation ( ))).build());
                                 gui.getConsole().addInfo( "trabajando ....." );
-                                // todo agregar item metal al inventario
+                                String objname = targetobj.getName();
+                                switch( objname ){
+                                    case "Yacimiento de Hierro":
+                                        addResourse( 192, player );
+                                        break;
+                                    case "Yacimiento de Oro":
+                                        addResourse( 193, player );
+                                        break;
+                                    case "Yacimiento de Plata":
+                                        addResourse( 194,player );
+                                        break;
+                                }
                             } else {
                                 gui.getConsole().addInfo( "el recurso no es el correcto" );
                             }
@@ -131,6 +138,38 @@ public class WorkSystem {
         } else {
             //assetManager.getMessages( Messages.NO_WORKING_TOOOL_EQUIPED )
             gui.getConsole().addInfo( "NO TIENES EQUIPADA UNA HERRAMIENTA" );
+        }
+    }
+    private void addResourse(int objid, E player){
+
+        objectHandler = GameScreen.world.getSystem( ObjectHandler.class );
+        Inventory.Item[] inventory = player.getInventory().items;
+        int index = -1;
+        int fistEmptySlot = -1;
+
+        for (int i = 0; i<20 ;i++) {
+            if(inventory[i] != null) {
+                if(inventory[i].objId == objid) {
+                    index = i;
+                }else if(inventory[i].objId == 0){
+                    if (fistEmptySlot == -1) {
+                        fistEmptySlot = i;
+                    }
+                }
+            } else {
+                if (fistEmptySlot == -1) {
+                    fistEmptySlot = i;
+                }
+            }
+        }
+        if (index != -1){
+            inventory[index].count++;
+            gui.getInventory().updateUserInventory( 0 );
+        }else if ( fistEmptySlot != -1){
+            player.getInventory().add( objid,1,false );
+            gui.getInventory().updateUserInventory( 0 );
+        }else {
+            gui.getConsole().addInfo( "Inventario lleno" );
         }
     }
 }
