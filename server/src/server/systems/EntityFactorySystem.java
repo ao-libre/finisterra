@@ -395,6 +395,14 @@ public class EntityFactorySystem extends PassiveSystem {
                 break;
         }
         objectManager.getObject(665).ifPresent(result::add);// arco
+        //"name": "Hacha de Leñador (Newbie)" para probar worksystem
+        objectManager.getObject( 561).ifPresent(result::add);
+        //"Piquete de Minero (Newbie)"
+        objectManager.getObject( 562).ifPresent(result::add);
+        //Serrucho (Newbie)
+        objectManager.getObject( 564).ifPresent(result::add);
+        //Martillo de Herrero (Newbie)
+        objectManager.getObject( 565).ifPresent(result::add);
         return result;
     }
 
