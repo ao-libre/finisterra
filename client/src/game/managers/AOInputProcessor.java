@@ -12,6 +12,7 @@ import game.handlers.MapHandler;
 import game.handlers.ObjectHandler;
 import game.handlers.MusicHandler;
 import game.screens.GameScreen;
+import game.systems.WorkSystem;
 import game.systems.camera.CameraSystem;
 import game.systems.network.TimeSync;
 import game.ui.GUI;
@@ -235,6 +236,9 @@ public class AOInputProcessor extends Stage {
             case Input.Keys.NUM_9:
                 musicControl (9);
                 break;
+            case Input.Keys.Q:
+                work();
+                break;
         }
     }
 
@@ -307,8 +311,15 @@ public class AOInputProcessor extends Stage {
             case Input.Keys.NUM_9:
                 musicControl (9);//subir volumen
                 break;
+            case Input.Keys.Q:
+                work();
+                break;
 
         }
+    }
+
+    private  void work(){
+        WorkSystem workSystem = new WorkSystem( gui ) ;
     }
 
     private void musicControl(int number){
