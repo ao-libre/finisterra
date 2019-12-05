@@ -76,5 +76,12 @@ public enum Messages {
     SPELLS_FULL,
 
     // COMMAND USAGE
-    PLAYERS_ONLINE
+    PLAYERS_ONLINE,
+
+    // ADDITEM
+    FULL_INVENTORY,
+    GOT_ITEM,
+    EMPTY_MSG
+
+
 }
