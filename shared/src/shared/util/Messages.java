@@ -80,8 +80,11 @@ public enum Messages {
 
     // ADDITEM
     FULL_INVENTORY,
-    GOT_ITEM,
-    EMPTY_MSG
-
+    NO_WORK_TOOL,
+    WRONG_WORK_TOOL,
+    WORKING,
+    WRONG_RESOURCE,
+    NO_RESOURCE,
+    ADD_OR_REMOVE_ITEMS,
 
 }
