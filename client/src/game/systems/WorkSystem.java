@@ -16,29 +16,26 @@ import position.WorldPos;
 import shared.interfaces.Constants;
 import shared.model.map.Map;
 import shared.model.map.Tile;
+import shared.network.interaction.AddItem;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.notifications.EntityUpdate;
 import shared.network.sound.SoundNotification;
 import shared.objects.types.*;
 import shared.objects.types.common.TreeObj;
 import shared.util.MapHelper;
+import shared.util.Messages;
 
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WorkSystem {
 
-    private final GUI gui;
-    private final AOAssetManager assetManager;
-    private WorldManager worldManager;
-    private GameNotificationProcessor gameNotificationProcessor;
-    private ObjectHandler objectHandler;
+    private int userId;
 
     public WorkSystem(GUI gui) {
-        this.gui = gui;
-        this.assetManager = AOGame.getGlobalAssetManager();
-        gameNotificationProcessor = GameScreen.world.getSystem( GameNotificationProcessor.class );
-        int userId = GameScreen.getPlayer();
+        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
+        GameNotificationProcessor gameNotificationProcessor = GameScreen.world.getSystem( GameNotificationProcessor.class );
+        this.userId = GameScreen.getPlayer();
         E player = E.E( userId );
         ObjectHandler objectHandler = WorldUtils.getWorld().orElse( null )
                 .getSystem( ObjectHandler.class );
@@ -58,8 +55,8 @@ public class WorkSystem {
             final Optional< Obj > object = objectHandler.getObject( player.getWeapon().index );
             WeaponObj weaponObj = (WeaponObj) object.get();
             if(weaponObj.getKind().equals( WeaponKind.WORK )) {
-                WorkKind workKind = weaponObj.getWorkKind();
-                switch( workKind ) {
+                //WorkKind workKind = weaponObj.getWorkKind();
+                switch( weaponObj.getWorkKind() ) {
                     case CUT:
                         assert tile != null;
                         if(tile.getObjIndex() > 0) {
@@ -67,28 +64,34 @@ public class WorkSystem {
                             if(targetobj.getType().equals( Type.TREE )) {
                                 TreeObj treeObj = (TreeObj) targetobj;
                                 gameNotificationProcessor.processNotification( new SoundNotification(13));
-                                //TODO ver porque no realiza la animacion de ataque
                                 gameNotificationProcessor.processNotification( (EntityUpdate
-                                        .EntityUpdateBuilder.of ( userId )
+                                        .EntityUpdateBuilder.of ( player.getNetwork().id )
                                         .withComponents ( new AttackAnimation () ).build() ) );
-                                gui.getConsole().addInfo( "trabajando ....." );
+                                gui.getConsole().addInfo(assetManager.getMessages( Messages.EMPTY_MSG,
+                                        "trabajando ....." ));
                                 ThreadLocalRandom random = ThreadLocalRandom.current();
                                 int woody = random.nextInt(0, 10);
                                 if (woody > 6) {
+                                    // 1008 arbol elfico
                                     if(targetobj.getId() == 1008) {
-                                        addResourse( 1006, player );
+                                        //1006 leña elfica
+                                        addResourse( 1006 );
                                     } else {
-                                        addResourse( 58, player );
+                                        //58 leña
+                                        addResourse( 58 );
                                     }
                                 }else {
-                                    addResourse( 136, player );
+                                    //136 ramitas
+                                    addResourse( 136 );
                                 }
                             } else {
-                                gui.getConsole().addInfo( "el recurso no es el correcto" );
+                                gui.getConsole().addInfo( assetManager.getMessages( Messages.EMPTY_MSG,
+                                        "el recurso no es el correcto" ));
                             }
                         } else {
                             //assetManager.getMessages( Messages.NO_WORKING_TOOOL_EQUIPED )
-                            gui.getConsole().addInfo( "No hay Recursos frente a ti" );
+                            gui.getConsole().addInfo( assetManager.getMessages( Messages.EMPTY_MSG,
+                                    "No hay Recursos frente a ti" ));
                         }
                         break;
                     case FISHING:
@@ -106,70 +109,49 @@ public class WorkSystem {
                                 gameNotificationProcessor.processNotification( (EntityUpdate
                                         .EntityUpdateBuilder.of ( userId )
                                         .withComponents ( new AttackAnimation ( ))).build());
-                                gui.getConsole().addInfo( "trabajando ....." );
-                                String objname = targetobj.getName();
-                                switch( objname ){
+                                gui.getConsole().addInfo( assetManager.getMessages( Messages.EMPTY_MSG,
+                                        "trabajando ..." ));
+                                switch( targetobj.getName() ){
                                     case "Yacimiento de Hierro":
-                                        addResourse( 192, player );
+                                        addResourse( 192 );
                                         break;
                                     case "Yacimiento de Oro":
-                                        addResourse( 193, player );
+                                        addResourse( 193 );
                                         break;
                                     case "Yacimiento de Plata":
-                                        addResourse( 194,player );
+                                        addResourse( 194 );
                                         break;
                                 }
                             } else {
-                                gui.getConsole().addInfo( "el recurso no es el correcto" );
+                                gui.getConsole().addInfo( assetManager.getMessages( Messages.EMPTY_MSG,
+                                        "el recurso no es el correcto" ));
                             }
                         } else {
                             //assetManager.getMessages( Messages.NO_WORKING_TOOOL_EQUIPED )
-                            gui.getConsole().addInfo( "No hay Recursos frente a ti" );
+                            gui.getConsole().addInfo( assetManager.getMessages( Messages.EMPTY_MSG,
+                                    "No hay Recursos frente a ti" ));
                         }
                         break;
                     case SAW:
                         //todo crear la UI y el funcionamiento
+
                         break;
                 }
             } else {
                 //assetManager.getMessages( Messages.NO_WORKING_TOOOL_EQUIPED )
-                gui.getConsole().addInfo( "NO TIENES EQUIPADA LA HERRAMIENTA NECESARIA" );
+                gui.getConsole().addInfo(assetManager.getMessages( Messages.EMPTY_MSG,
+                        "NO TIENES EQUIPADA LA HERRAMIENTA NECESARIA" ));
             }
         } else {
             //assetManager.getMessages( Messages.NO_WORKING_TOOOL_EQUIPED )
-            gui.getConsole().addInfo( "NO TIENES EQUIPADA UNA HERRAMIENTA" );
+            gui.getConsole().addInfo( assetManager.getMessages( Messages.EMPTY_MSG,
+                    "NO TIENES EQUIPADA UNA HERRAMIENTA" ));
         }
     }
-    private void addResourse(int objid, E player){
+    private void addResourse(int objid){
 
-        objectHandler = GameScreen.world.getSystem( ObjectHandler.class );
-        Inventory.Item[] inventory = player.getInventory().items;
-        int index = -1;
-        int fistEmptySlot = -1;
-
-        for (int i = 0; i<20 ;i++) {
-            if(inventory[i] != null) {
-                if(inventory[i].objId == objid) {
-                    index = i;
-                }else if(inventory[i].objId == 0){
-                    if (fistEmptySlot == -1) {
-                        fistEmptySlot = i;
-                    }
-                }
-            } else {
-                if (fistEmptySlot == -1) {
-                    fistEmptySlot = i;
-                }
-            }
-        }
-        if (index != -1){
-            inventory[index].count++;
-            gui.getInventory().updateUserInventory( 0 );
-        }else if ( fistEmptySlot != -1){
-            player.getInventory().add( objid,1,false );
-            gui.getInventory().updateUserInventory( 0 );
-        }else {
-            gui.getConsole().addInfo( "Inventario lleno" );
-        }
+        ObjectHandler objectHandler = GameScreen.world.getSystem( ObjectHandler.class );
+        Obj obj = objectHandler.getObject( objid ).get();
+        GameScreen.getClient().sendToAll(new AddItem( E.E(userId).getNetwork().id, obj ));
     }
 }

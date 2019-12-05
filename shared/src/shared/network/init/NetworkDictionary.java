@@ -57,10 +57,7 @@ import shared.model.readers.Loader;
 import shared.model.readers.Reader;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
-import shared.network.interaction.DropItem;
-import shared.network.interaction.MeditateRequest;
-import shared.network.interaction.TakeItemRequest;
-import shared.network.interaction.TalkRequest;
+import shared.network.interaction.*;
 import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.interfaces.INotificationProcessor;
 import shared.network.interfaces.IResponseProcessor;
@@ -118,6 +115,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 INotificationProcessor.class,
                 DefaultNotificationProcessor.class,
                 DropItem.class,
+                AddItem.class,
                 ConsoleMessage.class,
                 ConsoleMessage.Kind.class,
                 Messages.class,
