@@ -77,7 +77,7 @@ public class ServerNotificationProcessor extends DefaultNotificationProcessor {
 
         int userId = addItem.getPlayerId();
         E entity = E(userId);
-        Obj obj = addItem.getObj();
+        Obj obj = objectManager.getObject( addItem.getObjID()).get();
         int objId = obj.getId();
 
         InventoryUpdate update = new InventoryUpdate();
@@ -103,16 +103,19 @@ public class ServerNotificationProcessor extends DefaultNotificationProcessor {
         }
 
         if (index != -1){
-            inventory.items[index].count++;
+            inventory.items[index].count += addItem.getCount();
+            if (inventory.items[index].count <= 0) {
+                inventory.remove(index);
+            }
             update.add(index, inventory.items[index]);
             networkManager.sendTo(networkManager.getConnectionByPlayer(addItem.getPlayerId()), update);
-            worldManager.sendEntityUpdate(userId, ConsoleMessage.info(Messages.GOT_ITEM, obj.getName()));
+            worldManager.sendEntityUpdate(userId, ConsoleMessage.info(Messages.ADD_OR_REMOVE_ITEMS,addItem.getCount() + " " + obj.getName()));
 
         }else if ( fistEmptySlot != -1){
-            inventory.add( objId,1,false );
+            inventory.add( objId, addItem.getCount(),false );
             update.add(fistEmptySlot, inventory.items[fistEmptySlot]);
             networkManager.sendTo(networkManager.getConnectionByPlayer(addItem.getPlayerId()), update);
-            worldManager.sendEntityUpdate(userId, ConsoleMessage.info(Messages.GOT_ITEM, obj.getName()));
+            worldManager.sendEntityUpdate(userId, ConsoleMessage.info(Messages.ADD_OR_REMOVE_ITEMS,addItem.getCount() + " " + obj.getName()));
 
         }else {
             worldManager.sendEntityUpdate(userId, ConsoleMessage.info(Messages.FULL_INVENTORY ));

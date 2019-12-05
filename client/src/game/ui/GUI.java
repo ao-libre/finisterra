@@ -17,8 +17,10 @@ import game.managers.AOInputProcessor;
 import game.screens.GameScreen;
 import game.ui.user.UserInformation;
 import game.utils.Skins;
+import shared.objects.types.WorkKind;
 import shared.util.Messages;
 
+import java.awt.*;
 import java.time.LocalDateTime;
 
 public class GUI extends BaseSystem implements Disposable {
@@ -33,6 +35,7 @@ public class GUI extends BaseSystem implements Disposable {
     private DialogText dialog;
     private AOConsole console;
     private OrthographicCamera camera;
+    private WorkUI workUISaw;
 
     public GUI() {
         this.stage = new AOInputProcessor(this);
@@ -40,6 +43,7 @@ public class GUI extends BaseSystem implements Disposable {
         this.userTable = new UserInformation();
         this.dialog = new DialogText();
         this.console = new AOConsole();
+        this.workUISaw = new WorkUI( WorkKind.SAW );
     }
 
     @Override
@@ -84,6 +88,11 @@ public class GUI extends BaseSystem implements Disposable {
         return getActionBar ().getSpellViewExpanded ();
     }
 
+    public WorkUI getWorkUISaw() {
+        workUISaw.setVisible( !workUISaw.isVisible() );
+        return workUISaw;
+    }
+
     public void takeScreenshot() {
         AOAssetManager assetManager = AOGame.getGlobalAssetManager();
         String screenshotPath = "Screenshots/Screenshot-" + LocalDateTime.now() + ".png";
@@ -122,6 +131,7 @@ public class GUI extends BaseSystem implements Disposable {
         table.setFillParent(true);
         createConsole(table);
         createUserStatus(table);
+        createWorkUiSaw(table);
         createActionBar(table);
         createDialogContainer(table);
         stage.addActor(table);
@@ -149,6 +159,12 @@ public class GUI extends BaseSystem implements Disposable {
     private void createUserStatus(Table table) {
         userTable = new UserInformation();
         table.add(userTable).prefWidth(400).left().bottom().expandX();
+    }
+
+    private void createWorkUiSaw(Table table) {
+        workUISaw = new WorkUI(WorkKind.SAW);
+        workUISaw.setVisible( false );
+        table.add( workUISaw ).left().expand();
     }
 
     private void createActionBar(Table table) {
