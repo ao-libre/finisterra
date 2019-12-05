@@ -7,6 +7,7 @@ import game.handlers.*;
 import game.network.GameNotificationProcessor;
 import game.screens.GameScreen;
 import game.ui.GUI;
+import game.ui.WorkUI;
 import game.utils.WorldUtils;
 import physics.AttackAnimation;
 import position.WorldPos;
