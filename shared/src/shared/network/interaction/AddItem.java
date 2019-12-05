@@ -7,27 +7,32 @@ import shared.objects.types.Obj;
 public class AddItem implements INotification {
 
     private int playerId;
-    private Obj obj;
+    private int count;
+    private int objID;
 
     public AddItem(){
 
     }
-    public AddItem(int playerId,  Obj obj) {
+    public AddItem(int playerId,  int objID, int count) {
         this.playerId = playerId;
-        this.obj = obj;
+        this.objID = objID;
+        this.count = count;
     }
-
 
     @Override
     public void accept(INotificationProcessor processor) {
         processor.processNotification(this);
     }
 
-    public Obj getObj() {
-        return obj;
-    }
-
     public int getPlayerId() {
         return playerId;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public int getObjID() {
+        return objID;
     }
 }

@@ -1,15 +1,13 @@
 package game.systems;
 
 import com.artemis.E;
-import com.esotericsoftware.minlog.Log;
-import entity.character.info.Inventory;
 import entity.character.states.Heading;
 import game.AOGame;
 import game.handlers.*;
-import game.managers.WorldManager;
 import game.network.GameNotificationProcessor;
 import game.screens.GameScreen;
 import game.ui.GUI;
+import game.ui.WorkUI;
 import game.utils.WorldUtils;
 import physics.AttackAnimation;
 import position.WorldPos;
@@ -17,7 +15,6 @@ import shared.interfaces.Constants;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.network.interaction.AddItem;
-import shared.network.inventory.InventoryUpdate;
 import shared.network.notifications.EntityUpdate;
 import shared.network.sound.SoundNotification;
 import shared.objects.types.*;
@@ -67,31 +64,27 @@ public class WorkSystem {
                                 gameNotificationProcessor.processNotification( (EntityUpdate
                                         .EntityUpdateBuilder.of ( player.getNetwork().id )
                                         .withComponents ( new AttackAnimation () ).build() ) );
-                                gui.getConsole().addInfo(assetManager.getMessages( Messages.EMPTY_MSG,
-                                        "trabajando ....." ));
+                                gui.getConsole().addInfo(assetManager.getMessages( Messages.WORKING ));
                                 ThreadLocalRandom random = ThreadLocalRandom.current();
                                 int woody = random.nextInt(0, 10);
                                 if (woody > 6) {
                                     // 1008 arbol elfico
                                     if(targetobj.getId() == 1008) {
                                         //1006 leña elfica
-                                        addResourse( 1006 );
+                                        addResource( 1006 );
                                     } else {
                                         //58 leña
-                                        addResourse( 58 );
+                                        addResource( 58 );
                                     }
                                 }else {
                                     //136 ramitas
-                                    addResourse( 136 );
+                                    addResource( 136 );
                                 }
                             } else {
-                                gui.getConsole().addInfo( assetManager.getMessages( Messages.EMPTY_MSG,
-                                        "el recurso no es el correcto" ));
+                                gui.getConsole().addInfo( assetManager.getMessages( Messages.WRONG_RESOURCE ));
                             }
                         } else {
-                            //assetManager.getMessages( Messages.NO_WORKING_TOOOL_EQUIPED )
-                            gui.getConsole().addInfo( assetManager.getMessages( Messages.EMPTY_MSG,
-                                    "No hay Recursos frente a ti" ));
+                            gui.getConsole().addInfo( assetManager.getMessages( Messages.NO_RESOURCE ));
                         }
                         break;
                     case FISHING:
@@ -109,49 +102,38 @@ public class WorkSystem {
                                 gameNotificationProcessor.processNotification( (EntityUpdate
                                         .EntityUpdateBuilder.of ( userId )
                                         .withComponents ( new AttackAnimation ( ))).build());
-                                gui.getConsole().addInfo( assetManager.getMessages( Messages.EMPTY_MSG,
-                                        "trabajando ..." ));
+                                gui.getConsole().addInfo( assetManager.getMessages( Messages.WORKING ));
                                 switch( targetobj.getName() ){
                                     case "Yacimiento de Hierro":
-                                        addResourse( 192 );
+                                        addResource( 192 );
                                         break;
                                     case "Yacimiento de Oro":
-                                        addResourse( 193 );
+                                        addResource( 193 );
                                         break;
                                     case "Yacimiento de Plata":
-                                        addResourse( 194 );
+                                        addResource( 194 );
                                         break;
                                 }
                             } else {
-                                gui.getConsole().addInfo( assetManager.getMessages( Messages.EMPTY_MSG,
-                                        "el recurso no es el correcto" ));
+                                gui.getConsole().addInfo( assetManager.getMessages( Messages.WRONG_RESOURCE ));
                             }
                         } else {
-                            //assetManager.getMessages( Messages.NO_WORKING_TOOOL_EQUIPED )
-                            gui.getConsole().addInfo( assetManager.getMessages( Messages.EMPTY_MSG,
-                                    "No hay Recursos frente a ti" ));
+                            gui.getConsole().addInfo( assetManager.getMessages( Messages.NO_RESOURCE));
                         }
                         break;
                     case SAW:
-                        //todo crear la UI y el funcionamiento
-
+                        gui.getWorkUISaw().setVisible(!gui.getWorkUISaw().isVisible());
                         break;
                 }
             } else {
-                //assetManager.getMessages( Messages.NO_WORKING_TOOOL_EQUIPED )
-                gui.getConsole().addInfo(assetManager.getMessages( Messages.EMPTY_MSG,
-                        "NO TIENES EQUIPADA LA HERRAMIENTA NECESARIA" ));
+                gui.getConsole().addInfo(assetManager.getMessages( Messages.WRONG_WORK_TOOL ));
             }
         } else {
-            //assetManager.getMessages( Messages.NO_WORKING_TOOOL_EQUIPED )
-            gui.getConsole().addInfo( assetManager.getMessages( Messages.EMPTY_MSG,
-                    "NO TIENES EQUIPADA UNA HERRAMIENTA" ));
+            gui.getConsole().addInfo( assetManager.getMessages( Messages.NO_WORK_TOOL ));
         }
     }
-    private void addResourse(int objid){
 
-        ObjectHandler objectHandler = GameScreen.world.getSystem( ObjectHandler.class );
-        Obj obj = objectHandler.getObject( objid ).get();
-        GameScreen.getClient().sendToAll(new AddItem( E.E(userId).getNetwork().id, obj ));
+    private void addResource(int objID){
+        GameScreen.getClient().sendToAll(new AddItem( E.E(userId).getNetwork().id, objID, 1 ));
     }
 }
