@@ -93,6 +93,8 @@ public class WorkSystem {
                         break;
                     case FORGE:
                         //todo crear la UI y el funcionamiento
+                        gui.getWorkUI().setWorkKind( WorkKind.FORGE );
+                        gui.getWorkUI().setVisible(!gui.getWorkUI().isVisible());
                         break;
                     case MINE:
                         if(tile.getObjIndex() > 0) {
@@ -122,7 +124,8 @@ public class WorkSystem {
                         }
                         break;
                     case SAW:
-                        gui.getWorkUISaw().setVisible(!gui.getWorkUISaw().isVisible());
+                        gui.getWorkUI().setWorkKind( WorkKind.SAW );
+                        gui.getWorkUI().setVisible(!gui.getWorkUI().isVisible());
                         break;
                 }
             } else {
