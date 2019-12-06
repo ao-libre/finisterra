@@ -6,16 +6,22 @@ import java.util.stream.Collectors;
 
 
 public enum SawRecipes {
-    None(0,0,0,0),
-    Newbie_arrow(10,136,10,860 );
+    None(0,0,0,0,0,0,0,0),
+    Ramitas(1,58,0,0,0,0,10,136),
+    flecha_Newbie(10,136,0,0,0,0,10,860 ),
+    flecha(30,136,0,0,0,0,10,480 );
 
     public static final List< SawRecipes > VALUES = List.copyOf( Arrays.asList(values()));
     private static final int SIZE = VALUES.size();
-    private final int needCount, needObjID, resultCount, resultObjID;
+    private final int needCount, needObjID, needCount2, needObjID2, needCount3, needObjID3, resultCount, resultObjID;
 
-    SawRecipes(int needCount, int needObjID, int resultCount, int resultObjID){
+    SawRecipes(int needCount, int needObjID,int needCount2, int needObjID2,int needCount3, int needObjID3, int resultCount, int resultObjID){
         this.needCount = needCount;
         this.needObjID = needObjID;
+        this.needCount2 = needCount2;
+        this.needObjID2 = needObjID2;
+        this.needCount3 = needCount3;
+        this.needObjID3 = needObjID3;
         this.resultCount = resultCount;
         this.resultObjID = resultObjID;
     }
@@ -30,6 +36,22 @@ public enum SawRecipes {
 
     public int getNeedObjID() {
         return needObjID;
+    }
+
+    public int getNeedCount2() {
+        return needCount2;
+    }
+
+    public int getNeedObjID2() {
+        return needObjID2;
+    }
+
+    public int getNeedCount3() {
+        return needCount3;
+    }
+
+    public int getNeedObjID3() {
+        return needObjID3;
     }
 
     public int getResultCount() {
