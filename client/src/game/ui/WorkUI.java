@@ -60,6 +60,7 @@ public class WorkUI extends Table {
         final Array<ForgeRecipes> recipes = new Array<>();
         ForgeRecipes.getForgeRecipes().forEach(recipes::add);
         forgeRecipesSelect.setItems(recipes);
+        forgeRecipesSelect.toFront();
         forgeRecipesSelect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -97,6 +98,7 @@ public class WorkUI extends Table {
         final Array<SawRecipes> recipes = new Array<>();
         SawRecipes.getSawRecipes().forEach(recipes::add);
         sawRecipesSelect.setItems(recipes);
+        sawRecipesSelect.toFront();
         sawRecipesSelect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -117,6 +119,7 @@ public class WorkUI extends Table {
                 sawTable.add(createContent(  needCount, needObjID, needCount2, needObjID2, needCount3, needObjID3, resultObjID, resultCount  ) )
                         .prefSize( 400,400 ).top().row();
                 sawTable.add( createButton() ).bottom();
+
             }
         });
         sawTable.add( sawRecipesSelect ).row();
@@ -130,7 +133,7 @@ public class WorkUI extends Table {
 
         Table content = new Table( Skins.COMODORE_SKIN );
 
-        Label labelNeed = new Label("Recursos requeridos: ", Skins.COMODORE_SKIN  );
+        Label labelNeed = new Label(assetManager.getMessages( Messages.RECIPE_NEEDITEMS), Skins.COMODORE_SKIN  );
         //objetos requeridos 1
         Label labelNeedObj = new Label( " ", Skins.COMODORE_SKIN );
         if (needObjID > 0) {
@@ -150,7 +153,7 @@ public class WorkUI extends Table {
             labelNeedObj3 = new Label( needCount3 + " " + needObj3.getName(), Skins.COMODORE_SKIN );
         }
 
-        Label labelResult = new Label( "Resultado: ", Skins.COMODORE_SKIN );
+        Label labelResult = new Label( assetManager.getMessages( Messages.RECIPE_RESULT), Skins.COMODORE_SKIN );
         //objeto resultante
         Label labelResultObj = new Label( "", Skins.COMODORE_SKIN );
         if (resultObjID > 0) {
@@ -169,7 +172,7 @@ public class WorkUI extends Table {
         return content;
     }
     //crea el boton craft y la funcionalidad
-    private Button createButton(){
+    private TextButton createButton(){
         TextButton create = new TextButton( "Craft", getSkin() );
         create.addListener( new ClickListener() {
             @Override
@@ -191,7 +194,7 @@ public class WorkUI extends Table {
                             .getNetwork().id, resultObjID, resultCount ) );
                 } else {
                     GameScreen.world.getSystem( GUI.class ).getConsole().addInfo(assetManager.getMessages(
-                            Messages.ADD_OR_REMOVE_ITEMS, "No tienes los recursos necesarios" ));
+                            Messages.NOT_HAVE_NECESSARY_RESOURCE ));
                 }
             }
         } );
