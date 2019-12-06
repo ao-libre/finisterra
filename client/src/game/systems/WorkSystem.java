@@ -17,7 +17,6 @@ import shared.network.interaction.AddItem;
 import shared.network.notifications.EntityUpdate;
 import shared.network.sound.SoundNotification;
 import shared.objects.types.*;
-import shared.objects.types.common.TreeObj;
 import shared.util.MapHelper;
 import shared.util.Messages;
 
