@@ -6,10 +6,11 @@ import java.util.stream.Collectors;
 
 
 public enum SawRecipes {
+    //chequear los json de objetos para saber los objID
     None(0,0,0,0,0,0,0,0),
     Ramitas(1,58,0,0,0,0,10,136),
     flecha_Newbie(10,136,0,0,0,0,10,860 ),
-    flecha(30,136,0,0,0,0,10,480 );
+    flecha(10,136,1,58,0,0,10,480 );
 
     public static final List< SawRecipes > VALUES = List.copyOf( Arrays.asList(values()));
     private static final int SIZE = VALUES.size();
