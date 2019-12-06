@@ -21,7 +21,6 @@ import game.utils.Skins;
 import shared.objects.types.WorkKind;
 import shared.util.Messages;
 
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
