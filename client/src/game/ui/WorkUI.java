@@ -23,12 +23,10 @@ import shared.util.Messages;
 public class WorkUI extends Table {
 
     private final ClickListener mouseListener;
-    private WorkKind workKind;
     private AOAssetManager assetManager;
     private int needObjID = 0, needCount = 0, resultObjID = 0 , resultCount = 0;
-    private String recipeTitle;
     private SelectBox<SawRecipes> sawRecipesSelect;
-    //private SelectBox<ForgeRecipes> forgeRecipesSelect;
+    private SelectBox<ForgeRecipes> forgeRecipesSelect;
 
     public WorkUI() {
         super( Skins.COMODORE_SKIN );
@@ -37,7 +35,7 @@ public class WorkUI extends Table {
         this.assetManager = AOGame.getGlobalAssetManager();
         add( sawWork() ).prefSize( 400, 400 ).row();
     }
-
+    //cambia  el contenido de la tabla segun el tipo de trabajo
     public void notify(WorkKind workKind){
         switch(workKind){
             case SAW:
@@ -57,13 +55,32 @@ public class WorkUI extends Table {
     //crea la UI de herreria
     private Table forgeWork() {
         Table forgeTable = new Table(  );
-        //forgeTable.add( forgeRecipesSelect );
+        forgeRecipesSelect = new SelectBox<>(getSkin());
+        final Array<ForgeRecipes> recipes = new Array<>();
+        ForgeRecipes.getForgeRecipes().forEach(recipes::add);
+        forgeRecipesSelect.setItems(recipes);
+        forgeRecipesSelect.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                forgeTable.clearChildren();
+                forgeTable.add( forgeRecipesSelect ).top().row();
+                ForgeRecipes forgeRecipes = forgeRecipesSelect.getSelected();
+
+                needCount = forgeRecipes.getNeedCount();
+                needObjID = forgeRecipes.getNeedObjID();
+                resultCount = forgeRecipes.getResultCount();
+                resultObjID = forgeRecipes.getResultObjID();
+
+                forgeTable.add(createContent( needCount, needObjID, resultObjID, resultCount ) )
+                        .prefSize( 400,400 ).top().row();
+                forgeTable.add( createButton() ).bottom();
+            }
+        });
+        forgeTable.add( forgeRecipesSelect ).row();
         //todo crear recetas y ver como obtener los campos need y result
-        needCount = 0;
-        needObjID = 0;
-        resultCount = 0;
-        resultObjID = 0;
-        forgeTable.add( createContent( needCount, needObjID, resultObjID, resultCount ) );
+        forgeTable.add( createContent( needCount, needObjID, resultObjID, resultCount ) )
+                .prefSize( 400,400 ).top().row();
+        forgeTable.add( createButton() ).bottom();
         return forgeTable;
     }
     //crea la UI de carpinteria
@@ -97,7 +114,7 @@ public class WorkUI extends Table {
         sawTable.add( createButton() ).bottom();
         return sawTable;
     }
-
+    //crea el contedio central del UI
     private Table createContent(int needCount, int needObjID, int resultObjID, int resultCount){
 
         Table content = new Table( Skins.COMODORE_SKIN );
@@ -122,6 +139,7 @@ public class WorkUI extends Table {
         content.add( labelResultObj ).center().row();
         return content;
     }
+    //crea el boton craft y la funcionalidad
     private Button createButton(){
         TextButton create = new TextButton( "Craft", getSkin() );
         create.addListener( new ClickListener() {
@@ -142,11 +160,7 @@ public class WorkUI extends Table {
         } );
         return create;
     }
-
-    public WorkKind getWorkKind() {
-        return workKind;
-    }
-
+    //cambia  el tipo de trabajo
     public void setWorkKind(WorkKind workKind){
         notify( workKind );
     }
