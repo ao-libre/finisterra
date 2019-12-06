@@ -7,7 +7,6 @@ import game.handlers.*;
 import game.network.GameNotificationProcessor;
 import game.screens.GameScreen;
 import game.ui.GUI;
-import game.ui.WorkUI;
 import game.utils.WorldUtils;
 import physics.AttackAnimation;
 import position.WorldPos;
@@ -52,21 +51,24 @@ public class WorkSystem {
             final Optional< Obj > object = objectHandler.getObject( player.getWeapon().index );
             WeaponObj weaponObj = (WeaponObj) object.get();
             if(weaponObj.getKind().equals( WeaponKind.WORK )) {
-                //WorkKind workKind = weaponObj.getWorkKind();
+
                 switch( weaponObj.getWorkKind() ) {
                     case CUT:
                         assert tile != null;
                         if(tile.getObjIndex() > 0) {
                             Obj targetobj = objectHandler.getObject( tile.getObjIndex() ).get();
                             if(targetobj.getType().equals( Type.TREE )) {
-                                TreeObj treeObj = (TreeObj) targetobj;
+                                //envia el sonido del hachazo
                                 gameNotificationProcessor.processNotification( new SoundNotification(13));
+                                // envia la animacion
                                 gameNotificationProcessor.processNotification( (EntityUpdate
                                         .EntityUpdateBuilder.of ( player.getNetwork().id )
                                         .withComponents ( new AttackAnimation () ).build() ) );
                                 gui.getConsole().addInfo(assetManager.getMessages( Messages.WORKING ));
+
                                 ThreadLocalRandom random = ThreadLocalRandom.current();
                                 int woody = random.nextInt(0, 10);
+
                                 if (woody > 6) {
                                     // 1008 arbol elfico
                                     if(targetobj.getId() == 1008) {
@@ -92,7 +94,6 @@ public class WorkSystem {
                         new SoundNotification(15);
                         break;
                     case FORGE:
-                        //todo crear la UI y el funcionamiento
                         gui.getWorkUI().setWorkKind( WorkKind.FORGE );
                         gui.getWorkUI().setVisible(!gui.getWorkUI().isVisible());
                         break;
@@ -100,10 +101,13 @@ public class WorkSystem {
                         if(tile.getObjIndex() > 0) {
                             Obj targetobj = objectHandler.getObject( tile.getObjIndex() ).get();
                             if(targetobj.getType().equals( Type.DEPOSIT )) {
+                                // envia el sonido
                                 gameNotificationProcessor.processNotification(new SoundNotification(15));
+                                // envia la animacion
                                 gameNotificationProcessor.processNotification( (EntityUpdate
                                         .EntityUpdateBuilder.of ( userId )
                                         .withComponents ( new AttackAnimation ( ))).build());
+
                                 gui.getConsole().addInfo( assetManager.getMessages( Messages.WORKING ));
                                 switch( targetobj.getName() ){
                                     case "Yacimiento de Hierro":
@@ -137,6 +141,7 @@ public class WorkSystem {
     }
 
     private void addResource(int objID){
+        //agrega el item al inventario
         GameScreen.getClient().sendToAll(new AddItem( E.E(userId).getNetwork().id, objID, 1 ));
     }
 }
