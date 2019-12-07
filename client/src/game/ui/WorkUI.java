@@ -2,6 +2,7 @@ package game.ui;
 
 
 import com.artemis.E;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -23,7 +24,7 @@ import shared.util.Messages;
 
 public class WorkUI extends Table {
 
-    private final ClickListener mouseListener;
+    private ClickListener mouseListener;
     private AOAssetManager assetManager;
     private int needObjID = 0, needCount = 0, needCount2 = 0, needObjID2 = 0, needCount3 = 0, needObjID3 = 0, resultObjID = 0 , resultCount = 0;
     private SelectBox<SawRecipes> sawRecipesSelect;
@@ -56,16 +57,18 @@ public class WorkUI extends Table {
     //crea la UI de herreria
     private Table forgeWork() {
         Table forgeTable = new Table(  );
-        forgeRecipesSelect = new SelectBox<>(getSkin());
+        forgeRecipesSelect = new SelectBox<>(Skins.COMODORE_SKIN,"craft");
+        forgeRecipesSelect.setAlignment( 1 );
         final Array<ForgeRecipes> recipes = new Array<>();
         ForgeRecipes.getForgeRecipes().forEach(recipes::add);
         forgeRecipesSelect.setItems(recipes);
+        forgeRecipesSelect.setColor( Color.DARK_GRAY );
         forgeRecipesSelect.toFront();
         forgeRecipesSelect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 forgeTable.clearChildren();
-                forgeTable.add( forgeRecipesSelect ).top().row();
+                forgeTable.add( forgeRecipesSelect ).top().prefSize( 300,50 ).row();
                 ForgeRecipes forgeRecipes = forgeRecipesSelect.getSelected();
                 //obtiene ingredientes
                 needCount = forgeRecipes.getNeedCount();
@@ -80,30 +83,32 @@ public class WorkUI extends Table {
 
                 forgeTable.add(createContent( needCount, needObjID, needCount2, needObjID2, needCount3, needObjID3, resultObjID, resultCount  ) )
                         .prefSize( 400,400 ).top().row();
-                forgeTable.add( createButton() ).bottom();
+                forgeTable.add( createButton() ).bottom().prefSize( 300,50 );
             }
         });
-        forgeTable.add( forgeRecipesSelect ).row();
-        //todo crear recetas y ver como obtener los campos need y result
+        forgeTable.add( forgeRecipesSelect ).prefSize( 300,50 ).row();
         forgeTable.add( createContent( needCount, needObjID, needCount2, needObjID2, needCount3, needObjID3, resultObjID, resultCount  ) )
                 .prefSize( 400,400 ).top().row();
-        forgeTable.add( createButton() ).bottom();
+        forgeTable.add( createButton() ).bottom().prefSize( 300,50 );
         return forgeTable;
     }
     //crea la UI de carpinteria
     private Table sawWork() {
         Table sawTable = new Table( Skins.COMODORE_SKIN );
 
-        sawRecipesSelect = new SelectBox<>(getSkin());
+        sawRecipesSelect = new SelectBox<>(Skins.COMODORE_SKIN,"craft");
         final Array<SawRecipes> recipes = new Array<>();
         SawRecipes.getSawRecipes().forEach(recipes::add);
+        //setAlignment posiciona el texto 0 izq 1 centro 2 derecha
+        sawRecipesSelect.setAlignment( 1 );
+        sawRecipesSelect.setColor( Color.DARK_GRAY );
         sawRecipesSelect.setItems(recipes);
         sawRecipesSelect.toFront();
         sawRecipesSelect.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 sawTable.clearChildren();
-                sawTable.add( sawRecipesSelect ).top().row();
+                sawTable.add( sawRecipesSelect ).top().prefSize( 300,50 ).row();
                 SawRecipes sawRecipes = sawRecipesSelect.getSelected();
                 //obtiene ingredientes
                 needCount = sawRecipes.getNeedCount();
@@ -118,14 +123,14 @@ public class WorkUI extends Table {
 
                 sawTable.add(createContent(  needCount, needObjID, needCount2, needObjID2, needCount3, needObjID3, resultObjID, resultCount  ) )
                         .prefSize( 400,400 ).top().row();
-                sawTable.add( createButton() ).bottom();
+                sawTable.add( createButton() ).bottom().prefSize( 300,50 );
 
             }
         });
-        sawTable.add( sawRecipesSelect ).row();
+        sawTable.add( sawRecipesSelect ).prefSize( 300,50 ).row();
         sawTable.add(createContent( needCount, needObjID, needCount2, needObjID2, needCount3, needObjID3, resultObjID, resultCount ) )
                 .prefSize( 400,400 ).top().row();
-        sawTable.add( createButton() ).bottom();
+        sawTable.add( createButton() ).bottom().prefSize( 300,50 );
         return sawTable;
     }
     //crea el contedio central del UI
@@ -174,7 +179,7 @@ public class WorkUI extends Table {
     //crea el boton craft y la funcionalidad
     private TextButton createButton(){
         TextButton create = new TextButton( "Craft", getSkin() );
-        create.addListener( new ClickListener() {
+        create.addListener( mouseListener = new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if(hasRequestItems(needCount, needObjID ,needCount2, needObjID2, needCount3, needObjID3 )) {
@@ -252,7 +257,8 @@ public class WorkUI extends Table {
         }
     }
 
-    public void isOver(){
-        mouseListener.isOver();
+    public  boolean isOver(){
+        return mouseListener.isOver() && createButton().getClickListener().isOver();
+
     }
 }
