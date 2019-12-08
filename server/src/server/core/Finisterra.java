@@ -6,6 +6,7 @@ import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.esotericsoftware.minlog.Log;
 import server.configs.ServerConfiguration;
 import server.network.FinisterraRequestProcessor;
 import server.systems.FinisterraSystem;
@@ -16,6 +17,7 @@ import shared.model.lobby.Lobby;
 import shared.model.lobby.Room;
 import shared.model.map.Map;
 import shared.network.lobby.StartGameResponse;
+import shared.util.LogSystem;
 import shared.util.MapHelper;
 
 import java.net.InetAddress;
@@ -60,8 +62,9 @@ public class Finisterra implements ApplicationListener {
     @Override
     public void create() {
         long start = System.currentTimeMillis();
-        Gdx.app.setLogLevel(Application.LOG_DEBUG);
-        Gdx.app.log("Server initialization", "Initializing Finisterra Server...");
+
+        Log.setLogger(new LogSystem());
+        Log.info("Server Initialization", "Initializing Finisterra Server...");
 
         objectManager = new ObjectManager();
         spellManager = new SpellManager();
@@ -83,8 +86,8 @@ public class Finisterra implements ApplicationListener {
                 .with(new FinisterraRequestProcessor())
                 .build());
 
-        Gdx.app.log("Server initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(start - System.currentTimeMillis())) + " seconds.");
-        Gdx.app.log("Server initialization", "Finisterra OK");
+        Log.info("Server initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(start - System.currentTimeMillis())) + " seconds.");
+        Log.info("Server initialization", "Finisterra OK");
     }
 
     public void startGame(Room room) {
@@ -99,13 +102,13 @@ public class Finisterra implements ApplicationListener {
         room.getPlayers().stream().mapToInt(player -> getNetworkManager().getConnectionByPlayer(player)).forEach(connectionId -> {
             try {
                 if (shouldUseLocalHost) {
-                    System.out.println("Using localhost...");
+                    Log.info("Network","Using localhost...");
                 }
                 getNetworkManager().sendTo(connectionId, new StartGameResponse(
                         shouldUseLocalHost ? InetAddress.getLocalHost().getHostAddress() : IpChecker.getIp(),
                         roomServer.getTcpPort(), roomServer.getUdpPort()));
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.error("Network", "Error en startGame()", e);
             }
         });
     }

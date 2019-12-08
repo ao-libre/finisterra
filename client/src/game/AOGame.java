@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.esotericsoftware.minlog.Log;
+import shared.util.LogSystem;
 import game.handlers.AOAssetManager;
 import game.handlers.DefaultAOAssetManager;
 import game.screens.GameScreen;
@@ -41,7 +42,8 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
     @Override
     public void create() {
         super.create();
-        Gdx.app.debug("AOGame", "Creating AOGame...");
+        Log.setLogger(new LogSystem());
+        Log.info("AOGame", "Creating AOGame...");
         setTransition(new ColorFadeTransition(Color.BLACK, Interpolation.exp10), 1.0f);
         Cursors.setCursor("hand");
         ScreenManager.getInstance().initialize(this);
@@ -74,12 +76,14 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
         return clientConfiguration;
     }
 
+    @Override
     public AOAssetManager getAssetManager() {
         return assetManager;
     }
 
+    @Override
     public void dispose() {
-        Log.info("Closing client...");
+        Log.info("AOGame","Closing client...");
         screen.dispose();
         getAssetManager().dispose();
         Gdx.app.exit();

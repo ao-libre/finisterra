@@ -32,8 +32,7 @@ public class LoadingScreen extends AbstractScreen {
 
     @Override
     void createContent() {
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
-        assetManager = game.getAssetManager();
+        assetManager = AOGame.getGlobalAssetManager();
 
         String progressBarPath = Resources.GAME_IMAGES_PATH + "progress-bar.png";
         String progressBarKnobPath = Resources.GAME_IMAGES_PATH + "progress-bar-knob.png";
@@ -70,8 +69,8 @@ public class LoadingScreen extends AbstractScreen {
             }
         }
         // display loading information
-        float progress = manager.getProgress();
-        this.progress.setValue(progress * 100);
+        float varProgress = manager.getProgress();
+        this.progress.setValue(varProgress * 100);
         super.render(delta);
     }
 }

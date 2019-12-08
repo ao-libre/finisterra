@@ -28,6 +28,7 @@ import java.util.Optional;
 
 import static design.designers.ImageDesigner.ImageParameters;
 import static design.utils.FileUtils.openDialog;
+import game.AOGame;
 
 public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
 
@@ -94,8 +95,7 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
         int freeId = getFreeId();
         FileHandle dest = Gdx.files.local(Resources.GAME_GRAPHICS_PATH + freeId + ".png");
         fileHandle.copyTo(dest);
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        AOAssetManager assetManager = game.getAssetManager();
+        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
         if (assetManager instanceof DefaultAOAssetManager) {
             DefaultAOAssetManager defaultAOAssetManager = (DefaultAOAssetManager) assetManager;
             defaultAOAssetManager.load(dest.path(), Texture.class);

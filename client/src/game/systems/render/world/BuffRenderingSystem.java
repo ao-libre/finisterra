@@ -15,7 +15,7 @@ public class BuffRenderingSystem extends OrderedEntityProcessingSystem {
 
     public static final float ALPHA = 0.5f;
     private static final int BORDER = 6;
-    private SpriteBatch batch;
+    private final SpriteBatch batch;
     private CameraSystem cameraSystem;
     private int yOffset = 100;
 
