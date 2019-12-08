@@ -156,7 +156,8 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
 
     @Override
     public boolean closeRequested() {
-        return false;
+        // no tengo idea de porque lo pusieron como false por esto era que no se podia cerrar
+        return true;
     }
 
     @Override
@@ -171,5 +172,20 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
     @Override
     public void refreshRequested() {
 
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        Log.info("Saliendo de Finisterra Design Center ");
+        // como no se si el super.dispose() cubre lo de abajo tambien lo puse
+        screen.dispose();
+        SKIN.dispose();
+        world.dispose();
+        stage.dispose();
+        assetManager.dispose();
+        // esta si se que hay que ponerla para al final de un programa que use Gdx
+        Gdx.app.exit();
+        System.exit(0);
     }
 }
