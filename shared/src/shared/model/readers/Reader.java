@@ -20,7 +20,6 @@ package shared.model.readers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.esotericsoftware.minlog.Log;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -31,23 +30,24 @@ public class Reader<T> {
     public T read(String path, Loader<T> loader) {
 
         try {
-            Log.info(getClass().getSimpleName(), path);
+            Gdx.app.log(getClass().getSimpleName(), path);
             FileHandle fileHandle = Gdx.files.internal(path);
             T loadedFile = loader.load(new DataInputStream(fileHandle.read()));
 
             Gdx.app.log(this.getClass().getSimpleName(), "[Reader] Asset " + path + " successfully loaded");
             return loadedFile;
         } catch (IOException e) {
-            Log.error(this.getClass().getSimpleName(), "Failed to load [Reader] Asset " + path, e);
+            Gdx.app.log(this.getClass().getSimpleName(), "Failed to load [Reader] Asset " + path);
             return null;
         }
     }
 
     public T read(InputStream is, Loader<T> loader) {
         try {
-            return loader.load(new DataInputStream(is));
+            T loadedFile = loader.load(new DataInputStream(is));
+            return loadedFile;
         } catch (IOException e) {
-            Log.error(this.getClass().getSimpleName(), "Failed to load object input stream " + is.toString(), e);
+            Gdx.app.log(this.getClass().getSimpleName(), "Failed to load object input stream " + is.toString(), e);
             return null;
         }
     }

@@ -29,9 +29,6 @@ public class MapHelper {
     private static final int TOP_BORDER_TILE = 8;
     private static final int LEFT_BORDER_TILE = 10;
     private static final int RIGHT_BORDER_TILE = 91;
-
-    private static final int MAX_MAPS = 290;
-
     private static final AOJson JSON = new AOJson();
     private static MapHelper instance;
     private LoadingCache<Integer, Map> maps;
@@ -130,8 +127,8 @@ public class MapHelper {
      * Initialize maps.
      */
     public void loadAll() {
-        Log.info("Server initialization", "Loading maps...");
-        for (int i = 1; i <= MAX_MAPS; i++) {
+        Gdx.app.log("Server initialization", "Loading maps...");
+        for (int i = 1; i <= 290; i++) {
             maps.getUnchecked(i);
         }
     }
@@ -145,7 +142,8 @@ public class MapHelper {
              DataInputStream inf = new DataInputStream(infPath.read())) {
             return loader.load(map, inf);
         } catch (IOException | GdxRuntimeException e) {
-            Log.error("Map I/O","Failed to read map " + i, e);
+            e.printStackTrace();
+            Log.info("Failed to read map " + i);
             return new Map();
         }
     }
