@@ -76,5 +76,30 @@ public enum Messages {
     SPELLS_FULL,
 
     // COMMAND USAGE
-    PLAYERS_ONLINE
-}
+    PLAYERS_ONLINE,
+
+    // ITEM TOOLTIP
+    OBJ_NAME,
+    OBJ_TYPE,
+    OBJ_kIND,
+    OBJ_MAXHIT,
+    OBJ_MINHIT,
+    POTION_Max,
+    POTION_MIN,
+    POTION_ET,
+    OBJ_MAXDEF,
+    OBJ_MINDEF,
+    OBJ_VALUE,
+    OBJ_COUNT,
+    WEAPON_AXE,
+    WEAPON_BOW,
+    WEAPON_DAGGER,
+    WEAPON_MACE,
+    WEAPON_POLE,
+    WEAPON_WORK,
+    WEAPON_STAFF,
+    WEAPON_SWORD
+
+
+
+    }

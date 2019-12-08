@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.handlers.AOAssetManager;
+import game.handlers.MapHandler;
 import game.handlers.ObjectHandler;
 import game.handlers.MusicHandler;
 import game.screens.GameScreen;
@@ -20,6 +21,8 @@ import game.utils.Cursors;
 import game.utils.WorldUtils;
 import shared.model.AttackType;
 import shared.model.Spell;
+import shared.model.map.Map;
+import shared.model.map.Tile;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.DropItem;
@@ -28,6 +31,7 @@ import shared.network.interaction.TakeItemRequest;
 import shared.network.interaction.TalkRequest;
 import shared.network.inventory.ItemActionRequest;
 import shared.objects.types.Obj;
+import shared.util.MapHelper;
 import shared.util.Messages;
 
 import java.util.Optional;
@@ -95,6 +99,10 @@ public class AOInputProcessor extends Stage {
                         gui.getInventory().cleanShoot();
                     } else {
                         WorldManager worldManager = world.getSystem( WorldManager.class );
+                        Map map = MapHandler.get( worldPos.getMap() );
+                        Tile tile = MapHelper.getTile( map, worldPos );
+                        ObjectHandler objectHandler = WorldUtils.getWorld().orElse( null )
+                                .getSystem( ObjectHandler.class );
                         Optional< E > targetEntity = worldManager.getEntities()
                                 .stream()
                                 .filter( entity -> E( entity ).hasWorldPos() && E( entity ).getWorldPos().equals( worldPos ) )
@@ -103,8 +111,6 @@ public class AOInputProcessor extends Stage {
                         if(targetEntity.isPresent()) {
                             E entity = targetEntity.get();
                             if(entity.hasObject()) {
-                                ObjectHandler objectHandler = WorldUtils.getWorld().orElse( null )
-                                        .getSystem( ObjectHandler.class );
                                 Obj obj = objectHandler.getObject( entity.getObject().index ).get();
                                 gui.getConsole().addInfo( assetManager.getMessages(
                                         Messages.SEE_SOMEONE, String.valueOf( entity.objectCount() ) )
@@ -112,9 +118,15 @@ public class AOInputProcessor extends Stage {
                             } else if(entity.hasName()) {
                                 gui.getConsole().addInfo( assetManager.getMessages( Messages.SEE_SOMEONE,
                                         entity.getName().text ) );
-                            } else {
-                                gui.getConsole().addInfo( assetManager.getMessages( Messages.SEE_NOTHING ) );
                             }
+                        }else if(tile.getObjIndex() > 0) {
+                            objectHandler.getObject( tile.getObjIndex()).ifPresent(obj -> {
+                                gui.getConsole().addInfo( assetManager.getMessages(
+                                        Messages.SEE_SOMEONE, String.valueOf( tile.getObjCount() ) )
+                                        + " " + obj.getName() );
+                            });
+                        } else {
+                            gui.getConsole().addInfo( assetManager.getMessages( Messages.SEE_NOTHING ) );
                         }
                     }
                 } ) );
