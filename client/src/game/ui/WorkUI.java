@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
 import game.AOGame;
 import game.handlers.AOAssetManager;
@@ -59,7 +58,7 @@ public class WorkUI extends Table {
         Table forgeTable = new Table(  );
         forgeRecipesSelect = new SelectBox<>(Skins.COMODORE_SKIN,"craft");
         forgeRecipesSelect.setAlignment( 1 );
-        final Array<ForgeRecipes> recipes = new Array<>();
+        final Array< ForgeRecipes > recipes = new Array<>();
         ForgeRecipes.getForgeRecipes().forEach(recipes::add);
         forgeRecipesSelect.setItems(recipes);
         forgeRecipesSelect.setColor( Color.DARK_GRAY );
@@ -178,7 +177,7 @@ public class WorkUI extends Table {
     }
     //crea el boton craft y la funcionalidad
     private TextButton createButton(){
-        TextButton create = new TextButton( "Craft", getSkin() );
+        TextButton create = new TextButton( "Craft", Skins.COMODORE_SKIN,"craft" );
         create.addListener( mouseListener = new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -250,11 +249,7 @@ public class WorkUI extends Table {
 
         }
 
-        if (need1 && need2 && need3){
-            return true;
-        } else {
-            return false;
-        }
+        return need1 && need2 && need3;
     }
 
     public  boolean isOver(){
