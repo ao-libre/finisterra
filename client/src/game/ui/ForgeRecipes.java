@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 public enum ForgeRecipes {
     None(0,0,0,0,0,0,0,0,0);
 
-
     public static final List< ForgeRecipes > VALUES = List.copyOf( Arrays.asList(values()));
     private static final int SIZE = VALUES.size();
     private final int needCount, needObjID, needCount2, needObjID2, needCount3, needObjID3, resultCount, resultObjID
