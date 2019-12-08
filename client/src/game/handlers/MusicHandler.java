@@ -30,7 +30,7 @@ public class MusicHandler extends PassiveSystem {
                 if (channel != null) channel.controlChange(7, (int) (volume * 127));
             }
         } catch (MidiUnavailableException e) {
-            e.printStackTrace();
+            Log.error("Music System", "Error while setting volume", e);
         }
     }
 
@@ -44,7 +44,7 @@ public class MusicHandler extends PassiveSystem {
     public void playMusic(int musicID) {
         Music music = assetManager.getMusic(musicID);
         if (music == null) {
-            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play music index: " + musicID + ", but it was not loaded.");
+            Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to play music index: " + musicID + ", but it was not loaded.");
             return;
         }
         music.setVolume(volume);
@@ -55,7 +55,7 @@ public class MusicHandler extends PassiveSystem {
     public void stopMusic(int musicID) {
         Music music = assetManager.getMusic(musicID);
         if (music == null) {
-            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not loaded.");
+            Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not loaded.");
             return;
         }
         music.stop();
@@ -67,7 +67,7 @@ public class MusicHandler extends PassiveSystem {
             public void run() {
                 Music music = assetManager.getMusic(musicID);
                 if (music == null) {
-                    Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not playing or loaded.");
+                    Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not playing or loaded.");
                     return;
                 }
                 if (music.getVolume() < 1)
@@ -86,7 +86,7 @@ public class MusicHandler extends PassiveSystem {
             public void run() {
                 Music music = assetManager.getMusic(musicID);
                 if (music == null) {
-                    Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not playing or loaded.");
+                    Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not playing or loaded.");
                     return;
                 }
                 if (music.getVolume() >= MUSIC_FADE_STEP)
@@ -105,7 +105,7 @@ public class MusicHandler extends PassiveSystem {
         Sequencer sequencer = assetManager.getMidi(midiID);
 
         if (sequencer == null) {
-            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
+            Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
             return;
         }
 
@@ -116,7 +116,7 @@ public class MusicHandler extends PassiveSystem {
         Sequencer sequencer = assetManager.getMidi(midiID);
     
         if (sequencer == null) {
-            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
+            Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
             return;
         }
 

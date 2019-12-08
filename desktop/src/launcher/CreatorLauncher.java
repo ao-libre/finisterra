@@ -8,15 +8,18 @@ import game.ClientConfiguration;
 import object.ObjectCreator;
 
 import static game.utils.Resources.CLIENT_CONFIG;
+import shared.util.LogSystem;
 
 public class CreatorLauncher {
 
     public static void main(String[] arg) {
         System.setProperty("org.lwjgl.opengl.Display.enableOSXFullscreenModeAPI", "true");
-
+        
+        Log.setLogger(new LogSystem());
+        
         ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG);
         if (config == null) {
-            Log.info("DesktopLauncher", "Desktop config.json not found, creating default.");
+            Log.warn("DesktopLauncher", "Desktop config.json not found, creating default.");
             config = ClientConfiguration.createConfig();
             config.save(CLIENT_CONFIG);
         }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.esotericsoftware.minlog.Log;
 import design.designers.DescriptorDesigner;
 import design.editors.fields.FieldEditor.FieldListener;
 import game.screens.WorldScreen;
@@ -49,7 +50,7 @@ public abstract class DescriptorView<T extends Descriptor> extends View<T, Descr
                 copy.setOffsetY(original.getOffsetY());
             }
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            Log.error("DescriptorView","Error at copy()", e);
         }
         return newDescriptor;
     }

@@ -177,6 +177,7 @@ public class GUI extends BaseSystem implements Disposable {
         stage.draw();
     }
 
+    @Override
     public void dispose() {
         stage.dispose();
     }
