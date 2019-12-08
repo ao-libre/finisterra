@@ -9,14 +9,17 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class LogSystem extends Log.Logger {
+   
+    private static final String OS = System.getProperty("os.name").toLowerCase();
+    private final String SALTO_DE_LINEA = OS.contains("win") ? "\r\n" : "\n";
     
     @Override
     public void log (int level, String category, String message, Throwable ex) {
-
+        
         StringBuilder builder = new StringBuilder(256);
         
-	// We print Date & Time always except at INFO or DEBUG logs.
-	if (level != Log.LEVEL_INFO || level != Log.LEVEL_DEBUG) {
+	// We print Date & Time ONLY in ERROR or WARN logs.
+	if (level == Log.LEVEL_ERROR || level == Log.LEVEL_WARN) {
             builder.append(new Date());
     	    builder.append(" ");
 	}
@@ -28,16 +31,21 @@ public class LogSystem extends Log.Logger {
         builder.append(category);
         builder.append("] ");
         builder.append(message);
-
+        
+        // In the .log file, this is neccesary.
+        if (level == Log.LEVEL_ERROR || level == Log.LEVEL_WARN) {
+            builder.append(SALTO_DE_LINEA);
+        }
+        
         if (ex != null) {
             StringWriter writer = new StringWriter(256);
             ex.printStackTrace(new PrintWriter(writer));
-            builder.append("\n");
+            builder.append(SALTO_DE_LINEA);
             builder.append(writer.toString().trim());
         }
 
         // We only print ERROR logs into Errores.log
-        if (level != Log.LEVEL_INFO || level != Log.LEVEL_DEBUG) {
+        if (level == Log.LEVEL_ERROR || level == Log.LEVEL_WARN) {
             try (FileOutputStream file = new FileOutputStream("Errores.log", true)) {
                 byte[] output = builder.toString().getBytes();
                 file.write(output);
@@ -50,7 +58,7 @@ public class LogSystem extends Log.Logger {
         System.out.println(builder);
 
     }
-    
+
     private String getLevelName(int level){
         switch(level){
             case Log.LEVEL_INFO:
