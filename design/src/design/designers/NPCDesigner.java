@@ -3,7 +3,6 @@ package design.designers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.esotericsoftware.minlog.Log;
 import design.editors.NPCEditor;
 import shared.model.loaders.NPCLoader;
 import shared.model.npcs.NPC;
@@ -28,7 +27,7 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
     private final String OUTPUT_FOLDER = "output/";
 
     private Map<Integer, NPC> npcs;
-    private final AOJson json = new AOJson();
+    private AOJson json = new AOJson();
 
     public NPCDesigner(NPCParameters parameters) {
         load(parameters);
@@ -46,7 +45,7 @@ public class NPCDesigner implements IDesigner<NPC, NPCParameters> {
                 try {
                     npcs = new NPCLoader().load(new DataInputStream(file.read()));
                 } catch (IOException e) {
-                    Log.error("NPC's I/O", "Error loading NPCs.dat", e);
+                    e.printStackTrace();
                 }
                 break;
             case JSON:

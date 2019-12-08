@@ -2,7 +2,6 @@ package game.handlers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.systems.sound.SoundSytem;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
@@ -22,7 +21,7 @@ public class SoundsHandler extends PassiveSystem {
     public long playSound(Integer soundID, boolean loop) {
         Sound sound = assetManager.getSound(soundID);
         if (sound == null) {
-            Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
+            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
             return -1;
         }
         //TODO: it should be played with a global configurable volume
@@ -54,7 +53,7 @@ public class SoundsHandler extends PassiveSystem {
     public void stopSound(Integer soundID) {
         Sound sound = assetManager.getSound(soundID);
         if (sound == null) {
-            Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
+            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
             return;
         }
 
@@ -64,7 +63,7 @@ public class SoundsHandler extends PassiveSystem {
     public void stopSound(Integer soundID, long soundIndex) {
         Sound sound = assetManager.getSound(soundID);
         if (sound == null) {
-            Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
+            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
             return;
         }
         sound.stop(soundIndex);

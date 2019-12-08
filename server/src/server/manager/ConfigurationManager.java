@@ -38,7 +38,7 @@ public class ConfigurationManager {
             // DO NOT USE 'Gdx.Files', because 'Gdx.Files' in the launcher is always NULL!
             serverConfiguration = json.fromJson(ServerConfiguration.class, new FileHandle(ServerConfiguration.PATH));
         } catch (Exception ex) {
-            Log.warn("Server Configuration", "File not found! Creating new one with default values...", ex);
+            Log.debug("Server configuration file not found! Creating default...");
             serverConfiguration = new ServerConfiguration();
             serverConfiguration.loadDefaultValues();
             serverConfiguration.save();
@@ -51,7 +51,7 @@ public class ConfigurationManager {
         try {
             charConfiguration = json.fromJson(CharConfiguration.class, new FileHandle(CharConfiguration.PATH));
         } catch (Exception ex) {
-            Log.warn("Char Class Configuration", "File not found! Creating new one with default values...", ex);
+            Log.debug("Char class configuration file not found! Creating default...");
             charConfiguration = new CharConfiguration();
             charConfiguration.loadDefaultValues();
             charConfiguration.save();
