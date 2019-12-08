@@ -6,14 +6,16 @@ import java.util.stream.Collectors;
 
 
 public enum ForgeRecipes {
-    None(0,0,0,0,0,0,0,0);
+    None(0,0,0,0,0,0,0,0,0);
 
 
     public static final List< ForgeRecipes > VALUES = List.copyOf( Arrays.asList(values()));
     private static final int SIZE = VALUES.size();
-    private final int needCount, needObjID, needCount2, needObjID2, needCount3, needObjID3, resultCount, resultObjID;
+    private final int needCount, needObjID, needCount2, needObjID2, needCount3, needObjID3, resultCount, resultObjID
+            , recipeLvl;
 
-    ForgeRecipes(int needCount, int needObjID, int needCount2, int needObjID2, int needCount3, int needObjID3, int resultCount, int resultObjID){
+    ForgeRecipes(int needCount, int needObjID, int needCount2, int needObjID2, int needCount3, int needObjID3
+            , int resultCount, int resultObjID, int recipeLvl){
         this.needCount = needCount;
         this.needObjID = needObjID;
         this.needCount2 = needCount2;
@@ -22,6 +24,7 @@ public enum ForgeRecipes {
         this.needObjID3 = needObjID3;
         this.resultCount = resultCount;
         this.resultObjID = resultObjID;
+        this.recipeLvl = recipeLvl;
     }
 
     public static List< ForgeRecipes > getForgeRecipes() {
@@ -58,5 +61,9 @@ public enum ForgeRecipes {
 
     public int getResultObjID() {
         return resultObjID;
+    }
+
+    public int getRecipeLvl() {
+        return recipeLvl;
     }
 }
