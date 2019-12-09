@@ -47,7 +47,7 @@ public class LogSystem extends Log.Logger {
             builder.append(SALTO_DE_LINEA);
             builder.append(writer.toString().trim());
             builder.append(SALTO_DE_LINEA);
-			builder.append(SALTO_DE_LINEA);
+	    builder.append(SALTO_DE_LINEA);
         }
 
         // We only print ERROR logs into Errores.log
