@@ -32,7 +32,7 @@ public class LogSystem extends Log.Logger {
         builder.append("] ");
         builder.append(message);
         
-        // In the .log file, this is neccesary.
+        // In the .log file, this is neccesary for better readability.
         if (level == Log.LEVEL_ERROR || level == Log.LEVEL_WARN) {
             builder.append(SALTO_DE_LINEA);
         }
@@ -42,6 +42,7 @@ public class LogSystem extends Log.Logger {
             ex.printStackTrace(new PrintWriter(writer));
             builder.append(SALTO_DE_LINEA);
             builder.append(writer.toString().trim());
+			builder.append(SALTO_DE_LINEA);
         }
 
         // We only print ERROR logs into Errores.log

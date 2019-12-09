@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.handlers.AOAssetManager;
 import game.managers.AOInputProcessor;
@@ -85,20 +86,27 @@ public class GUI extends BaseSystem implements Disposable {
     }
 
     public void takeScreenshot() {
-        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
-        String screenshotPath = "Screenshots/Screenshot-" + LocalDateTime.now() + ".png";
+        try {
+            
+            AOAssetManager assetManager = AOGame.getGlobalAssetManager();
+            String screenshotPath = "Screenshots/Screenshot-" + LocalDateTime.now() + ".png";
 
-        byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
-        // this loop makes sure the whole screenshot is opaque and looks exactly like what the user is seeing
-        for (int i = 4; i < pixels.length; i += 4) {
-            pixels[i - 1] = (byte) 255;
+            byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
+            // this loop makes sure the whole screenshot is opaque and looks exactly like what the user is seeing
+            for (int i = 4; i < pixels.length; i += 4) {
+                pixels[i - 1] = (byte) 255;
+            }
+
+            Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
+            BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
+            PixmapIO.writePNG(Gdx.files.local(screenshotPath), pixmap);
+            getConsole().addInfo(assetManager.getMessages(Messages.SCREENSHOT, screenshotPath));
+            pixmap.dispose();
+        
+        } catch(Exception ex) {
+            Log.error("Screenshot I/O", "Error trying to take a screenshot..." , ex);
         }
-
-        Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
-        BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
-        PixmapIO.writePNG(Gdx.files.local(screenshotPath), pixmap);
-        getConsole().addInfo(assetManager.getMessages(Messages.SCREENSHOT, screenshotPath));
-        pixmap.dispose();
+        
     }
 
     public void toggleFullscreen() {
