@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.artemis.E.E;
 import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
+import com.esotericsoftware.minlog.Log;
 
 public class GameScreen extends ScreenAdapter implements WorldScreen {
 
@@ -61,7 +62,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     private final SpriteBatch spriteBatch;
     private WorldConfigurationBuilder worldConfigBuilder;
     private final AOAssetManager assetManager;
-    private Music backgroundMusic = MusicHandler.BACKGROUNDMUSIC;
+    private final Music backgroundMusic = MusicHandler.BACKGROUNDMUSIC;
 
     public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
         this.clientConfiguration = clientConfiguration;
@@ -70,7 +71,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         this.logger = new FPSLogger();
         long start = System.currentTimeMillis();
         initWorldConfiguration();
-        Gdx.app.log("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
+        Log.info("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
     }
 
     public static int getPlayer() {
@@ -89,6 +90,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         return world.getSystem(ClientSystem.class).getKryonetClient();
     }
 
+    @Override
     public World getWorld() {
         return world;
     }

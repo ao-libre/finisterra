@@ -5,6 +5,7 @@ import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
+import com.esotericsoftware.minlog.Log;
 import server.network.ServerNotificationProcessor;
 import server.network.ServerRequestProcessor;
 import server.systems.*;
@@ -31,7 +32,6 @@ public class Server {
     private ObjectManager objectManager;
     private SpellManager spellManager;
     private World world;
-    private ServerStrategy strategy;
 
     public Server(int roomId, int tcpPort, int udpPort, ObjectManager objectManager, SpellManager spellManager, HashMap<Integer, Map> maps) {
         this.roomId = roomId;
@@ -57,7 +57,7 @@ public class Server {
     private void create() {
         long start = System.currentTimeMillis();
         initWorld();
-        Gdx.app.log("Server initialization", "Elapsed time: " + (start - System.currentTimeMillis()));
+        Log.info("Server initialization", "Elapsed time: " + (start - System.currentTimeMillis()));
     }
 
     public World getWorld() {
@@ -65,9 +65,9 @@ public class Server {
     }
 
     private void initWorld() {
-        System.out.println("Initializing systems...");
+        Log.info("Initializing systems...");
         final WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
-        strategy = new ServerStrategy(tcpPort, udpPort);
+        ServerStrategy strategy = new ServerStrategy(tcpPort, udpPort);
         builder
                 .with(new FluidEntityPlugin())
                 .with(new ServerSystem(strategy))
@@ -95,7 +95,7 @@ public class Server {
                 .with(new BuffSystem())
                 .with(new CommandSystem());
         world = new World(builder.build());
-        System.out.println("WORLD CREATED");
+        Log.info("World created successfully!");
     }
 
     public void update() {
