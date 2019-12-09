@@ -21,6 +21,7 @@ import game.utils.Skins;
 import shared.util.Messages;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class GUI extends BaseSystem implements Disposable {
 
@@ -88,19 +89,26 @@ public class GUI extends BaseSystem implements Disposable {
     public void takeScreenshot() {
         try {
             
+            // Fetch assetManager
             AOAssetManager assetManager = AOGame.getGlobalAssetManager();
-            String screenshotPath = "Screenshots/Screenshot-" + LocalDateTime.now() + ".png";
-
+            
+            // Set where we gonna save the screenshot
+            String screenshotPath = "Screenshots/Screenshot-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM_HH-mm-ss")) + ".png";
+            
+            // Perform the appropiate I/O opperations.
             byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
             // this loop makes sure the whole screenshot is opaque and looks exactly like what the user is seeing
             for (int i = 4; i < pixels.length; i += 4) {
                 pixels[i - 1] = (byte) 255;
             }
-
             Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
             BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
             PixmapIO.writePNG(Gdx.files.local(screenshotPath), pixmap);
+            
+            // Render the message in the game console.
             getConsole().addInfo(assetManager.getMessages(Messages.SCREENSHOT, screenshotPath));
+            
+            // Clear/dispose the pixmap object.
             pixmap.dispose();
         
         } catch(Exception ex) {
