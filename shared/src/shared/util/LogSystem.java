@@ -32,7 +32,11 @@ public class LogSystem extends Log.Logger {
         builder.append("] ");
         builder.append(message);
         
-        // In the .log file, this is neccesary.
+        /*
+            Para mejor visibilidad.
+            Separamos el mensaje de error de el stacktrace.
+        */
+        
         if (level == Log.LEVEL_ERROR || level == Log.LEVEL_WARN) {
             builder.append(SALTO_DE_LINEA);
         }
@@ -42,6 +46,8 @@ public class LogSystem extends Log.Logger {
             ex.printStackTrace(new PrintWriter(writer));
             builder.append(SALTO_DE_LINEA);
             builder.append(writer.toString().trim());
+            builder.append(SALTO_DE_LINEA);
+	    builder.append(SALTO_DE_LINEA);
         }
 
         // We only print ERROR logs into Errores.log
@@ -74,8 +80,10 @@ public class LogSystem extends Log.Logger {
                 return "TRACE";
                 
             case Log.LEVEL_WARN:
-                return "WARNING";         
+                return "WARNING";
+                
+            default:
+                return "OTHER";
         }
-        return "NONE";
     }
 }
