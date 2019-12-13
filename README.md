@@ -6,7 +6,7 @@ MMORPG Java Open Source based on Argentum Online. Written in Java, using Artemis
 ![game preview image](https://cdn.discordapp.com/attachments/580487031197794313/636899837354442755/readme-repo.png)
 
 ### Fugaz Get Started
-basado en [OpenJDK-build 12.0.2+10](https://jdk.java.net/archive) para la rama **master**:
+basado en [OpenJDK versión 13](https://jdk.java.net/13/):
 
 ```
 git clone https://github.com/ao-libre/finisterra.git

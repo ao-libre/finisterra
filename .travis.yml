@@ -1,8 +1,9 @@
+dist: bionic
 language: java
 install: true
 
 jdk:
-  - openjdk12
+  - openjdk13
 
 script:
   - ./gradlew compileJava
