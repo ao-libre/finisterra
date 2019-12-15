@@ -27,9 +27,12 @@ import com.esotericsoftware.minlog.Log;
 import static launcher.DesignCenter.SKIN;
 
 public class IntegerEditor extends FieldEditor<Integer> {
-
+    
+    private final Timer timer;
+    
     private IntegerEditor(String label, FieldProvider fieldProvider, Consumer<Integer> consumer, Supplier<Integer> supplier) {
         super(label, fieldProvider, consumer, supplier);
+        timer = new Timer();
     }
 
     public static Actor create(String label, Consumer<Integer> consumer, Supplier<Integer> supplier, FieldListener listener) {
@@ -91,7 +94,8 @@ public class IntegerEditor extends FieldEditor<Integer> {
         text.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Timer.schedule(new Timer.Task() {
+                timer.clear();
+                timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
                         Gdx.app.postRunnable(() -> {
