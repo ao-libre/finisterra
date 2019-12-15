@@ -331,6 +331,7 @@ public class Utils {
                 entry = zis.getNextEntry();
             }
             
+            is.close();
             zis.close();
             
         } catch(IOException ex) {
