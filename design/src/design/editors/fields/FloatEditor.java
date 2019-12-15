@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
+import com.esotericsoftware.minlog.Log;
 import design.screens.ScreenManager;
 import design.screens.views.View;
 
@@ -36,16 +37,18 @@ public class FloatEditor extends FieldEditor<Float> {
             public void changed(ChangeEvent event, Actor actor) {
                 Timer.instance().clear();
                 Timer.schedule(new Timer.Task() {
+                    @Override
                     public void run() {
                         Gdx.app.postRunnable(() -> {
                             Screen current = ScreenManager.getInstance().getCurrent();
                             if (current instanceof View) {
-                                View view = (View) current;
                                 try {
                                     float t = Float.parseFloat(text.getText());
                                     getConsumer().accept(t);
                                     onModify();
-                                } catch (NumberFormatException ignored) {
+                                } catch (NumberFormatException ex) {
+                                    Log.error(this.toString(), "Error creating simple editor.", ex);
+                                } finally {
                                     IntegerEditor.showWarning(current, text);
                                     text.setText(getSupplier().get().toString());
                                 }

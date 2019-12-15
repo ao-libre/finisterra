@@ -123,9 +123,9 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
     public void resize(int width, int height) {
         // See below for what true means.
         stage.getViewport().update(width, height, true);
-        Screen screen = getScreen();
-        if (screen instanceof View) {
-            ((View) screen).update(width, height);
+        Screen varScreen = getScreen();
+        if (varScreen instanceof View) {
+            ((View) varScreen).update(width, height);
         }
     }
 
@@ -163,9 +163,9 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
     @Override
     public void filesDropped(String[] files) {
         List<FileHandle> list = Arrays.stream(files).map(FileHandle::new).collect(Collectors.toList());
-        Screen screen = getScreen();
-        if (screen instanceof View) {
-            ((View) screen).filesDropped(list);
+        Screen varScreen = getScreen();
+        if (varScreen instanceof View) {
+            ((View) varScreen).filesDropped(list);
         }
     }
 

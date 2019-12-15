@@ -25,6 +25,7 @@ import java.util.Optional;
 
 import static design.designers.AnimationDesigner.AnimationParameters;
 import static design.utils.FileUtils.openDialog;
+import game.AOGame;
 
 public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParameters> {
 
@@ -86,7 +87,6 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
 
     public void createFromFile() {
         // open file chooser
-        Optional<AOAnimation> result = Optional.empty();
         File file = openDialog("Search Image", "", new String[]{"*.png"}, "");
         if (file == null) {
             return;
@@ -99,8 +99,9 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
     public void create(FileHandle fileHandle) {
         FileHandle dest = Gdx.files.local(Resources.GAME_GRAPHICS_PATH + getFreeId() + ".png");
         fileHandle.copyTo(dest);
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        AOAssetManager assetManager = game.getAssetManager();
+        
+        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
+        
         if (assetManager instanceof DefaultAOAssetManager) {
             DefaultAOAssetManager defaultAOAssetManager = (DefaultAOAssetManager) assetManager;
             defaultAOAssetManager.load(dest.path(), Texture.class);
@@ -112,6 +113,7 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
             ScreenEnum.IMAGE_VIEW.getScreen().getDesigner().add(image);
             assetManager.getImages().put(image.getId(), image);
         });
+        
         if (slice.getImages().size() > 1) {
             AnimationView animationView = (AnimationView) ScreenEnum.ANIMATION_VIEW.getScreen();
             animationView.createAnimation(slice.getImages());

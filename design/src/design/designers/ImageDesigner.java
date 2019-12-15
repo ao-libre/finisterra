@@ -52,8 +52,7 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
 
     @Override
     public void load(ImageParameters params) {
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        AOAssetManager assetManager = game.getAssetManager();
+        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
         images = assetManager.getImages();
     }
 
