@@ -3,7 +3,7 @@ import org.gradle.internal.jvm.Jvm
 buildscript {
     ext {
         kotlin_version = '1.3.50'
-		artemis_version = '2.2.0'
+	artemis_version = '2.2.0'
     }
 
     repositories {
@@ -26,7 +26,7 @@ allprojects {
     apply plugin: "eclipse"
 	
     group = 'Finisterra'
-    version = '0.1.12'
+    version = '0.1.13'
 
     ext {
         appName = 'Finisterra'
