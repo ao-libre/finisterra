@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
 import game.AOGame;
 import game.handlers.AOAssetManager;
@@ -58,7 +59,7 @@ public class WorkUI extends Table {
         Table forgeTable = new Table(  );
         forgeRecipesSelect = new SelectBox<>(Skins.COMODORE_SKIN,"craft");
         forgeRecipesSelect.setAlignment( 1 );
-        final Array< ForgeRecipes > recipes = new Array<>();
+        final Array<ForgeRecipes> recipes = new Array<>();
         ForgeRecipes.getForgeRecipes().forEach(recipes::add);
         forgeRecipesSelect.setItems(recipes);
         forgeRecipesSelect.setColor( Color.DARK_GRAY );
