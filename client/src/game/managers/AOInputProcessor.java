@@ -336,8 +336,8 @@ public class AOInputProcessor extends Stage {
     private void useActionBarSlot(int x) {
         int base;
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT )) {
-            if (gui.getActionBar ().getState().equals("INVENTORY")) {
-                if (gui.getInventory ( ).getSelected ( ).isEmpty ( )) {
+            if (gui.getActionBar().getState().equals("INVENTORY")) {
+                if (!gui.getInventory().getSelected().isPresent()) {
                     base = 0;
                 } else {
                     base = gui.getInventory ( ).selectedIndex ( );

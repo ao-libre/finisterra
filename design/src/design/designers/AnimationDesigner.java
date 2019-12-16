@@ -144,9 +144,9 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
         ImageView view = (ImageView) ScreenEnum.IMAGE_VIEW.getScreen();
         animations.values().forEach(animation -> {
             int[] frames = animation.getFrames();
-            for (int i = 0; i < frames.length; i++) {
-                if (frames[i] > 0) {
-                    view.imageUsed(frames[i]);
+            for (int frame : frames) {
+                if (frame > 0) {
+                    view.imageUsed(frame);
                 }
             }
         });

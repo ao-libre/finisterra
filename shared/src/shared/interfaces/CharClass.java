@@ -4,6 +4,7 @@ import com.artemis.E;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public enum CharClass {
     ARCHER,
@@ -18,7 +19,7 @@ public enum CharClass {
     THIEF,
     WARRIOR;
 
-    private static final List<CharClass> VALUES = List.copyOf(Arrays.asList(values()));
+    private static final List<CharClass> VALUES = Arrays.stream(values()).collect(Collectors.toList());
 
     public static CharClass getClass(String classString) {
         switch (classString.toLowerCase()) {
