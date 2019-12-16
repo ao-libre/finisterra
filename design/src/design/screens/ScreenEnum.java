@@ -20,8 +20,8 @@ public enum ScreenEnum {
     SPELL_VIEW("Spells", SpellView.class),
     TILE_SET_VIEW("Tile Set", TileSetView.class);
 
-    private String title;
-    private Class<? extends View> type;
+    private final String title;
+    private final Class<? extends View> type;
     private View view;
 
     ScreenEnum(String title, Class<? extends View> type) {
@@ -34,7 +34,7 @@ public enum ScreenEnum {
             try {
                 view = type.getDeclaredConstructor().newInstance();
             } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                Log.error("View not implemented", e);
+                Log.error(this.toString(), "View not implemented", e);
             }
         }
         readParams(view, params);

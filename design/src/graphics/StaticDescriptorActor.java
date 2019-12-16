@@ -35,7 +35,7 @@ import model.textures.AOTexture;
 
 public class StaticDescriptorActor extends DescriptorActor {
 
-    private AnimationHandler animationHandler;
+    private final AnimationHandler animationHandler;
     private int heading = Heading.HEADING_SOUTH;
     private Descriptor descriptor;
     private AOTexture texture;
@@ -58,6 +58,7 @@ public class StaticDescriptorActor extends DescriptorActor {
         }
     }
 
+    @Override
     public void setDescriptor(Descriptor descriptor) {
         this.descriptor = descriptor;
         if (descriptor == null) {
@@ -69,7 +70,7 @@ public class StaticDescriptorActor extends DescriptorActor {
                 this.texture = animationHandler.getTexture(graphic);
                 setSize(texture.getTexture().getRegionWidth(), texture.getTexture().getRegionHeight());
             } else {
-                Log.info("Fail to show preview for descriptor: " + descriptor);
+                Log.info(this.toString(), "Fail to show preview for descriptor: " + descriptor);
                 this.texture = null;
             }
         }

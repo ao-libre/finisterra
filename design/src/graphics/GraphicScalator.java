@@ -2,6 +2,7 @@ package graphics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.esotericsoftware.minlog.Log;
 import design.Scale2x;
 import launcher.DesignCenter;
 
@@ -23,9 +24,9 @@ public class GraphicScalator {
                 if (!output.child(fileName).exists()) {
                     String inputFile = graphicsInput.file().getPath() + "/" + fileName;
                     String outputFile = output.file().getPath() + "/" + fileName;
-                    Gdx.app.log(DesignCenter.class.getSimpleName(), "Scaling graphic " + fileName);
+                    Log.info(DesignCenter.class.getSimpleName(), "Scaling graphic " + fileName);
                     Scale2x.run(inputFile, outputFile);
-                    Gdx.app.log(DesignCenter.class.getSimpleName(), "Faltan :" + --missingFiles);
+                    Log.info(DesignCenter.class.getSimpleName(), "Faltan :" + --missingFiles);
                 }
             }
         }
@@ -41,6 +42,6 @@ public class GraphicScalator {
 //                }
 //            }
 //        });
-        Gdx.app.log(DesignCenter.class.getSimpleName(), "Missing scaled graphics: " + count);
+        Log.info(DesignCenter.class.getSimpleName(), "Missing scaled graphics: " + count);
     }
 }
