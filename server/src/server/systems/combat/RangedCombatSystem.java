@@ -351,7 +351,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         HEAD,
         BODY;
 
-        private static final List< RangedCombatSystem.AttackPlace > VALUES = List.of(values());
+        private static final List<RangedCombatSystem.AttackPlace> VALUES = Arrays.asList(values());
         private static final int SIZE = VALUES.size();
         private static final Random RANDOM = new Random();
 
