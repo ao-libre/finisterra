@@ -33,7 +33,7 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
     private final LoadingCache<Map, Texture> bufferedLayers = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
-            .build(new CacheLoader<>() {
+            .build(new CacheLoader<Map, Texture>() {
                 @Override
                 public Texture load(Map key) {
                     return renderLayerToBuffer(key, 0);

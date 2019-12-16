@@ -1,5 +1,6 @@
 package shared.interfaces;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -15,8 +16,7 @@ public enum Hero {
     ARQUERO(CharClass.ARCHER.ordinal(), Race.DWARF.ordinal()),
     CLERIGO(CharClass.CLERIC.ordinal(), Race.HUMAN.ordinal());
 
-    public static final List<Hero> VALUES = List.copyOf(Arrays.asList(values()));
-    private static final int SIZE = VALUES.size();
+    public static final List<Hero> VALUES = Arrays.stream(values()).collect(Collectors.toList());
     private static final Random RANDOM = new Random();
     private final int classId;
     private final int raceId;
@@ -32,7 +32,7 @@ public enum Hero {
     }
 
     public static List<Hero> getHeroes() {
-        return VALUES.stream().collect(Collectors.toList());
+        return new ArrayList<>(VALUES);
     }
 
     public int getClassId() {

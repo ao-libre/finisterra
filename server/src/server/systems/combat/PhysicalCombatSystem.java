@@ -23,10 +23,7 @@ import shared.network.sound.SoundNotification;
 import shared.objects.types.*;
 import shared.util.Messages;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
@@ -376,7 +373,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         HEAD,
         BODY;
 
-        private static final List<AttackPlace> VALUES = List.of(values());
+        private static final List<AttackPlace> VALUES = Arrays.asList(values());
         private static final int SIZE = VALUES.size();
         private static final Random RANDOM = new Random();
 
