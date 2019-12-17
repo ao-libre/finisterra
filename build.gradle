@@ -96,7 +96,7 @@ configure(subprojects.findAll { it.name == 'server' || it.name == 'desktop' }) {
 	
     ext {
         jdkPath = Jvm.current().getJavaHome().path
-        JPackagePath = "${rootDir.path}/JPackage"
+        JPackagePath = "${rootDir}/JPackage"
         prebuiltJRE = "${rootDir}/JPackage/bundled-JRE"
         JPackageCompressed = OperatingSystem.current().isWindows() ? "jpackage.zip" : "jpackage.tar.gz"
     }
