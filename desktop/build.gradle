@@ -1,4 +1,4 @@
-import org.gradle.internal.jvm.Jvm
+import org.gradle.internal.os.OperatingSystem
 
 plugins {
     id 'application'
@@ -10,14 +10,17 @@ sourceSets {
 }
 
 dependencies {
-    api project(":client")
-	api group: "com.badlogicgames.gdx", name: "gdx-backend-lwjgl3", version: "$gdxVersion"
-	api group: "com.badlogicgames.gdx", name: "gdx-freetype-platform", version: "$gdxVersion", classifier: "natives-desktop"
+    implementation project(":client")
+    implementation group: "com.badlogicgames.gdx", name: "gdx-backend-lwjgl3", version: "$gdxVersion"
+    implementation group: "com.badlogicgames.gdx", name: "gdx-freetype-platform", version: "$gdxVersion", classifier: "natives-desktop"
 }
 
 mainClassName = "launcher.DesktopLauncher"
 
-if (osName.contains('mac')) {
+// Get current Operating System
+def OS = OperatingSystem.current()
+
+if (OS.isMacOsX()) {
     run {
         jvmArgs += '-XstartOnFirstThread'
     }
@@ -47,6 +50,9 @@ run.dependsOn(classes)
 // Determine where the bundled application is going to be.
 def releasePath = "${buildDir}/releases"
 
+// Short-named variable that represents where the Assets are.
+def assetsPath = sourceSets.main.resources.srcDirs[0].path
+
 // creates application bundle (executable + runtime)
 task bundle(type: Exec, dependsOn: [dist, jlink]) {
 
@@ -58,7 +64,7 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
     }
 
     def commands = [
-            osName.contains('mac') ? JPackagePath.concat("/jdk-14.jdk/Contents/Home/bin/jpackage") : JPackagePath.concat("/jdk-14/bin/jpackage"),
+            OS.isMacOsX() ? JPackagePath.concat("/jdk-14.jdk/Contents/Home/bin/jpackage") : JPackagePath.concat("/jdk-14/bin/jpackage"),
             '--type', 'app-image',
             '--name', project.appName,
             '--vendor', "Argentum Online Libre",
@@ -70,17 +76,21 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
             '--main-jar', "${project.name}-${project.version}.jar"
     ]
 
-    if (osName.contains('windows')) {
-        commands << "--icon"
-        commands << "${projectDir}/assets/data/icons/ao.ico"
-    } else if (osName.contains('linux')) {
-        commands << "--icon"
-        commands << "${projectDir}/assets/data/icons/ao.png"
-    } else if (osName.contains('mac')) {
-        commands << "--icon"
-        commands << "${projectDir}/assets/data/icons/ao.icns"
-        commands << "--java-options"
-        commands << "-XstartOnFirstThread"
+    switch(OS) {
+        case OperatingSystem.MAC_OS:
+            commands << "--icon"
+            commands << assetsPath.concat("/data/icons/ao.icns")
+            commands << "--java-options"
+            commands << "-XstartOnFirstThread"
+            break;
+        case OperatingSystem.WINDOWS:
+            commands << "--icon"
+            commands << assetsPath.concat("/data/icons/ao.ico")
+            break;
+        case OperatingSystem.LINUX:
+            commands << "--icon"
+            commands << assetsPath.concat("/data/icons/ao.png")
+            break;
     }
 
     commandLine = commands
@@ -88,15 +98,19 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
     doLast() {
 
         copy {
-            from("${projectDir}/assets")
+            from(assetsPath)
             from("${projectDir}/Config.json")
-			
-            if (osName.contains('mac')) {
-                into("${releasePath}/${project.appName}.app/Contents/Resources/")
-            } else if (osName.contains('windows')) {
-                into("${releasePath}/${project.appName}")
-            } else if (osName.contains('linux')) {
-            	into("${releasePath}/${project.appName}/bin")
+
+            switch(OS) {
+                case OperatingSystem.MAC_OS:
+                    into("${releasePath}/${project.appName}.app/Contents/Resources/")
+                    break;
+                case OperatingSystem.WINDOWS:
+                    into("${releasePath}/${project.appName}")
+                    break;
+                case OperatingSystem.LINUX:
+                    into("${releasePath}/${project.appName}/bin")
+                    break;
             }
         }
 
@@ -107,6 +121,6 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
 
         System.out.println("Application '${project.appName}' packaged.")
         System.out.println(" -> location: ${releasePath}/${project.appName}/")
-    }
 
+    }
 }

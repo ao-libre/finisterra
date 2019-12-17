@@ -11,8 +11,11 @@ sourceSets {
 mainClassName = "launcher.DesignCenterLauncher"
 
 dependencies {
-    implementation project(":desktop")
-	implementation group: "com.soywiz", name: "kaifu2x", version: "$kaifu2xVersion"
+    implementation project(":client")
+	implementation group: "com.badlogicgames.gdx", name: "gdx-backend-lwjgl3", version: "$gdxVersion"
+	implementation (group: "com.soywiz", name: "kaifu2x", version: "$kaifu2xVersion") {
+		exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-jdk8"
+	}
 	implementation group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: "$kotlinxCoroutinesVersion"
 	implementation group: "org.lwjgl", name: "lwjgl-tinyfd", version: "$tinyfdVersion"
 	implementation group: "org.lwjgl", name: "lwjgl-tinyfd", version: "$tinyfdVersion", classifier: "natives-windows"
