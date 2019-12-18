@@ -11,8 +11,7 @@ sourceSets {
 mainClassName = "launcher.DesignCenterLauncher"
 
 dependencies {
-    implementation project(":client")
-	implementation group: "com.badlogicgames.gdx", name: "gdx-backend-lwjgl3", version: "$gdxVersion"
+    implementation project(":desktop")
 	implementation (group: "com.soywiz", name: "kaifu2x", version: "$kaifu2xVersion") {
 		exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-jdk8"
 	}
@@ -23,4 +22,4 @@ dependencies {
 	implementation group: "org.lwjgl", name: "lwjgl-tinyfd", version: "$tinyfdVersion", classifier: "natives-macos"
 }
 
-run.dependsOn classes
+run.dependsOn(classes)

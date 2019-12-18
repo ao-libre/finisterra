@@ -10,9 +10,9 @@ sourceSets {
 }
 
 dependencies {
-    implementation project(":client")
-    implementation group: "com.badlogicgames.gdx", name: "gdx-backend-lwjgl3", version: "$gdxVersion"
-    implementation group: "com.badlogicgames.gdx", name: "gdx-freetype-platform", version: "$gdxVersion", classifier: "natives-desktop"
+    api project(":client")
+    api group: "com.badlogicgames.gdx", name: "gdx-backend-lwjgl3", version: "$gdxVersion"
+    api group: "com.badlogicgames.gdx", name: "gdx-freetype-platform", version: "$gdxVersion", classifier: "natives-desktop"
 }
 
 mainClassName = "launcher.DesktopLauncher"
