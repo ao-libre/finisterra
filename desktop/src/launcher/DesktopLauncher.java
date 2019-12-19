@@ -42,6 +42,7 @@ public class DesktopLauncher {
         cfg.setResizable(initConfig.isResizeable());
         cfg.disableAudio(initConfig.isDisableAudio());
         cfg.setMaximized(initConfig.isStartMaximized());
+        cfg.setWindowSizeLimits(800, 600, -1, -1);
 
         if (video.getHiDPIMode().equalsIgnoreCase("Pixels")) {
             cfg.setHdpiMode(HdpiMode.Pixels);
