@@ -1,3 +1,5 @@
+import org.gradle.internal.os.OperatingSystem
+
 plugins {
     id 'application'
 }
@@ -27,12 +29,12 @@ test {
 
 dependencies {
     implementation project(":shared")
-	runtimeOnly group: "com.badlogicgames.gdx", name: "gdx-backend-lwjgl3", version: "$gdxVersion"
+    implementation group: "com.badlogicgames.gdx", name: "gdx-backend-lwjgl3", version: "$gdxVersion"
 	implementation group: "com.badlogicgames.gdx", name: "gdx-backend-headless", version: "$gdxVersion"
 	implementation group: "com.badlogicgames.gdx", name: "gdx-ai", version: "$gdxAIVersion"
 
 	testImplementation group: "org.junit.jupiter", name: "junit-jupiter-api", version: "$jupiterVersion"
-	testRuntimeOnly group: "org.junit.jupiter", name: "junit-jupiter-engine", version: "$jupiterVersion"
+    testImplementation group: "org.junit.jupiter", name: "junit-jupiter-engine", version: "$jupiterVersion"
 }
 
 task dist(type: Jar) {
@@ -67,6 +69,9 @@ tasks.dist.doLast {
 
 }
 
+// Get current Operating System
+def OS = OperatingSystem.current()
+
 // Determine where the bundled application is going to be.
 def releasePath = "${projectDir}/bundled-APP"
 
@@ -93,7 +98,7 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
             '--main-jar', "${project.name}-${project.version}.jar"
     ]
 
-    if (osName.contains('mac')) {
+    if (OS.isMacOsX()) {
         commands << "--java-options"
         commands << "-XstartOnFirstThread"
     }
@@ -107,24 +112,27 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
             from files(sourceSets.main.output.resourcesDir)
 			from file("$projectDir/Server.json")
             from file("$projectDir/Chars.json")
-			
-            if (osName.contains('mac')) {
-                into("${releasePath}/${project.appName}/Contents/Resources/")
-            } else if (osName.contains('windows')) {
-                into("${releasePath}/${project.appName}")
-            } else if (osName.contains('linux')) {
-                into("${releasePath}/${project.appName}/bin")
+
+            switch(OS) {
+                case OperatingSystem.MAC_OS:
+                    into("${releasePath}/${project.appName}/Contents/Resources/")
+                    break;
+                case OperatingSystem.WINDOWS:
+                    into("${releasePath}/${project.appName}")
+                    break;
+                case OperatingSystem.LINUX:
+                    into("${releasePath}/${project.appName}/bin")
+                    break;
             }
 
+            // Debloat for Windows users.
+            delete fileTree("${releasePath}/${project.appName}/bin").matching { include "*.dll" exclude "applauncher.dll" }
+            delete fileTree("${releasePath}/${project.appName}/app").matching { include "api*.dll" }
+            delete file("${releasePath}/${project.appName}/.jpackage.xml")
+
+            System.out.println("Application '${project.appName}' packaged.")
+            System.out.println(" -> location: ${releasePath}/${project.appName}/")
         }
-
-        // Debloat for Windows users.
-        delete fileTree("${releasePath}/${project.appName}/bin").matching { include "*.dll" exclude "applauncher.dll" }
-        delete fileTree("${releasePath}/${project.appName}/app").matching { include "api*.dll" }
-        delete file("${releasePath}/${project.appName}/.jpackage.xml")
-
-        System.out.println("Application '${project.appName}' packaged.")
-        System.out.println(" -> location: ${releasePath}/${project.appName}/")
     }
 
 }
