@@ -1,5 +1,6 @@
 package game.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -26,7 +27,7 @@ import shared.util.Messages;
 public class RoomScreen extends AbstractScreen {
     private final ClientSystem clientSystem;
     private final Room room;
-    private final Player me;
+    private Player me;
     private List<Player> criminalList;
     private List<Player> armyList;
     private TextButton start;
@@ -37,7 +38,7 @@ public class RoomScreen extends AbstractScreen {
         this.clientSystem = clientSystem;
         this.room = room;
         this.me = me;
-        selectRandomHero();
+        updateHero(me);
         updatePlayers();
         checkStart();
     }
@@ -109,6 +110,8 @@ public class RoomScreen extends AbstractScreen {
             }
         });
 
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        AOAssetManager assetManager = game.getAssetManager();
         Button readyButton = new CheckBox(assetManager.getMessages(Messages.READY), getSkin());
         readyButton.addListener(new ClickListener() {
             @Override
@@ -146,13 +149,6 @@ public class RoomScreen extends AbstractScreen {
 
     public void checkStart() {
         start.setDisabled(!room.getPlayers().stream().allMatch(Player::isReady));
-    }
-
-    private void selectRandomHero() {
-        Hero defaultHero = Hero.getRandom();
-        heroSelect.setSelected(defaultHero);
-        me.setHero(defaultHero);
-        clientSystem.getKryonetClient().sendToAll(new ChangeHeroRequest(defaultHero));
     }
 
     private void updateHero(Player player) {

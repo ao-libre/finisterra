@@ -31,7 +31,7 @@ public final class ActionBar extends Table implements ActionSwitchListener {
         this.inventory = new Inventory();
         this.inventoryQuickBar = new InventoryQuickBar();
         this.spellViewExpanded = new SpellViewExpanded();
-        this.expandButton = new ImageTextButton ("-", Skins.COMODORE_SKIN, "inventory-expand-collapse");
+        this.expandButton = new ImageTextButton ("-", Skins.COMODORE_SKIN);
         this.expandButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

@@ -89,7 +89,7 @@ public class AOInputProcessor extends Stage implements ControllerListener {
                     final boolean toShoot = gui.getInventory().toShoot;
                     if(toCast.isPresent() || toShoot) {
                         E player = E.E( GameScreen.getPlayer() );
-                        if(!player.hasAttack() || player.getAttack().interval - world.getDelta() < 0) {
+                        if(!player.hasAttack() || player.getAttackInterval().interval - world.getDelta() < 0) {
                             TimeSync timeSyncSystem = world.getSystem( TimeSync.class );
                             long rtt = timeSyncSystem.getRtt();
                             long timeOffset = timeSyncSystem.getTimeOffset();

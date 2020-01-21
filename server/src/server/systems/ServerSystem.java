@@ -144,5 +144,9 @@ public class ServerSystem extends MarshalSystem {
         int connectionByPlayer = getConnectionByPlayer(id);
         return getLobbyPlayer(connectionByPlayer);
     }
+
+    public int getAmountConnections() {
+        return getEstablishedConnections();
+    }
 }
 

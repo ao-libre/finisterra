@@ -13,6 +13,7 @@ import entity.character.equipment.Weapon;
 import entity.character.parts.Body;
 import entity.character.parts.Head;
 import graphics.Effect;
+import model.descriptors.FXDescriptor;
 import model.descriptors.HeadDescriptor;
 import model.descriptors.IDescriptor;
 import model.textures.AOAnimation;

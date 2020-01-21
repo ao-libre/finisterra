@@ -18,6 +18,7 @@ import server.systems.battle.SpotRegenerationSystem;
 import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.combat.RangedCombatSystem;
+import server.systems.fx.FXSystem;
 import server.systems.manager.*;
 import server.systems.regeneration.RegenerationSystem;
 

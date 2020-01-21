@@ -22,6 +22,7 @@ public class SpellSlot extends ImageButton {
     private final ClickListener clickListener;
     private Spell spell;
     private Tooltip tooltip;
+    private Texture icon;
 
     SpellSlot(SpellView spellView, Spell spell) {
         super(Skins.COMODORE_SKIN, "icon-container");
@@ -55,13 +56,8 @@ public class SpellSlot extends ImageButton {
 
     private Tooltip getTooltip(Spell spell) {
         Actor content = createTooltipContent(spell);
-<<<<<<< HEAD
-        return new Tooltip<>(content);
-=======
         Tooltip tooltip = new Tooltip(content);
-
         return tooltip;
->>>>>>> Clean ao java skin. Changing spells icons
     }
 
     private Actor createTooltipContent(Spell spell) {

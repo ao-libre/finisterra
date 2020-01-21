@@ -19,6 +19,7 @@ public class Player {
     public Player(int connectionId, String playerName) {
         this.connectionId = connectionId;
         this.playerName = playerName;
+        this.hero = Hero.getRandom();
     }
 
     public String getPlayerName() {

@@ -7,4 +7,6 @@ dependencies {
         exclude group: "com.badlogicgames.gdx", module: "gdx-backend-lwjgl"
     }
 	api group: "org.reflections", name: "reflections", version: "$reflectionsVersion"
+    api group: 'com.badlogicgames.gdx', name: 'gdx-controllers-lwjgl3', version: '1.9.10'
+
 }

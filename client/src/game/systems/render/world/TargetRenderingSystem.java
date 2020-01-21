@@ -47,7 +47,7 @@ public class TargetRenderingSystem extends RenderingSystem {
     private void drawInPos(Pos2D pos) {
         Color prevColor = new Color(getBatch().getColor());
         getBatch().setColor(Colors.rgba(255, 255, 255, 0.5f));
-        getBatch().draw(target, pos.x, pos.y, Tile.TILE_PIXEL_WIDTH, Tile.TILE_PIXEL_HEIGHT);
+        getBatch().draw(TARGET, pos.x, pos.y, Tile.TILE_PIXEL_WIDTH, Tile.TILE_PIXEL_HEIGHT);
         getBatch().setColor(prevColor);
     }
 
