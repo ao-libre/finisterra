@@ -38,6 +38,5 @@ It allows us to create application game logic, create screens and render all tha
 [Historial de cambios](https://github.com/ao-libre/finisterra/blob/master/docs/index/Espa%C3%B1ol/ChangeLog.txt)
 
 ## Networks
-[Web](https://finisterra.argentumonline.org/) - [Youtube](https://www.youtube.com/watch?v=rXinaWXErwo&list=PLnBfSTXOshh7Ndf_53CxLk76vhyzEXOdR) - 
-[Whatsapp](https://api.whatsapp.com/send?phone=5492216822760) -  [Discord](https://discord.gg/qCJPGbY) - 
-[Instagram](https://t.me/FinisterraLatam)
+[Web](https://finisterra.argentumonline.org/) -  [Discord](https://discord.gg/qCJPGbY) - 
+
