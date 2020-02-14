@@ -1,6 +1,10 @@
-# Finisterra [![Build Status](https://travis-ci.org/ao-libre/finisterra.svg?branch=master)](https://travis-ci.org/ao-libre/finisterra)  [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/ao-libre/finisterra?include_prereleases)](https://github.com/ao-libre/finisterra/releases) ![Language](https://img.shields.io/badge/lang-espa%C3%B1ol%20%2F%20english-yellow) [![Discord](https://img.shields.io/discord/479056868707270657?color=blue&label=discord)](https://discord.gg/qCJPGbY)
+# Finisterra [![Build Status](https://travis-ci.org/ao-libre/finisterra.svg?branch=master)](https://travis-ci.org/ao-libre/finisterra)  [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/ao-libre/finisterra?include_prereleases)](https://github.com/ao-libre/finisterra/releases) [![Language](https://img.shields.io/badge/lang-espa%C3%B1ol%20%2F%20english-yellow)](#)
 
-MMORPG Java Open Source based on Argentum Online. Written in Java, using Artemis, Kryonet and libGDX.
+MMORPG de código abierto basado en Argentum Online. Escrito en Java usando Artemis, Kryonet y libGDX.
+
+*Open Source MMORPG based on Argentum Online. Written in Java, using Artemis, Kryonet and libGDX.*
+
+#### Redes [![Website](https://img.shields.io/website?down_color=lightgrey&down_message=offline&up_color=blue&up_message=online&url=https%3A%2F%2Ffinisterra.argentumonline.org%2F)](https://finisterra.argentumonline.org/) [![Discord](https://img.shields.io/discord/479056868707270657?color=blueviolet&label=discord)](https://discord.gg/qCJPGbY) 
 
 ## Colaboradores
 ![game preview image](https://cdn.discordapp.com/attachments/580487031197794313/636899837354442755/readme-repo.png)
