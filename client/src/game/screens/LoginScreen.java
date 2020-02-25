@@ -1,6 +1,5 @@
 package game.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -24,7 +23,6 @@ import static game.utils.Resources.CLIENT_CONFIG;
 public class LoginScreen extends AbstractScreen {
 
     private ClientSystem clientSystem;
-    private ClientConfiguration config;
 
     private TextField username;
     private List<ClientConfiguration.Network.Server> serverList;
@@ -78,7 +76,7 @@ public class LoginScreen extends AbstractScreen {
 
     @Override
     void createContent() {
-        config = ClientConfiguration.loadConfig(CLIENT_CONFIG); // @todo hotfix
+        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); // @todo hotfix
 
         Window loginWindow = new Window("", getSkin());
         Label userLabel = new Label("User", getSkin());
@@ -120,8 +118,7 @@ public class LoginScreen extends AbstractScreen {
             String user = username.getText();
 
             ClientConfiguration.Network.Server server = serverList.getSelected();
-            if (server == null)
-                return;
+            if (server == null) return;
             String ip = server.getHostname();
             int port = server.getPort();
 
@@ -136,7 +133,7 @@ public class LoginScreen extends AbstractScreen {
                     clientSystem.start();
                     if (clientSystem.getState() == MarshalState.STARTED) {
                         clientSystem.getKryonetClient().sendToAll(new JoinLobbyRequest(user));
-                        this.canConnect = false;
+
                     } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
                         AOAssetManager assetManager = AOGame.getGlobalAssetManager();
 
@@ -144,7 +141,6 @@ public class LoginScreen extends AbstractScreen {
                         dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
                         dialog.button("OK");
                         dialog.show(getStage());
-                        this.canConnect = true;
                     }
                 }
             }
