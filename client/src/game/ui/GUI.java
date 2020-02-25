@@ -1,6 +1,7 @@
 package game.ui;
 
 import com.artemis.BaseSystem;
+import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -17,6 +18,7 @@ import game.handlers.AOAssetManager;
 import game.managers.AOInputProcessor;
 import game.screens.GameScreen;
 import game.ui.user.UserInformation;
+import game.utils.Resources;
 import game.utils.Skins;
 import shared.util.Messages;
 
@@ -58,8 +60,9 @@ public class GUI extends BaseSystem implements Disposable {
     public Inventory getInventory() {
         return actionBar.getInventory();
     }
+
     public InventoryQuickBar getInventoryQuickBar() {
-        return actionBar.getInventoryQuickBar ();
+        return actionBar.getInventoryQuickBar();
     }
 
     public DialogText getDialog() {
@@ -86,6 +89,11 @@ public class GUI extends BaseSystem implements Disposable {
         return getActionBar ().getSpellViewExpanded ();
     }
 
+    /**
+     *  Saca una captura de pantalla del juego.
+     *
+     * @see Resources#GAME_SCREENSHOTS_PATH - Carpeta donde se guardan las capturas.
+     */
     public void takeScreenshot() {
         try {
             
@@ -93,7 +101,7 @@ public class GUI extends BaseSystem implements Disposable {
             AOAssetManager assetManager = AOGame.getGlobalAssetManager();
             
             // Set where we gonna save the screenshot
-            String screenshotPath = "Screenshots/Screenshot-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM_HH-mm-ss")) + ".png";
+            String screenshotPath = Resources.GAME_SCREENSHOTS_PATH + "Screenshot-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM_HH-mm-ss")) + ".png";
             
             // Perform the appropiate I/O opperations.
             byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
@@ -114,9 +122,11 @@ public class GUI extends BaseSystem implements Disposable {
         } catch(Exception ex) {
             Log.error("Screenshot I/O", "Error trying to take a screenshot..." , ex);
         }
-        
     }
 
+    /**
+     * Activa/desactiva el modo pantalla completa.
+     */
     public void toggleFullscreen() {
         if (Gdx.graphics.isFullscreen()) {
             Gdx.graphics.setWindowedMode(this.windowedWidth, this.windowedHeight);
@@ -127,6 +137,9 @@ public class GUI extends BaseSystem implements Disposable {
         }
     }
 
+    /**
+     * Inicializa la interfaz de usuario.
+     */
     @Override
     public void initialize() {
         Skins.COMODORE_SKIN.getFont("simple").setUseIntegerPositions(false);
@@ -157,16 +170,31 @@ public class GUI extends BaseSystem implements Disposable {
         return camera;
     }
 
+    /**
+     * Interfaz: Crea una consola para hablar/introducir comandos.
+     *
+     * @param table {@link com.badlogic.gdx.scenes.scene2d.ui.Table}
+     */
     private void createConsole(Table table) {
         console = new AOConsole();
         table.add(console).left().top();
     }
 
+    /**
+     * Interfaz: Crea el cuadro que muestra la informacion del usuario.
+     *
+     * @param table {@link com.badlogic.gdx.scenes.scene2d.ui.Table}
+     */
     private void createUserStatus(Table table) {
         userTable = new UserInformation();
         table.add(userTable).prefWidth(400).left().bottom().expandX();
     }
 
+    /**
+     * Interfaz: Crea el circulo de EXP.
+     *
+     * @param table {@link com.badlogic.gdx.scenes.scene2d.ui.Table}
+     */
     private void createActionBar(Table table) {
         actionBar = new ActionBar();
         table.add(actionBar).right().expandY().expandX ();
@@ -188,11 +216,19 @@ public class GUI extends BaseSystem implements Disposable {
         return Gdx.graphics.getWidth();
     }
 
+    /**
+     * Dibuja la interfaz de usuario.
+     *
+     * @param delta {@link World#getDelta()}
+     */
     public void draw(float delta) {
         stage.act(delta);
         stage.draw();
     }
 
+    /**
+     * Libera los recursos de los objetos de esta clase.
+     */
     @Override
     public void dispose() {
         stage.dispose();
