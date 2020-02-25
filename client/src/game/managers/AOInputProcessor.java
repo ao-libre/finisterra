@@ -12,6 +12,7 @@ import game.handlers.MapHandler;
 import game.handlers.ObjectHandler;
 import game.handlers.MusicHandler;
 import game.screens.GameScreen;
+import game.screens.transitions.FadingGame;
 import game.systems.camera.CameraSystem;
 import game.systems.network.TimeSync;
 import game.ui.GUI;
@@ -106,7 +107,7 @@ public class AOInputProcessor extends Stage {
                         Optional< E > targetEntity = worldManager.getEntities()
                                 .stream()
                                 .filter( entity -> E( entity ).hasWorldPos() && E( entity ).getWorldPos().equals( worldPos ) )
-                                .map( entity -> E( entity ) )
+                                .map(E::E)
                                 .findFirst();
                         if(targetEntity.isPresent()) {
                             E entity = targetEntity.get();

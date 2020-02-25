@@ -14,8 +14,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.Iterator;
-
 public class FadingGame extends Game {
     private final Array<TransitionListener> listeners;
     protected Batch batch;
@@ -119,13 +117,10 @@ public class FadingGame extends Game {
         this.nextScreenFBO = new FrameBuffer(Format.RGBA8888, width, height, false);
     }
 
-    protected boolean setTransition(ScreenTransition screenTransition, float duration) {
-        if (this.transitionRunning) {
-            return false;
-        } else {
+    protected void setTransition(ScreenTransition screenTransition, float duration) {
+        if (!this.transitionRunning) {
             this.screenTransition = screenTransition;
             this.transitionDuration = duration;
-            return true;
         }
     }
 
@@ -175,22 +170,14 @@ public class FadingGame extends Game {
     }
 
     private void notifyFinished() {
-        Iterator var1 = this.listeners.iterator();
-
-        while (var1.hasNext()) {
-            TransitionListener transitionListener = (TransitionListener) var1.next();
+        for (TransitionListener transitionListener : this.listeners) {
             transitionListener.onTransitionFinished();
         }
-
     }
 
     private void notifyStarted() {
-        Iterator var1 = this.listeners.iterator();
-
-        while (var1.hasNext()) {
-            TransitionListener transitionListener = (TransitionListener) var1.next();
+        for (TransitionListener transitionListener : this.listeners) {
             transitionListener.onTransitionStart();
         }
-
     }
 }
