@@ -24,7 +24,8 @@ public class Resources {
     public static final String GAME_SHADERS_PATH = GAME_DATA_PATH + "shaders/";
     public static final String CLIENT_ICON = GAME_DATA_PATH + "icons/ao.png";
     public static final String GAME_SPELLS_PATH = "spells/";
-    
+    public static final String GAME_SCREENSHOTS_PATH = "Screenshots/";
+
     // Files
     public static final String GAME_SHADERS_LIGHT = "light.png";
     public static final String CLIENT_CONFIG = "Config.json";
