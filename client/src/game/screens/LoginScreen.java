@@ -33,7 +33,7 @@ public class LoginScreen extends AbstractScreen {
         super();
         init();
         // utilice bgmusic  para subir gradualmente el sonido.
-        bGMusic ();
+        bGMusic();
     }
 
     void bGMusic() {
@@ -76,7 +76,7 @@ public class LoginScreen extends AbstractScreen {
 
     @Override
     void createContent() {
-        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); // @todo hotfix
+        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG);
 
         Window loginWindow = new Window("", getSkin());
         Label userLabel = new Label("User", getSkin());
@@ -123,14 +123,15 @@ public class LoginScreen extends AbstractScreen {
             int port = server.getPort();
 
             if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
-                if (clientSystem.getState() != MarshalState.STOPPED)
-                    clientSystem.stop();
-                if (clientSystem.getState() == MarshalState.STOPPED) {
+                
+				if (clientSystem.getState() != MarshalState.STOPPED) clientSystem.stop();
+                
+				if (clientSystem.getState() == MarshalState.STOPPED) {
 
                     clientSystem.getKryonetClient().setHost(ip);
                     clientSystem.getKryonetClient().setPort(port);
-
                     clientSystem.start();
+					
                     if (clientSystem.getState() == MarshalState.STARTED) {
                         clientSystem.getKryonetClient().sendToAll(new JoinLobbyRequest(user));
 
@@ -143,8 +144,11 @@ public class LoginScreen extends AbstractScreen {
                         dialog.show(getStage());
                     }
                 }
+				
             }
+			
         }
+		
     }
 
     public ClientSystem getClientSystem() {
