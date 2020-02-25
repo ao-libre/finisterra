@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import game.ui.SwitchButtons.ActionSwitchListener;
 import game.ui.SwitchButtons.State;
 import game.utils.Skins;
+import org.jetbrains.annotations.NotNull;
 
 
 public final class ActionBar extends Table implements ActionSwitchListener {
@@ -55,7 +56,7 @@ public final class ActionBar extends Table implements ActionSwitchListener {
     }
     
     @Override
-    public void notify(State state) {
+    public void notify(@NotNull State state) {
         switch (state) {
             case SPELLS:
                 clear();
@@ -110,8 +111,6 @@ public final class ActionBar extends Table implements ActionSwitchListener {
     public void scrolled(int amount) {
         if (getInventory().isOver()) {
             getInventory().scrolled(amount);
-        } else if (getSpellView().isOver()) {
-            // TODO
         }
     }
 

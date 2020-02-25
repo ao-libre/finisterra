@@ -15,6 +15,7 @@ import game.utils.Colors;
 import game.utils.Cursors;
 import game.utils.Skins;
 import game.utils.WorldUtils;
+import org.jetbrains.annotations.NotNull;
 import shared.model.Spell;
 
 import java.util.ArrayList;
@@ -86,6 +87,7 @@ public class SpellView extends Table {
      *
      * @return staff
      */
+    @NotNull
     private ImageButton createCastButton() {
         ImageButton staff = new ImageButton(Skins.COMODORE_SKIN, "staff");
         staff.addListener(new ClickListener() {
@@ -115,7 +117,7 @@ public class SpellView extends Table {
     }
 
     @Override
-    public void draw(Batch batch, float parentAlpha) {
+    public void draw(@NotNull Batch batch, float parentAlpha) {
         int player = GameScreen.getPlayer();
         Color backup = batch.getColor();
         if (player >= 0) {

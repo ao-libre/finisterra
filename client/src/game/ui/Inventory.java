@@ -17,6 +17,7 @@ import game.screens.GameScreen;
 import game.utils.Cursors;
 import game.utils.Skins;
 import game.utils.WorldUtils;
+import org.jetbrains.annotations.NotNull;
 import shared.network.interaction.DropItem;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
@@ -158,7 +159,7 @@ public class Inventory extends Window {
                 dragging = Optional.empty();
             }
 
-            final <T> void swap(T[] a, int i, int j) {
+            final <T> void swap(@NotNull T[] a, int i, int j) {
                 T t = a[i];
                 a[i] = a[j];
                 a[j] = t;
@@ -261,17 +262,16 @@ public class Inventory extends Window {
         return base + slots.indexOf(dragging.get());
     }
 
-    //recupera el objeto de un slot
-    private Optional<Obj> slotToObject(Slot slot){
+    // Recupera el objeto de un slot
+    private Optional<Obj> slotToObject(@NotNull Slot slot){
         Optional< Item > item = slot.getItem ();
         int objID = item.map ( item1 -> item1.objId ).orElse ( -1 );
         ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
-        Optional<Obj> object = objectHandler.getObject(objID);
-        return object;
+        return objectHandler.getObject(objID);
     }
 
-
-    private void addSpellSVE(Slot slot){ //funcion provisoria hasta q encuentre como hacerlo a desde el servidor
+    // Funcion provisoria hasta q encuentre como hacerlo a desde el servidor
+    private void addSpellSVE(Slot slot){
         Optional<Obj> object = slotToObject( slot );
         object.ifPresent(obj -> {
             if (obj.getType().equals (Type.SPELL)) {

@@ -36,7 +36,7 @@ public class Slot extends ImageButton {
     private Optional<Item> item = Optional.empty();
 
     private boolean selected;
-    private Tooltip tooltip;
+    private Tooltip<?> tooltip;
 
     Slot() {
         super(Skins.COMODORE_SKIN, "icon-container");
