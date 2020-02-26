@@ -5,7 +5,7 @@ import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import entity.character.equipment.Helmet;
@@ -37,7 +37,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
     private DescriptorHandler descriptorHandler;
     private AnimationHandler animationHandler;
 
-    public CharacterRenderingSystem(SpriteBatch batch) {
+    public CharacterRenderingSystem(TextureArraySpriteBatch batch) {
         super(CHAR_ASPECT, batch, CameraKind.WORLD);
     }
 

@@ -6,6 +6,7 @@ plugins {
 dependencies {
     api project(":components")
     api group: "com.google.guava", name: "guava", version: "$guavaVersion"
+    api group: "org.jetbrains", name: "annotations", version: "19.0.0"
     api (group: "net.mostlyoriginal.artemis-odb", name: "contrib-network", version: "$artemisContribVersion") {
         exclude group: "net.esotericsoftware", module: "kryo"
     }

@@ -1,7 +1,7 @@
 package game.managers;
 
 import com.artemis.BaseSystem;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import game.handlers.AnimationHandler;
 import model.textures.AOTexture;
@@ -25,11 +25,11 @@ public class MapManager extends BaseSystem {
     public static final int MIN_MAP_SIZE_HEIGHT = 1;
     private AnimationHandler animationHandler;
 
-    public void drawLayer(Map map, SpriteBatch batch, int layer) {
+    public void drawLayer(Map map, TextureArraySpriteBatch batch, int layer) {
         drawLayer(map, batch, 0, layer, false, false, false);
     }
 
-    private void drawLayer(Map map, SpriteBatch batch, float delta, int layer, boolean drawExit, boolean drawBlock, boolean flip) {
+    private void drawLayer(Map map, TextureArraySpriteBatch batch, float delta, int layer, boolean drawExit, boolean drawBlock, boolean flip) {
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = map.getHeight() - 1; y >= 0; y--) {
                 Tile tile = map.getTile(x, y);
@@ -57,11 +57,11 @@ public class MapManager extends BaseSystem {
         }
     }
 
-    public void drawLayer(Map map, SpriteBatch batch, float delta, int layer, boolean drawExit, boolean drawBlock) {
+    public void drawLayer(Map map, TextureArraySpriteBatch batch, float delta, int layer, boolean drawExit, boolean drawBlock) {
         drawLayer(map, batch, delta, layer, drawExit, drawBlock, true);
     }
 
-    private void doTileDrawFlipped(SpriteBatch batch, float delta, int x, int y, int graphic) {
+    private void doTileDrawFlipped(TextureArraySpriteBatch batch, float delta, int x, int y, int graphic) {
         TextureRegion tileRegion = animationHandler.hasTexture(graphic) ?
                 getTextureRegion(animationHandler.getTexture(graphic)) :
                 getAnimation(delta, graphic);
@@ -88,14 +88,14 @@ public class MapManager extends BaseSystem {
         return tileRegion;
     }
 
-    public void doTileDraw(SpriteBatch batch, float delta, int x, int y, int graphic) {
+    public void doTileDraw(TextureArraySpriteBatch batch, float delta, int x, int y, int graphic) {
         TextureRegion tileRegion = animationHandler.hasTexture(graphic) ?
                 getTextureRegion(animationHandler.getTexture(graphic)) :
                 getAnimation(delta, graphic);
         doTileDraw(batch, y, x, tileRegion);
     }
 
-    private void doTileDraw(SpriteBatch batch, int y, int x, TextureRegion tileRegion) {
+    private void doTileDraw(TextureArraySpriteBatch batch, int y, int x, TextureRegion tileRegion) {
         if (tileRegion != null) {
             final float mapPosX = (x * Tile.TILE_PIXEL_WIDTH);
             final float mapPosY = (y * Tile.TILE_PIXEL_HEIGHT);

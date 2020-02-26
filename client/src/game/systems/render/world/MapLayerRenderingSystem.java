@@ -4,7 +4,7 @@ import camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
 import game.handlers.MapHandler;
 import game.managers.MapManager;
 import game.systems.map.TiledMapSystem;
@@ -24,7 +24,7 @@ public class MapLayerRenderingSystem extends RenderingSystem {
     private WorldRenderingSystem worldRenderingSystem;
     private final List<Integer> layers;
 
-    public MapLayerRenderingSystem(SpriteBatch spriteBatch, List<Integer> layers) {
+    public MapLayerRenderingSystem(TextureArraySpriteBatch spriteBatch, List<Integer> layers) {
         super(Aspect.all(Focused.class), spriteBatch, CameraKind.WORLD);
         this.layers = layers;
     }

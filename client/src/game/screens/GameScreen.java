@@ -6,12 +6,11 @@ import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
 import game.ClientConfiguration;
@@ -59,7 +58,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public static int player = -1;
     private final ClientConfiguration clientConfiguration;
     private final FPSLogger logger;
-    private final SpriteBatch spriteBatch;
+    private final TextureArraySpriteBatch spriteBatch;
     private WorldConfigurationBuilder worldConfigBuilder;
     private final AOAssetManager assetManager;
     private final Music backgroundMusic = MusicHandler.BACKGROUNDMUSIC;
@@ -67,7 +66,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
         this.clientConfiguration = clientConfiguration;
         this.assetManager = assetManager;
-        this.spriteBatch = new SpriteBatch();
+        this.spriteBatch = new TextureArraySpriteBatch();
         this.logger = new FPSLogger();
         long start = System.currentTimeMillis();
         initWorldConfiguration();

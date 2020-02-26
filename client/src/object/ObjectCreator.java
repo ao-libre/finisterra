@@ -5,7 +5,7 @@ import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
 import entity.character.Character;
 import game.screens.CharacterScreen;
 import game.systems.anim.IdleAnimationSystem;
@@ -25,7 +25,7 @@ public class ObjectCreator extends Game {
 
     private static final float GAME_SCREEN_ZOOM = 1f;
 
-    private SpriteBatch spriteBatch; // This is only used in GameScreen
+    private TextureArraySpriteBatch spriteBatch; // This is only used in GameScreen
 
     private World world;
 
@@ -37,7 +37,7 @@ public class ObjectCreator extends Game {
 //        AssetHandler.load(assetManager);
 //        if (AssetHandler.getState() == StateHandler.LOADED)
 //            Gdx.app.debug("AOGame", "Handler loaded!");
-        this.spriteBatch = new SpriteBatch();
+        this.spriteBatch = new TextureArraySpriteBatch();
         initWorld();
         postWorldInit();
         addCharacter();

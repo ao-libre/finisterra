@@ -4,7 +4,7 @@ import camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
 import entity.character.states.Buff;
 import game.systems.OrderedEntityProcessingSystem;
 import game.systems.camera.CameraSystem;
@@ -15,11 +15,11 @@ public class BuffRenderingSystem extends OrderedEntityProcessingSystem {
 
     public static final float ALPHA = 0.5f;
     private static final int BORDER = 6;
-    private final SpriteBatch batch;
+    private final TextureArraySpriteBatch batch;
     private CameraSystem cameraSystem;
     private int yOffset = 100;
 
-    public BuffRenderingSystem(SpriteBatch batch) {
+    public BuffRenderingSystem(TextureArraySpriteBatch batch) {
         super(Aspect.all(Focused.class, Buff.class));
         this.batch = batch;
     }

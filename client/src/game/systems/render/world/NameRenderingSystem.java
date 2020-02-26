@@ -4,7 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -16,6 +16,7 @@ import entity.character.Character;
 import entity.character.info.Name;
 import game.utils.Colors;
 import game.utils.Skins;
+import org.jetbrains.annotations.NotNull;
 import position.Pos2D;
 import position.WorldPos;
 import shared.interfaces.Hero;
@@ -34,7 +35,7 @@ public class NameRenderingSystem extends RenderingSystem {
             .expireAfterAccess(5, TimeUnit.MINUTES)
             .build(new CacheLoader<Integer, Table>() {
                 @Override
-                public Table load(Integer integer) {
+                public Table load(@NotNull Integer integer) {
                     Table table = new Table(Skins.COMODORE_SKIN);
                     table.setRound(false);
                     E e = E(integer);
@@ -53,7 +54,7 @@ public class NameRenderingSystem extends RenderingSystem {
 
             });
 
-    public NameRenderingSystem(SpriteBatch batch) {
+    public NameRenderingSystem(TextureArraySpriteBatch batch) {
         super(Aspect.all(Character.class, WorldPos.class, Name.class), batch, CameraKind.WORLD);
     }
 
@@ -86,8 +87,6 @@ public class NameRenderingSystem extends RenderingSystem {
             clanOrHero = player.getClan().name;
         } else if (player.hasCharHero()) {
             clanOrHero = Hero.values()[player.getCharHero().heroId].name();
-        }
-        if (clanOrHero == null) {
         }
     }
 
