@@ -10,7 +10,7 @@ import java.io.StringWriter;
 
 public class LogSystem extends Log.Logger {
    
-    private static final String OS = System.getProperty("os.name").toLowerCase();
+    public static final String OS = System.getProperty("os.name").toLowerCase();
     private final String SALTO_DE_LINEA = OS.contains("win") ? "\r\n" : "\n";
     
     @Override
