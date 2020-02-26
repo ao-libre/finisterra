@@ -44,12 +44,6 @@ public class DesktopLauncher {
         cfg.setMaximized(initConfig.isStartMaximized());
         cfg.setWindowSizeLimits(854, 480, -1, -1);
 
-        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
-            cfg.useOpenGL3(true, 3, 2);
-        } else {
-            cfg.useOpenGL3(true, 4, 2);
-        }
-
         if (video.getHiDPIMode().equalsIgnoreCase("Pixels")) {
             cfg.setHdpiMode(HdpiMode.Pixels);
         } else {
