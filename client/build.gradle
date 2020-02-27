@@ -2,9 +2,9 @@ sourceSets.main.java.srcDirs = ["src/"]
 
 dependencies {
     api project(":shared")
-	api group: "com.badlogicgames.gdx", name: "gdx-freetype", version: "$gdxVersion"
-    api("com.badlogicgames.gdx:gdx-tools:$gdxVersion") {
+    implementation group: "com.badlogicgames.gdx", name: "gdx-freetype", version: "$gdxVersion"
+    implementation (group: "com.badlogicgames.gdx", name: "gdx-tools", version: "$gdxVersion") {
         exclude group: "com.badlogicgames.gdx", module: "gdx-backend-lwjgl"
     }
-	api group: "org.reflections", name: "reflections", version: "$reflectionsVersion"
+	implementation group: "org.reflections", name: "reflections", version: "$reflectionsVersion"
 }

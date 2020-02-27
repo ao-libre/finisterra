@@ -18,15 +18,15 @@ public class LogSystem extends Log.Logger {
         
         StringBuilder builder = new StringBuilder(256);
         
-	// We print Date & Time ONLY in ERROR or WARN logs.
-	if (level == Log.LEVEL_ERROR || level == Log.LEVEL_WARN) {
-            builder.append(new Date());
-    	    builder.append(" ");
-	}
+        // We print Date & Time ONLY in ERROR or WARN logs.
+        if (level == Log.LEVEL_ERROR || level == Log.LEVEL_WARN) {
+                builder.append(new Date());
+                builder.append(" ");
+        }
 		
-	builder.append("[");
+	    builder.append("[");
         builder.append(getLevelName(level));
-	builder.append("] ");
+	    builder.append("] ");
         builder.append("[");
         builder.append(category);
         builder.append("] ");
@@ -47,7 +47,7 @@ public class LogSystem extends Log.Logger {
             builder.append(SALTO_DE_LINEA);
             builder.append(writer.toString().trim());
             builder.append(SALTO_DE_LINEA);
-	    builder.append(SALTO_DE_LINEA);
+	        builder.append(SALTO_DE_LINEA);
         }
 
         // We only print ERROR logs into Errores.log

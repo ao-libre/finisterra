@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package design
 
 import com.soywiz.kaifu2x.Kaifu2x
