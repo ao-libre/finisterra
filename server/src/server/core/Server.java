@@ -83,6 +83,7 @@ public class Server {
                 .with(new WorldManager())
                 .with(new PhysicalCombatSystem())
                 .with(new RangedCombatSystem())
+                .with(new WorkSystem())
                 .with(new CharacterTrainingSystem())
                 .with(new MagicCombatSystem())
                 .with(new PathFindingSystem(PATH_FINDING_INTERVAL))

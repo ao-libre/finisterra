@@ -5,18 +5,21 @@ import com.artemis.E;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import com.esotericsoftware.minlog.Log;
-import entity.character.info.Inventory;
 import game.AOGame;
 import game.handlers.AOAssetManager;
 import game.handlers.ObjectHandler;
 import game.screens.GameScreen;
 import game.utils.Skins;
-import shared.network.interaction.AddItem;
+import shared.network.interaction.WorkRequest;
+import shared.network.inventory.ForgeRecipes;
+import shared.network.inventory.SawRecipes;
 import shared.objects.types.Obj;
 import shared.objects.types.WorkKind;
 import shared.util.Messages;
@@ -27,8 +30,10 @@ public class WorkUI extends Table {
     private ClickListener mouseListener;
     private AOAssetManager assetManager;
     private int needObjID = 0, needCount = 0, needCount2 = 0, needObjID2 = 0, needCount3 = 0, needObjID3 = 0, resultObjID = 0 , resultCount = 0;
-    private SelectBox<SawRecipes> sawRecipesSelect;
-    private SelectBox<ForgeRecipes> forgeRecipesSelect;
+    private SelectBox< SawRecipes > sawRecipesSelect;
+    private SelectBox< ForgeRecipes > forgeRecipesSelect;
+    private WorkKind workKind;
+    private String recipeName;
 
     public WorkUI() {
         super( Skins.COMODORE_SKIN );
@@ -39,6 +44,7 @@ public class WorkUI extends Table {
     }
     //cambia  el contenido de la tabla segun el tipo de trabajo
     public void notify(WorkKind workKind){
+        this.workKind = workKind;
         switch(workKind){
             case SAW:
                 clear();
@@ -70,6 +76,7 @@ public class WorkUI extends Table {
                 forgeTable.clearChildren();
                 forgeTable.add( forgeRecipesSelect ).top().prefSize( 300,50 ).row();
                 ForgeRecipes forgeRecipes = forgeRecipesSelect.getSelected();
+                recipeName = forgeRecipes.name();
                 //obtiene ingredientes
                 needCount = forgeRecipes.getNeedCount();
                 needObjID = forgeRecipes.getNeedObjID();
@@ -110,6 +117,7 @@ public class WorkUI extends Table {
                 sawTable.clearChildren();
                 sawTable.add( sawRecipesSelect ).top().prefSize( 300,50 ).row();
                 SawRecipes sawRecipes = sawRecipesSelect.getSelected();
+                recipeName = sawRecipes.name();
                 //obtiene ingredientes
                 needCount = sawRecipes.getNeedCount();
                 needObjID = sawRecipes.getNeedObjID();
@@ -182,25 +190,8 @@ public class WorkUI extends Table {
         create.addListener( mouseListener = new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(hasRequestItems(needCount, needObjID ,needCount2, needObjID2, needCount3, needObjID3 )) {
-                    //remueve los items necesarios
-                    GameScreen.getClient().sendToAll( new AddItem( E.E( GameScreen.getPlayer() )
-                            .getNetwork().id, needObjID,  -needCount ) );
-                    if (needObjID2>0){
-                        GameScreen.getClient().sendToAll( new AddItem( E.E( GameScreen.getPlayer() )
-                                .getNetwork().id, needObjID2,  -needCount2 ) );
-                    }
-                    if (needObjID3>0){
-                        GameScreen.getClient().sendToAll( new AddItem( E.E( GameScreen.getPlayer() )
-                                .getNetwork().id, needObjID3,  -needCount3 ) );
-                    }
-                    //agrega el resultado de la creacion
-                    GameScreen.getClient().sendToAll( new AddItem( E.E( GameScreen.getPlayer() )
-                            .getNetwork().id, resultObjID, resultCount ) );
-                } else {
-                    GameScreen.world.getSystem( GUI.class ).getConsole().addInfo(assetManager.getMessages(
-                            Messages.NOT_HAVE_NECESSARY_RESOURCE ));
-                }
+                GameScreen.getClient().sendToAll( new WorkRequest( workKind, E.E( GameScreen.getPlayer() ).getWorldPos(), recipeName ) );
+
             }
         } );
         return create;
@@ -208,49 +199,6 @@ public class WorkUI extends Table {
     //cambia  el tipo de trabajo
     public void setWorkKind(WorkKind workKind){
         notify( workKind );
-    }
-
-    //chequea que poseas los items necesarios para la creacion
-    private boolean hasRequestItems(int needCount, int needObjID, int needCount2, int needObjID2,int needCount3, int needObjID3){
-        E player = E.E (GameScreen.getPlayer());
-        Inventory.Item[] items = player.getInventory().items;
-        boolean need1=false, need2=false, need3=false;
-
-        if (needObjID2 == 0){
-            need2 = true;
-        }
-        if (needObjID3 == 0){
-            need3 = true;
-        }
-
-        for (int i = 0; i <20 ; i++) {
-            if (items[i] != null){
-                if (!need1) {
-                    if(items[i].objId == needObjID) {
-                        if(items[i].count >= needCount) {
-                            need1 = true;
-                        }
-                    }
-                }
-                if (!need2) {
-                    if(items[i].objId == needObjID2) {
-                        if(items[i].count >= needCount2) {
-                            need2 = true;
-                        }
-                    }
-                }
-                if(!need3) {
-                    if(items[i].objId == needObjID3) {
-                        if(items[i].count >= needCount3) {
-                            need3 = true;
-                        }
-                    }
-                }
-            }
-
-        }
-
-        return need1 && need2 && need3;
     }
 
     public  boolean isOver(){

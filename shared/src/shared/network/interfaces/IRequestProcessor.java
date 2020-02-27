@@ -5,6 +5,7 @@ import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.MeditateRequest;
 import shared.network.interaction.TakeItemRequest;
 import shared.network.interaction.TalkRequest;
+import shared.network.interaction.WorkRequest;
 import shared.network.inventory.ItemActionRequest;
 import shared.network.lobby.*;
 import shared.network.lobby.player.ChangeHeroRequest;
@@ -49,4 +50,6 @@ public interface IRequestProcessor {
     void processRequest(ChangeReadyStateRequest changeReadyStateRequest, int connectionId);
 
     void processRequest(ChangeHeroRequest changeHeroRequest, int connectionId);
+
+    void processRequest(WorkRequest workRequest, int connectionId);
 }

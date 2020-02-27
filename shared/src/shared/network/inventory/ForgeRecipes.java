@@ -1,26 +1,20 @@
-package game.ui;
+package shared.network.inventory;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
-public enum SawRecipes {
-    //chequear los json de objetos para saber los objID
-    // recipe lvl 0 objetos newbies 1 objetos normales 2 objetos+1 3 objetos+2 4 objetos+3 5 objetos+4 ...
-    None(0,0,0,0,0,0,0,0,0),
-    Ramitas(1,58,0,0,0,0,10,136,0),
-    flecha_Newbie(10,136,0,0,0,0,10,860,0 ),
-    flecha(10,136,1,58,0,0,10,480,1 );
+public enum ForgeRecipes {
+    None(0,0,0,0,0,0,0,0,0);
 
-    public static final List< SawRecipes > VALUES = List.copyOf( Arrays.asList(values()));
+    public static final List< ForgeRecipes > VALUES = List.copyOf( Arrays.asList(values()));
     private static final int SIZE = VALUES.size();
     private final int needCount, needObjID, needCount2, needObjID2, needCount3, needObjID3, resultCount, resultObjID
             , recipeLvl;
 
-    SawRecipes(int needCount, int needObjID,int needCount2, int needObjID2,int needCount3, int needObjID3,
-               int resultCount, int resultObjID, int recipeLvl){
-
+    ForgeRecipes(int needCount, int needObjID, int needCount2, int needObjID2, int needCount3, int needObjID3
+            , int resultCount, int resultObjID, int recipeLvl){
         this.needCount = needCount;
         this.needObjID = needObjID;
         this.needCount2 = needCount2;
@@ -32,7 +26,7 @@ public enum SawRecipes {
         this.recipeLvl = recipeLvl;
     }
 
-    public static List<SawRecipes> getSawRecipes() {
+    public static List< ForgeRecipes > getForgeRecipes() {
         return VALUES.stream().collect( Collectors.toList());
     }
 
