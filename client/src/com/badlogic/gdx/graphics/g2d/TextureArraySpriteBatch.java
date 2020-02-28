@@ -109,7 +109,7 @@ public class TextureArraySpriteBatch implements Batch {
 	 * pixel perfect with respect to the current screen resolution.
 	 * <p>
 	 * The defaultShader specifies the shader to use. Note that the names for uniforms for this default shader are different than
-	 * the ones expect for shaders set with {@link #setShader(ShaderProgram)}. See {@link this#createDefaultShader()}.
+	 * the ones expect for shaders set with {@link this#setShader(ShaderProgram)}. See {@link this#createDefaultShader()}.
 	 * @param size The max number of sprites in a single batch. Max of 8191.
 	 * @param defaultShader The default shader to use. This is not owned by the TextureArraySpriteBatch and must be disposed
 	 *           separately. */
@@ -1215,12 +1215,12 @@ public class TextureArraySpriteBatch implements Batch {
 		}
 	}
 
-	/** @return The number of texture swaps the LFU cache performed since calling {@link#begin()}. */
+	/** @return The number of texture swaps the LFU cache performed since calling {@link this#begin()}. */
 	public int getTextureLFUSwaps () {
 		return currentTextureLFUSwaps;
 	}
 
-	/** @return The current number of textures in the LFU cache. Gets reset when calling {@link#begin()}. */
+	/** @return The current number of textures in the LFU cache. Gets reset when calling {@link this#begin()}. */
 	public int getTextureLFUSize () {
 		return currentTextureLFUSize;
 	}
@@ -1365,8 +1365,8 @@ public class TextureArraySpriteBatch implements Batch {
 	 * <p>
 	 * Call this method with a null argument to use the default shader.
 	 * <p>
-	 * This method will flush the batch before setting the new shader, you can call it in between {@link #begin()} and
-	 * {@link #end()}.
+	 * This method will flush the batch before setting the new shader, you can call it in between {@link this#begin()} and
+	 * {@link this#end()}.
 	 * @param shader the {@link ShaderProgram} or null to use the default shader. */
 	@Override
 	public void setShader (ShaderProgram shader) {

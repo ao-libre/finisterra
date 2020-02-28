@@ -4,7 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -55,7 +55,7 @@ public class CombatRenderingSystem extends RenderingSystem {
 
             });
 
-    public CombatRenderingSystem(TextureArraySpriteBatch batch) {
+    public CombatRenderingSystem(Batch batch) {
         super(Aspect.all(CombatMessage.class, Body.class, WorldPos.class), batch, CameraKind.WORLD);
     }
 

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.esotericsoftware.minlog.Log;
@@ -14,6 +14,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import game.managers.MapManager;
+import game.screens.GameScreen;
 import org.jetbrains.annotations.NotNull;
 import shared.model.map.Map;
 import shared.model.map.Tile;
@@ -30,7 +31,7 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
     // injected systems
     private MapManager mapManager;
     private WorldRenderingSystem worldRenderingSystem;
-    private final TextureArraySpriteBatch mapBatch;
+    private final Batch mapBatch;
     private final LoadingCache<Map, Texture> bufferedLayers = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
@@ -41,9 +42,9 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
                 }
             });
 
-    public MapGroundRenderingSystem(TextureArraySpriteBatch spriteBatch) {
+    public MapGroundRenderingSystem(Batch spriteBatch) {
         super(spriteBatch, LOWER_LAYERS);
-        mapBatch = new TextureArraySpriteBatch();
+        mapBatch = GameScreen.initBatch();
     }
 
     @Override
@@ -90,7 +91,7 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
         return fbo.getColorBufferTexture();
     }
 
-    private void renderLayer(Map map, TextureArraySpriteBatch mapBatch, int layer) {
+    private void renderLayer(Map map, Batch mapBatch, int layer) {
         mapManager.drawLayer(map, mapBatch, layer);
     }
 }

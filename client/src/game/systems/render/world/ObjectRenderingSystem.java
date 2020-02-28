@@ -3,7 +3,7 @@ package game.systems.render.world;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import entity.world.Object;
@@ -21,7 +21,7 @@ public class ObjectRenderingSystem extends RenderingSystem {
 
     private ObjectHandler objectHandler;
 
-    public ObjectRenderingSystem(TextureArraySpriteBatch batch) {
+    public ObjectRenderingSystem(Batch batch) {
         super(Aspect.all(Object.class, WorldPos.class), batch, RenderingSystem.CameraKind.WORLD);
     }
 

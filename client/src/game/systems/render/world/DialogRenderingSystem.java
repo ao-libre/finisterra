@@ -4,7 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -55,7 +55,7 @@ public class DialogRenderingSystem extends RenderingSystem {
                 }
             });
 
-    public DialogRenderingSystem(TextureArraySpriteBatch batch) {
+    public DialogRenderingSystem(Batch batch) {
         super(Aspect.all(Dialog.class, Body.class, WorldPos.class), batch, CameraKind.WORLD);
     }
 

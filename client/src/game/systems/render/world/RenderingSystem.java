@@ -5,7 +5,7 @@ import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import game.systems.OrderedEntityProcessingSystem;
 import game.systems.camera.CameraSystem;
 
@@ -19,17 +19,17 @@ public abstract class RenderingSystem extends OrderedEntityProcessingSystem {
 
     public static final float SCALE = 2;
 
-    private final TextureArraySpriteBatch batch;
+    private final Batch batch;
     private final CameraKind kind;
     private CameraSystem cameraSystem;
 
-    public RenderingSystem(Aspect.Builder aspect, TextureArraySpriteBatch batch, CameraKind kind) {
+    public RenderingSystem(Aspect.Builder aspect, Batch batch, CameraKind kind) {
         super(aspect);
         this.batch = batch;
         this.kind = kind;
     }
 
-    public TextureArraySpriteBatch getBatch() {
+    public Batch getBatch() {
         return batch;
     }
 

@@ -4,7 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -54,7 +54,7 @@ public class NameRenderingSystem extends RenderingSystem {
 
             });
 
-    public NameRenderingSystem(TextureArraySpriteBatch batch) {
+    public NameRenderingSystem(Batch batch) {
         super(Aspect.all(Character.class, WorldPos.class, Name.class), batch, CameraKind.WORLD);
     }
 

@@ -10,6 +10,8 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
@@ -58,15 +60,16 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public static int player = -1;
     private final ClientConfiguration clientConfiguration;
     private final FPSLogger logger;
-    private final TextureArraySpriteBatch spriteBatch;
+    private final Batch spriteBatch;
     private WorldConfigurationBuilder worldConfigBuilder;
     private final AOAssetManager assetManager;
     private final Music backgroundMusic = MusicHandler.BACKGROUNDMUSIC;
 
     public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
+
         this.clientConfiguration = clientConfiguration;
         this.assetManager = assetManager;
-        this.spriteBatch = new TextureArraySpriteBatch();
+        this.spriteBatch = initBatch();
         this.logger = new FPSLogger();
         long start = System.currentTimeMillis();
         initWorldConfiguration();
@@ -157,6 +160,17 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .with(HIGH + 1, new GameNotificationProcessor())
                 .with(HIGH + 1, clientSystem);
         world = new World(worldConfigBuilder.build()); // preload Artemis world
+    }
+
+    public static Batch initBatch() {
+        Batch tempSpriteBatch;
+        try {
+            tempSpriteBatch = new TextureArraySpriteBatch();
+        } catch (Exception ex) {
+            Log.info("Tu dispositivo no es compatible con el SpriteBatch mejorado. Usando sistema original...");
+            tempSpriteBatch = new SpriteBatch();
+        }
+        return tempSpriteBatch;
     }
 
     private void postWorldInit() {

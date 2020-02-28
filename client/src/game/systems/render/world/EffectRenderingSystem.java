@@ -5,8 +5,8 @@ import com.artemis.E;
 import com.artemis.FluidIteratingSystem;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entity.character.parts.Body;
 import game.handlers.AnimationHandler;
@@ -37,18 +37,18 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
 
     private int srcFunc;
     private int dstFunc;
-    private final TextureArraySpriteBatch batch;
+    private final Batch batch;
     private final Map<Integer, BundledAnimation> fxs;
     private final Map<Integer, ParticleEffect> particleEffects;
 
-    public EffectRenderingSystem(TextureArraySpriteBatch batch) {
+    public EffectRenderingSystem(Batch batch) {
         super(Aspect.all(Effect.class));
         this.particleEffects = new HashMap<>();
         this.fxs = new HashMap<>();
         this.batch = batch;
     }
 
-    public TextureArraySpriteBatch getBatch() {
+    public Batch getBatch() {
         return batch;
     }
 

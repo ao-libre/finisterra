@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 
-import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import game.utils.Resources;
 import position.Pos2D;
@@ -30,7 +30,7 @@ public class LightRenderingSystem extends RenderingSystem {
     private int blendDstFunc;
     private int blendSrcFunc;
 
-    public LightRenderingSystem(TextureArraySpriteBatch batch) {
+    public LightRenderingSystem(Batch batch) {
         super(Aspect.all(Focused.class), batch, CameraKind.WORLD);
         light = new Texture(Gdx.files.internal(Resources.GAME_SHADERS_PATH + GAME_SHADERS_LIGHT));
 
