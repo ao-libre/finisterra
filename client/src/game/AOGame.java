@@ -83,7 +83,7 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
 
     @Override
     public void dispose() {
-        Log.info("AOGame","Closing client...");
+        Log.info("AOGame", "Closing client...");
         screen.dispose();
         getAssetManager().dispose();
         Gdx.app.exit();

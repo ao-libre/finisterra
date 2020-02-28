@@ -43,7 +43,7 @@ public class RoomScreen extends AbstractScreen {
     public Player getPlayer() {
         return me;
     }
-    
+
     public void updatePlayers() {
         criminalList.setItems(room.getPlayers().stream().filter(player -> player.getTeam().equals(Team.CAOS_ARMY)).toArray(Player[]::new));
         armyList.setItems(room.getPlayers().stream().filter(player -> player.getTeam().equals(Team.REAL_ARMY)).toArray(Player[]::new));
@@ -144,7 +144,7 @@ public class RoomScreen extends AbstractScreen {
     @Override
     public void dispose() {
         clientSystem.stop();
-        MusicHandler.FIRSTBGM.stop ();
+        MusicHandler.FIRSTBGM.stop();
         super.dispose();
     }
 }

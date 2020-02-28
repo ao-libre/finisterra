@@ -31,29 +31,29 @@ public final class ActionBar extends Table implements ActionSwitchListener {
         this.inventory = new Inventory();
         this.inventoryQuickBar = new InventoryQuickBar();
         this.spellViewExpanded = new SpellViewExpanded();
-        this.expandButton = new ImageTextButton ("-", Skins.COMODORE_SKIN, "inventory-expand-collapse");
+        this.expandButton = new ImageTextButton("-", Skins.COMODORE_SKIN, "inventory-expand-collapse");
         this.expandButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                getInventory ().setVisible(!getInventory ().isVisible ());
-                getSpellViewExpanded ().setVisible ( !getSpellViewExpanded().isVisible() );
-                if (getInventory().isVisible()){
-                    expandButton.setText ( "-" );
-                }else{
-                    expandButton.setText ( "+" );
+                getInventory().setVisible(!getInventory().isVisible());
+                getSpellViewExpanded().setVisible(!getSpellViewExpanded().isVisible());
+                if (getInventory().isVisible()) {
+                    expandButton.setText("-");
+                } else {
+                    expandButton.setText("+");
                 }
 
             }
         });
 
         add().top();
-        add( buttons ).top().right ().row();
-        add( inventory ).padTop( PAD_TOP );
-        add( inventoryQuickBar ).padTop( PAD_TOP ).right ().row ();
+        add(buttons).top().right().row();
+        add(inventory).padTop(PAD_TOP);
+        add(inventoryQuickBar).padTop(PAD_TOP).right().row();
         add().top();
-        add( expandButton ).right().padTop (-10f);
+        add(expandButton).right().padTop(-10f);
     }
-    
+
     @Override
     public void notify(State state) {
         switch (state) {
@@ -61,29 +61,29 @@ public final class ActionBar extends Table implements ActionSwitchListener {
                 clear();
                 add().top();
                 add(buttons).top().right().row();
-                add( spellViewExpanded ).padTop(PAD_TOP).right ();
-                add(spellView).padTop(PAD_TOP).right().row ();
+                add(spellViewExpanded).padTop(PAD_TOP).right();
+                add(spellView).padTop(PAD_TOP).right().row();
                 add();
-                add( expandButton ).padTop (-10f).right ();
-                expandButton.setVisible(spellView.isVisible ());
+                add(expandButton).padTop(-10f).right();
+                expandButton.setVisible(spellView.isVisible());
                 currentState = "SPELL";
                 break;
             case INVENTORY:
                 clear();
                 add().top();
-                add(buttons).top().right ().row();
-                add(inventory).padTop(PAD_TOP).right ();
-                add( inventoryQuickBar ).padTop(PAD_TOP).right ().row ();
+                add(buttons).top().right().row();
+                add(inventory).padTop(PAD_TOP).right();
+                add(inventoryQuickBar).padTop(PAD_TOP).right().row();
                 add();
-                add( expandButton ).padTop (-10f).right () ;
-                expandButton.setVisible(inventoryQuickBar.isVisible ());
+                add(expandButton).padTop(-10f).right();
+                expandButton.setVisible(inventoryQuickBar.isVisible());
                 currentState = "INVENTORY";
                 break;
         }
     }
 
     public boolean isOver() {
-        return getInventory().isOver() || getSpellView().isOver() || getInventoryQuickBar ().isOver() || getSpellViewExpanded ().isOver () || mouseListener.isOver() || expandButton.isOver ();
+        return getInventory().isOver() || getSpellView().isOver() || getInventoryQuickBar().isOver() || getSpellViewExpanded().isOver() || mouseListener.isOver() || expandButton.isOver();
     }
 
     public void toggle() {
@@ -102,7 +102,7 @@ public final class ActionBar extends Table implements ActionSwitchListener {
         return inventoryQuickBar;
     }
 
-    public SpellViewExpanded getSpellViewExpanded(){
+    public SpellViewExpanded getSpellViewExpanded() {
         return spellViewExpanded;
     }
 
@@ -116,7 +116,7 @@ public final class ActionBar extends Table implements ActionSwitchListener {
     }
 
     public void setExpandButtonVisible() {
-        expandButton.setVisible (!expandButton.isVisible ());
+        expandButton.setVisible(!expandButton.isVisible());
     }
 
     public String getState() {

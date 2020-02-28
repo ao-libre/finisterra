@@ -94,7 +94,7 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
                 player.meditating();
                 consoleMessage = ConsoleMessage.info(Messages.MEDITATE_START);
                 update.withComponents(player.getMeditating());
-                getWorldManager().notifyUpdate(player.id () , new SoundNotification (18));
+                getWorldManager().notifyUpdate(player.id(), new SoundNotification(18));
             }
         }
         worldManager.sendEntityUpdate(userId, consoleMessage);
@@ -107,7 +107,7 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
         userMeditations.remove(userId);
         E(entityId).deleteFromWorld();
         E(userId).removeMeditating();
-        getWorldManager().notifyUpdate(userId , new SoundNotification (18, SoundNotification.SoundState.STOPPED));
+        getWorldManager().notifyUpdate(userId, new SoundNotification(18, SoundNotification.SoundState.STOPPED));
     }
 
     private WorldManager getWorldManager() {

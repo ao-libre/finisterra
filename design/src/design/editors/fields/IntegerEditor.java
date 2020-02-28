@@ -27,9 +27,9 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
 import static launcher.DesignCenter.SKIN;
 
 public class IntegerEditor extends FieldEditor<Integer> {
-    
+
     private final Timer timer;
-    
+
     private IntegerEditor(String label, FieldProvider fieldProvider, Consumer<Integer> consumer, Supplier<Integer> supplier) {
         super(label, fieldProvider, consumer, supplier);
         timer = new Timer();

@@ -14,9 +14,9 @@ public class CreatorLauncher {
 
     public static void main(String[] arg) {
         System.setProperty("org.lwjgl.opengl.Display.enableOSXFullscreenModeAPI", "true");
-        
+
         Log.setLogger(new LogSystem());
-        
+
         ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG);
         if (config == null) {
             Log.warn("DesktopLauncher", "Desktop config.json not found, creating default.");

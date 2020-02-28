@@ -33,26 +33,26 @@ public class LoginScreen extends AbstractScreen {
         super();
         init();
         // utilice bgmusic  para subir gradualmente el sonido.
-        bGMusic ();
+        bGMusic();
     }
 
     void bGMusic() {
         Music firstBGMusic = MusicHandler.FIRSTBGM;
-        firstBGMusic.setVolume ( 0 );
-        firstBGMusic.play ( );
-        firstBGMusic.setLooping ( true );
+        firstBGMusic.setVolume(0);
+        firstBGMusic.play();
+        firstBGMusic.setLooping(true);
         // incrementa el sonido gradualmente hasta llegar al 34%
         float MUSIC_FADE_STEP = 0.01f;
-        Timer.schedule ( new Timer.Task ( ) {
+        Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                if (firstBGMusic.getVolume ( ) < 0.34f)
-                    firstBGMusic.setVolume ( firstBGMusic.getVolume ( ) + MUSIC_FADE_STEP );
+                if (firstBGMusic.getVolume() < 0.34f)
+                    firstBGMusic.setVolume(firstBGMusic.getVolume() + MUSIC_FADE_STEP);
                 else {
-                    this.cancel ( );
+                    this.cancel();
                 }
             }
-        }, 0, 0.6f );
+        }, 0, 0.6f);
     }
 
     @Override

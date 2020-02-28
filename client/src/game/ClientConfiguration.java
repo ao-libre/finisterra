@@ -25,7 +25,7 @@ public class ClientConfiguration extends PassiveSystem {
             // DO NOT USE 'Gdx.Files', because 'Gdx.Files' in the launcher is always NULL!
             return configObject.fromJson(ClientConfiguration.class, is);
         } catch (Exception ex) {
-            Log.error("Client configuration" , "File not found!", ex); // @todo check for other errors
+            Log.error("Client configuration", "File not found!", ex); // @todo check for other errors
         }
 
         return null;

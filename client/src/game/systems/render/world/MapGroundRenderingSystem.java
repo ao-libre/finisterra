@@ -28,10 +28,9 @@ import java.util.concurrent.TimeUnit;
 public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
 
     private static final List<Integer> LOWER_LAYERS = Collections.singletonList(1);
+    private final Batch mapBatch;
     // injected systems
     private MapManager mapManager;
-    private WorldRenderingSystem worldRenderingSystem;
-    private final Batch mapBatch;
     private final LoadingCache<Map, Texture> bufferedLayers = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
@@ -41,6 +40,7 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
                     return renderLayerToBuffer(key, 0);
                 }
             });
+    private WorldRenderingSystem worldRenderingSystem;
 
     public MapGroundRenderingSystem(Batch spriteBatch) {
         super(spriteBatch, LOWER_LAYERS);

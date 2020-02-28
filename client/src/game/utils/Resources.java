@@ -1,7 +1,7 @@
 package game.utils;
 
 public class Resources {
-	
+
     // Paths
     private static final String GAME_DATA_PATH = "data/";
     public static final String GAME_UI_PATH = GAME_DATA_PATH + "ui/";
@@ -20,15 +20,15 @@ public class Resources {
     public static final String GAME_SHADERS_PATH = GAME_DATA_PATH + "shaders/";
     public static final String CLIENT_ICON = GAME_DATA_PATH + "icons/ao.png";
     public static final String GAME_SPELLS_PATH = "spells/";
-    
+
     // Files
     public static final String GAME_SHADERS_LIGHT = "light.png";
     public static final String CLIENT_CONFIG = "Config.json";
-	
+
     // Extensions
     public static final String GAME_GRAPHICS_EXTENSION = ".png";
     public static final String GAME_SOUNDS_EXTENSION = ".ogg";
     public static final String GAME_MUSIC_EXTENSION = ".mp3";
     public static final String GAME_MIDI_EXTENSION = ".mid";
-    
+
 }

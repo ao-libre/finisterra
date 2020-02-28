@@ -31,15 +31,14 @@ import static com.artemis.E.E;
 @Wire
 public class EffectRenderingSystem extends FluidIteratingSystem {
 
-    private WorldManager worldManager;
-    private DescriptorHandler descriptorHandler;
-    private AnimationHandler animationHandler;
-
-    private int srcFunc;
-    private int dstFunc;
     private final Batch batch;
     private final Map<Integer, BundledAnimation> fxs;
     private final Map<Integer, ParticleEffect> particleEffects;
+    private WorldManager worldManager;
+    private DescriptorHandler descriptorHandler;
+    private AnimationHandler animationHandler;
+    private int srcFunc;
+    private int dstFunc;
 
     public EffectRenderingSystem(Batch batch) {
         super(Aspect.all(Effect.class));

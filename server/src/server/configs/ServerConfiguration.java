@@ -146,9 +146,13 @@ public class ServerConfiguration extends BaseConfiguration {
             this.limitCreation = limitCreation;
         }
 
-        public int getMaxPlayers() { return maxPlayers; }
+        public int getMaxPlayers() {
+            return maxPlayers;
+        }
 
-        private void setMaxPlayers(int maxPlayers) { this.maxPlayers = maxPlayers; }
+        private void setMaxPlayers(int maxPlayers) {
+            this.maxPlayers = maxPlayers;
+        }
 
     }
 }

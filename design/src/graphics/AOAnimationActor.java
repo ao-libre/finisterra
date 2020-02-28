@@ -91,23 +91,23 @@ public class AOAnimationActor extends DescriptorActor {
     }
 
     public void setAnimation(Descriptor descriptor) {
-        
+
         try {
-           int graphic;
-           
-           if (descriptor instanceof FXDescriptor) {
-               graphic = descriptor.getGraphic(0);
-           } else {
-               graphic = descriptor.getGraphic(heading);
-           }
-           
-           setAnimationID(graphic);
-           
-        } catch(NullPointerException ex) {
+            int graphic;
+
+            if (descriptor instanceof FXDescriptor) {
+                graphic = descriptor.getGraphic(0);
+            } else {
+                graphic = descriptor.getGraphic(heading);
+            }
+
+            setAnimationID(graphic);
+
+        } catch (NullPointerException ex) {
             Log.error(this.toString(), "Non-existing graphic.", ex);
         }
-        
-        
+
+
     }
 
     public void setAnimationID(int graphic) {

@@ -99,9 +99,9 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
     public void create(FileHandle fileHandle) {
         FileHandle dest = Gdx.files.local(Resources.GAME_GRAPHICS_PATH + getFreeId() + ".png");
         fileHandle.copyTo(dest);
-        
+
         AOAssetManager assetManager = AOGame.getGlobalAssetManager();
-        
+
         if (assetManager instanceof DefaultAOAssetManager) {
             DefaultAOAssetManager defaultAOAssetManager = (DefaultAOAssetManager) assetManager;
             defaultAOAssetManager.load(dest.path(), Texture.class);
@@ -113,7 +113,7 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
             ScreenEnum.IMAGE_VIEW.getScreen().getDesigner().add(image);
             assetManager.getImages().put(image.getId(), image);
         });
-        
+
         if (slice.getImages().size() > 1) {
             AnimationView animationView = (AnimationView) ScreenEnum.ANIMATION_VIEW.getScreen();
             animationView.createAnimation(slice.getImages());

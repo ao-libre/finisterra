@@ -37,9 +37,9 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
     @Override
     public void load(Parameters<T> params) {
         AOAssetManager assetManager = AOGame.getGlobalAssetManager();
-        
+
         Collection<? extends Descriptor> values = Collections.emptyList();
-        
+
         if (tClass.equals(HeadDescriptor.class)) {
             values = assetManager.getHeads().values();
         } else if (tClass.equals(BodyDescriptor.class)) {

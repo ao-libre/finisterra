@@ -34,7 +34,6 @@ public class DialogRenderingSystem extends RenderingSystem {
     private static final int DISTANCE_TO_TOP = (int) (5 * SCALE);
     private static final float TIME = 0.3f;
     private static final float VELOCITY = DISTANCE_TO_TOP / TIME * SCALE;
-    private DescriptorHandler descriptorHandler;
     private final LoadingCache<Dialog, Table> labels = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
@@ -54,6 +53,7 @@ public class DialogRenderingSystem extends RenderingSystem {
                     return table;
                 }
             });
+    private DescriptorHandler descriptorHandler;
 
     public DialogRenderingSystem(Batch batch) {
         super(Aspect.all(Dialog.class, Body.class, WorldPos.class), batch, CameraKind.WORLD);

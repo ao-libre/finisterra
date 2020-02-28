@@ -16,9 +16,9 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
         System.setProperty("org.lwjgl.opengl.Display.enableOSXFullscreenModeAPI", "true");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Finisterra");
-        
+
         Log.setLogger(new LogSystem());
-        
+
         /**
          * Load desktop config.json or create default.
          */

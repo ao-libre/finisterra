@@ -28,8 +28,8 @@ import static graphics.Effect.NO_REF;
 public class WorldRenderingSystem extends BaseSystem {
 
     private static final int EXTRA_TILES = 7;
-    private MapManager mapManager;
     private final Batch batch;
+    private MapManager mapManager;
     private CameraSystem cameraSystem;
     private TiledMapSystem tiledMapSystem;
     private CharacterRenderingSystem characterRenderingSystem;

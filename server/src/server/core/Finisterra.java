@@ -100,7 +100,7 @@ public class Finisterra implements ApplicationListener {
         room.getPlayers().stream().mapToInt(player -> getNetworkManager().getConnectionByPlayer(player)).forEach(connectionId -> {
             try {
                 if (shouldUseLocalHost) {
-                    Log.info("Network","Using localhost...");
+                    Log.info("Network", "Using localhost...");
                 }
                 getNetworkManager().sendTo(connectionId, new StartGameResponse(
                         shouldUseLocalHost ? InetAddress.getLocalHost().getHostAddress() : IpChecker.getIp(),

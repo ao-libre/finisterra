@@ -185,11 +185,11 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     @Override
     public void processNotification(SoundNotification soundNotification) {
-        int soundNumber = soundNotification.getSoundNumber ( );
-        if (soundNotification.getState ( ).equals ( SoundNotification.SoundState.STOPPED )) {
-            soundsHandler.stopSound ( soundNumber );
-        }else {
-            soundsHandler.playSound ( soundNumber );
+        int soundNumber = soundNotification.getSoundNumber();
+        if (soundNotification.getState().equals(SoundNotification.SoundState.STOPPED)) {
+            soundsHandler.stopSound(soundNumber);
+        } else {
+            soundsHandler.playSound(soundNumber);
         }
     }
 

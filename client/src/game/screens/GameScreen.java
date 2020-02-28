@@ -61,9 +61,9 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     private final ClientConfiguration clientConfiguration;
     private final FPSLogger logger;
     private final Batch spriteBatch;
-    private WorldConfigurationBuilder worldConfigBuilder;
     private final AOAssetManager assetManager;
     private final Music backgroundMusic = MusicHandler.BACKGROUNDMUSIC;
+    private WorldConfigurationBuilder worldConfigBuilder;
 
     public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
 
@@ -84,12 +84,23 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         GameScreen.player = player;
         world.getSystem(GUI.class).getInventory().updateUserInventory(0);
         world.getSystem(GUI.class).getSpellView().updateSpells();
-        world.getSystem(GUI.class).getSpellViewExpanded ().updateSpells();
+        world.getSystem(GUI.class).getSpellViewExpanded().updateSpells();
 
     }
 
     public static KryonetClientMarshalStrategy getClient() {
         return world.getSystem(ClientSystem.class).getKryonetClient();
+    }
+
+    public static Batch initBatch() {
+        Batch tempSpriteBatch;
+        try {
+            tempSpriteBatch = new TextureArraySpriteBatch();
+        } catch (Exception ex) {
+            Log.info("Tu dispositivo no es compatible con el SpriteBatch mejorado. Usando sistema original...");
+            tempSpriteBatch = new SpriteBatch();
+        }
+        return tempSpriteBatch;
     }
 
     @Override
@@ -162,17 +173,6 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         world = new World(worldConfigBuilder.build()); // preload Artemis world
     }
 
-    public static Batch initBatch() {
-        Batch tempSpriteBatch;
-        try {
-            tempSpriteBatch = new TextureArraySpriteBatch();
-        } catch (Exception ex) {
-            Log.info("Tu dispositivo no es compatible con el SpriteBatch mejorado. Usando sistema original...");
-            tempSpriteBatch = new SpriteBatch();
-        }
-        return tempSpriteBatch;
-    }
-
     private void postWorldInit() {
         Entity cameraEntity = world.createEntity();
         E(cameraEntity)
@@ -180,8 +180,8 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .pos2D();
 
         // for testing
-        backgroundMusic.setVolume ( 0.20f );
-        backgroundMusic.play ();
+        backgroundMusic.setVolume(0.20f);
+        backgroundMusic.play();
     }
 
     protected void update(float deltaTime) {
@@ -221,7 +221,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public void dispose() {
         world.getSystem(ClientSystem.class).stop();
         world.getSystem(GUI.class).dispose();
-        backgroundMusic.stop ();
+        backgroundMusic.stop();
     }
 
 }
