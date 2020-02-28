@@ -2,11 +2,11 @@ package shared.util;
 
 import com.esotericsoftware.minlog.Log;
 
-import java.util.Date;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Date;
 
 public class LogSystem extends Log.Logger {
    
