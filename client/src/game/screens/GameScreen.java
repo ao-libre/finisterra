@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.ClientConfiguration;
 import game.handlers.*;
@@ -45,7 +46,6 @@ import java.util.concurrent.TimeUnit;
 
 import static com.artemis.E.E;
 import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
-import com.esotericsoftware.minlog.Log;
 
 public class GameScreen extends ScreenAdapter implements WorldScreen {
 

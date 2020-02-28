@@ -4,12 +4,12 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.glutils.HdpiMode;
 import com.esotericsoftware.minlog.Log;
-import shared.util.LogSystem;
 import game.AOGame;
 import game.ClientConfiguration;
 import game.ClientConfiguration.Init;
 import game.ClientConfiguration.Init.Video;
 import game.utils.Resources;
+import shared.util.LogSystem;
 
 public class DesktopLauncher {
 

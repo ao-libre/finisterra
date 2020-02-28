@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import design.screens.ScreenEnum;
 import design.screens.views.ImageView;
 import game.AOGame;
-import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import game.loaders.DescriptorsLoader;
 import model.descriptors.*;

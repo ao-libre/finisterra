@@ -1,7 +1,5 @@
 package shared.model.lobby;
 
-import shared.network.lobby.CreateRoomRequest;
-
 import java.util.*;
 
 public class Lobby {

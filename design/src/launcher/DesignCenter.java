@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.esotericsoftware.minlog.Log;
-import shared.util.LogSystem;
 import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
 import design.screens.views.View;
@@ -28,6 +27,7 @@ import game.handlers.*;
 import game.screens.WorldScreen;
 import game.utils.Skins;
 import graphics.AnimationDrawable;
+import shared.util.LogSystem;
 
 import java.util.Arrays;
 import java.util.List;

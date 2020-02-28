@@ -1,6 +1,5 @@
 package game.ui;
 
-import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -20,13 +19,8 @@ import game.utils.WorldUtils;
 import shared.network.interaction.DropItem;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
-import shared.objects.types.Obj;
-import shared.objects.types.Type;
-import shared.objects.types.WeaponKind;
-import shared.objects.types.WeaponObj;
+import shared.objects.types.*;
 import shared.util.Messages;
-import shared.objects.types.SpellObj;
-import shared.objects.types.Type;
 
 import java.util.ArrayList;
 import java.util.Optional;

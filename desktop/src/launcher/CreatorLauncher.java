@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.glutils.HdpiMode;
 import com.esotericsoftware.minlog.Log;
 import game.ClientConfiguration;
 import object.ObjectCreator;
+import shared.util.LogSystem;
 
 import static game.utils.Resources.CLIENT_CONFIG;
-import shared.util.LogSystem;
 
 public class CreatorLauncher {
 
