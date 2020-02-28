@@ -76,7 +76,7 @@ public class LoginScreen extends AbstractScreen {
 
     @Override
     void createContent() {
-        config = ClientConfiguration.loadConfig(CLIENT_CONFIG); // @todo hotfix
+        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); // @todo hotfix
         Cell<Image> imageCell = addTitle();
         Image logo = imageCell.getActor();
         imageCell.row();
