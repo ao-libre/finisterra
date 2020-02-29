@@ -7,20 +7,34 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ObjectMap;
 
+/**
+ * Clase para reemplazar el cursor de windows por un cursor grafico
+ */
 public class Cursors {
 
     private static ObjectMap<String, Cursor> cursors = new ObjectMap<>();
     private static String cursor;
 
+    /**
+     * Setea un cursor grafico
+     * @param name
+     */
     public static void setCursor(String name) {
         cursor = name;
         updateCursor();
     }
 
+    /**
+     * Metodo que recibe por parametros el nombre de un cursor para cargarlo.
+     * @param name
+     * @return
+     */
     private static Cursor loadCursor(String name) {
         Cursor cursor = cursors.get(name);
 
+        //Si cursor esta vacio, cargamos un nuevo cursor...
         if (cursor == null) {
+            //Cargamos el grafico del nuevo cursor
             Texture texture = new Texture(Resources.GAME_UI_PATH + "cursors/" + name + ".png");
             texture.getTextureData().prepare();
 
@@ -38,7 +52,11 @@ public class Cursors {
         return cursor;
     }
 
+    /**
+     * Actualiza un cursor grafico
+     */
     private static void updateCursor() {
+        //¿Hay un cursor? Si lo hay, lo cargamos
         if (cursor != null) {
             Gdx.graphics.setCursor(loadCursor(cursor));
         }
