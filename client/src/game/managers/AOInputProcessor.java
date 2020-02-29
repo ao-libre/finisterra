@@ -12,6 +12,7 @@ import game.handlers.MapHandler;
 import game.handlers.ObjectHandler;
 import game.handlers.MusicHandler;
 import game.screens.GameScreen;
+import game.screens.transitions.FadingGame;
 import game.systems.camera.CameraSystem;
 import game.systems.network.TimeSync;
 import game.ui.GUI;
@@ -106,7 +107,7 @@ public class AOInputProcessor extends Stage {
                         Optional< E > targetEntity = worldManager.getEntities()
                                 .stream()
                                 .filter( entity -> E( entity ).hasWorldPos() && E( entity ).getWorldPos().equals( worldPos ) )
-                                .map( entity -> E( entity ) )
+                                .map(E::E)
                                 .findFirst();
                         if(targetEntity.isPresent()) {
                             E entity = targetEntity.get();
@@ -336,8 +337,8 @@ public class AOInputProcessor extends Stage {
     private void useActionBarSlot(int x) {
         int base;
         if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT )) {
-            if (gui.getActionBar ().getState().equals("INVENTORY")) {
-                if (gui.getInventory ( ).getSelected ( ).isEmpty ( )) {
+            if (gui.getActionBar().getState().equals("INVENTORY")) {
+                if (!gui.getInventory().getSelected().isPresent()) {
                     base = 0;
                 } else {
                     base = gui.getInventory ( ).selectedIndex ( );

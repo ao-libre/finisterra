@@ -1,9 +1,10 @@
 import org.gradle.internal.jvm.Jvm
+import org.gradle.internal.os.OperatingSystem
 
 buildscript {
     ext {
-        kotlin_version = '1.3.50'
-	artemis_version = '2.2.0'
+        kotlin_version = '1.3.61'
+	    artemis_version = '2.2.0'
     }
 
     repositories {
@@ -30,18 +31,20 @@ allprojects {
 
     ext {
         appName = 'Finisterra'
-        
-        gdxVersion = '1.9.11-SNAPSHOT' //graphic library
-        kryoVersion = '4.0.2' //object serialization api
-        artemisVersion = '2.2.0'  //Artemis EntityCompomentSystem & Network manager (TCP/UDP)
-        gdxAIVersion = '1.8.2' //artificial intelligence
-	tinyfdVersion = '3.2.3'
-	jupiterVersion = '5.5.2' //test used for cache to map
-	guavaVersion = '28.1-jre' //collection types used for map information
-	ini4jVersion = '0.5.4'
-	kotlinxCoroutinesVersion = '1.3.2' //currently only used to scale images
-	kaifu2xVersion = '0.4.0'
-	reflectionsVersion = '0.9.11' //load indexed file information to reuse
+
+        // Control global de las versiones de las dependencias.
+        gdxVersion = '1.9.11-SNAPSHOT'      //Graphic Engine Library.
+        kryoVersion = '4.0.2'               //Object Serialization API, override dependency of KryoNet.
+        artemisVersion = '2.2.0'            //Artemis EntityComponentSystem & Network manager (TCP/UDP)
+        artemisContribVersion = '2.4.0'     //Kinda the same but developed by someone else.
+        gdxAIVersion = '1.8.2'              //Artificial Intelligence
+	    tinyfdVersion = '3.2.3'
+	    jupiterVersion = '5.5.2'            //Test map caching.
+	    guavaVersion = '28.1-jre'           //Collection types used for map information.
+	    ini4jVersion = '0.5.4'
+	    kotlinxCoroutinesVersion = '1.3.3'  //Only used to scale images 2x.
+	    kaifu2xVersion = '0.4.0'
+	    reflectionsVersion = '0.9.11'       //Load indexed file information to reuse.
     }
 
     repositories {
@@ -57,13 +60,33 @@ subprojects {
 
     apply plugin: "java-library"
 
+    // Establecemos la version de Java a usar.
     sourceCompatibility = JavaVersion.VERSION_13
     targetCompatibility = JavaVersion.VERSION_13
 
+    // Configuraciones del compilador Java
     tasks.withType(JavaCompile) {
-	options.encoding = "UTF-8"
-	//options.compilerArgs << '-Xlint:unchecked'
-	//options.deprecation = true
+	    options.encoding = "UTF-8"
+	    //options.compilerArgs << '-Xlint:unchecked'
+	    //options.deprecation = true
+    }
+
+    // Configuracion de resolucion de dependencias.
+    configurations.all {
+        resolutionStrategy {
+            // fail eagerly on version conflict (includes transitive dependencies)
+            // e.g. multiple different versions of the same dependency (group and name are equal)
+            failOnVersionConflict()
+
+            // prefer modules that are part of this build (multi-project or composite build) over external modules
+            preferProjectModules()
+
+            // cache dynamic versions for 10 minutes
+            cacheDynamicVersionsFor 10*60, 'seconds'
+
+            // don't cache changing modules at all
+            cacheChangingModulesFor 0, 'seconds'
+        }
     }
 }
 
@@ -72,25 +95,28 @@ configure(subprojects.findAll { it.name == 'server' || it.name == 'desktop' }) {
     apply plugin: "de.undercouch.download"
 	
     ext {
-        osName = System.getProperty('os.name').toLowerCase(Locale.ROOT)
         jdkPath = Jvm.current().getJavaHome().path
-	JPackagePath = "${rootDir}/JPackage"
+        JPackagePath = "${rootDir}/JPackage"
         prebuiltJRE = "${rootDir}/JPackage/bundled-JRE"
-        JPackageCompressed = osName.contains('windows') ? "jpackage.zip" : "jpackage.tar.gz"
+        JPackageCompressed = OperatingSystem.current().isWindows() ? "jpackage.zip" : "jpackage.tar.gz"
     }
 
     // Downloads the JPackage binary and decompresses it.
     task downloadJPackage(type: Download) {
 
-        if (osName.contains('windows')) {
-            src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-70_windows-x64_bin.zip'
-        } else if (osName.contains('linux')) {
-            src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-70_linux-x64_bin.tar.gz'
-        } else if (osName.contains('mac')) {
-            src 'https://download.java.net/java/early_access/jpackage/1/openjdk-14-jpackage+1-70_osx-x64_bin.tar.gz'
+        switch(OperatingSystem.current()) {
+            case OperatingSystem.MAC_OS:
+                src 'https://download.java.net/java/early_access/jdk14/27/GPL/openjdk-14-ea+27_osx-x64_bin.tar.gz'
+                break;
+            case OperatingSystem.WINDOWS:
+                src 'https://download.java.net/java/early_access/jdk14/27/GPL/openjdk-14-ea+27_windows-x64_bin.zip'
+                break;
+            case OperatingSystem.LINUX:
+                src 'https://download.java.net/java/early_access/jdk14/27/GPL/openjdk-14-ea+27_linux-x64_bin.tar.gz'
+                break;
         }
 
-        dest(new File(JPackagePath, JPackageCompressed))
+        dest(file(JPackagePath.concat("/${JPackageCompressed}")))
         overwrite(false)
 
         // We put it in a doLast{} block because otherwise it (the task) auto-executes.
@@ -98,7 +124,7 @@ configure(subprojects.findAll { it.name == 'server' || it.name == 'desktop' }) {
             if (!file(JPackagePath.concat("/jdk-14")).exists()) {
                 copy {
 
-                    if (osName.contains('windows')) {
+                    if (OperatingSystem.current().isWindows()) {
                         from zipTree("${JPackagePath}/${JPackageCompressed}")
                     } else {
                         from tarTree("${JPackagePath}/${JPackageCompressed}")

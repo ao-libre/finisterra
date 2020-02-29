@@ -32,6 +32,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.esotericsoftware.minlog.Log;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -124,6 +125,7 @@ public class Utils {
      * Does not dispose pixmap
      *
      * @param pixmap
+     * @param color
      * @return
      */
     public static Pixmap tintPixmap(Pixmap pixmap, Color color) {
@@ -285,12 +287,12 @@ public class Utils {
                 int imageHeight = reader.getHeight(reader.getMinIndex());
                 result = imageWidth < width && imageHeight < height;
             } catch (IOException e) {
-                Gdx.app.error(Utils.class.getName(), "error checking image dimensions", e);
+                Log.error(Utils.class.getName(), "error checking image dimensions", e);
             } finally {
                 reader.dispose();
             }
         } else {
-            Gdx.app.error(Utils.class.getName(), "No reader available to check image dimensions");
+            Log.error(Utils.class.getName(), "No reader available to check image dimensions");
         }
         return result;
     }
@@ -306,31 +308,36 @@ public class Utils {
      * Extracts a zip file specified by the zipFilePath to a directory specified by
      * destDirectory (will be created if does not exists)
      *
-     * @param zis
+     * @param zipFile
      * @param destDirectory
      * @throws IOException
      */
     public static void unzip(FileHandle zipFile, FileHandle destDirectory) throws IOException {
         destDirectory.mkdirs();
 
-        InputStream is = zipFile.read();
-        ZipInputStream zis = new ZipInputStream(is);
-
-        ZipEntry entry = zis.getNextEntry();
-        // iterates over entries in the zip file
-        while (entry != null) {
-            if (!entry.isDirectory()) {
-                // if the entry is a file, extracts it
-                extractFile(zis, destDirectory.child(entry.getName()));
-            } else {
-                // if the entry is a directory, make the directory
-                destDirectory.child(entry.getName()).mkdirs();
+        try (InputStream is = zipFile.read(); ZipInputStream zis = new ZipInputStream(is)) {
+            ZipEntry entry = zis.getNextEntry();
+            
+            // iterates over entries in the zip file
+            while (entry != null) {
+                if (!entry.isDirectory()) {
+                    // if the entry is a file, extracts it
+                    extractFile(zis, destDirectory.child(entry.getName()));
+                } else {
+                    // if the entry is a directory, make the directory
+                    destDirectory.child(entry.getName()).mkdirs();
+                }
+                zis.closeEntry();
+                entry = zis.getNextEntry();
             }
-            zis.closeEntry();
-            entry = zis.getNextEntry();
-        }
-        is.close();
-        zis.close();
+            
+            is.close();
+            zis.close();
+            
+        } catch(IOException ex) {
+            Log.error(Utils.class.getName(), "Error trying to unZip archive: " + zipFile, ex);
+        } 
+
     }
 
     /**
@@ -341,13 +348,16 @@ public class Utils {
      * @throws IOException
      */
     private static void extractFile(ZipInputStream zipIn, FileHandle filePath) throws IOException {
-        BufferedOutputStream bos = new BufferedOutputStream(filePath.write(false));
-        byte[] bytesIn = new byte[BUFFER_SIZE];
-        int read = 0;
-        while ((read = zipIn.read(bytesIn)) != -1) {
-            bos.write(bytesIn, 0, read);
+        try (BufferedOutputStream bos = new BufferedOutputStream(filePath.write(false))) {
+            byte[] bytesIn = new byte[BUFFER_SIZE];
+            int read;
+            while ((read = zipIn.read(bytesIn)) != -1) {
+                bos.write(bytesIn, 0, read);
+            }
+            bos.close();
+        } catch(IOException ex) {
+            Log.error(Utils.class.getName(), "Error extracting file: " + zipIn, ex);
         }
-        bos.close();
     }
 
     public static Pixmap textureRegionToPixmap(TextureRegion textureRegion) {
@@ -382,7 +392,7 @@ public class Utils {
 
     public static String removeDuplicateCharacters(String string) {
         char[] chars = string.toCharArray();
-        Set<Character> charSet = new LinkedHashSet<Character>();
+        Set<Character> charSet = new LinkedHashSet<>();
         for (char c : chars) {
             charSet.add(c);
         }

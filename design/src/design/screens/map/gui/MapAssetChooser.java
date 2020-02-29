@@ -15,7 +15,7 @@ public class MapAssetChooser extends Window implements MapPalette.SelectionListe
     private int image;
     private int animation;
     private int tileset;
-    private WorldPosition tileExit = new WorldPosition();
+    private final WorldPosition tileExit = new WorldPosition();
 
     public MapAssetChooser() {
         super("Chooser", SKIN, "main");

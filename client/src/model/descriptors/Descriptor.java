@@ -15,6 +15,7 @@ public class Descriptor implements IDescriptor, ID {
         this.indexs = grhIndex;
     }
 
+    @Override
     public int[] getIndexs() {
         return indexs;
     }
@@ -23,6 +24,7 @@ public class Descriptor implements IDescriptor, ID {
         this.indexs = indexs;
     }
 
+    @Override
     public int getId() {
         return id;
     }

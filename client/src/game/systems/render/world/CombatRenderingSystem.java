@@ -34,7 +34,7 @@ public class CombatRenderingSystem extends RenderingSystem {
     private LoadingCache<CombatMessage, Table> messages = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
-            .build(new CacheLoader<>() {
+            .build(new CacheLoader<CombatMessage, Table>() {
                 @Override
                 public Table load(CombatMessage message) {
                     Table table = new Table(Skins.COMODORE_SKIN);

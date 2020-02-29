@@ -38,13 +38,13 @@ public class GenericEditor extends Dialog {
                 table.add(IntegerEditor.create(field.getName(), getFieldProvider(field.getName()), (v) -> {
                     try {
                         field.set(obj, v);
-                    } catch (Exception e) {
+                    } catch (IllegalAccessException | IllegalArgumentException e) {
                         Log.error("Failed to set field value", e);
                     }
                 }, () -> {
                     try {
                         return (Integer) field.get(obj);
-                    } catch (Exception e) {
+                    } catch (IllegalAccessException | IllegalArgumentException e) {
                         Log.error("Failed to get field value", e);
                     }
                     return 0;
@@ -53,13 +53,13 @@ public class GenericEditor extends Dialog {
                 table.add(StringEditor.simple(field.getName(), (v) -> {
                     try {
                         field.set(obj, v);
-                    } catch (Exception e) {
+                    } catch (IllegalAccessException | IllegalArgumentException e) {
                         Log.error("Failed to set field value", e);
                     }
                 }, () -> {
                     try {
                         return (String) field.get(obj);
-                    } catch (Exception e) {
+                    } catch (IllegalAccessException | IllegalArgumentException e) {
                         Log.error("Failed to get field value", e);
                     }
                     return "";
@@ -68,13 +68,13 @@ public class GenericEditor extends Dialog {
                 table.add(BooleanEditor.simple(field.getName(), (v) -> {
                     try {
                         field.set(obj, v);
-                    } catch (Exception e) {
+                    } catch (IllegalAccessException | IllegalArgumentException e) {
                         Log.error("Failed to set field value", e);
                     }
                 }, () -> {
                     try {
                         return (Boolean) field.get(obj);
-                    } catch (Exception e) {
+                    } catch (IllegalAccessException | IllegalArgumentException e) {
                         Log.error("Failed to get field value", e);
                     }
                     return false;
@@ -83,13 +83,13 @@ public class GenericEditor extends Dialog {
                 table.add(FloatEditor.simple(field.getName(), (v) -> {
                     try {
                         field.set(obj, v);
-                    } catch (Exception e) {
+                    } catch (IllegalAccessException | IllegalArgumentException e) {
                         Log.error("Failed to set field value", e);
                     }
                 }, () -> {
                     try {
                         return (Float) field.get(obj);
-                    } catch (Exception e) {
+                    } catch (IllegalAccessException | IllegalArgumentException e) {
                         Log.error("Failed to get field value", e);
                     }
                     return 0f;

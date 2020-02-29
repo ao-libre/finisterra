@@ -79,6 +79,7 @@ public class AOAnimationActor extends DescriptorActor {
         }
     }
 
+    @Override
     public void setDescriptor(Descriptor descriptor) {
         this.descriptor = descriptor;
         if (descriptor == null) {
@@ -90,8 +91,23 @@ public class AOAnimationActor extends DescriptorActor {
     }
 
     public void setAnimation(Descriptor descriptor) {
-        int graphic = descriptor instanceof FXDescriptor ? descriptor.getGraphic(0) : descriptor.getGraphic(heading);
-        setAnimationID(graphic);
+        
+        try {
+           int graphic;
+           
+           if (descriptor instanceof FXDescriptor) {
+               graphic = descriptor.getGraphic(0);
+           } else {
+               graphic = descriptor.getGraphic(heading);
+           }
+           
+           setAnimationID(graphic);
+           
+        } catch(NullPointerException ex) {
+            Log.error(this.toString(), "Non-existing graphic.", ex);
+        }
+        
+        
     }
 
     public void setAnimationID(int graphic) {
@@ -102,7 +118,7 @@ public class AOAnimationActor extends DescriptorActor {
                     .get(graphic)
                     .ifPresent(anim -> this.animation = new BundledAnimation((AOAnimation) anim));
         } else {
-            Log.info("Failed to preview descriptor: " + descriptor);
+            Log.info(this.toString(), "Failed to preview descriptor: " + descriptor);
         }
     }
 
