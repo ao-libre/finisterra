@@ -68,13 +68,14 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         Lobby lobby = getLobby();
         Optional<Room> room = lobby.getRoom(joinRoomRequest.getId());
         room.ifPresent(room1 -> {
+            if (room1.isFull()) return; // @todo responder al cliente que la sala está llena
             Player player = networkManager.getPlayerByConnection(connectionId);
             player.setTeam(getBalancedTeam(room1));
+            lobby.joinRoom(joinRoomRequest.getId(), player);
             room1.getPlayers().forEach(roomPlayer -> {
                 int roomPlayerConnection = networkManager.getConnectionByPlayer(roomPlayer);
                 networkManager.sendTo(roomPlayerConnection, new JoinRoomNotification(player, true));
             });
-            lobby.joinRoom(joinRoomRequest.getId(), player);
             networkManager.sendTo(connectionId, new JoinRoomResponse(room1, player));
         });
     }
@@ -150,7 +151,11 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         ApplicationListener applicationListener = Gdx.app.getApplicationListener();
         Finisterra finisterra = (Finisterra) applicationListener;
         Optional<Room> room = finisterra.getLobby().getRoom(startGameRequest.getRoomId());
-        room.ifPresent(finisterra::startGame);
+        room.ifPresent(room1 -> {
+            if (room1.getPlayers().stream().allMatch(Player::isReady)) {
+                finisterra.startGame(room1);
+            } // @todo else responder al cliente que los jugadores no están listos
+        });
     }
 
     @Override
