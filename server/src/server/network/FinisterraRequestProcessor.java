@@ -193,7 +193,7 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
 
         if (account != null) {
             if (account.getPassword() == password) {
-                // login successful
+                //@todo responder al cliente
             }
         }
 

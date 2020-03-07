@@ -87,7 +87,8 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
             AOGame game = (AOGame) Gdx.app.getApplicationListener();
             game.toLobby();
         }
-
+        //@todo en caso de exito pasar al lobby del servidor
+        //@todo en caso de falla mostrar un pop-up
     }
 
     @Override
