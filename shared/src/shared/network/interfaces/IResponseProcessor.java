@@ -1,5 +1,6 @@
 package shared.network.interfaces;
 
+import shared.network.account.AccountCreationResponse;
 import shared.network.account.AccountLoginResponse;
 import shared.network.lobby.CreateRoomResponse;
 import shared.network.lobby.JoinLobbyResponse;
@@ -21,6 +22,8 @@ public interface IResponseProcessor {
     void processResponse(StartGameResponse startGameResponse);
 
     void processResponse(TimeSyncResponse timeSyncResponse);
+
+    void processResponse(AccountCreationResponse accountCreationResponse);
 
     void processResponse(AccountLoginResponse accountLoginResponse);
 }

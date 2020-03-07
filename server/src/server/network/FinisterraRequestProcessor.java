@@ -13,7 +13,10 @@ import shared.model.lobby.Lobby;
 import shared.model.lobby.Player;
 import shared.model.lobby.Room;
 import shared.model.lobby.Team;
+import shared.network.account.AccountCreationRequest;
+import shared.network.account.AccountCreationResponse;
 import shared.network.account.AccountLoginRequest;
+import shared.network.account.AccountLoginResponse;
 import shared.network.interfaces.DefaultRequestProcessor;
 import shared.network.lobby.*;
 import shared.network.lobby.player.ChangeHeroRequest;
@@ -176,6 +179,36 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
     }
 
     @Override
+    public void processRequest(AccountCreationRequest accountCreationRequest, int connectionId) {
+        String email = accountCreationRequest.getEmail();
+        String password = accountCreationRequest.getPassword();
+
+        //Actual location on disk for database files, process should have read-write permissions to this folder
+        URL url = getClass().getResource("jsondb");
+        String dbFilesLocation = url.getPath();
+
+        //Java package name where POJO's are present
+        String baseScanPackage = "server.jsondb";
+
+        JsonDBTemplate jsonDBTemplate = new JsonDBTemplate(dbFilesLocation, baseScanPackage);
+        jsonDBTemplate.getCollection(Account.class);
+        Account account = jsonDBTemplate.findById(email, Account.class);
+
+        boolean success;
+        if (account != null) {
+            //@todo error
+            success = false;
+        }
+        else {
+            account = new Account(email, password);
+            jsonDBTemplate.insert(account);
+            success = true;
+        }
+
+        networkManager.sendTo(connectionId, new AccountCreationResponse(success));
+    }
+
+    @Override
     public void processRequest(AccountLoginRequest accountLoginRequest, int connectionId) {
         String email = accountLoginRequest.getEmail();
         String password = accountLoginRequest.getPassword();
@@ -191,11 +224,15 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         jsonDBTemplate.getCollection(Account.class);
         Account account = jsonDBTemplate.findById(email, Account.class);
 
-        if (account != null) {
-            if (account.getPassword() == password) {
-                //@todo responder al cliente
-            }
+        boolean success;
+        if ((account != null) && (account.getPassword() == password)) {
+            //@todo hacer cosas del login
+            success = true;
+        }
+        else {
+            success = false;
         }
 
+        networkManager.sendTo(connectionId, new AccountLoginResponse(success));
     }
 }
