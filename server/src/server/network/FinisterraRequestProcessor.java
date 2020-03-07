@@ -2,11 +2,12 @@ package server.network;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.esotericsoftware.minlog.Log;
 import io.jsondb.JsonDBTemplate;
 import io.jsondb.crypto.Default1Cipher;
 import io.jsondb.crypto.ICipher;
 import server.core.Finisterra;
-import server.jsondb.Account;
+import server.database.Account;
 import server.systems.FinisterraSystem;
 import shared.interfaces.Hero;
 import shared.model.lobby.Lobby;
@@ -26,8 +27,6 @@ import shared.network.lobby.player.ChangeTeamRequest;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
 
-import java.net.URL;
-import java.security.GeneralSecurityException;
 import java.util.Optional;
 
 /**
@@ -182,27 +181,13 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
     public void processRequest(AccountCreationRequest accountCreationRequest, int connectionId) {
         String email = accountCreationRequest.getEmail();
         String password = accountCreationRequest.getPassword();
+        String salt = accountCreationRequest.getSalt();
 
-        //Actual location on disk for database files, process should have read-write permissions to this folder
-        URL url = getClass().getResource("jsondb");
-        String dbFilesLocation = url.getPath();
-
-        //Java package name where POJO's are present
-        String baseScanPackage = "server.jsondb";
-
-        JsonDBTemplate jsonDBTemplate = new JsonDBTemplate(dbFilesLocation, baseScanPackage);
-        jsonDBTemplate.getCollection(Account.class);
-        Account account = jsonDBTemplate.findById(email, Account.class);
-
-        boolean success;
-        if (account != null) {
-            //@todo error
-            success = false;
-        }
-        else {
-            account = new Account(email, password);
-            jsonDBTemplate.insert(account);
-            success = true;
+        try {
+            Account account = new Account(email, password, salt);
+            account.save();
+        } catch (Exception ex) {
+            Log.info("Creacion de cuentas", "No se pudo crear la cuenta: " + email, ex);
         }
 
         networkManager.sendTo(connectionId, new AccountCreationResponse(success));
@@ -213,25 +198,11 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         String email = accountLoginRequest.getEmail();
         String password = accountLoginRequest.getPassword();
 
-        //Actual location on disk for database files, process should have read-write permissions to this folder
-        URL url = getClass().getResource("jsondb");
-        String dbFilesLocation = url.getPath();
-
-        //Java package name where POJO's are present
-        String baseScanPackage = "server.jsondb";
-
-        JsonDBTemplate jsonDBTemplate = new JsonDBTemplate(dbFilesLocation, baseScanPackage);
-        jsonDBTemplate.getCollection(Account.class);
-        Account account = jsonDBTemplate.findById(email, Account.class);
+        // Obtenemos la cuenta de la carpeta Accounts.
+        Account requestedAccount = Account.load(email);
 
         boolean success;
-        if ((account != null) && (account.getPassword() == password)) {
-            //@todo hacer cosas del login
-            success = true;
-        }
-        else {
-            success = false;
-        }
+        success = (requestedAccount != null) && (requestedAccount.getPassword().equals(password));
 
         networkManager.sendTo(connectionId, new AccountLoginResponse(success));
     }
