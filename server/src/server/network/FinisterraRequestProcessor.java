@@ -2,13 +2,18 @@ package server.network;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import io.jsondb.JsonDBTemplate;
+import io.jsondb.crypto.Default1Cipher;
+import io.jsondb.crypto.ICipher;
 import server.core.Finisterra;
+import server.jsondb.Account;
 import server.systems.FinisterraSystem;
 import shared.interfaces.Hero;
 import shared.model.lobby.Lobby;
 import shared.model.lobby.Player;
 import shared.model.lobby.Room;
 import shared.model.lobby.Team;
+import shared.network.account.AccountLoginRequest;
 import shared.network.interfaces.DefaultRequestProcessor;
 import shared.network.lobby.*;
 import shared.network.lobby.player.ChangeHeroRequest;
@@ -18,6 +23,8 @@ import shared.network.lobby.player.ChangeTeamRequest;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
 
+import java.net.URL;
+import java.security.GeneralSecurityException;
 import java.util.Optional;
 
 /**
@@ -166,5 +173,29 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         response.requestId = request.requestId;
         response.sendTime = System.nanoTime();
         networkManager.sendTo(connectionId, response);
+    }
+
+    @Override
+    public void processRequest(AccountLoginRequest accountLoginRequest, int connectionId) {
+        String email = accountLoginRequest.getEmail();
+        String password = accountLoginRequest.getPassword();
+
+        //Actual location on disk for database files, process should have read-write permissions to this folder
+        URL url = getClass().getResource("jsondb");
+        String dbFilesLocation = url.getPath();
+
+        //Java package name where POJO's are present
+        String baseScanPackage = "server.jsondb";
+
+        JsonDBTemplate jsonDBTemplate = new JsonDBTemplate(dbFilesLocation, baseScanPackage);
+        jsonDBTemplate.getCollection(Account.class);
+        Account account = jsonDBTemplate.findById(email, Account.class);
+
+        if (account != null) {
+            if (account.getPassword() == password) {
+                // login successful
+            }
+        }
+
     }
 }

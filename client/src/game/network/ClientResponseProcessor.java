@@ -10,6 +10,7 @@ import game.screens.*;
 import game.systems.network.ClientSystem;
 import game.systems.network.TimeSync;
 import game.systems.physics.MovementProcessorSystem;
+import shared.network.account.AccountLoginResponse;
 import shared.network.interfaces.IResponseProcessor;
 import shared.network.lobby.CreateRoomResponse;
 import shared.network.lobby.JoinLobbyResponse;
@@ -78,6 +79,15 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
         Log.info("Local timestamp: " + TimeUtils.millis() / 1000);
         Log.info("RTT: " + timeSync.getRtt() / 1000);
         Log.info("Time offset: " + timeSync.getTimeOffset() / 1000);
+    }
+
+    @Override
+    public void processResponse(AccountLoginResponse accountLoginResponse) {
+        if (accountLoginResponse.success()) {
+            AOGame game = (AOGame) Gdx.app.getApplicationListener();
+            game.toLobby();
+        }
+
     }
 
     @Override
