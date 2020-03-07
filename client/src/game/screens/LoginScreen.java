@@ -82,7 +82,6 @@ public class LoginScreen extends AbstractScreen {
     void createContent() {
         ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); // @todo hotfix
 
-        //@todo centrar la tabla de login
         //@todo cambiar window por table (window está pensado para ventanas)
 
         /** Tabla de login */
@@ -114,28 +113,26 @@ public class LoginScreen extends AbstractScreen {
         });
 
         loginWindow.getColor().a = 0.8f;
-        loginWindow.add(usernameLabel);
+        loginWindow.add(usernameLabel).padRight(5);
         loginWindow.add(this.username).width(250).row();
-        loginWindow.add(passwordLabel).padTop(5);
+        loginWindow.add(passwordLabel).padTop(5).padRight(5);
         loginWindow.add(this.password).padTop(5).width(250).row();
         loginWindow.add(this.rememberMe).padTop(20);
-        loginWindow.add(loginButton).padTop(20).expandX().row();
+        loginWindow.add(loginButton).padTop(20).row();
         loginWindow.add();
         loginWindow.add(registerButton).padTop(30).row();
 
         /** Tabla de servidores */
         Table connectionTable = new Table((getSkin()));
-
         this.serverList = new List<>(getSkin());
         serverList.setItems(config.getNetwork().getServers());
-
-        connectionTable.add(serverList).width(300);
-        connectionTable.align(Align.center);
-        connectionTable.setVisible(true);
+        //Nota: el size acá es redundante, pero si no está no se ve bien la lista. Ver más abajo *.
+        connectionTable.add(serverList).width(400).height(300);
 
         /** Tabla principal */
-        getMainTable().add(loginWindow).width(500).height(300);
-        getMainTable().add(connectionTable).width(400).height(300);
+        getMainTable().add(loginWindow).width(500).height(300).pad(10);
+        getMainTable().add(connectionTable).width(400).height(300).pad(10); //*Seteando el size, recursivamente tendría que resizear list
+        //getMainTable().setDebug(true, true);
         getStage().setKeyboardFocus(username);
     }
 
