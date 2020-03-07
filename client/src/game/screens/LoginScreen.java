@@ -2,8 +2,10 @@ package game.screens;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
@@ -25,6 +27,8 @@ public class LoginScreen extends AbstractScreen {
     private ClientSystem clientSystem;
 
     private TextField username;
+    private TextField password;
+    private CheckBox rememberMe;
     private List<ClientConfiguration.Network.Server> serverList;
 
     private boolean canConnect = true;
@@ -78,37 +82,60 @@ public class LoginScreen extends AbstractScreen {
     void createContent() {
         ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); // @todo hotfix
 
-        Window loginWindow = new Window("", getSkin());
-        Label userLabel = new Label("User", getSkin());
-        this.username = new TextField("", getSkin());
-        username.setMessageText("User Name");
+        //@todo centrar la tabla de login
+        //@todo cambiar window por table (window está pensado para ventanas)
 
+        /** Tabla de login */
+        Window loginWindow = new Window("", getSkin());
+        Label usernameLabel = new Label("Username or email:", getSkin());
+        this.username = new TextField("", getSkin());
+        Label passwordLabel = new Label("Password:", getSkin());
+        this.password = new TextField("", getSkin());
+        this.rememberMe = new CheckBox("Remember me", getSkin());
+
+        TextButton loginButton = new TextButton("Login", getSkin());
+        loginButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (((TextButton)actor).isPressed()) {
+                    connectThenLogin();
+                }
+            }
+        });
+
+        TextButton registerButton = new TextButton("New account", getSkin());
+        loginButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (((TextButton)actor).isPressed()) {
+                    //@todo ui creacion de cuenta
+                }
+            }
+        });
+
+        loginWindow.getColor().a = 0.8f;
+        loginWindow.add(usernameLabel);
+        loginWindow.add(this.username).width(250).row();
+        loginWindow.add(passwordLabel).padTop(5);
+        loginWindow.add(this.password).padTop(5).width(250).row();
+        loginWindow.add(this.rememberMe).padTop(20);
+        loginWindow.add(loginButton).padTop(20).expandX().row();
+        loginWindow.add();
+        loginWindow.add(registerButton).padTop(30).row();
+
+        /** Tabla de servidores */
         Table connectionTable = new Table((getSkin()));
 
         this.serverList = new List<>(getSkin());
         serverList.setItems(config.getNetwork().getServers());
 
-        TextButton loginButton = new TextButton("Connect", getSkin());
-        loginButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                connectThenLogin();
-            }
-
-        });
-
-        loginWindow.getColor().a = 0.8f;
-        loginWindow.add(userLabel);
-        loginWindow.row();
-        loginWindow.add(username).width(200);
-        loginWindow.row();
-        loginWindow.add(loginButton).padTop(20).expandX().row();
-        getMainTable().add(loginWindow).width(400).height(300).row();
-
         connectionTable.add(serverList).width(300);
         connectionTable.align(Align.center);
         connectionTable.setVisible(true);
-        getMainTable().add(connectionTable);
+
+        /** Tabla principal */
+        getMainTable().add(loginWindow).width(500).height(300);
+        getMainTable().add(connectionTable).width(400).height(300);
         getStage().setKeyboardFocus(username);
     }
 
