@@ -180,9 +180,12 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         String password = accountCreationRequest.getPassword();
         String salt = accountCreationRequest.getSalt();
 
+        boolean success = false;
+
         try {
             Account account = new Account(email, password, salt);
             account.save();
+            success = true;
         } catch (Exception ex) {
             Log.info("Creacion de cuentas", "No se pudo crear la cuenta: " + email, ex);
         }
