@@ -26,19 +26,21 @@ public class Account {
         this.banned = false;
     }
 
+    static Json json = new AOJson();
+
     public static Account load(String email) {
-        Json accountJson = new AOJson();
+        //Json accountJson = new AOJson();
         try  {
-            return accountJson.fromJson(Account.class, Gdx.files.local("Accounts/" + email + ".json"));
+            return json.fromJson(Account.class, Gdx.files.local("Accounts/" + email + ".json"));
         } catch (Exception ex) {
-            Log.error("Accounts" , "Account not found!", ex);
+            //Log.error("Accounts" , "Account not found!", ex);
         }
 
         return null;
     }
 
     public void save() {
-        Json json = new AOJson();
+//        Json json = new AOJson();
         json.toJson(this, new FileHandle("Accounts/" + this.email + ".json"));
     }
 
