@@ -4,8 +4,6 @@ import com.badlogic.gdx.ApplicationListener;
 import com.esotericsoftware.minlog.Log;
 import server.database.Account;
 
-import java.util.concurrent.TimeUnit;
-
 public class DatabaseTest implements ApplicationListener {
 
     @Override
