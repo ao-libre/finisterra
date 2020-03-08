@@ -12,7 +12,7 @@ public class DatabaseTest implements ApplicationListener {
     public void create() {
         Log.info("DatabaseTest application created");
 
-        int n = 100000;
+        int n = 10000;
         String email[] = new String[n];
         for (int i = 0; i < n; i++) {
             email[i] = "email@domain.com" + i;
@@ -24,6 +24,7 @@ public class DatabaseTest implements ApplicationListener {
         }
 
         long start, end;
+        double runtime;
 
         /** Base de datos en disco, usando libgdx Json */
         Log.info("Base de datos en disco, usando libgdx Json.");
@@ -35,7 +36,8 @@ public class DatabaseTest implements ApplicationListener {
             account1.save();
         }
         end = System.currentTimeMillis();
-        Log.info( "Create test", "Elapsed time: " + (end - start) + " milliseconds.");
+        runtime = ((double)(end - start)) / n;
+        Log.info( "Create test", "Average run time: " + runtime + " milliseconds.");
 
         /** Read test */
         start = System.currentTimeMillis();
@@ -43,7 +45,8 @@ public class DatabaseTest implements ApplicationListener {
             Account account2 = Account.load(email[i]);
         }
         end = System.currentTimeMillis();
-        Log.info( "Read test", "Elapsed time: " + (end - start) + " milliseconds.");
+        runtime = ((double)(end - start)) / n;
+        Log.info( "Read test", "Average run time: " + runtime + " milliseconds.");
 
         /** Update test */
         start = System.currentTimeMillis();
@@ -52,7 +55,8 @@ public class DatabaseTest implements ApplicationListener {
             account1.save();
         }
         end = System.currentTimeMillis();
-        Log.info( "Update test", "Elapsed time: " + (end - start) + " milliseconds.");
+        runtime = ((double)(end - start)) / n;
+        Log.info( "Update test", "Average run time: " + runtime + " milliseconds.");
 
         /** Worst-case find (non-existent entry) */
         start = System.currentTimeMillis();
@@ -60,7 +64,8 @@ public class DatabaseTest implements ApplicationListener {
             Account.load(email2[i]);
         }
         end = System.currentTimeMillis();
-        Log.info( "Worst-case find test", "Elapsed time: " + (end - start) + " milliseconds.");
+        runtime = ((double)(end - start)) / n;
+        Log.info( "Worst-case find test", "Average run time: " + runtime + " milliseconds.");
 
         /** null argument test */
         start = System.currentTimeMillis();
@@ -68,7 +73,8 @@ public class DatabaseTest implements ApplicationListener {
             Account.load(null);
         }
         end = System.currentTimeMillis();
-        Log.info( "null argument test", "Elapsed time: " + (end - start) + " milliseconds.");
+        runtime = ((double)(end - start)) / n;
+        Log.info( "null argument test", "Average run time: " + runtime + " milliseconds.");
     }
 
     @Override

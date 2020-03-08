@@ -11,8 +11,6 @@ public class Charfile {
 
     static transient final Json json = new AOJson();
 
-    private String nick;
-
     public String nick;
     public String email;
     public String clase;
