@@ -73,6 +73,8 @@ public class DatabaseTest implements ApplicationListener {
         end = System.currentTimeMillis();
         runtime = ((double)(end - start)) / n;
         Log.info( "null argument test", "Average run time: " + runtime + " milliseconds.");
+
+        System.exit(0);
     }
 
     @Override
