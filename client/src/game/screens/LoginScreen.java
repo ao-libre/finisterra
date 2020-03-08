@@ -3,11 +3,8 @@ package game.screens;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
 import game.AOGame;
 import game.ClientConfiguration;
@@ -17,7 +14,7 @@ import game.network.ClientResponseProcessor;
 import game.network.GameNotificationProcessor;
 import game.systems.network.ClientSystem;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
-import shared.network.lobby.JoinLobbyRequest;
+import shared.network.account.AccountLoginRequest;
 import shared.util.Messages;
 
 import static game.utils.Resources.CLIENT_CONFIG;
@@ -62,11 +59,8 @@ public class LoginScreen extends AbstractScreen {
     @Override
     protected void keyPressed(int keyCode) {
         if (keyCode == Input.Keys.ENTER && this.canConnect) {
-            //Connect
-            connectThenLogin();
-
-            //Prevent multiple simultaneous connections.
             this.canConnect = false;
+            connectThenLogin();
         }
     }
 
@@ -84,7 +78,7 @@ public class LoginScreen extends AbstractScreen {
 
         //@todo cambiar window por table (window está pensado para ventanas)
 
-        /** Tabla de login */
+        // Tabla de login
         Window loginWindow = new Window("", getSkin());
         Label usernameLabel = new Label("Username or email:", getSkin());
         this.username = new TextField("", getSkin());
@@ -122,14 +116,14 @@ public class LoginScreen extends AbstractScreen {
         loginWindow.add();
         loginWindow.add(registerButton).padTop(30).row();
 
-        /** Tabla de servidores */
+        // Tabla de servidores
         Table connectionTable = new Table((getSkin()));
         this.serverList = new List<>(getSkin());
         serverList.setItems(config.getNetwork().getServers());
         //Nota: el size acá es redundante, pero si no está no se ve bien la lista. Ver más abajo *.
         connectionTable.add(serverList).width(400).height(300);
 
-        /** Tabla principal */
+        // Tabla principal
         getMainTable().add(loginWindow).width(500).height(300).pad(10);
         getMainTable().add(connectionTable).width(400).height(300).pad(10); //*Seteando el size, recursivamente tendría que resizear list
         //getMainTable().setDebug(true, true);
@@ -139,7 +133,9 @@ public class LoginScreen extends AbstractScreen {
     private void connectThenLogin() {
 
         if (this.canConnect) {
-            String user = username.getText();
+
+            String user = this.username.getText();
+            String password = this.password.getText();
 
             ClientConfiguration.Network.Server server = serverList.getSelected();
             if (server == null) return;
@@ -147,20 +143,33 @@ public class LoginScreen extends AbstractScreen {
             int port = server.getPort();
 
             if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
-                if (clientSystem.getState() != MarshalState.STOPPED)
+
+                if (clientSystem.getState() != MarshalState.STOPPED) {
                     clientSystem.stop();
+                }
+
+                // Si no estamos tratando de conectarnos al servidor, intentamos conectarnos.
                 if (clientSystem.getState() == MarshalState.STOPPED) {
 
+                    // Seteamos la info. del servidor al que nos vamos a conectar.
                     clientSystem.getKryonetClient().setHost(ip);
                     clientSystem.getKryonetClient().setPort(port);
 
+                    // Inicializamos la conexion.
                     clientSystem.start();
+
+                    // Si pudimos conectarnos, mandamos la peticion para loguearnos a la cuenta.
                     if (clientSystem.getState() == MarshalState.STARTED) {
-                        clientSystem.getKryonetClient().sendToAll(new JoinLobbyRequest(user));
+
+                        // Enviamos la peticion de inicio de sesion.
+                        clientSystem.getKryonetClient().sendToAll(new AccountLoginRequest(user, password));
 
                     } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
+                        this.canConnect = true;
+
                         AOAssetManager assetManager = AOGame.getGlobalAssetManager();
 
+                        // Mostramos un mensaje de error.
                         Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
                         dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
                         dialog.button("OK");
