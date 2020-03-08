@@ -79,7 +79,7 @@ public class LoginScreen extends AbstractScreen {
 
         /* Tabla de login */
         Window loginWindow = new Window("", getSkin()); //@todo cambiar window por table (window está pensado para ventanas)
-        Label usernameLabel = new Label("Username or email:", getSkin());
+        Label usernameLabel = new Label("Username:", getSkin());
         this.username = new TextField("", getSkin());
         Label passwordLabel = new Label("Password:", getSkin());
         this.password = new TextField("", getSkin());

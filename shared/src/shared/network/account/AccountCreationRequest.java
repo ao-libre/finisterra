@@ -4,24 +4,31 @@ import shared.network.interfaces.IRequest;
 import shared.network.interfaces.IRequestProcessor;
 
 public class AccountCreationRequest implements IRequest {
+    String username;
     String email;
-    String password;
+    String hash;
     String salt;
 
     public AccountCreationRequest() {
     }
 
-    public AccountCreationRequest(String email, String password, String salt) {
+    public AccountCreationRequest(String username, String email, String hash, String salt) {
+        this.username = username;
         this.email = email;
-        this.password = password;
+        this.hash = hash;
+        this.salt = salt;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getHash() {
+        return hash;
     }
 
     public String getSalt() { return salt; }
