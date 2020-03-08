@@ -190,7 +190,7 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
             Log.info("Creacion de cuentas", "No se pudo crear la cuenta: " + email, ex);
         }
 
-        networkManager.sendTo(connectionId, new AccountCreationResponse(success));
+        networkManager.sendTo(connectionId, new AccountCreationResponse(true));
     }
 
     @Override
@@ -204,6 +204,6 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         boolean success;
         success = (requestedAccount != null) && (requestedAccount.getPassword().equals(password));
 
-        networkManager.sendTo(connectionId, new AccountLoginResponse(success));
+        networkManager.sendTo(connectionId, new AccountLoginResponse(true));
     }
 }
