@@ -9,6 +9,9 @@ import shared.util.AOJson;
 import java.util.ArrayList;
 
 public class Account {
+
+    static transient final Json json = new AOJson();
+
     private String email;
     private String password;
     private String salt;
@@ -26,10 +29,8 @@ public class Account {
         this.banned = false;
     }
 
-    static Json json = new AOJson();
 
     public static Account load(String email) {
-        //Json accountJson = new AOJson();
         try  {
             return json.fromJson(Account.class, Gdx.files.local("Accounts/" + email + ".json"));
         } catch (Exception ex) {
@@ -40,7 +41,6 @@ public class Account {
     }
 
     public void save() {
-//        Json json = new AOJson();
         json.toJson(this, new FileHandle("Accounts/" + this.email + ".json"));
     }
 
