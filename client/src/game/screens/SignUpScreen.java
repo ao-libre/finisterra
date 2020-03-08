@@ -34,7 +34,7 @@ public class SignUpScreen extends AbstractScreen {
 
     @Override
     void createContent() {
-        /* Tabla de login */
+        /* Tabla de sign up */
         Table signUpTable = new Table(getSkin());
         Label usernameLabel = new Label("Username:", getSkin());
         this.usernameField = new TextField("", getSkin());
@@ -54,6 +54,7 @@ public class SignUpScreen extends AbstractScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (((TextButton)actor).isPressed()) {
+                    //@todo validar username, email, password. hashear password.
                     clientSystem.getKryonetClient().sendToAll(new AccountCreationRequest());
                 }
             }
@@ -73,7 +74,6 @@ public class SignUpScreen extends AbstractScreen {
 
         /* Tabla principal */
         getMainTable().add(signUpTable).width(500).height(300).pad(10);
-        //getMainTable().setDebug(true, true);
         getStage().setKeyboardFocus(this.usernameField);
     }
 

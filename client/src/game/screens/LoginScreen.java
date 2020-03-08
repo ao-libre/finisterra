@@ -125,7 +125,7 @@ public class LoginScreen extends AbstractScreen {
         /* Tabla principal */
         getMainTable().add(loginWindow).width(500).height(300).pad(10);
         getMainTable().add(connectionTable).width(400).height(300).pad(10); //(*) Seteando acá el size, recursivamente tendría que resizear list.
-        getStage().setKeyboardFocus(username);
+        getStage().setKeyboardFocus(this.username);
     }
 
     private void connectThenLogin() {
