@@ -1,5 +1,6 @@
 package game.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -74,12 +75,10 @@ public class LoginScreen extends AbstractScreen {
 
     @Override
     void createContent() {
-        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); // @todo hotfix
+        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); //@todo esto es un hotfix, el config tendría que cargarse en otro lado
 
-        //@todo cambiar window por table (window está pensado para ventanas)
-
-        // Tabla de login
-        Window loginWindow = new Window("", getSkin());
+        /* Tabla de login */
+        Window loginWindow = new Window("", getSkin()); //@todo cambiar window por table (window está pensado para ventanas)
         Label usernameLabel = new Label("Username or email:", getSkin());
         this.username = new TextField("", getSkin());
         Label passwordLabel = new Label("Password:", getSkin());
@@ -96,12 +95,13 @@ public class LoginScreen extends AbstractScreen {
             }
         });
 
-        TextButton registerButton = new TextButton("New account", getSkin());
-        loginButton.addListener(new ChangeListener() {
+        TextButton newAccountButton = new TextButton("New account", getSkin());
+        newAccountButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (((TextButton)actor).isPressed()) {
-                    //@todo ui creacion de cuenta
+                    AOGame game = (AOGame) Gdx.app.getApplicationListener();
+                    game.toSignUp(clientSystem);
                 }
             }
         });
@@ -114,19 +114,17 @@ public class LoginScreen extends AbstractScreen {
         loginWindow.add(this.rememberMe).padTop(20);
         loginWindow.add(loginButton).padTop(20).row();
         loginWindow.add();
-        loginWindow.add(registerButton).padTop(30).row();
+        loginWindow.add(newAccountButton).padTop(30).row();
 
-        // Tabla de servidores
+        /* Tabla de servidores */
         Table connectionTable = new Table((getSkin()));
         this.serverList = new List<>(getSkin());
         serverList.setItems(config.getNetwork().getServers());
-        //Nota: el size acá es redundante, pero si no está no se ve bien la lista. Ver más abajo *.
-        connectionTable.add(serverList).width(400).height(300);
+        connectionTable.add(serverList).width(400).height(300); //@todo Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
 
-        // Tabla principal
+        /* Tabla principal */
         getMainTable().add(loginWindow).width(500).height(300).pad(10);
-        getMainTable().add(connectionTable).width(400).height(300).pad(10); //*Seteando el size, recursivamente tendría que resizear list
-        //getMainTable().setDebug(true, true);
+        getMainTable().add(connectionTable).width(400).height(300).pad(10); //(*) Seteando acá el size, recursivamente tendría que resizear list.
         getStage().setKeyboardFocus(username);
     }
 
