@@ -10,8 +10,16 @@ import java.util.ArrayList;
 
 public class Account {
 
+    /**
+     * Fields excluidos de la serializacion.
+     *
+     * Para excluir un field tenes que declararlo como "transient".
+     */
     static transient final Json json = new AOJson();
 
+    /**
+     * Fields que serán serializados.
+     */
     private String email;
     private String password;
     private String salt;

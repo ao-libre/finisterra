@@ -9,10 +9,16 @@ import java.util.ArrayList;
 
 public class Charfile {
 
+    /**
+     * Fields excluidos de la serializacion.
+     *
+     * Para excluir un field tenes que declararlo como "transient".
+     */
     static transient final Json json = new AOJson();
 
-    private String nick;
-
+    /**
+     * Fields que serán serializados.
+     */
     public String nick;
     public String email;
     public String clase;
