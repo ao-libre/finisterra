@@ -36,7 +36,7 @@ public class SignUpScreen extends AbstractScreen {
     @Override
     void createContent() {
         /* Tabla de sign up */
-        Window signUpTable = new Window("", getSkin()); //@todo usar tabla
+        Window signUpTable = new Window("", getSkin()); //@todo window es una ventana arrastrable
         Label usernameLabel = new Label("Username:", getSkin());
         this.usernameField = new TextField("", getSkin());
         Label emailLabel = new Label("Email:", getSkin());

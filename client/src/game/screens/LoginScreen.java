@@ -78,7 +78,7 @@ public class LoginScreen extends AbstractScreen {
         ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); //@todo esto es un hotfix, el config tendría que cargarse en otro lado
 
         /* Tabla de login */
-        Window loginWindow = new Window("", getSkin()); //@todo cambiar window por table (window está pensado para ventanas)
+        Window loginWindow = new Window("", getSkin()); //@todo window es una ventana arrastrable
         Label usernameLabel = new Label("Username:", getSkin());
         this.username = new TextField("", getSkin());
         Label passwordLabel = new Label("Password:", getSkin());
