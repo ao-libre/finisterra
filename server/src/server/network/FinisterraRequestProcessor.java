@@ -23,6 +23,7 @@ import shared.network.lobby.player.ChangeReadyStateRequest;
 import shared.network.lobby.player.ChangeTeamRequest;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
+import shared.util.AccountSystemUtilities;
 
 import java.util.Optional;
 
@@ -176,15 +177,21 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
 
     @Override
     public void processRequest(AccountCreationRequest accountCreationRequest, int connectionId) {
+
+        // Recibimos los datos de la cuenta del cliente.
         String username = accountCreationRequest.getUsername();
         String email = accountCreationRequest.getEmail();
-        String hash = accountCreationRequest.getHash();
-        String salt = accountCreationRequest.getSalt();
+        String password = accountCreationRequest.getPassword();
 
+        // Hasheamos la contraseña.
+        String hashedPassword = AccountSystemUtilities.hashPassword(password);
+
+        // Resultado de la operacion.
         boolean successful = false;
 
+        // Guardamos la cuenta.
         try {
-            Account account = new Account(email, hash, salt);
+            Account account = new Account(email, hashedPassword);
             account.save();
             successful = true;
         } catch (Exception ex) {
@@ -202,7 +209,7 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         // Obtenemos la cuenta de la carpeta Accounts.
         Account requestedAccount = Account.load(email);
 
-        boolean successful = (requestedAccount != null) && (requestedAccount.getPassword().equals(password));
+        boolean successful = (requestedAccount != null) && (AccountSystemUtilities.checkPassword(password, requestedAccount.getPassword()));
 
         networkManager.sendTo(connectionId, new AccountLoginResponse(successful));
     }

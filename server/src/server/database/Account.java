@@ -22,17 +22,15 @@ public class Account {
      */
     private String email;
     private String password;
-    private String salt;
     private boolean banned;
     private ArrayList<String> personajes = new ArrayList<>();
 
     public Account() {
     }
 
-    public Account(String email, String password, String salt) {
+    public Account(String email, String password) {
         this.email = email;
         this.password = password;
-        this.salt = salt;
 
         this.banned = false;
     }
@@ -54,7 +52,6 @@ public class Account {
 
     public String getEmail() { return email; }
     public String getPassword() { return password; }
-    public String getSalt() { return salt; }
     public boolean getBanned() { return banned; }
     public ArrayList<String> getPersonajes() { return personajes; }
 

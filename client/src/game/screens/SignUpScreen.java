@@ -93,11 +93,7 @@ public class SignUpScreen extends AbstractScreen {
             return;
         }
 
-        //@todo hash password
-        String hash = password1;
-        String salt = "asd";
-
-        AccountCreationRequest accountCreationRequest = new AccountCreationRequest(username, email, hash, salt);
+        AccountCreationRequest accountCreationRequest = new AccountCreationRequest(username, email, password1);
         clientSystem.getKryonetClient().sendToAll(accountCreationRequest);
     }
 

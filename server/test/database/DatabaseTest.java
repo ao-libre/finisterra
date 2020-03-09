@@ -1,9 +1,15 @@
 package database;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import server.database.Account;
 
+/**
+ * Aca testeamos el tiempo que le toma al servidor leer/escribir los .json que van a usar para guardar la info. de las cuentas.
+ * 
+ * Ejecutar desde {@link DatabaseTestLauncher#main(String[])}
+ */
 public class DatabaseTest implements ApplicationListener {
 
     @Override
@@ -30,7 +36,7 @@ public class DatabaseTest implements ApplicationListener {
         /** Create test */
         start = System.currentTimeMillis();
         for (int i = 0; i < n; i++) {
-            Account account1 = new Account(email[i], "aFeo3&5l2-+1w", "di3m1#0fwp32+");
+            Account account1 = new Account(email[i], "aFeo3&5l2-+1w");
             account1.save();
         }
         end = System.currentTimeMillis();
@@ -49,7 +55,7 @@ public class DatabaseTest implements ApplicationListener {
         /** Update test */
         start = System.currentTimeMillis();
         for (int i = 0; i < n; i++) {
-            Account account1 = new Account(email[i], "di3m1#0fwp32+", "aFeo3&5l2-+1w");
+            Account account1 = new Account(email[i], "di3m1#0fwp32+");
             account1.save();
         }
         end = System.currentTimeMillis();
@@ -74,6 +80,10 @@ public class DatabaseTest implements ApplicationListener {
         runtime = ((double)(end - start)) / n;
         Log.info( "null argument test", "Average run time: " + runtime + " milliseconds.");
 
+        // Borramos todos los .json que se usaron en las pruebas.
+        Gdx.files.local("Accounts").deleteDirectory();
+
+        // Le decimos a la JVM que ya terminamos.
         System.exit(0);
     }
 
