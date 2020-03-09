@@ -176,21 +176,22 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
 
     @Override
     public void processRequest(AccountCreationRequest accountCreationRequest, int connectionId) {
+        String username = accountCreationRequest.getUsername();
         String email = accountCreationRequest.getEmail();
-        String password = accountCreationRequest.getPassword();
+        String hash = accountCreationRequest.getHash();
         String salt = accountCreationRequest.getSalt();
 
-        boolean success = false;
+        boolean successful = false;
 
         try {
-            Account account = new Account(email, password, salt);
+            Account account = new Account(email, hash, salt);
             account.save();
-            success = true;
+            successful = true;
         } catch (Exception ex) {
             Log.info("Creacion de cuentas", "No se pudo crear la cuenta: " + email, ex);
         }
 
-        networkManager.sendTo(connectionId, new AccountCreationResponse(success));
+        networkManager.sendTo(connectionId, new AccountCreationResponse(successful));
     }
 
     @Override
@@ -201,8 +202,8 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         // Obtenemos la cuenta de la carpeta Accounts.
         Account requestedAccount = Account.load(email);
 
-        boolean success = (requestedAccount != null) && (requestedAccount.getPassword().equals(password));
+        boolean successful = (requestedAccount != null) && (requestedAccount.getPassword().equals(password));
 
-        networkManager.sendTo(connectionId, new AccountLoginResponse(success));
+        networkManager.sendTo(connectionId, new AccountLoginResponse(successful));
     }
 }

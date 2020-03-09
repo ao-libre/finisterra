@@ -1,16 +1,16 @@
 package shared.network.account;
 
 public class AccountLoginResponse {
-    boolean success;
+    boolean successful;
 
     public AccountLoginResponse() {
     }
 
-    public AccountLoginResponse(boolean success) {
-        this.success = success;
+    public AccountLoginResponse(boolean successful) {
+        this.successful = successful;
     }
 
-    public boolean success() {
-        return success;
+    public boolean isSuccessful() {
+        return successful;
     }
 }

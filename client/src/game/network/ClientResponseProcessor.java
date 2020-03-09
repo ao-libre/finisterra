@@ -3,6 +3,7 @@ package game.network;
 import com.artemis.BaseSystem;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
@@ -84,22 +85,41 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
 
     @Override
     public void processResponse(AccountCreationResponse accountCreationResponse) {
-        if (accountCreationResponse.success()) {
-            //@todo mostrar popup
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        AbstractScreen screen = (AbstractScreen) game.getScreen();
+
+        if (accountCreationResponse.isSuccessful()) {
+            Dialog dialog = new Dialog("Exito", screen.getSkin());
+            dialog.text("Cuenta creada con exito");
+            dialog.button("OK");
+            dialog.show(screen.getStage());
         }
         else {
-            //@todo mostrar popup
+            Dialog dialog = new Dialog("Error", screen.getSkin());
+            dialog.text("Error al crear la cuenta");
+            dialog.button("OK");
+            dialog.show(screen.getStage());
         }
     }
 
     @Override
     public void processResponse(AccountLoginResponse accountLoginResponse) {
-        if (accountLoginResponse.success()) {
-            AOGame game = (AOGame) Gdx.app.getApplicationListener();
-            game.toLobby();
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        AbstractScreen screen = (AbstractScreen) game.getScreen();
+
+        if (accountLoginResponse.isSuccessful()) {
+            Dialog dialog = new Dialog("Exito", screen.getSkin());
+            dialog.text("Logueado con exito");
+            dialog.button("OK");
+            dialog.show(screen.getStage());
+            //@todo pasar al lobby del servidor
         }
-        //@todo en caso de exito pasar al lobby del servidor
-        //@todo en caso de falla mostrar un pop-up
+        else {
+            Dialog dialog = new Dialog("Error", screen.getSkin());
+            dialog.text("Error al loguearse");
+            dialog.button("OK");
+            dialog.show(screen.getStage());
+        }
     }
 
     @Override

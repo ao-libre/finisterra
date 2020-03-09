@@ -56,7 +56,7 @@ public class SignUpScreen extends AbstractScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 if (((TextButton)actor).isPressed()) {
                     //@todo validar username, email, password. hashear password.
-                    clientSystem.getKryonetClient().sendToAll(new AccountCreationRequest());
+                    signup();
                 }
             }
         });
@@ -76,6 +76,29 @@ public class SignUpScreen extends AbstractScreen {
         /* Tabla principal */
         getMainTable().add(signUpTable).width(500).height(300).pad(10);
         getStage().setKeyboardFocus(this.usernameField);
+    }
+
+    private void signup() {
+        String username = this.usernameField.getText();
+        String email = this.emailField.getText();
+        String password1 = this.passwordField1.getText();
+        String password2 = this.passwordField2.getText();
+
+        if (!password1.equals(password2)) {
+            //@todo implement popup
+            Dialog dialog = new Dialog("Error", getSkin());
+            dialog.text("Las contraseñas no coinciden.");
+            dialog.button("OK");
+            dialog.show(getStage());
+            return;
+        }
+
+        //@todo hash password
+        String hash = password1;
+        String salt = "asd";
+
+        AccountCreationRequest accountCreationRequest = new AccountCreationRequest(username, email, hash, salt);
+        clientSystem.getKryonetClient().sendToAll(accountCreationRequest);
     }
 
     @Override

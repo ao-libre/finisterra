@@ -83,6 +83,8 @@ public class LoginScreen extends AbstractScreen {
         this.username = new TextField("", getSkin());
         Label passwordLabel = new Label("Password:", getSkin());
         this.password = new TextField("", getSkin());
+        this.password.setPasswordCharacter('*');
+        this.password.setPasswordMode(true);
         this.rememberMe = new CheckBox("Remember me", getSkin());
 
         TextButton loginButton = new TextButton("Login", getSkin());
