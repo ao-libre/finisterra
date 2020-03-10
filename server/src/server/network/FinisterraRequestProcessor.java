@@ -187,12 +187,12 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         String hashedPassword = AccountSystemUtilities.hashPassword(password);
 
         // Resultado de la operacion.
-        boolean successful = false;
+        boolean successful = false; //@todo todos los requests podrían llevar un flag de exito/error
 
         // Guardamos la cuenta.
         try {
             Account account = new Account(email, hashedPassword);
-            account.save();
+            account.create();
             successful = true;
         } catch (Exception ex) {
             Log.info("Creacion de cuentas", "No se pudo crear la cuenta: " + email, ex);

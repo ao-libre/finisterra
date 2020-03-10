@@ -142,6 +142,7 @@ public class LoginScreen extends AbstractScreen {
             String ip = server.getHostname();
             int port = server.getPort();
 
+            //@todo encapsular todo este chequeo en el cliente
             if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
 
                 if (clientSystem.getState() != MarshalState.STOPPED) {

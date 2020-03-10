@@ -1,6 +1,9 @@
 package shared.network.account;
 
-public class AccountCreationResponse {
+import shared.network.interfaces.IResponse;
+import shared.network.interfaces.IResponseProcessor;
+
+public class AccountCreationResponse implements IResponse {
     boolean successful;
 
     public AccountCreationResponse() {
@@ -12,5 +15,10 @@ public class AccountCreationResponse {
 
     public boolean isSuccessful() {
         return successful;
+    }
+
+    @Override
+    public void accept(IResponseProcessor processor) {
+        processor.processResponse(this);
     }
 }
