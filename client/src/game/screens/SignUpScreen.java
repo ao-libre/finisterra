@@ -60,6 +60,17 @@ public class SignUpScreen extends AbstractScreen {
                 }
             }
         });
+		
+		TextButton goBackButton = new TextButton("Go Back", getSkin());
+        goBackButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (((TextButton)actor).isPressed()) {
+                    AOGame game = (AOGame) Gdx.app.getApplicationListener();
+                    game.toLogin();
+                }
+            }
+        });
 
         signUpTable.getColor().a = 0.8f;
         signUpTable.add(usernameLabel).padRight(5);
