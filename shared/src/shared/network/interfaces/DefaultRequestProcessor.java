@@ -1,6 +1,8 @@
 package shared.network.interfaces;
 
 import com.artemis.BaseSystem;
+import shared.network.account.AccountCreationRequest;
+import shared.network.account.AccountLoginRequest;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.MeditateRequest;
@@ -105,6 +107,17 @@ public class DefaultRequestProcessor extends BaseSystem implements IRequestProce
 
     @Override
     public void processRequest(WorkRequest workRequest, int connectionId) {
+		
+	}
+	
+	@Override
+    public void processRequest(AccountCreationRequest accountCreationRequest, int connectionId) {
+
+    }
+
+    @Override
+    public void processRequest(AccountLoginRequest accountLoginRequest, int connectionId) {
+
     }
 
     @Override

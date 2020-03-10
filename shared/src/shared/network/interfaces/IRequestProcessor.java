@@ -1,5 +1,7 @@
 package shared.network.interfaces;
 
+import shared.network.account.AccountCreationRequest;
+import shared.network.account.AccountLoginRequest;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.MeditateRequest;
@@ -52,4 +54,9 @@ public interface IRequestProcessor {
     void processRequest(ChangeHeroRequest changeHeroRequest, int connectionId);
 
     void processRequest(WorkRequest workRequest, int connectionId);
+
+    void processRequest(AccountCreationRequest accountCreationRequest, int connectionId);
+
+    void processRequest(AccountLoginRequest accountLoginRequest, int connectionId);
+
 }
