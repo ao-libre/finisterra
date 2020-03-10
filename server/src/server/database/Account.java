@@ -21,6 +21,7 @@ public class Account {
     /**
      * Fields que serán serializados.
      */
+    private String username;
     private String email;
     private String password;
     private boolean banned;
@@ -29,12 +30,14 @@ public class Account {
     public Account() {
     }
 
-    public Account(String email, String password) {
+    public Account(String username, String email, String password) {
+        this.username = username;
         this.email = email;
         this.password = password;
         this.banned = false;
     }
 
+    public String getUsername() { return username; }
     public String getEmail() { return email; }
     public String getPassword() { return password; }
     public boolean isBanned() { return banned; }

@@ -191,7 +191,7 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
 
         // Guardamos la cuenta.
         try {
-            Account account = new Account(email, hashedPassword);
+            Account account = new Account(username, email, hashedPassword);
             account.create();
             successful = true;
         } catch (Exception ex) {
@@ -211,6 +211,8 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
 
         boolean successful = (requestedAccount != null) && (AccountSystemUtilities.checkPassword(password, requestedAccount.getPassword()));
 
-        networkManager.sendTo(connectionId, new AccountLoginResponse(successful));
+        String username = successful ? requestedAccount.getUsername() : null;
+
+        networkManager.sendTo(connectionId, new AccountLoginResponse(username, successful));
     }
 }

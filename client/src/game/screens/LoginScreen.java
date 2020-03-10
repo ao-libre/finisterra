@@ -24,7 +24,7 @@ public class LoginScreen extends AbstractScreen {
 
     private ClientSystem clientSystem;
 
-    private TextField username;
+    private TextField email;
     private TextField password;
     private CheckBox rememberMe;
     private List<ClientConfiguration.Network.Server> serverList;
@@ -79,8 +79,8 @@ public class LoginScreen extends AbstractScreen {
 
         /* Tabla de login */
         Window loginWindow = new Window("", getSkin()); //@todo window es una ventana arrastrable
-        Label usernameLabel = new Label("Username:", getSkin());
-        this.username = new TextField("", getSkin());
+        Label emailLabel = new Label("Email:", getSkin());
+        this.email = new TextField("", getSkin());
         Label passwordLabel = new Label("Password:", getSkin());
         this.password = new TextField("", getSkin());
         this.password.setPasswordCharacter('*');
@@ -109,8 +109,8 @@ public class LoginScreen extends AbstractScreen {
         });
 
         loginWindow.getColor().a = 0.8f;
-        loginWindow.add(usernameLabel).padRight(5);
-        loginWindow.add(this.username).width(250).row();
+        loginWindow.add(emailLabel).padRight(5);
+        loginWindow.add(this.email).width(250).row();
         loginWindow.add(passwordLabel).padTop(5).padRight(5);
         loginWindow.add(this.password).padTop(5).width(250).row();
         loginWindow.add(this.rememberMe).padTop(20);
@@ -127,14 +127,14 @@ public class LoginScreen extends AbstractScreen {
         /* Tabla principal */
         getMainTable().add(loginWindow).width(500).height(300).pad(10);
         getMainTable().add(connectionTable).width(400).height(300).pad(10); //(*) Seteando acá el size, recursivamente tendría que resizear list.
-        getStage().setKeyboardFocus(this.username);
+        getStage().setKeyboardFocus(this.email);
     }
 
     private void connectThenLogin() {
 
         if (this.canConnect) {
 
-            String user = this.username.getText();
+            String email = this.email.getText();
             String password = this.password.getText();
 
             ClientConfiguration.Network.Server server = serverList.getSelected();
@@ -163,7 +163,7 @@ public class LoginScreen extends AbstractScreen {
                     if (clientSystem.getState() == MarshalState.STARTED) {
 
                         // Enviamos la peticion de inicio de sesion.
-                        clientSystem.getKryonetClient().sendToAll(new AccountLoginRequest(user, password));
+                        clientSystem.getKryonetClient().sendToAll(new AccountLoginRequest(email, password));
 
                     } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
                         this.canConnect = true;

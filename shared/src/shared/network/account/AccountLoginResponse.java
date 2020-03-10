@@ -4,15 +4,18 @@ import shared.network.interfaces.IResponse;
 import shared.network.interfaces.IResponseProcessor;
 
 public class AccountLoginResponse implements IResponse {
+    String username;
     boolean successful;
 
     public AccountLoginResponse() {
     }
 
-    public AccountLoginResponse(boolean successful) {
+    public AccountLoginResponse(String username, boolean successful) {
+        this.username = username;
         this.successful = successful;
     }
 
+    public String getUsername() { return username; }
     public boolean isSuccessful() {
         return successful;
     }
