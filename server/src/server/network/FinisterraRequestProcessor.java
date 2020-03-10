@@ -189,13 +189,15 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         // Resultado de la operacion.
         boolean successful = false; //@todo todos los requests podrían llevar un flag de exito/error
 
-        // Guardamos la cuenta.
-        try {
-            Account account = new Account(username, email, hashedPassword);
-            account.create();
-            successful = true;
-        } catch (Exception ex) {
-            Log.info("Creacion de cuentas", "No se pudo crear la cuenta: " + email, ex);
+        if (!Account.exists(email)) {
+            // Guardamos la cuenta.
+            try {
+                Account account = new Account(username, email, hashedPassword);
+                account.create();
+                successful = true;
+            } catch (Exception ex) {
+                Log.info("Creacion de cuentas", "No se pudo crear la cuenta: " + email, ex);
+            }
         }
 
         networkManager.sendTo(connectionId, new AccountCreationResponse(successful));
