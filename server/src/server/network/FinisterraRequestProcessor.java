@@ -189,7 +189,7 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         // Resultado de la operacion.
         boolean successful = false; //@todo todos los requests podrían llevar un flag de exito/error
 
-        if (!Account.exists(email)) {
+        if (!Gdx.files.local("Accounts/" + email + ".json").exists()) {
             // Guardamos la cuenta.
             try {
                 Account account = new Account(username, email, hashedPassword);
