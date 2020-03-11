@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Timer;
 import game.AOGame;
 import game.ClientConfiguration;
@@ -27,6 +29,7 @@ public class LoginScreen extends AbstractScreen {
     private TextField email;
     private TextField password;
     private CheckBox rememberMe;
+    private CheckBox seePassword;
     private List<ClientConfiguration.Network.Server> serverList;
 
     private boolean canConnect = true;
@@ -86,6 +89,13 @@ public class LoginScreen extends AbstractScreen {
         this.password.setPasswordCharacter('*');
         this.password.setPasswordMode(true);
         this.rememberMe = new CheckBox("Remember me", getSkin());
+        this.seePassword = new CheckBox("See Password", getSkin());
+        this.seePassword.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+               password.setPasswordMode( !password.isPasswordMode() );
+            }
+        });
 
         TextButton loginButton = new TextButton("Login", getSkin());
         loginButton.addListener(new ChangeListener() {
@@ -115,7 +125,7 @@ public class LoginScreen extends AbstractScreen {
         loginWindow.add(this.password).padTop(5).width(250).row();
         loginWindow.add(this.rememberMe).padTop(20);
         loginWindow.add(loginButton).padTop(20).row();
-        loginWindow.add();
+        loginWindow.add(this.seePassword).padLeft( -10 ).padTop( 30 );
         loginWindow.add(newAccountButton).padTop(30).row();
 
         /* Tabla de servidores */
