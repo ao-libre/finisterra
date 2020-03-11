@@ -1,6 +1,5 @@
 package shared.objects.factory;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Json;
@@ -9,6 +8,7 @@ import shared.util.AOJson;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public abstract class POJOFactory {
 
@@ -24,10 +24,10 @@ public abstract class POJOFactory {
         T result = null;
         try (FileInputStream is = new FileInputStream(path))  {
             result = json.fromJson(Class, is);
-        } catch (GdxRuntimeException ex) {
-            Log.error("POJO File load" , "File not found!", ex);
+        } catch (FileNotFoundException ex) {
+            Log.error("Carga de POJO's" , "Archivo no encontrado! Archivo: " + path, ex);
         } catch (Exception ex) {
-            Log.info("Ha ocurrido un error al LEER este POJO: " + path, ex);
+            Log.info("Error al LEER este POJO: " + path, ex);
         }
 
         return result;
@@ -37,7 +37,7 @@ public abstract class POJOFactory {
         try {
             json.toJson(Class, new FileHandle(path));
         } catch (Exception ex) {
-            Log.info("Ha ocurrido un error al GUARDAR este POJO: " + path, ex);
+            Log.info("Error al GUARDAR este POJO: " + path, ex);
         }
     }
 
