@@ -4,10 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Timer;
 import game.AOGame;
 import game.ClientConfiguration;
@@ -90,10 +88,12 @@ public class LoginScreen extends AbstractScreen {
         this.password.setPasswordMode(true);
         this.rememberMe = new CheckBox("Remember me", getSkin());
         this.seePassword = new CheckBox("See Password", getSkin());
-        this.seePassword.addListener(new ClickListener() {
+        this.seePassword.addListener(new ChangeListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-               password.setPasswordMode( !password.isPasswordMode() );
+            public void changed(ChangeEvent event, Actor actor) {
+                if (((CheckBox)actor).isPressed()) {
+                    password.setPasswordMode( !password.isPasswordMode() );
+                }
             }
         });
 
