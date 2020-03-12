@@ -77,13 +77,14 @@ public class LoginScreen extends AbstractScreen {
     @Override
     void createContent() {
         ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); //@todo esto es un hotfix, el config tendría que cargarse en otro lado
+        ClientConfiguration.Account account = config.getAccount();
 
         /* Tabla de login */
         Window loginWindow = new Window("", getSkin()); //@todo window es una ventana arrastrable
         Label emailLabel = new Label("Email:", getSkin());
-        emailField = new TextField("", getSkin());
+        emailField = new TextField(account.getEmail(), getSkin());
         Label passwordLabel = new Label("Password:", getSkin());
-        passwordField = new TextField("", getSkin());
+        passwordField = new TextField(account.getPassword(), getSkin());
         passwordField.setPasswordCharacter('*');
         passwordField.setPasswordMode(true);
         rememberMe = new CheckBox("Remember me", getSkin());
@@ -148,6 +149,11 @@ public class LoginScreen extends AbstractScreen {
 
                 String email = emailField.getText();
                 String password = passwordField.getText();
+
+                ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); //@todo esto es un hotfix, el config tendría que cargarse en otro lado
+                config.getAccount().setEmail(email);
+                config.getAccount().setPassword(password);
+                config.save(CLIENT_CONFIG);
 
                 ClientConfiguration.Network.Server server = serverList.getSelected();
                 if (server == null) return;
