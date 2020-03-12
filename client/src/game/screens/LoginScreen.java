@@ -25,7 +25,7 @@ public class LoginScreen extends AbstractScreen {
 
     private TextField emailField;
     private TextField passwordField;
-    private CheckBox rememberMe;
+    private CheckBox rememberMe; //@todo implementar remember me
     private CheckBox seePassword;
     private TextButton loginButton;
     private List<ClientConfiguration.Network.Server> serverList;
