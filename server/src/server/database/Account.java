@@ -43,12 +43,16 @@ public class Account extends POJOFactory {
         return POJOFactory.exists(DIR_CUENTAS + email + POJOFactory.EXTENSION);
     }
 
+    public static Account load(String email){
+        return POJOFactory.load(Account.class, DIR_CUENTAS + email + POJOFactory.EXTENSION);
+    }
+
     public void save() {
-        super.save(this.getClass(), DIR_CUENTAS + this.email + POJOFactory.EXTENSION);
+        super.save(this, DIR_CUENTAS + this.email + POJOFactory.EXTENSION);
     }
 
     public void update() {
         // Misma cosa, distinto nombre para que se entienda mejor.
-        super.save(this.getClass(), DIR_CUENTAS + this.email + POJOFactory.EXTENSION);
+        super.save(this, DIR_CUENTAS + this.email + POJOFactory.EXTENSION);
     }
 }

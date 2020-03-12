@@ -33,9 +33,9 @@ public abstract class POJOFactory {
         return result;
     }
 
-    public void save(Class<?> Class, String path) {
+    public void save(Object object, String path) {
         try {
-            json.toJson(Class, new FileHandle(path));
+            json.toJson(object, new FileHandle(path));
         } catch (Exception ex) {
             Log.info("Error al GUARDAR este POJO: " + path, ex);
         }
