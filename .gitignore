@@ -6,6 +6,8 @@ private/
 build/
 old/
 JPackage/
+Accounts/
+Charfiles/
 desktop/*.tar.gz
 desktop/*.zip
 desktop/jdk*

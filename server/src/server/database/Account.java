@@ -1,22 +1,17 @@
 package server.database;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.Json;
-import com.esotericsoftware.minlog.Log;
-import shared.util.AOJson;
+import shared.objects.factory.POJOFactory;
 
 import java.util.ArrayList;
 
-public class Account {
+public class Account extends POJOFactory {
 
     /**
      * Fields excluidos de la serializacion.
      *
      * Para excluir un field tenes que declararlo como "transient".
      */
-    static transient final Json json = new AOJson();
+    public static transient final String DIR_CUENTAS = "Accounts/";
 
     /**
      * Fields que serán serializados.
@@ -44,34 +39,20 @@ public class Account {
     public ArrayList<String> getCharacters() { return characters; }
     public void addCharacter(String character) { characters.add(character); }
 
-    /* @todo abstraer estos métodos en una clase de base de datos generica */
-    public static boolean exists(String email) {
-        boolean exists = true;
-        try {
-            Gdx.files.local("Accounts/" + email + ".json");
-        } catch (GdxRuntimeException ex) {
-            exists = false;
-        }
-        return exists;
+    public static boolean exists(String email){
+        return POJOFactory.exists(DIR_CUENTAS + email + POJOFactory.EXTENSION);
     }
 
-    public static Account load(String email) {
-        Account account = null;
-        try  {
-            account = json.fromJson(Account.class, Gdx.files.local("Accounts/" + email + ".json"));
-        } catch (GdxRuntimeException ex) {
-            //Log.error("Accounts" , "Account not found!", ex);
-        } catch (Exception ex) {
-            //Error de serialización, etc. Reportar al programador
-        }
-        return account;
+    public static Account load(String email){
+        return POJOFactory.load(Account.class, DIR_CUENTAS + email + POJOFactory.EXTENSION);
     }
 
-    public void create() {
-        json.toJson(this, new FileHandle("Accounts/" + this.email + ".json"));
+    public void save() {
+        super.save(this, DIR_CUENTAS + this.email + POJOFactory.EXTENSION);
     }
 
     public void update() {
-        json.toJson(this, new FileHandle("Accounts/" + this.email + ".json"));
+        // Misma cosa, distinto nombre para que se entienda mejor.
+        super.save(this, DIR_CUENTAS + this.email + POJOFactory.EXTENSION);
     }
 }

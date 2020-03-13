@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 public class ClientConfiguration extends PassiveSystem {
 
     private Init initConfig;
+    private Account account;
     private Network network;
 
     public static ClientConfiguration loadConfig(String path) {
@@ -52,6 +53,12 @@ public class ClientConfiguration extends PassiveSystem {
         video.setHiDPIMode("Logical");
         configOutput.getInitConfig().setVideo(video);
 
+        // Default values of `Account`
+        Account account = new Account();
+        account.setEmail("");
+        account.setPassword("");
+        configOutput.setAccount(account);
+
         // Default values of `Network`
         configOutput.setNetwork(new Network());
 
@@ -68,6 +75,14 @@ public class ClientConfiguration extends PassiveSystem {
 
     private void setInitConfig(Init initConfig) {
         this.initConfig = initConfig;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public Network getNetwork() {
@@ -168,6 +183,27 @@ public class ClientConfiguration extends PassiveSystem {
             private void setHiDPIMode(String HiDPI_Mode) {
                 this.HiDPI_Mode = HiDPI_Mode;
             }
+        }
+    }
+
+    public static class Account {
+        public String email;
+        public String password;
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
         }
     }
 
