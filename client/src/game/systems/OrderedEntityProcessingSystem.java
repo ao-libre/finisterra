@@ -26,8 +26,8 @@ import java.util.List;
 public abstract class OrderedEntityProcessingSystem extends BaseEntitySystem
         implements EntitySubscription.SubscriptionListener {
 
-    private boolean shouldSyncEntities;
     private final ArrayList<Entity> entities = new ArrayList<>();
+    private boolean shouldSyncEntities;
 
     public OrderedEntityProcessingSystem(Aspect.Builder aspect) {
         super(aspect);

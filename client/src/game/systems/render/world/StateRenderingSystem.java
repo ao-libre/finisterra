@@ -3,7 +3,7 @@ package game.systems.render.world;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import entity.character.states.Immobile;
 import game.screens.GameScreen;
 import position.Pos2D;
@@ -15,7 +15,7 @@ import static com.artemis.E.E;
 @Wire(injectInherited = true)
 public class StateRenderingSystem extends RenderingSystem {
 
-    public StateRenderingSystem(SpriteBatch batch) {
+    public StateRenderingSystem(Batch batch) {
         super(Aspect.all(WorldPos.class).one(Immobile.class), batch, CameraKind.WORLD);
     }
 

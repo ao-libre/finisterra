@@ -58,8 +58,9 @@ public class GUI extends BaseSystem implements Disposable {
     public Inventory getInventory() {
         return actionBar.getInventory();
     }
+
     public InventoryQuickBar getInventoryQuickBar() {
-        return actionBar.getInventoryQuickBar ();
+        return actionBar.getInventoryQuickBar();
     }
 
     public DialogText getDialog() {
@@ -82,19 +83,19 @@ public class GUI extends BaseSystem implements Disposable {
         return getActionBar().getSpellView();
     }
 
-    public SpellViewExpanded getSpellViewExpanded(){
-        return getActionBar ().getSpellViewExpanded ();
+    public SpellViewExpanded getSpellViewExpanded() {
+        return getActionBar().getSpellViewExpanded();
     }
 
     public void takeScreenshot() {
         try {
-            
+
             // Fetch assetManager
             AOAssetManager assetManager = AOGame.getGlobalAssetManager();
-            
+
             // Set where we gonna save the screenshot
             String screenshotPath = "Screenshots/Screenshot-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM_HH-mm-ss")) + ".png";
-            
+
             // Perform the appropiate I/O opperations.
             byte[] pixels = ScreenUtils.getFrameBufferPixels(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), true);
             // this loop makes sure the whole screenshot is opaque and looks exactly like what the user is seeing
@@ -104,17 +105,17 @@ public class GUI extends BaseSystem implements Disposable {
             Pixmap pixmap = new Pixmap(Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight(), Pixmap.Format.RGBA8888);
             BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
             PixmapIO.writePNG(Gdx.files.local(screenshotPath), pixmap);
-            
+
             // Render the message in the game console.
             getConsole().addInfo(assetManager.getMessages(Messages.SCREENSHOT, screenshotPath));
-            
+
             // Clear/dispose the pixmap object.
             pixmap.dispose();
-        
-        } catch(Exception ex) {
-            Log.error("Screenshot I/O", "Error trying to take a screenshot..." , ex);
+
+        } catch (Exception ex) {
+            Log.error("Screenshot I/O", "Error trying to take a screenshot...", ex);
         }
-        
+
     }
 
     public void toggleFullscreen() {
@@ -169,7 +170,7 @@ public class GUI extends BaseSystem implements Disposable {
 
     private void createActionBar(Table table) {
         actionBar = new ActionBar();
-        table.add(actionBar).right().expandY().expandX ();
+        table.add(actionBar).right().expandY().expandX();
     }
 
     private void createDialogContainer(Table table) {

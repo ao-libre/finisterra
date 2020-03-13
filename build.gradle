@@ -35,7 +35,7 @@ allprojects {
         // Control global de las versiones de las dependencias.
         gdxVersion = '1.9.11-SNAPSHOT'      //Graphic Engine Library.
         kryoVersion = '4.0.2'               //Object Serialization API, override dependency of KryoNet.
-        artemisVersion = '2.2.0'            //Artemis EntityComponentSystem & Network manager (TCP/UDP)
+        artemisVersion = '2.3.0'            //Artemis EntityComponentSystem & Network manager (TCP/UDP)
         artemisContribVersion = '2.4.0'     //Kinda the same but developed by someone else.
         gdxAIVersion = '1.8.2'              //Artificial Intelligence
 	    tinyfdVersion = '3.2.3'

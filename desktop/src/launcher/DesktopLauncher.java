@@ -4,21 +4,21 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.glutils.HdpiMode;
 import com.esotericsoftware.minlog.Log;
-import shared.util.LogSystem;
 import game.AOGame;
 import game.ClientConfiguration;
 import game.ClientConfiguration.Init;
 import game.ClientConfiguration.Init.Video;
 import game.utils.Resources;
+import shared.util.LogSystem;
 
 public class DesktopLauncher {
 
     public static void main(String[] arg) {
         System.setProperty("org.lwjgl.opengl.Display.enableOSXFullscreenModeAPI", "true");
         System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Finisterra");
-        
+
         Log.setLogger(new LogSystem());
-        
+
         /**
          * Load desktop config.json or create default.
          */

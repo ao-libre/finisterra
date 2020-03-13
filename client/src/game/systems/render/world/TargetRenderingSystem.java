@@ -7,7 +7,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import game.ui.GUI;
 import game.utils.Colors;
 import game.utils.WorldUtils;
@@ -24,7 +24,7 @@ public class TargetRenderingSystem extends RenderingSystem {
     private static final Texture TARGET = new Texture(Gdx.files.local("data/ui/images/target.png"));
     private GUI gui;
 
-    public TargetRenderingSystem(SpriteBatch batch) {
+    public TargetRenderingSystem(Batch batch) {
         super(Aspect.all(Focused.class), batch, CameraKind.WORLD);
     }
 

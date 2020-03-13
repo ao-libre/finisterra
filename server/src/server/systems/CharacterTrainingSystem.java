@@ -99,7 +99,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
     }
 
     private void levelUp(int userId) {
-        world.getSystem(WorldManager.class).notifyUpdate ( userId, new SoundNotification ( 3 ) );
+        world.getSystem(WorldManager.class).notifyUpdate(userId, new SoundNotification(3));
         // set new experience
         Level level = E(userId).getLevel();
         level.exp -= level.expToNextLevel;

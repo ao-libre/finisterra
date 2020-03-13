@@ -4,7 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -19,6 +19,7 @@ import entity.world.CombatMessage;
 import game.handlers.DescriptorHandler;
 import game.utils.Colors;
 import game.utils.Skins;
+import org.jetbrains.annotations.NotNull;
 import position.Pos2D;
 import position.WorldPos;
 import shared.model.map.Tile;
@@ -36,7 +37,7 @@ public class CombatRenderingSystem extends RenderingSystem {
             .expireAfterAccess(5, TimeUnit.MINUTES)
             .build(new CacheLoader<CombatMessage, Table>() {
                 @Override
-                public Table load(CombatMessage message) {
+                public Table load(@NotNull CombatMessage message) {
                     Table table = new Table(Skins.COMODORE_SKIN);
                     table.setRound(false);
                     String text = message.text;
@@ -54,7 +55,7 @@ public class CombatRenderingSystem extends RenderingSystem {
 
             });
 
-    public CombatRenderingSystem(SpriteBatch batch) {
+    public CombatRenderingSystem(Batch batch) {
         super(Aspect.all(CombatMessage.class, Body.class, WorldPos.class), batch, CameraKind.WORLD);
     }
 

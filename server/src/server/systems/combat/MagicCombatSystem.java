@@ -137,7 +137,7 @@ public class MagicCombatSystem extends BaseSystem {
                     getWorldManager().entityDie(target);
                     notifyMagic(playerId, Messages.KILL, getName(target));
                     notifyMagic(target, Messages.KILLED, getName(playerId));
-                    getWorldManager ( ).notifyUpdate ( playerId, new SoundNotification ( 126 ) );
+                    getWorldManager().notifyUpdate(playerId, new SoundNotification(126));
                 }
             }
             if (spell.isImmobilize()) {
@@ -187,8 +187,8 @@ public class MagicCombatSystem extends BaseSystem {
             Dialog magicWords = new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS);
 
             Log.info("Magic attack " + spell.getMagicWords());
-            int spellSound = spell.getWav ();
-            getWorldManager().notifyUpdate(playerId, new SoundNotification (spellSound));
+            int spellSound = spell.getWav();
+            getWorldManager().notifyUpdate(playerId, new SoundNotification(spellSound));
             getWorldManager().sendEntityUpdate(target, victimUpdateBuilder.build());
             getWorldManager().notifyUpdate(target, victimUpdateToAllBuilder.build());
             getWorldManager().notifyUpdate(playerId, playerUpdateBuilder

@@ -1,6 +1,5 @@
 package server.core;
 
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;

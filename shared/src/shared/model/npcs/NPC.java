@@ -130,22 +130,6 @@ public class NPC {
         npcSpanwer.add(new Pair<>(id, name));
     }
 
-    public void setAttackSnd(int id) {
-        this.attackSnd = id;
-    }
-
-    public void setWalkSnd(int id) {
-        this.walkSnd = id;
-    }
-
-    public void setDieSound(int id) {
-        this.dieSound = id;
-    }
-
-    public void setGHitSnd(int id) {
-        this.gHitSnd = id;
-    }
-
     public void addExpression(String expression) {
         expressions.add(expression);
     }
@@ -166,22 +150,37 @@ public class NPC {
         return npcSpanwer;
     }
 
-    public int getAttackSnd(){
+    public int getAttackSnd() {
         return attackSnd;
     }
 
-    public int getWalkSnd(){
+    public void setAttackSnd(int id) {
+        this.attackSnd = id;
+    }
+
+    public int getWalkSnd() {
         return walkSnd;
     }
 
-    public int getDieSound(){
+    public void setWalkSnd(int id) {
+        this.walkSnd = id;
+    }
+
+    public int getDieSound() {
         return dieSound;
+    }
+
+    public void setDieSound(int id) {
+        this.dieSound = id;
     }
 
     public int getGHitSnd() {
         return gHitSnd;
     }
 
+    public void setGHitSnd(int id) {
+        this.gHitSnd = id;
+    }
 
     public List<String> getExpressions() {
         return expressions;

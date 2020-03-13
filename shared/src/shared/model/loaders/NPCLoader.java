@@ -53,9 +53,9 @@ public class NPCLoader extends Loader<Map<Integer, NPC>> {
         add("Veneno", ((npc, o) -> npc.setPoison(Boolean.parseBoolean(o))));
         add("ReSpawn", ((npc, o) -> npc.setRespawn(Boolean.parseBoolean(o))));
         add("AguaValida", ((npc, o) -> npc.setValidWater(Boolean.parseBoolean(o))));
-        add("Snd1", ((npc, o) -> npc.setAttackSnd (Integer.parseInt(o))));
+        add("Snd1", ((npc, o) -> npc.setAttackSnd(Integer.parseInt(o))));
         add("Snd2", ((npc, o) -> npc.setGHitSnd(Integer.parseInt(o))));
-        add("Snd3", ((npc, o) -> npc.setDieSound (Integer.parseInt(o))));
+        add("Snd3", ((npc, o) -> npc.setDieSound(Integer.parseInt(o))));
     }
 
     private static void add(String field, BiConsumer<NPC, String> setter) {

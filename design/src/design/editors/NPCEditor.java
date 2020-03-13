@@ -51,10 +51,10 @@ public class NPCEditor extends Dialog {
         table.add(IntegerEditor.create("Attack", npc::setAttackPower, npc::getAttackPower, listener)).row();
         table.add(IntegerEditor.create("Gold", npc::setGiveGLD, npc::getGiveGLD, listener)).row();
         table.add(IntegerEditor.create("Exp", npc::setGiveEXP, npc::getGiveEXP, listener)).row();
-        table.add(IntegerEditor.create("Attack Sound N.", npc::setAttackSnd, npc::getAttackSnd, listener)).row ();
-        table.add(IntegerEditor.create("Get Hit Sound N.", npc::setGHitSnd, npc::getGHitSnd, listener)).row ();
-        table.add(IntegerEditor.create("Die Sound N.", npc::setDieSound, npc::getDieSound, listener)).row ();
-        table.add(IntegerEditor.create("Walk Sound N.", npc::setWalkSnd, npc::getWalkSnd, listener)).row ();
+        table.add(IntegerEditor.create("Attack Sound N.", npc::setAttackSnd, npc::getAttackSnd, listener)).row();
+        table.add(IntegerEditor.create("Get Hit Sound N.", npc::setGHitSnd, npc::getGHitSnd, listener)).row();
+        table.add(IntegerEditor.create("Die Sound N.", npc::setDieSound, npc::getDieSound, listener)).row();
+        table.add(IntegerEditor.create("Walk Sound N.", npc::setWalkSnd, npc::getWalkSnd, listener)).row();
         npc.getSpells();
         npc.getExpressions();
         npc.getDrops();
