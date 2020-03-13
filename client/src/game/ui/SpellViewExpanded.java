@@ -26,12 +26,11 @@ import static com.artemis.E.E;
 public class SpellViewExpanded extends Table {
 
     private static final int MAX_SPELLS = 25;
-    public Optional<Spell> selected = Optional.empty();
     private final Window spellTable;
     private final List<SpellSlotEC> slotsEC = new ArrayList<>(MAX_SPELLS);
-    private int base;
-
     private final AOAssetManager assetManager;
+    public Optional<Spell> selected = Optional.empty();
+    private int base;
 
     public SpellViewExpanded() {
         super(Skins.COMODORE_SKIN);
@@ -67,38 +66,37 @@ public class SpellViewExpanded extends Table {
         });
     }
 
-    public void newSpellAdd(int spellNum){
-        AtomicBoolean present = new AtomicBoolean ( false );
+    public void newSpellAdd(int spellNum) {
+        AtomicBoolean present = new AtomicBoolean(false);
         WorldUtils.getWorld().ifPresent(world -> {
-            SpellHandler spellHandler = world.getSystem ( SpellHandler.class );
+            SpellHandler spellHandler = world.getSystem(SpellHandler.class);
             Spell[] spells = spellHandler.getSpells();
             Spell[] spellsToShow = new Spell[MAX_SPELLS];
-            Optional< Spell > newSpell = spellHandler.getSpell ( spellNum );
-            newSpell.ifPresent ( spell1 -> {
-                if(spells.length <= MAX_SPELLS ) {
+            Optional<Spell> newSpell = spellHandler.getSpell(spellNum);
+            newSpell.ifPresent(spell1 -> {
+                if (spells.length <= MAX_SPELLS) {
                     for (Spell spell : spells) {
                         if (spell.equals(spell1)) {
                             present.set(true);
                         }
                     }
-                    if (!present.get ( )) {
+                    if (!present.get()) {
                         System.arraycopy(spells, 0, spellsToShow, 0, spells.length);
                         spellsToShow[spells.length] = spell1;
                         for (int i = 0; i < MAX_SPELLS; i++) {
-                            slotsEC.get ( i ).setSpell ( spellsToShow[i] );
+                            slotsEC.get(i).setSpell(spellsToShow[i]);
                         }
-                        world.getSystem ( GUI.class ).getConsole ( ).addInfo ( assetManager.getMessages( Messages.SPELLS_ADD, spell1.getName(), Integer.toString(spells.length + 1) ) );
+                        world.getSystem(GUI.class).getConsole().addInfo(assetManager.getMessages(Messages.SPELLS_ADD, spell1.getName(), Integer.toString(spells.length + 1)));
                     } else {
-                        world.getSystem ( GUI.class ).getConsole ( ).addInfo ( assetManager.getMessages( Messages.SPELLS_ALREDY_KNOWN, spell1.getName() ) );
+                        world.getSystem(GUI.class).getConsole().addInfo(assetManager.getMessages(Messages.SPELLS_ALREDY_KNOWN, spell1.getName()));
                     }
-                }
-                else {
-                    world.getSystem ( GUI.class ).getConsole ( ).addInfo ( assetManager.getMessages( Messages.SPELLS_FULL ) );
+                } else {
+                    world.getSystem(GUI.class).getConsole().addInfo(assetManager.getMessages(Messages.SPELLS_FULL));
                 }
             });
         });
-        E (GameScreen.getPlayer ()).getSpellBook ().addSpell ( spellNum );
-        updateSpells ();
+        E(GameScreen.getPlayer()).getSpellBook().addSpell(spellNum);
+        updateSpells();
     }
 
     void selected(Spell spell) {

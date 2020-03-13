@@ -5,7 +5,7 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
 import game.handlers.ParticlesHandler;
 import graphics.FX;
 import position.Pos2D;
@@ -25,7 +25,7 @@ public class ParticleRenderingSystem extends RenderingSystem {
     private int srcFunc;
     private int dstFunc;
 
-    public ParticleRenderingSystem(SpriteBatch batch) {
+    public ParticleRenderingSystem(TextureArraySpriteBatch batch) {
         super(Aspect.all(FX.class, WorldPos.class), batch, CameraKind.WORLD);
         this.particles = new HashMap<>();
     }

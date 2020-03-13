@@ -151,10 +151,10 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     public void processRequest(AttackRequest attackRequest, int connectionId) {
         int playerId = networkManager.getPlayerByConnection(connectionId);
         AttackType type = attackRequest.type();
-        if (type.equals ( AttackType.RANGED )) {
-            rangedCombatSystem.shoot ( playerId, attackRequest );
-        }else {
-            physicalCombatSystem.entityAttack ( playerId, Optional.empty ( ) );
+        if (type.equals(AttackType.RANGED)) {
+            rangedCombatSystem.shoot(playerId, attackRequest);
+        } else {
+            physicalCombatSystem.entityAttack(playerId, Optional.empty());
         }
     }
 

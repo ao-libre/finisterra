@@ -1,6 +1,5 @@
 package game.ui;
 
-import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -20,13 +19,8 @@ import game.utils.WorldUtils;
 import shared.network.interaction.DropItem;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
-import shared.objects.types.Obj;
-import shared.objects.types.Type;
-import shared.objects.types.WeaponKind;
-import shared.objects.types.WeaponObj;
+import shared.objects.types.*;
 import shared.util.Messages;
-import shared.objects.types.SpellObj;
-import shared.objects.types.Type;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -37,11 +31,11 @@ import static com.artemis.E.E;
 
 public class Inventory extends Window {
 
-    public boolean toShoot = false;
     private static final int COLUMNS = 5;
     private static final int ROWS = 4;
     private static final int SIZE = COLUMNS * ROWS;
     private final ClickListener mouseListener;
+    public boolean toShoot = false;
     private int base;
 
     private ArrayList<Slot> slots;
@@ -59,7 +53,7 @@ public class Inventory extends Window {
             Slot newSlot = new Slot();
             slots.add(newSlot);
             add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE);
-            if (columnsCounter > ROWS -1) {
+            if (columnsCounter > ROWS - 1) {
                 row();
                 columnsCounter = 0;
             }
@@ -89,7 +83,7 @@ public class Inventory extends Window {
                         if (getTapCount() >= 2) {
                             GameScreen.getClient().sendToAll(new ItemActionRequest(slots.indexOf(slot)));
                             addSpellSVE(slot);
-                            isBowORArrow( slot );
+                            isBowORArrow(slot);
                         }
                     });
                 });
@@ -184,29 +178,29 @@ public class Inventory extends Window {
         }
     }
 
-    public void getShoot (){
+    public void getShoot() {
         ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
         Item[] items = E(GameScreen.getPlayer()).getInventory().items;
 
-        AtomicBoolean bowPresent = new AtomicBoolean ( false );
-        AtomicBoolean arrowPresent = new AtomicBoolean ( false );
+        AtomicBoolean bowPresent = new AtomicBoolean(false);
+        AtomicBoolean arrowPresent = new AtomicBoolean(false);
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null) {
                 int inventoryIndex = i;
                 objectHandler.getObject(items[i].objId).ifPresent(obj -> {
-                    if (items[inventoryIndex].equipped && obj.getType().equals( Type.WEAPON)) {
+                    if (items[inventoryIndex].equipped && obj.getType().equals(Type.WEAPON)) {
                         WeaponObj weaponObj = (WeaponObj) obj;
-                        if (weaponObj.getKind ().equals ( WeaponKind.BOW )){
-                            bowPresent.set ( true );
+                        if (weaponObj.getKind().equals(WeaponKind.BOW)) {
+                            bowPresent.set(true);
                         }
                     }
                     if (items[inventoryIndex].equipped && obj.getType().equals(Type.ARROW)) {
-                        arrowPresent.set ( true );
+                        arrowPresent.set(true);
                     }
                 });
             }
         }
-        if (bowPresent.get ( ) && arrowPresent.get ( )){
+        if (bowPresent.get() && arrowPresent.get()) {
             WorldUtils.getWorld().ifPresent(world -> {
                 world.getSystem(GUI.class).getConsole().addInfo(assetManager.getMessages(Messages.CLICK_TO_SHOOT));
                 Cursors.setCursor("arrow");
@@ -218,16 +212,18 @@ public class Inventory extends Window {
             });
         }
     }
+
     public void cleanShoot() {
         toShoot = false;
     }
+
     //chequea si es arco o flecha
-    public void isBowORArrow(Slot slot){
-        Optional<Obj> object = slotToObject( slot );
+    public void isBowORArrow(Slot slot) {
+        Optional<Obj> object = slotToObject(slot);
         object.ifPresent(obj -> {
-            if (obj.getType().equals( Type.WEAPON ) || obj.getType().equals( Type.ARROW )){
+            if (obj.getType().equals(Type.WEAPON) || obj.getType().equals(Type.ARROW)) {
                 cleanShoot();
-                Cursors.setCursor ( "hand" );
+                Cursors.setCursor("hand");
             }
         });
     }
@@ -262,22 +258,22 @@ public class Inventory extends Window {
     }
 
     //recupera el objeto de un slot
-    private Optional<Obj> slotToObject(Slot slot){
-        Optional< Item > item = slot.getItem ();
-        int objID = item.map ( item1 -> item1.objId ).orElse ( -1 );
+    private Optional<Obj> slotToObject(Slot slot) {
+        Optional<Item> item = slot.getItem();
+        int objID = item.map(item1 -> item1.objId).orElse(-1);
         ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
         Optional<Obj> object = objectHandler.getObject(objID);
         return object;
     }
 
 
-    private void addSpellSVE(Slot slot){ //funcion provisoria hasta q encuentre como hacerlo a desde el servidor
-        Optional<Obj> object = slotToObject( slot );
+    private void addSpellSVE(Slot slot) { //funcion provisoria hasta q encuentre como hacerlo a desde el servidor
+        Optional<Obj> object = slotToObject(slot);
         object.ifPresent(obj -> {
-            if (obj.getType().equals (Type.SPELL)) {
+            if (obj.getType().equals(Type.SPELL)) {
                 SpellObj spellObj = (SpellObj) obj;
-                if (E (GameScreen.getPlayer ()).charHeroHeroId () != 0 ) {
-                    GameScreen.world.getSystem (GUI.class).getSpellViewExpanded ().newSpellAdd (spellObj.getSpellIndex ());
+                if (E(GameScreen.getPlayer()).charHeroHeroId() != 0) {
+                    GameScreen.world.getSystem(GUI.class).getSpellViewExpanded().newSpellAdd(spellObj.getSpellIndex());
                 }
             }
         });

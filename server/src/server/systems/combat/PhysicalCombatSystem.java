@@ -233,14 +233,14 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         sendFX(entityId);
         if (health.min > 0) {
             update(entityId);
-            getWorldManager ( ).notifyUpdate ( userId, new SoundNotification ( 10 ) );
+            getWorldManager().notifyUpdate(userId, new SoundNotification(10));
         } else {
             // TODO die
             characterTrainingSystem.takeGold(userId, entityId);
             notifyCombat(userId, Messages.KILL, getName(entityId));
             notifyCombat(entityId, Messages.KILLED, getName(userId));
             worldManager.entityDie(entityId);
-            getWorldManager ( ).notifyUpdate ( userId, new SoundNotification ( 126 ) );
+            getWorldManager().notifyUpdate(userId, new SoundNotification(126));
         }
     }
 
@@ -358,6 +358,11 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         world.delete(fxE);
     }
 
+    private WorldManager getWorldManager() {
+        return world.getSystem(WorldManager.class);
+    }
+
+
     private enum AttackKind {
         WEAPON,
         PROJECTILE,
@@ -367,7 +372,6 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
             return entity.hasWeapon() ? WEAPON : WRESTLING;
         }
     }
-
 
     private enum AttackPlace {
         HEAD,
@@ -380,8 +384,5 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         public static AttackPlace getRandom() {
             return VALUES.get(RANDOM.nextInt(SIZE));
         }
-    }
-    private WorldManager getWorldManager() {
-        return world.getSystem(WorldManager.class);
     }
 }

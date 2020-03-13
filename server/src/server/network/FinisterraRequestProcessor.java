@@ -193,7 +193,7 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
             // Guardamos la cuenta.
             try {
                 Account account = new Account(username, email, hashedPassword);
-                account.create();
+                account.save();
                 successful = true;
             } catch (Exception ex) {
                 Log.info("Creacion de cuentas", "No se pudo crear la cuenta: " + email, ex);

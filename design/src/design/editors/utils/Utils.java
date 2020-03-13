@@ -317,7 +317,7 @@ public class Utils {
 
         try (InputStream is = zipFile.read(); ZipInputStream zis = new ZipInputStream(is)) {
             ZipEntry entry = zis.getNextEntry();
-            
+
             // iterates over entries in the zip file
             while (entry != null) {
                 if (!entry.isDirectory()) {
@@ -330,13 +330,13 @@ public class Utils {
                 zis.closeEntry();
                 entry = zis.getNextEntry();
             }
-            
+
             is.close();
             zis.close();
-            
-        } catch(IOException ex) {
+
+        } catch (IOException ex) {
             Log.error(Utils.class.getName(), "Error trying to unZip archive: " + zipFile, ex);
-        } 
+        }
 
     }
 
@@ -355,7 +355,7 @@ public class Utils {
                 bos.write(bytesIn, 0, read);
             }
             bos.close();
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             Log.error(Utils.class.getName(), "Error extracting file: " + zipIn, ex);
         }
     }

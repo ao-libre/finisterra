@@ -5,7 +5,6 @@ import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import entity.character.equipment.Helmet;
@@ -37,7 +36,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
     private DescriptorHandler descriptorHandler;
     private AnimationHandler animationHandler;
 
-    public CharacterRenderingSystem(SpriteBatch batch) {
+    public CharacterRenderingSystem(Batch batch) {
         super(CHAR_ASPECT, batch, CameraKind.WORLD);
     }
 
@@ -68,18 +67,17 @@ public class CharacterRenderingSystem extends RenderingSystem {
     }
 
     public static class CharacterDrawer {
-        private boolean shouldFlip;
         private final Batch batch;
         private final E player;
         private final Heading heading;
         private final Pos2D screenPos;
+        private final DescriptorHandler descriptorHandler;
+        private final AnimationHandler animationHandler;
+        private boolean shouldFlip;
         private float headOffsetY;
-
         // body
         private float bodyPixelOffsetX;
         private float bodyPixelOffsetY;
-        private final DescriptorHandler descriptorHandler;
-        private final AnimationHandler animationHandler;
         private TextureRegion bodyRegion;
         private BundledAnimation bodyAnimation;
         private float idle;

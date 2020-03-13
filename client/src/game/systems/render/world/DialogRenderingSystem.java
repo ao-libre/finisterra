@@ -4,7 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -16,9 +16,9 @@ import entity.character.parts.Body;
 import entity.world.Dialog;
 import entity.world.Dialog.Kind;
 import game.handlers.DescriptorHandler;
-import game.handlers.FontsHandler;
 import game.utils.Colors;
 import game.utils.Skins;
+import org.jetbrains.annotations.NotNull;
 import position.Pos2D;
 import position.WorldPos;
 import shared.model.map.Tile;
@@ -34,13 +34,12 @@ public class DialogRenderingSystem extends RenderingSystem {
     private static final int DISTANCE_TO_TOP = (int) (5 * SCALE);
     private static final float TIME = 0.3f;
     private static final float VELOCITY = DISTANCE_TO_TOP / TIME * SCALE;
-    private DescriptorHandler descriptorHandler;
     private final LoadingCache<Dialog, Table> labels = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
             .build(new CacheLoader<Dialog, Table>() {
                 @Override
-                public Table load(Dialog dialog) {
+                public Table load(@NotNull Dialog dialog) {
                     Table table = new Table(Skins.COMODORE_SKIN);
                     table.setRound(false);
                     String text = dialog.text;
@@ -54,8 +53,9 @@ public class DialogRenderingSystem extends RenderingSystem {
                     return table;
                 }
             });
+    private DescriptorHandler descriptorHandler;
 
-    public DialogRenderingSystem(SpriteBatch batch) {
+    public DialogRenderingSystem(Batch batch) {
         super(Aspect.all(Dialog.class, Body.class, WorldPos.class), batch, CameraKind.WORLD);
     }
 

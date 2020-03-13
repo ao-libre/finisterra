@@ -12,6 +12,10 @@
     "startMaximized": false,
     "tutorialTodo": "checkbox true false"
   },
+  "account": {
+    "email": "",
+    "password": ""
+  },
   "network": {
     "servers": [
       {

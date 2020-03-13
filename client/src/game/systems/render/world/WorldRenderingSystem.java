@@ -6,7 +6,7 @@ import com.artemis.E;
 import com.artemis.EBag;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import game.handlers.MapHandler;
 import game.managers.MapManager;
 import game.managers.WorldManager;
@@ -28,15 +28,15 @@ import static graphics.Effect.NO_REF;
 public class WorldRenderingSystem extends BaseSystem {
 
     private static final int EXTRA_TILES = 7;
+    private final Batch batch;
     private MapManager mapManager;
-    private final SpriteBatch batch;
     private CameraSystem cameraSystem;
     private TiledMapSystem tiledMapSystem;
     private CharacterRenderingSystem characterRenderingSystem;
     private EffectRenderingSystem effectRenderingSystem;
     private WorldManager worldManager;
 
-    public WorldRenderingSystem(SpriteBatch batch) {
+    public WorldRenderingSystem(Batch batch) {
         this.batch = batch;
     }
 
@@ -47,7 +47,7 @@ public class WorldRenderingSystem extends BaseSystem {
         getBatch().begin();
     }
 
-    public SpriteBatch getBatch() {
+    public Batch getBatch() {
         return batch;
     }
 

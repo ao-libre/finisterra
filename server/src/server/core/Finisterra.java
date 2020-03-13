@@ -3,9 +3,7 @@ package server.core;
 import com.artemis.FluidEntityPlugin;
 import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import server.configs.ServerConfiguration;
 import server.network.FinisterraRequestProcessor;
@@ -102,7 +100,7 @@ public class Finisterra implements ApplicationListener {
         room.getPlayers().stream().mapToInt(player -> getNetworkManager().getConnectionByPlayer(player)).forEach(connectionId -> {
             try {
                 if (shouldUseLocalHost) {
-                    Log.info("Network","Using localhost...");
+                    Log.info("Network", "Using localhost...");
                 }
                 getNetworkManager().sendTo(connectionId, new StartGameResponse(
                         shouldUseLocalHost ? InetAddress.getLocalHost().getHostAddress() : IpChecker.getIp(),

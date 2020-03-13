@@ -14,6 +14,7 @@ public class AttackRequest implements IRequest {
 
     public AttackRequest() {
     }
+
     public AttackRequest(AttackType type, WorldPos worldPos, long timestamp) {
         this.type = type;
         this.worldPos = worldPos;

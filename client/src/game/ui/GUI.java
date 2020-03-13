@@ -61,8 +61,9 @@ public class GUI extends BaseSystem implements Disposable {
     public Inventory getInventory() {
         return actionBar.getInventory();
     }
+
     public InventoryQuickBar getInventoryQuickBar() {
-        return actionBar.getInventoryQuickBar ();
+        return actionBar.getInventoryQuickBar();
     }
 
     public DialogText getDialog() {
@@ -85,8 +86,8 @@ public class GUI extends BaseSystem implements Disposable {
         return getActionBar().getSpellView();
     }
 
-    public SpellViewExpanded getSpellViewExpanded(){
-        return getActionBar ().getSpellViewExpanded ();
+    public SpellViewExpanded getSpellViewExpanded() {
+        return getActionBar().getSpellViewExpanded();
     }
 
     public WorkUI getWorkUI() {
@@ -118,8 +119,8 @@ public class GUI extends BaseSystem implements Disposable {
             // Clear/dispose the pixmap object.
             pixmap.dispose();
 
-        } catch(Exception ex) {
-            Log.error("Screenshot I/O", "Error trying to take a screenshot..." , ex);
+        } catch (Exception ex) {
+            Log.error("Screenshot I/O", "Error trying to take a screenshot...", ex);
         }
 
     }
@@ -183,7 +184,7 @@ public class GUI extends BaseSystem implements Disposable {
 
     private void createActionBar(Table table) {
         actionBar = new ActionBar();
-        table.add(actionBar).right().expandY().expandX ();
+        table.add(actionBar).right().expandY().expandX();
     }
 
     private void createDialogContainer(Table table) {

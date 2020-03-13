@@ -9,8 +9,8 @@ import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.handlers.AOAssetManager;
 import game.handlers.MapHandler;
-import game.handlers.ObjectHandler;
 import game.handlers.MusicHandler;
+import game.handlers.ObjectHandler;
 import game.screens.GameScreen;
 import game.systems.WorkSystem;
 import game.screens.transitions.FadingGame;
@@ -71,73 +71,73 @@ public class AOInputProcessor extends Stage {
         if (gui.getActionBar().isOver()) {
             return result;
         }
-        switch( button ) {
+        switch (button) {
             case 0:
-                WorldUtils.getWorld().ifPresent( world -> WorldUtils.mouseToWorldPos().ifPresent( worldPos -> {
-                    final Optional< Spell > toCast = gui.getSpellView().toCast;
+                WorldUtils.getWorld().ifPresent(world -> WorldUtils.mouseToWorldPos().ifPresent(worldPos -> {
+                    final Optional<Spell> toCast = gui.getSpellView().toCast;
                     final boolean toShoot = gui.getInventory().toShoot;
-                    if(toCast.isPresent() || toShoot) {
-                        E player = E.E( GameScreen.getPlayer() );
-                        if(!player.hasAttack() || player.getAttack().interval - world.getDelta() < 0) {
-                            TimeSync timeSyncSystem = world.getSystem( TimeSync.class );
+                    if (toCast.isPresent() || toShoot) {
+                        E player = E.E(GameScreen.getPlayer());
+                        if (!player.hasAttack() || player.getAttack().interval - world.getDelta() < 0) {
+                            TimeSync timeSyncSystem = world.getSystem(TimeSync.class);
                             long rtt = timeSyncSystem.getRtt();
                             long timeOffset = timeSyncSystem.getTimeOffset();
-                            if(toShoot) {
-                                GameScreen.getClient().sendToAll( new AttackRequest( AttackType.RANGED, worldPos, rtt + timeOffset ) );
+                            if (toShoot) {
+                                GameScreen.getClient().sendToAll(new AttackRequest(AttackType.RANGED, worldPos, rtt + timeOffset));
                             } else {
                                 Spell spell = toCast.get();
-                                GameScreen.getClient().sendToAll( new SpellCastRequest( spell, worldPos, rtt + timeOffset ) );
+                                GameScreen.getClient().sendToAll(new SpellCastRequest(spell, worldPos, rtt + timeOffset));
                             }
                             player.attack();
                         } else {
-                            if(toShoot) {
-                                gui.getConsole().addWarning( assetManager.getMessages( Messages.CANT_SHOOT_THAT_FAST ) );
+                            if (toShoot) {
+                                gui.getConsole().addWarning(assetManager.getMessages(Messages.CANT_SHOOT_THAT_FAST));
                             } else {
-                                gui.getConsole().addWarning( assetManager.getMessages( Messages.CANT_ATTACK ) );
+                                gui.getConsole().addWarning(assetManager.getMessages(Messages.CANT_ATTACK));
                             }
                         }
-                        Cursors.setCursor( "hand" );
+                        Cursors.setCursor("hand");
                         gui.getSpellView().cleanCast();
                         gui.getInventory().cleanShoot();
                     } else {
-                        WorldManager worldManager = world.getSystem( WorldManager.class );
-                        Map map = MapHandler.get( worldPos.getMap() );
-                        Tile tile = MapHelper.getTile( map, worldPos );
-                        ObjectHandler objectHandler = WorldUtils.getWorld().orElse( null )
-                                .getSystem( ObjectHandler.class );
-                        Optional< E > targetEntity = worldManager.getEntities()
+                        WorldManager worldManager = world.getSystem(WorldManager.class);
+                        Map map = MapHandler.get(worldPos.getMap());
+                        Tile tile = MapHelper.getTile(map, worldPos);
+                        ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null)
+                                .getSystem(ObjectHandler.class);
+                        Optional<E> targetEntity = worldManager.getEntities()
                                 .stream()
-                                .filter( entity -> E( entity ).hasWorldPos() && E( entity ).getWorldPos().equals( worldPos ) )
+                                .filter(entity -> E(entity).hasWorldPos() && E(entity).getWorldPos().equals(worldPos))
                                 .map(E::E)
                                 .findFirst();
-                        if(targetEntity.isPresent()) {
+                        if (targetEntity.isPresent()) {
                             E entity = targetEntity.get();
-                            if(entity.hasObject()) {
-                                Obj obj = objectHandler.getObject( entity.getObject().index ).get();
-                                gui.getConsole().addInfo( assetManager.getMessages(
-                                        Messages.SEE_SOMEONE, String.valueOf( entity.objectCount() ) )
-                                        + " " + obj.getName() );
-                            } else if(entity.hasName()) {
-                                gui.getConsole().addInfo( assetManager.getMessages( Messages.SEE_SOMEONE,
-                                        entity.getName().text ) );
+                            if (entity.hasObject()) {
+                                Obj obj = objectHandler.getObject(entity.getObject().index).get();
+                                gui.getConsole().addInfo(assetManager.getMessages(
+                                        Messages.SEE_SOMEONE, String.valueOf(entity.objectCount()))
+                                        + " " + obj.getName());
+                            } else if (entity.hasName()) {
+                                gui.getConsole().addInfo(assetManager.getMessages(Messages.SEE_SOMEONE,
+                                        entity.getName().text));
                             }
-                        }else if(tile.getObjIndex() > 0) {
-                            objectHandler.getObject( tile.getObjIndex()).ifPresent(obj -> {
-                                gui.getConsole().addInfo( assetManager.getMessages(
-                                        Messages.SEE_SOMEONE, String.valueOf( tile.getObjCount() ) )
-                                        + " " + obj.getName() );
+                        } else if (tile.getObjIndex() > 0) {
+                            objectHandler.getObject(tile.getObjIndex()).ifPresent(obj -> {
+                                gui.getConsole().addInfo(assetManager.getMessages(
+                                        Messages.SEE_SOMEONE, String.valueOf(tile.getObjCount()))
+                                        + " " + obj.getName());
                             });
                         } else {
-                            gui.getConsole().addInfo( assetManager.getMessages( Messages.SEE_NOTHING ) );
+                            gui.getConsole().addInfo(assetManager.getMessages(Messages.SEE_NOTHING));
                         }
                     }
-                } ) );
+                }));
                 break;
             case 1:
                 shoot();
                 break;
             case 2: // para implementar mas adelate o hacer test boton del medio
-                Log.info( "********boton medio******" );
+                Log.info("********boton medio******");
                 break;
         }
         return result;
@@ -229,13 +229,13 @@ public class AOInputProcessor extends Stage {
                 useActionBarSlot(5);
                 break;
             case Input.Keys.NUM_7:
-                musicControl (7);
+                musicControl(7);
                 break;
             case Input.Keys.NUM_8:
-                musicControl (8);
+                musicControl(8);
                 break;
             case Input.Keys.NUM_9:
-                musicControl (9);
+                musicControl(9);
                 break;
             case Input.Keys.Q:
                 work();
@@ -304,13 +304,13 @@ public class AOInputProcessor extends Stage {
                 useActionBarSlot(5);
                 break;
             case Input.Keys.NUM_7:
-                musicControl (7);//play / stop
+                musicControl(7);//play / stop
                 break;
             case Input.Keys.NUM_8:
-                musicControl (8);//bajar volumen
+                musicControl(8);//bajar volumen
                 break;
             case Input.Keys.NUM_9:
-                musicControl (9);//subir volumen
+                musicControl(9);//subir volumen
                 break;
             case Input.Keys.Q:
                 work();
@@ -324,45 +324,46 @@ public class AOInputProcessor extends Stage {
     }
 
     private void musicControl(int number){
+
         Music backGroundMusic = MusicHandler.BACKGROUNDMUSIC;
         float volum;
         switch (number) {
             case 7:
-                if (!backGroundMusic.isPlaying ( )) {
-                    backGroundMusic.play ( );
+                if (!backGroundMusic.isPlaying()) {
+                    backGroundMusic.play();
                 } else {
-                    backGroundMusic.stop ( );
+                    backGroundMusic.stop();
                 }
                 break;
             case 8:
-                volum = backGroundMusic.getVolume ( ) - 0.01f;
-                backGroundMusic.setVolume ( volum );
+                volum = backGroundMusic.getVolume() - 0.01f;
+                backGroundMusic.setVolume(volum);
                 break;
             case 9:
-                volum = backGroundMusic.getVolume ( ) + 0.01f;
-                backGroundMusic.setVolume ( volum );
+                volum = backGroundMusic.getVolume() + 0.01f;
+                backGroundMusic.setVolume(volum);
                 break;
         }
     }
 
     private void useActionBarSlot(int x) {
         int base;
-        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT )) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
             if (gui.getActionBar().getState().equals("INVENTORY")) {
                 if (!gui.getInventory().getSelected().isPresent()) {
                     base = 0;
                 } else {
-                    base = gui.getInventory ( ).selectedIndex ( );
+                    base = gui.getInventory().selectedIndex();
                 }
-                gui.getInventoryQuickBar ( ).addItemsIQB ( base, x );
+                gui.getInventoryQuickBar().addItemsIQB(base, x);
             }
-            if (gui.getActionBar ().getState().equals("SPELL")) {
-                gui.getSpellView ( ).addSpelltoSpellview ( gui.getSpellViewExpanded ( ).getSelected ( ), x );
+            if (gui.getActionBar().getState().equals("SPELL")) {
+                gui.getSpellView().addSpelltoSpellview(gui.getSpellViewExpanded().getSelected(), x);
             }
         } else {
-            GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getInventoryQuickBar ().getGBases(x)));
+            GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getInventoryQuickBar().getGBases(x)));
             gui.getInventory().cleanShoot();
-            Cursors.setCursor ( "hand" );
+            Cursors.setCursor("hand");
         }
     }
 
@@ -381,8 +382,9 @@ public class AOInputProcessor extends Stage {
             }
         });
     }
+
     private void shoot() {
-        gui.getInventory ().getShoot ();
+        gui.getInventory().getShoot();
     }
 
     private void equip() {
@@ -398,7 +400,7 @@ public class AOInputProcessor extends Stage {
     // drop selected item (count 1 for the time being)
     private void dropItem() {
         gui.getInventory().getSelected().ifPresent(selected -> {
-            gui.getInventory().isBowORArrow( gui.getInventory().getSelected().get() );
+            gui.getInventory().isBowORArrow(gui.getInventory().getSelected().get());
             int player = GameScreen.getPlayer();
             GameScreen
                     .getClient()
@@ -420,13 +422,13 @@ public class AOInputProcessor extends Stage {
     }
 
     private void toggleInventory() {
-        gui.getInventoryQuickBar ().setVisible(!gui.getInventoryQuickBar ().isVisible());
-        gui.getActionBar ().setExpandButtonVisible();
+        gui.getInventoryQuickBar().setVisible(!gui.getInventoryQuickBar().isVisible());
+        gui.getActionBar().setExpandButtonVisible();
     }
 
     private void toggleSpells() {
         gui.getSpellView().setVisible(!gui.getSpellView().isVisible());
-        gui.getActionBar ().setExpandButtonVisible();
+        gui.getActionBar().setExpandButtonVisible();
     }
 
 }
