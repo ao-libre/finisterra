@@ -59,6 +59,10 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
         ScreenManager.getInstance().showScreen(ScreenEnum.LOGIN);
     }
 
+    public void toSignUp(Object... params) {
+        ScreenManager.getInstance().showScreen(ScreenEnum.SIGNUP, params);
+    }
+
     public void toLobby(Object... params) {
         ScreenManager.getInstance().showScreen(ScreenEnum.LOBBY, params);
     }

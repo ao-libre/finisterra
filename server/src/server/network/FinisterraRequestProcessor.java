@@ -2,13 +2,19 @@ package server.network;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.esotericsoftware.minlog.Log;
 import server.core.Finisterra;
+import server.database.Account;
 import server.systems.FinisterraSystem;
 import shared.interfaces.Hero;
 import shared.model.lobby.Lobby;
 import shared.model.lobby.Player;
 import shared.model.lobby.Room;
 import shared.model.lobby.Team;
+import shared.network.account.AccountCreationRequest;
+import shared.network.account.AccountCreationResponse;
+import shared.network.account.AccountLoginRequest;
+import shared.network.account.AccountLoginResponse;
 import shared.network.interfaces.DefaultRequestProcessor;
 import shared.network.lobby.*;
 import shared.network.lobby.player.ChangeHeroRequest;
@@ -17,6 +23,7 @@ import shared.network.lobby.player.ChangeReadyStateRequest;
 import shared.network.lobby.player.ChangeTeamRequest;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
+import shared.util.AccountSystemUtilities;
 
 import java.util.Optional;
 
@@ -68,13 +75,14 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         Lobby lobby = getLobby();
         Optional<Room> room = lobby.getRoom(joinRoomRequest.getId());
         room.ifPresent(room1 -> {
+            if (room1.isFull()) return; // @todo responder al cliente que la sala está llena
             Player player = networkManager.getPlayerByConnection(connectionId);
             player.setTeam(getBalancedTeam(room1));
+            lobby.joinRoom(joinRoomRequest.getId(), player);
             room1.getPlayers().forEach(roomPlayer -> {
                 int roomPlayerConnection = networkManager.getConnectionByPlayer(roomPlayer);
                 networkManager.sendTo(roomPlayerConnection, new JoinRoomNotification(player, true));
             });
-            lobby.joinRoom(joinRoomRequest.getId(), player);
             networkManager.sendTo(connectionId, new JoinRoomResponse(room1, player));
         });
     }
@@ -150,7 +158,11 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         ApplicationListener applicationListener = Gdx.app.getApplicationListener();
         Finisterra finisterra = (Finisterra) applicationListener;
         Optional<Room> room = finisterra.getLobby().getRoom(startGameRequest.getRoomId());
-        room.ifPresent(finisterra::startGame);
+        room.ifPresent(room1 -> {
+            if (room1.getPlayers().stream().allMatch(Player::isReady)) {
+                finisterra.startGame(room1);
+            } // @todo else responder al cliente que los jugadores no están listos
+        });
     }
 
     @Override
@@ -161,5 +173,48 @@ public class FinisterraRequestProcessor extends DefaultRequestProcessor {
         response.requestId = request.requestId;
         response.sendTime = System.nanoTime();
         networkManager.sendTo(connectionId, response);
+    }
+
+    @Override
+    public void processRequest(AccountCreationRequest accountCreationRequest, int connectionId) {
+
+        // Recibimos los datos de la cuenta del cliente.
+        String username = accountCreationRequest.getUsername();
+        String email = accountCreationRequest.getEmail();
+        String password = accountCreationRequest.getPassword();
+
+        // Hasheamos la contraseña.
+        String hashedPassword = AccountSystemUtilities.hashPassword(password);
+
+        // Resultado de la operacion.
+        boolean successful = false; //@todo todos los requests podrían llevar un flag de exito/error
+
+        if (!Account.exists(email)) {
+            // Guardamos la cuenta.
+            try {
+                Account account = new Account(username, email, hashedPassword);
+                account.create();
+                successful = true;
+            } catch (Exception ex) {
+                Log.info("Creacion de cuentas", "No se pudo crear la cuenta: " + email, ex);
+            }
+        }
+
+        networkManager.sendTo(connectionId, new AccountCreationResponse(successful));
+    }
+
+    @Override
+    public void processRequest(AccountLoginRequest accountLoginRequest, int connectionId) {
+        String email = accountLoginRequest.getEmail();
+        String password = accountLoginRequest.getPassword();
+
+        // Obtenemos la cuenta de la carpeta Accounts.
+        Account requestedAccount = Account.load(email);
+
+        boolean successful = (requestedAccount != null) && (AccountSystemUtilities.checkPassword(password, requestedAccount.getPassword()));
+
+        String username = successful ? requestedAccount.getUsername() : null;
+
+        networkManager.sendTo(connectionId, new AccountLoginResponse(username, successful));
     }
 }

@@ -3,18 +3,19 @@ package game.network;
 import com.artemis.BaseSystem;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.screens.*;
+import game.screens.transitions.TransitionListener;
 import game.systems.network.ClientSystem;
 import game.systems.network.TimeSync;
 import game.systems.physics.MovementProcessorSystem;
+import shared.network.account.AccountCreationResponse;
+import shared.network.account.AccountLoginResponse;
 import shared.network.interfaces.IResponseProcessor;
-import shared.network.lobby.CreateRoomResponse;
-import shared.network.lobby.JoinLobbyResponse;
-import shared.network.lobby.JoinRoomResponse;
-import shared.network.lobby.StartGameResponse;
+import shared.network.lobby.*;
 import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.movement.MovementResponse;
 import shared.network.time.TimeSyncResponse;
@@ -78,6 +79,66 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
         Log.info("Local timestamp: " + TimeUtils.millis() / 1000);
         Log.info("RTT: " + timeSync.getRtt() / 1000);
         Log.info("Time offset: " + timeSync.getTimeOffset() / 1000);
+    }
+
+    @Override
+    public void processResponse(AccountCreationResponse accountCreationResponse) {
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        AbstractScreen screen = (AbstractScreen) game.getScreen();
+
+        if (accountCreationResponse.isSuccessful()) {
+            game.addTransitionListener(new TransitionListener() {
+                @Override
+                public void onTransitionStart() {
+
+                }
+
+                @Override
+                public void onTransitionFinished() {
+                    AOGame game = (AOGame) Gdx.app.getApplicationListener();
+                    AbstractScreen screen = (AbstractScreen) game.getScreen();
+
+                    Dialog dialog = new Dialog("Exito", screen.getSkin());
+                    dialog.text("Cuenta creada con exito");
+                    dialog.button("OK");
+                    dialog.show(screen.getStage());
+
+                    game.removeTransitionListener(this);
+                }
+            });
+            game.toLogin();
+        }
+        else {
+            Dialog dialog = new Dialog("Error", screen.getSkin());
+            dialog.text("Error al crear la cuenta");
+            dialog.button("OK");
+            dialog.show(screen.getStage());
+        }
+    }
+
+    @Override
+    public void processResponse(AccountLoginResponse accountLoginResponse) {
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        LoginScreen screen = (LoginScreen) game.getScreen();
+
+        if (accountLoginResponse.isSuccessful()) {
+            /*
+            Dialog dialog = new Dialog("Exito", screen.getSkin());
+            dialog.text("Logueado con exito");
+            dialog.button("OK");
+            dialog.show(screen.getStage());
+            */
+
+            //@todo pasar al lobby del servidor
+            //hotfix para recuperar funcionalidad
+            screen.getClientSystem().getKryonetClient().sendToAll(new JoinLobbyRequest(accountLoginResponse.getUsername()));
+        }
+        else {
+            Dialog dialog = new Dialog("Error", screen.getSkin());
+            dialog.text("Error al loguearse");
+            dialog.button("OK");
+            dialog.show(screen.getStage());
+        }
     }
 
     @Override
