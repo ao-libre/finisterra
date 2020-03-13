@@ -6,6 +6,7 @@ import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.ClientConfiguration;
@@ -40,6 +42,7 @@ import game.systems.render.ui.CoordinatesRenderingSystem;
 import game.systems.render.world.*;
 import game.systems.sound.SoundSytem;
 import game.ui.GUI;
+import game.utils.Skins;
 import shared.model.map.Tile;
 
 import java.util.concurrent.TimeUnit;
@@ -60,6 +63,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public static int player = -1;
     private final ClientConfiguration clientConfiguration;
     private final FPSLogger logger;
+    private final Label fpsLabel;
     private final Batch spriteBatch;
     private final AOAssetManager assetManager;
     private final Music backgroundMusic = MusicHandler.BACKGROUNDMUSIC;
@@ -71,6 +75,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         this.assetManager = assetManager;
         this.spriteBatch = initBatch();
         this.logger = new FPSLogger();
+        this.fpsLabel = new Label("", Skins.COMODORE_SKIN);
         long start = System.currentTimeMillis();
         initWorldConfiguration();
         Log.info("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
@@ -185,10 +190,17 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     }
 
     protected void update(float deltaTime) {
-        this.logger.log();
+        //this.logger.log();
 
         world.setDelta(MathUtils.clamp(deltaTime, 0, 1 / 14f));
         world.process();
+
+        //@todo emprolijar
+        spriteBatch.begin();
+        fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
+        fpsLabel.setPosition(1200, 700);
+        fpsLabel.draw(spriteBatch, 1);
+        spriteBatch.end();
     }
 
     public OrthographicCamera getGUICamera() {
