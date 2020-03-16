@@ -1,7 +1,6 @@
 package game.systems;
 
 import com.artemis.E;
-import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.handlers.AOAssetManager;
 import game.handlers.ObjectHandler;
@@ -32,7 +31,6 @@ public class WorkSystem {
         WorldPos worldPos = player.getWorldPos();
 
         if(player.hasWeapon()) {
-            Log.info( "cheque1 cliente" );
             Optional< Obj > object = objectHandler.getObject( player.getWeapon().index );
             WeaponObj weaponObj = (WeaponObj) object.get();
             if(weaponObj.getKind().equals( WeaponKind.WORK )) {
@@ -43,7 +41,14 @@ public class WorkSystem {
                         break;
                     case MINE:
                     case CUT:
-                        GameScreen.getClient().sendToAll( new WorkRequest( workKind, worldPos ) );
+                        WorldUtils.getWorld().ifPresent(world -> {
+                            if (!player.hasAttack() || player.getAttack().interval - world.getDelta() <= 0) {
+                                GameScreen.getClient().sendToAll(new WorkRequest(workKind, worldPos));
+                                player.attack();
+                            } else {
+                                gui.getConsole().addInfo( assetManager.getMessages(Messages.CANT_WORK_THAT_FAST));
+                            }
+                        });
                         break;
                     case SAW:
                         gui.getWorkUI().setWorkKind( WorkKind.SAW );

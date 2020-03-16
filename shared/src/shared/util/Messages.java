@@ -102,6 +102,7 @@ public enum Messages {
 
     // ADDITEM
     FULL_INVENTORY,
+    // WORK SYSTEM
     NO_WORK_TOOL,
     WRONG_WORK_TOOL,
     WORKING,
@@ -110,5 +111,6 @@ public enum Messages {
     ADD_OR_REMOVE_ITEMS,
     NOT_HAVE_NECESSARY_RESOURCE,
     RECIPE_RESULT,
-    RECIPE_NEEDITEMS
+    RECIPE_NEEDITEMS,
+    CANT_WORK_THAT_FAST
 }
