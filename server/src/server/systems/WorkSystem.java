@@ -6,6 +6,7 @@ import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
 import entity.character.states.Heading;
+import entity.character.status.Stamina;
 import physics.AttackAnimation;
 import position.WorldPos;
 import server.network.ServerNotificationProcessor;
@@ -36,6 +37,8 @@ public class WorkSystem extends BaseSystem {
     private WorldManager worldManager;
     private int userId;
     private int needObjID = 0, needCount = 0, needCount2 = 0, needObjID2 = 0, needCount3 = 0, needObjID3 = 0, resultObjID = 0 , resultCount = 0;
+    public static final int STAMINA_REQUIRED_PERCENT = 12;
+    private Stamina stamina;
 
     // codigo tomado y adaptado del original que estaba en el cliente
     public void works(int userId, WorkRequest workRequest){
@@ -46,6 +49,7 @@ public class WorkSystem extends BaseSystem {
 
 
         E player = E.E( userId );
+        this.stamina = player.getStamina();
         WorldPos worldPos = player.getWorldPos();
         Heading heading = player.getHeading();
         // si mal no entendi esto deveria devolver la posision enfrente el jugador
@@ -68,32 +72,41 @@ public class WorkSystem extends BaseSystem {
                     assert tile != null;
                     if(tile.getObjIndex() > 0) {
                         Obj targetobj = objectHandler.getObject( tile.getObjIndex() ).get();
-                        if(targetobj.getType().equals( Type.TREE )) {
-                            //envia el sonido del hachazo
-                            worldManager.notifyUpdate(userId, new SoundNotification(13));
-                            // envia la animacion
-                            worldManager.notifyUpdate ( userId, EntityUpdate.EntityUpdateBuilder.of ( userId ).withComponents ( new AttackAnimation( ) ).build ( ) );
-                            // envia el mensaje trabajando
-                            consoleMessage( userId, Messages.WORKING );
+                        //chequeamos que el jugador tenga la energia para trabajar
+                        if (stamina.min > stamina.max * STAMINA_REQUIRED_PERCENT / 100){
+                            if(targetobj.getType().equals( Type.TREE )) {
+                                // Gasta la energia
+                                useStamina();
+                                //envia el sonido del hachazo
+                                worldManager.notifyUpdate(userId, new SoundNotification(13));
+                                // envia la animacion
+                                worldManager.notifyUpdate ( userId, EntityUpdate.EntityUpdateBuilder.of ( userId ).withComponents ( new AttackAnimation( ) ).build ( ) );
+                                // envia el mensaje trabajando
+                                consoleMessage( userId, Messages.WORKING );
 
-                            ThreadLocalRandom random = ThreadLocalRandom.current();
-                            int woody = random.nextInt(0, 10);
-
-                            if (woody > 6) {
-                                // 1008 arbol elfico
-                                if(targetobj.getId() == 1008) {
-                                    //1006 leña elfica
-                                    addResource( 1006,1 );
+                                ThreadLocalRandom random = ThreadLocalRandom.current();
+                                int woody = random.nextInt(0, 10);
+                                // 60% de obtener ramitas
+                                if (woody > 6) {
+                                    //chequeamos el tipo de arbol frente al personaje y agregamos el obj correspondiente al inventario
+                                    // 1008 arbol elfico
+                                    if(targetobj.getId() == 1008) {
+                                        //1006 leña elfica
+                                       addResource( 1006,1 );
+                                    } else {
+                                        //58 leña
+                                        addResource( 58,1 );
+                                    }
                                 } else {
-                                    //58 leña
-                                    addResource( 58,1 );
+                                    //136 ramitas
+                                    addResource( 136,1 );
                                 }
-                            }else {
-                                //136 ramitas
-                                addResource( 136,1 );
+
+                            } else {
+                                consoleMessage( userId, Messages.WRONG_RESOURCE );
                             }
                         } else {
-                            consoleMessage( userId, Messages.WRONG_RESOURCE );
+                            consoleMessage( userId, Messages.NOT_ENOUGH_ENERGY );
                         }
                     } else {
                         consoleMessage( userId, Messages.NO_RESOURCE );
@@ -107,32 +120,40 @@ public class WorkSystem extends BaseSystem {
                 case MINE:
                     if(tile.getObjIndex() > 0) {
                         Obj targetobj = objectHandler.getObject( tile.getObjIndex() ).get();
-                        if(targetobj.getType().equals( Type.DEPOSIT )) {
-                            // envia el sonido
-                            worldManager.notifyUpdate(userId, new SoundNotification(15));
-                            // envia la animacion
-                            worldManager.notifyUpdate(userId, (EntityUpdate
-                                    .EntityUpdateBuilder.of ( userId )
-                                    .withComponents ( new AttackAnimation ( ))).build());
+                        //chequeamos que el jugador tenga la energia para trabajar
+                        if (stamina.min > stamina.max * STAMINA_REQUIRED_PERCENT / 100) {
+                            if(targetobj.getType().equals( Type.DEPOSIT )) {
+                                // Gasta la energia
+                                useStamina();
+                                // envia el sonido
+                                worldManager.notifyUpdate( userId, new SoundNotification( 15 ) );
+                                // envia la animacion
+                                worldManager.notifyUpdate( userId, (EntityUpdate
+                                        .EntityUpdateBuilder.of( userId )
+                                        .withComponents( new AttackAnimation() )).build() );
 
-                            consoleMessage( userId, Messages.WORKING );
-                            switch( targetobj.getName() ){
-                                case "Yacimiento de Hierro":
-                                    addResource( 192, 1 );
-                                    break;
-                                case "Yacimiento de Oro":
-                                    addResource( 193,1 );
-                                    break;
-                                case "Yacimiento de Plata":
-                                    addResource( 194,1 );
-                                    break;
+                                consoleMessage( userId, Messages.WORKING );
+                                switch( targetobj.getName() ) {
+                                    case "Yacimiento de Hierro":
+                                        addResource( 192, 1 );
+                                        break;
+                                    case "Yacimiento de Oro":
+                                        addResource( 193, 1 );
+                                        break;
+                                    case "Yacimiento de Plata":
+                                        addResource( 194, 1 );
+                                        break;
+                                }
+                            } else {
+                                consoleMessage( userId, Messages.WRONG_RESOURCE );
                             }
                         } else {
-                            consoleMessage( userId, Messages.WRONG_RESOURCE );
+                            consoleMessage( userId, Messages.NOT_ENOUGH_ENERGY );
                         }
                     } else {
                         consoleMessage( userId, Messages.NO_RESOURCE);
                     }
+
                     break;
 
             }
@@ -200,11 +221,16 @@ public class WorkSystem extends BaseSystem {
         }
     }
 
-
+    private void useStamina(){
+        stamina.min = Math.max(0, stamina.min - stamina.max * STAMINA_REQUIRED_PERCENT / 100);
+        EntityUpdate update = EntityUpdate.EntityUpdateBuilder.of(userId).withComponents(stamina).build();
+        getWorld().getSystem(WorldManager.class).sendEntityUpdate(userId, update);
+    }
 
 
     private void addResource(int objID, int count){
-        //agrega el item al inventario
+        // agrega el item al inventario o remueve el o los item del inventario
+        // para remober poner numero negativo
         ServerNotificationProcessor serverNotificationProcessor = world.getSystem( ServerNotificationProcessor.class );
         AddItem addItem = new AddItem( userId, objID, count );
         serverNotificationProcessor.processNotification( addItem );
