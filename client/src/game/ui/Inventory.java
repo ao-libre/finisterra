@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import entity.character.info.Inventory.Item;
@@ -39,6 +41,7 @@ public class Inventory extends Window {
     private int base;
 
     private ArrayList<Slot> slots;
+    private ArrayList< Label > itemCount;
     private AOAssetManager assetManager;
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
@@ -46,16 +49,51 @@ public class Inventory extends Window {
 
     Inventory() {
         super("", Skins.COMODORE_SKIN, "inventory");
-        int columnsCounter = 1;
+        int columnsCounter = 1,loops = 0;
         setMovable(false);
         this.slots = new ArrayList<>();
+        this.itemCount = new ArrayList<>();
         for (int i = 0; i < SIZE; i++) {
             Slot newSlot = new Slot();
             slots.add(newSlot);
+            Label count = new Label( "",getSkin() );
+            count.setFontScale( 0.7f );
+            itemCount.add( count );
             add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE);
             if (columnsCounter > ROWS - 1) {
                 row();
+                for (int x = 0; x < 4; x++) {
+                    if(loops == 0) {
+                        add(itemCount.get(x)).height(10);
+                    }else if (loops ==1) {
+                        add(itemCount.get(x + 4)).height(10);
+                    }else if (loops ==2) {
+                        add( itemCount.get(x + 8)).height(10);
+                    }else if (loops ==3) {
+                        add(itemCount.get(x + 12)).height(10);
+                    }else if (loops ==4) {
+                        add(itemCount.get(x + 16)).height(10);
+                    }
+                }
+                row();
+                for (int x = 0; x < 4; x++) {
+                    if(loops == 0) {
+                        add(new Image(getSkin().getDrawable("separator")));
+                    }else if (loops ==1) {
+                        add(new Image(getSkin().getDrawable("separator")));
+                    }else if (loops ==2) {
+                        add(new Image(getSkin().getDrawable("separator")));
+                    }else if (loops ==3) {
+                        add(new Image(getSkin().getDrawable("separator")));
+                    }else if (loops ==4) {
+                        add(new Image(getSkin().getDrawable("separator")));
+                    }
+
+                }
+                row();
+
                 columnsCounter = 0;
+                loops++;
             }
             columnsCounter++;
         }
@@ -175,7 +213,14 @@ public class Inventory extends Window {
         for (int i = 0; i < SIZE; i++) {
             Item item = base + i < userItems.length ? userItems[base + i] : null;
             slots.get(i).setItem(item);
+            if(item != null) {
+                itemCount.get( i ).setText( item.count );
+            }else {
+                itemCount.get( i ).setText( "" );
+            }
         }
+        GUI gui = GameScreen.world.getSystem( GUI.class );
+        gui.getInventoryQuickBar().inverntoryQBUpdate();
     }
 
     public void getShoot() {
