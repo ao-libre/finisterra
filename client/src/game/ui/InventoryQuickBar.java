@@ -2,6 +2,7 @@ package game.ui;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import entity.character.info.Inventory.Item;
@@ -23,6 +24,7 @@ public class InventoryQuickBar extends Window {
     private final ClickListener mouseListener;
 
     private ArrayList<Slot> quickInventorySlot; //object
+    private ArrayList< Label > itemCount;
 
     private Optional<Slot> selected = Optional.empty();
     private ArrayList<Integer> gBases; //index of inventoryQuickBar
@@ -31,11 +33,16 @@ public class InventoryQuickBar extends Window {
         super("", Skins.COMODORE_SKIN, "inventory");
         setMovable(false);
         quickInventorySlot = new ArrayList<>();
+        this.itemCount = new ArrayList<>();
 
         for (int i = 0; i < SIZE; i++) {
             Slot nuevoSlot = new Slot();
             quickInventorySlot.add(nuevoSlot);
+            Label count = new Label( "",getSkin() );
+            count.setFontScale( 0.7f );
+            itemCount.add( count );
             add(quickInventorySlot.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
+            add(itemCount.get(i)).height(10).row();
             if (i < SIZE - 1) {
                 add(new Image(getSkin().getDrawable("separator"))).row();
             }
@@ -100,6 +107,22 @@ public class InventoryQuickBar extends Window {
             quickInventorySlot.get(x).setItem(item);
             gBases.set(x, base);
             x++;
+        }
+        if(item != null) {
+            itemCount.get(x-1).setText(item.count);
+        }else {
+            itemCount.get(x-1).setText("");
+        }
+    }
+    public void inverntoryQBUpdate(){
+        Item[] userItems = E(GameScreen.getPlayer()).getInventory().items;
+        for(int i = 0; i < 5; i++ ){
+            Item item = userItems[getGBases( i )];
+            if (item != null) {
+                if (item.count >2) {
+                    itemCount.get(i).setText( item.count );
+                }
+            }
         }
     }
 
