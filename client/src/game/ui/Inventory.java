@@ -63,32 +63,27 @@ public class Inventory extends Window {
             if (columnsCounter > ROWS - 1) {
                 row();
                 for (int x = 0; x < 4; x++) {
-                    if(loops == 0) {
-                        add(itemCount.get(x)).height(10);
-                    }else if (loops ==1) {
-                        add(itemCount.get(x + 4)).height(10);
-                    }else if (loops ==2) {
-                        add( itemCount.get(x + 8)).height(10);
-                    }else if (loops ==3) {
-                        add(itemCount.get(x + 12)).height(10);
-                    }else if (loops ==4) {
-                        add(itemCount.get(x + 16)).height(10);
+                    switch( loops ) {
+                        case 0:
+                            add( itemCount.get( x ) ).height( 10 );
+                            break;
+                        case 1:
+                            add( itemCount.get( x + 4 ) ).height( 10 );
+                            break;
+                        case 2:
+                            add( itemCount.get( x + 8 ) ).height( 10 );
+                            break;
+                        case 3:
+                            add( itemCount.get( x + 12 ) ).height( 10 );
+                            break;
+                        case 4:
+                            add( itemCount.get( x + 16 ) ).height( 10 );
+                            break;
                     }
                 }
                 row();
                 for (int x = 0; x < 4; x++) {
-                    if(loops == 0) {
-                        add(new Image(getSkin().getDrawable("separator")));
-                    }else if (loops ==1) {
-                        add(new Image(getSkin().getDrawable("separator")));
-                    }else if (loops ==2) {
-                        add(new Image(getSkin().getDrawable("separator")));
-                    }else if (loops ==3) {
-                        add(new Image(getSkin().getDrawable("separator")));
-                    }else if (loops ==4) {
-                        add(new Image(getSkin().getDrawable("separator")));
-                    }
-
+                    add( new Image( getSkin().getDrawable( "separator" ) ) );
                 }
                 row();
 
