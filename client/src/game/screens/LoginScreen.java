@@ -209,6 +209,5 @@ public class LoginScreen extends AbstractScreen {
         dialog.text("Wrong client-server communication");
         dialog.button("OK");
         dialog.show(getStage());
-        this.canConnect = true;
     }
 }

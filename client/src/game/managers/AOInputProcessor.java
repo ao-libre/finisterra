@@ -5,15 +5,13 @@ import com.artemis.World;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.esotericsoftware.minlog.Log;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
+import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.handlers.AOAssetManager;
 import game.handlers.MapHandler;
@@ -22,7 +20,6 @@ import game.handlers.ObjectHandler;
 import game.screens.GameScreen;
 import game.systems.camera.CameraSystem;
 import game.systems.network.TimeSync;
-import game.systems.render.world.TargetRenderingSystem;
 import game.ui.GUI;
 import game.ui.SwitchButtons;
 import game.utils.AOKeys;
@@ -88,7 +85,7 @@ public class AOInputProcessor extends Stage implements ControllerListener {
                     final boolean toShoot = gui.getInventory().toShoot;
                     if(toCast.isPresent() || toShoot) {
                         E player = E.E( GameScreen.getPlayer() );
-                        if(!player.hasAttack() || player.getAttackInterval().interval - world.getDelta() < 0) {
+                        if(!player.hasAttackInterval() || player.getAttackInterval().interval - world.getDelta() < 0) {
                             TimeSync timeSyncSystem = world.getSystem( TimeSync.class );
                             long rtt = timeSyncSystem.getRtt();
                             long timeOffset = timeSyncSystem.getTimeOffset();

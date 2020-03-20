@@ -4,10 +4,10 @@ dependencies {
     api project(":shared")
     implementation group: "org.jetbrains", name: "annotations", version: "19.0.0"
     implementation group: "com.badlogicgames.gdx", name: "gdx-freetype", version: "$gdxVersion"
+    implementation group: "com.badlogicgames.gdx", name: "gdx-controllers-lwjgl3", version: "$gdxVersion"
+
     implementation (group: "com.badlogicgames.gdx", name: "gdx-tools", version: "$gdxVersion") {
         exclude group: "com.badlogicgames.gdx", module: "gdx-backend-lwjgl"
     }
-	api group: "org.reflections", name: "reflections", version: "$reflectionsVersion"
-    api group: 'com.badlogicgames.gdx', name: 'gdx-controllers-lwjgl3', version: '1.9.10'
-
+    api group: "org.reflections", name: "reflections", version: "$reflectionsVersion"
 }

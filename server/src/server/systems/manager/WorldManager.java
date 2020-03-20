@@ -117,8 +117,5 @@ public class WorldManager extends DefaultManager {
         registerEntity(connectionId, entity);
         fxSystem.attachParticle(entity, player.getTeam().equals(Team.CAOS_ARMY) ? 5 : 6, false);
         networkManager.registerPlayer(connectionId, player);
-        for (int i = 0; i < 44; i++) {
-            characterTrainingSystem.levelUp(entity);
-        }
     }
 }

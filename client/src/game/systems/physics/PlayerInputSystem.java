@@ -7,7 +7,6 @@ import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
-import com.esotericsoftware.minlog.Log;
 import com.google.common.collect.Lists;
 import game.managers.AOInputProcessor;
 import game.utils.AOKeys;
@@ -15,7 +14,6 @@ import game.utils.AlternativeKeys;
 import physics.AOPhysics;
 
 import java.util.ArrayList;
-import java.util.stream.Stream;
 
 import static com.artemis.E.E;
 
