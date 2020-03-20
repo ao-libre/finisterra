@@ -25,10 +25,12 @@ public class AOGame extends Game implements AssetManagerHolder {
 
     private final AOAssetManager assetManager;
     private final ClientConfiguration clientConfiguration;
+    private final Sync fpsSync;
 
     public AOGame(ClientConfiguration clientConfiguration) {
         this.clientConfiguration = clientConfiguration;
         this.assetManager = new DefaultAOAssetManager(clientConfiguration);
+        this.fpsSync = new Sync();
     }
 
     public static AOAssetManager getGlobalAssetManager() {
@@ -77,6 +79,12 @@ public class AOGame extends Game implements AssetManagerHolder {
     @Override
     public AOAssetManager getAssetManager() {
         return assetManager;
+    }
+
+    @Override
+    public void render() {
+        fpsSync.sync(62);
+        super.render();
     }
 
     @Override

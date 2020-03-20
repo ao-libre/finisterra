@@ -166,7 +166,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     }
 
     protected void update(float deltaTime) {
-        world.setDelta(MathUtils.clamp(deltaTime, 0, 1 / 14f));
+        world.setDelta(deltaTime);
         world.process();
     }
 
