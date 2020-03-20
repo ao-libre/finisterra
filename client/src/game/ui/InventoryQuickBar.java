@@ -116,12 +116,14 @@ public class InventoryQuickBar extends Window {
     }
     public void inverntoryQBUpdate(){
         Item[] userItems = E(GameScreen.getPlayer()).getInventory().items;
-        for(int i = 0; i < 5; i++ ){
+        for(int i = 0; i < SIZE; i++ ){
             Item item = userItems[getGBases( i )];
             if (item != null) {
                 if (item.count >2) {
                     itemCount.get(i).setText( item.count );
-                }
+                }else {
+                    itemCount.get(i).setText("");
+            }
             }
         }
     }
