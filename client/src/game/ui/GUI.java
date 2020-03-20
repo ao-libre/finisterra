@@ -17,7 +17,6 @@ import game.AOGame;
 import game.handlers.AOAssetManager;
 import game.managers.AOInputProcessor;
 import game.screens.GameScreen;
-import game.systems.physics.PlayerInputSystem;
 import game.ui.user.UserInformation;
 import game.utils.Skins;
 import shared.util.Messages;
@@ -28,10 +27,6 @@ import java.time.format.DateTimeFormatter;
 @Wire
 public class GUI extends BaseSystem implements Disposable {
 
-    private PlayerInputSystem playerInputSystem;
-
-    //public static final int CONSOLE_TOP_BORDER = 16;
-    //public static final int CONSOLE_LEFT_BORDER = 5;
     private int windowedWidth;
     private int windowedHeight;
     private Stage stage;
@@ -166,7 +161,7 @@ public class GUI extends BaseSystem implements Disposable {
         createConsole(table);
         createUserStatus(table);
         createActionBar(table);
-        createDialogContainer(table);
+        createDialogContainer();
     }
 
     public OrthographicCamera getCamera() {
@@ -197,7 +192,7 @@ public class GUI extends BaseSystem implements Disposable {
         table.add(actionBar).right().expandY().expandX();
     }
 
-    private void createDialogContainer(Table table) {
+    private void createDialogContainer() {
         dialog = new DialogText();
         float width = getWidth() * 0.8f;
         dialog.setSize(width, dialog.getHeight());
@@ -220,10 +215,6 @@ public class GUI extends BaseSystem implements Disposable {
 
     public Table getTable() {
         return table;
-    }
-
-    public PlayerInputSystem getPlayerInputSystem() {
-        return playerInputSystem;
     }
 
     public void dispose() {
