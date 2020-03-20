@@ -17,7 +17,7 @@ public class PhysicsAttackSystem extends IteratingSystem {
     @Override
     protected void process(int entityId) {
         E entity = E(entityId);
-        if (entity.hasAttack()) {
+        if (entity.hasAttackInterval()) {
             AttackInterval attack = entity.getAttackInterval();
             attack.interval -= world.getDelta();
             if (attack.interval <= 0) {

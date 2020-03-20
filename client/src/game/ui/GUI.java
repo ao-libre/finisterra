@@ -140,7 +140,9 @@ public class GUI extends BaseSystem implements Disposable {
         Skins.COMODORE_SKIN.getFont("simple-with-border").setUseIntegerPositions(false);
         Skins.COMODORE_SKIN.getFont("flipped").setUseIntegerPositions(false);
         Skins.COMODORE_SKIN.getFont("flipped-with-border").setUseIntegerPositions(false);
+    }
 
+    public void initializeGUI() {
         table = new Table();
         table.setFillParent(true);
         fillTable();
@@ -152,12 +154,12 @@ public class GUI extends BaseSystem implements Disposable {
             public void resized(int width, int height) {
                 table.clear();
                 fillTable();
-                getInventory().updateUserInventory();
-                getSpellView().updateSpells();
+                if (GameScreen.getPlayer() > 0) {
+                    getInventory().updateUserInventory();
+                    getSpellView().updateSpells();
+                }
             }
         });
-
-
     }
 
     public void fillTable() {

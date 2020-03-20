@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.screens.*;
-import game.screens.transitions.TransitionListener;
 import game.systems.network.ClientSystem;
 import game.systems.network.TimeSync;
 import game.systems.physics.MovementProcessorSystem;
@@ -91,26 +90,12 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
         AbstractScreen screen = (AbstractScreen) game.getScreen();
 
         if (accountCreationResponse.isSuccessful()) {
-            game.addTransitionListener(new TransitionListener() {
-                @Override
-                public void onTransitionStart() {
 
-                }
-
-                @Override
-                public void onTransitionFinished() {
-                    AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                    AbstractScreen screen = (AbstractScreen) game.getScreen();
-
-                    Dialog dialog = new Dialog("Exito", screen.getSkin());
-                    dialog.text("Cuenta creada con exito");
-                    dialog.button("OK");
-                    dialog.show(screen.getStage());
-
-                    game.removeTransitionListener(this);
-                }
-            });
             game.toLogin();
+            Dialog dialog = new Dialog("Exito", screen.getSkin());
+            dialog.text("Cuenta creada con exito");
+            dialog.button("OK");
+            dialog.show(screen.getStage());
         }
         else {
             Dialog dialog = new Dialog("Error", screen.getSkin());

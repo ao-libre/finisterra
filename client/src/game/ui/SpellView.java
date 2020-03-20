@@ -113,7 +113,7 @@ public class SpellView extends Table {
         Color backup = batch.getColor();
         if (player >= 0) {
             E e = E(player);
-            if (e != null && e.hasAttack()) {
+            if (e != null && e.hasAttackInterval()) {
                 batch.setColor(Colors.COMBAT);
             }
         }
