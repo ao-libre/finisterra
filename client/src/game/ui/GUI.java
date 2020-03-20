@@ -45,7 +45,7 @@ public class GUI extends BaseSystem implements Disposable {
     @Override
     protected void processSystem() {
         if (GameScreen.player >= 0) {
-            this.draw(world.getDelta());
+//            this.draw(world.getDelta());
         }
     }
 

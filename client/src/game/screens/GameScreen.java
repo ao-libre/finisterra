@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.ClientConfiguration;
@@ -190,7 +189,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
 
     protected void update(float deltaTime) {
         //this.logger.log();
-        world.setDelta(MathUtils.clamp(deltaTime, 0, 1 / 14f));
+        world.setDelta(deltaTime);
         world.process();
         frameRate.update();
         frameRate.render();

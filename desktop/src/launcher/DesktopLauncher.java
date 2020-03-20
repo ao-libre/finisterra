@@ -43,6 +43,7 @@ public class DesktopLauncher {
         cfg.disableAudio(initConfig.isDisableAudio());
         cfg.setMaximized(initConfig.isStartMaximized());
         cfg.setWindowSizeLimits(854, 480, -1, -1);
+        cfg.useOpenGL3(true, 3, 2);
 
         if (video.getHiDPIMode().equalsIgnoreCase("Pixels")) {
             cfg.setHdpiMode(HdpiMode.Pixels);
@@ -55,7 +56,7 @@ public class DesktopLauncher {
          */
         if (System.getProperty("os.name").toLowerCase().contains("mac")) {
             /*
-                TODO: Add icon image handler fot Mac.
+                TODO: Add icon image handler for Mac.
             */
         } else {
             cfg.setWindowIcon(Resources.CLIENT_ICON);
