@@ -1,6 +1,8 @@
 package game.ui.user;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import game.AOGame;
 
 public class UserStatus extends Table {
 
@@ -10,11 +12,25 @@ public class UserStatus extends Table {
 
 
     public UserStatus() {
-        add(hp).width(300).height(24).padLeft(-30f).left();
+        add(hp).width(getBarWidth()).height(getBarHeight()).padLeft(-getLeftPad()).left();
         row();
-        add(mana).width(300).height(24).padLeft(-10f).padTop(-5f).left();
+        add(mana).width(getBarWidth()).height(getBarHeight()).padLeft(-10f).padTop(-5f).left();
         row();
-        add(energy).width(150).height(24).padLeft(-30f).padTop(-5f).left();
+        add(energy).width(getBarWidth() / 2).height(getBarHeight()).padLeft(-getLeftPad()).padTop(-5f).left();
+    }
+
+    private float getLeftPad() {
+        return getBarWidth() / 10;
+    }
+
+    private float getBarHeight() {
+        float ratio = Gdx.graphics.getWidth() / AOGame.ORIGINAL_WIDTH;
+        return 16 * ratio;
+    }
+
+    private float getBarWidth() {
+        float ratio = Gdx.graphics.getWidth() / AOGame.ORIGINAL_WIDTH;
+        return 200 * ratio;
     }
 
 }

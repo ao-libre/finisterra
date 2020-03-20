@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.Disposable;
@@ -39,10 +40,6 @@ public class GUI extends BaseSystem implements Disposable {
 
     public GUI() {
         this.stage = new AOInputProcessor(this);
-        this.actionBar = new ActionBar();
-        this.userTable = new UserInformation();
-        this.dialog = new DialogText();
-        this.console = new AOConsole();
     }
 
     @Override
@@ -138,7 +135,7 @@ public class GUI extends BaseSystem implements Disposable {
     }
 
     public void initializeGUI() {
-        table = new Table();
+        table = new Table(Skins.COMODORE_SKIN);
         table.setFillParent(true);
         fillTable();
         stage.addActor(table);
@@ -158,10 +155,17 @@ public class GUI extends BaseSystem implements Disposable {
     }
 
     public void fillTable() {
-        createConsole(table);
-        createUserStatus(table);
-        createActionBar(table);
         createDialogContainer();
+        table.setDebug(true);
+
+
+        table.add(createConsole()).top().colspan(2).minHeight(Gdx.graphics.getHeight() * 0.15f).maxHeight(Gdx.graphics.getHeight() * 0.15f);
+        table.row();
+
+        table.add(new Container<>()).left().expand();
+        table.add(new Container<>(createActionBar())).right().expand();
+        table.row();
+        table.add(new Container<>(createUserStatus())).bottom().colspan(2);
     }
 
     public OrthographicCamera getCamera() {
@@ -177,19 +181,17 @@ public class GUI extends BaseSystem implements Disposable {
         return camera;
     }
 
-    private void createConsole(Table table) {
+    private AOConsole createConsole() {
         console = new AOConsole();
-        table.add(console).left().top();
+        return console;
     }
 
-    private void createUserStatus(Table table) {
-        userTable = new UserInformation();
-        table.add(userTable).prefWidth(400).left().bottom().expandX();
+    private UserInformation createUserStatus() {
+        return userTable = new UserInformation();
     }
 
-    private void createActionBar(Table table) {
-        actionBar = new ActionBar();
-        table.add(actionBar).right().expandY().expandX();
+    private ActionBar createActionBar() {
+        return actionBar = new ActionBar();
     }
 
     private void createDialogContainer() {

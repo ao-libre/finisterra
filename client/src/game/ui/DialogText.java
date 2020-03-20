@@ -10,6 +10,7 @@ public class DialogText extends Table {
 
     DialogText() {
         setVisible(false);
+        textf = new TextField("", Skins.COMODORE_SKIN);
     }
 
     public String getMessage() {
@@ -23,7 +24,6 @@ public class DialogText extends Table {
         setVisible(!isVisible());
         if (isVisible()) {
             add(textf).fillX();
-            row().colspan(1).expandX().fillX();
             getStage().setKeyboardFocus(textf);
         } else {
             getStage().unfocus(textf);

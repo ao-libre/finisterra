@@ -23,6 +23,9 @@ public class AOGame extends Game implements AssetManagerHolder {
     public static final float GAME_SCREEN_ZOOM = 1f;
     public static final float GAME_SCREEN_MAX_ZOOM = 1.3f;
 
+    public static final float ORIGINAL_WIDTH = 800;
+    public static final float ORIGINAL_HEIGHT = 600;
+
     private final AOAssetManager assetManager;
     private final ClientConfiguration clientConfiguration;
 
