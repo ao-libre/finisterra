@@ -9,6 +9,7 @@ dependencies {
     api (group: "net.mostlyoriginal.artemis-odb", name: "contrib-network", version: "$artemisContribVersion") {
         exclude group: "net.esotericsoftware", module: "kryo"
     }
+    implementation group: "org.mindrot", name: "jbcrypt", version: "0.4"
     implementation group: "com.badlogicgames.gdx", name: "gdx-platform", version: "$gdxVersion", classifier: "natives-desktop"
     implementation group: "org.ini4j", name: "ini4j", version: "$ini4jVersion"
     implementation group: "net.mostlyoriginal.artemis-odb", name: "contrib-core", version: "$artemisContribVersion"

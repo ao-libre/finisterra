@@ -50,7 +50,7 @@ public abstract class DescriptorView<T extends Descriptor> extends View<T, Descr
                 copy.setOffsetY(original.getOffsetY());
             }
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            Log.error("DescriptorView","Error at copy()", e);
+            Log.error("DescriptorView", "Error at copy()", e);
         }
         return newDescriptor;
     }

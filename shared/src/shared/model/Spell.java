@@ -78,7 +78,7 @@ public class Spell {
     // INVOKE
     private boolean invokes;
     private int numNpc;
-    private  int count;
+    private int count;
 
     private boolean mimetize;
     private boolean materialize;

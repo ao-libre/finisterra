@@ -145,7 +145,7 @@ public class MapHelper {
              DataInputStream inf = new DataInputStream(infPath.read())) {
             return loader.load(map, inf);
         } catch (IOException | GdxRuntimeException e) {
-            Log.error("Map I/O","Failed to read map " + i, e);
+            Log.error("Map I/O", "Failed to read map " + i, e);
             return new Map();
         }
     }

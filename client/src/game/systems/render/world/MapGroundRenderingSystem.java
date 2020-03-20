@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.esotericsoftware.minlog.Log;
@@ -14,6 +14,8 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import game.managers.MapManager;
+import game.screens.GameScreen;
+import org.jetbrains.annotations.NotNull;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 
@@ -26,23 +28,23 @@ import java.util.concurrent.TimeUnit;
 public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
 
     private static final List<Integer> LOWER_LAYERS = Collections.singletonList(1);
+    private final Batch mapBatch;
     // injected systems
     private MapManager mapManager;
-    private WorldRenderingSystem worldRenderingSystem;
-    private final SpriteBatch mapBatch;
     private final LoadingCache<Map, Texture> bufferedLayers = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
             .build(new CacheLoader<Map, Texture>() {
                 @Override
-                public Texture load(Map key) {
+                public Texture load(@NotNull Map key) {
                     return renderLayerToBuffer(key, 0);
                 }
             });
+    private WorldRenderingSystem worldRenderingSystem;
 
-    public MapGroundRenderingSystem(SpriteBatch spriteBatch) {
+    public MapGroundRenderingSystem(Batch spriteBatch) {
         super(spriteBatch, LOWER_LAYERS);
-        mapBatch = new SpriteBatch();
+        mapBatch = GameScreen.initBatch();
     }
 
     @Override
@@ -89,7 +91,7 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
         return fbo.getColorBufferTexture();
     }
 
-    private void renderLayer(Map map, SpriteBatch mapBatch, int layer) {
+    private void renderLayer(Map map, Batch mapBatch, int layer) {
         mapManager.drawLayer(map, mapBatch, layer);
     }
 }

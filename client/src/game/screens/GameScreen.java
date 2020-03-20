@@ -11,8 +11,12 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.ClientConfiguration;
 import game.handlers.*;
@@ -40,6 +44,7 @@ import game.systems.sound.SoundSytem;
 import game.ui.GUI;
 import game.ui.StageResizeEvent;
 import net.mostlyoriginal.api.system.render.ClearScreenSystem;
+import game.utils.Skins;
 import shared.model.map.Tile;
 
 import java.util.concurrent.TimeUnit;
@@ -59,16 +64,20 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public static World world;
     public static int player = -1;
     private final ClientConfiguration clientConfiguration;
-    private FPSLogger logger;
-    private SpriteBatch spriteBatch;
+    private final FPSLogger logger;
+    private final Label fpsLabel;
+    private final Batch spriteBatch;
+    private final AOAssetManager assetManager;
+    private final Music backgroundMusic = MusicHandler.BACKGROUNDMUSIC;
     private WorldConfigurationBuilder worldConfigBuilder;
-    private AOAssetManager assetManager;
 
     public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
+
         this.clientConfiguration = clientConfiguration;
         this.assetManager = assetManager;
-        this.spriteBatch = new SpriteBatch();
+        this.spriteBatch = initBatch();
         this.logger = new FPSLogger();
+        this.fpsLabel = new Label("", Skins.COMODORE_SKIN);
         long start = System.currentTimeMillis();
         initWorldConfiguration();
         Gdx.app.log("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
@@ -82,12 +91,26 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         GameScreen.player = player;
         world.getSystem(GUI.class).getInventory().updateUserInventory(0);
         world.getSystem(GUI.class).getSpellView().updateSpells();
+        world.getSystem(GUI.class).getSpellViewExpanded().updateSpells();
+
     }
 
     public static KryonetClientMarshalStrategy getClient() {
         return world.getSystem(ClientSystem.class).getKryonetClient();
     }
 
+    public static Batch initBatch() {
+        Batch tempSpriteBatch;
+        try {
+            tempSpriteBatch = new TextureArraySpriteBatch();
+        } catch (Exception ex) {
+            Log.info("Tu dispositivo no es compatible con el SpriteBatch mejorado. Usando sistema original...");
+            tempSpriteBatch = new SpriteBatch();
+        }
+        return tempSpriteBatch;
+    }
+
+    @Override
     public World getWorld() {
         return world;
     }
@@ -165,18 +188,22 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .pos2D();
 
         // for testing
-        world.getSystem(SoundSytem.class).setVolume(0);
-        world.getSystem(MusicHandler.class).setVolume(0);
-
-        world.getSystem(MusicHandler.class).fadeOutMusic(101, 0.02f);
-        world.getSystem(MusicHandler.class).playMIDI(1);
+        backgroundMusic.setVolume(0.20f);
+        backgroundMusic.play();
     }
 
     protected void update(float deltaTime) {
-        this.logger.log();
+        //this.logger.log();
 
         world.setDelta(MathUtils.clamp(deltaTime, 0, 1 / 14f));
         world.process();
+
+        //@todo emprolijar
+        spriteBatch.begin();
+        fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
+        fpsLabel.setPosition(1200, 700);
+        fpsLabel.draw(spriteBatch, 1);
+        spriteBatch.end();
     }
 
     public OrthographicCamera getGUICamera() {
@@ -210,6 +237,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public void dispose() {
         world.getSystem(ClientSystem.class).stop();
         world.getSystem(GUI.class).dispose();
+        backgroundMusic.stop();
     }
 
 }

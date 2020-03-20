@@ -18,11 +18,11 @@ public class Dialog extends Component {
 
     public Dialog() {
     }
-    
+
     public Dialog(String text) {
         this.text = text;
     }
-    
+
     public Dialog(String text, float time, float alpha) {
         this.text = text;
         this.time = time;

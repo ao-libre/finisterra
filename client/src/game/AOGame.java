@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.esotericsoftware.minlog.Log;
-import shared.util.LogSystem;
 import game.handlers.AOAssetManager;
 import game.handlers.DefaultAOAssetManager;
 import game.screens.GameScreen;
@@ -14,6 +13,7 @@ import game.screens.ScreenManager;
 import game.screens.transitions.ColorFadeTransition;
 import game.screens.transitions.FadingGame;
 import game.utils.Cursors;
+import shared.util.LogSystem;
 
 /**
  * Represents the game application.
@@ -59,6 +59,10 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
         ScreenManager.getInstance().showScreen(ScreenEnum.LOGIN);
     }
 
+    public void toSignUp(Object... params) {
+        ScreenManager.getInstance().showScreen(ScreenEnum.SIGNUP, params);
+    }
+
     public void toLobby(Object... params) {
         ScreenManager.getInstance().showScreen(ScreenEnum.LOBBY, params);
     }
@@ -83,7 +87,7 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
 
     @Override
     public void dispose() {
-        Log.info("AOGame","Closing client...");
+        Log.info("AOGame", "Closing client...");
         screen.dispose();
         getAssetManager().dispose();
         Gdx.app.exit();

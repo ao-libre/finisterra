@@ -20,6 +20,13 @@ public enum ScreenEnum {
             return new LoginScreen();
         }
     },
+    SIGNUP {
+        @Override
+        public Screen getScreen(Object... params) {
+            ClientSystem clientSystem = (ClientSystem) params[0];
+            return new SignUpScreen(clientSystem);
+        }
+    },
     LOBBY {
         @Override
         public Screen getScreen(Object... params) {

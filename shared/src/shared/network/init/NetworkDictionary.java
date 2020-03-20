@@ -56,6 +56,10 @@ import shared.model.readers.DescriptorsReader;
 import shared.model.readers.Loader;
 import shared.model.readers.Reader;
 import shared.network.battle.DominationNotification;
+import shared.network.account.AccountCreationRequest;
+import shared.network.account.AccountCreationResponse;
+import shared.network.account.AccountLoginRequest;
+import shared.network.account.AccountLoginResponse;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.DropItem;
@@ -122,6 +126,12 @@ public class NetworkDictionary extends MarshalDictionary {
                 ConsoleMessage.class,
                 ConsoleMessage.Kind.class,
                 Messages.class,
+
+                // Login
+                AccountCreationRequest.class,
+                AccountLoginRequest.class,
+                AccountCreationResponse.class,
+                AccountLoginResponse.class,
 
                 // Lobby
                 Lobby.class,

@@ -128,8 +128,8 @@ public class ServerSystem extends MarshalSystem {
         return connectionByPlayer.get(playerId);
     }
 
-    public int getRoomId() {
-        return roomId;
+    public int getAmountConnections() {
+        return connectionByPlayer.size();
     }
 
     public void registerPlayer(int connectionId, Player player) {

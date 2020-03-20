@@ -14,13 +14,11 @@ import javax.sound.midi.Sequencer;
 
 public class MusicHandler extends PassiveSystem {
 
+    public final static Music FIRSTBGM = Gdx.audio.newMusic(Gdx.files.internal("data/music/101.mp3"));
+    public final static Music BACKGROUNDMUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/music/1.mp3"));
     private static final float MUSIC_FADE_STEP = 0.01f;
-
     private static float volume = 1.0f;
     private AOAssetManager assetManager;
-
-    public final static Music FIRSTBGM = Gdx.audio.newMusic ( Gdx.files.internal ( "data/music/101.mp3" ) );
-    public final static Music BACKGROUNDMUSIC = Gdx.audio.newMusic ( Gdx.files.internal ( "data/music/1.mp3" ) );
 
     public static void setVolume(float volume) {
         MusicHandler.volume = volume;
@@ -114,7 +112,7 @@ public class MusicHandler extends PassiveSystem {
 
     public void stopMIDI(int midiID) {
         Sequencer sequencer = assetManager.getMidi(midiID);
-    
+
         if (sequencer == null) {
             Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
             return;

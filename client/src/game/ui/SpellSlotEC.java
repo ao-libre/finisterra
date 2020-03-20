@@ -94,7 +94,7 @@ public class SpellSlotEC extends ImageButton {
             return;
         }
         drawSpell(batch);
-        spellViewExpanded.selected.filter( sp -> sp.equals(spell)).ifPresent( sp -> drawSelection(batch));
+        spellViewExpanded.selected.filter(sp -> sp.equals(spell)).ifPresent(sp -> drawSelection(batch));
     }
 
     private void drawSelection(Batch batch) {
@@ -119,7 +119,7 @@ public class SpellSlotEC extends ImageButton {
 
     private Texture getSpellIcon() {
         if (icon == null) {
-            icon = new Texture ( Gdx.files.local ( Resources.GAME_SPELL_ICONS_PATH + spell.getId ( ) + ".png" ) );
+            icon = new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getId() + ".png"));
         }
         return icon;
     }

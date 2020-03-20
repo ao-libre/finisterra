@@ -55,7 +55,7 @@ public class ItemManager extends DefaultManager {
 
     public boolean isUsable(Inventory.Item item) {
         Optional<Obj> object = objectManager.getObject(item.objId);
-        return object.map(obj -> (obj.getType().equals(Type.POTION) || obj.getType ().equals (Type.SPELL )) ).orElse(false);
+        return object.map(obj -> (obj.getType().equals(Type.POTION) || obj.getType().equals(Type.SPELL))).orElse(false);
     }
 
     public void use(int player, Inventory.Item item) {
@@ -99,12 +99,12 @@ public class ItemManager extends DefaultManager {
                 worldManager.sendEntityUpdate(player, update);
                 // TODO remove from inventory
             }
-            if (obj.getType().equals(Type.SPELL)){
+            if (obj.getType().equals(Type.SPELL)) {
                 SpellObj spellObj = (SpellObj) obj;
-                if (E (player).charHeroHeroId () != 0 ) {
-                    E (player).spellBookAddSpell ( spellObj.getSpellIndex ( ) );
+                if (E(player).charHeroHeroId() != 0) {
+                    E(player).spellBookAddSpell(spellObj.getSpellIndex());
                 }
-                Log.info( E ( player ).nameText () + " " +E ( player ).getSpellBook ( ).getMsj() );
+                Log.info(E(player).nameText() + " " + E(player).getSpellBook().getMsj());
             }
         });
     }

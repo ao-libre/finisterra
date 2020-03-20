@@ -31,8 +31,8 @@ class SoundIndexPair {
 public class SoundSytem extends IteratingSystem {
 
     public static float volume = 1.0f;
-    private SoundsHandler soundsHandler;
     private final Map<Integer, SoundIndexPair> sounds;
+    private SoundsHandler soundsHandler;
 
     public SoundSytem() {
         super(Aspect.all(AOSound.class));

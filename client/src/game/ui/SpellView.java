@@ -72,7 +72,7 @@ public class SpellView extends Table {
     }
 
     public void addSpelltoSpellview(Spell spell, int slotPosition) {
-               slots.get(slotPosition).setSpell(spell);
+        slots.get(slotPosition).setSpell(spell);
     }
 
     private ImageButton createCastButton() {

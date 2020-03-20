@@ -5,9 +5,10 @@ import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import entity.character.Character;
 import game.screens.CharacterScreen;
+import game.screens.GameScreen;
 import game.systems.anim.IdleAnimationSystem;
 import game.systems.anim.MovementAnimationSystem;
 import game.systems.camera.CameraFocusSystem;
@@ -24,20 +25,16 @@ import static com.artemis.E.E;
 public class ObjectCreator extends Game {
 
     private static final float GAME_SCREEN_ZOOM = 1f;
-
-    private SpriteBatch spriteBatch; // This is only used in GameScreen
-
+    private Batch spriteBatch; // This is only used in GameScreen
     private World world;
-
     private int player;
 
     @Override
     public void create() {
         Gdx.app.debug("AOGame", "Opening Objects Creator...");
-//        AssetHandler.load(assetManager);
-//        if (AssetHandler.getState() == StateHandler.LOADED)
-//            Gdx.app.debug("AOGame", "Handler loaded!");
-        this.spriteBatch = new SpriteBatch();
+        //AssetHandler.load(assetManager);
+        //if (AssetHandler.getState() == StateHandler.LOADED) Gdx.app.debug("AOGame", "Handler loaded!");
+        this.spriteBatch = GameScreen.initBatch();
         initWorld();
         postWorldInit();
         addCharacter();
@@ -78,8 +75,8 @@ public class ObjectCreator extends Game {
         E(player)
                 .headIndex(4)
                 .bodyIndex(101)
-//                .shieldIndex(1)
-//                .weaponIndex(3)
+                //.shieldIndex(1)
+                //.weaponIndex(3)
                 .heading()
                 .moving(true)
                 .aOPhysics()

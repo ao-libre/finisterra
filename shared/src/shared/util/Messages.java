@@ -69,7 +69,7 @@ public enum Messages {
     // LOBBY MESSAGES
     MAX_ROOM_LIMIT_CREATION_TITLE,
     MAX_ROOM_LIMIT_CREATION_DESCRIPTION,
-	
+
     // SPELLS EXTENDED
     SPELLS_ADD,
     SPELLS_ALREDY_KNOWN,
@@ -101,5 +101,4 @@ public enum Messages {
     WEAPON_SWORD
 
 
-
-    }
+}

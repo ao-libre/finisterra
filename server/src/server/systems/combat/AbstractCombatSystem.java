@@ -70,7 +70,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
     @Override
     public void entityAttack(int entityId, Optional<Integer> targetId) {
         Optional<Integer> realTargetId = targetId.isPresent() ? targetId : getTarget(entityId);
-        getWorldManager ( ).notifyUpdate ( entityId, new SoundNotification ( 2 ) );
+        getWorldManager().notifyUpdate(entityId, new SoundNotification(2));
         if (canAttack(entityId, realTargetId)) {
             hit(entityId, realTargetId.get());
         } else {
@@ -109,6 +109,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
     @Override
     protected void processSystem() {
     }
+
     private WorldManager getWorldManager() {
         return world.getSystem(WorldManager.class);
     }

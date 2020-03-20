@@ -32,24 +32,24 @@ public class SpellBook extends Component implements Serializable {
     }
 
 
-    public void addSpell(int spellId){
+    public void addSpell(int spellId) {
 
         boolean spellPresent = false;
-        System.out.println (spells.length);
+        System.out.println(spells.length);
         for (Integer spell : spells) {
             if (spell == spellId) {
                 spellPresent = true;
                 break;
             }
         }
-        if (!spellPresent){
-            if (spells.length < SIZE){
+        if (!spellPresent) {
+            if (spells.length < SIZE) {
                 int spellLength = (spells.length + 1);
                 Integer[] spells1 = new Integer[spellLength];
                 System.arraycopy(spells, 0, spells1, 0, spells.length);
-                spells1[spellLength-1] = spellId;
+                spells1[spellLength - 1] = spellId;
                 msj = "hechiso agregado";
-                setSpells ( spells1 );
+                setSpells(spells1);
             }
         } else {
             msj = "ya conoces el hechiso o tu libro de echisos esta lleno";

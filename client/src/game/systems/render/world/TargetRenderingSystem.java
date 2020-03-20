@@ -9,9 +9,7 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Array;
-import game.screens.GameScreen;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import game.ui.GUI;
 import game.utils.Colors;
 import game.utils.WorldUtils;
@@ -29,7 +27,7 @@ public class TargetRenderingSystem extends RenderingSystem {
     private GUI gui;
     public static int MAX_TARGET_CONTROLLER = 7;
 
-    public TargetRenderingSystem(SpriteBatch batch) {
+    public TargetRenderingSystem(Batch batch) {
         super(Aspect.all(Focused.class), batch, CameraKind.WORLD);
     }
 

@@ -5,7 +5,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import game.systems.OrderedEntityProcessingSystem;
 import game.systems.camera.CameraSystem;
@@ -22,10 +22,10 @@ public class CoordinatesRenderingSystem extends OrderedEntityProcessingSystem {
     public static final float ALPHA = 0.5f;
     private static final int BORDER = 6;
     private final Label coordLabel;
-    private final SpriteBatch batch;
+    private final Batch batch;
     private CameraSystem cameraSystem;
 
-    public CoordinatesRenderingSystem(SpriteBatch batch) {
+    public CoordinatesRenderingSystem(Batch batch) {
         super(Aspect.all(Focused.class, WorldPos.class));
         this.batch = batch;
         coordLabel = new Label("", Skins.COMODORE_SKIN);
