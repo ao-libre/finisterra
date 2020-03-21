@@ -55,63 +55,89 @@ public class ItemManager extends DefaultManager {
 
     public boolean isUsable(Inventory.Item item) {
         Optional<Obj> object = objectManager.getObject(item.objId);
-        return object.map(obj -> (obj.getType().equals(Type.POTION) || obj.getType().equals(Type.SPELL))).orElse(false);
+        return object.map(obj -> (obj.getType().equals(Type.POTION) || obj.getType().equals(Type.SPELL)||obj.getType().equals(Type.GOLD))).orElse(false);
     }
 
     public void use(int player, Inventory.Item item) {
-        Optional<Obj> object = objectManager.getObject(item.objId);
-        object.ifPresent(obj -> {
-            if (obj.getType().equals(Type.POTION)) {
+        Optional< Obj > object = objectManager.getObject( item.objId );
+        object.ifPresent( obj -> {
+            if(obj.getType().equals( Type.POTION )) {
                 PotionObj potion = (PotionObj) obj;
                 int max = potion.getMax();
                 int min = potion.getMin();
-                int random = new Random().nextInt(max - min + 1) + min;
-                List<Component> components = new ArrayList<>();
-                switch (potion.getKind()) {
+                int random = new Random().nextInt( max - min + 1 ) + min;
+                List< Component > components = new ArrayList<>();
+                switch( potion.getKind() ) {
                     case HP:
-                        Health health = E(player).getHealth();
-                        health.min = Math.min(health.min + random, health.max);
-                        components.add(health);
+                        Health health = E( player ).getHealth();
+                        health.min = Math.min( health.min + random, health.max );
+                        components.add( health );
                         break;
                     case MANA:
-                        Mana mana = E(player).getMana();
-                        final int level = E(player).levelLevel();
+                        Mana mana = E( player ).getMana();
+                        final int level = E( player ).levelLevel();
                         mana.min += mana.max * 0.04f + (level >> 1) + 40 / level;
-                        mana.min = Math.min(mana.min, mana.max);
-                        components.add(mana);
+                        mana.min = Math.min( mana.min, mana.max );
+                        components.add( mana );
                         break;
                     case AGILITY:
-                        Agility agility = E(player).getAgility();
-                        agility.setCurrentValue(agility.getBaseValue() + random);
-                        E(player).buff().getBuff().addAttribute(agility, potion.getEffecTime());
-                        SendAttributeUpdate(player, agility, E(player).getBuff());
+                        Agility agility = E( player ).getAgility();
+                        agility.setCurrentValue( agility.getBaseValue() + random );
+                        E( player ).buff().getBuff().addAttribute( agility, potion.getEffecTime() );
+                        SendAttributeUpdate( player, agility, E( player ).getBuff() );
                         break;
                     case POISON:
                     case STRENGTH:
-                        Strength strength = E(player).getStrength();
-                        strength.setCurrentValue(strength.getBaseValue() + random);
-                        E(player).buff().getBuff().addAttribute(strength, potion.getEffecTime());
-                        SendAttributeUpdate(player, strength, E(player).getBuff());
+                        Strength strength = E( player ).getStrength();
+                        strength.setCurrentValue( strength.getBaseValue() + random );
+                        E( player ).buff().getBuff().addAttribute( strength, potion.getEffecTime() );
+                        SendAttributeUpdate( player, strength, E( player ).getBuff() );
                         break;
                 }
                 // Notify update to user
-                EntityUpdate update = EntityUpdateBuilder.of(player).withComponents(components.toArray(new Component[0])).build();
-                worldManager.sendEntityUpdate(player, update);
+                EntityUpdate update = EntityUpdateBuilder.of( player ).withComponents( components.toArray( new Component[0] ) ).build();
+                worldManager.sendEntityUpdate( player, update );
                 // TODO remove from inventory
             }
-            if (obj.getType().equals(Type.SPELL)) {
+            if(obj.getType().equals( Type.SPELL )) {
                 SpellObj spellObj = (SpellObj) obj;
-                if (E(player).charHeroHeroId() != 0) {
-                    E(player).spellBookAddSpell(spellObj.getSpellIndex());
+                if(E( player ).charHeroHeroId() != 0) {
+                    E( player ).spellBookAddSpell( spellObj.getSpellIndex() );
                 }
-                Log.info(E(player).nameText() + " " + E(player).getSpellBook().getMsj());
+                Log.info( E( player ).nameText() + " " + E( player ).getSpellBook().getMsj() );
             }
-        });
+        } );
+        if (object.isPresent()){
+            if (object.get().getType().equals( Type.GOLD )) {
+                E playerUser = E( player );
+                int gold = item.count + playerUser.getGold().getCount();
+                playerUser.goldCount( gold );
+                removeGold(player);
+            }
+        }
     }
-
     protected void SendAttributeUpdate(int player, Attribute attribute, Buff buff) {
         EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(attribute, buff).build();
         worldManager.sendEntityUpdate(player, updateAGI);
+    }
+    private void removeGold(int player){
+        E entity = E(player);
+        Inventory.Item[] items = entity.getInventory().items;
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] != null) {
+                if (objectManager.getObject( items[i].objId ).get().getType().equals( Type.GOLD ) ) {
+                    items[i].count = 0 ;
+                    //notifica el incremento de oro en el jugador
+                    EntityUpdateBuilder goldUpdate = EntityUpdateBuilder.of(player);
+                    goldUpdate.withComponents(E(player).getGold());
+                    worldManager.sendEntityUpdate(player, goldUpdate.build());
+                    //notifica la remocion del item y se actualiza el inventario
+                    InventoryUpdate update = new InventoryUpdate();
+                    update.remove(i);
+                    worldManager.sendEntityUpdate(player, update);
+                }
+            }
+        }
     }
 
     public void equip(int player, int index, Inventory.Item item) {

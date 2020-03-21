@@ -1,7 +1,9 @@
 package game.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import game.ui.SwitchButtons.ActionSwitchListener;
@@ -20,6 +22,7 @@ public final class ActionBar extends Table implements ActionSwitchListener {
     private final InventoryQuickBar inventoryQuickBar;
     private ImageTextButton expandButton;
     private String currentState = "INVENTORY";
+    private Label goldLabel;
 
     ActionBar() {
         super(Skins.COMODORE_SKIN);
@@ -45,13 +48,17 @@ public final class ActionBar extends Table implements ActionSwitchListener {
 
             }
         });
-
+        goldLabel = new Label( "0",getSkin());
+        goldLabel.setColor( Color.GOLDENROD );
         add().top();
         add(buttons).top().right().row();
         add(inventory).padTop(PAD_TOP);
         add(inventoryQuickBar).padTop(PAD_TOP).right().row();
         add().top();
-        add(expandButton).right().padTop(-10f);
+        add(expandButton).right().padTop(-10f).row();
+        add().height( 20 ).row();
+        add();
+        add(goldLabel).right().fillY();
     }
 
     @Override
@@ -64,8 +71,11 @@ public final class ActionBar extends Table implements ActionSwitchListener {
                 add(spellViewExpanded).padTop(PAD_TOP).right();
                 add(spellView).padTop(PAD_TOP).right().row();
                 add();
-                add(expandButton).padTop(-10f).right();
+                add(expandButton).padTop(-10f).right().row();
                 expandButton.setVisible(spellView.isVisible());
+                add().height( 20 ).row();
+                add();
+                add(goldLabel).right().fillY();
                 currentState = "SPELL";
                 break;
             case INVENTORY:
@@ -75,7 +85,10 @@ public final class ActionBar extends Table implements ActionSwitchListener {
                 add(inventory).padTop(PAD_TOP).right();
                 add(inventoryQuickBar).padTop(PAD_TOP).right().row();
                 add();
-                add(expandButton).padTop(-10f).right();
+                add(expandButton).padTop(-10f).right().row();
+                add().height( 20 ).row();
+                add();
+                add(goldLabel).right().fillY();
                 expandButton.setVisible(inventoryQuickBar.isVisible());
                 currentState = "INVENTORY";
                 break;
@@ -113,6 +126,10 @@ public final class ActionBar extends Table implements ActionSwitchListener {
         } else if (getSpellView().isOver()) {
             // TODO
         }
+    }
+
+    public void setGoldLabel(int amount){
+        this.goldLabel.setText( amount );
     }
 
     public void setExpandButtonVisible() {

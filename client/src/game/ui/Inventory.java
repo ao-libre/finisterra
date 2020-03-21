@@ -176,6 +176,9 @@ public class Inventory extends Window {
             Item item = base + i < userItems.length ? userItems[base + i] : null;
             slots.get(i).setItem(item);
         }
+        //actualiza el label al actualizarse el inventario
+        GUI gui = WorldUtils.getWorld().get().getSystem( GUI.class );
+        gui.getActionBar().setGoldLabel( E(GameScreen.getPlayer()).getGold().getCount() );
     }
 
     public void getShoot() {
