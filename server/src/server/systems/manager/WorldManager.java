@@ -4,18 +4,25 @@ import camera.Focused;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.utils.Timer;
+import com.esotericsoftware.minlog.Log;
+import entity.character.info.Inventory;
 import entity.character.states.CanWrite;
 import entity.npc.OriginPos;
 import physics.AOPhysics;
 import position.WorldPos;
 import server.systems.EntityFactorySystem;
 import server.systems.ServerSystem;
+import shared.interfaces.Race;
 import shared.model.lobby.Player;
 import shared.model.npcs.NPC;
+import shared.network.inventory.InventoryUpdate;
 import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
 import shared.network.notifications.RemoveEntity;
+import shared.objects.types.Obj;
 
 import java.util.List;
+import java.util.Random;
 
 import static com.artemis.E.E;
 import static server.utils.WorldUtils.WorldUtils;
@@ -70,35 +77,95 @@ public class WorldManager extends DefaultManager {
 
     public void entityDie(int entityId) {
 
-        final E e = E(entityId);
-        if (e.hasNPC()) {
-            int npcId = e.nPCId();
+        final E entity = E(entityId);
+        if (entity.hasNPC()) {
+            int npcId = entity.nPCId();
             NPC npc = world.getSystem(NPCManager.class).getNpcs().get(npcId);
             // TODO check if should respawn
-
-            OriginPos originPos = e.getOriginPos();
+            OriginPos originPos = entity.getOriginPos();
             int npcRespawn = world.create();
             E(npcRespawn)
                     .respawnTime(5)
                     .respawnNpcId(npcId)
                     .respawnPos(originPos);
 
-            unregisterEntity(e.id());
-            npc.getDrops().forEach(itemPair -> dropItem(itemPair.getKey(), itemPair.getValue(), e.getWorldPos()));
+            unregisterEntity(entity.id());
+            npc.getDrops().forEach(itemPair -> dropItem(itemPair.getKey(), itemPair.getValue(), entity.getWorldPos()));
         } else {
-            // RESET USER. TODO implement ghost
-            // reset health
-            e.getHealth().min = e.getHealth().max;
-            // reset mana
-            EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(entityId);
-            resetUpdate.withComponents(e.getHealth());
-            if (e.hasMana()) {
-                e.getMana().min = e.getMana().max;
-                resetUpdate.withComponents(e.getMana());
+            // TODO hacer q los npc dejen de tomarnos como blanco
+            // dropeo de items random al morir
+            Inventory.Item items[] = entity.getInventory().items;
+            InventoryUpdate inventoryUpdate = new InventoryUpdate();
+            for(int i = 0; i<20;i++) {
+                if(items[i] != null) {
+                    items[i].equipped = false;
+                    inventoryUpdate.add( i, items[i] );
+                    ItemConsumers itemConsumers = getWorld().getSystem( ItemConsumers.class );
+                    Obj item = objectManager.getObject( items[i].objId ).get();
+                    itemConsumers.TAKE_OFF.accept( entityId, item );
+                    if(!item.isNewbie() || item.isNotDrop()) {
+                        Random random = new Random(  );
+                        boolean dropi = random.nextBoolean();
+                        Log.info(" " + dropi);
+                        if (dropi) {
+                            dropItem( item.getId(), items[i].count, entity.getWorldPos() );
+                            inventoryUpdate.remove( i );
+                        }
+                    }
+                }
             }
+
+            sendEntityUpdate( entityId, inventoryUpdate );
+            entity.getHealth().min = 0;
+            // cambio del cuerpo y la cabeza a fantasma
+            // TODO arreglar las imagenes de los espiritus se ven de a 4
+            entity.bodyIndex( 8 );
+            entity.headIndex( 514 );
+            EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(entityId);
+            resetUpdate.withComponents( entity.getHealth() );
+            resetUpdate.withComponents( entity.getHead(), entity.getBody() );
             sendEntityUpdate(entityId, resetUpdate.build());
-            notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(e.getWorldPos()).build());
+            notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(entity.getWorldPos()).build());
+            //a los 20 segundos no revive en la posision de origen del jugador
+            Timer.schedule( new Timer.Task() {
+                @Override
+                public void run() {
+                    resurrect(entityId, false);
+                }
+            }, 20);
         }
+    }
+    public void resurrect(int entityId, boolean resurected){
+        final E entity = E(entityId);
+        // RESET USER.
+        // reset health
+        entity.getHealth().min = entity.getHealth().max;
+        // reset mana
+        EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(entityId);
+        resetUpdate.withComponents(entity.getHealth());
+        if (entity.hasMana()) {
+            entity.getMana().min = entity.getMana().max;
+            resetUpdate.withComponents(entity.getMana());
+        }
+        //reset body and head
+        //todo obtener body y head de la base de datos del jugador las cabezas actualmente son randoms
+        entityFactorySystem.setNakedBody(entity, Race.of(entity));
+        entityFactorySystem.setHead(entity, Race.of(entity));
+        notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(entity.getBody(), entity.getHead()).build());
+        //todo asignar comando para asignar la posicion de las distintas ciudades
+        if (!resurected) {
+            // por si no tiene posision de origen o es la ciudad newbir y el jugador ya no es newbie
+            if (entity.originPosMap() == 0 || (entity.getLevel().level>13 && entity.originPosMap()==286)){
+                if (entity.getLevel().level < 13){
+                    entity.originPosMap( 286 ).originPosX(50).originPosY(60);
+                }else {
+                    entity.originPosMap( 1 ).originPosX( 50 ).originPosY( 50 );
+                }
+            }
+            entity.worldPosMap(entity.originPosMap()).worldPosX(entity.originPosY()).worldPosY(entity.originPosY());
+        }
+        sendEntityUpdate(entityId, resetUpdate.build());
+        notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(entity.getWorldPos()).build());
     }
 
     private void dropItem(Integer key, Integer value, WorldPos worldPos) {
