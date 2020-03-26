@@ -92,7 +92,6 @@ public class WorldManager extends DefaultManager {
             unregisterEntity(entity.id());
             npc.getDrops().forEach(itemPair -> dropItem(itemPair.getKey(), itemPair.getValue(), entity.getWorldPos()));
         } else {
-            // TODO hacer q los npc dejen de tomarnos como blanco
             // dropeo de items random al morir
             Inventory.Item items[] = entity.getInventory().items;
             InventoryUpdate inventoryUpdate = new InventoryUpdate();
@@ -118,7 +117,7 @@ public class WorldManager extends DefaultManager {
             //setea la hp a 0 porque o sino queda con hp
             entity.getHealth().min = 0;
             // cambio del cuerpo y la cabeza a fantasma
-            // TODO arreglar las imagenes de los espiritus se ven de a 4
+            // TODO arreglar las imagenes de los espiritus falta scalarla x2
             entity.bodyIndex( 8 );
             entity.headIndex( 514 );
             EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(entityId);
