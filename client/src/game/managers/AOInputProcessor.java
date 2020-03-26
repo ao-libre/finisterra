@@ -335,65 +335,79 @@ public class AOInputProcessor extends Stage {
     }
 
     private void useActionBarSlot(int x) {
-        int base;
-        if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
-            if (gui.getActionBar().getState().equals("INVENTORY")) {
-                if (!gui.getInventory().getSelected().isPresent()) {
-                    base = 0;
-                } else {
-                    base = gui.getInventory().selectedIndex();
+        if (E(GameScreen.getPlayer()).healthMin() != 0) {
+            int base;
+            if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
+                if (gui.getActionBar().getState().equals("INVENTORY")) {
+                    if (!gui.getInventory().getSelected().isPresent()) {
+                        base = 0;
+                    } else {
+                        base = gui.getInventory().selectedIndex();
+                    }
+                    gui.getInventoryQuickBar().addItemsIQB(base, x);
                 }
-                gui.getInventoryQuickBar().addItemsIQB(base, x);
+                if (gui.getActionBar().getState().equals("SPELL")) {
+                    gui.getSpellView().addSpelltoSpellview(gui.getSpellViewExpanded().getSelected(), x);
+                }
+            } else {
+                GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getInventoryQuickBar().getGBases(x)));
+                gui.getInventory().cleanShoot();
+                Cursors.setCursor("hand");
             }
-            if (gui.getActionBar().getState().equals("SPELL")) {
-                gui.getSpellView().addSpelltoSpellview(gui.getSpellViewExpanded().getSelected(), x);
-            }
-        } else {
-            GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getInventoryQuickBar().getGBases(x)));
-            gui.getInventory().cleanShoot();
-            Cursors.setCursor("hand");
         }
     }
 
     private void use() {
-        gui.getInventory()
-                .getSelected()
-                .ifPresent(slot -> GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getInventory().selectedIndex())));
+        if (E(GameScreen.getPlayer()).healthMin() != 0) {
+            gui.getInventory()
+                    .getSelected()
+                    .ifPresent( slot -> GameScreen.getClient().sendToAll( new ItemActionRequest( gui.getInventory().selectedIndex() ) ) );
+        }
     }
 
     private void attack() {
-        E player = E(GameScreen.getPlayer());
-        WorldUtils.getWorld().ifPresent(world -> {
-            if (!player.hasAttack() || player.getAttack().interval - world.getDelta() <= 0) {
-                GameScreen.getClient().sendToAll(new AttackRequest(AttackType.PHYSICAL));
-                player.attack();
-            }
-        });
+        if (E(GameScreen.getPlayer()).healthMin() != 0) {
+            E player = E( GameScreen.getPlayer() );
+            WorldUtils.getWorld().ifPresent( world -> {
+                if(!player.hasAttack() || player.getAttack().interval - world.getDelta() <= 0) {
+                    GameScreen.getClient().sendToAll( new AttackRequest( AttackType.PHYSICAL ) );
+                    player.attack();
+                }
+            } );
+        }
     }
 
     private void shoot() {
-        gui.getInventory().getShoot();
+        if (E(GameScreen.getPlayer()).healthMin() != 0) {
+            gui.getInventory().getShoot();
+        }
     }
 
     private void equip() {
-        gui.getInventory()
-                .getSelected()
-                .ifPresent(slot -> GameScreen.getClient().sendToAll(new ItemActionRequest(gui.getInventory().selectedIndex())));
+        if (E(GameScreen.getPlayer()).healthMin() != 0) {
+            gui.getInventory()
+                    .getSelected()
+                    .ifPresent( slot -> GameScreen.getClient().sendToAll( new ItemActionRequest( gui.getInventory().selectedIndex() ) ) );
+        }
     }
 
     private void takeItem() {
-        GameScreen.getClient().sendToAll(new TakeItemRequest());
+        if (E(GameScreen.getPlayer()).healthMin() != 0) {
+            GameScreen.getClient().sendToAll(new TakeItemRequest());
+        }
     }
 
     // drop selected item (count 1 for the time being)
     private void dropItem() {
-        gui.getInventory().getSelected().ifPresent(selected -> {
-            gui.getInventory().isBowORArrow(gui.getInventory().getSelected().get());
-            int player = GameScreen.getPlayer();
-            GameScreen
-                    .getClient()
-                    .sendToAll(new DropItem(E(player).getNetwork().id, gui.getInventory().selectedIndex(), E(player).getWorldPos()));
-        });
+        if (E(GameScreen.getPlayer()).healthMin() != 0) {
+            gui.getInventory().getSelected().ifPresent(selected -> {
+                gui.getInventory().isBowORArrow(gui.getInventory().getSelected().get());
+                int player = GameScreen.getPlayer();
+                GameScreen
+                        .getClient()
+                        .sendToAll(new DropItem(E(player).getNetwork().id, gui.getInventory().selectedIndex(), E(player).getWorldPos()));
+            });
+        }
     }
 
     private void toggleDialogText() {
@@ -406,7 +420,9 @@ public class AOInputProcessor extends Stage {
     }
 
     private void toggleMeditate() {
-        GameScreen.getClient().sendToAll(new MeditateRequest());
+        if (E(GameScreen.getPlayer()).healthMin() != 0) {
+            GameScreen.getClient().sendToAll(new MeditateRequest());
+        }
     }
 
     private void toggleInventory() {

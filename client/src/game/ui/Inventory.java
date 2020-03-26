@@ -81,9 +81,11 @@ public class Inventory extends Window {
                     slot.setSelected(true);
                     slot.getItem().ifPresent(item -> {
                         if (getTapCount() >= 2) {
-                            GameScreen.getClient().sendToAll(new ItemActionRequest(slots.indexOf(slot)));
-                            addSpellSVE(slot);
-                            isBowORArrow(slot);
+                            if (E(GameScreen.getPlayer()).healthMin() != 0) {
+                                GameScreen.getClient().sendToAll(new ItemActionRequest(slots.indexOf(slot)));
+                                addSpellSVE(slot);
+                                isBowORArrow(slot);
+                            }
                         }
                     });
                 });
