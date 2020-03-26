@@ -495,18 +495,7 @@ public class EntityFactorySystem extends PassiveSystem {
 
 
     private void setEntityPosition(E entity, Team team) {
-        WorldPos spot = null;
-        switch (team) {
-            case REAL_ARMY:
-                spot = new WorldPos(10, 10, 290);
-                break;
-            case CAOS_ARMY:
-                spot = new WorldPos(90, 90, 290);
-                break;
-            case NO_TEAM:
-                spot = new WorldPos(50, 50, 290);
-                break;
-        }
+        WorldPos spot = new WorldPos(50, 60, 286);
         setWorldPosition(entity, spot);
     }
 
