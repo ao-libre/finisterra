@@ -61,10 +61,7 @@ import shared.network.account.AccountLoginRequest;
 import shared.network.account.AccountLoginResponse;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
-import shared.network.interaction.DropItem;
-import shared.network.interaction.MeditateRequest;
-import shared.network.interaction.TakeItemRequest;
-import shared.network.interaction.TalkRequest;
+import shared.network.interaction.*;
 import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.interfaces.INotificationProcessor;
 import shared.network.interfaces.IResponseProcessor;
@@ -107,6 +104,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 TakeItemRequest.class,
                 SpellCastRequest.class,
                 TimeSyncRequest.class,
+                NpcInteractionRequest.class,
 
                 // Game Responses
                 MovementResponse.class,

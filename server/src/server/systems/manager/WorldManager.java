@@ -99,7 +99,7 @@ public class WorldManager extends DefaultManager {
             for(int i = 0; i<20;i++) {
                 if(items[i] != null) {
                     items[i].equipped = false;
-                    inventoryUpdate.add( i, items[i] );
+                    //inventoryUpdate.add( i, items[i] );
                     ItemConsumers itemConsumers = getWorld().getSystem( ItemConsumers.class );
                     Obj item = objectManager.getObject( items[i].objId ).get();
                     itemConsumers.TAKE_OFF.accept( entityId, item );
@@ -114,8 +114,8 @@ public class WorldManager extends DefaultManager {
                     }
                 }
             }
-
             sendEntityUpdate( entityId, inventoryUpdate );
+            //setea la hp a 0 porque o sino queda con hp
             entity.getHealth().min = 0;
             // cambio del cuerpo y la cabeza a fantasma
             // TODO arreglar las imagenes de los espiritus se ven de a 4
@@ -126,15 +126,24 @@ public class WorldManager extends DefaultManager {
             resetUpdate.withComponents( entity.getHead(), entity.getBody() );
             sendEntityUpdate(entityId, resetUpdate.build());
             notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(entity.getWorldPos()).build());
-            //a los 20 segundos no revive en la posision de origen del jugador
+            //a los 20 segundos no revive automaticamente en la posision de origen del jugador
             Timer.schedule( new Timer.Task() {
                 @Override
                 public void run() {
-                    resurrect(entityId, false);
+                    Log.info( " pasaron 20 segundos " );
+                    if (entity.healthMin() == 0) {
+                        resurrect( entityId, false );
+                    }
                 }
             }, 20);
         }
     }
+
+    /**
+     * @param entityId player id
+     * @param resurected si fue resucitado por un jugador o npc es true
+     *                   caso resurrecion automatica es false y se resucita en la ciudad
+     */
     public void resurrect(int entityId, boolean resurected){
         final E entity = E(entityId);
         // RESET USER.

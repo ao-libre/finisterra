@@ -36,6 +36,7 @@ public class NPCAttackSystem extends IntervalFluidIteratingSystem {
                 .filter(e2 -> E(e2) != null)
                 .filter(e2 -> !E(e2).hasNPC())
                 .filter(e2 -> E(e2).hasWorldPos())
+                .filter(e2 -> E(e2).healthMin() != 0)
                 .filter(e2 -> inRange(e.id(), e2))
                 .findFirst()
                 .ifPresent(target -> system.entityAttack(e.id(), Optional.of(target)));

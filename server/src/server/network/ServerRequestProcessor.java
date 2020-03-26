@@ -15,19 +15,18 @@ import server.systems.ServerSystem;
 import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.combat.RangedCombatSystem;
-import server.systems.manager.ItemManager;
-import server.systems.manager.MapManager;
-import server.systems.manager.SpellManager;
-import server.systems.manager.WorldManager;
+import server.systems.manager.*;
 import server.utils.WorldUtils;
 import shared.model.AttackType;
 import shared.model.lobby.Player;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.model.map.WorldPosition;
+import shared.model.npcs.NPC;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.MeditateRequest;
+import shared.network.interaction.NpcInteractionRequest;
 import shared.network.interaction.TakeItemRequest;
 import shared.network.interaction.TalkRequest;
 import shared.network.interfaces.DefaultRequestProcessor;
@@ -260,6 +259,25 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         response.requestId = request.requestId;
         response.sendTime = TimeUtils.millis();
         networkManager.sendTo(connectionId, response);
+    }
+
+    @Override
+    public void processRequest(NpcInteractionRequest npcInteractionRequest, int connectionId) {
+        NPC npc = world.getSystem( NPCManager.class).getNpcs().get(npcInteractionRequest.getTargetEntity());
+        int playerId = networkManager.getPlayerByConnection(connectionId);
+        switch( npc.getName()){
+            case "Sacerdote":
+                if (E(playerId).healthMin() == 0) {
+                    worldManager.resurrect( playerId, true );
+                } else {
+                    E entity = E(playerId);
+                    entity.getHealth().min = entity.getHealth().max;
+                    EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(playerId);
+                    resetUpdate.withComponents(entity.getHealth());
+                    worldManager.sendEntityUpdate(playerId, resetUpdate.build());
+                }
+                break;
+        }
     }
 
 }
