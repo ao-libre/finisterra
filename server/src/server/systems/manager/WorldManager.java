@@ -105,7 +105,7 @@ public class WorldManager extends DefaultManager {
                     if(!item.isNewbie() || item.isNotDrop()) {
                         Random random = new Random(  );
                         boolean dropi = random.nextBoolean();
-                        Log.info(" " + dropi);
+                        Log.info("drop slot "+i +": "+ dropi);
                         if (dropi) {
                             dropItem( item.getId(), items[i].count, entity.getWorldPos() );
                             inventoryUpdate.remove( i );
@@ -129,9 +129,11 @@ public class WorldManager extends DefaultManager {
             Timer.schedule( new Timer.Task() {
                 @Override
                 public void run() {
-                    Log.info( " pasaron 20 segundos " );
-                    if (entity.healthMin() == 0) {
-                        resurrect( entityId, false );
+                    Log.info(" pasaron 20 segundos ");
+                    if (entity.hasHealth()) {
+                        if(entity.healthMin() == 0) {
+                            resurrect( entityId, false );
+                        }
                     }
                 }
             }, 20);
@@ -145,6 +147,7 @@ public class WorldManager extends DefaultManager {
      */
     public void resurrect(int entityId, boolean resurected){
         final E entity = E(entityId);
+        Log.info( "resuscitanto player "+ entity.getName().text );
         // RESET USER.
         // reset health
         entity.getHealth().min = entity.getHealth().max;
