@@ -142,10 +142,10 @@ public class WorldManager extends DefaultManager {
 
     /**
      * @param entityId player id
-     * @param resurected si fue resucitado por un jugador o npc es true
+     * @param resurrected si fue resucitado por un jugador o npc es true
      *                   caso resurrecion automatica es false y se resucita en la ciudad
      */
-    public void resurrect(int entityId, boolean resurected){
+    public void resurrect(int entityId, boolean resurrected){
         final E entity = E(entityId);
         Log.info( "resuscitanto player "+ entity.getName().text );
         // RESET USER.
@@ -164,7 +164,7 @@ public class WorldManager extends DefaultManager {
         entityFactorySystem.setHead(entity, Race.of(entity));
         notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(entity.getBody(), entity.getHead()).build());
         //todo asignar comando para asignar la posicion de las distintas ciudades
-        if (!resurected) {
+        if (!resurrected) {
             // por si no tiene posision de origen o es la ciudad newbir y el jugador ya no es newbie
             if (entity.originPosMap() == 0 || (entity.getLevel().level>13 && entity.originPosMap()==286)){
                 if (entity.getLevel().level < 13){
@@ -174,6 +174,9 @@ public class WorldManager extends DefaultManager {
                 }
             }
             entity.worldPosMap(entity.originPosMap()).worldPosX(entity.originPosX()).worldPosY(entity.originPosY());
+        }
+        if (resurrected){
+            Timer.instance().clear();
         }
         sendEntityUpdate(entityId, resetUpdate.build());
         notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(entity.getWorldPos()).build());
