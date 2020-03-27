@@ -2,6 +2,7 @@ package server.systems;
 
 import com.artemis.E;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.utils.Array;
 import server.systems.manager.DefaultManager;
 import server.systems.manager.WorldManager;
 import shared.network.notifications.ConsoleMessage;
@@ -25,8 +26,61 @@ public class CommandSystem extends DefaultManager {
             worldManager.sendEntityUpdate(senderId, ConsoleMessage.info(Messages.PLAYERS_ONLINE, connections));
         }
         if (command.equalsIgnoreCase( CMD_PLAYER_SET_HOME_CITY )){
+            final int capacity = 17;
+            Array<Integer> cityMaps = new Array(capacity);
+            /*
+            Mapas:
+            1: "Ullathorpe (Zona segura)"
+            34: "Nix (Zona segura)"
+            61: "Muelles de Banderbill (Zona segura)"
+            60: "Centro de Banderbill (Zona segura)"
+            59: "Ciudad de Banderbill: Muralla (Zona segura)"
+            58: "Afueras de Banderbill (Zona segura)"
+            62: "Centro de Lindos (Zona segura)"
+            63: "Abadía de Lindos (Zona segura)"
+            64: "Ciudad de Lindos (Zona segura)"
+            156: "Puentes de Arkhein (Zona segura)"
+            151: "Ciudad de Arkhein (Zona segura)"
+            150: "Puerto de Arkhein (Zona segura)"
+            195: "Arghal Oeste (Zona segura)"
+            196: "Centro de Arghal (Zona segura)"
+            197: "Muelles de Arghal (Zona segura)"
+            112: "Ciudad de Nueva Esperanza (Zona segura)"
+            286: "Nemahuak (Zona segura)"
+             */
+            cityMaps.add( 1 );
+            cityMaps.add( 34 );
+            cityMaps.add( 61 );
+            cityMaps.add( 60 );
+            cityMaps.add( 59 );
+            cityMaps.add( 58 );
+            cityMaps.add( 62 );
+            cityMaps.add( 63 );
+            cityMaps.add( 64 );
+            cityMaps.add( 56 );
+            cityMaps.add( 151 );
+            cityMaps.add( 150 );
+            cityMaps.add( 195 );
+            cityMaps.add( 196 );
+            cityMaps.add( 197 );
+            cityMaps.add( 286 );
+            cityMaps.add( 112 );
+
             E player = E.E(senderId);
-            player.originPosMap(player.worldPosMap() ).originPosX(player.worldPosX()).originPosY(player.worldPosY());
+            int playerMap = player.worldPosMap(), playerX = player.worldPosX(), playerY = player.worldPosY();
+            boolean homeSet = false;
+            int i = 0;
+            while ((i < (capacity - 1)) || homeSet) {
+                if (playerMap == cityMaps.get( i )){
+                    player.originPosMap( playerMap ).originPosX( playerX ).originPosY( playerY );
+                    worldManager.sendEntityUpdate(senderId, ConsoleMessage.info( Messages.MULTIUSE, "Home set","","",""));
+                    homeSet = true;
+                }
+                i++;
+            }
+            if (!homeSet){
+                worldManager.sendEntityUpdate(senderId, ConsoleMessage.info( Messages.MULTIUSE, "Maps "+ cityMaps, "","",""));
+            }
         }
         if (command.equalsIgnoreCase( CMD_PLAYER_SEE_HOME_CITY )){
             E player = E.E(senderId);
