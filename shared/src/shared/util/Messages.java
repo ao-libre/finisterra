@@ -98,7 +98,7 @@ public enum Messages {
     WEAPON_POLE,
     WEAPON_WORK,
     WEAPON_STAFF,
-    WEAPON_SWORD
-
-
+    WEAPON_SWORD,
+    HOME_POS,
+    MULTIUSE;
 }

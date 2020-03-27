@@ -118,11 +118,11 @@ public class WorldManager extends DefaultManager {
             entity.getHealth().min = 0;
             // cambio del cuerpo y la cabeza a fantasma
             // TODO arreglar las imagenes de los espiritus falta scalarla x2
-            entity.bodyIndex( 8 );
-            entity.headIndex( 514 );
+            entity.bodyIndex(8);
+            entity.headIndex(514);
             EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(entityId);
             resetUpdate.withComponents( entity.getHealth() );
-            resetUpdate.withComponents( entity.getHead(), entity.getBody() );
+            resetUpdate.withComponents( entity.getHead(), entity.getBody());
             sendEntityUpdate(entityId, resetUpdate.build());
             notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(entity.getWorldPos()).build());
             //a los 20 segundos no revive automaticamente en la posision de origen del jugador
@@ -168,12 +168,12 @@ public class WorldManager extends DefaultManager {
             // por si no tiene posision de origen o es la ciudad newbir y el jugador ya no es newbie
             if (entity.originPosMap() == 0 || (entity.getLevel().level>13 && entity.originPosMap()==286)){
                 if (entity.getLevel().level < 13){
-                    entity.originPosMap( 286 ).originPosX(50).originPosY(60);
+                    entity.originPosMap(286).originPosX(50).originPosY(60);
                 }else {
-                    entity.originPosMap( 1 ).originPosX( 50 ).originPosY( 50 );
+                    entity.originPosMap(1).originPosX(50).originPosY(50);
                 }
             }
-            entity.worldPosMap(entity.originPosMap()).worldPosX(entity.originPosY()).worldPosY(entity.originPosY());
+            entity.worldPosMap(entity.originPosMap()).worldPosX(entity.originPosX()).worldPosY(entity.originPosY());
         }
         sendEntityUpdate(entityId, resetUpdate.build());
         notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(entity.getWorldPos()).build());
