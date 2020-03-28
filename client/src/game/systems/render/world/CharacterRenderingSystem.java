@@ -4,7 +4,6 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import entity.character.equipment.Helmet;
@@ -15,14 +14,13 @@ import entity.character.parts.Head;
 import entity.character.states.Heading;
 import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
+import game.systems.render.BatchRenderingSystem;
 import game.utils.Pos2D;
 import model.descriptors.BodyDescriptor;
 import model.textures.AOTexture;
 import model.textures.BundledAnimation;
-import position.WorldPosOffsets;
 import position.WorldPos;
 import shared.model.map.Tile;
-import shared.util.Util;
 
 import java.util.Comparator;
 import java.util.Optional;
@@ -36,9 +34,10 @@ public class CharacterRenderingSystem extends RenderingSystem {
     private static final Aspect.Builder CHAR_ASPECT = Aspect.all(WorldPos.class, Body.class, Heading.class);
     private DescriptorHandler descriptorHandler;
     private AnimationHandler animationHandler;
+    private BatchRenderingSystem batchRenderingSystem;
 
-    public CharacterRenderingSystem(Batch batch) {
-        super(CHAR_ASPECT, batch, CameraKind.WORLD);
+    public CharacterRenderingSystem() {
+        super(CHAR_ASPECT);
     }
 
     private static float getMovementOffset(BundledAnimation bodyAnimation) {
@@ -59,7 +58,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
         WorldPos pos = forcedPos.orElse(player.getWorldPos());
         Pos2D currentPos = Pos2D.get(pos, player.getWorldPosOffsets());
         Pos2D screenPos = currentPos.toScreen();
-        createDrawer(getBatch(), player, screenPos, descriptorHandler, animationHandler).draw();
+        createDrawer(batchRenderingSystem, player, screenPos, descriptorHandler, animationHandler).draw();
     }
 
     @Override
@@ -68,7 +67,8 @@ public class CharacterRenderingSystem extends RenderingSystem {
     }
 
     public static class CharacterDrawer {
-        private final Batch batch;
+        static final float FACTOR = 1.2f;
+        private BatchRenderingSystem batchRenderingSystem;
         private final E player;
         private final Heading heading;
         private final Pos2D screenPos;
@@ -83,8 +83,8 @@ public class CharacterRenderingSystem extends RenderingSystem {
         private BundledAnimation bodyAnimation;
         private float idle;
 
-        private CharacterDrawer(Batch batch, E player, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler) {
-            this.batch = batch;
+        private CharacterDrawer(BatchRenderingSystem batchRenderingSystem, E player, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler) {
+            this.batchRenderingSystem = batchRenderingSystem;
             this.player = player;
             this.heading = player.getHeading();
             this.screenPos = screenPos;
@@ -95,12 +95,12 @@ public class CharacterRenderingSystem extends RenderingSystem {
             calculateOffsets();
         }
 
-        public static CharacterDrawer createDrawer(Batch batch, E player, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler) {
-            return new CharacterDrawer(batch, player, screenPos, descriptorHandler, animationHandler);
+        public static CharacterDrawer createDrawer(BatchRenderingSystem batchRenderingSystem, E player, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler) {
+            return new CharacterDrawer(batchRenderingSystem, player, screenPos, descriptorHandler, animationHandler);
         }
 
-        public static CharacterDrawer createDrawer(Batch batch, E player, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler, boolean shouldFlip) {
-            CharacterDrawer characterDrawer = new CharacterDrawer(batch, player, screenPos, descriptorHandler, animationHandler);
+        public static CharacterDrawer createDrawer(BatchRenderingSystem batchRenderingSystem, E player, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler, boolean shouldFlip) {
+            CharacterDrawer characterDrawer = new CharacterDrawer(batchRenderingSystem, player, screenPos, descriptorHandler, animationHandler);
             characterDrawer.shouldFlip = shouldFlip;
             return characterDrawer;
         }
@@ -159,7 +159,16 @@ public class CharacterRenderingSystem extends RenderingSystem {
             if (bodyRegion.isFlipY() && shouldFlip) {
                 bodyRegion.flip(false, true);
             }
-            batch.draw(bodyRegion, bodyPixelOffsetX + idle / 4, (bodyPixelOffsetY + offsetY) + idle * 1.2f, bodyRegion.getRegionWidth() - idle / 2, bodyRegion.getRegionHeight() - idle * 1.2f);
+            batchRenderingSystem.addTask((batch) ->
+                    {
+                        float x = bodyPixelOffsetX + idle / 4;
+                        float y = (bodyPixelOffsetY + offsetY) + idle * FACTOR;
+                        float width = bodyRegion.getRegionWidth() - idle / 2;
+                        float height = bodyRegion.getRegionHeight() - idle * FACTOR;
+
+                        batch.draw(bodyRegion, x, y, width, height);
+                    }
+            );
         }
 
         void drawHead() {
@@ -218,7 +227,14 @@ public class CharacterRenderingSystem extends RenderingSystem {
                 if (region.isFlipY() && shouldFlip) {
                     region.flip(false, true);
                 }
-                batch.draw(region, x + offsetX, (y + offsetY * (shouldFlip ? -1 : 1)));
+                batchRenderingSystem.addTask((batch ->
+                        {
+                            float x1 = x + offsetX;
+                            float y1 = y + offsetY * (shouldFlip ? -1 : 1);
+                            batch.draw(region, x1, y1);
+                        })
+                );
+
             }
         }
     }

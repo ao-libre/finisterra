@@ -17,6 +17,7 @@ import com.google.common.cache.LoadingCache;
 import entity.character.parts.Body;
 import entity.world.CombatMessage;
 import game.handlers.DescriptorHandler;
+import game.systems.render.BatchRenderingSystem;
 import game.utils.Colors;
 import game.utils.Pos2D;
 import game.utils.Skins;
@@ -33,6 +34,7 @@ public class CombatRenderingSystem extends RenderingSystem {
 
     public static final float VELOCITY = 1f;
     private DescriptorHandler descriptorHandler;
+    private BatchRenderingSystem batchRenderingSystem;
     private LoadingCache<CombatMessage, Table> messages = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
@@ -56,8 +58,8 @@ public class CombatRenderingSystem extends RenderingSystem {
 
             });
 
-    public CombatRenderingSystem(Batch batch) {
-        super(Aspect.all(CombatMessage.class, Body.class, WorldPos.class), batch, CameraKind.WORLD);
+    public CombatRenderingSystem() {
+        super(Aspect.all(CombatMessage.class, Body.class, WorldPos.class));
     }
 
     @Override
@@ -92,7 +94,7 @@ public class CombatRenderingSystem extends RenderingSystem {
             final float fontY = playerPos.y + combatMessage.offset + bodyOffset - 60 * SCALE
                     + label.getHeight();
             label.setPosition(fontX, fontY);
-            label.draw(getBatch(), 1);
+            batchRenderingSystem.addTask((batch -> label.draw(batch, 1)));
         } else {
             messages.invalidate(player.getCombatMessage());
             player.removeCombatMessage();

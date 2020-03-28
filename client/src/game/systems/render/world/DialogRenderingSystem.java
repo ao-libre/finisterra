@@ -4,7 +4,6 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -16,14 +15,13 @@ import entity.character.parts.Body;
 import entity.world.Dialog;
 import entity.world.Dialog.Kind;
 import game.handlers.DescriptorHandler;
+import game.systems.render.BatchRenderingSystem;
 import game.utils.Colors;
 import game.utils.Pos2D;
 import game.utils.Skins;
 import org.jetbrains.annotations.NotNull;
-import position.WorldPosOffsets;
 import position.WorldPos;
 import shared.model.map.Tile;
-import shared.util.Util;
 
 import java.util.concurrent.TimeUnit;
 
@@ -38,7 +36,7 @@ public class DialogRenderingSystem extends RenderingSystem {
     private final LoadingCache<Dialog, Table> labels = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
-            .build(new CacheLoader<Dialog, Table>() {
+            .build(new CacheLoader<>() {
                 @Override
                 public Table load(@NotNull Dialog dialog) {
                     Table table = new Table(Skins.COMODORE_SKIN);
@@ -55,9 +53,10 @@ public class DialogRenderingSystem extends RenderingSystem {
                 }
             });
     private DescriptorHandler descriptorHandler;
+    private BatchRenderingSystem batchRenderingSystem;
 
-    public DialogRenderingSystem(Batch batch) {
-        super(Aspect.all(Dialog.class, Body.class, WorldPos.class), batch, CameraKind.WORLD);
+    public DialogRenderingSystem() {
+        super(Aspect.all(Dialog.class, Body.class, WorldPos.class));
     }
 
     private Color setColor(Dialog dialog, Label label) {
@@ -95,7 +94,7 @@ public class DialogRenderingSystem extends RenderingSystem {
         if (dialog.time < ALPHA_TIME) {
             dialog.alpha = dialog.time / ALPHA_TIME;
         }
-        label.draw(getBatch(), dialog.alpha);
+        batchRenderingSystem.addTask(batch -> label.draw(batch, dialog.alpha));
         child.getStyle().fontColor = color;
     }
 }
