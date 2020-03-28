@@ -7,7 +7,7 @@ import game.managers.MapManager;
 @Wire(injectInherited = true)
 public class MapLastLayerRenderingSystem extends MapLayerRenderingSystem {
 
-    public MapLastLayerRenderingSystem(Batch spriteBatch) {
-        super(spriteBatch, MapManager.UPPER_LAYERS);
+    public MapLastLayerRenderingSystem() {
+        super(MapManager.UPPER_LAYERS);
     }
 }

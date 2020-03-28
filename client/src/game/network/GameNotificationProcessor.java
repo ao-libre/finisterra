@@ -110,7 +110,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     public void processNotification(MovementNotification movementNotification) {
         if (worldManager.hasNetworkedEntity(movementNotification.getPlayerId())) {
             int playerId = worldManager.getNetworkedEntity(movementNotification.getPlayerId());
-            E(playerId).aOPhysics();
+//            E(playerId).aOPhysics();
             E(playerId).movementAdd(movementNotification.getDestination());
         }
     }

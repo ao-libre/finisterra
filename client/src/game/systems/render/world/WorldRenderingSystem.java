@@ -28,7 +28,6 @@ import static graphics.Effect.NO_REF;
 public class WorldRenderingSystem extends BaseSystem {
 
     private static final int EXTRA_TILES = 7;
-    private final Batch batch;
     private MapManager mapManager;
     private CameraSystem cameraSystem;
     private TiledMapSystem tiledMapSystem;
@@ -36,28 +35,7 @@ public class WorldRenderingSystem extends BaseSystem {
     private EffectRenderingSystem effectRenderingSystem;
     private WorldManager worldManager;
 
-    public WorldRenderingSystem(Batch batch) {
-        this.batch = batch;
-    }
-
-    @Override
-    protected void begin() {
-        getCamera().update();
-        getBatch().setProjectionMatrix(getCamera().combined);
-        getBatch().begin();
-    }
-
-    public Batch getBatch() {
-        return batch;
-    }
-
-    private Camera getCamera() {
-        return cameraSystem.camera;
-    }
-
-    @Override
-    protected void end() {
-        batch.end();
+    public WorldRenderingSystem() {
     }
 
     @Override
@@ -66,7 +44,7 @@ public class WorldRenderingSystem extends BaseSystem {
         if (mapNumber > 0) {
             getRange().forEachTile((x, y) -> {
                 WorldPos pos = MapHandler.getHelper().getEffectivePosition(mapNumber, x, y);
-                getMapElement(pos).ifPresent(element -> mapManager.doTileDraw(batch, world.getDelta(), x, y, element));
+                getMapElement(pos).ifPresent(element -> mapManager.doTileDraw(world.getDelta(), x, y, element));
                 getBeforeEffect(pos).forEach(e -> effectRenderingSystem.drawEffect(e, e.hasWorldPos() ? translatePos(e.getWorldPos(), x, y) : Optional.empty()));
                 getPlayer(pos).ifPresent(e -> characterRenderingSystem.drawPlayer(e, translatePos(e.getWorldPos(), x, y)));
                 getAfterEffect(pos).forEach(e -> effectRenderingSystem.drawEffect(e, e.hasWorldPos() ? translatePos(e.getWorldPos(), x, y) : Optional.empty()));

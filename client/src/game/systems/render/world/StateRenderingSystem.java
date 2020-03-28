@@ -15,8 +15,8 @@ import static com.artemis.E.E;
 @Wire(injectInherited = true)
 public class StateRenderingSystem extends RenderingSystem {
 
-    public StateRenderingSystem(Batch batch) {
-        super(Aspect.all(WorldPos.class).one(Immobile.class), batch, CameraKind.WORLD);
+    public StateRenderingSystem() {
+        super(Aspect.all(WorldPos.class).one(Immobile.class));
     }
 
     private void drawMessage(int entityId) {

@@ -59,6 +59,15 @@ public class BundledAnimation {
         return this.animation.getKeyFrame(this.getAnimationTime());
     }
 
+    public TextureRegion getPreviousGraphic() {
+        int index = this.animation.getKeyFrameIndex(this.getAnimationTime());
+        return this.animation.getKeyFrames()[index == 0 ? this.animation.getKeyFrames().length - 1 : index - 1];
+    }
+
+    public float getPreviousFrameTransparency() {
+        return 1 - (getAnimationTime() % this.animation.getKeyFrames().length) / this.animation.getFrameDuration();
+    }
+
     public TextureRegion getGraphic(int index) {
         return this.animation.getKeyFrames()[index];
     }

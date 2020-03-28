@@ -3,13 +3,13 @@ package game.systems.render.world;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import entity.world.Object;
 import game.handlers.ObjectHandler;
-import position.WorldPosOffsets;
+import game.systems.render.BatchRenderingSystem;
 import position.WorldPos;
+import position.WorldPosOffsets;
 import shared.model.map.Tile;
 import shared.objects.types.Obj;
 import shared.util.Util;
@@ -20,9 +20,10 @@ import java.util.Optional;
 public class ObjectRenderingSystem extends RenderingSystem {
 
     private ObjectHandler objectHandler;
+    private BatchRenderingSystem batchRenderingSystem;
 
-    public ObjectRenderingSystem(Batch batch) {
-        super(Aspect.all(Object.class, WorldPos.class), batch, RenderingSystem.CameraKind.WORLD);
+    public ObjectRenderingSystem() {
+        super(Aspect.all(Object.class, WorldPos.class));
     }
 
     @Override
@@ -42,7 +43,9 @@ public class ObjectRenderingSystem extends RenderingSystem {
             TextureRegion texture = objectHandler.getIngameGraphic(obj);
             float width = scale * texture.getRegionWidth();
             float height = scale * texture.getRegionHeight();
-            getBatch().draw(texture, screenPos.x + (Tile.TILE_PIXEL_WIDTH - width) / 2, screenPos.y + (Tile.TILE_PIXEL_HEIGHT - height) / 2, width, height);
+            float x = screenPos.x + (Tile.TILE_PIXEL_WIDTH - width) / 2;
+            float y = screenPos.y + (Tile.TILE_PIXEL_HEIGHT - height) / 2;
+            batchRenderingSystem.addTask(batch -> batch.draw(texture, x, y, width, height));
         });
     }
 }

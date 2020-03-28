@@ -1,17 +1,14 @@
 package game;
 
 import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Interpolation;
 import com.esotericsoftware.minlog.Log;
 import game.handlers.AOAssetManager;
 import game.handlers.DefaultAOAssetManager;
 import game.screens.GameScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
-import game.screens.transitions.ColorFadeTransition;
-import game.screens.transitions.FadingGame;
 import game.utils.Cursors;
 import shared.util.LogSystem;
 
@@ -21,13 +18,14 @@ import shared.util.LogSystem;
  * <p>
  * This should be the primary instance of the app.
  */
-public class AOGame extends FadingGame implements AssetManagerHolder {
+public class AOGame extends Game implements AssetManagerHolder {
 
     public static final float GAME_SCREEN_ZOOM = 1f;
     public static final float GAME_SCREEN_MAX_ZOOM = 1.3f;
 
     private final AOAssetManager assetManager;
     private final ClientConfiguration clientConfiguration;
+    private Sync fpsSync;
 
     public AOGame(ClientConfiguration clientConfiguration) {
         this.clientConfiguration = clientConfiguration;
@@ -41,13 +39,12 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
 
     @Override
     public void create() {
-        super.create();
         Log.setLogger(new LogSystem());
         Log.info("AOGame", "Creating AOGame...");
-        setTransition(new ColorFadeTransition(Color.BLACK, Interpolation.exp10), 1.0f);
         Cursors.setCursor("hand");
         ScreenManager.getInstance().initialize(this);
         toLoading();
+        this.fpsSync = new Sync();
         // @todo load platform-independent configuration (network, etc.)
     }
 
@@ -72,7 +69,6 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
     }
 
     public void toGame(GameScreen gameScreen) {
-        setTransition(new ColorFadeTransition(Color.BLACK, Interpolation.exp10), 0f);
         setScreen(gameScreen);
     }
 
@@ -83,6 +79,12 @@ public class AOGame extends FadingGame implements AssetManagerHolder {
     @Override
     public AOAssetManager getAssetManager() {
         return assetManager;
+    }
+
+    @Override
+    public void render() {
+//        fpsSync.sync(100);
+        super.render();
     }
 
     @Override

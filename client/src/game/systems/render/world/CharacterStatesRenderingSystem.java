@@ -13,8 +13,8 @@ import shared.util.Util;
 @Wire(injectInherited = true)
 public class CharacterStatesRenderingSystem extends RenderingSystem {
 
-    public CharacterStatesRenderingSystem(Batch batch) {
-        super(Aspect.all(Character.class, WorldPos.class), batch, CameraKind.WORLD);
+    public CharacterStatesRenderingSystem() {
+        super(Aspect.all(Character.class, WorldPos.class));
     }
 
     @Override

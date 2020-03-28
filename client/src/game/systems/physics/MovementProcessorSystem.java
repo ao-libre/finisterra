@@ -39,7 +39,7 @@ public class MovementProcessorSystem extends IteratingSystem {
     public static WorldPos getDelta(WorldPos worldPos) {
         WorldPos correctPos = new WorldPos(worldPos.x, worldPos.y, worldPos.map);
         requests.values().stream().filter(it -> it.valid).forEach(request -> {
-            WorldPos nextPos = Util.getNextPos(correctPos, request.movement);
+            WorldPos nextPos = Util.getNextPos(correctPos, AOPhysics.Movement.values()[request.movement]);
             correctPos.x = nextPos.x;
             correctPos.y = nextPos.y;
             correctPos.map = nextPos.map;
@@ -104,7 +104,7 @@ public class MovementProcessorSystem extends IteratingSystem {
                     WorldPosition tileExitPos = map.getTile(expectedPos.x, expectedPos.y).getTileExit();
                     expectedPos = new WorldPos(tileExitPos.getX(), tileExitPos.getY(), tileExitPos.getMap());
                 }
-                MovementRequest request = new MovementRequest(++requestNumber, valid ? expectedPos : pos, movement, valid);
+                MovementRequest request = new MovementRequest(++requestNumber, valid ? expectedPos : pos, movement.ordinal(), valid);
                 if (requests.containsValue(request)) {
                     // ignore multiple requests with same direction & prediction
                     return;
