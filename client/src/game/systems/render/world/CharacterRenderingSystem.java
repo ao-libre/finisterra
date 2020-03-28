@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import entity.character.equipment.Helmet;
@@ -15,6 +16,7 @@ import entity.character.states.Heading;
 import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
 import game.systems.render.BatchRenderingSystem;
+import game.systems.render.BatchTask;
 import game.utils.Pos2D;
 import model.descriptors.BodyDescriptor;
 import model.textures.AOTexture;
@@ -156,17 +158,34 @@ public class CharacterRenderingSystem extends RenderingSystem {
 
         void drawBody() {
             float offsetY = -getMovementOffsetY() * SCALE;
-            if (bodyRegion.isFlipY() && shouldFlip) {
-                bodyRegion.flip(false, true);
-            }
+            float x = bodyPixelOffsetX + idle / 4;
+            float y = (bodyPixelOffsetY + offsetY) + idle * FACTOR;
+            float width = bodyRegion.getRegionWidth() - idle / 2;
+            float height = bodyRegion.getRegionHeight() - idle * FACTOR;
+
             batchRenderingSystem.addTask((batch) ->
                     {
-                        float x = bodyPixelOffsetX + idle / 4;
-                        float y = (bodyPixelOffsetY + offsetY) + idle * FACTOR;
-                        float width = bodyRegion.getRegionWidth() - idle / 2;
-                        float height = bodyRegion.getRegionHeight() - idle * FACTOR;
-
-                        batch.draw(bodyRegion, x, y, width, height);
+                        if (animate()) {
+                            TextureRegion previousBodyRegion = bodyAnimation.getPreviousGraphic();
+                            if (previousBodyRegion != null) {
+                                if (previousBodyRegion.isFlipY() && shouldFlip) {
+                                    previousBodyRegion.flip(false, true);
+                                }
+                                Color color = batch.getColor();
+                                float previusTransparency = color.a;
+                                color.a = bodyAnimation.getPreviousFrameTransparency();
+                                batch.setColor(color);
+                                batch.draw(previousBodyRegion, x, y, width, height);
+                                color.a = previusTransparency;
+                                batch.setColor(color);
+                            }
+                        }
+                        if (bodyRegion != null) {
+                            if (bodyRegion.isFlipY() && shouldFlip) {
+                                bodyRegion.flip(false, true);
+                            }
+                            batch.draw(bodyRegion, x, y, width, height);
+                        }
                     }
             );
         }
@@ -192,11 +211,9 @@ public class CharacterRenderingSystem extends RenderingSystem {
             if (player.hasHelmet()) {
                 Helmet helmet = player.getHelmet();
                 BundledAnimation animation = animationHandler.getHelmetsAnimation(helmet, heading.current);
-                if (animation != null) {
-                    TextureRegion helmetRegion = animation.getGraphic();
-                    float offsetY = headOffsetY - 4 * SCALE;
-                    drawTexture(helmetRegion, bodyPixelOffsetX, bodyPixelOffsetY, 4.0f * SCALE, offsetY + (idle / 2));
-                }
+                float offsetY = headOffsetY - 4 * SCALE;
+                float offsetX = 4.0f * SCALE;
+                draw(animation, this.bodyPixelOffsetX, this.bodyPixelOffsetY, offsetX, offsetY);
             }
         }
 
@@ -204,37 +221,56 @@ public class CharacterRenderingSystem extends RenderingSystem {
             if (player.hasWeapon()) {
                 Weapon weapon = player.getWeapon();
                 BundledAnimation animation = animationHandler.getWeaponAnimation(weapon, heading.current);
-                if (animation != null) {
-                    TextureRegion weaponRegion = player.isMoving() || player.hasAttackAnimation() ? animation.getGraphic() : animation.getGraphic(0);
-                    drawTexture(weaponRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, Math.max(0, headOffsetY) + idle);
-                }
+                draw(animation, this.bodyPixelOffsetX, this.bodyPixelOffsetY, 0, Math.max(0, headOffsetY) + idle);
             }
         }
+
 
         void drawShield() {
             if (player.hasShield()) {
                 Shield shield = player.getShield();
                 BundledAnimation animation = animationHandler.getShieldAnimation(shield, heading.current);
-                if (animation != null) {
-                    TextureRegion shieldRegion = player.isMoving() || player.hasAttackAnimation() ? animation.getGraphic() : animation.getGraphic(0);
-                    drawTexture(shieldRegion, bodyPixelOffsetX, bodyPixelOffsetY, 0, Math.max(0, headOffsetY) + idle);
+                draw(animation, this.bodyPixelOffsetX, this.bodyPixelOffsetY, 0, Math.max(0, headOffsetY) + idle);
+            }
+        }
+
+        boolean animate() {
+            return player.isMoving() || player.hasAttackAnimation();
+        }
+
+        private void draw(BundledAnimation animation, float x, float y, float offsetX, float offsetY) {
+            if (animation != null) {
+                if (animate()) {
+                    drawTexture(animation.getPreviousGraphic(), x, y, offsetX, offsetY, animation.getPreviousFrameTransparency());
+                    drawTexture(animation.getGraphic(), x, y, offsetX, offsetY);
+                } else {
+                    drawTexture(animation.getGraphic(0), x, y, offsetX, offsetY);
                 }
             }
         }
 
         private void drawTexture(TextureRegion region, float x, float y, float offsetX, float offsetY) {
+            drawTexture(region, x, y, offsetX, offsetY, 1);
+        }
+
+        private void drawTexture(TextureRegion region, float x, float y, float offsetX, float offsetY, float transparency) {
             if (region != null) {
                 if (region.isFlipY() && shouldFlip) {
                     region.flip(false, true);
                 }
-                batchRenderingSystem.addTask((batch ->
-                        {
-                            float x1 = x + offsetX;
-                            float y1 = y + offsetY * (shouldFlip ? -1 : 1);
-                            batch.draw(region, x1, y1);
-                        })
-                );
-
+                float x1 = x + offsetX;
+                float y1 = y + offsetY * (shouldFlip ? -1 : 1);
+                BatchTask drawTexture = (batch) ->
+                {
+                    Color color = batch.getColor();
+                    float previusTransparency = color.a;
+                    color.a = transparency;
+                    batch.setColor(color);
+                    batch.draw(region, x1, y1);
+                    color.a = previusTransparency;
+                    batch.setColor(color);
+                };
+                batchRenderingSystem.addTask(drawTexture);
             }
         }
     }

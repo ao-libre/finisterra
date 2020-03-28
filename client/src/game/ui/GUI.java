@@ -2,8 +2,6 @@ package game.ui;
 
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.scenes.scene2d.Stage;

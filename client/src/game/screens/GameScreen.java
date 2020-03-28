@@ -8,7 +8,7 @@ import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.ClientConfiguration;
@@ -58,6 +58,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     private final AOAssetManager assetManager;
     private final Music backgroundMusic = MusicHandler.BACKGROUNDMUSIC;
     private WorldConfigurationBuilder worldConfigBuilder;
+    private FPSLogger fpsLogger = new FPSLogger();
 
     public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
 
@@ -178,6 +179,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     @Override
     public void render(float delta) {
         this.update(delta);
+        fpsLogger.log();
     }
 
     @Override

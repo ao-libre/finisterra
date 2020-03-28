@@ -43,7 +43,6 @@ public class DesktopLauncher {
         cfg.disableAudio(initConfig.isDisableAudio());
         cfg.setMaximized(initConfig.isStartMaximized());
         cfg.setWindowSizeLimits(854, 480, -1, -1);
-        cfg.useOpenGL3(true, 3, 2);
 
         if (video.getHiDPIMode().equalsIgnoreCase("Pixels")) {
             cfg.setHdpiMode(HdpiMode.Pixels);
