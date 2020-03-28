@@ -15,10 +15,11 @@ import entity.character.parts.Head;
 import entity.character.states.Heading;
 import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
+import game.utils.Pos2D;
 import model.descriptors.BodyDescriptor;
 import model.textures.AOTexture;
 import model.textures.BundledAnimation;
-import position.Pos2D;
+import position.WorldPosOffsets;
 import position.WorldPos;
 import shared.model.map.Tile;
 import shared.util.Util;
@@ -56,8 +57,8 @@ public class CharacterRenderingSystem extends RenderingSystem {
 
     public void drawPlayer(E player, Optional<WorldPos> forcedPos) {
         WorldPos pos = forcedPos.orElse(player.getWorldPos());
-        Pos2D currentPos = pos.getPos2D();
-        Pos2D screenPos = Util.toScreen(currentPos);
+        Pos2D currentPos = Pos2D.get(pos, player.getWorldPosOffsets());
+        Pos2D screenPos = currentPos.toScreen();
         createDrawer(getBatch(), player, screenPos, descriptorHandler, animationHandler).draw();
     }
 

@@ -15,9 +15,10 @@ import com.google.common.cache.LoadingCache;
 import entity.character.Character;
 import entity.character.info.Name;
 import game.utils.Colors;
+import game.utils.Pos2D;
 import game.utils.Skins;
 import org.jetbrains.annotations.NotNull;
-import position.Pos2D;
+import position.WorldPosOffsets;
 import position.WorldPos;
 import shared.interfaces.Hero;
 import shared.model.map.Tile;
@@ -60,7 +61,7 @@ public class NameRenderingSystem extends RenderingSystem {
 
     @Override
     protected void process(E player) {
-        Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
+        Pos2D playerPos = Pos2D.get(player).toScreen();
 
         float nameY = drawName(player, playerPos);
         drawClanName(player, playerPos, nameY);

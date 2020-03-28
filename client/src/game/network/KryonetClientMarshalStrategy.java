@@ -17,6 +17,7 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
         this.host = host;
         this.port = port;
         endpoint = new Client(8192, 8192);
+        Log.set(Log.LEVEL_DEBUG);
     }
 
     public void setHost(String host) {

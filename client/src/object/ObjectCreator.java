@@ -66,7 +66,7 @@ public class ObjectCreator extends Game {
         Entity cameraEntity = world.createEntity();
         E(cameraEntity)
                 .aOCamera(true)
-                .pos2D();
+                .worldPosOffsets();
         world.getSystem(TagManager.class).register("camera", cameraEntity);
     }
 

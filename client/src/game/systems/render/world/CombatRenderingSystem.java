@@ -18,9 +18,10 @@ import entity.character.parts.Body;
 import entity.world.CombatMessage;
 import game.handlers.DescriptorHandler;
 import game.utils.Colors;
+import game.utils.Pos2D;
 import game.utils.Skins;
 import org.jetbrains.annotations.NotNull;
-import position.Pos2D;
+import position.WorldPosOffsets;
 import position.WorldPos;
 import shared.model.map.Tile;
 import shared.util.Util;
@@ -61,7 +62,7 @@ public class CombatRenderingSystem extends RenderingSystem {
 
     @Override
     protected void process(E player) {
-        Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
+        Pos2D playerPos = Pos2D.get(player).toScreen();
 
         if (!player.hasCombatMessage()) {
             return;

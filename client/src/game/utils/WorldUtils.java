@@ -11,7 +11,7 @@ import game.screens.GameScreen;
 import game.screens.WorldScreen;
 import game.systems.camera.CameraSystem;
 import physics.AOPhysics;
-import position.Pos2D;
+import position.WorldPosOffsets;
 import position.WorldPos;
 import shared.util.Util;
 
@@ -45,7 +45,7 @@ public class WorldUtils {
 
             // Mouse coordinates in world
             Vector3 screenPos = camera.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-            WorldPos value = Util.toWorld(new Pos2D(screenPos.x, screenPos.y));
+            WorldPos value = Util.toWorld(new WorldPosOffsets(screenPos.x, screenPos.y));
             value.map = map;
             return value;
         });

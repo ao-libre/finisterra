@@ -57,10 +57,12 @@ public class MovementProcessorSystem extends IteratingSystem {
             }
             player.getMovement().destinations.clear();
             WorldPos worldPos = player.getWorldPos();
-            worldPos.offsetY = 0;
-            worldPos.offsetX = 0;
+            if (player.hasWorldPosOffsets()) {
+                player.getWorldPosOffsets().x = 0;
+                player.getWorldPosOffsets().y = 0;
+            }
             if (!worldPos.equals(destination)) {
-                player.getMovement().add(new Destination(destination, getDir(worldPos, destination)));
+                player.getMovement().add(new Destination(destination, getDir(worldPos, destination).ordinal()));
             }
         }
     }
@@ -110,7 +112,7 @@ public class MovementProcessorSystem extends IteratingSystem {
                 requests.put(requestNumber, request);
                 GameScreen.getClient().sendToAll(request);
                 if (valid) { // Prediction
-                    Destination destination = new Destination(expectedPos, movement);
+                    Destination destination = new Destination(expectedPos, movement.ordinal());
                     player.movementAdd(destination);
                     if (player.isMeditating()) {
                         GameScreen.getClient().sendToAll(new MeditateRequest());

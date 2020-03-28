@@ -34,7 +34,7 @@ import network.Network;
 import physics.AOPhysics;
 import physics.Attack;
 import physics.AttackAnimation;
-import position.Pos2D;
+import position.WorldPosOffsets;
 import position.WorldPos;
 import shared.interfaces.CharClass;
 import shared.interfaces.Constants;
@@ -256,7 +256,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Inventory.Item.class,
                 Inventory.Item[].class,
                 Optional.class,
-                Pos2D.class,
+                WorldPosOffsets.class,
                 AOPhysics.class,
                 AOPhysics.Movement.class,
                 CombatMessage.class,

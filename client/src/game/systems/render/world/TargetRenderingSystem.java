@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import game.ui.GUI;
 import game.utils.Colors;
 import game.utils.WorldUtils;
-import position.Pos2D;
+import position.WorldPosOffsets;
 import position.WorldPos;
 import shared.model.map.Tile;
 import shared.util.Util;
@@ -35,7 +35,7 @@ public class TargetRenderingSystem extends RenderingSystem {
             if (worldPos.isPresent()) {
                 Color prevColor = new Color(getBatch().getColor());
                 getBatch().setColor(Colors.rgba(255, 255, 255, 0.5f));
-                Pos2D mousePos = Util.toScreen(worldPos.get());
+                WorldPosOffsets mousePos = Util.toScreen(worldPos.get());
                 getBatch().draw(TARGET, mousePos.x, mousePos.y, Tile.TILE_PIXEL_WIDTH, Tile.TILE_PIXEL_HEIGHT);
                 getBatch().setColor(prevColor);
             }

@@ -114,7 +114,7 @@ public class ServerSystem extends MarshalSystem {
         return connectionByPlayer.get(playerId);
     }
 
-    public int getAmountConnections() {
+    int getAmountConnections() {
         return connectionByPlayer.size();
     }
 
