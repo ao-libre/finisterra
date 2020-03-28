@@ -11,8 +11,9 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import game.utils.Pos2D;
 import game.utils.Resources;
-import position.Pos2D;
+import position.WorldPosOffsets;
 import shared.model.map.Tile;
 import shared.util.Util;
 
@@ -65,12 +66,12 @@ public class LightRenderingSystem extends RenderingSystem {
 
     @Override
     protected void process(E playerEntity) {
-        Pos2D pos = playerEntity.worldPosPos2D();
+        Pos2D pos = Pos2D.get(playerEntity);
         renderLight(pos);
     }
 
     private void renderLight(Pos2D pos) {
-        Pos2D playerPosition = Util.toScreen(pos);
+        Pos2D playerPosition = pos.toScreen();
 
         lightBuffer.begin();
         Gdx.gl.glEnable(GL20.GL_BLEND);

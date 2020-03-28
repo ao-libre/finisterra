@@ -16,6 +16,7 @@ public class ServerStrategy extends KryonetMarshalStrategy {
         this.tcpPort = tcpPort;
         this.udpPort = udpPort;
         endpoint = new Server();
+        Log.set(Log.LEVEL_DEBUG);
     }
 
     @Override

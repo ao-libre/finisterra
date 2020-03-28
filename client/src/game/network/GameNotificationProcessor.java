@@ -164,9 +164,6 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         final AOConsole console = gui.getConsole();
         final String message = assetManager.getMessages(consoleMessage.getMessageId(), consoleMessage.getMessageParams());
         switch (consoleMessage.getKind()) {
-            case INFO:
-                console.addInfo(message);
-                break;
             case ERROR:
                 console.addError(message);
                 break;
@@ -176,6 +173,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
             case WARNING:
                 console.addWarning(message);
                 break;
+            case INFO:
             default:
                 console.addInfo(message);
                 break;

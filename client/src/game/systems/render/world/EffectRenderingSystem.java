@@ -13,20 +13,21 @@ import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
 import game.handlers.ParticlesHandler;
 import game.managers.WorldManager;
+import game.utils.Pos2D;
 import graphics.Effect;
 import model.descriptors.BodyDescriptor;
 import model.descriptors.FXDescriptor;
 import model.textures.BundledAnimation;
-import position.Pos2D;
 import position.WorldPos;
+import position.WorldPosOffsets;
 import shared.model.map.Tile;
-import shared.util.Util;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import static com.artemis.E.E;
+import static graphics.Effect.NO_REF;
 
 @Wire
 public class EffectRenderingSystem extends FluidIteratingSystem {
@@ -92,28 +93,26 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
     }
 
     void drawEffect(E e, Optional<WorldPos> forcePos) {
+        E candidate = e;
         if (e.hasEffect()) {
             Effect effect = e.getEffect();
-            if (forcePos.isPresent()) {
-                drawEffect(e, forcePos.get());
-            } else {
+            if (effect.entityReference != NO_REF) {
                 int networkedEntity = effect.entityReference;
                 if (worldManager.hasNetworkedEntity(networkedEntity)) {
                     int entityId = worldManager.getNetworkedEntity(networkedEntity);
                     E entity = E(entityId);
-                    if (entity != null && entity.hasWorldPos()) {
-                        drawEffect(e, entity.getWorldPos());
+                    if (entity != null) {
+                        candidate = entity;
                     }
-                } else if (e.hasWorldPos()) {
-                    drawEffect(e, e.getWorldPos());
                 }
             }
+            drawEffect(e, forcePos.orElse(candidate.getWorldPos()), candidate.getWorldPosOffsets());
         }
     }
 
-    private void drawEffect(E e, WorldPos pos) {
+    private void drawEffect(E e, WorldPos pos, WorldPosOffsets offsets) {
         doBegin();
-        Pos2D screenPos = Util.toScreen(pos.getPos2D());
+        Pos2D screenPos = Pos2D.get(pos, offsets).toScreen();
         Effect effect = e.getEffect();
         int entityId = e.id();
         switch (effect.type) {

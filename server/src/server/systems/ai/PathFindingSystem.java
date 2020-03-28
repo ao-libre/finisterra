@@ -66,7 +66,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         WorldPos targetPos = target1.map(E::getWorldPos).orElse(e.getOriginPos().toWorldPos());
         if (targetPos.equals(e.getWorldPos())) {
             return;
-        } else if (!target1.isPresent() && WorldUtils.WorldUtils(world).distance(origin, e.getOriginPos().toWorldPos()) < 10) {
+        } else if (target1.isEmpty() && WorldUtils.WorldUtils(world).distance(origin, e.getOriginPos().toWorldPos()) < 10) {
             return;
         }
         makeYourMove(e, origin, targetPos, aStarMap);
@@ -128,7 +128,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         Map map = mapManager.getMap(nextPos.map);
         boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
         boolean occupied = mapManager.getHelper().hasEntity(mapManager.getNearEntities(entityId), nextPos);
-        Tile tile = mapManager.getHelper().getTile(map, nextPos);
+        Tile tile = MapHelper.getTile(map, nextPos);
         if (player.hasImmobile() || blocked || occupied || (tile != null && tile.getTileExit() != null)) {
             nextPos = oldPos;
         }
@@ -142,7 +142,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         WorldManager worldManager = world.getSystem(WorldManager.class);
         // notify near users
         if (nextPos != oldPos) {
-            worldManager.notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov)));
+            worldManager.notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov.ordinal())));
         } else {
             worldManager.notifyUpdate(entityId, EntityUpdate.EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build());
         }

@@ -78,8 +78,6 @@ public class WorldRenderingSystem extends BaseSystem {
         Optional<WorldPos> result = Optional.empty();
         if (pos.x != x || pos.y != y) {
             WorldPos newPos = new WorldPos(x, y, pos.map);
-            newPos.offsetX = pos.offsetX;
-            newPos.offsetY = pos.offsetY;
             result = Optional.of(newPos);
         }
         return result;

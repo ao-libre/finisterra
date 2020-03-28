@@ -182,7 +182,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         Entity cameraEntity = world.createEntity();
         E(cameraEntity)
                 .aOCamera(true)
-                .pos2D();
+                .worldPosOffsets();
 
         // for testing
         backgroundMusic.setVolume(0.20f);
