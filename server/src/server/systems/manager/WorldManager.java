@@ -98,7 +98,6 @@ public class WorldManager extends DefaultManager {
             for(int i = 0; i<20;i++) {
                 if(items[i] != null) {
                     items[i].equipped = false;
-                    //inventoryUpdate.add( i, items[i] );
                     ItemConsumers itemConsumers = getWorld().getSystem( ItemConsumers.class );
                     Obj item = objectManager.getObject( items[i].objId ).get();
                     itemConsumers.TAKE_OFF.accept( entityId, item );
@@ -108,12 +107,13 @@ public class WorldManager extends DefaultManager {
                         Log.info("drop slot "+i +": "+ dropi);
                         if (dropi) {
                             dropItem( item.getId(), items[i].count, entity.getWorldPos() );
+                            entity.getInventory().remove( i );
                             inventoryUpdate.remove( i );
                         }
                     }
                 }
             }
-            sendEntityUpdate( entityId, inventoryUpdate );
+            notifyUpdate( entityId, inventoryUpdate );
             //setea la hp a 0 porque o sino queda con hp
             entity.getHealth().min = 0;
             // cambio del cuerpo y la cabeza a fantasma
@@ -121,8 +121,9 @@ public class WorldManager extends DefaultManager {
             entity.bodyIndex(8);
             entity.headIndex(514);
             EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(entityId);
-            resetUpdate.withComponents( entity.getHealth() );
-            resetUpdate.withComponents( entity.getHead(), entity.getBody());
+            resetUpdate.withComponents(entity.getHealth());
+            resetUpdate.withComponents(entity.getHead(), entity.getBody());
+            resetUpdate.withComponents(entity.getInventory());
             sendEntityUpdate(entityId, resetUpdate.build());
             notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(entity.getWorldPos()).build());
             //a los 20 segundos no revive automaticamente en la posision de origen del jugador
@@ -174,8 +175,7 @@ public class WorldManager extends DefaultManager {
                 }
             }
             entity.worldPosMap(entity.originPosMap()).worldPosX(entity.originPosX()).worldPosY(entity.originPosY());
-        }
-        if (resurrected){
+        } else {
             Timer.instance().clear();
         }
         sendEntityUpdate(entityId, resetUpdate.build());
