@@ -7,8 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
 import game.handlers.ParticlesHandler;
+import game.utils.Pos2D;
 import graphics.FX;
-import position.Pos2D;
+import position.WorldPosOffsets;
 import position.WorldPos;
 import shared.model.map.Tile;
 import shared.util.Util;
@@ -51,7 +52,7 @@ public class ParticleRenderingSystem extends RenderingSystem {
 
     @Override
     protected void process(E entity) {
-        Pos2D screenPos = Util.toScreen(entity.worldPosPos2D());
+        Pos2D screenPos = Pos2D.get(entity).toScreen();
         final FX fx = entity.getFX();
         if (fx.particles.isEmpty()) {
             return;

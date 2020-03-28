@@ -5,7 +5,8 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import entity.character.Character;
-import position.Pos2D;
+import game.utils.Pos2D;
+import position.WorldPosOffsets;
 import position.WorldPos;
 import shared.util.Util;
 
@@ -19,7 +20,7 @@ public class CharacterStatesRenderingSystem extends RenderingSystem {
     @Override
     protected void process(E player) {
         if (isInAnyState(player)) {
-            Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
+            Pos2D playerPos = Pos2D.get(player).toScreen();
             if (player.hasWriting()) {
 
             }

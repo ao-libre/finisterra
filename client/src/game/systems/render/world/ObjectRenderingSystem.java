@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import entity.world.Object;
 import game.handlers.ObjectHandler;
-import position.Pos2D;
+import position.WorldPosOffsets;
 import position.WorldPos;
 import shared.model.map.Tile;
 import shared.objects.types.Obj;
@@ -30,7 +30,7 @@ public class ObjectRenderingSystem extends RenderingSystem {
         Optional<Obj> object = objectHandler.getObject(e.getObject().index);
         object.ifPresent(obj -> {
             WorldPos objectPos = e.getWorldPos();
-            Pos2D screenPos = Util.toScreen(objectPos);
+            WorldPosOffsets screenPos = Util.toScreen(objectPos);
             if (!e.hasScale()) {
                 e.scale(0f);
             } else if (e.getScale().scale >= 1.0f) {

@@ -1,17 +1,16 @@
 package game.systems.camera;
 
-import camera.AOCamera;
-import camera.Focused;
-import com.artemis.Aspect;
-import com.artemis.E;
-import com.artemis.EBag;
-import com.artemis.annotations.Wire;
-import com.artemis.systems.IteratingSystem;
-import position.Pos2D;
-import position.WorldPos;
-import shared.util.Util;
+        import camera.AOCamera;
+        import camera.Focused;
+        import com.artemis.Aspect;
+        import com.artemis.E;
+        import com.artemis.EBag;
+        import com.artemis.annotations.Wire;
+        import com.artemis.systems.IteratingSystem;
+        import game.utils.Pos2D;
+        import position.WorldPos;
 
-import static com.artemis.E.E;
+        import static com.artemis.E.E;
 
 @Wire
 public class CameraFocusSystem extends IteratingSystem {
@@ -22,14 +21,14 @@ public class CameraFocusSystem extends IteratingSystem {
 
     @Override
     protected void process(int player) {
-
         EBag cameras = E.withComponent(AOCamera.class);
         if (cameras.iterator().hasNext()) {
-            E camera = cameras.iterator().next();
-            Pos2D cameraPos = camera.getPos2D();
-            Pos2D pos = Util.toScreen(E(player).worldPosPos2D());
-            cameraPos.x = pos.x;
-            cameraPos.y = pos.y;
+            E playerEntity = E(player);
+            Pos2D pos = Pos2D.get(playerEntity).toScreen();
+
+            cameras.iterator().next()
+                    .worldPosOffsetsX(pos.x)
+                    .worldPosOffsetsY(pos.y);
         }
     }
 

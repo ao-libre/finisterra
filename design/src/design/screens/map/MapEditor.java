@@ -33,7 +33,7 @@ import game.handlers.ObjectHandler;
 import game.managers.MapManager;
 import game.systems.camera.CameraSystem;
 import launcher.DesignCenter;
-import position.Pos2D;
+import position.WorldPosOffsets;
 import position.WorldPos;
 import shared.model.map.Map;
 import shared.model.map.Tile;
@@ -224,7 +224,7 @@ public class MapEditor extends DesignScreen {
     private Optional<WorldPos> mouseToWorldPos() {
         CameraSystem camera = world.getSystem(CameraSystem.class);
         Vector3 screenPos = camera.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-        WorldPos value = Util.toWorld(new Pos2D(screenPos.x, screenPos.y));
+        WorldPos value = Util.toWorld(new WorldPosOffsets(screenPos.x, screenPos.y));
         if (MapHelper.getTile(mapProperties.getCurrent(), value) != null) {
             return Optional.of(value);
         }
@@ -252,7 +252,7 @@ public class MapEditor extends DesignScreen {
         WorldConfiguration config = builder.build();
         world = new World(config);
         int camera = world.create();
-        E(camera).pos2D().aOCamera();
+        E(camera).worldPosOffsets().aOCamera();
         viewer = world.create();
         E(viewer).focused();
         initMap(1);

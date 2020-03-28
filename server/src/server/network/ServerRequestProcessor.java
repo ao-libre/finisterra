@@ -128,7 +128,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
             if (nextPos.map != oldPos.map) {
                 worldManager.notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(E(playerId).getWorldPos()).build());
             } else {
-                worldManager.notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement)));
+                worldManager.notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement.ordinal())));
             }
         } else {
             worldManager.notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(player.getHeading()).build());

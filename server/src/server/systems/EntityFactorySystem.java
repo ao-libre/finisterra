@@ -530,7 +530,9 @@ public class EntityFactorySystem extends PassiveSystem {
         entity
                 .worldPosMap(worldPos.map)
                 .worldPosX(worldPos.x)
-                .worldPosY(worldPos.y);
+                .worldPosY(worldPos.y)
+                .worldPosOffsetsX(0)
+                .worldPosOffsetsY(0);
     }
 
     private Optional<WorldPos> rhombLegalPos(WorldPos spot, int i, shared.model.map.Map map, boolean item) {
