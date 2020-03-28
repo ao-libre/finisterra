@@ -6,16 +6,9 @@ import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.ClientConfiguration;
@@ -38,11 +31,11 @@ import game.systems.physics.MovementProcessorSystem;
 import game.systems.physics.MovementSystem;
 import game.systems.physics.PhysicsAttackSystem;
 import game.systems.physics.PlayerInputSystem;
-import game.systems.render.ui.CoordinatesRenderingSystem;
+import game.systems.render.BatchRenderingSystem;
 import game.systems.render.world.*;
 import game.systems.sound.SoundSytem;
 import game.ui.GUI;
-import game.utils.Skins;
+import net.mostlyoriginal.api.system.render.ClearScreenSystem;
 import shared.model.map.Tile;
 
 import java.util.concurrent.TimeUnit;
@@ -62,20 +55,15 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public static World world;
     public static int player = -1;
     private final ClientConfiguration clientConfiguration;
-    private final FPSLogger logger;
-    private final Label fpsLabel;
-    private final Batch spriteBatch;
     private final AOAssetManager assetManager;
     private final Music backgroundMusic = MusicHandler.BACKGROUNDMUSIC;
     private WorldConfigurationBuilder worldConfigBuilder;
+    private FPSLogger fpsLogger = new FPSLogger();
 
     public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
 
         this.clientConfiguration = clientConfiguration;
         this.assetManager = assetManager;
-        this.spriteBatch = initBatch();
-        this.logger = new FPSLogger();
-        this.fpsLabel = new Label("", Skins.COMODORE_SKIN);
         long start = System.currentTimeMillis();
         initWorldConfiguration();
         Log.info("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
@@ -95,17 +83,6 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
 
     public static KryonetClientMarshalStrategy getClient() {
         return world.getSystem(ClientSystem.class).getKryonetClient();
-    }
-
-    public static Batch initBatch() {
-        Batch tempSpriteBatch;
-        try {
-            tempSpriteBatch = new TextureArraySpriteBatch();
-        } catch (Exception ex) {
-            Log.info("Tu dispositivo no es compatible con el SpriteBatch mejorado. Usando sistema original...");
-            tempSpriteBatch = new SpriteBatch();
-        }
-        return tempSpriteBatch;
     }
 
     @Override
@@ -145,21 +122,21 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .with(HANDLER_PRIORITY, new SpellHandler())
                 .with(HANDLER_PRIORITY, new FontsHandler())
                 // Rendering
-                .with(PRE_ENTITY_RENDER_PRIORITY, new MapGroundRenderingSystem(spriteBatch))
-                .with(PRE_ENTITY_RENDER_PRIORITY, new ObjectRenderingSystem(spriteBatch))
-                .with(PRE_ENTITY_RENDER_PRIORITY, new TargetRenderingSystem(spriteBatch))
-                .with(PRE_ENTITY_RENDER_PRIORITY, new NameRenderingSystem(spriteBatch))
-                .with(ENTITY_RENDER_PRIORITY, new EffectRenderingSystem(spriteBatch))
-                .with(ENTITY_RENDER_PRIORITY, new CharacterRenderingSystem(spriteBatch))
-                .with(ENTITY_RENDER_PRIORITY, new WorldRenderingSystem(spriteBatch))
-                .with(POST_ENTITY_RENDER_PRIORITY, new CombatRenderingSystem(spriteBatch))
-                .with(POST_ENTITY_RENDER_PRIORITY, new DialogRenderingSystem(spriteBatch))
-                .with(POST_ENTITY_RENDER_PRIORITY, new MapLastLayerRenderingSystem(spriteBatch))
-                .with(POST_ENTITY_RENDER_PRIORITY, new LightRenderingSystem(spriteBatch))
-                .with(DECORATION_PRIORITY, new StateRenderingSystem(spriteBatch))
-                .with(DECORATION_PRIORITY, new CharacterStatesRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL, new CoordinatesRenderingSystem(spriteBatch))
-                .with(WorldConfigurationBuilder.Priority.NORMAL, new BuffRenderingSystem(spriteBatch))
+                .with(PRE_ENTITY_RENDER_PRIORITY, new ClearScreenSystem())
+                .with(PRE_ENTITY_RENDER_PRIORITY, new MapGroundRenderingSystem())
+                .with(PRE_ENTITY_RENDER_PRIORITY, new ObjectRenderingSystem())
+                .with(PRE_ENTITY_RENDER_PRIORITY, new TargetRenderingSystem())
+                .with(PRE_ENTITY_RENDER_PRIORITY, new NameRenderingSystem())
+                .with(ENTITY_RENDER_PRIORITY, new EffectRenderingSystem())
+                .with(ENTITY_RENDER_PRIORITY, new CharacterRenderingSystem())
+                .with(ENTITY_RENDER_PRIORITY, new WorldRenderingSystem())
+                .with(POST_ENTITY_RENDER_PRIORITY, new CombatRenderingSystem())
+                .with(POST_ENTITY_RENDER_PRIORITY, new DialogRenderingSystem())
+                .with(POST_ENTITY_RENDER_PRIORITY, new MapLastLayerRenderingSystem())
+                .with(DECORATION_PRIORITY, new StateRenderingSystem())
+                .with(DECORATION_PRIORITY, new CharacterStatesRenderingSystem())
+                .with(DECORATION_PRIORITY, new BatchRenderingSystem())
+
                 // GUI
                 .with(GUI, new GUI())
                 // Other
@@ -182,7 +159,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         Entity cameraEntity = world.createEntity();
         E(cameraEntity)
                 .aOCamera(true)
-                .pos2D();
+                .worldPosOffsets();
 
         // for testing
         backgroundMusic.setVolume(0.20f);
@@ -190,21 +167,8 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     }
 
     protected void update(float deltaTime) {
-        //this.logger.log();
-
-        world.setDelta(MathUtils.clamp(deltaTime, 0, 1 / 14f));
+        world.setDelta(deltaTime);
         world.process();
-
-        //@todo emprolijar
-        spriteBatch.begin();
-        fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
-        fpsLabel.setPosition(1200, 700);
-        fpsLabel.draw(spriteBatch, 1);
-        spriteBatch.end();
-    }
-
-    public OrthographicCamera getGUICamera() {
-        return world.getSystem(CameraSystem.class).guiCamera;
     }
 
     @Override
@@ -215,6 +179,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     @Override
     public void render(float delta) {
         this.update(delta);
+        fpsLogger.log();
     }
 
     @Override
@@ -226,7 +191,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
 
         getWorld().getSystem(GUI.class).getStage().getViewport().update(width, height);
 
-        getWorld().getSystem(LightRenderingSystem.class).resize(width, height);
+        getWorld().getSystem(BatchRenderingSystem.class).resize(width, height);
     }
 
     @Override

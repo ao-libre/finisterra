@@ -7,14 +7,17 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.esotericsoftware.minlog.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import game.handlers.AnimationHandler;
 import game.managers.MapManager;
 import game.screens.GameScreen;
+import game.systems.render.BatchRenderingSystem;
 import org.jetbrains.annotations.NotNull;
 import shared.model.map.Map;
 import shared.model.map.Tile;
@@ -40,11 +43,14 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
                     return renderLayerToBuffer(key, 0);
                 }
             });
-    private WorldRenderingSystem worldRenderingSystem;
 
-    public MapGroundRenderingSystem(Batch spriteBatch) {
-        super(spriteBatch, LOWER_LAYERS);
-        mapBatch = GameScreen.initBatch();
+    private AnimationHandler animationHandler;
+    private WorldRenderingSystem worldRenderingSystem;
+    private BatchRenderingSystem batchRenderingSystem;
+
+    public MapGroundRenderingSystem() {
+        super(LOWER_LAYERS);
+        mapBatch = new SpriteBatch();
     }
 
     @Override
@@ -59,7 +65,7 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
             int height = (int) ((range.maxAreaY - range.minAreaY) * Tile.TILE_PIXEL_HEIGHT);
 
             TextureRegion userRegion = new TextureRegion(mapTexture, x, mapTexture.getHeight() - y - height, width, height);
-            getBatch().draw(userRegion, x, y);
+            batchRenderingSystem.addTask(batch -> batch.draw(userRegion, x, y));
         } catch (ExecutionException e) {
             Log.error("Failed to render map layer 0", e);
         }
@@ -92,6 +98,36 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
     }
 
     private void renderLayer(Map map, Batch mapBatch, int layer) {
-        mapManager.drawLayer(map, mapBatch, layer);
+        for (int x = 0; x < map.getWidth(); x++) {
+            for (int y = map.getHeight() - 1; y >= 0; y--) {
+                Tile tile = map.getTile(x, y);
+                if (tile == null) {
+                    continue;
+                }
+                int graphic = tile.getGraphic(layer);
+                if (graphic == 0) {
+                    continue;
+                }
+                doTileDraw(mapBatch, x, y, graphic);
+
+            }
+        }
+    }
+
+    private void doTileDraw(Batch mapBatch, int x, int y, int graphic) {
+        TextureRegion tileRegion = animationHandler.hasTexture(graphic) ?
+                mapManager.getTextureRegion(animationHandler.getTexture(graphic)) :
+                mapManager.getAnimation(0, graphic);
+        doTileDraw(mapBatch, y, x, tileRegion);
+    }
+
+    private void doTileDraw(Batch mapBatch, int y, int x, TextureRegion tileRegion) {
+        if (tileRegion != null) {
+            final float mapPosX = (x * Tile.TILE_PIXEL_WIDTH);
+            final float mapPosY = (y * Tile.TILE_PIXEL_HEIGHT);
+            final float tileOffsetX = mapPosX + (Tile.TILE_PIXEL_WIDTH - tileRegion.getRegionWidth()) / 2;
+            final float tileOffsetY = mapPosY - tileRegion.getRegionHeight() + Tile.TILE_PIXEL_HEIGHT;
+            mapBatch.draw(tileRegion, tileOffsetX, tileOffsetY);
+        }
     }
 }

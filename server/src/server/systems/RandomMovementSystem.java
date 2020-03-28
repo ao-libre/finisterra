@@ -75,17 +75,8 @@ public class RandomMovementSystem extends IteratingSystem {
 
         worldManager.notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build()); // is necessary?
         if (nextPos != oldPos) {
-            worldManager.notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov)));
+            worldManager.notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov.ordinal())));
         }
     }
 
-    private List<AOPhysics.Movement> otherMovements(Optional<AOPhysics.Movement> movement) {
-        return movement.isPresent() ? getOther(movement.get()) : VALUES;
-    }
-
-    private List<AOPhysics.Movement> getOther(AOPhysics.Movement movement) {
-        List<AOPhysics.Movement> result = new ArrayList<>(VALUES);
-        result.remove(movement);
-        return result;
-    }
 }

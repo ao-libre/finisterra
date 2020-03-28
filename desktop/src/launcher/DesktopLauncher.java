@@ -55,7 +55,7 @@ public class DesktopLauncher {
          */
         if (System.getProperty("os.name").toLowerCase().contains("mac")) {
             /*
-                TODO: Add icon image handler fot Mac.
+                TODO: Add icon image handler for Mac.
             */
         } else {
             cfg.setWindowIcon(Resources.CLIENT_ICON);

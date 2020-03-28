@@ -14,8 +14,6 @@ public class WorldPos extends Component {
     public int map;
     public int x;
     public int y;
-    public float offsetX;
-    public float offsetY;
 
     public WorldPos() {
         this.x = 0;
@@ -55,22 +53,6 @@ public class WorldPos extends Component {
         return new WorldPos();
     }
 
-    public float getOffsetX() {
-        return offsetX;
-    }
-
-    public void setOffsetX(float offsetX) {
-        this.offsetX = offsetX;
-    }
-
-    public float getOffsetY() {
-        return offsetY;
-    }
-
-    public void setOffsetY(float offsetY) {
-        this.offsetY = offsetY;
-    }
-
     public int getMap() {
         return map;
     }
@@ -93,10 +75,6 @@ public class WorldPos extends Component {
 
     public void setY(int y) {
         this.y = y;
-    }
-
-    public Pos2D getPos2D() {
-        return new Pos2D(x + offsetX, y + offsetY);
     }
 
     @Override

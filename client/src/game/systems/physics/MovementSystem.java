@@ -9,6 +9,7 @@ import game.utils.WorldUtils;
 import movement.Destination;
 import physics.AOPhysics;
 import position.WorldPos;
+import position.WorldPosOffsets;
 import shared.model.map.Tile;
 
 import static com.artemis.E.E;
@@ -31,15 +32,16 @@ public class MovementSystem extends IteratingSystem {
             }
 
             player.moving(true);
+            player.worldPosOffsets();
 
             if (movePlayer(player)) {
                 WorldPos worldPos = player.getWorldPos();
-                WorldPos dest = player.movementCurrent().worldPos;
+                WorldPos dest = player.movementCurrent().pos;
                 worldPos.x = dest.x;
                 worldPos.y = dest.y;
                 worldPos.map = dest.map;
-                worldPos.offsetX = 0;
-                worldPos.offsetY = 0;
+                player.getWorldPosOffsets().x = 0;
+                player.getWorldPosOffsets().y = 0;
                 player.movementCompleteCurrent();
             }
         } else {
@@ -56,28 +58,30 @@ public class MovementSystem extends IteratingSystem {
         Destination destination = player.movementCurrent();
         float velocity = player.getAOPhysics().getVelocity();
         float delta = world.getDelta() * velocity / Tile.TILE_PIXEL_HEIGHT;
-        switch (destination.dir) {
+        AOPhysics.Movement movementDir = AOPhysics.Movement.values()[destination.dir];
+        WorldPosOffsets offsets = player.getWorldPosOffsets();
+        switch (movementDir) {
             case DOWN:
-                player.getWorldPos().offsetY += delta;
+                offsets.y += delta;
                 break;
             case LEFT:
-                player.getWorldPos().offsetX -= delta;
+                offsets.x -= delta;
                 break;
             case RIGHT:
-                player.getWorldPos().offsetX += delta;
+                offsets.x += delta;
                 break;
             case UP:
-                player.getWorldPos().offsetY -= delta;
+                offsets.y -= delta;
                 break;
         }
-        player.headingCurrent(WorldUtils.getHeading(destination.dir));
+        player.headingCurrent(WorldUtils.getHeading(movementDir));
         adjustPossiblePos(player);
-        return player.getWorldPos().offsetX % 1 == 0 && player.getWorldPos().offsetY % 1 == 0;
+        return offsets.x % 1 == 0 && offsets.y % 1 == 0;
     }
 
     private void adjustPossiblePos(E player) {
-        player.getWorldPos().offsetX = MathUtils.clamp(player.getWorldPos().offsetX, -1, 1);
-        player.getWorldPos().offsetY = MathUtils.clamp(player.getWorldPos().offsetY, -1, 1);
+        player.getWorldPosOffsets().x = MathUtils.clamp(player.getWorldPosOffsets().x, -1, 1);
+        player.getWorldPosOffsets().y = MathUtils.clamp(player.getWorldPosOffsets().y, -1, 1);
     }
 
 }

@@ -112,7 +112,7 @@ public class MapHelper {
                 .filter(E::hasWorldPos)
                 .anyMatch(entity -> {
                     boolean samePos = pos.equals(entity.getWorldPos());
-                    boolean hasSameDestination = entity.hasMovement() && entity.getMovement().destinations.stream().anyMatch(destination -> destination.worldPos.equals(pos));
+                    boolean hasSameDestination = entity.hasMovement() && entity.getMovement().destinations.stream().anyMatch(destination -> destination.pos.equals(pos));
                     return (samePos || hasSameDestination);
                 });
     }

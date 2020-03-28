@@ -6,7 +6,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import entity.character.states.Immobile;
 import game.screens.GameScreen;
-import position.Pos2D;
+import position.WorldPosOffsets;
 import position.WorldPos;
 import shared.util.Util;
 
@@ -15,13 +15,12 @@ import static com.artemis.E.E;
 @Wire(injectInherited = true)
 public class StateRenderingSystem extends RenderingSystem {
 
-    public StateRenderingSystem(Batch batch) {
-        super(Aspect.all(WorldPos.class).one(Immobile.class), batch, CameraKind.WORLD);
+    public StateRenderingSystem() {
+        super(Aspect.all(WorldPos.class).one(Immobile.class));
     }
 
     private void drawMessage(int entityId) {
         // search position
-        Pos2D playerPos = Util.toScreen(E(entityId).worldPosPos2D());
         // draw [P] in cyan color
         // TODO
     }
