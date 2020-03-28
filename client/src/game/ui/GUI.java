@@ -2,8 +2,6 @@ package game.ui;
 
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -34,7 +32,6 @@ public class GUI extends BaseSystem implements Disposable {
     private UserInformation userTable;
     private DialogText dialog;
     private AOConsole console;
-    private OrthographicCamera camera;
 
     public GUI() {
         this.stage = new AOInputProcessor(this);
@@ -143,19 +140,6 @@ public class GUI extends BaseSystem implements Disposable {
         createDialogContainer(table);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
-    }
-
-    public OrthographicCamera getCamera() {
-        if (camera == null) {
-            if (Gdx.app.getApplicationListener() instanceof AOGame) {
-                AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                final Screen screen = game.getScreen();
-                if (screen instanceof GameScreen) {
-                    camera = ((GameScreen) screen).getGUICamera();
-                }
-            }
-        }
-        return camera;
     }
 
     private void createConsole(Table table) {

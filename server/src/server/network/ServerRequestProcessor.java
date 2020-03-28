@@ -8,6 +8,7 @@ import entity.character.info.Inventory;
 import entity.world.Dialog;
 import entity.world.Object;
 import movement.Destination;
+import physics.AOPhysics;
 import position.WorldPos;
 import server.systems.CommandSystem;
 import server.systems.MeditateSystem;
@@ -97,11 +98,12 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         int playerId = networkManager.getPlayerByConnection(connectionId);
         E player = E(playerId);
         WorldUtils worldUtils = WorldUtils(world);
-        player.headingCurrent(worldUtils.getHeading(request.movement));
+        AOPhysics.Movement movement = AOPhysics.Movement.values()[request.movement];
+        player.headingCurrent(worldUtils.getHeading(movement));
 
         WorldPos worldPos = player.getWorldPos();
         WorldPos oldPos = new WorldPos(worldPos);
-        WorldPos nextPos = worldUtils.getNextPos(worldPos, request.movement);
+        WorldPos nextPos = worldUtils.getNextPos(worldPos, movement);
         Map map = mapManager.getMap(nextPos.map);
         boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
         boolean occupied = mapManager.getHelper().hasEntity(mapManager.getNearEntities(playerId), nextPos);
@@ -127,7 +129,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
             if (nextPos.map != oldPos.map) {
                 worldManager.notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(E(playerId).getWorldPos()).build());
             } else {
-                worldManager.notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement.ordinal())));
+                worldManager.notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement)));
             }
         } else {
             worldManager.notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(player.getHeading()).build());

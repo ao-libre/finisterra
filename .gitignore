@@ -11,6 +11,7 @@ Charfiles/
 desktop/*.tar.gz
 desktop/*.zip
 desktop/jdk*
+desktop/Config.json
 desktop/Screenshots*
 server/bundled-APP
 *.log
