@@ -33,7 +33,7 @@ allprojects {
         appName = 'Finisterra'
 
         // Control global de las versiones de las dependencias.
-        gdxVersion = '1.9.11-SNAPSHOT'      //Graphic Engine Library.
+        gdxVersion = '1.9.10'               //Graphic Engine Library.
         kryoVersion = '4.0.2'               //Object Serialization API, override dependency of KryoNet.
         artemisVersion = '2.3.0'            //Artemis EntityComponentSystem & Network manager (TCP/UDP)
         artemisContribVersion = '2.4.0'     //Kinda the same but developed by someone else.
@@ -106,13 +106,13 @@ configure(subprojects.findAll { it.name == 'server' || it.name == 'desktop' }) {
 
         switch(OperatingSystem.current()) {
             case OperatingSystem.MAC_OS:
-                src 'https://download.java.net/java/early_access/jdk14/27/GPL/openjdk-14-ea+27_osx-x64_bin.tar.gz'
+                src 'https://download.java.net/java/GA/jdk14/076bab302c7b4508975440c56f6cc26a/36/GPL/openjdk-14_osx-x64_bin.tar.gz'
                 break;
             case OperatingSystem.WINDOWS:
-                src 'https://download.java.net/java/early_access/jdk14/27/GPL/openjdk-14-ea+27_windows-x64_bin.zip'
+                src 'https://download.java.net/java/GA/jdk14/076bab302c7b4508975440c56f6cc26a/36/GPL/openjdk-14_windows-x64_bin.zip'
                 break;
             case OperatingSystem.LINUX:
-                src 'https://download.java.net/java/early_access/jdk14/27/GPL/openjdk-14-ea+27_linux-x64_bin.tar.gz'
+                src 'https://download.java.net/java/GA/jdk14/076bab302c7b4508975440c56f6cc26a/36/GPL/openjdk-14_linux-x64_bin.tar.gz'
                 break;
         }
 

@@ -5,7 +5,6 @@ import com.artemis.E;
 import com.artemis.FluidIteratingSystem;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entity.character.parts.Body;
@@ -13,42 +12,41 @@ import game.handlers.AnimationHandler;
 import game.handlers.DescriptorHandler;
 import game.handlers.ParticlesHandler;
 import game.managers.WorldManager;
+import game.systems.render.BatchRenderingSystem;
+import game.utils.Pos2D;
 import graphics.Effect;
 import model.descriptors.BodyDescriptor;
 import model.descriptors.FXDescriptor;
 import model.textures.BundledAnimation;
-import position.Pos2D;
 import position.WorldPos;
+import position.WorldPosOffsets;
 import shared.model.map.Tile;
-import shared.util.Util;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import static com.artemis.E.E;
+import static graphics.Effect.NO_REF;
 
 @Wire
 public class EffectRenderingSystem extends FluidIteratingSystem {
 
-    private final Batch batch;
     private final Map<Integer, BundledAnimation> fxs;
     private final Map<Integer, ParticleEffect> particleEffects;
+
     private WorldManager worldManager;
     private DescriptorHandler descriptorHandler;
     private AnimationHandler animationHandler;
+    private BatchRenderingSystem batchRenderingSystem;
+
     private int srcFunc;
     private int dstFunc;
 
-    public EffectRenderingSystem(Batch batch) {
+    public EffectRenderingSystem() {
         super(Aspect.all(Effect.class));
         this.particleEffects = new HashMap<>();
         this.fxs = new HashMap<>();
-        this.batch = batch;
-    }
-
-    public Batch getBatch() {
-        return batch;
     }
 
     @Override
@@ -81,39 +79,44 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
     }
 
     private void doBegin() {
-        srcFunc = getBatch().getBlendSrcFunc();
-        dstFunc = getBatch().getBlendDstFunc();
-        getBatch().enableBlending();
-        getBatch().setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
+
+        batchRenderingSystem.addTask((batch) -> {
+                    srcFunc = batch.getBlendSrcFunc();
+                    dstFunc = batch.getBlendDstFunc();
+                    batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_DST_ALPHA);
+                }
+        );
+
     }
 
     private void doEnd() {
-        getBatch().setBlendFunction(srcFunc, dstFunc);
+        batchRenderingSystem.addTask((batch) -> {
+                    batch.setBlendFunction(srcFunc, dstFunc);
+                }
+        );
     }
 
     void drawEffect(E e, Optional<WorldPos> forcePos) {
+        E candidate = e;
         if (e.hasEffect()) {
             Effect effect = e.getEffect();
-            if (forcePos.isPresent()) {
-                drawEffect(e, forcePos.get());
-            } else {
+            if (effect.entityReference != NO_REF) {
                 int networkedEntity = effect.entityReference;
                 if (worldManager.hasNetworkedEntity(networkedEntity)) {
                     int entityId = worldManager.getNetworkedEntity(networkedEntity);
                     E entity = E(entityId);
-                    if (entity != null && entity.hasWorldPos()) {
-                        drawEffect(e, entity.getWorldPos());
+                    if (entity != null) {
+                        candidate = entity;
                     }
-                } else if (e.hasWorldPos()) {
-                    drawEffect(e, e.getWorldPos());
                 }
             }
+            drawEffect(e, forcePos.orElse(candidate.getWorldPos()), candidate.getWorldPosOffsets());
         }
     }
 
-    private void drawEffect(E e, WorldPos pos) {
+    private void drawEffect(E e, WorldPos pos, WorldPosOffsets offsets) {
         doBegin();
-        Pos2D screenPos = Util.toScreen(pos.getPos2D());
+        Pos2D screenPos = Pos2D.get(pos, offsets).toScreen();
         Effect effect = e.getEffect();
         int entityId = e.id();
         switch (effect.type) {
@@ -122,13 +125,21 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                 int effectId = effect.effectId;
                 FXDescriptor fxDescriptor = descriptorHandler.getFX(effectId);
                 TextureRegion graphic = anim.getGraphic();
-                getBatch().draw(graphic, screenPos.x + (Tile.TILE_PIXEL_WIDTH - graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX(), screenPos.y - graphic.getRegionHeight() + 20 + fxDescriptor.getOffsetY());
+                batchRenderingSystem.addTask((batch) ->
+                        {
+                            float x = screenPos.x + (Tile.TILE_PIXEL_WIDTH - graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX();
+                            float y = screenPos.y - graphic.getRegionHeight() + 20 + fxDescriptor.getOffsetY();
+                            batch.draw(graphic, x, y);
+                        }
+                );
                 break;
             case PARTICLE:
                 ParticleEffect particleEffect = particleEffects.get(entityId);
                 float x = particleEffect.getBoundingBox().getWidth();
                 particleEffect.setPosition(screenPos.x + Tile.TILE_PIXEL_WIDTH / 2, screenPos.y);
-                particleEffect.draw(getBatch(), world.getDelta());
+                batchRenderingSystem.addTask((batch) ->
+                        particleEffect.draw(batch, world.getDelta())
+                );
                 break;
         }
         doEnd();

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import game.handlers.MapHandler;
 import game.managers.MapManager;
 import game.systems.map.TiledMapSystem;
+import game.systems.render.BatchRenderingSystem;
 import game.systems.render.world.WorldRenderingSystem.UserRange;
 import position.WorldPos;
 import shared.model.map.Map;
@@ -24,8 +25,8 @@ public class MapLayerRenderingSystem extends RenderingSystem {
     private TiledMapSystem mapSystem;
     private WorldRenderingSystem worldRenderingSystem;
 
-    public MapLayerRenderingSystem(Batch spriteBatch, List<Integer> layers) {
-        super(Aspect.all(Focused.class), spriteBatch, CameraKind.WORLD);
+    public MapLayerRenderingSystem(List<Integer> layers) {
+        super(Aspect.all(Focused.class));
         this.layers = layers;
     }
 
@@ -58,7 +59,7 @@ public class MapLayerRenderingSystem extends RenderingSystem {
             if (graphic == 0) {
                 return;
             }
-            mapManager.doTileDraw(getBatch(), world.getDelta(), x, y, graphic);
+            mapManager.doTileDraw(world.getDelta(), x, y, graphic);
         });
     }
 

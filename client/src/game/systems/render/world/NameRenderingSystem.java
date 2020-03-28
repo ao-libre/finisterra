@@ -4,7 +4,6 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -14,14 +13,14 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import entity.character.Character;
 import entity.character.info.Name;
+import game.systems.render.BatchRenderingSystem;
 import game.utils.Colors;
+import game.utils.Pos2D;
 import game.utils.Skins;
 import org.jetbrains.annotations.NotNull;
-import position.Pos2D;
 import position.WorldPos;
 import shared.interfaces.Hero;
 import shared.model.map.Tile;
-import shared.util.Util;
 
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +29,7 @@ import static com.artemis.E.E;
 @Wire(injectInherited = true)
 public class NameRenderingSystem extends RenderingSystem {
 
+    private BatchRenderingSystem batchRenderingSystem;
     private final LoadingCache<Integer, Table> names = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
@@ -54,13 +54,13 @@ public class NameRenderingSystem extends RenderingSystem {
 
             });
 
-    public NameRenderingSystem(Batch batch) {
-        super(Aspect.all(Character.class, WorldPos.class, Name.class), batch, CameraKind.WORLD);
+    public NameRenderingSystem() {
+        super(Aspect.all(Character.class, WorldPos.class, Name.class));
     }
 
     @Override
     protected void process(E player) {
-        Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
+        Pos2D playerPos = Pos2D.get(player).toScreen();
 
         float nameY = drawName(player, playerPos);
         drawClanName(player, playerPos, nameY);
@@ -73,10 +73,13 @@ public class NameRenderingSystem extends RenderingSystem {
         final float fontY = screenPos.y + 10;
         Label label = (Label) nameLabel.getChild(0);
         label.getStyle().font.setUseIntegerPositions(false);
-        Color color = setColor(player, label);
-        nameLabel.setPosition(fontX, fontY);
-        nameLabel.draw(getBatch(), 1);
-        label.getStyle().fontColor = color;
+        batchRenderingSystem.addTask(batch -> {
+                    Color color = setColor(player, label);
+                    nameLabel.setPosition(fontX, fontY);
+                    nameLabel.draw(batch, 1);
+                    label.getStyle().fontColor = color;
+                }
+        );
         return fontY;
     }
 

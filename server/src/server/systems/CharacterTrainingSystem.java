@@ -51,7 +51,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
         E e = E(userId);
         if (e.hasGold()) {
             e.getGold().setCount(e.getGold().getCount() + gold);
-            worldManager.sendEntityUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(e.getGold(), CombatMessage.energy("+" + gold)));
+            worldManager.sendEntityUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(e.getGold(), CombatMessage.energy("+" + gold)).build());
         }
     }
 
