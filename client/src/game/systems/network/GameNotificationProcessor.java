@@ -1,4 +1,4 @@
-package game.network;
+package game.systems.network;
 
 import com.artemis.Component;
 import com.artemis.E;
@@ -10,8 +10,8 @@ import com.esotericsoftware.minlog.Log;
 import entity.character.info.Inventory;
 import game.AOGame;
 import game.handlers.AOAssetManager;
-import game.handlers.SoundsHandler;
-import game.managers.WorldManager;
+import game.systems.resources.SoundsSystem;
+import game.systems.world.WorldManager;
 import game.screens.GameScreen;
 import game.screens.LobbyScreen;
 import game.screens.RoomScreen;
@@ -38,7 +38,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     private WorldManager worldManager;
     private AOAssetManager assetManager;
     private CameraShakeSystem cameraShakeSystem;
-    private SoundsHandler soundsHandler;
+    private SoundsSystem soundsSystem;
     private GUI gui;
 
     @Override
@@ -185,9 +185,9 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     public void processNotification(SoundNotification soundNotification) {
         int soundNumber = soundNotification.getSoundNumber();
         if (soundNotification.getState().equals(SoundNotification.SoundState.STOPPED)) {
-            soundsHandler.stopSound(soundNumber);
+            soundsSystem.stopSound(soundNumber);
         } else {
-            soundsHandler.playSound(soundNumber);
+            soundsSystem.playSound(soundNumber);
         }
     }
 

@@ -8,10 +8,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import entity.character.parts.Body;
-import game.handlers.AnimationHandler;
-import game.handlers.DescriptorHandler;
-import game.handlers.ParticlesHandler;
-import game.managers.WorldManager;
+import game.systems.resources.AnimationsSystem;
+import game.systems.resources.DescriptorsSystem;
+import game.systems.resources.ParticlesSystem;
+import game.systems.world.WorldManager;
 import game.systems.render.BatchRenderingSystem;
 import game.utils.Pos2D;
 import graphics.Effect;
@@ -36,8 +36,8 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
     private final Map<Integer, ParticleEffect> particleEffects;
 
     private WorldManager worldManager;
-    private DescriptorHandler descriptorHandler;
-    private AnimationHandler animationHandler;
+    private DescriptorsSystem descriptorsSystem;
+    private AnimationsSystem animationsSystem;
     private BatchRenderingSystem batchRenderingSystem;
 
     private int srcFunc;
@@ -58,13 +58,13 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
             int effectId = effect.effectId;
             switch (effect.type) {
                 case PARTICLE:
-                    ParticleEffect particle = ParticlesHandler.getParticle(effectId);
+                    ParticleEffect particle = ParticlesSystem.getParticle(effectId);
                     particle.flipY();
                     particleEffects.put(entityId, particle);
                     break;
                 case FX:
-                    FXDescriptor fxDescriptor = descriptorHandler.getFX(effectId);
-                    BundledAnimation bundledAnimation = animationHandler.getFX(effect);
+                    FXDescriptor fxDescriptor = descriptorsSystem.getFX(effectId);
+                    BundledAnimation bundledAnimation = animationsSystem.getFX(effect);
                     fxs.put(entityId, bundledAnimation);
                     break;
             }
@@ -123,7 +123,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
             case FX:
                 BundledAnimation anim = fxs.get(entityId);
                 int effectId = effect.effectId;
-                FXDescriptor fxDescriptor = descriptorHandler.getFX(effectId);
+                FXDescriptor fxDescriptor = descriptorsSystem.getFX(effectId);
                 TextureRegion graphic = anim.getGraphic();
                 batchRenderingSystem.addTask((batch) ->
                         {
@@ -149,7 +149,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
         int headOffsetY = 0;
         if (E(entityId).hasBody()) {
             final Body body = E(entityId).getBody();
-            BodyDescriptor bodyDescriptor = descriptorHandler.getBody(body.index);
+            BodyDescriptor bodyDescriptor = descriptorsSystem.getBody(body.index);
             headOffsetY = Math.max(0, bodyDescriptor.getHeadOffsetY());
         }
         return headOffsetY;

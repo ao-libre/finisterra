@@ -1,12 +1,13 @@
-package game.handlers;
+package game.systems.resources;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import game.AOGame;
+import game.handlers.AOAssetManager;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
-public class FontsHandler extends PassiveSystem {
+public class FontsSystem extends PassiveSystem {
 
     private AOAssetManager assetManager;
 

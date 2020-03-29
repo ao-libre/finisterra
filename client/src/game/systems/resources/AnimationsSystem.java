@@ -1,4 +1,4 @@
-package game.handlers;
+package game.systems.resources;
 
 import com.artemis.BaseSystem;
 import com.artemis.annotations.Wire;
@@ -12,6 +12,7 @@ import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
 import entity.character.parts.Body;
 import entity.character.parts.Head;
+import game.handlers.AOAssetManager;
 import graphics.Effect;
 import model.descriptors.HeadDescriptor;
 import model.descriptors.IDescriptor;
@@ -30,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 @Wire
-public class AnimationHandler extends BaseSystem {
+public class AnimationsSystem extends BaseSystem {
 
     private static LoadingCache<Integer, AOTexture> textures;
     private static LoadingCache<Index, List<AOTexture>> headAnimations;
@@ -41,15 +42,15 @@ public class AnimationHandler extends BaseSystem {
     private static LoadingCache<Index, List<BundledAnimation>> fxAnimations;
     private static LoadingCache<Integer, BundledAnimation> tiledAnimations;
     // Injected Systems
-    private DescriptorHandler descriptorHandler;
-    private ObjectHandler objectHandler;
+    private DescriptorsSystem descriptorsSystem;
+    private ObjectSystem objectSystem;
     private AOAssetManager assetManager;
     private LoadingCache<AOAnimation, BundledAnimation> previews = CacheBuilder
             .newBuilder()
             .expireAfterAccess(3, TimeUnit.MINUTES)
             .build(CacheLoader.from(BundledAnimation::new));
 
-    public AnimationHandler(AOAssetManager assetManager) {
+    public AnimationsSystem(AOAssetManager assetManager) {
         this.assetManager = assetManager;
 
         tiledAnimations = CacheBuilder
@@ -62,23 +63,23 @@ public class AnimationHandler extends BaseSystem {
 
         headAnimations = CacheBuilder.newBuilder().expireAfterAccess(3, TimeUnit.MINUTES)
                 .build(CacheLoader.from(head -> {
-                    HeadDescriptor descriptor = descriptorHandler.getHead(head.getIndex());
+                    HeadDescriptor descriptor = descriptorsSystem.getHead(head.getIndex());
                     return createTextures(descriptor);
                 }));
-        bodyAnimations = createCache((body) -> descriptorHandler.getBody(body.getIndex()));
+        bodyAnimations = createCache((body) -> descriptorsSystem.getBody(body.getIndex()));
         helmetAnimations = createCache((helmet) -> {
-            HelmetObj helmetObj = (HelmetObj) objectHandler.getObject(helmet.getIndex()).get();
-            return descriptorHandler.getHelmet(Math.max(helmetObj.getAnimationId(), 0));
+            HelmetObj helmetObj = (HelmetObj) objectSystem.getObject(helmet.getIndex()).get();
+            return descriptorsSystem.getHelmet(Math.max(helmetObj.getAnimationId(), 0));
         });
         weaponAnimations = createCache((weapon) -> {
-            WeaponObj weaponObj = (WeaponObj) objectHandler.getObject(weapon.getIndex()).get();
-            return descriptorHandler.getWeapon(Math.max(weaponObj.getAnimationId(), 0));
+            WeaponObj weaponObj = (WeaponObj) objectSystem.getObject(weapon.getIndex()).get();
+            return descriptorsSystem.getWeapon(Math.max(weaponObj.getAnimationId(), 0));
         });
         shieldAnimations = createCache((shield) -> {
-            ShieldObj shieldObj = (ShieldObj) objectHandler.getObject(shield.getIndex()).get();
-            return descriptorHandler.getShield(Math.max(shieldObj.getAnimationId(), 0));
+            ShieldObj shieldObj = (ShieldObj) objectSystem.getObject(shield.getIndex()).get();
+            return descriptorsSystem.getShield(Math.max(shieldObj.getAnimationId(), 0));
         });
-        fxAnimations = createCache((fx) -> descriptorHandler.getFX(fx.getIndex()));
+        fxAnimations = createCache((fx) -> descriptorsSystem.getFX(fx.getIndex()));
 
         textures = CacheBuilder.newBuilder()
                 .expireAfterAccess(3, TimeUnit.MINUTES)

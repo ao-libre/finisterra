@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import entity.character.info.Inventory.Item;
 import game.AOGame;
 import game.handlers.AOAssetManager;
-import game.handlers.ObjectHandler;
+import game.systems.resources.ObjectSystem;
 import game.screens.GameScreen;
 import game.utils.Cursors;
 import game.utils.Skins;
@@ -179,7 +179,7 @@ public class Inventory extends Window {
     }
 
     public void getShoot() {
-        ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
+        ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null).getSystem(ObjectSystem.class);
         Item[] items = E(GameScreen.getPlayer()).getInventory().items;
 
         AtomicBoolean bowPresent = new AtomicBoolean(false);
@@ -187,7 +187,7 @@ public class Inventory extends Window {
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null) {
                 int inventoryIndex = i;
-                objectHandler.getObject(items[i].objId).ifPresent(obj -> {
+                objectSystem.getObject(items[i].objId).ifPresent(obj -> {
                     if (items[inventoryIndex].equipped && obj.getType().equals(Type.WEAPON)) {
                         WeaponObj weaponObj = (WeaponObj) obj;
                         if (weaponObj.getKind().equals(WeaponKind.BOW)) {
@@ -232,10 +232,10 @@ public class Inventory extends Window {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         dragging.flatMap(Slot::getItem).ifPresent(item -> {
-            ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
-            Optional<Obj> object = objectHandler.getObject(item.objId);
+            ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null).getSystem(ObjectSystem.class);
+            Optional<Obj> object = objectSystem.getObject(item.objId);
             object.ifPresent(obj -> {
-                TextureRegion graphic = objectHandler.getGraphic(obj);
+                TextureRegion graphic = objectSystem.getGraphic(obj);
                 int x1 = Gdx.input.getX() - (graphic.getRegionWidth() / 2);
                 int y1 = Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2);
                 batch.draw(graphic, x1, y1);
@@ -261,8 +261,8 @@ public class Inventory extends Window {
     private Optional<Obj> slotToObject(Slot slot) {
         Optional<Item> item = slot.getItem();
         int objID = item.map(item1 -> item1.objId).orElse(-1);
-        ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
-        Optional<Obj> object = objectHandler.getObject(objID);
+        ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null).getSystem(ObjectSystem.class);
+        Optional<Obj> object = objectSystem.getObject(objID);
         return object;
     }
 

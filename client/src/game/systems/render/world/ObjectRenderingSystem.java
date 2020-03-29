@@ -6,7 +6,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import entity.world.Object;
-import game.handlers.ObjectHandler;
+import game.systems.resources.ObjectSystem;
 import game.systems.render.BatchRenderingSystem;
 import position.WorldPos;
 import position.WorldPosOffsets;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @Wire(injectInherited = true)
 public class ObjectRenderingSystem extends RenderingSystem {
 
-    private ObjectHandler objectHandler;
+    private ObjectSystem objectSystem;
     private BatchRenderingSystem batchRenderingSystem;
 
     public ObjectRenderingSystem() {
@@ -28,7 +28,7 @@ public class ObjectRenderingSystem extends RenderingSystem {
 
     @Override
     protected void process(E e) {
-        Optional<Obj> object = objectHandler.getObject(e.getObject().index);
+        Optional<Obj> object = objectSystem.getObject(e.getObject().index);
         object.ifPresent(obj -> {
             WorldPos objectPos = e.getWorldPos();
             WorldPosOffsets screenPos = Util.toScreen(objectPos);
@@ -40,7 +40,7 @@ public class ObjectRenderingSystem extends RenderingSystem {
                 e.getScale().scale += world.delta * 2;
             }
             float scale = Interpolation.swingOut.apply(e.getScale().scale);
-            TextureRegion texture = objectHandler.getIngameGraphic(obj);
+            TextureRegion texture = objectSystem.getIngameGraphic(obj);
             float width = scale * texture.getRegionWidth();
             float height = scale * texture.getRegionHeight();
             float x = screenPos.x + (Tile.TILE_PIXEL_WIDTH - width) / 2;

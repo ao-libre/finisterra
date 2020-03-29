@@ -4,11 +4,9 @@ import camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import game.handlers.MapHandler;
-import game.managers.MapManager;
+import game.systems.resources.MapSystem;
+import game.systems.map.MapManager;
 import game.systems.map.TiledMapSystem;
-import game.systems.render.BatchRenderingSystem;
 import game.systems.render.world.WorldRenderingSystem.UserRange;
 import position.WorldPos;
 import shared.model.map.Map;
@@ -44,9 +42,9 @@ public class MapLayerRenderingSystem extends RenderingSystem {
     private void drawRange(Map map, UserRange range) {
         range.forEachTile((x, y) -> {
             Map effectiveMap = map;
-            WorldPos pos = MapHandler.getHelper().getEffectivePosition(mapSystem.mapNumber, x, y);
+            WorldPos pos = MapSystem.getHelper().getEffectivePosition(mapSystem.mapNumber, x, y);
             if (pos.map != mapSystem.mapNumber) {
-                effectiveMap = MapHandler.get(pos.map);
+                effectiveMap = MapSystem.get(pos.map);
             }
             Map finalEffectiveMap = effectiveMap;
             layers.forEach(layer -> drawGraphicInLayer(layer, x, y, finalEffectiveMap, pos));

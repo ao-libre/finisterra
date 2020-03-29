@@ -28,7 +28,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
-import game.handlers.AnimationHandler;
+import game.systems.resources.AnimationsSystem;
 import model.textures.AOImage;
 import model.textures.AOTexture;
 
@@ -37,12 +37,12 @@ public class AOImageActor extends Image {
 
     private AOImage image;
 
-    public AOImageActor(AOImage image, AnimationHandler animationHandler) {
+    public AOImageActor(AOImage image, AnimationsSystem animationsSystem) {
         super();
         this.image = image;
         setScaling(Scaling.fit);
         if (image != null) {
-            AOTexture texture = animationHandler.getTexture(image.getId());
+            AOTexture texture = animationsSystem.getTexture(image.getId());
             if (texture != null) {
                 TextureRegion texture1 = texture.getTexture();
                 if (texture1.isFlipY()) {

@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.handlers.AOAssetManager;
-import game.managers.AOInputProcessor;
+import game.input.AOInputProcessor;
 import game.screens.GameScreen;
 import game.ui.user.UserInformation;
 import game.utils.Skins;

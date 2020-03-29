@@ -8,7 +8,7 @@ import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
-import game.handlers.SoundsHandler;
+import game.systems.resources.SoundsSystem;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
@@ -45,13 +45,13 @@ public class MidiLoader extends AsynchronousAssetLoader<Sequencer, MidiLoader.Mi
             sequencer.setSequence(file.read());
             sequencer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
         } catch (MidiUnavailableException e) {
-            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error on loadMidi(FileHandle file): Midi is not available.", e);
+            Gdx.app.debug(SoundsSystem.class.getSimpleName(), "Error on loadMidi(FileHandle file): Midi is not available.", e);
             return null;
         } catch (InvalidMidiDataException e) {
-            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error on loadMidi(FileHandle file): Midi Data was invalid.", e);
+            Gdx.app.debug(SoundsSystem.class.getSimpleName(), "Error on loadMidi(FileHandle file): Midi Data was invalid.", e);
             return null;
         } catch (IOException e) {
-            Gdx.app.debug(SoundsHandler.class.getSimpleName(), "Error on loadMidi(FileHandle file): IO error.", e);
+            Gdx.app.debug(SoundsSystem.class.getSimpleName(), "Error on loadMidi(FileHandle file): IO error.", e);
             return null;
         }
         return sequencer;

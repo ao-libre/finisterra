@@ -6,8 +6,8 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import entity.character.states.Heading;
-import game.handlers.MapHandler;
-import game.managers.WorldManager;
+import game.systems.resources.MapSystem;
+import game.systems.world.WorldManager;
 import game.screens.GameScreen;
 import movement.Destination;
 import physics.AOPhysics;
@@ -93,13 +93,13 @@ public class MovementProcessorSystem extends IteratingSystem {
                 WorldPos expectedPos = Util.getNextPos(pos, movement);
                 Set<Integer> nearEntities = worldManager.getEntities();
                 nearEntities.remove(entity);
-                Map map = MapHandler.get(expectedPos.map);
-                boolean blocked = MapHandler.getHelper().isBlocked(map, expectedPos);
-                boolean occupied = MapHandler.getHelper().hasEntity(nearEntities, expectedPos);
+                Map map = MapSystem.get(expectedPos.map);
+                boolean blocked = MapSystem.getHelper().isBlocked(map, expectedPos);
+                boolean occupied = MapSystem.getHelper().hasEntity(nearEntities, expectedPos);
                 boolean valid = !(blocked ||
                         occupied ||
                         player.hasImmobile());
-                boolean tileExit = MapHandler.getHelper().hasTileExit(map, expectedPos);
+                boolean tileExit = MapSystem.getHelper().hasTileExit(map, expectedPos);
                 if (tileExit) {
                     WorldPosition tileExitPos = map.getTile(expectedPos.x, expectedPos.y).getTileExit();
                     expectedPos = new WorldPos(tileExitPos.getX(), tileExitPos.getY(), tileExitPos.getMap());

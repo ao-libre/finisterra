@@ -30,7 +30,7 @@ import com.esotericsoftware.minlog.Log;
 import design.screens.ScreenEnum;
 import design.screens.views.DescriptorActor;
 import entity.character.states.Heading;
-import game.handlers.AnimationHandler;
+import game.systems.resources.AnimationsSystem;
 import model.descriptors.Descriptor;
 import model.descriptors.FXDescriptor;
 import model.textures.AOAnimation;
@@ -39,13 +39,13 @@ import model.textures.BundledAnimation;
 public class AOAnimationActor extends DescriptorActor {
 
     private BundledAnimation animation;
-    private AnimationHandler animationHandler;
+    private AnimationsSystem animationsSystem;
     private int heading = Heading.HEADING_SOUTH;
     private Descriptor descriptor;
 
-    public AOAnimationActor(AnimationHandler animationHandler) {
+    public AOAnimationActor(AnimationsSystem animationsSystem) {
         super();
-        this.animationHandler = animationHandler;
+        this.animationsSystem = animationsSystem;
     }
 
     public AOAnimationActor(AOAnimation animation) {

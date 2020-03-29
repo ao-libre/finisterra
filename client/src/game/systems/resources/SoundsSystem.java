@@ -1,14 +1,15 @@
-package game.handlers;
+package game.systems.resources;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
+import game.handlers.AOAssetManager;
 import game.systems.sound.SoundSytem;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 
-public class SoundsHandler extends PassiveSystem {
+public class SoundsSystem extends PassiveSystem {
 
     private AOAssetManager assetManager;
 
@@ -22,7 +23,7 @@ public class SoundsHandler extends PassiveSystem {
     public long playSound(Integer soundID, boolean loop) {
         Sound sound = assetManager.getSound(soundID);
         if (sound == null) {
-            Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
+            Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
             return -1;
         }
         //TODO: it should be played with a global configurable volume
@@ -54,7 +55,7 @@ public class SoundsHandler extends PassiveSystem {
     public void stopSound(Integer soundID) {
         Sound sound = assetManager.getSound(soundID);
         if (sound == null) {
-            Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
+            Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
             return;
         }
 
@@ -64,7 +65,7 @@ public class SoundsHandler extends PassiveSystem {
     public void stopSound(Integer soundID, long soundIndex) {
         Sound sound = assetManager.getSound(soundID);
         if (sound == null) {
-            Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
+            Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
             return;
         }
         sound.stop(soundIndex);

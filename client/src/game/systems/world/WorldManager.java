@@ -1,4 +1,4 @@
-package game.managers;
+package game.systems.world;
 
 import com.artemis.BaseSystem;
 import com.esotericsoftware.minlog.Log;

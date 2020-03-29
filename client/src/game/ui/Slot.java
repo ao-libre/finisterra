@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Tooltip;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import game.AOGame;
 import game.handlers.AOAssetManager;
-import game.handlers.ObjectHandler;
+import game.systems.resources.ObjectSystem;
 import game.utils.Skins;
 import game.utils.WorldUtils;
 import shared.objects.types.*;
@@ -82,10 +82,10 @@ public class Slot extends ImageButton {
     }
 
     private void drawItem(Batch batch) {
-        ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
-        Optional<Obj> object = objectHandler.getObject(getObjId());
+        ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null).getSystem(ObjectSystem.class);
+        Optional<Obj> object = objectSystem.getObject(getObjId());
         object.ifPresent(obj -> {
-            TextureRegion graphic = objectHandler.getGraphic(obj);
+            TextureRegion graphic = objectSystem.getGraphic(obj);
             batch.draw(graphic, getX() + 1, getY() + 1);
         });
     }
@@ -96,8 +96,8 @@ public class Slot extends ImageButton {
 
     public Tooltip<Actor> getTooltip(Item item) {
         int objID = item.objId;
-        ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
-        Optional<Obj> obj = objectHandler.getObject(objID);
+        ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null).getSystem(ObjectSystem.class);
+        Optional<Obj> obj = objectSystem.getObject(objID);
         Actor content = createTooltipContent(obj.get());
         return new Tooltip<>(content);
     }

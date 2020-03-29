@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import game.AOGame;
 import game.handlers.AOAssetManager;
-import game.handlers.SpellHandler;
+import game.systems.resources.SpellsSystem;
 import game.screens.GameScreen;
 import game.utils.Colors;
 import game.utils.Skins;
@@ -56,8 +56,8 @@ public class SpellViewExpanded extends Table {
 
     public void updateSpells() {
         WorldUtils.getWorld().ifPresent(world -> {
-            SpellHandler spellHandler = world.getSystem(SpellHandler.class);
-            Spell[] spells = spellHandler.getSpells();
+            SpellsSystem spellsSystem = world.getSystem(SpellsSystem.class);
+            Spell[] spells = spellsSystem.getSpells();
             Spell[] spellsToShow = new Spell[MAX_SPELLS];
             System.arraycopy(spells, 0, spellsToShow, 0, Math.min(MAX_SPELLS, spells.length));
             for (int i = 0; i < MAX_SPELLS; i++) {
@@ -69,10 +69,10 @@ public class SpellViewExpanded extends Table {
     public void newSpellAdd(int spellNum) {
         AtomicBoolean present = new AtomicBoolean(false);
         WorldUtils.getWorld().ifPresent(world -> {
-            SpellHandler spellHandler = world.getSystem(SpellHandler.class);
-            Spell[] spells = spellHandler.getSpells();
+            SpellsSystem spellsSystem = world.getSystem(SpellsSystem.class);
+            Spell[] spells = spellsSystem.getSpells();
             Spell[] spellsToShow = new Spell[MAX_SPELLS];
-            Optional<Spell> newSpell = spellHandler.getSpell(spellNum);
+            Optional<Spell> newSpell = spellsSystem.getSpell(spellNum);
             newSpell.ifPresent(spell1 -> {
                 if (spells.length <= MAX_SPELLS) {
                     for (Spell spell : spells) {

@@ -1,4 +1,4 @@
-package game.network;
+package game.systems.network;
 
 import com.artemis.BaseSystem;
 import com.artemis.annotations.Wire;

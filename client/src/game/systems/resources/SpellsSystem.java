@@ -1,7 +1,8 @@
-package game.handlers;
+package game.systems.resources;
 
 import entity.character.info.SpellBook;
 import game.AOGame;
+import game.handlers.AOAssetManager;
 import game.screens.GameScreen;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.model.Spell;
@@ -11,7 +12,7 @@ import java.util.Optional;
 
 import static com.artemis.E.E;
 
-public class SpellHandler extends PassiveSystem {
+public class SpellsSystem extends PassiveSystem {
 
     private AOAssetManager assetManager;
 

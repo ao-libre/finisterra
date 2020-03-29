@@ -1,9 +1,8 @@
-package game.managers;
+package game.systems.map;
 
 import com.artemis.BaseSystem;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import game.handlers.AnimationHandler;
+import game.systems.resources.AnimationsSystem;
 import game.systems.render.BatchRenderingSystem;
 import model.textures.AOTexture;
 import model.textures.BundledAnimation;
@@ -19,7 +18,7 @@ public class MapManager extends BaseSystem {
 
     public static final List<Integer> LOWER_LAYERS = Arrays.asList(0, 1);
     public static final List<Integer> UPPER_LAYERS = Collections.singletonList(3);
-    private AnimationHandler animationHandler;
+    private AnimationsSystem animationsSystem;
     private BatchRenderingSystem batchRenderingSystem;
 
     public void drawLayer(Map map, int layer) {
@@ -59,8 +58,8 @@ public class MapManager extends BaseSystem {
     }
 
     private void doTileDrawFlipped(float delta, int x, int y, int graphic) {
-        TextureRegion tileRegion = animationHandler.hasTexture(graphic) ?
-                getTextureRegion(animationHandler.getTexture(graphic)) :
+        TextureRegion tileRegion = animationsSystem.hasTexture(graphic) ?
+                getTextureRegion(animationsSystem.getTexture(graphic)) :
                 getAnimation(delta, graphic);
         if (tileRegion != null && !tileRegion.isFlipY()) {
             tileRegion.flip(false, true);
@@ -70,7 +69,7 @@ public class MapManager extends BaseSystem {
 
     public TextureRegion getAnimation(float delta, int graphic) {
         TextureRegion tileRegion = null;
-        BundledAnimation animation = animationHandler.getTiledAnimation(graphic);
+        BundledAnimation animation = animationsSystem.getTiledAnimation(graphic);
         if (animation != null) {
             tileRegion = animation.getGraphic();
         }
@@ -86,8 +85,8 @@ public class MapManager extends BaseSystem {
     }
 
     public void doTileDraw(float delta, int x, int y, int graphic) {
-        TextureRegion tileRegion = animationHandler.hasTexture(graphic) ?
-                getTextureRegion(animationHandler.getTexture(graphic)) :
+        TextureRegion tileRegion = animationsSystem.hasTexture(graphic) ?
+                getTextureRegion(animationsSystem.getTexture(graphic)) :
                 getAnimation(delta, graphic);
         doTileDraw(y, x, tileRegion);
     }

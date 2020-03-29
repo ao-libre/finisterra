@@ -1,10 +1,11 @@
-package game.handlers;
+package game.systems.resources;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
+import game.handlers.AOAssetManager;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 import javax.sound.midi.MidiChannel;
@@ -12,7 +13,7 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 
-public class MusicHandler extends PassiveSystem {
+public class MusicSystem extends PassiveSystem {
 
     public final static Music FIRSTBGM = Gdx.audio.newMusic(Gdx.files.internal("data/music/101.mp3"));
     public final static Music BACKGROUNDMUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/music/1.mp3"));
@@ -21,7 +22,7 @@ public class MusicHandler extends PassiveSystem {
     private AOAssetManager assetManager;
 
     public static void setVolume(float volume) {
-        MusicHandler.volume = volume;
+        MusicSystem.volume = volume;
         try {
             MidiChannel[] channels = MidiSystem.getSynthesizer().getChannels();
             for (MidiChannel channel : channels) {
@@ -42,7 +43,7 @@ public class MusicHandler extends PassiveSystem {
     public void playMusic(int musicID) {
         Music music = assetManager.getMusic(musicID);
         if (music == null) {
-            Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to play music index: " + musicID + ", but it was not loaded.");
+            Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to play music index: " + musicID + ", but it was not loaded.");
             return;
         }
         music.setVolume(volume);
@@ -53,7 +54,7 @@ public class MusicHandler extends PassiveSystem {
     public void stopMusic(int musicID) {
         Music music = assetManager.getMusic(musicID);
         if (music == null) {
-            Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not loaded.");
+            Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not loaded.");
             return;
         }
         music.stop();
@@ -65,7 +66,7 @@ public class MusicHandler extends PassiveSystem {
             public void run() {
                 Music music = assetManager.getMusic(musicID);
                 if (music == null) {
-                    Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not playing or loaded.");
+                    Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not playing or loaded.");
                     return;
                 }
                 if (music.getVolume() < 1)
@@ -84,7 +85,7 @@ public class MusicHandler extends PassiveSystem {
             public void run() {
                 Music music = assetManager.getMusic(musicID);
                 if (music == null) {
-                    Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not playing or loaded.");
+                    Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not playing or loaded.");
                     return;
                 }
                 if (music.getVolume() >= MUSIC_FADE_STEP)
@@ -103,7 +104,7 @@ public class MusicHandler extends PassiveSystem {
         Sequencer sequencer = assetManager.getMidi(midiID);
 
         if (sequencer == null) {
-            Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
+            Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
             return;
         }
 
@@ -114,7 +115,7 @@ public class MusicHandler extends PassiveSystem {
         Sequencer sequencer = assetManager.getMidi(midiID);
 
         if (sequencer == null) {
-            Log.warn(SoundsHandler.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
+            Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to play midi index: " + midiID + ", but it was not loaded.");
             return;
         }
 

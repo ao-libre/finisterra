@@ -13,11 +13,13 @@ import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.ClientConfiguration;
 import game.handlers.*;
-import game.managers.MapManager;
-import game.managers.WorldManager;
-import game.network.ClientResponseProcessor;
-import game.network.GameNotificationProcessor;
-import game.network.KryonetClientMarshalStrategy;
+import game.systems.resources.AnimationsSystem;
+import game.systems.map.MapManager;
+import game.systems.resources.*;
+import game.systems.world.WorldManager;
+import game.systems.network.ClientResponseProcessor;
+import game.systems.network.GameNotificationProcessor;
+import game.systems.network.KryonetClientMarshalStrategy;
 import game.systems.anim.IdleAnimationSystem;
 import game.systems.anim.MovementAnimationSystem;
 import game.systems.camera.CameraFocusSystem;
@@ -56,7 +58,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public static int player = -1;
     private final ClientConfiguration clientConfiguration;
     private final AOAssetManager assetManager;
-    private final Music backgroundMusic = MusicHandler.BACKGROUNDMUSIC;
+    private final Music backgroundMusic = MusicSystem.BACKGROUNDMUSIC;
     private WorldConfigurationBuilder worldConfigBuilder;
     private FPSLogger fpsLogger = new FPSLogger();
 
@@ -112,15 +114,15 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                 .with(HIGH, new SoundSytem())
                 .with(HIGH, new TiledMapSystem())
                 // Handlers
-                .with(HANDLER_PRIORITY, new AnimationHandler(assetManager))
-                .with(HANDLER_PRIORITY, new DescriptorHandler(assetManager))
-                .with(HANDLER_PRIORITY, new MapHandler())
-                .with(HANDLER_PRIORITY, new MusicHandler())
-                .with(HANDLER_PRIORITY, new ObjectHandler())
-                .with(HANDLER_PRIORITY, new ParticlesHandler())
-                .with(HANDLER_PRIORITY, new SoundsHandler())
-                .with(HANDLER_PRIORITY, new SpellHandler())
-                .with(HANDLER_PRIORITY, new FontsHandler())
+                .with(HANDLER_PRIORITY, new AnimationsSystem(assetManager))
+                .with(HANDLER_PRIORITY, new DescriptorsSystem(assetManager))
+                .with(HANDLER_PRIORITY, new MapSystem())
+                .with(HANDLER_PRIORITY, new MusicSystem())
+                .with(HANDLER_PRIORITY, new ObjectSystem())
+                .with(HANDLER_PRIORITY, new ParticlesSystem())
+                .with(HANDLER_PRIORITY, new SoundsSystem())
+                .with(HANDLER_PRIORITY, new SpellsSystem())
+                .with(HANDLER_PRIORITY, new FontsSystem())
                 // Rendering
                 .with(PRE_ENTITY_RENDER_PRIORITY, new ClearScreenSystem())
                 .with(PRE_ENTITY_RENDER_PRIORITY, new MapGroundRenderingSystem())

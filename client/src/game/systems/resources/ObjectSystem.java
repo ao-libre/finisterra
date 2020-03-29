@@ -1,8 +1,9 @@
-package game.handlers;
+package game.systems.resources;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import game.AssetManagerHolder;
+import game.handlers.AOAssetManager;
 import model.textures.AOImage;
 import model.textures.AOTexture;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
@@ -15,7 +16,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ObjectHandler extends PassiveSystem {
+public class ObjectSystem extends PassiveSystem {
 
     private final Map<Obj, AOTexture> textures = new HashMap<>();
     private final Map<Obj, AOTexture> flipped = new HashMap<>();

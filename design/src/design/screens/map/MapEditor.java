@@ -27,10 +27,10 @@ import design.screens.map.gui.MapPalette.Selection;
 import design.screens.map.gui.MapProperties;
 import design.screens.map.systems.MapDesignRenderingSystem;
 import design.screens.views.TileSetView;
-import game.handlers.AnimationHandler;
-import game.handlers.DescriptorHandler;
-import game.handlers.ObjectHandler;
-import game.managers.MapManager;
+import game.systems.resources.AnimationsSystem;
+import game.systems.resources.DescriptorsSystem;
+import game.systems.resources.ObjectSystem;
+import game.systems.map.MapManager;
 import game.systems.camera.CameraSystem;
 import launcher.DesignCenter;
 import position.WorldPosOffsets;
@@ -237,15 +237,15 @@ public class MapEditor extends DesignScreen {
     }
 
     private void createWorld() {
-        AnimationHandler animationHandler = ((DesignCenter) Gdx.app.getApplicationListener()).getAnimationHandler();
-        DescriptorHandler descriptorHandler = ((DesignCenter) Gdx.app.getApplicationListener()).getDescriptorHandler();
+        AnimationsSystem animationsSystem = ((DesignCenter) Gdx.app.getApplicationListener()).getAnimationsSystem();
+        DescriptorsSystem descriptorsSystem = ((DesignCenter) Gdx.app.getApplicationListener()).getDescriptorsSystem();
         WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
         builder
                 .with(new SuperMapper())
-                .with(new ObjectHandler())
+                .with(new ObjectSystem())
                 .with(new CameraSystem(0.1f, 2f))
-                .with(animationHandler)
-                .with(descriptorHandler)
+                .with(animationsSystem)
+                .with(descriptorsSystem)
                 .with(new MapDesignRenderingSystem(new SpriteBatch()))
                 .with(new MapManager());
 

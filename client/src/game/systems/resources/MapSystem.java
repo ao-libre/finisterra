@@ -1,4 +1,4 @@
-package game.handlers;
+package game.systems.resources;
 
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import position.WorldPos;
@@ -8,7 +8,7 @@ import shared.util.MapHelper;
 
 import static shared.util.MapHelper.CacheStrategy.FIVE_MIN_EXPIRE;
 
-public class MapHandler extends PassiveSystem {
+public class MapSystem extends PassiveSystem {
 
     private static MapHelper helper;
 

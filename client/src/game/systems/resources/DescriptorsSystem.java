@@ -1,13 +1,14 @@
-package game.handlers;
+package game.systems.resources;
 
+import game.handlers.AOAssetManager;
 import model.descriptors.*;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
-public class DescriptorHandler extends PassiveSystem {
+public class DescriptorsSystem extends PassiveSystem {
 
     private final AOAssetManager assetManager;
 
-    public DescriptorHandler(AOAssetManager assetManager) {
+    public DescriptorsSystem(AOAssetManager assetManager) {
         this.assetManager = assetManager;
     }
 

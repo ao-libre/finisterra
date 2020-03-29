@@ -1,4 +1,4 @@
-package game.network;
+package game.systems.network;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.minlog.Log;

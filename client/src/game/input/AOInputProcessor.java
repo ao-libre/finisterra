@@ -1,4 +1,4 @@
-package game.managers;
+package game.input;
 
 import com.artemis.E;
 import com.badlogic.gdx.Gdx;
@@ -8,12 +8,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.handlers.AOAssetManager;
-import game.handlers.MapHandler;
-import game.handlers.MusicHandler;
-import game.handlers.ObjectHandler;
+import game.systems.resources.MapSystem;
+import game.systems.resources.MusicSystem;
+import game.systems.resources.ObjectSystem;
 import game.screens.GameScreen;
 import game.systems.camera.CameraSystem;
 import game.systems.network.TimeSync;
+import game.systems.world.WorldManager;
 import game.ui.GUI;
 import game.utils.AOKeys;
 import game.utils.AlternativeKeys;
@@ -99,10 +100,10 @@ public class AOInputProcessor extends Stage {
                         gui.getInventory().cleanShoot();
                     } else {
                         WorldManager worldManager = world.getSystem(WorldManager.class);
-                        Map map = MapHandler.get(worldPos.getMap());
+                        Map map = MapSystem.get(worldPos.getMap());
                         Tile tile = MapHelper.getTile(map, worldPos);
-                        ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null)
-                                .getSystem(ObjectHandler.class);
+                        ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null)
+                                .getSystem(ObjectSystem.class);
                         Optional<E> targetEntity = worldManager.getEntities()
                                 .stream()
                                 .filter(entity -> E(entity).hasWorldPos() && E(entity).getWorldPos().equals(worldPos))
@@ -111,7 +112,7 @@ public class AOInputProcessor extends Stage {
                         if (targetEntity.isPresent()) {
                             E entity = targetEntity.get();
                             if (entity.hasObject()) {
-                                Obj obj = objectHandler.getObject(entity.getObject().index).get();
+                                Obj obj = objectSystem.getObject(entity.getObject().index).get();
                                 gui.getConsole().addInfo(assetManager.getMessages(
                                         Messages.SEE_SOMEONE, String.valueOf(entity.objectCount()))
                                         + " " + obj.getName());
@@ -120,7 +121,7 @@ public class AOInputProcessor extends Stage {
                                         entity.getName().text));
                             }
                         } else if (tile.getObjIndex() > 0) {
-                            objectHandler.getObject(tile.getObjIndex()).ifPresent(obj -> {
+                            objectSystem.getObject(tile.getObjIndex()).ifPresent(obj -> {
                                 gui.getConsole().addInfo(assetManager.getMessages(
                                         Messages.SEE_SOMEONE, String.valueOf(tile.getObjCount()))
                                         + " " + obj.getName());
@@ -312,7 +313,7 @@ public class AOInputProcessor extends Stage {
     }
 
     private void musicControl(int number) {
-        Music backGroundMusic = MusicHandler.BACKGROUNDMUSIC;
+        Music backGroundMusic = MusicSystem.BACKGROUNDMUSIC;
         float volum;
         switch (number) {
             case 7:

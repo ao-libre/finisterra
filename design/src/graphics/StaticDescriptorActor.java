@@ -29,20 +29,20 @@ import com.badlogic.gdx.math.MathUtils;
 import com.esotericsoftware.minlog.Log;
 import design.screens.views.DescriptorActor;
 import entity.character.states.Heading;
-import game.handlers.AnimationHandler;
+import game.systems.resources.AnimationsSystem;
 import model.descriptors.Descriptor;
 import model.textures.AOTexture;
 
 public class StaticDescriptorActor extends DescriptorActor {
 
-    private final AnimationHandler animationHandler;
+    private final AnimationsSystem animationsSystem;
     private int heading = Heading.HEADING_SOUTH;
     private Descriptor descriptor;
     private AOTexture texture;
 
-    public StaticDescriptorActor(AnimationHandler animationHandler) {
+    public StaticDescriptorActor(AnimationsSystem animationsSystem) {
         super();
-        this.animationHandler = animationHandler;
+        this.animationsSystem = animationsSystem;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class StaticDescriptorActor extends DescriptorActor {
     public void rotate() {
         heading = MathUtils.clamp((heading + 1) % 4, Heading.HEADING_NORTH, Heading.HEADING_WEST);
         if (descriptor != null) {
-            texture = animationHandler.getTexture(descriptor.getGraphic(heading));
+            texture = animationsSystem.getTexture(descriptor.getGraphic(heading));
         }
     }
 
@@ -67,7 +67,7 @@ public class StaticDescriptorActor extends DescriptorActor {
         } else {
             int graphic = descriptor.getGraphic(heading);
             if (graphic > 0) {
-                this.texture = animationHandler.getTexture(graphic);
+                this.texture = animationsSystem.getTexture(graphic);
                 setSize(texture.getTexture().getRegionWidth(), texture.getTexture().getRegionHeight());
             } else {
                 Log.info(this.toString(), "Fail to show preview for descriptor: " + descriptor);
