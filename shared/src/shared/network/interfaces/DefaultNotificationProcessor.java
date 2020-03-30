@@ -1,7 +1,6 @@
 package shared.network.interfaces;
 
 import com.artemis.BaseSystem;
-import shared.network.interaction.DropItem;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.lobby.JoinRoomNotification;
 import shared.network.lobby.NewRoomNotification;
@@ -31,11 +30,6 @@ public class DefaultNotificationProcessor extends BaseSystem implements INotific
 
     @Override
     public void processNotification(InventoryUpdate inventoryUpdate) {
-
-    }
-
-    @Override
-    public void processNotification(DropItem dropItem) {
 
     }
 

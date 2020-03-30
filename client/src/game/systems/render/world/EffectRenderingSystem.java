@@ -11,7 +11,7 @@ import entity.character.parts.Body;
 import game.systems.resources.AnimationsSystem;
 import game.systems.resources.DescriptorsSystem;
 import game.systems.resources.ParticlesSystem;
-import game.systems.world.WorldManager;
+import game.systems.world.NetworkedEntitySystem;
 import game.systems.render.BatchRenderingSystem;
 import game.utils.Pos2D;
 import graphics.Effect;
@@ -35,7 +35,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
     private final Map<Integer, BundledAnimation> fxs;
     private final Map<Integer, ParticleEffect> particleEffects;
 
-    private WorldManager worldManager;
+    private NetworkedEntitySystem networkedEntitySystem;
     private DescriptorsSystem descriptorsSystem;
     private AnimationsSystem animationsSystem;
     private BatchRenderingSystem batchRenderingSystem;
@@ -102,8 +102,8 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
             Effect effect = e.getEffect();
             if (effect.entityReference != NO_REF) {
                 int networkedEntity = effect.entityReference;
-                if (worldManager.hasNetworkedEntity(networkedEntity)) {
-                    int entityId = worldManager.getNetworkedEntity(networkedEntity);
+                if (networkedEntitySystem.exists(networkedEntity)) {
+                    int entityId = networkedEntitySystem.get(networkedEntity);
                     E entity = E(entityId);
                     if (entity != null) {
                         candidate = entity;
@@ -164,7 +164,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                 if (fxs.containsKey(id)) {
                     BundledAnimation anim = fxs.get(id);
                     if (anim.isAnimationFinished()) {
-                        worldManager.getNetworkedId(id).ifPresent(worldManager::unregisterEntity);
+                        networkedEntitySystem.getNetworkedId(id).ifPresent(networkedEntitySystem::unregisterEntity);
                     } else {
                         anim.setAnimationTime(anim.getAnimationTime() + getWorld().getDelta() * (anim.getAnimation().getKeyFrames().length * 0.33f));
                     }

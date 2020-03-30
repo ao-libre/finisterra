@@ -7,17 +7,17 @@ import com.artemis.EntityEdit;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
-import entity.character.info.Inventory;
+import entity.character.info.Bag;
 import game.AOGame;
 import game.handlers.AOAssetManager;
-import game.systems.resources.SoundsSystem;
-import game.systems.world.WorldManager;
-import game.screens.GameScreen;
 import game.screens.LobbyScreen;
 import game.screens.RoomScreen;
+import game.systems.PlayerSystem;
 import game.systems.camera.CameraShakeSystem;
-import game.ui.AOConsole;
-import game.ui.GUI;
+import game.systems.resources.SoundsSystem;
+import game.systems.ui.UserInterfaceSystem;
+import game.systems.ui.action_bar.systems.InventorySystem;
+import game.systems.world.NetworkedEntitySystem;
 import shared.model.lobby.Player;
 import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.inventory.InventoryUpdate;
@@ -35,22 +35,23 @@ import static com.artemis.E.E;
 @Wire
 public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
-    private WorldManager worldManager;
+    private NetworkedEntitySystem networkedEntitySystem;
     private AOAssetManager assetManager;
     private CameraShakeSystem cameraShakeSystem;
     private SoundsSystem soundsSystem;
-    private GUI gui;
+    private UserInterfaceSystem userInterfaceSystem;
+    private PlayerSystem playerSystem;
+    private InventorySystem inventorySystem;
 
     @Override
     public void processNotification(EntityUpdate entityUpdate) {
-        if (!worldManager.entityExists(entityUpdate.entityId)) {
+        if (!networkedEntitySystem.exists(entityUpdate.entityId)) {
             Log.info("Network entity doesn't exist: " + entityUpdate.entityId + ". So we create it");
             Entity newEntity = getWorld().createEntity();
-            worldManager.registerEntity(entityUpdate.entityId, newEntity.getId());
+            networkedEntitySystem.registerEntity(entityUpdate.entityId, newEntity.getId());
             addComponentsToEntity(newEntity, entityUpdate);
             if (E(newEntity).hasFocused()) {
                 Log.info("New focused player: " + newEntity.getId());
-                GameScreen.setPlayer(newEntity.getId());
             }
         } else {
             Log.info("Network entity exists: " + entityUpdate.entityId + ". Updating");
@@ -61,9 +62,10 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     }
 
     private void updateActions(int id, Runnable update) {
-        if (worldManager.hasNetworkedEntity(id)) {
-            int networkedEntity = worldManager.getNetworkedEntity(id);
-            if (networkedEntity == GameScreen.getPlayer()) {
+        // TODO move to cameraShakeSystem
+        if (networkedEntitySystem.exists(id)) {
+            int networkedEntity = networkedEntitySystem.get(id);
+            if (networkedEntity == playerSystem.get().id()) {
                 E e = E(networkedEntity);
                 int preHealth = e.getHealth().min;
                 update.run();
@@ -75,6 +77,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     }
 
     private void onDamage(int id, int preHealth) {
+        // TODO move to cameraShakeSystem
         int postHealth = E(id).getHealth().min;
         if (postHealth < preHealth) {
             Log.info("Shake camera by " + (preHealth - postHealth));
@@ -86,15 +89,15 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     @Override
     public void processNotification(RemoveEntity removeEntity) {
         Log.info("Unregistering entity: " + removeEntity.entityId);
-        worldManager.unregisterEntity(removeEntity.entityId);
+        networkedEntitySystem.unregisterEntity(removeEntity.entityId);
     }
 
     @Override
     public void processNotification(InventoryUpdate inventoryUpdate) {
-        E player = E(GameScreen.getPlayer());
-        Inventory inventory = player.getInventory();
+        E player = playerSystem.get();
+        Bag bag = player.getBag();
         inventoryUpdate.getUpdates().forEach((position, item) -> {
-            inventory.set(position, item);
+            bag.set(position, item);
             if (item == null) {
                 Log.info("Item removed from position: " + position);
             } else {
@@ -102,15 +105,13 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
                 Log.info("Item equipped: " + item.equipped);
             }
         });
-        // @todo fix
-        gui.getInventory().updateUserInventory(0);
+        inventorySystem.update(bag);
     }
 
     @Override
     public void processNotification(MovementNotification movementNotification) {
-        if (worldManager.hasNetworkedEntity(movementNotification.getPlayerId())) {
-            int playerId = worldManager.getNetworkedEntity(movementNotification.getPlayerId());
-//            E(playerId).aOPhysics();
+        if (networkedEntitySystem.exists(movementNotification.getPlayerId())) {
+            int playerId = networkedEntitySystem.get(movementNotification.getPlayerId());
             E(playerId).movementAdd(movementNotification.getDestination());
         }
     }
@@ -123,7 +124,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     }
 
     private void updateEntity(EntityUpdate entityUpdate) {
-        int entityId = worldManager.getNetworkedEntity(entityUpdate.entityId);
+        int entityId = networkedEntitySystem.get(entityUpdate.entityId);
         Entity entity = world.getEntity(entityId);
         EntityEdit edit = entity.edit();
         for (Component component : entityUpdate.components) {
@@ -161,23 +162,24 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     @Override
     public void processNotification(ConsoleMessage consoleMessage) {
-        final AOConsole console = gui.getConsole();
-        final String message = assetManager.getMessages(consoleMessage.getMessageId(), consoleMessage.getMessageParams());
-        switch (consoleMessage.getKind()) {
-            case ERROR:
-                console.addError(message);
-                break;
-            case COMBAT:
-                console.addCombat(message);
-                break;
-            case WARNING:
-                console.addWarning(message);
-                break;
-            case INFO:
-            default:
-                console.addInfo(message);
-                break;
-        }
+        // TODO
+//        final AOConsole console = userInterfaceSystem.getConsole();
+//        final String message = assetManager.getMessages(consoleMessage.getMessageId(), consoleMessage.getMessageParams());
+//        switch (consoleMessage.getKind()) {
+//            case ERROR:
+//                console.addError(message);
+//                break;
+//            case COMBAT:
+//                console.addCombat(message);
+//                break;
+//            case WARNING:
+//                console.addWarning(message);
+//                break;
+//            case INFO:
+//            default:
+//                console.addInfo(message);
+//                break;
+//        }
 
     }
 

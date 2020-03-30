@@ -1,27 +1,18 @@
 package game.ui;
 
-import com.artemis.E;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import game.AOGame;
 import game.handlers.AOAssetManager;
-import game.systems.resources.SpellsSystem;
-import game.screens.GameScreen;
-import game.utils.Colors;
 import game.utils.Skins;
-import game.utils.WorldUtils;
 import shared.model.Spell;
-import shared.util.Messages;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
-
-import static com.artemis.E.E;
 
 public class SpellViewExpanded extends Table {
 
@@ -55,48 +46,48 @@ public class SpellViewExpanded extends Table {
 
 
     public void updateSpells() {
-        WorldUtils.getWorld().ifPresent(world -> {
-            SpellsSystem spellsSystem = world.getSystem(SpellsSystem.class);
-            Spell[] spells = spellsSystem.getSpells();
-            Spell[] spellsToShow = new Spell[MAX_SPELLS];
-            System.arraycopy(spells, 0, spellsToShow, 0, Math.min(MAX_SPELLS, spells.length));
-            for (int i = 0; i < MAX_SPELLS; i++) {
-                slotsEC.get(i).setSpell(spellsToShow[i]);
-            }
-        });
+//        WorldUtils.getWorld().ifPresent(world -> {
+//            SpellsSystem spellsSystem = world.getSystem(SpellsSystem.class);
+//            Spell[] spells = spellsSystem.getSpells();
+//            Spell[] spellsToShow = new Spell[MAX_SPELLS];
+//            System.arraycopy(spells, 0, spellsToShow, 0, Math.min(MAX_SPELLS, spells.length));
+//            for (int i = 0; i < MAX_SPELLS; i++) {
+//                slotsEC.get(i).setSpell(spellsToShow[i]);
+//            }
+//        });
     }
 
     public void newSpellAdd(int spellNum) {
         AtomicBoolean present = new AtomicBoolean(false);
-        WorldUtils.getWorld().ifPresent(world -> {
-            SpellsSystem spellsSystem = world.getSystem(SpellsSystem.class);
-            Spell[] spells = spellsSystem.getSpells();
-            Spell[] spellsToShow = new Spell[MAX_SPELLS];
-            Optional<Spell> newSpell = spellsSystem.getSpell(spellNum);
-            newSpell.ifPresent(spell1 -> {
-                if (spells.length <= MAX_SPELLS) {
-                    for (Spell spell : spells) {
-                        if (spell.equals(spell1)) {
-                            present.set(true);
-                        }
-                    }
-                    if (!present.get()) {
-                        System.arraycopy(spells, 0, spellsToShow, 0, spells.length);
-                        spellsToShow[spells.length] = spell1;
-                        for (int i = 0; i < MAX_SPELLS; i++) {
-                            slotsEC.get(i).setSpell(spellsToShow[i]);
-                        }
-                        world.getSystem(GUI.class).getConsole().addInfo(assetManager.getMessages(Messages.SPELLS_ADD, spell1.getName(), Integer.toString(spells.length + 1)));
-                    } else {
-                        world.getSystem(GUI.class).getConsole().addInfo(assetManager.getMessages(Messages.SPELLS_ALREDY_KNOWN, spell1.getName()));
-                    }
-                } else {
-                    world.getSystem(GUI.class).getConsole().addInfo(assetManager.getMessages(Messages.SPELLS_FULL));
-                }
-            });
-        });
-        E(GameScreen.getPlayer()).getSpellBook().addSpell(spellNum);
-        updateSpells();
+//        WorldUtils.getWorld().ifPresent(world -> {
+//            SpellsSystem spellsSystem = world.getSystem(SpellsSystem.class);
+//            Spell[] spells = spellsSystem.getSpells();
+//            Spell[] spellsToShow = new Spell[MAX_SPELLS];
+//            Optional<Spell> newSpell = spellsSystem.getSpell(spellNum);
+//            newSpell.ifPresent(spell1 -> {
+//                if (spells.length <= MAX_SPELLS) {
+//                    for (Spell spell : spells) {
+//                        if (spell.equals(spell1)) {
+//                            present.set(true);
+//                        }
+//                    }
+//                    if (!present.get()) {
+//                        System.arraycopy(spells, 0, spellsToShow, 0, spells.length);
+//                        spellsToShow[spells.length] = spell1;
+//                        for (int i = 0; i < MAX_SPELLS; i++) {
+//                            slotsEC.get(i).setSpell(spellsToShow[i]);
+//                        }
+//                        world.getSystem(UserInterfaceSystem.class).getConsole().addInfo(assetManager.getMessages(Messages.SPELLS_ADD, spell1.getName(), Integer.toString(spells.length + 1)));
+//                    } else {
+//                        world.getSystem(UserInterfaceSystem.class).getConsole().addInfo(assetManager.getMessages(Messages.SPELLS_ALREDY_KNOWN, spell1.getName()));
+//                    }
+//                } else {
+//                    world.getSystem(UserInterfaceSystem.class).getConsole().addInfo(assetManager.getMessages(Messages.SPELLS_FULL));
+//                }
+//            });
+//        });
+//        E(GameScreen.getPlayer()).getSpellBook().addSpell(spellNum);
+//        updateSpells();
     }
 
     void selected(Spell spell) {
@@ -106,16 +97,16 @@ public class SpellViewExpanded extends Table {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        int player = GameScreen.getPlayer();
-        Color backup = batch.getColor();
-        if (player >= 0) {
-            E e = E(player);
-            if (e != null && e.hasAttack()) {
-                batch.setColor(Colors.COMBAT);
-            }
-        }
-        super.draw(batch, parentAlpha);
-        batch.setColor(backup);
+//        int player = GameScreen.getPlayer();
+//        Color backup = batch.getColor();
+//        if (player >= 0) {
+//            E e = E(player);
+//            if (e != null && e.hasAttack()) {
+//                batch.setColor(Colors.COMBAT);
+//            }
+//        }
+//        super.draw(batch, parentAlpha);
+//        batch.setColor(backup);
     }
 
     public boolean isOver() {

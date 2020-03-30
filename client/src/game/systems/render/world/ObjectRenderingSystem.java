@@ -12,7 +12,7 @@ import position.WorldPos;
 import position.WorldPosOffsets;
 import shared.model.map.Tile;
 import shared.objects.types.Obj;
-import shared.util.Util;
+import shared.util.WorldPosConversion;
 
 import java.util.Optional;
 
@@ -31,7 +31,7 @@ public class ObjectRenderingSystem extends RenderingSystem {
         Optional<Obj> object = objectSystem.getObject(e.getObject().index);
         object.ifPresent(obj -> {
             WorldPos objectPos = e.getWorldPos();
-            WorldPosOffsets screenPos = Util.toScreen(objectPos);
+            WorldPosOffsets screenPos = WorldPosConversion.toScreen(objectPos);
             if (!e.hasScale()) {
                 e.scale(0f);
             } else if (e.getScale().scale >= 1.0f) {

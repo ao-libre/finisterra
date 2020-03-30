@@ -1,20 +1,21 @@
 package game.systems.resources;
 
+import com.artemis.annotations.Wire;
 import entity.character.info.SpellBook;
 import game.AOGame;
 import game.handlers.AOAssetManager;
-import game.screens.GameScreen;
+import game.systems.PlayerSystem;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.model.Spell;
 
 import java.util.Arrays;
 import java.util.Optional;
 
-import static com.artemis.E.E;
-
+@Wire
 public class SpellsSystem extends PassiveSystem {
 
     private AOAssetManager assetManager;
+    private PlayerSystem playerSystem;
 
     @Override
     protected void initialize() {
@@ -27,8 +28,7 @@ public class SpellsSystem extends PassiveSystem {
     }
 
     public Spell[] getSpells() {
-        final int player = GameScreen.getPlayer();
-        final SpellBook spellBook = E(player).getSpellBook();
+        final SpellBook spellBook = playerSystem.get().getSpellBook();
 
         return Arrays.stream(spellBook.spells).map(this::getSpell).filter(Optional::isPresent).map(Optional::get)
                 .distinct().toArray(Spell[]::new);

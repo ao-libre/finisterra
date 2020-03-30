@@ -7,7 +7,7 @@ import com.artemis.EBag;
 import com.artemis.annotations.Wire;
 import game.systems.resources.MapSystem;
 import game.systems.map.MapManager;
-import game.systems.world.WorldManager;
+import game.systems.world.NetworkedEntitySystem;
 import game.systems.camera.CameraSystem;
 import game.systems.map.TiledMapSystem;
 import graphics.Effect;
@@ -31,7 +31,7 @@ public class WorldRenderingSystem extends BaseSystem {
     private TiledMapSystem tiledMapSystem;
     private CharacterRenderingSystem characterRenderingSystem;
     private EffectRenderingSystem effectRenderingSystem;
-    private WorldManager worldManager;
+    private NetworkedEntitySystem networkedEntitySystem;
 
     public WorldRenderingSystem() {
     }
@@ -74,8 +74,8 @@ public class WorldRenderingSystem extends BaseSystem {
                         return e.getWorldPos().equals(pos);
                     } else if (e.getEffect().entityReference != NO_REF) {
                         int entityReference = e.getEffect().entityReference;
-                        if (worldManager.hasNetworkedEntity(entityReference)) {
-                            int entityId = worldManager.getNetworkedEntity(entityReference);
+                        if (networkedEntitySystem.exists(entityReference)) {
+                            int entityId = networkedEntitySystem.get(entityReference);
                             E entity = E.E(entityId);
                             if (entity != null && entity.hasWorldPos()) {
                                 return entity.getWorldPos().equals(pos);

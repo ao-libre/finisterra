@@ -3,7 +3,6 @@ package game.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -12,15 +11,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Tooltip;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import game.AOGame;
 import game.handlers.AOAssetManager;
-import game.systems.resources.ObjectSystem;
 import game.utils.Skins;
-import game.utils.WorldUtils;
 import shared.objects.types.*;
 import shared.util.Messages;
 
 import java.util.Optional;
 
-import static entity.character.info.Inventory.Item;
+import static entity.character.info.Bag.Item;
 
 public class Slot extends ImageButton {
 
@@ -63,8 +60,8 @@ public class Slot extends ImageButton {
         if (tooltip != null) {
             removeListener(tooltip);
         }
-        tooltip = getTooltip(item);
-        addListener(tooltip);
+//        tooltip = getTooltip(item);
+//        addListener(tooltip);
     }
 
     @Override
@@ -82,12 +79,12 @@ public class Slot extends ImageButton {
     }
 
     private void drawItem(Batch batch) {
-        ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null).getSystem(ObjectSystem.class);
-        Optional<Obj> object = objectSystem.getObject(getObjId());
-        object.ifPresent(obj -> {
-            TextureRegion graphic = objectSystem.getGraphic(obj);
-            batch.draw(graphic, getX() + 1, getY() + 1);
-        });
+//        ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null).getSystem(ObjectSystem.class);
+//        Optional<Obj> object = objectSystem.getObject(getObjId());
+//        object.ifPresent(obj -> {
+//            TextureRegion graphic = objectSystem.getGraphic(obj);
+//            batch.draw(graphic, getX() + 1, getY() + 1);
+//        });
     }
 
     void setSelected(boolean selected) {
@@ -95,11 +92,12 @@ public class Slot extends ImageButton {
     }
 
     public Tooltip<Actor> getTooltip(Item item) {
-        int objID = item.objId;
-        ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null).getSystem(ObjectSystem.class);
-        Optional<Obj> obj = objectSystem.getObject(objID);
-        Actor content = createTooltipContent(obj.get());
-        return new Tooltip<>(content);
+//        int objID = item.objId;
+//        ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null).getSystem(ObjectSystem.class);
+//        Optional<Obj> obj = objectSystem.getObject(objID);
+//        Actor content = createTooltipContent(obj.get());
+//        return new Tooltip<>(content);
+        return null;
     }
 
     private Actor createTooltipContent(Obj obj) {

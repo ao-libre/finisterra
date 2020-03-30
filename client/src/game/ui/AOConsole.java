@@ -16,7 +16,7 @@ public class AOConsole extends Actor {
     private static final float MAX_MESSAGES = 9;
     private final LinkedList<Actor> messages;
 
-    AOConsole() {
+    public AOConsole() {
         super();
         this.messages = new LinkedList<>();
     }

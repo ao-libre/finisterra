@@ -3,7 +3,7 @@ package server.systems.combat;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
-import entity.character.info.Inventory;
+import entity.character.info.Bag;
 import entity.character.status.Health;
 import entity.character.status.Stamina;
 import entity.world.CombatMessage;
@@ -243,7 +243,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
 
     //obtiene el tipo de flecha
     private Optional<ArrowObj> getarrow(E entity) {
-        Inventory.Item[] items = entity.getInventory().items;
+        Bag.Item[] items = entity.getBag().items;
         Optional<ArrowObj> arrowObj = Optional.empty();
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null) {

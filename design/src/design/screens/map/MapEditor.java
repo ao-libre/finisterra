@@ -8,7 +8,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -27,20 +26,21 @@ import design.screens.map.gui.MapPalette.Selection;
 import design.screens.map.gui.MapProperties;
 import design.screens.map.systems.MapDesignRenderingSystem;
 import design.screens.views.TileSetView;
+import game.systems.camera.CameraSystem;
+import game.systems.map.MapManager;
+import game.systems.render.BatchRenderingSystem;
 import game.systems.resources.AnimationsSystem;
 import game.systems.resources.DescriptorsSystem;
 import game.systems.resources.ObjectSystem;
-import game.systems.map.MapManager;
-import game.systems.camera.CameraSystem;
 import launcher.DesignCenter;
-import position.WorldPosOffsets;
 import position.WorldPos;
+import position.WorldPosOffsets;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.model.map.WorldPosition;
 import shared.util.AOJson;
 import shared.util.MapHelper;
-import shared.util.Util;
+import shared.util.WorldPosConversion;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -224,7 +224,7 @@ public class MapEditor extends DesignScreen {
     private Optional<WorldPos> mouseToWorldPos() {
         CameraSystem camera = world.getSystem(CameraSystem.class);
         Vector3 screenPos = camera.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-        WorldPos value = Util.toWorld(new WorldPosOffsets(screenPos.x, screenPos.y));
+        WorldPos value = WorldPosConversion.toWorld(new WorldPosOffsets(screenPos.x, screenPos.y));
         if (MapHelper.getTile(mapProperties.getCurrent(), value) != null) {
             return Optional.of(value);
         }
@@ -246,7 +246,8 @@ public class MapEditor extends DesignScreen {
                 .with(new CameraSystem(0.1f, 2f))
                 .with(animationsSystem)
                 .with(descriptorsSystem)
-                .with(new MapDesignRenderingSystem(new SpriteBatch()))
+                .with(new MapDesignRenderingSystem())
+                .with(new BatchRenderingSystem())
                 .with(new MapManager());
 
         WorldConfiguration config = builder.build();

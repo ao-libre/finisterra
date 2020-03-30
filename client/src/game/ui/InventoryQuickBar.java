@@ -4,16 +4,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import entity.character.info.Inventory.Item;
-import game.screens.GameScreen;
 import game.utils.Skins;
-import shared.network.inventory.ItemActionRequest;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import static com.artemis.E.E;
 
 public class InventoryQuickBar extends Window {
 
@@ -59,8 +54,8 @@ public class InventoryQuickBar extends Window {
                 selected.ifPresent(slot -> {
                     slot.setSelected(true);
                     slot.getItem().ifPresent(item -> {
-                        GameScreen.getClient().sendToAll(new ItemActionRequest(gBases.get(quickInventorySlot.indexOf(slot))));
-                        GameScreen.world.getSystem(GUI.class).getInventory().isBowORArrow(slot);
+//                        GameScreen.getClient().sendToAll(new ItemActionRequest(gBases.get(quickInventorySlot.indexOf(slot))));
+//                        GameScreen.world.getSystem(UserInterfaceSystem.class).getInventory().isBowORArrow(slot);
                     });
                 });
             }
@@ -88,19 +83,19 @@ public class InventoryQuickBar extends Window {
 
 
     public void addItemsIQB(int base, int x) {
-        Item[] userItems = E(GameScreen.getPlayer()).getInventory().items;
-        Item item = base < userItems.length ? userItems[base] : null;
-
-        if (x > 0 && x < 6) {
-            quickInventorySlot.get(x).setItem(item);
-            gBases.set(x, base);
-            x++;
-        } else {
-            x = 0;
-            quickInventorySlot.get(x).setItem(item);
-            gBases.set(x, base);
-            x++;
-        }
+//        Item[] userItems = E(GameScreen.getPlayer()).getInventory().items;
+//        Item item = base < userItems.length ? userItems[base] : null;
+//
+//        if (x > 0 && x < 6) {
+//            quickInventorySlot.get(x).setItem(item);
+//            gBases.set(x, base);
+//            x++;
+//        } else {
+//            x = 0;
+//            quickInventorySlot.get(x).setItem(item);
+//            gBases.set(x, base);
+//            x++;
+//        }
     }
 
     public int getGBases(int x) {

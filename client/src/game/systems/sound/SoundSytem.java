@@ -6,9 +6,9 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
+import game.systems.PlayerSystem;
 import game.systems.resources.SoundsSystem;
-import game.screens.GameScreen;
-import game.utils.WorldUtils;
+import game.systems.world.WorldSystem;
 import position.WorldPos;
 
 import java.util.HashMap;
@@ -33,6 +33,9 @@ public class SoundSytem extends IteratingSystem {
     public static float volume = 1.0f;
     private final Map<Integer, SoundIndexPair> sounds;
     private SoundsSystem soundsSystem;
+
+    private WorldSystem worldSystem;
+    private PlayerSystem playerSystem;
 
     public SoundSytem() {
         super(Aspect.all(AOSound.class));
@@ -66,15 +69,15 @@ public class SoundSytem extends IteratingSystem {
 
     @Override
     protected void process(int entityId) {
-        int mainPlayer = GameScreen.getPlayer();
+        int mainPlayer = playerSystem.get().id();
         if (entityId != mainPlayer) {
             // check distance to entity if has worldpos and update volume
             E soundEntity = E(entityId);
             if (soundEntity.hasWorldPos()) {
                 WorldPos soundPos = soundEntity.getWorldPos();
                 WorldPos playerPos = E(mainPlayer).getWorldPos();
-                float distance = WorldUtils.distance(soundPos, playerPos);
-                float distanceX = WorldUtils.getDistanceX(soundPos, playerPos);
+                float distance = worldSystem.distance(soundPos, playerPos);
+                float distanceX = worldSystem.getDistanceX(soundPos, playerPos);
                 if (sounds.containsKey(entityId)) {
                     SoundIndexPair soundIndexPair = sounds.get(entityId);
                     soundsSystem.updatePan(soundIndexPair.soundID, soundIndexPair.soundIndex, distanceX == 0 ? distanceX : MathUtils.clamp(1 / distanceX, -1, 1), MathUtils.clamp(1 / distance, -1, 1));

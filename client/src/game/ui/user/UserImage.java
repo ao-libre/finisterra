@@ -1,19 +1,15 @@
 package game.ui.user;
 
-import com.artemis.E;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import entity.character.status.Level;
-import game.screens.GameScreen;
 import game.utils.Skins;
 import model.textures.RadialProgress;
 import model.textures.RadialSprite;
 
 import java.util.Optional;
-
-import static com.artemis.E.E;
 
 public class UserImage extends ImageButton {
 
@@ -64,13 +60,14 @@ public class UserImage extends ImageButton {
 
     private Optional<Level> getLevel() {
         Optional<Level> level = Optional.empty();
-        int playerId = GameScreen.getPlayer();
-        if (playerId != -1) {
-            E player = E(playerId);
-            if (player != null && player.hasLevel()) {
-                level = Optional.of(player.getLevel());
-            }
-        }
+        // TODO
+//        int playerId = GameScreen.getPlayer();
+//        if (playerId != -1) {
+//            E player = E(playerId);
+//            if (player != null && player.hasLevel()) {
+//                level = Optional.of(player.getLevel());
+//            }
+//        }
         return level;
     }
 

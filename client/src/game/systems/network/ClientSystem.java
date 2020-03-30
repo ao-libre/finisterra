@@ -49,6 +49,10 @@ public class ClientSystem extends MarshalSystem {
         this.responseProcessor = responseProcessor;
     }
 
+    public void send(Object object) {
+        getKryonetClient().sendToAll(object);
+    }
+
     public KryonetClientMarshalStrategy getKryonetClient() {
         return (KryonetClientMarshalStrategy) getMarshal();
     }

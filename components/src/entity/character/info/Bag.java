@@ -7,11 +7,19 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @PooledWeaver
-public class Inventory extends Component {
+public class Bag extends Component {
     public final static int SIZE = 20;
     public Item[] items = new Item[SIZE];
 
-    public Inventory() {
+    public Bag() {
+    }
+
+    public Item[] getItems() {
+        return items;
+    }
+
+    public void setItems(Item[] items) {
+        this.items = items;
     }
 
     public void set(int i, Item item) {

@@ -7,7 +7,7 @@ import com.esotericsoftware.minlog.Log;
 import entity.character.attributes.Agility;
 import entity.character.attributes.Attribute;
 import entity.character.attributes.Strength;
-import entity.character.info.Inventory;
+import entity.character.info.Bag;
 import entity.character.states.Buff;
 import entity.character.status.Health;
 import entity.character.status.Mana;
@@ -44,7 +44,7 @@ public class ItemManager extends DefaultManager {
         return itemConsumers;
     }
 
-    public boolean isEquippable(Inventory.Item item) {
+    public boolean isEquippable(Bag.Item item) {
         Optional<Obj> object = objectManager.getObject(item.objId);
         if (object.isPresent()) {
             Obj obj = object.get();
@@ -53,12 +53,12 @@ public class ItemManager extends DefaultManager {
         return false;
     }
 
-    public boolean isUsable(Inventory.Item item) {
+    public boolean isUsable(Bag.Item item) {
         Optional<Obj> object = objectManager.getObject(item.objId);
         return object.map(obj -> (obj.getType().equals(Type.POTION) || obj.getType().equals(Type.SPELL))).orElse(false);
     }
 
-    public void use(int player, Inventory.Item item) {
+    public void use(int player, Bag.Item item) {
         Optional<Obj> object = objectManager.getObject(item.objId);
         object.ifPresent(obj -> {
             if (obj.getType().equals(Type.POTION)) {
@@ -114,13 +114,13 @@ public class ItemManager extends DefaultManager {
         worldManager.sendEntityUpdate(player, updateAGI);
     }
 
-    public void equip(int player, int index, Inventory.Item item) {
+    public void equip(int player, int index, Bag.Item item) {
         InventoryUpdate update = new InventoryUpdate();
         modifyUserEquip(player, item, index, update);
         worldManager.sendEntityUpdate(player, update);
     }
 
-    private void modifyUserEquip(int player, Inventory.Item item, int index, InventoryUpdate update) {
+    private void modifyUserEquip(int player, Bag.Item item, int index, InventoryUpdate update) {
         Optional<Obj> object = objectManager.getObject(item.objId);
         object.ifPresent(obj -> {
             item.equipped = !item.equipped;
@@ -137,7 +137,7 @@ public class ItemManager extends DefaultManager {
     }
 
     private void discardItems(E entity, int index, Type type, InventoryUpdate update) {
-        Inventory.Item[] items = entity.getInventory().items;
+        Bag.Item[] items = entity.getBag().items;
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null && index != i) {
                 int inventoryIndex = i;

@@ -21,6 +21,8 @@ public class MusicSystem extends PassiveSystem {
     private static float volume = 1.0f;
     private AOAssetManager assetManager;
 
+    public Music current;
+
     public static void setVolume(float volume) {
         MusicSystem.volume = volume;
         try {
@@ -38,6 +40,9 @@ public class MusicSystem extends PassiveSystem {
         super.initialize();
         AOGame game = (AOGame) Gdx.app.getApplicationListener();
         assetManager = game.getAssetManager();
+        current = BACKGROUNDMUSIC;
+        current.setVolume(0.20f);
+        current.play();
     }
 
     public void playMusic(int musicID) {
@@ -120,5 +125,21 @@ public class MusicSystem extends PassiveSystem {
         }
 
         sequencer.stop();
+    }
+
+    public void volumeDown(float vol) {
+        current.setVolume(current.getVolume() - vol);
+    }
+
+    public void volumeUp(float vol) {
+        current.setVolume(current.getVolume() + vol);
+    }
+
+    public void toggle() {
+        if (current.isPlaying()) {
+            current.stop();
+        } else {
+            current.play();
+        }
     }
 }

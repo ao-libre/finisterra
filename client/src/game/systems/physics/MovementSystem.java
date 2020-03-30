@@ -5,7 +5,7 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
-import game.utils.WorldUtils;
+import game.systems.world.WorldSystem;
 import movement.Destination;
 import physics.AOPhysics;
 import position.WorldPos;
@@ -16,6 +16,8 @@ import static com.artemis.E.E;
 
 @Wire
 public class MovementSystem extends IteratingSystem {
+
+    private WorldSystem worldSystem;
 
     public MovementSystem() {
         super(Aspect.all(WorldPos.class, AOPhysics.class));
@@ -74,7 +76,7 @@ public class MovementSystem extends IteratingSystem {
                 offsets.y -= delta;
                 break;
         }
-        player.headingCurrent(WorldUtils.getHeading(movementDir));
+        player.headingCurrent(worldSystem.getHeading(movementDir));
         adjustPossiblePos(player);
         return offsets.x % 1 == 0 && offsets.y % 1 == 0;
     }

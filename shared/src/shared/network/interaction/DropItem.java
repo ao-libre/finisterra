@@ -3,32 +3,28 @@ package shared.network.interaction;
 import position.WorldPos;
 import shared.network.interfaces.INotification;
 import shared.network.interfaces.INotificationProcessor;
+import shared.network.interfaces.IRequest;
+import shared.network.interfaces.IRequestProcessor;
 
-public class DropItem implements INotification {
+public class DropItem implements IRequest {
 
     private int count;
     private WorldPos position;
-    private int playerId;
     private int slot;
 
     public DropItem() {
     }
 
-    public DropItem(int playerId, int slot, WorldPos position) {
-        this(playerId, slot, 1, position);
+    public DropItem(int slot, WorldPos position) {
+        this(slot, 1, position);
     }
 
-    public DropItem(int playerId, int slot, int count, WorldPos position) {
-        this.playerId = playerId;
+    public DropItem(int slot, int count, WorldPos position) {
         this.slot = slot;
         this.count = count;
         this.position = position;
     }
 
-    @Override
-    public void accept(INotificationProcessor processor) {
-        processor.processNotification(this);
-    }
 
     public int getCount() {
         return count;
@@ -42,7 +38,8 @@ public class DropItem implements INotification {
         return position;
     }
 
-    public int getPlayerId() {
-        return playerId;
+    @Override
+    public void accept(IRequestProcessor processor, int connectionId) {
+        processor.processRequest(this, connectionId);
     }
 }

@@ -17,7 +17,7 @@ class SwitchButtons extends Table {
     private State state = State.INVENTORY;
 
     SwitchButtons() {
-        setBackground(Skins.COMODORE_SKIN.getDrawable("inventory-spells-window"));
+//        setBackground(Skins.COMODORE_SKIN.getDrawable("inventory-spells-window"));
         inventory = new ImageButton(Skins.COMODORE_SKIN, "inventory");
         spells = new ImageButton(Skins.COMODORE_SKIN, "spells");
         inventory.addListener(new ClickListener() {

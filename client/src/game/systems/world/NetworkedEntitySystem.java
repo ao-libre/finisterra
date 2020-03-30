@@ -1,34 +1,18 @@
 package game.systems.world;
 
-import com.artemis.BaseSystem;
 import com.esotericsoftware.minlog.Log;
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 import java.util.*;
 
 import static com.artemis.E.E;
 
-public class WorldManager extends BaseSystem {
+public class NetworkedEntitySystem extends PassiveSystem {
 
     private final Map<Integer, Integer> networkedEntities = new HashMap<>();
 
-    public boolean entityExists(int networkId) {
-        return networkedEntities.containsKey(networkId);
-    }
-
-    public int getNetworkedEntity(int networkId) {
-        return networkedEntities.get(networkId);
-    }
-
-    public boolean hasNetworkedEntity(int networkId) {
-        return networkedEntities.containsKey(networkId);
-    }
-
-    public Set<Integer> getEntities() {
-        return new HashSet<>(networkedEntities.values());
-    }
-
     public void registerEntity(int networkId, int entityId) {
-        E(entityId).network().getNetwork().id = networkId;
+        E(entityId).networkId(networkId);
         networkedEntities.put(networkId, entityId);
     }
 
@@ -42,8 +26,16 @@ public class WorldManager extends BaseSystem {
         }
     }
 
-    @Override
-    protected void processSystem() {
+    public boolean exists(int networkId) {
+        return networkedEntities.containsKey(networkId);
+    }
+
+    public int get(int networkId) {
+        return networkedEntities.get(networkId);
+    }
+
+    public Set<Integer> getAll() {
+        return new HashSet<>(networkedEntities.values());
     }
 
     public Optional<Integer> getNetworkedId(int id) {

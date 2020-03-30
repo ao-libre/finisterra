@@ -8,8 +8,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.screens.*;
-import game.systems.network.ClientSystem;
-import game.systems.network.TimeSync;
 import game.systems.physics.MovementProcessorSystem;
 import shared.network.account.AccountCreationResponse;
 import shared.network.account.AccountLoginResponse;
@@ -23,10 +21,11 @@ import shared.network.time.TimeSyncResponse;
 public class ClientResponseProcessor extends BaseSystem implements IResponseProcessor {
 
     private TimeSync timeSync;
+    private MovementProcessorSystem movementProcessorSystem;
 
     @Override
     public void processResponse(MovementResponse movementResponse) {
-        MovementProcessorSystem.validateRequest(movementResponse.requestNumber, movementResponse.destination);
+        movementProcessorSystem.validateRequest(movementResponse.requestNumber, movementResponse.destination);
     }
 
     @Override

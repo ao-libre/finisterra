@@ -11,7 +11,7 @@ public class Effect extends Component implements Serializable, Index {
 
     public static final int NO_REF = -1;
 
-    public int entityReference = NO_REF;
+    public int entityReference = NO_REF; //TODO change reference when arrive to client
     public int effectId;
     public int loops;
     public Type type;

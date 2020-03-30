@@ -1,6 +1,5 @@
 package shared.network.interfaces;
 
-import shared.network.interaction.DropItem;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.lobby.JoinRoomNotification;
 import shared.network.lobby.NewRoomNotification;
@@ -20,8 +19,6 @@ public interface INotificationProcessor {
     void processNotification(RemoveEntity removeEntity);
 
     void processNotification(InventoryUpdate inventoryUpdate);
-
-    void processNotification(DropItem dropItem);
 
     void processNotification(MovementNotification movementNotification);
 
