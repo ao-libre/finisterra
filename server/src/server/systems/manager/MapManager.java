@@ -7,7 +7,7 @@ import position.WorldPos;
 import server.systems.EntityFactorySystem;
 import shared.model.map.Tile;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 import shared.util.MapHelper;
 
 import java.util.*;

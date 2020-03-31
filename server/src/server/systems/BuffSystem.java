@@ -6,7 +6,7 @@ import com.artemis.FluidIteratingSystem;
 import com.artemis.annotations.Wire;
 import entity.character.states.Buff;
 import server.systems.manager.WorldManager;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 
 @Wire
 public class BuffSystem extends FluidIteratingSystem {

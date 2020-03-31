@@ -24,7 +24,7 @@ import shared.model.Spell;
 import shared.network.combat.SpellCastRequest;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 import shared.network.sound.SoundNotification;
 import shared.objects.types.HelmetObj;
 import shared.objects.types.Obj;

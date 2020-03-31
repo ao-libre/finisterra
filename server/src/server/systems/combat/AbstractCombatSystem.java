@@ -7,7 +7,7 @@ import server.database.model.modifiers.Modifiers;
 import server.systems.manager.WorldManager;
 import shared.interfaces.CharClass;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 import shared.network.sound.SoundNotification;
 
 import java.util.Optional;

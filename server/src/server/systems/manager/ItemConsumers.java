@@ -8,7 +8,7 @@ import entity.character.equipment.Weapon;
 import server.systems.EntityFactorySystem;
 import shared.interfaces.Hero;
 import shared.interfaces.Race;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 import shared.objects.types.*;
 
 import java.util.function.BiConsumer;

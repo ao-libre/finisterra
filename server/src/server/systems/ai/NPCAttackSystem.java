@@ -12,7 +12,7 @@ import server.systems.combat.PhysicalCombatSystem;
 import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
 import server.utils.WorldUtils;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 
 import java.util.Optional;
 

@@ -20,7 +20,7 @@ import server.utils.WorldUtils;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.network.movement.MovementNotification;
-import shared.network.notifications.EntityUpdate;
+import shared.util.EntityUpdateBuilder;
 import shared.util.MapHelper;
 
 import java.util.*;
@@ -144,7 +144,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         if (nextPos != oldPos) {
             worldManager.notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov.ordinal())));
         } else {
-            worldManager.notifyUpdate(entityId, EntityUpdate.EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build());
+            worldManager.notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build());
         }
     }
 

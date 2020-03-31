@@ -17,6 +17,7 @@ import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.combat.RangedCombatSystem;
 import server.systems.manager.*;
+import server.systems.network.EntityUpdateSystem;
 import server.utils.WorldUtils;
 import shared.model.AttackType;
 import shared.model.lobby.Player;
@@ -36,7 +37,7 @@ import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
 
@@ -65,6 +66,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     private RangedCombatSystem rangedCombatSystem;
     private CommandSystem commandSystem;
     private ObjectManager objectManager;
+    private EntityUpdateSystem entityUpdateSystem;
 
     private List<WorldPos> getArea(WorldPos worldPos, int range /*impar*/) {
         List<WorldPos> positions = new ArrayList<>();
@@ -127,12 +129,14 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         // notify near users
         if (!nextPos.equals(oldPos)) {
             if (nextPos.map != oldPos.map) {
-                worldManager.notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(E(playerId).getWorldPos()).build());
+                entityUpdateSystem.add(EntityUpdateBuilder.of(playerId).withComponents(E(playerId).getWorldPos()).build(), EntityUpdateSystem.UpdateTo.NEAR);
+
             } else {
+                // TODO convert notification into entity update
                 worldManager.notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement)));
             }
         } else {
-            worldManager.notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(player.getHeading()).build());
+            entityUpdateSystem.add(EntityUpdateBuilder.of(playerId).withComponents(player.getHeading()).build(), EntityUpdateSystem.UpdateTo.NEAR);
         }
 
         // notify user

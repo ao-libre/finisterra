@@ -77,6 +77,7 @@ import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
+import shared.util.EntityUpdateBuilder;
 import shared.network.notifications.RemoveEntity;
 import shared.network.sound.SoundNotification;
 import shared.network.time.TimeSyncRequest;
@@ -114,7 +115,7 @@ public class NetworkDictionary extends MarshalDictionary {
 
                 // Game Notifications
                 EntityUpdate.class,
-                EntityUpdate.EntityUpdateBuilder.class,
+                EntityUpdateBuilder.class,
                 RemoveEntity.class,
                 MovementNotification.class,
                 InventoryUpdate.class,

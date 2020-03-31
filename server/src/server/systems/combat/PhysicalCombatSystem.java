@@ -18,7 +18,7 @@ import shared.interfaces.CharClass;
 import shared.interfaces.FXs;
 import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 import shared.network.sound.SoundNotification;
 import shared.objects.types.*;
 import shared.util.Messages;

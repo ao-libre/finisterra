@@ -13,7 +13,7 @@ import entity.character.status.Health;
 import entity.character.status.Mana;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 import shared.objects.types.*;
 
 import java.util.ArrayList;

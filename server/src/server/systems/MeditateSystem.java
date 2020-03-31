@@ -11,7 +11,7 @@ import graphics.Effect.EffectBuilder;
 import server.systems.manager.WorldManager;
 import shared.interfaces.Constants;
 import shared.network.notifications.ConsoleMessage;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 import shared.network.notifications.RemoveEntity;
 import shared.network.sound.SoundNotification;
 import shared.util.Messages;

@@ -5,7 +5,7 @@ import com.artemis.E;
 import entity.character.status.Stamina;
 import server.systems.manager.WorldManager;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 
 public class EnergyRegenerationSystem extends IntervalFluidIteratingSystem {
 

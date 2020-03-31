@@ -13,7 +13,7 @@ import server.systems.manager.WorldManager;
 import server.utils.WorldUtils;
 import shared.model.map.Map;
 import shared.network.movement.MovementNotification;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 
 import java.util.*;
 

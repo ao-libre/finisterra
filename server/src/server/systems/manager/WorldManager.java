@@ -8,12 +8,11 @@ import entity.character.states.CanWrite;
 import entity.npc.OriginPos;
 import physics.AOPhysics;
 import position.WorldPos;
-import position.WorldPosOffsets;
 import server.systems.EntityFactorySystem;
 import server.systems.ServerSystem;
 import shared.model.lobby.Player;
 import shared.model.npcs.NPC;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 import shared.network.notifications.RemoveEntity;
 
 import java.util.List;

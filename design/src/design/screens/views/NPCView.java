@@ -18,10 +18,8 @@ import design.designers.NPCDesigner.NPCParameters;
 import design.editors.NPCEditor;
 import entity.character.parts.Body;
 import entity.character.states.Heading;
-import game.utils.Pos2D;
 import model.textures.BundledAnimation;
 import org.jetbrains.annotations.NotNull;
-import position.WorldPosOffsets;
 import position.WorldPos;
 import shared.model.map.Tile;
 import shared.model.npcs.NPC;
@@ -31,7 +29,6 @@ import java.util.Comparator;
 
 import static com.artemis.E.E;
 import static design.editors.fields.FieldEditor.FieldListener;
-import static game.systems.render.world.CharacterRenderingSystem.CharacterDrawer.createDrawer;
 import static launcher.DesignCenter.SKIN;
 
 public class NPCView extends View<NPC, NPCDesigner> {
@@ -198,7 +195,7 @@ public class NPCView extends View<NPC, NPCDesigner> {
             if (entityId >= 0) {
                 float offset = (Tile.TILE_PIXEL_WIDTH - getWidth()) / 2;
                 if (validate()) {
-                    createDrawer(batch, E(entityId), new Pos2D(getX() - offset, getY() + getHeight()), getDescriptorHandler(), getAnimationHandler(), true).draw();
+//                    createDrawer(batch, E(entityId), new Pos2D(getX() - offset, getY() + getHeight()), getDescriptorHandler(), getAnimationHandler(), true).draw();
                 }
             }
         }
