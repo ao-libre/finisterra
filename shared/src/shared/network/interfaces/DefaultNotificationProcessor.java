@@ -6,10 +6,8 @@ import shared.network.lobby.JoinRoomNotification;
 import shared.network.lobby.NewRoomNotification;
 import shared.network.lobby.player.ChangePlayerNotification;
 import shared.network.movement.MovementNotification;
-import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
-import shared.network.sound.SoundNotification;
 
 public class DefaultNotificationProcessor extends BaseSystem implements INotificationProcessor {
 
@@ -45,16 +43,6 @@ public class DefaultNotificationProcessor extends BaseSystem implements INotific
 
     @Override
     public void processNotification(NewRoomNotification newRoomNotification) {
-
-    }
-
-    @Override
-    public void processNotification(ConsoleMessage consoleMessage) {
-
-    }
-
-    @Override
-    public void processNotification(SoundNotification soundNotification) {
 
     }
 

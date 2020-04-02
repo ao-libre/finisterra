@@ -4,6 +4,7 @@ import com.artemis.Component;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import shared.network.notifications.EntityUpdate;
+import shared.network.notifications.RemoveEntity;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -17,6 +18,10 @@ public class EntityUpdateBuilder {
     private EntityUpdate entityUpdate;
     private Set<Component> components = new HashSet<>();
     private Set<Class> toRemove = new HashSet<>();
+
+    public static EntityUpdate delete(int entityId) {
+        return new RemoveEntity(entityId);
+    }
 
     public static EntityUpdateBuilder of(int entityId) {
         EntityUpdateBuilder builder = new EntityUpdateBuilder();
@@ -56,7 +61,7 @@ public class EntityUpdateBuilder {
                 newComponents.add(u2.components[c]);
             }
         }
-        List<Component> oldComponents = components.collect(Collectors.toList());
+        List<Component> oldComponents = Lists.newArrayList(u1.components);
         oldComponents.addAll(newComponents);
         u1.components = oldComponents.toArray(new Component[0]);
 

@@ -18,6 +18,7 @@ import server.systems.combat.PhysicalCombatSystem;
 import server.systems.combat.RangedCombatSystem;
 import server.systems.manager.*;
 import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import server.utils.WorldUtils;
 import shared.model.AttackType;
 import shared.model.lobby.Player;
@@ -37,6 +38,7 @@ import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
+import shared.network.notifications.EntityUpdate;
 import shared.util.EntityUpdateBuilder;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
@@ -129,14 +131,13 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         // notify near users
         if (!nextPos.equals(oldPos)) {
             if (nextPos.map != oldPos.map) {
-                entityUpdateSystem.add(EntityUpdateBuilder.of(playerId).withComponents(E(playerId).getWorldPos()).build(), EntityUpdateSystem.UpdateTo.NEAR);
-
+                entityUpdateSystem.add(EntityUpdateBuilder.of(playerId).withComponents(E(playerId).getWorldPos()).build(), UpdateTo.NEAR);
             } else {
                 // TODO convert notification into entity update
                 worldManager.notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement)));
             }
         } else {
-            entityUpdateSystem.add(EntityUpdateBuilder.of(playerId).withComponents(player.getHeading()).build(), EntityUpdateSystem.UpdateTo.NEAR);
+            entityUpdateSystem.add(EntityUpdateBuilder.of(playerId).withComponents(player.getHeading()).build(), UpdateTo.NEAR);
         }
 
         // notify user
@@ -213,8 +214,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         if (talkRequest.getMessage().startsWith("/")) {
             commandSystem.handleCommand(talkRequest.getMessage(), playerId);
         } else {
-            worldManager.notifyUpdate(playerId, EntityUpdateBuilder.of(playerId)
-                    .withComponents(new Dialog(talkRequest.getMessage())).build());
+            EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(new Dialog(talkRequest.getMessage())).build();
+            entityUpdateSystem.add(update, UpdateTo.ALL);
         }
     }
 

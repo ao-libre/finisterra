@@ -1,15 +1,20 @@
 package server.systems.manager;
 
+import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import entity.character.equipment.Helmet;
 import entity.character.equipment.Shield;
 import entity.character.equipment.Weapon;
+import entity.character.parts.Body;
 import server.systems.EntityFactorySystem;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import shared.interfaces.Hero;
 import shared.interfaces.Race;
-import shared.util.EntityUpdateBuilder;
+import shared.network.notifications.EntityUpdate;
 import shared.objects.types.*;
+import shared.util.EntityUpdateBuilder;
 
 import java.util.function.BiConsumer;
 
@@ -22,6 +27,8 @@ import static com.artemis.E.E;
 public class ItemConsumers extends DefaultManager {
 
     private WorldManager worldManager;
+    private EntityUpdateSystem entityUpdateSystem;
+
     public final BiConsumer<Integer, Obj> WEAR = wear();
     private EntityFactorySystem entityFactorySystem;
     public final BiConsumer<Integer, Obj> TAKE_OFF = takeOff();
@@ -34,17 +41,17 @@ public class ItemConsumers extends DefaultManager {
             E entity = E(player);
             if (obj instanceof WeaponObj) {
                 entity.removeWeapon();
-                worldManager.notifyUpdate(player, EntityUpdateBuilder.of(player).remove(Weapon.class).build());
+                remove(player, Weapon.class);
             } else if (obj instanceof ArmorObj) {
                 Hero hero = Hero.getHeroes().get(entity.getCharHero().heroId);
                 entityFactorySystem.setNakedBody(entity, Race.values()[hero.getRaceId()]);
-                worldManager.notifyUpdate(player, EntityUpdateBuilder.of(player).withComponents(entity.getBody()).build());
+                remove(player, Body.class);
             } else if (obj instanceof HelmetObj) {
                 entity.removeHelmet();
-                worldManager.notifyUpdate(player, EntityUpdateBuilder.of(player).remove(Helmet.class).build());
+                remove(player, Helmet.class);
             } else if (obj instanceof ShieldObj) {
                 entity.removeShield();
-                worldManager.notifyUpdate(player, EntityUpdateBuilder.of(player).remove(Shield.class).build());
+                remove(player, Shield.class);
             }
         };
     }
@@ -54,18 +61,28 @@ public class ItemConsumers extends DefaultManager {
             E entity = E(player);
             if (obj instanceof WeaponObj) {
                 entity.weaponIndex(obj.getId());
-                worldManager.notifyUpdate(player, EntityUpdateBuilder.of(player).withComponents(entity.getWeapon()).build());
+                update(player, entity.getWeapon());
             } else if (obj instanceof ArmorObj) {
                 entity.bodyIndex(((ArmorObj) obj).getBodyNumber());
                 entity.armorIndex(obj.getId());
-                worldManager.notifyUpdate(player, EntityUpdateBuilder.of(player).withComponents(entity.getBody(), entity.getArmor()).build());
+                update(player, entity.getBody());
             } else if (obj instanceof HelmetObj) {
                 entity.helmetIndex(obj.getId());
-                worldManager.notifyUpdate(player, EntityUpdateBuilder.of(player).withComponents(entity.getHelmet()).build());
+                update(player, entity.getHelmet());
             } else if (obj instanceof ShieldObj) {
                 entity.shieldIndex(obj.getId());
-                worldManager.notifyUpdate(player, EntityUpdateBuilder.of(player).withComponents(entity.getShield()).build());
+                update(player, entity.getShield());
             }
         };
     }
-}
+
+    private void update(int user, Component component) {
+        EntityUpdate update = EntityUpdateBuilder.of(user).withComponents(component).build();
+        entityUpdateSystem.add(update, UpdateTo.ALL);
+    }
+
+    private void remove(int user, Class clasz) {
+        EntityUpdate update = EntityUpdateBuilder.of(user).remove(clasz).build();
+        entityUpdateSystem.add(update, UpdateTo.ALL);
+    }
+ }

@@ -4,7 +4,6 @@ import com.artemis.Component;
 import shared.network.interfaces.INotification;
 import shared.network.interfaces.INotificationProcessor;
 
-@SuppressWarnings("ALL")
 public class EntityUpdate implements INotification {
 
     public int entityId;
@@ -12,6 +11,10 @@ public class EntityUpdate implements INotification {
     public Class[] toRemove;
 
     public EntityUpdate() {
+    }
+
+    public EntityUpdate(int entityId) {
+        this.entityId = entityId;
     }
 
     public EntityUpdate(int entityId, Component[] components, Class[] toRemove) {

@@ -9,7 +9,6 @@ import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import entity.character.info.Bag;
 import game.AOGame;
-import game.handlers.AOAssetManager;
 import game.screens.LobbyScreen;
 import game.screens.RoomScreen;
 import game.systems.PlayerSystem;
@@ -25,10 +24,8 @@ import shared.network.lobby.JoinRoomNotification;
 import shared.network.lobby.NewRoomNotification;
 import shared.network.lobby.player.ChangePlayerNotification;
 import shared.network.movement.MovementNotification;
-import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
-import shared.network.sound.SoundNotification;
 
 import static com.artemis.E.E;
 
@@ -36,7 +33,6 @@ import static com.artemis.E.E;
 public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     private NetworkedEntitySystem networkedEntitySystem;
-    private AOAssetManager assetManager;
     private CameraShakeSystem cameraShakeSystem;
     private SoundsSystem soundsSystem;
     private UserInterfaceSystem userInterfaceSystem;
@@ -46,19 +42,25 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     @Override
     public void processNotification(EntityUpdate entityUpdate) {
         if (!networkedEntitySystem.exists(entityUpdate.entityId)) {
-            Log.info("Network entity doesn't exist: " + entityUpdate.entityId + ". So we create it");
+            Log.debug("Network entity doesn't exist: " + entityUpdate.entityId + ". So we create it");
             Entity newEntity = getWorld().createEntity();
             networkedEntitySystem.registerEntity(entityUpdate.entityId, newEntity.getId());
             addComponentsToEntity(newEntity, entityUpdate);
-            if (E(newEntity).hasFocused()) {
-                Log.info("New focused player: " + newEntity.getId());
-            }
         } else {
-            Log.info("Network entity exists: " + entityUpdate.entityId + ". Updating");
-            updateActions(entityUpdate.entityId, () -> updateEntity(entityUpdate));
-
+            Log.debug("Network entity exists: " + entityUpdate.entityId + ". Updating");
+            if (entityUpdate instanceof RemoveEntity) {
+                networkedEntitySystem.unregisterEntity(entityUpdate.entityId);
+                return;
+            } else {
+                updateActions(entityUpdate.entityId, () -> updateEntity(entityUpdate));
+            }
         }
-        assetManager = AOGame.getGlobalAssetManager();
+        int localEntity = networkedEntitySystem.get(entityUpdate.entityId);
+        E localE = E(localEntity);
+        if (localE != null && localE.hasRef()) {
+            // Map ref to local entity
+            localE.refId(networkedEntitySystem.get(localE.refId()));
+        }
     }
 
     private void updateActions(int id, Runnable update) {
@@ -157,39 +159,6 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         if (game.getScreen() instanceof LobbyScreen) {
             final LobbyScreen lobby = (LobbyScreen) game.getScreen();
             lobby.roomCreated(newRoomNotification.getRoom());
-        }
-    }
-
-    @Override
-    public void processNotification(ConsoleMessage consoleMessage) {
-        // TODO
-//        final AOConsole console = userInterfaceSystem.getConsole();
-//        final String message = assetManager.getMessages(consoleMessage.getMessageId(), consoleMessage.getMessageParams());
-//        switch (consoleMessage.getKind()) {
-//            case ERROR:
-//                console.addError(message);
-//                break;
-//            case COMBAT:
-//                console.addCombat(message);
-//                break;
-//            case WARNING:
-//                console.addWarning(message);
-//                break;
-//            case INFO:
-//            default:
-//                console.addInfo(message);
-//                break;
-//        }
-
-    }
-
-    @Override
-    public void processNotification(SoundNotification soundNotification) {
-        int soundNumber = soundNotification.getSoundNumber();
-        if (soundNotification.getState().equals(SoundNotification.SoundState.STOPPED)) {
-            soundsSystem.stopSound(soundNumber);
-        } else {
-            soundsSystem.playSound(soundNumber);
         }
     }
 

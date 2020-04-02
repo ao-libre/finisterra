@@ -16,10 +16,13 @@ import position.WorldPos;
 import server.systems.IntervalFluidIteratingSystem;
 import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import server.utils.WorldUtils;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.network.movement.MovementNotification;
+import shared.network.notifications.EntityUpdate;
 import shared.util.EntityUpdateBuilder;
 import shared.util.MapHelper;
 
@@ -33,6 +36,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
 
     private static final int MAX_DISTANCE_TARGET = 10;
     private MapManager mapManager;
+    private EntityUpdateSystem entityUpdateSystem;
     private HashMap<Integer, AStarMap> maps = new HashMap<>();
 
     public PathFindingSystem(float interval) {
@@ -144,7 +148,8 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         if (nextPos != oldPos) {
             worldManager.notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov.ordinal())));
         } else {
-            worldManager.notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build());
+            EntityUpdate update = EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build();
+            entityUpdateSystem.add(update, UpdateTo.ALL);
         }
     }
 

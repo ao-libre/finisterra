@@ -7,6 +7,8 @@ import server.systems.ServerSystem;
 import server.systems.manager.ItemManager;
 import server.systems.manager.ObjectManager;
 import server.systems.manager.WorldManager;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.notifications.EntityUpdate;
@@ -20,10 +22,11 @@ public class ServerNotificationProcessor extends DefaultNotificationProcessor {
     private ItemManager itemManager;
     private ObjectManager objectManager;
     private ServerSystem networkManager;
+    private EntityUpdateSystem entityUpdateSystem;
 
     @Override
     public void processNotification(EntityUpdate entityUpdate) {
-        worldManager.notifyToNearEntities(entityUpdate.entityId, entityUpdate);
+        entityUpdateSystem.add(entityUpdate, UpdateTo.NEAR);
     }
 
     @Override

@@ -28,6 +28,11 @@ public class ClientSystem extends MarshalSystem {
                 ((IResponse) object).accept(responseProcessor);
             } else if (object instanceof INotification) {
                 ((INotification) object).accept(notificationProcessor);
+            } else if (object instanceof INotification[]) {
+                INotification[] notifications = (INotification[]) object;
+                for (INotification notification : notifications) {
+                    notification.accept(notificationProcessor);
+                }
             }
         });
     }

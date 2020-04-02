@@ -13,6 +13,7 @@ import position.WorldPos;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.artemis.E.E;
 
@@ -53,8 +54,8 @@ public class SoundSytem extends IteratingSystem {
         E entity = E(entityId);
         AOSound sound = entity.getAOSound();
 
-        long soundIndex = soundsSystem.playSound(sound.soundID, sound.shouldLoop);
-        sounds.put(entityId, new SoundIndexPair(sound.soundID, soundIndex));
+        long soundIndex = soundsSystem.playSound(sound.id, sound.shouldLoop);
+        sounds.put(entityId, new SoundIndexPair(sound.id, soundIndex));
     }
 
     @Override
@@ -70,19 +71,27 @@ public class SoundSytem extends IteratingSystem {
     @Override
     protected void process(int entityId) {
         int mainPlayer = playerSystem.get().id();
-        if (entityId != mainPlayer) {
-            // check distance to entity if has worldpos and update volume
-            E soundEntity = E(entityId);
-            if (soundEntity.hasWorldPos()) {
-                WorldPos soundPos = soundEntity.getWorldPos();
-                WorldPos playerPos = E(mainPlayer).getWorldPos();
+        WorldPos playerPos = E(mainPlayer).getWorldPos();
+        // check distance to entity if has worldpos and update volume
+        E soundEntity = E(entityId);
+        if (soundEntity.hasWorldPos() || soundEntity.hasRef()) {
+            Optional.of(soundEntity.hasWorldPos() ? soundEntity.getWorldPos() : getRefPos(soundEntity.refId())).ifPresent(soundPos -> {
                 float distance = worldSystem.distance(soundPos, playerPos);
                 float distanceX = worldSystem.getDistanceX(soundPos, playerPos);
                 if (sounds.containsKey(entityId)) {
                     SoundIndexPair soundIndexPair = sounds.get(entityId);
                     soundsSystem.updatePan(soundIndexPair.soundID, soundIndexPair.soundIndex, distanceX == 0 ? distanceX : MathUtils.clamp(1 / distanceX, -1, 1), MathUtils.clamp(1 / distance, -1, 1));
                 }
-            }
+            });
         }
+
+    }
+
+    private WorldPos getRefPos(int refId) {
+        WorldPos pos = null;
+        if (E(refId) != null && E(refId).hasWorldPos()) {
+            pos = E(refId).getWorldPos();
+        }
+        return pos;
     }
 }

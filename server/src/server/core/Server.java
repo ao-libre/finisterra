@@ -15,7 +15,10 @@ import server.systems.ai.RespawnSystem;
 import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.combat.RangedCombatSystem;
+import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.*;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.MessageSystem;
 import shared.model.lobby.Player;
 import shared.model.map.Map;
 
@@ -69,12 +72,12 @@ public class Server {
         final WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
         ServerStrategy strategy = new ServerStrategy(tcpPort, udpPort);
         builder
-                .with(new FluidEntityPlugin())
                 .with(new ServerSystem(strategy))
                 .with(new ServerNotificationProcessor())
-                .with(new ServerRequestProcessor())
+                .with(new FluidEntityPlugin())
                 .with(new EntityFactorySystem())
                 .with(new ItemManager())
+                .with(new ServerRequestProcessor())
                 .with(new ItemConsumers())
                 .with(new NPCManager())
                 .with(new MapManager())
@@ -90,10 +93,13 @@ public class Server {
                 .with(new EnergyRegenerationSystem(ENERGY_REGENERATION_INTERVAL))
                 .with(new MeditateSystem(MEDITATE_INTERVAL))
                 .with(new FootprintSystem(FOOTPRINT_LIVE_TIME))
+                .with(new SoundEntitySystem())
                 .with(new RandomMovementSystem())
                 .with(new RespawnSystem())
                 .with(new BuffSystem())
-                .with(new CommandSystem());
+                .with(new CommandSystem())
+                .with(new EntityUpdateSystem())
+                .with(new MessageSystem());
         world = new World(builder.build());
         Log.info("World created successfully!");
     }

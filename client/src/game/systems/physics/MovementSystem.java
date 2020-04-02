@@ -30,7 +30,7 @@ public class MovementSystem extends IteratingSystem {
 
             if (!player.isMoving()) {
                 player.aOSound();
-                player.aOSoundSoundID(23).aOSoundShouldLoop(true);
+                player.aOSoundId(23).aOSoundShouldLoop(true);
             }
 
             player.moving(true);

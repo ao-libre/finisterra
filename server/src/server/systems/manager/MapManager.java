@@ -5,6 +5,8 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
 import position.WorldPos;
 import server.systems.EntityFactorySystem;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import shared.model.map.Tile;
 import shared.network.notifications.EntityUpdate;
 import shared.util.EntityUpdateBuilder;
@@ -25,6 +27,7 @@ import static shared.util.MapHelper.CacheStrategy.NEVER_EXPIRE;
 public class MapManager extends DefaultManager {
 
     private WorldManager worldManager;
+    private EntityUpdateSystem entityUpdateSystem;
     private EntityFactorySystem entityFactorySystem;
 
     private MapHelper helper;
@@ -267,7 +270,7 @@ public class MapManager extends DefaultManager {
         Set<Integer> near = nearEntities.computeIfAbsent(entity1, (i) -> new HashSet<>());
         if (near.add(entity2)) {
             EntityUpdate update = EntityUpdateBuilder.of(entity2).withComponents(WorldUtils(world).getComponents(entity2)).build();
-            worldManager.sendEntityUpdate(entity1, update);
+            entityUpdateSystem.add(entity1, update, UpdateTo.ENTITY);
         }
     }
 

@@ -10,9 +10,12 @@ import physics.AOPhysics;
 import position.WorldPos;
 import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import server.utils.WorldUtils;
 import shared.model.map.Map;
 import shared.network.movement.MovementNotification;
+import shared.network.notifications.EntityUpdate;
 import shared.util.EntityUpdateBuilder;
 
 import java.util.*;
@@ -29,6 +32,7 @@ public class RandomMovementSystem extends IteratingSystem {
     private static final Random RANDOM = new Random();
     private MapManager mapManager;
     private WorldManager worldManager;
+    private EntityUpdateSystem entityUpdateSystem;
 
     public RandomMovementSystem() {
         super(Aspect.all(RandomMovement.class));
@@ -73,7 +77,8 @@ public class RandomMovementSystem extends IteratingSystem {
 
         // notify near users
 
-        worldManager.notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build()); // is necessary?
+        EntityUpdate update = EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build();
+        entityUpdateSystem.add(update, UpdateTo.ALL);
         if (nextPos != oldPos) {
             worldManager.notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov.ordinal())));
         }

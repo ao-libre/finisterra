@@ -2,6 +2,7 @@ package server.systems.ai;
 
 import com.artemis.Aspect;
 import com.artemis.E;
+import com.artemis.annotations.Wire;
 import entity.character.states.Heading;
 import entity.character.status.Hit;
 import entity.npc.NPC;
@@ -10,8 +11,10 @@ import server.systems.IntervalFluidIteratingSystem;
 import server.systems.combat.CombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.manager.MapManager;
-import server.systems.manager.WorldManager;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import server.utils.WorldUtils;
+import shared.network.notifications.EntityUpdate;
 import shared.util.EntityUpdateBuilder;
 
 import java.util.Optional;
@@ -19,7 +22,10 @@ import java.util.Optional;
 import static com.artemis.E.E;
 import static server.utils.WorldUtils.WorldUtils;
 
+@Wire
 public class NPCAttackSystem extends IntervalFluidIteratingSystem {
+
+    private EntityUpdateSystem entityUpdateSystem;
 
     // should interval be per npc?
     public NPCAttackSystem(float interval) {
@@ -53,7 +59,8 @@ public class NPCAttackSystem extends IntervalFluidIteratingSystem {
             if (!npc.isImmobile() && !facingPos.equals(targetPos)) {
                 // move heading
                 npc.headingCurrent(worldUtils.getHeading(npcPos, targetPos));
-                world.getSystem(WorldManager.class).notifyUpdate(e, EntityUpdateBuilder.of(e).withComponents(npc.getHeading()).build());
+                EntityUpdate update = EntityUpdateBuilder.of(e).withComponents(npc.getHeading()).build();
+                entityUpdateSystem.add(update, UpdateTo.ALL);
                 facingPos = targetPos;
             }
         }

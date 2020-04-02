@@ -10,8 +10,11 @@ import physics.AOPhysics;
 import position.WorldPos;
 import server.systems.EntityFactorySystem;
 import server.systems.ServerSystem;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import shared.model.lobby.Player;
 import shared.model.npcs.NPC;
+import shared.network.notifications.EntityUpdate;
 import shared.util.EntityUpdateBuilder;
 import shared.network.notifications.RemoveEntity;
 
@@ -28,6 +31,7 @@ public class WorldManager extends DefaultManager {
     private SpellManager spellManager;
     private ObjectManager objectManager;
     private EntityFactorySystem entityFactorySystem;
+    private EntityUpdateSystem entityUpdateSystem;
 
     public void registerEntity(int id) {
         mapManager.updateEntity(id);
@@ -96,8 +100,10 @@ public class WorldManager extends DefaultManager {
                 e.getMana().min = e.getMana().max;
                 resetUpdate.withComponents(e.getMana());
             }
-            sendEntityUpdate(entityId, resetUpdate.build());
-            notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(e.getWorldPos()).build());
+            entityUpdateSystem.add(resetUpdate.build(), UpdateTo.ENTITY);
+
+            EntityUpdate update = EntityUpdateBuilder.of(entityId).withComponents(e.getWorldPos()).build();
+            entityUpdateSystem.add(update, UpdateTo.ALL);
         }
     }
 

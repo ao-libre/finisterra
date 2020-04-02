@@ -7,7 +7,7 @@ import design.editors.GenericEditor;
 import design.editors.fields.FieldEditor;
 import design.screens.ScreenEnum;
 import graphics.AOAnimationActor;
-import graphics.Effect;
+import graphics.EffectBuilder;
 import model.descriptors.FXDescriptor;
 import model.textures.BundledAnimation;
 import org.jetbrains.annotations.NotNull;
@@ -77,7 +77,7 @@ public class SpellView extends View<Spell, SpellDesigner> {
                     .filter(FXDescriptor.class::isInstance)
                     .ifPresent(fx -> {
                         FXDescriptor descriptor = (FXDescriptor) fx;
-                        BundledAnimation anim = getAnimationHandler().getFX(new Effect.EffectBuilder().withFX(descriptor.id).build());
+                        BundledAnimation anim = getAnimationHandler().getFX(new EffectBuilder().withFX(descriptor.id).build());
                         AOAnimationActor animation = new AOAnimationActor(anim);
                         add(animation);
                     });

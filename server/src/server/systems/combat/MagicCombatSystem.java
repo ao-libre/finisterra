@@ -1,9 +1,9 @@
 package server.systems.combat;
 
-import com.artemis.BaseSystem;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
+import console.ConsoleMessage;
 import entity.character.attributes.Attribute;
 import entity.character.states.Buff;
 import entity.character.states.Immobile;
@@ -13,21 +13,24 @@ import entity.character.status.Stamina;
 import entity.world.CombatMessage;
 import entity.world.Dialog;
 import graphics.Effect;
-import graphics.Effect.EffectBuilder;
+import graphics.EffectBuilder;
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 import physics.AttackAnimation;
 import position.WorldPos;
 import server.systems.CharacterTrainingSystem;
+import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.MapManager;
 import server.systems.manager.ObjectManager;
 import server.systems.manager.WorldManager;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.MessageSystem;
+import server.systems.network.UpdateTo;
 import shared.model.Spell;
 import shared.network.combat.SpellCastRequest;
-import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
-import shared.util.EntityUpdateBuilder;
-import shared.network.sound.SoundNotification;
 import shared.objects.types.HelmetObj;
 import shared.objects.types.Obj;
+import shared.util.EntityUpdateBuilder;
 import shared.util.Messages;
 
 import java.util.*;
@@ -36,7 +39,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.artemis.E.E;
 
 @Wire
-public class MagicCombatSystem extends BaseSystem {
+public class MagicCombatSystem extends PassiveSystem {
 
     private static final String SPACE = " ";
     private static final int TIME_TO_MOVE_1_TILE = 200;
@@ -46,6 +49,9 @@ public class MagicCombatSystem extends BaseSystem {
     private WorldManager worldManager;
     private ObjectManager objectManager;
     private CharacterTrainingSystem characterTrainingSystem;
+    private EntityUpdateSystem entityUpdateSystem;
+    private MessageSystem messageSystem;
+    private SoundEntitySystem soundEntitySystem;
 
     public void spell(int userId, SpellCastRequest spellCastRequest) {
         final Spell spell = spellCastRequest.getSpell();
@@ -53,7 +59,9 @@ public class MagicCombatSystem extends BaseSystem {
         final long timestamp = spellCastRequest.getTimestamp();
         Optional<Integer> target = getTarget(userId, targetPos, timestamp);
         if (target.isPresent()) {
-            worldManager.notifyUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(new AttackAnimation()).build());
+            EntityUpdate update = EntityUpdateBuilder.of(userId).withComponents(new AttackAnimation()).build();
+            entityUpdateSystem.add(update, UpdateTo.ALL);
+
             castSpell(userId, target.get(), spell);
         }
     }
@@ -118,7 +126,7 @@ public class MagicCombatSystem extends BaseSystem {
 
             int fxGrh = spell.getFxGrh();
             E targetEntity = E(target);
-            int damage = 0;
+            int damage;
             if (spell.getSumHP() > 0) {
                 Health health = targetEntity.getHealth();
                 damage = calculateMagicDamage(playerId, target, spell);
@@ -134,10 +142,10 @@ public class MagicCombatSystem extends BaseSystem {
                     notifyMagic(target, Messages.DAMAGED_BY, getName(playerId), Integer.toString(Math.abs(damage)));
                 }
                 if (health.min <= 0) {
-                    getWorldManager().entityDie(target);
+                    worldManager.entityDie(target);
                     notifyMagic(playerId, Messages.KILL, getName(target));
                     notifyMagic(target, Messages.KILLED, getName(playerId));
-                    getWorldManager().notifyUpdate(playerId, new SoundNotification(126));
+                    soundEntitySystem.add(playerId, 126);
                 }
             }
             if (spell.isImmobilize()) {
@@ -176,8 +184,8 @@ public class MagicCombatSystem extends BaseSystem {
                     WorldPos worldPos = targetEntity.getWorldPos();
                     fxUpdate.withComponents(worldPos);
                 }
-                getWorldManager().notifyUpdate(target, fxUpdate.build());
-                getWorldManager().unregisterEntity(fxE);
+                entityUpdateSystem.add(target, fxUpdate.build(), UpdateTo.ALL);
+                worldManager.unregisterEntity(fxE);
             }
 
             stamina.min -= requiredStamina;
@@ -188,11 +196,13 @@ public class MagicCombatSystem extends BaseSystem {
 
             Log.info("Magic attack " + spell.getMagicWords());
             int spellSound = spell.getWav();
-            getWorldManager().notifyUpdate(playerId, new SoundNotification(spellSound));
-            getWorldManager().sendEntityUpdate(target, victimUpdateBuilder.build());
-            getWorldManager().notifyUpdate(target, victimUpdateToAllBuilder.build());
-            getWorldManager().notifyUpdate(playerId, playerUpdateBuilder
-                    .withComponents(magicWords).build());
+            soundEntitySystem.add(playerId, spellSound);
+
+            EntityUpdate victimUpdate = victimUpdateBuilder.build();
+            entityUpdateSystem.add(victimUpdate, UpdateTo.ALL);
+
+            EntityUpdate playerUpdate = playerUpdateBuilder.withComponents(magicWords).build();
+            entityUpdateSystem.add(playerUpdate, UpdateTo.ALL);
         } else {
             notifyInfo(playerId, Messages.NOT_ENOUGHT_MANA);
         }
@@ -227,12 +237,12 @@ public class MagicCombatSystem extends BaseSystem {
         mana.min -= requiredMana;
         // update mana
         EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(mana).build();
-        getWorldManager().sendEntityUpdate(playerId, update);
+        worldManager.sendEntityUpdate(playerId, update);
     }
 
     private void sendAttributeUpdate(int player, Attribute attribute, Buff buff) {
         EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(attribute, buff).build();
-        worldManager.sendEntityUpdate(player, updateAGI);
+        entityUpdateSystem.add(updateAGI, UpdateTo.ENTITY);
     }
 
     private boolean isValid(int target, Spell spell) {
@@ -252,25 +262,17 @@ public class MagicCombatSystem extends BaseSystem {
     }
 
     private void notifyInfo(int userId, Messages messageId, String... messageParams) {
-        final ConsoleMessage combat = ConsoleMessage.info(messageId, messageParams);
-        getWorldManager().sendEntityUpdate(userId, combat);
+        final ConsoleMessage combat = ConsoleMessage.info(messageId.name(), messageParams);
+        messageSystem.add(userId, combat);
     }
 
     private void notifyMagic(int userId, Messages messageId, String... messageParams) {
-        final ConsoleMessage combat = ConsoleMessage.combat(messageId, messageParams);
-        getWorldManager().sendEntityUpdate(userId, combat);
+        final ConsoleMessage combat = ConsoleMessage.combat(messageId.name(), messageParams);
+        messageSystem.add(userId, combat);
     }
 
     private String getName(int userId) {
         return E(userId).getName().text;
     }
 
-    private WorldManager getWorldManager() {
-        return world.getSystem(WorldManager.class);
-    }
-
-    @Override
-    protected void processSystem() {
-
-    }
 }

@@ -11,6 +11,8 @@ import entity.character.info.Bag;
 import entity.character.states.Buff;
 import entity.character.status.Health;
 import entity.character.status.Mana;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.notifications.EntityUpdate;
 import shared.util.EntityUpdateBuilder;
@@ -32,6 +34,7 @@ public class ItemManager extends DefaultManager {
     private ItemConsumers itemConsumers;
     private ObjectManager objectManager;
     private WorldManager worldManager;
+    private EntityUpdateSystem entityUpdateSystem;
 
     public ItemManager() {
     }
@@ -84,19 +87,19 @@ public class ItemManager extends DefaultManager {
                         Agility agility = E(player).getAgility();
                         agility.setCurrentValue(agility.getBaseValue() + random);
                         E(player).buff().getBuff().addAttribute(agility, potion.getEffecTime());
-                        SendAttributeUpdate(player, agility, E(player).getBuff());
+                        sendAttributeUpdate(player, agility, E(player).getBuff());
                         break;
                     case POISON:
                     case STRENGTH:
                         Strength strength = E(player).getStrength();
                         strength.setCurrentValue(strength.getBaseValue() + random);
                         E(player).buff().getBuff().addAttribute(strength, potion.getEffecTime());
-                        SendAttributeUpdate(player, strength, E(player).getBuff());
+                        sendAttributeUpdate(player, strength, E(player).getBuff());
                         break;
                 }
                 // Notify update to user
                 EntityUpdate update = EntityUpdateBuilder.of(player).withComponents(components.toArray(new Component[0])).build();
-                worldManager.sendEntityUpdate(player, update);
+                entityUpdateSystem.add(update, UpdateTo.ENTITY);
                 // TODO remove from inventory
             }
             if (obj.getType().equals(Type.SPELL)) {
@@ -109,13 +112,14 @@ public class ItemManager extends DefaultManager {
         });
     }
 
-    protected void SendAttributeUpdate(int player, Attribute attribute, Buff buff) {
+    protected void sendAttributeUpdate(int player, Attribute attribute, Buff buff) {
         EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(attribute, buff).build();
-        worldManager.sendEntityUpdate(player, updateAGI);
+        entityUpdateSystem.add(updateAGI, UpdateTo.ENTITY);
     }
 
     public void equip(int player, int index, Bag.Item item) {
         InventoryUpdate update = new InventoryUpdate();
+        // TODO convert InventoryUpdate into EntityUpdate
         modifyUserEquip(player, item, index, update);
         worldManager.sendEntityUpdate(player, update);
     }

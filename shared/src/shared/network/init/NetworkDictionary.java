@@ -3,7 +3,9 @@ package shared.network.init;
 import camera.Focused;
 import com.artemis.Component;
 import com.artemis.FluidIteratingSystem;
+import console.ConsoleMessage;
 import entity.Description;
+import entity.Ref;
 import entity.character.attributes.*;
 import entity.character.equipment.Armor;
 import entity.character.equipment.Helmet;
@@ -22,6 +24,7 @@ import entity.world.Dialog;
 import entity.world.Footprint;
 import entity.world.Ground;
 import graphics.Effect;
+import graphics.EffectBuilder;
 import graphics.FX;
 import graphics.RenderBefore;
 import map.Cave;
@@ -34,8 +37,8 @@ import network.Network;
 import physics.AOPhysics;
 import physics.Attack;
 import physics.AttackAnimation;
-import position.WorldPosOffsets;
 import position.WorldPos;
+import position.WorldPosOffsets;
 import shared.interfaces.CharClass;
 import shared.interfaces.Constants;
 import shared.interfaces.Hero;
@@ -75,16 +78,14 @@ import shared.network.lobby.player.*;
 import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
-import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
-import shared.util.EntityUpdateBuilder;
 import shared.network.notifications.RemoveEntity;
-import shared.network.sound.SoundNotification;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
 import shared.objects.factory.ObjectFactory;
 import shared.objects.types.*;
 import shared.objects.types.common.*;
+import shared.util.EntityUpdateBuilder;
 import shared.util.MapHelper;
 import shared.util.Messages;
 
@@ -115,6 +116,7 @@ public class NetworkDictionary extends MarshalDictionary {
 
                 // Game Notifications
                 EntityUpdate.class,
+                EntityUpdate[].class,
                 EntityUpdateBuilder.class,
                 RemoveEntity.class,
                 MovementNotification.class,
@@ -188,8 +190,6 @@ public class NetworkDictionary extends MarshalDictionary {
                 Loader.class,
                 Reader.class,
                 FluidIteratingSystem.class,
-                SoundNotification.class,
-                SoundNotification.SoundState.class,
 
                 ObjectLoader.class,
                 SpellLoader.class,
@@ -241,9 +241,10 @@ public class NetworkDictionary extends MarshalDictionary {
                 WoodObj.class,
 
                 // Components
+                Ref.class,
                 OriginPos.class,
                 Effect.class,
-                Effect.EffectBuilder.class,
+                EffectBuilder.class,
                 RenderBefore.class,
                 Effect.Type.class,
                 EvasionPower.class,
