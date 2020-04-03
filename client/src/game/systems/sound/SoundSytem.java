@@ -1,6 +1,6 @@
 package game.systems.sound;
 
-import Sound.AOSound;
+import sound.AOSound;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
@@ -61,7 +61,6 @@ public class SoundSytem extends IteratingSystem {
     @Override
     protected void removed(int entityId) {
         super.removed(entityId);
-
         SoundIndexPair soundInstance = sounds.get(entityId);
         if (soundInstance != null) {
             soundsSystem.stopSound(soundInstance.soundID, soundInstance.soundIndex);
@@ -75,7 +74,7 @@ public class SoundSytem extends IteratingSystem {
         // check distance to entity if has worldpos and update volume
         E soundEntity = E(entityId);
         if (soundEntity.hasWorldPos() || soundEntity.hasRef()) {
-            Optional.of(soundEntity.hasWorldPos() ? soundEntity.getWorldPos() : getRefPos(soundEntity.refId())).ifPresent(soundPos -> {
+            Optional.ofNullable(soundEntity.hasWorldPos() ? soundEntity.getWorldPos() : getRefPos(soundEntity.refId())).ifPresent(soundPos -> {
                 float distance = worldSystem.distance(soundPos, playerPos);
                 float distanceX = worldSystem.getDistanceX(soundPos, playerPos);
                 if (sounds.containsKey(entityId)) {

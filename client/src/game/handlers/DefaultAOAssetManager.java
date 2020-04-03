@@ -165,6 +165,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         return get(Resources.GAME_SKIN_FILE);
     }
 
+    // TODO: fix asap
     @Override
     public Music getMusic(int key) {
         if (Gdx.files.internal(Resources.GAME_MUSIC_PATH + key + Resources.GAME_MUSIC_EXTENSION).exists()) {
@@ -175,11 +176,11 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         }
     }
 
+    // TODO: fix asap
     @Override
     public Sound getSound(int key) {
         if (Gdx.files.internal(Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION).exists()) {
-            return Gdx.audio.newSound(Gdx.files.internal
-                    (Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION));
+            return get(Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION);
         } else {
             return null;
         }
