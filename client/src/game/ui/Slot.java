@@ -3,6 +3,7 @@ package game.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -30,6 +31,7 @@ public class Slot extends ImageButton {
 
     private boolean selected;
     private Tooltip tooltip;
+    private TextureRegion graphic;
 
     Slot() {
         super(Skins.COMODORE_SKIN, "icon-container");
@@ -52,11 +54,12 @@ public class Slot extends ImageButton {
         return item;
     }
 
-    void setItem(Item item) {
+    void setItem(Item item, TextureRegion graphic) {
         this.item = Optional.ofNullable(item);
         if (item == null) {
             return;
         }
+        this.graphic = graphic;
         if (tooltip != null) {
             removeListener(tooltip);
         }
@@ -79,12 +82,9 @@ public class Slot extends ImageButton {
     }
 
     private void drawItem(Batch batch) {
-//        ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null).getSystem(ObjectSystem.class);
-//        Optional<Obj> object = objectSystem.getObject(getObjId());
-//        object.ifPresent(obj -> {
-//            TextureRegion graphic = objectSystem.getGraphic(obj);
-//            batch.draw(graphic, getX() + 1, getY() + 1);
-//        });
+        if (graphic != null) {
+            batch.draw(graphic, getX() + 1, getY() + 1);
+        }
     }
 
     void setSelected(boolean selected) {

@@ -4,32 +4,36 @@ import com.artemis.Aspect;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import entity.character.info.SpellBook;
 import game.systems.ui.UserInterfaceContributionSystem;
+import game.ui.SpellView;
 
 public class SpellSystem  extends UserInterfaceContributionSystem {
+
+    private Actor spellView;
 
     public SpellSystem() {
         super(Aspect.all(SpellBook.class));
     }
 
     @Override
-    protected void calculate(int entityId) {
-
+    public void calculate(int entityId) {
+        spellView = new SpellView();
     }
 
     @Override
-    protected Actor getActor() {
-        return null;
+    public Actor getActor() {
+
+        return spellView;
     }
 
     public void hide() {
-        // TODO
+        spellView.setVisible(false);
     }
 
     public void show() {
-        // TODO
+        spellView.setVisible(true);
     }
 
     public boolean isVisible() {
-        return false; // TODO
+        return spellView.isVisible();
     }
 }

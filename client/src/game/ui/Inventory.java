@@ -148,10 +148,14 @@ public class Inventory extends Window {
         Item[] userItems = userBag.items;
         for (int i = 0; i < SIZE; i++) {
             Item item = base + i < userItems.length ? userItems[base + i] : null;
-            slots.get(i).setItem(item);
+            slots.get(i).setItem(item, getGraphic(item));
         }
     }
-//
+
+    private TextureRegion getGraphic(Item item) {
+        return Optional.ofNullable(item).map(i -> inventorySystem.getGraphic(i.objId)).orElse(null);
+    }
+
 //    public void getShoot() {
 //        ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null).getSystem(ObjectSystem.class);
 //        Item[] items = E(GameScreen.getPlayer()).getInventory().items;

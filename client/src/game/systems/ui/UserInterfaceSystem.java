@@ -7,10 +7,12 @@ import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
+import com.esotericsoftware.minlog.Log;
 import game.systems.camera.CameraSystem;
 import game.systems.input.InputSystem;
 import game.systems.map.TiledMapSystem;
@@ -52,16 +54,21 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
         Skins.COMODORE_SKIN.getFont("flipped").setUseIntegerPositions(false);
         Skins.COMODORE_SKIN.getFont("flipped-with-border").setUseIntegerPositions(false);
 
-        Table table = new Table();
-        table.setFillParent(true);
-        fillTable(table);
-
-        stage.addActor(table);
-
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(stage);
         inputMultiplexer.addProcessor(inputSystem);
         Gdx.input.setInputProcessor(inputMultiplexer);
+    }
+
+    @Override
+    protected void inserted(int entityId) {
+        super.inserted(entityId);
+        actionBarSystem.calculate(entityId);
+        Log.info("Creating UI for entity: " + entityId);
+        Table table = new Table();
+        table.setFillParent(true);
+        fillTable(table);
+        stage.addActor(table);
     }
 
     private void fillTable(Table table) {
@@ -72,7 +79,9 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
         table.row();
 
         table.add(new Container<>(statsSystem.getActor())).left().expand();
-        table.add(new Container<>(actionBarSystem.getActor())).right().expand();
+        Actor actor = actionBarSystem.getActor();
+        Log.info("Adding action bar:" + actor);
+        table.add(new Container<>(actor)).right().expand();
         table.row();
         table.add(new Container<>(userSystem.getActor())).bottom().colspan(2);
     }

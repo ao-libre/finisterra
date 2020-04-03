@@ -9,14 +9,14 @@ import game.utils.Skins;
 import java.util.ArrayList;
 import java.util.List;
 
-class SwitchButtons extends Table {
+public class SwitchButtons extends Table {
 
     private final ImageButton inventory;
     private final ImageButton spells;
     private final List<ActionSwitchListener> listeners = new ArrayList<>();
     private State state = State.INVENTORY;
 
-    SwitchButtons() {
+    public SwitchButtons() {
 //        setBackground(Skins.COMODORE_SKIN.getDrawable("inventory-spells-window"));
         inventory = new ImageButton(Skins.COMODORE_SKIN, "inventory");
         spells = new ImageButton(Skins.COMODORE_SKIN, "spells");
@@ -37,7 +37,7 @@ class SwitchButtons extends Table {
         toggle(State.INVENTORY);
     }
 
-    void addListener(ActionSwitchListener listener) {
+    public void addListener(ActionSwitchListener listener) {
         listeners.add(listener);
     }
 
@@ -71,7 +71,7 @@ class SwitchButtons extends Table {
 
     }
 
-    enum State {
+    public enum State {
         INVENTORY,
         SPELLS
     }

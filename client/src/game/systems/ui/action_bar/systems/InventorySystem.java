@@ -5,6 +5,7 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.esotericsoftware.minlog.Log;
 import entity.character.info.Bag;
 import game.systems.PlayerSystem;
 import game.systems.network.ClientSystem;
@@ -38,14 +39,14 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     @Override
-    protected void calculate(int entityId) {
+    public void calculate(int entityId) {
         inventory = new Inventory(this);
         inventory.update(E(entityId).getBag());
     }
 
     @Override
-    protected Actor getActor() {
-        return null;
+    public Actor getActor() {
+        return inventory;
     }
 
     @Override
@@ -62,12 +63,11 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     public void dropItem() {
-        clientSystem.send(Optional.empty());
+        dropItem(getSelectedIndex(), Optional.empty());
     }
 
     public void dropItem(Optional<WorldPos> pos) {
-        int droppingIndex = getSelectedIndex();
-        dropItem(droppingIndex, pos);
+        dropItem(getSelectedIndex(), pos);
     }
 
     public void dropItem(int droppingIndex, Optional<WorldPos> pos) {
@@ -87,11 +87,11 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     public void show() {
-        // TODO
+        inventory.setVisible(true);
     }
 
     public void hide() {
-        // TODO
+        inventory.setVisible(false);
     }
 
     public Optional<Obj> getObject(int objId) {
@@ -128,6 +128,7 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     public Optional<WorldPos> getWorldPos(int x, int y) {
+        Log.info("`");// TODO
         return Optional.of(userInterfaceSystem.getWorldPos(x, y));
     }
 

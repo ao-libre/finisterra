@@ -14,7 +14,7 @@ public abstract class UserInterfaceContributionSystem extends BaseEntitySystem {
     @Override
     protected void inserted(int entityId) {
         super.inserted(entityId);
-        calculate(entityId);
+//        calculate(entityId);
     }
 
     protected abstract void calculate(int entityId);
