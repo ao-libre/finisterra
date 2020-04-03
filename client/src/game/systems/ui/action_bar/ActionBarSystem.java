@@ -61,7 +61,6 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
 
         actionBar.add(stack).top().right().row();
         this.actionBar = actionBar;
-
     }
 
     @Override

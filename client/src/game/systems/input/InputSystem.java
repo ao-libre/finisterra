@@ -4,6 +4,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.camera.CameraSystem;
@@ -84,6 +85,7 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
+        Log.info("Scrolled event handled by camera system (zooming)");
         cameraSystem.zoom(amount, CameraSystem.ZOOM_TIME);
         return true;
     }

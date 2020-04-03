@@ -6,8 +6,11 @@ import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -69,21 +72,47 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
         table.setFillParent(true);
         fillTable(table);
         stage.addActor(table);
+        stage.setScrollFocus(table);
     }
 
     private void fillTable(Table table) {
-        stage.addActor(dialogSystem.getActor());
+        final Actor dialogUI = dialogSystem.getActor();
+        stage.addActor(dialogUI);
 
-        table.setDebug(true);
-        table.add(consoleSystem.getActor()).top().colspan(2).minHeight(Gdx.graphics.getHeight() * 0.15f).maxHeight(Gdx.graphics.getHeight() * 0.15f);
+        Container<Actor> consoleUI = new Container<>(consoleSystem.getActor());
+        table.add(consoleUI).top().colspan(2).minHeight(Gdx.graphics.getHeight() * 0.15f).maxHeight(Gdx.graphics.getHeight() * 0.15f);
         table.row();
 
-        table.add(new Container<>(statsSystem.getActor())).left().expand();
-        Actor actor = actionBarSystem.getActor();
-        Log.info("Adding action bar:" + actor);
-        table.add(new Container<>(actor)).right().expand();
+        Container<Actor> userStatsUI = new Container<>(statsSystem.getActor());
+        table.add(userStatsUI).left().expand();
+        // Add action bar (inventory and spell view)
+        Container<Actor> actionBarUI = new Container<>(actionBarSystem.getActor());
+        table.add(actionBarUI).right().expand();
         table.row();
-        table.add(new Container<>(userSystem.getActor())).bottom().colspan(2);
+        Container<Actor> userUI = new Container<>(userSystem.getActor());
+        table.add(userUI).bottom().colspan(2);
+
+        table.addListener(new InputListener() {
+            @Override
+            public boolean scrolled(InputEvent event, float x, float y, int amount) {
+                Log.info("Scrolled event handled by UI");
+                return isInUI(dialogUI, x, y) ||
+                        isInUI(consoleUI, x, y) ||
+                        isInUI(userStatsUI, x, y) ||
+                        isInUI(actionBarUI, x, y) ||
+                        isInUI(userUI, x, y);
+            }
+
+            private boolean isInUI(Actor actor, float x, float y) {
+                Vector2 localCoordinates = actor.stageToLocalCoordinates(new Vector2(x, y));
+                return isBetween(localCoordinates.x, 0, actor.getWidth())
+                        && isBetween(localCoordinates.y, 0, actor.getHeight());
+            }
+
+            private boolean isBetween(float x, float x1, float x2) {
+                return x >= x1 && x <= x2;
+            }
+        });
     }
 
     // Should only process player entity

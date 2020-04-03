@@ -5,7 +5,6 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.esotericsoftware.minlog.Log;
 import entity.character.info.Bag;
 import game.systems.PlayerSystem;
 import game.systems.network.ClientSystem;
@@ -128,7 +127,6 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     public Optional<WorldPos> getWorldPos(int x, int y) {
-        Log.info("`");// TODO
         return Optional.of(userInterfaceSystem.getWorldPos(x, y));
     }
 
