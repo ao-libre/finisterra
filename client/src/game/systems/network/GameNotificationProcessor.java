@@ -89,12 +89,6 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     }
 
     @Override
-    public void processNotification(RemoveEntity removeEntity) {
-        Log.info("Unregistering entity: " + removeEntity.entityId);
-        networkedEntitySystem.unregisterEntity(removeEntity.entityId);
-    }
-
-    @Override
     public void processNotification(InventoryUpdate inventoryUpdate) {
         E player = playerSystem.get();
         Bag bag = player.getBag();

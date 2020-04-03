@@ -1,5 +1,6 @@
 package shared.network.init;
 
+import sound.AOSound;
 import camera.Focused;
 import com.artemis.Component;
 import com.artemis.FluidIteratingSystem;
@@ -241,6 +242,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 WoodObj.class,
 
                 // Components
+                AOSound.class,
                 Ref.class,
                 OriginPos.class,
                 Effect.class,

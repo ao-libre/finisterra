@@ -7,7 +7,6 @@ import shared.network.lobby.NewRoomNotification;
 import shared.network.lobby.player.ChangePlayerNotification;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.RemoveEntity;
 
 public class DefaultNotificationProcessor extends BaseSystem implements INotificationProcessor {
 
@@ -18,11 +17,6 @@ public class DefaultNotificationProcessor extends BaseSystem implements INotific
 
     @Override
     public void processNotification(EntityUpdate notification) {
-
-    }
-
-    @Override
-    public void processNotification(RemoveEntity removeEntity) {
 
     }
 
