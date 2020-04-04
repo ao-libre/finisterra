@@ -10,6 +10,7 @@ import game.systems.resources.MapSystem;
 import game.systems.resources.MessageSystem;
 import game.systems.resources.ObjectSystem;
 import game.systems.ui.UserInterfaceSystem;
+import game.systems.ui.action_bar.systems.SpellSystem;
 import game.systems.ui.console.ConsoleSystem;
 import game.utils.CursorSystem;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
@@ -29,6 +30,7 @@ public class MouseSystem extends PassiveSystem {
     private MapSystem mapSystem;
     private ObjectSystem objectSystem;
     private MessageSystem messageSystem;
+    private SpellSystem spellSystem;
 
     private UserInterfaceSystem userInterfaceSystem;
 
@@ -88,6 +90,7 @@ public class MouseSystem extends PassiveSystem {
                     long rtt = timeSyncSystem.getRtt();
                     long timeOffset = timeSyncSystem.getTimeOffset();
                     clientSystem.send(new SpellCastRequest(spell, pos, rtt + timeOffset));
+                    spellSystem.clearCast();
                 }
             }));
         }

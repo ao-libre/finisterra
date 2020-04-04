@@ -76,9 +76,9 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
 
         Table table = new Table();
         table.setFillParent(true);
-        fillTable(table);
         stage.addActor(table);
         stage.setScrollFocus(table);
+        fillTable(table);
     }
 
     private void fillTable(Table table) {

@@ -1,9 +1,10 @@
 package server.systems.manager;
 
-import component.camera.Focused;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
+import com.esotericsoftware.minlog.Log;
+import component.camera.Focused;
 import component.entity.character.states.CanWrite;
 import component.entity.npc.OriginPos;
 import component.physics.AOPhysics;
@@ -57,7 +58,10 @@ public class WorldManager extends DefaultManager {
 
     public void sendEntityUpdate(int user, Object update) {
         if (networkManager.playerHasConnection(user)) {
+            Log.info("Sending update to user: " + user + " - update: " + update);
             networkManager.sendTo(networkManager.getConnectionByPlayer(user), update);
+        } else {
+            Log.info("Trying to send update to non-networked entity");
         }
     }
 

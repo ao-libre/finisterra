@@ -161,8 +161,7 @@ public abstract class Inventory extends Window {
     }
 
     public int selectedIndex() {
-        assert (selected.isPresent());
-        return base + slots.indexOf(selected.get());
+        return getSelected().map(selected -> base + slots.indexOf(selected)).orElse(base);
     }
 
     private int draggingIndex() {

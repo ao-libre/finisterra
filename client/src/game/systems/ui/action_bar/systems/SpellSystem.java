@@ -56,6 +56,10 @@ public class SpellSystem  extends UserInterfaceContributionSystem {
         spellView.setVisible(true);
     }
 
+    public void clearCast() {
+        spellView.clearCast();
+    }
+
     public boolean isVisible() {
         return spellView.isVisible();
     }

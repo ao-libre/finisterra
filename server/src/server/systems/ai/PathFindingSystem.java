@@ -37,6 +37,8 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
     private static final int MAX_DISTANCE_TARGET = 10;
     private MapManager mapManager;
     private EntityUpdateSystem entityUpdateSystem;
+    private WorldManager worldManager;
+
     private HashMap<Integer, AStarMap> maps = new HashMap<>();
 
     public PathFindingSystem(float interval) {
@@ -95,27 +97,18 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
             return;
         }
         int entityId = e.id();
-        String text = entityId + " " + (e.hasName() ? e.getName().text : "NO NAME: " + entityId);
         if (nextNode.x - from.x > 0) {
             // move right
             moveEntity(entityId, RIGHT);
-            Log.info(text + " AI MOVE RIGHT");
-            Log.info(e.getWorldPos() + " ");
         } else if (nextNode.x - from.x < 0) {
             // move left
             moveEntity(entityId, LEFT);
-            Log.info(text + " AI MOVE LEFT");
-            Log.info(e.getWorldPos() + " ");
         } else if (nextNode.y - from.y > 0) {
             // move south
             moveEntity(entityId, DOWN);
-            Log.info(text + " AI MOVE DOWN");
-            Log.info(e.getWorldPos() + " ");
-        } else {
+        } else if (nextNode.y - from.y < 0){
             // move north
             moveEntity(entityId, UP);
-            Log.info(text + "AI MOVE UP");
-            Log.info(e.getWorldPos() + " ");
         }
     }
 
@@ -123,7 +116,13 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         E player = E.E(entityId);
 
         WorldUtils worldUtils = WorldUtils(world);
-        player.headingCurrent(worldUtils.getHeading(mov));
+        int headingMov = worldUtils.getHeading(mov);
+        boolean headingChanged = headingMov != player.headingCurrent();
+        if (headingChanged) {
+            player.headingCurrent(headingMov);
+            EntityUpdate update = EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build();
+            entityUpdateSystem.add(update, UpdateTo.ALL);
+        }
 
         WorldPos worldPos = player.getWorldPos();
         WorldPos oldPos = new WorldPos(worldPos);
@@ -143,13 +142,9 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
 
         mapManager.movePlayer(entityId, Optional.of(oldPos));
 
-        WorldManager worldManager = world.getSystem(WorldManager.class);
         // notify near users
         if (nextPos != oldPos) {
             worldManager.notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov.ordinal())));
-        } else {
-            EntityUpdate update = EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build();
-            entityUpdateSystem.add(update, UpdateTo.ALL);
         }
     }
 

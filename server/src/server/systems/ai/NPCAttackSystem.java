@@ -8,7 +8,6 @@ import component.entity.character.status.Hit;
 import component.entity.npc.NPC;
 import component.position.WorldPos;
 import server.systems.IntervalFluidIteratingSystem;
-import server.systems.combat.CombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.manager.MapManager;
 import server.systems.network.EntityUpdateSystem;
@@ -25,6 +24,8 @@ import static server.utils.WorldUtils.WorldUtils;
 @Wire
 public class NPCAttackSystem extends IntervalFluidIteratingSystem {
 
+    private MapManager mapManager;
+    private PhysicalCombatSystem combatSystem;
     private EntityUpdateSystem entityUpdateSystem;
 
     // should interval be per npc?
@@ -34,9 +35,7 @@ public class NPCAttackSystem extends IntervalFluidIteratingSystem {
 
     @Override
     protected void process(E e) {
-        CombatSystem system = world.getSystem(PhysicalCombatSystem.class);
-        world
-                .getSystem(MapManager.class)
+        mapManager
                 .getNearEntities(e.id())
                 .stream()
                 .filter(e2 -> E(e2) != null)
@@ -44,7 +43,7 @@ public class NPCAttackSystem extends IntervalFluidIteratingSystem {
                 .filter(e2 -> E(e2).hasWorldPos())
                 .filter(e2 -> inRange(e.id(), e2))
                 .findFirst()
-                .ifPresent(target -> system.entityAttack(e.id(), Optional.of(target)));
+                .ifPresent(target -> combatSystem.entityAttack(e.id(), Optional.of(target)));
 
     }
 

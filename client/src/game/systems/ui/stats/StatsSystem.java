@@ -8,6 +8,6 @@ import net.mostlyoriginal.api.system.core.PassiveSystem;
 public class StatsSystem extends PassiveSystem {
     public Actor getActor() {
         // TODO
-        return new Label("Stats", Skins.COMODORE_SKIN);
+        return new Label("", Skins.COMODORE_SKIN);
     }
 }
