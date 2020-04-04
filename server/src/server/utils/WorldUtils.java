@@ -1,16 +1,10 @@
 package server.utils;
 
-import com.artemis.Component;
-import com.artemis.Entity;
 import com.artemis.World;
-import com.artemis.utils.Bag;
-import entity.character.states.Heading;
-import physics.AOPhysics;
-import position.WorldPos;
+import component.entity.character.states.Heading;
+import component.physics.AOPhysics;
+import component.position.WorldPos;
 import shared.interfaces.Constants;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class WorldUtils {
 
@@ -46,23 +40,6 @@ public class WorldUtils {
                 (heading.current == Constants.Heading.EAST.toInt() ? 1 : heading.current == Constants.Heading.WEST.toInt() ? -1 : 0) + pos.x,
                 (heading.current == Constants.Heading.NORTH.toInt() ? -1 : heading.current == Constants.Heading.SOUTH.toInt() ? 1 : 0) + pos.y,
                 pos.map);
-    }
-
-    public List<Component> getComponents(Entity player) {
-        // TODO implement filter (non relevant components for clients)
-        Bag<Component> components = player.getComponents(new Bag<>());
-        List<Component> componentsToSend = new ArrayList<>();
-        components.forEach(component -> {
-            if (component != null) {
-                componentsToSend.add(component);
-            }
-        });
-        return componentsToSend;
-    }
-
-    public Component[] getComponents(int playerId) {
-        List<Component> components = getComponents(world.getEntity(playerId));
-        return components.toArray(new Component[0]);
     }
 
     public int getHeading(AOPhysics.Movement movement) {

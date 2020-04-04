@@ -8,7 +8,7 @@ public class DialogText extends Table {
 
     private TextField textf;
 
-    DialogText() {
+    public DialogText() {
         setVisible(false);
     }
 

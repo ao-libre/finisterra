@@ -3,17 +3,21 @@ package server.systems;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import entity.character.states.Meditating;
-import entity.character.status.Mana;
-import entity.world.CombatMessage;
-import graphics.Effect;
-import graphics.Effect.EffectBuilder;
+import component.console.ConsoleMessage;
+import component.entity.character.states.Meditating;
+import component.entity.character.status.Mana;
+import component.entity.world.CombatMessage;
+import component.graphic.Effect;
+import component.graphic.EffectBuilder;
+import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.WorldManager;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.MessageSystem;
+import server.systems.network.UpdateTo;
 import shared.interfaces.Constants;
-import shared.network.notifications.ConsoleMessage;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
-import shared.network.sound.SoundNotification;
+import shared.util.EntityUpdateBuilder;
 import shared.util.Messages;
 
 import java.util.HashMap;
@@ -28,6 +32,9 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
     private static final float MANA_RECOVERY_PERCENT = 0.3f;
     private static Map<Integer, Integer> userMeditations = new HashMap<>();
     private WorldManager worldManager;
+    private EntityUpdateSystem entityUpdateSystem;
+    private MessageSystem messageSystem;
+    private SoundEntitySystem soundEntitySystem;
 
     public MeditateSystem(float timer) {
         super(Aspect.all(Meditating.class, Mana.class), timer);
@@ -46,27 +53,31 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
                 mana.min += mana.max * MANA_RECOVERY_PERCENT;
                 mana.min = Math.min(mana.min, mana.max);
                 int recoveredMana = mana.min - manaMin;
+
                 CombatMessage manaMessage = CombatMessage.magic("+" + recoveredMana);
-                update.withComponents(mana);
                 notify.withComponents(manaMessage);
-                ConsoleMessage consoleMessage = ConsoleMessage.info(Messages.MANA_RECOVERED, Integer.toString(recoveredMana));
-                worldManager.sendEntityUpdate(player.id(), consoleMessage);
+
+                update.withComponents(mana);
+
+                // send component.console message
+                ConsoleMessage consoleMessage = ConsoleMessage.info(Messages.MANA_RECOVERED.name(), Integer.toString(recoveredMana));
+                messageSystem.add(player.id(), consoleMessage);
             }
         }
 
         if (mana.min >= mana.max) {
             notify.remove(Meditating.class);
-            ConsoleMessage consoleMessage = ConsoleMessage.info(Messages.MEDITATE_STOP);
-            worldManager.sendEntityUpdate(player.id(), consoleMessage);
+            ConsoleMessage consoleMessage = ConsoleMessage.info(Messages.MEDITATE_STOP.name());
+            messageSystem.add(player.id(), consoleMessage);
             stopMeditationEffect(player.id());
         }
 
         if (!update.isEmpty()) {
-            worldManager.notifyUpdate(player.id(), update.build());
+            entityUpdateSystem.add(update.build(), UpdateTo.ENTITY);
         }
 
         if (!notify.isEmpty()) {
-            worldManager.notifyUpdate(player.id(), notify.build());
+            entityUpdateSystem.add(notify.build(), UpdateTo.ALL);
         }
     }
 
@@ -79,35 +90,36 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
 
         if (meditating) {
             stopMeditationEffect(userId);
-            consoleMessage = ConsoleMessage.info(Messages.MEDITATE_STOP);
+            consoleMessage = ConsoleMessage.info(Messages.MEDITATE_STOP.name());
             update.remove(Meditating.class);
         } else {
             E entity = E(userId);
             Mana mana = entity.getMana();
             if (mana != null && mana.min == mana.max) {
-                consoleMessage = ConsoleMessage.info(Messages.MANA_FULL);
+                consoleMessage = ConsoleMessage.info(Messages.MANA_FULL.name());
             } else {
                 int e = world.create();
                 Effect effect = new EffectBuilder().withParticle(Constants.MEDITATE_NW_FX).attachTo(userId).build();
-                worldManager.notifyUpdate(userId, EntityUpdateBuilder.of(e).withComponents(effect).build());
+                EntityUpdate effectUpdate = EntityUpdateBuilder.of(e).withComponents(effect).build();
+                entityUpdateSystem.add(userId, effectUpdate, UpdateTo.ALL);
                 userMeditations.put(userId, e);
                 player.meditating();
-                consoleMessage = ConsoleMessage.info(Messages.MEDITATE_START);
+                consoleMessage = ConsoleMessage.info(Messages.MEDITATE_START.name());
                 update.withComponents(player.getMeditating());
-                getWorldManager().notifyUpdate(player.id(), new SoundNotification(18));
+                soundEntitySystem.add(player.id(), 18, true); // TODO make sound loop
             }
         }
-        worldManager.sendEntityUpdate(userId, consoleMessage);
-        worldManager.notifyUpdate(userId, update.build());
+        messageSystem.add(userId, consoleMessage);
+        entityUpdateSystem.add(update.build(), UpdateTo.ALL);
     }
 
     private void stopMeditationEffect(int userId) {
         Integer entityId = userMeditations.get(userId);
         worldManager.notifyUpdate(userId, new RemoveEntity(entityId));
         userMeditations.remove(userId);
-        E(entityId).deleteFromWorld();
+        E(entityId).clear();
         E(userId).removeMeditating();
-        getWorldManager().notifyUpdate(userId, new SoundNotification(18, SoundNotification.SoundState.STOPPED));
+        soundEntitySystem.remove(userId, 18);
     }
 
     private WorldManager getWorldManager() {

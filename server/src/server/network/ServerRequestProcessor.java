@@ -4,22 +4,21 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
-import entity.character.info.Inventory;
-import entity.world.Dialog;
-import entity.world.Object;
-import movement.Destination;
-import physics.AOPhysics;
-import position.WorldPos;
+import component.entity.character.info.Bag;
+import component.entity.world.Dialog;
+import component.entity.world.Object;
+import component.movement.Destination;
+import component.physics.AOPhysics;
+import component.position.WorldPos;
 import server.systems.CommandSystem;
 import server.systems.MeditateSystem;
 import server.systems.ServerSystem;
 import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.combat.RangedCombatSystem;
-import server.systems.manager.ItemManager;
-import server.systems.manager.MapManager;
-import server.systems.manager.SpellManager;
-import server.systems.manager.WorldManager;
+import server.systems.manager.*;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import server.utils.WorldUtils;
 import shared.model.AttackType;
 import shared.model.lobby.Player;
@@ -28,6 +27,7 @@ import shared.model.map.Tile;
 import shared.model.map.WorldPosition;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
+import shared.network.interaction.DropItem;
 import shared.network.interaction.MeditateRequest;
 import shared.network.interaction.TakeItemRequest;
 import shared.network.interaction.TalkRequest;
@@ -38,7 +38,8 @@ import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.network.notifications.EntityUpdate;
+import shared.util.EntityUpdateBuilder;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
 
@@ -66,6 +67,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     private MeditateSystem meditateSystem;
     private RangedCombatSystem rangedCombatSystem;
     private CommandSystem commandSystem;
+    private ObjectManager objectManager;
+    private EntityUpdateSystem entityUpdateSystem;
 
     private List<WorldPos> getArea(WorldPos worldPos, int range /*impar*/) {
         List<WorldPos> positions = new ArrayList<>();
@@ -87,7 +90,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     /**
      * Process {@link MovementRequest}. If it is valid, move player and notify.
      *
-     * @param request      movement request
+     * @param request      component.movement request
      * @param connectionId id
      * @see MovementRequest
      */
@@ -128,12 +131,13 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         // notify near users
         if (!nextPos.equals(oldPos)) {
             if (nextPos.map != oldPos.map) {
-                worldManager.notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(E(playerId).getWorldPos()).build());
+                entityUpdateSystem.add(EntityUpdateBuilder.of(playerId).withComponents(E(playerId).getWorldPos()).build(), UpdateTo.NEAR);
             } else {
+                // TODO convert notification into component.entity update
                 worldManager.notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement)));
             }
         } else {
-            worldManager.notifyToNearEntities(playerId, EntityUpdateBuilder.of(playerId).withComponents(player.getHeading()).build());
+            entityUpdateSystem.add(EntityUpdateBuilder.of(playerId).withComponents(player.getHeading()).build(), UpdateTo.NEAR);
         }
 
         // notify user
@@ -167,11 +171,11 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     public void processRequest(ItemActionRequest itemAction, int connectionId) {
         int playerId = networkManager.getPlayerByConnection(connectionId);
         E player = E(playerId);
-        Inventory.Item[] userItems = player.getInventory().items;
+        Bag.Item[] userItems = player.bagItems();
         int itemIndex = itemAction.getSlot();
         if (itemIndex < userItems.length) {
             // if equipable
-            Inventory.Item item = userItems[itemIndex];
+            Bag.Item item = userItems[itemIndex];
             if (item == null) {
                 return;
             }
@@ -210,8 +214,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         if (talkRequest.getMessage().startsWith("/")) {
             commandSystem.handleCommand(talkRequest.getMessage(), playerId);
         } else {
-            worldManager.notifyUpdate(playerId, EntityUpdateBuilder.of(playerId)
-                    .withComponents(new Dialog(talkRequest.getMessage())).build());
+            EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(new Dialog(talkRequest.getMessage())).build();
+            entityUpdateSystem.add(update, UpdateTo.ALL);
         }
     }
 
@@ -235,11 +239,11 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
                 .findFirst()
                 .ifPresent(objectEntityId -> {
                     Object object = E(objectEntityId).getObject();
-                    int index = player.getInventory().add(object.index, object.count, false);
+                    int index = player.getBag().add(object.index, object.count, false);
                     if (index >= 0) {
                         Log.info("Adding item to index: " + index);
                         InventoryUpdate update = new InventoryUpdate();
-                        update.add(index, player.getInventory().items[index]);
+                        update.add(index, player.bagItems()[index]);
                         networkManager.sendTo(connectionId, update);
                         worldManager.unregisterEntity(objectEntityId);
                     } else {
@@ -264,4 +268,36 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         networkManager.sendTo(connectionId, response);
     }
 
+    @Override
+    public void processRequest(DropItem dropItem, int connectionId) {
+        int slot = dropItem.getSlot();
+        int playerId = networkManager.getPlayerByConnection(connectionId);
+        E entity = E(playerId);
+        // remove item from inventory
+        InventoryUpdate update = new InventoryUpdate();
+        Bag bag = entity.getBag();
+        Bag.Item item = bag.items[slot];
+        if (item == null) {
+            return;
+        }
+        if (item.equipped) {
+            itemManager.getItemConsumers().TAKE_OFF.accept(playerId, objectManager.getObject(item.objId).get());
+            item.equipped = false;
+        }
+        item.count -= dropItem.getCount();
+        if (item.count <= 0) {
+            bag.remove(slot);
+        }
+        update.add(slot, bag.items[slot]); // should remove item if count <= 0
+        networkManager.sendTo(networkManager.getConnectionByPlayer(playerId), update);
+        // add new obj component.entity to world
+        int object = world.create();
+        E(object).worldPos()
+                .worldPosMap(dropItem.getPosition().map)
+                .worldPosX(dropItem.getPosition().x)
+                .worldPosY(dropItem.getPosition().y);
+        E(object).objectIndex(item.objId);
+        E(object).objectCount(dropItem.getCount());
+        worldManager.registerEntity(object);
+    }
 }

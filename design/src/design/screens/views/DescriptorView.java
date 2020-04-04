@@ -11,7 +11,7 @@ import com.esotericsoftware.minlog.Log;
 import design.designers.DescriptorDesigner;
 import design.editors.fields.FieldEditor.FieldListener;
 import game.screens.WorldScreen;
-import graphics.AOAnimationActor;
+import design.graphic.AOAnimationActor;
 import model.descriptors.BodyDescriptor;
 import model.descriptors.Descriptor;
 import model.descriptors.FXDescriptor;

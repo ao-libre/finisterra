@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import game.handlers.ObjectHandler;
+import game.systems.resources.ObjectSystem;
 import game.utils.Skins;
 import shared.objects.types.*;
 
@@ -107,7 +107,7 @@ public class CharacterScreen extends ScreenAdapter {
 
     private static class Chooser extends Window {
         private final Stage stage;
-        private ObjectHandler objectHandler;
+        private ObjectSystem objectSystem;
 
         Chooser() {
             super("Choose", Skins.COMODORE_SKIN, "black");
@@ -144,13 +144,13 @@ public class CharacterScreen extends ScreenAdapter {
         private Set<Obj> getItems(Part part) {
             switch (part) {
                 case WEAPON:
-                    return objectHandler.getTypeObjects(Type.WEAPON).stream().map(WeaponObj.class::cast).collect(Collectors.toSet());
+                    return objectSystem.getTypeObjects(Type.WEAPON).stream().map(WeaponObj.class::cast).collect(Collectors.toSet());
                 case SHIELD:
-                    return objectHandler.getTypeObjects(Type.SHIELD).stream().map(ShieldObj.class::cast).collect(Collectors.toSet());
+                    return objectSystem.getTypeObjects(Type.SHIELD).stream().map(ShieldObj.class::cast).collect(Collectors.toSet());
                 case BODY:
-                    return objectHandler.getTypeObjects(Type.ARMOR).stream().map(ArmorObj.class::cast).collect(Collectors.toSet());
+                    return objectSystem.getTypeObjects(Type.ARMOR).stream().map(ArmorObj.class::cast).collect(Collectors.toSet());
                 case HELMET:
-                    return objectHandler.getTypeObjects(Type.HELMET).stream().map(HelmetObj.class::cast).collect(Collectors.toSet());
+                    return objectSystem.getTypeObjects(Type.HELMET).stream().map(HelmetObj.class::cast).collect(Collectors.toSet());
             }
             return Collections.emptySet();
         }

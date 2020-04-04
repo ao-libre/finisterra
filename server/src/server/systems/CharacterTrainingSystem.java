@@ -3,21 +3,25 @@ package server.systems;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.math.MathUtils;
-import entity.character.status.Health;
-import entity.character.status.Level;
-import entity.world.CombatMessage;
-import graphics.Effect;
+import component.console.ConsoleMessage;
+import component.entity.character.status.Health;
+import component.entity.character.status.Level;
+import component.entity.world.CombatMessage;
+import component.graphic.Effect;
+import component.graphic.EffectBuilder;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.database.model.modifiers.Modifiers;
+import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.NPCManager;
 import server.systems.manager.WorldManager;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.MessageSystem;
+import server.systems.network.UpdateTo;
 import shared.interfaces.CharClass;
 import shared.interfaces.FXs;
 import shared.model.npcs.NPC;
-import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
-import shared.network.sound.SoundNotification;
+import shared.util.EntityUpdateBuilder;
 import shared.util.Messages;
 import shared.util.Pair;
 
@@ -31,15 +35,19 @@ public class CharacterTrainingSystem extends PassiveSystem {
     private static final int HIT_BREAKING_LEVEL = 35;
     static int INITIAL_LEVEL = 1;
     static int DEFAULT_STAMINA = 15;
+
+    private EntityUpdateSystem entityUpdateSystem;
     private WorldManager worldManager;
     private NPCManager npcManager;
+    private SoundEntitySystem soundEntitySystem;
+    private MessageSystem messageSystem;
 
     public void userTakeDamage(int entityId, int target, int effectiveDamage) {
         int exp = getExp(target, effectiveDamage);
 
         E e = E(entityId);
         if (e.hasLevel() && exp > 0) {
-            worldManager.sendEntityUpdate(entityId, ConsoleMessage.combat(Messages.EXP_GAIN, Integer.toString(exp)));
+            messageSystem.add(entityId, ConsoleMessage.combat(Messages.EXP_GAIN.name(), Integer.toString(exp)));
             Level level = e.getLevel();
             level.exp += exp;
             userCheckLevel(entityId);
@@ -51,7 +59,11 @@ public class CharacterTrainingSystem extends PassiveSystem {
         E e = E(userId);
         if (e.hasGold()) {
             e.getGold().setCount(e.getGold().getCount() + gold);
-            worldManager.sendEntityUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(e.getGold(), CombatMessage.energy("+" + gold)).build());
+            EntityUpdate update = EntityUpdateBuilder
+                    .of(userId)
+                    .withComponents(e.getGold(), CombatMessage.energy("+" + gold))
+                    .build();
+            entityUpdateSystem.add(update, UpdateTo.NEAR);
         }
     }
 
@@ -93,13 +105,12 @@ public class CharacterTrainingSystem extends PassiveSystem {
                 level.expToNextLevel = 0;
             }
         } else {
-            worldManager.sendEntityUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(E(userId).getLevel()).build());
+            entityUpdateSystem.add(EntityUpdateBuilder.of(userId).withComponents(E(userId).getLevel()).build(), UpdateTo.ENTITY);
         }
-
     }
 
     private void levelUp(int userId) {
-        world.getSystem(WorldManager.class).notifyUpdate(userId, new SoundNotification(3));
+        soundEntitySystem.add(userId, 3);
         // set new experience
         Level level = E(userId).getLevel();
         level.exp -= level.expToNextLevel;
@@ -116,17 +127,22 @@ public class CharacterTrainingSystem extends PassiveSystem {
     }
 
     private void notifyUpgrade(int userId, int mana, float health, Pair<Integer, Integer> hit, int stamina) {
+        // send message to user component.console
+        messageSystem.add(userId, ConsoleMessage.info(Messages.LEVEL_UP.name(), Float.toString(health), Integer.toString(mana), hit.getValue().toString(), Integer.toString(stamina)));
+
+        // send user stat info
         E e = E(userId);
         EntityUpdate update = EntityUpdateBuilder.of(userId)
                 .withComponents(e.getLevel(), e.getHealth(), e.getMana(), e.getHit(), e.getStamina())
                 .build();
-        worldManager.sendEntityUpdate(userId, update);
-        worldManager.sendEntityUpdate(userId, ConsoleMessage.info(Messages.LEVEL_UP, Float.toString(health), Integer.toString(mana), hit.getValue().toString(), Integer.toString(stamina)));
+        entityUpdateSystem.add(update, UpdateTo.ENTITY);
+
+        // TODO effect component.entity system
         int fxE = world.create();
-        Effect effect = new Effect.EffectBuilder().attachTo(userId).withLoops(1).withFX(FXs.FX_LEVEL_UP).build();
+        Effect effect = new EffectBuilder().attachTo(userId).withLoops(1).withFX(FXs.FX_LEVEL_UP).build();
         EntityUpdate fxUpdate = EntityUpdateBuilder.of(fxE).withComponents(effect).build();
-        worldManager.notifyUpdate(userId, fxUpdate);
-        worldManager.unregisterEntity(fxE);
+        entityUpdateSystem.add(fxUpdate, UpdateTo.NEAR);
+        E(fxE).clear();
     }
 
     private void setNextRequiredExperience(Level level) {

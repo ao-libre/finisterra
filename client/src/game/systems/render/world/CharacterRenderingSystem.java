@@ -7,21 +7,21 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
-import entity.character.equipment.Helmet;
-import entity.character.equipment.Shield;
-import entity.character.equipment.Weapon;
-import entity.character.parts.Body;
-import entity.character.parts.Head;
-import entity.character.states.Heading;
-import game.handlers.AnimationHandler;
-import game.handlers.DescriptorHandler;
+import component.entity.character.equipment.Helmet;
+import component.entity.character.equipment.Shield;
+import component.entity.character.equipment.Weapon;
+import component.entity.character.parts.Body;
+import component.entity.character.parts.Head;
+import component.entity.character.states.Heading;
+import game.systems.resources.AnimationsSystem;
+import game.systems.resources.DescriptorsSystem;
 import game.systems.render.BatchRenderingSystem;
 import game.systems.render.BatchTask;
 import game.utils.Pos2D;
 import model.descriptors.BodyDescriptor;
 import model.textures.AOTexture;
 import model.textures.BundledAnimation;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.model.map.Tile;
 
 import java.util.Comparator;
@@ -34,8 +34,8 @@ import static game.systems.render.world.CharacterRenderingSystem.CharacterDrawer
 public class CharacterRenderingSystem extends RenderingSystem {
 
     private static final Aspect.Builder CHAR_ASPECT = Aspect.all(WorldPos.class, Body.class, Heading.class);
-    private DescriptorHandler descriptorHandler;
-    private AnimationHandler animationHandler;
+    private DescriptorsSystem descriptorsSystem;
+    private AnimationsSystem animationsSystem;
     private BatchRenderingSystem batchRenderingSystem;
 
     public CharacterRenderingSystem() {
@@ -60,7 +60,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
         WorldPos pos = forcedPos.orElse(player.getWorldPos());
         Pos2D currentPos = Pos2D.get(pos, player.getWorldPosOffsets());
         Pos2D screenPos = currentPos.toScreen();
-        createDrawer(batchRenderingSystem, player, screenPos, descriptorHandler, animationHandler).draw();
+        createDrawer(batchRenderingSystem, player, screenPos, descriptorsSystem, animationsSystem).draw();
     }
 
     @Override
@@ -74,8 +74,8 @@ public class CharacterRenderingSystem extends RenderingSystem {
         private final E player;
         private final Heading heading;
         private final Pos2D screenPos;
-        private final DescriptorHandler descriptorHandler;
-        private final AnimationHandler animationHandler;
+        private final DescriptorsSystem descriptorsSystem;
+        private final AnimationsSystem animationsSystem;
         private boolean shouldFlip;
         private float headOffsetY;
         // body
@@ -85,24 +85,24 @@ public class CharacterRenderingSystem extends RenderingSystem {
         private BundledAnimation bodyAnimation;
         private float idle;
 
-        private CharacterDrawer(BatchRenderingSystem batchRenderingSystem, E player, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler) {
+        private CharacterDrawer(BatchRenderingSystem batchRenderingSystem, E player, Pos2D screenPos, DescriptorsSystem descriptorsSystem, AnimationsSystem animationsSystem) {
             this.batchRenderingSystem = batchRenderingSystem;
             this.player = player;
             this.heading = player.getHeading();
             this.screenPos = screenPos;
             bodyPixelOffsetX = screenPos.x;
             bodyPixelOffsetY = screenPos.y;
-            this.descriptorHandler = descriptorHandler;
-            this.animationHandler = animationHandler;
+            this.descriptorsSystem = descriptorsSystem;
+            this.animationsSystem = animationsSystem;
             calculateOffsets();
         }
 
-        public static CharacterDrawer createDrawer(BatchRenderingSystem batchRenderingSystem, E player, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler) {
-            return new CharacterDrawer(batchRenderingSystem, player, screenPos, descriptorHandler, animationHandler);
+        public static CharacterDrawer createDrawer(BatchRenderingSystem batchRenderingSystem, E player, Pos2D screenPos, DescriptorsSystem descriptorsSystem, AnimationsSystem animationsSystem) {
+            return new CharacterDrawer(batchRenderingSystem, player, screenPos, descriptorsSystem, animationsSystem);
         }
 
-        public static CharacterDrawer createDrawer(BatchRenderingSystem batchRenderingSystem, E player, Pos2D screenPos, DescriptorHandler descriptorHandler, AnimationHandler animationHandler, boolean shouldFlip) {
-            CharacterDrawer characterDrawer = new CharacterDrawer(batchRenderingSystem, player, screenPos, descriptorHandler, animationHandler);
+        public static CharacterDrawer createDrawer(BatchRenderingSystem batchRenderingSystem, E player, Pos2D screenPos, DescriptorsSystem descriptorsSystem, AnimationsSystem animationsSystem, boolean shouldFlip) {
+            CharacterDrawer characterDrawer = new CharacterDrawer(batchRenderingSystem, player, screenPos, descriptorsSystem, animationsSystem);
             characterDrawer.shouldFlip = shouldFlip;
             return characterDrawer;
         }
@@ -143,8 +143,8 @@ public class CharacterRenderingSystem extends RenderingSystem {
 
         private void calculateOffsets() {
             final Body body = player.getBody();
-            BodyDescriptor bodyDescriptor = descriptorHandler.getBody(body.index);
-            bodyAnimation = animationHandler.getBodyAnimation(body, heading.current);
+            BodyDescriptor bodyDescriptor = descriptorsSystem.getBody(body.index);
+            bodyAnimation = animationsSystem.getBodyAnimation(body, heading.current);
 
             headOffsetY = bodyDescriptor.getHeadOffsetY() - getMovementOffsetY();
             headOffsetY *= SCALE;
@@ -193,7 +193,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
         void drawHead() {
             if (player.hasHead()) {
                 final Head head = player.getHead();
-                AOTexture headTexture = animationHandler.getHeadAnimation(head, heading.current);
+                AOTexture headTexture = animationsSystem.getHeadAnimation(head, heading.current);
                 if (headTexture != null) {
                     TextureRegion headRegion = headTexture.getTexture();
                     float offsetY = headOffsetY - (shouldFlip ? -1 : 1) * 4 * SCALE;
@@ -210,7 +210,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
         void drawHelmet() {
             if (player.hasHelmet()) {
                 Helmet helmet = player.getHelmet();
-                BundledAnimation animation = animationHandler.getHelmetsAnimation(helmet, heading.current);
+                BundledAnimation animation = animationsSystem.getHelmetsAnimation(helmet, heading.current);
                 float offsetY = headOffsetY - 4 * SCALE;
                 float offsetX = 4.0f * SCALE;
                 draw(animation, this.bodyPixelOffsetX, this.bodyPixelOffsetY, offsetX, offsetY);
@@ -220,7 +220,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
         void drawWeapon() {
             if (player.hasWeapon()) {
                 Weapon weapon = player.getWeapon();
-                BundledAnimation animation = animationHandler.getWeaponAnimation(weapon, heading.current);
+                BundledAnimation animation = animationsSystem.getWeaponAnimation(weapon, heading.current);
                 draw(animation, this.bodyPixelOffsetX, this.bodyPixelOffsetY, 0, Math.max(0, headOffsetY) + idle);
             }
         }
@@ -229,7 +229,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
         void drawShield() {
             if (player.hasShield()) {
                 Shield shield = player.getShield();
-                BundledAnimation animation = animationHandler.getShieldAnimation(shield, heading.current);
+                BundledAnimation animation = animationsSystem.getShieldAnimation(shield, heading.current);
                 draw(animation, this.bodyPixelOffsetX, this.bodyPixelOffsetY, 0, Math.max(0, headOffsetY) + idle);
             }
         }

@@ -12,15 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Tooltip;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import game.AOGame;
 import game.handlers.AOAssetManager;
-import game.handlers.ObjectHandler;
 import game.utils.Skins;
-import game.utils.WorldUtils;
 import shared.objects.types.*;
 import shared.util.Messages;
 
 import java.util.Optional;
 
-import static entity.character.info.Inventory.Item;
+import static component.entity.character.info.Bag.Item;
 
 public class Slot extends ImageButton {
 
@@ -33,6 +31,7 @@ public class Slot extends ImageButton {
 
     private boolean selected;
     private Tooltip tooltip;
+    private TextureRegion graphic;
 
     Slot() {
         super(Skins.COMODORE_SKIN, "icon-container");
@@ -55,16 +54,21 @@ public class Slot extends ImageButton {
         return item;
     }
 
-    void setItem(Item item) {
+    public TextureRegion getGraphic() {
+        return graphic;
+    }
+
+    void setItem(Item item, TextureRegion graphic) {
         this.item = Optional.ofNullable(item);
         if (item == null) {
             return;
         }
+        this.graphic = graphic;
         if (tooltip != null) {
             removeListener(tooltip);
         }
-        tooltip = getTooltip(item);
-        addListener(tooltip);
+//        tooltip = getTooltip(item);
+//        addListener(tooltip);
     }
 
     @Override
@@ -82,12 +86,9 @@ public class Slot extends ImageButton {
     }
 
     private void drawItem(Batch batch) {
-        ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
-        Optional<Obj> object = objectHandler.getObject(getObjId());
-        object.ifPresent(obj -> {
-            TextureRegion graphic = objectHandler.getGraphic(obj);
+        if (graphic != null) {
             batch.draw(graphic, getX() + 1, getY() + 1);
-        });
+        }
     }
 
     void setSelected(boolean selected) {
@@ -95,11 +96,12 @@ public class Slot extends ImageButton {
     }
 
     public Tooltip<Actor> getTooltip(Item item) {
-        int objID = item.objId;
-        ObjectHandler objectHandler = WorldUtils.getWorld().orElse(null).getSystem(ObjectHandler.class);
-        Optional<Obj> obj = objectHandler.getObject(objID);
-        Actor content = createTooltipContent(obj.get());
-        return new Tooltip<>(content);
+//        int objID = item.objId;
+//        ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null).getSystem(ObjectSystem.class);
+//        Optional<Obj> obj = objectSystem.getObject(objID);
+//        Actor content = createTooltipContent(obj.get());
+//        return new Tooltip<>(content);
+        return null;
     }
 
     private Actor createTooltipContent(Obj obj) {

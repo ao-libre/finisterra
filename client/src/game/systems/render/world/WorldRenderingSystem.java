@@ -5,16 +5,14 @@ import com.artemis.BaseSystem;
 import com.artemis.E;
 import com.artemis.EBag;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import game.handlers.MapHandler;
-import game.managers.MapManager;
-import game.managers.WorldManager;
+import game.systems.resources.MapSystem;
+import game.systems.map.MapManager;
+import game.systems.world.NetworkedEntitySystem;
 import game.systems.camera.CameraSystem;
 import game.systems.map.TiledMapSystem;
-import graphics.Effect;
-import graphics.RenderBefore;
-import position.WorldPos;
+import component.graphic.Effect;
+import component.graphic.RenderBefore;
+import component.position.WorldPos;
 import shared.model.map.Tile;
 
 import java.util.HashSet;
@@ -22,7 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static graphics.Effect.NO_REF;
+import static component.graphic.Effect.NO_REF;
 
 @Wire
 public class WorldRenderingSystem extends BaseSystem {
@@ -33,7 +31,7 @@ public class WorldRenderingSystem extends BaseSystem {
     private TiledMapSystem tiledMapSystem;
     private CharacterRenderingSystem characterRenderingSystem;
     private EffectRenderingSystem effectRenderingSystem;
-    private WorldManager worldManager;
+    private NetworkedEntitySystem networkedEntitySystem;
 
     public WorldRenderingSystem() {
     }
@@ -43,7 +41,7 @@ public class WorldRenderingSystem extends BaseSystem {
         int mapNumber = tiledMapSystem.mapNumber;
         if (mapNumber > 0) {
             getRange().forEachTile((x, y) -> {
-                WorldPos pos = MapHandler.getHelper().getEffectivePosition(mapNumber, x, y);
+                WorldPos pos = MapSystem.getHelper().getEffectivePosition(mapNumber, x, y);
                 getMapElement(pos).ifPresent(element -> mapManager.doTileDraw(world.getDelta(), x, y, element));
                 getBeforeEffect(pos).forEach(e -> effectRenderingSystem.drawEffect(e, e.hasWorldPos() ? translatePos(e.getWorldPos(), x, y) : Optional.empty()));
                 getPlayer(pos).ifPresent(e -> characterRenderingSystem.drawPlayer(e, translatePos(e.getWorldPos(), x, y)));
@@ -76,8 +74,8 @@ public class WorldRenderingSystem extends BaseSystem {
                         return e.getWorldPos().equals(pos);
                     } else if (e.getEffect().entityReference != NO_REF) {
                         int entityReference = e.getEffect().entityReference;
-                        if (worldManager.hasNetworkedEntity(entityReference)) {
-                            int entityId = worldManager.getNetworkedEntity(entityReference);
+                        if (networkedEntitySystem.exists(entityReference)) {
+                            int entityId = networkedEntitySystem.getLocalId(entityReference);
                             E entity = E.E(entityId);
                             if (entity != null && entity.hasWorldPos()) {
                                 return entity.getWorldPos().equals(pos);
@@ -113,7 +111,7 @@ public class WorldRenderingSystem extends BaseSystem {
     private Optional<Integer> getMapElement(WorldPos pos) {
         Optional<Integer> result = Optional.empty();
 
-        Tile tile = MapHandler.getTile(pos);
+        Tile tile = MapSystem.getTile(pos);
         if (tile != null) {
             int element = tile.getGraphic(2);
             if (element != 0) {

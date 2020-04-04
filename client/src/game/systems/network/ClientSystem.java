@@ -4,9 +4,6 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
-import game.network.ClientResponseProcessor;
-import game.network.GameNotificationProcessor;
-import game.network.KryonetClientMarshalStrategy;
 import game.screens.GameScreen;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import shared.network.init.NetworkDictionary;
@@ -31,6 +28,11 @@ public class ClientSystem extends MarshalSystem {
                 ((IResponse) object).accept(responseProcessor);
             } else if (object instanceof INotification) {
                 ((INotification) object).accept(notificationProcessor);
+            } else if (object instanceof INotification[]) {
+                INotification[] notifications = (INotification[]) object;
+                for (INotification notification : notifications) {
+                    notification.accept(notificationProcessor);
+                }
             }
         });
     }
@@ -50,6 +52,10 @@ public class ClientSystem extends MarshalSystem {
 
     public void setResponseProcessor(ClientResponseProcessor responseProcessor) {
         this.responseProcessor = responseProcessor;
+    }
+
+    public void send(Object object) {
+        getKryonetClient().sendToAll(object);
     }
 
     public KryonetClientMarshalStrategy getKryonetClient() {

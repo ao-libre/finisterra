@@ -2,8 +2,8 @@ package shared.model.npcs;
 
 import com.artemis.E;
 import com.artemis.World;
-import entity.character.states.Heading;
-import position.WorldPos;
+import component.entity.character.states.Heading;
+import component.position.WorldPos;
 
 public class NPCToEntity {
 

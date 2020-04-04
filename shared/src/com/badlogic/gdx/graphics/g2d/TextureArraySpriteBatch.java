@@ -1386,7 +1386,7 @@ public class TextureArraySpriteBatch implements Batch {
     }
 
     /**
-     * Sets the shader to be used in a GLES 2.0 environment. Vertex position attribute is called "a_position", the texture
+     * Sets the shader to be used in a GLES 2.0 environment. Vertex component.position attribute is called "a_position", the texture
      * coordinates attribute is called "a_texCoord0", the color attribute is called "a_color", texture unit index is called
      * "texture_index", this needs to be converted to int with int(...) in the fragment shader. See
      * {@link ShaderProgram#POSITION_ATTRIBUTE}, {@link ShaderProgram#COLOR_ATTRIBUTE} and {@link ShaderProgram#TEXCOORD_ATTRIBUTE}

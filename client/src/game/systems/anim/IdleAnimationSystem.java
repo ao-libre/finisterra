@@ -3,15 +3,15 @@ package game.systems.anim;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
-import entity.character.equipment.Shield;
-import entity.character.equipment.Weapon;
-import entity.character.parts.Body;
-import entity.character.states.Heading;
-import entity.character.status.Health;
-import game.handlers.AnimationHandler;
+import component.entity.character.equipment.Shield;
+import component.entity.character.equipment.Weapon;
+import component.entity.character.parts.Body;
+import component.entity.character.states.Heading;
+import component.entity.character.status.Health;
+import game.systems.resources.AnimationsSystem;
 import model.textures.BundledAnimation;
-import movement.Moving;
-import physics.AttackAnimation;
+import component.movement.Moving;
+import component.physics.AttackAnimation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ import static com.artemis.E.E;
 
 public class IdleAnimationSystem extends IteratingSystem {
 
-    private AnimationHandler animationHandler;
+    private AnimationsSystem animationsSystem;
 
     public IdleAnimationSystem() {
         super(Aspect.all(Heading.class).exclude(Moving.class, AttackAnimation.class));
@@ -49,15 +49,15 @@ public class IdleAnimationSystem extends IteratingSystem {
         List<BundledAnimation> animations = new ArrayList<>();
         if (entity.hasBody()) {
             final Body body = entity.getBody();
-            animations.add(animationHandler.getBodyAnimation(body, heading.current));
+            animations.add(animationsSystem.getBodyAnimation(body, heading.current));
         }
         if (entity.hasWeapon()) {
             final Weapon weapon = entity.getWeapon();
-            animations.add(animationHandler.getWeaponAnimation(weapon, heading.current));
+            animations.add(animationsSystem.getWeaponAnimation(weapon, heading.current));
         }
         if (entity.hasShield()) {
             final Shield weapon = entity.getShield();
-            animations.add(animationHandler.getShieldAnimation(weapon, heading.current));
+            animations.add(animationsSystem.getShieldAnimation(weapon, heading.current));
         }
         animations.stream().filter(Objects::nonNull).forEach(animation -> {
             float delta = world.getDelta();

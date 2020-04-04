@@ -1,8 +1,8 @@
 package game.utils;
 
 import com.artemis.E;
-import position.WorldPos;
-import position.WorldPosOffsets;
+import component.position.WorldPos;
+import component.position.WorldPosOffsets;
 import shared.model.map.Tile;
 
 public class Pos2D {

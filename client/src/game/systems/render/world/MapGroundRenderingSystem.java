@@ -14,9 +14,8 @@ import com.esotericsoftware.minlog.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import game.handlers.AnimationHandler;
-import game.managers.MapManager;
-import game.screens.GameScreen;
+import game.systems.resources.AnimationsSystem;
+import game.systems.map.MapManager;
 import game.systems.render.BatchRenderingSystem;
 import org.jetbrains.annotations.NotNull;
 import shared.model.map.Map;
@@ -44,7 +43,7 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
                 }
             });
 
-    private AnimationHandler animationHandler;
+    private AnimationsSystem animationsSystem;
     private WorldRenderingSystem worldRenderingSystem;
     private BatchRenderingSystem batchRenderingSystem;
 
@@ -115,8 +114,8 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
     }
 
     private void doTileDraw(Batch mapBatch, int x, int y, int graphic) {
-        TextureRegion tileRegion = animationHandler.hasTexture(graphic) ?
-                mapManager.getTextureRegion(animationHandler.getTexture(graphic)) :
+        TextureRegion tileRegion = animationsSystem.hasTexture(graphic) ?
+                mapManager.getTextureRegion(animationsSystem.getTexture(graphic)) :
                 mapManager.getAnimation(0, graphic);
         doTileDraw(mapBatch, y, x, tileRegion);
     }

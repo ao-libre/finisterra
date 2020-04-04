@@ -89,7 +89,7 @@ icon-container
   orig: 64, 64
   offset: 0, 0
   index: -1
-inventory-spells-window
+bag-spells-window
   rotate: false
   xy: 269, 330
   size: 85, 52
