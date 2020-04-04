@@ -52,7 +52,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
                 networkedEntitySystem.unregisterEntity(entityUpdate.entityId);
                 return;
             } else {
-                updateActions(entityUpdate.entityId, () -> updateEntity(entityUpdate));
+                updateEntity(entityUpdate);
             }
         }
         int localEntity = networkedEntitySystem.getLocalId(entityUpdate.entityId);
@@ -63,31 +63,6 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         }
     }
 
-    private void updateActions(int id, Runnable update) {
-        // TODO move to cameraShakeSystem
-        if (networkedEntitySystem.exists(id)) {
-            int networkedEntity = networkedEntitySystem.getLocalId(id);
-            if (networkedEntity == playerSystem.get().id()) {
-                E e = E(networkedEntity);
-                int preHealth = e.getHealth().min;
-                update.run();
-                onDamage(networkedEntity, preHealth);
-            } else {
-                update.run();
-            }
-        }
-    }
-
-    private void onDamage(int id, int preHealth) {
-        // TODO move to cameraShakeSystem
-        int postHealth = E(id).getHealth().min;
-        if (postHealth < preHealth) {
-            Log.info("Shake camera by " + (preHealth - postHealth));
-            cameraShakeSystem.shake((preHealth - postHealth) / 10f);
-            cameraShakeSystem.push(5, 5);
-        }
-    }
-
     @Override
     public void processNotification(InventoryUpdate inventoryUpdate) {
         E player = playerSystem.get();
@@ -95,10 +70,10 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         inventoryUpdate.getUpdates().forEach((position, item) -> {
             bag.set(position, item);
             if (item == null) {
-                Log.info("Item removed from position: " + position);
+                Log.debug("Item removed from position: " + position);
             } else {
-                Log.info("Item: " + item.objId + " updated in position: " + position);
-                Log.info("Item equipped: " + item.equipped);
+                Log.debug("Item: " + item.objId + " updated in position: " + position);
+                Log.debug("Item equipped: " + item.equipped);
             }
         });
         inventorySystem.update(bag);

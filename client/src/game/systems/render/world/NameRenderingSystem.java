@@ -46,7 +46,7 @@ public class NameRenderingSystem extends RenderingSystem {
                     float prefWidth = label.getPrefWidth();
                     label.setWrap(true);
                     label.setAlignment(Align.center);
-                    Log.info("Width: " + prefWidth);
+                    Log.debug("Width: " + prefWidth);
                     table.add(label).width(Math.min(prefWidth + 20, 200));
                     return table;
                 }

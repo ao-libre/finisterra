@@ -33,7 +33,7 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
         inventorySystem.calculate(entityId);
         spellSystem.calculate(entityId);
         Table actionBar = new Table(Skins.COMODORE_SKIN);
-        Log.info("Creating Action Bar for component.entity: " + entityId);
+        Log.debug("Creating Action Bar for component.entity: " + entityId);
         SwitchButtons buttons = new SwitchButtons();
         buttons.addListener(state -> {
             switch (state) {

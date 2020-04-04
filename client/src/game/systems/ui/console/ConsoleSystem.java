@@ -40,7 +40,7 @@ public class ConsoleSystem extends IteratingSystem {
                 console.addWarning(message);
                 break;
         }
-        Log.info("Delete from world: " + entityId);
+        Log.debug("Delete from world: " + entityId);
         E(entityId).clear();
     }
 

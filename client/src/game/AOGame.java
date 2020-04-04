@@ -39,7 +39,7 @@ public class AOGame extends Game implements AssetManagerHolder {
     @Override
     public void create() {
         Log.setLogger(new LogSystem());
-        Log.info("AOGame", "Creating AOGame...");
+        Log.debug("AOGame", "Creating AOGame...");
         ScreenManager.getInstance().initialize(this);
         toLoading();
         this.fpsSync = new Sync();
@@ -87,11 +87,11 @@ public class AOGame extends Game implements AssetManagerHolder {
 
     @Override
     public void dispose() {
-        Log.info("AOGame", "Closing client...");
+        Log.debug("AOGame", "Closing client...");
         screen.dispose();
         getAssetManager().dispose();
         Gdx.app.exit();
-        Log.info("Thank you for playing! See you soon...");
+        Log.debug("Thank you for playing! See you soon...");
         System.exit(0);
     }
 }
