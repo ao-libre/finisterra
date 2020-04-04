@@ -74,7 +74,7 @@ public class MouseSystem extends PassiveSystem {
 
     public void onClick() {
         if (action == null) {
-            Log.info("BAD: see Mouse System");
+            Log.debug("BAD: see Mouse System");
             return;
         }
         WorldPos mouseWorldPos = userInterfaceSystem.getMouseWorldPos();

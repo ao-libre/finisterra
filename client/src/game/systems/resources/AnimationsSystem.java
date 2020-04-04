@@ -98,7 +98,7 @@ public class AnimationsSystem extends BaseSystem {
     }
 
     private List<BundledAnimation> createAnimations(IDescriptor descriptor) {
-        Log.info("Animation created: " + Arrays.toString(descriptor.getIndexs()));
+        Log.debug("Animation created: " + Arrays.toString(descriptor.getIndexs()));
         List<BundledAnimation> animations = new ArrayList<>();
         int[] indexes = descriptor.getIndexs();
         for (int grhIndex : indexes) {
@@ -158,7 +158,7 @@ public class AnimationsSystem extends BaseSystem {
     private BundledAnimation createAnimation(int id) {
         AOAnimation animation = assetManager.getAnimation(id);
         if (animation == null) {
-            Log.info("Fail to create animation for: " + id);
+            Log.debug("Fail to create animation for: " + id);
             return null;
         }
         return new BundledAnimation(animation);
@@ -168,7 +168,7 @@ public class AnimationsSystem extends BaseSystem {
     private AOTexture createTexture(int id) {
         AOImage image = assetManager.getImage(id);
         if (image == null) {
-            Log.info("Fail to create AO Image: " + id);
+            Log.debug("Fail to create AO Image: " + id);
             return null;
         }
         return new AOTexture(image);

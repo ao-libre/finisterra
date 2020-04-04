@@ -74,9 +74,9 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
     @Override
     public void processResponse(TimeSyncResponse timeSyncResponse) {
         timeSync.receive(timeSyncResponse);
-        Log.info("Local timestamp: " + TimeUtils.millis() / 1000);
-        Log.info("RTT: " + timeSync.getRtt() / 1000);
-        Log.info("Time offset: " + timeSync.getTimeOffset() / 1000);
+        Log.debug("Local timestamp: " + TimeUtils.millis() / 1000);
+        Log.debug("RTT: " + timeSync.getRtt() / 1000);
+        Log.debug("Time offset: " + timeSync.getTimeOffset() / 1000);
     }
 
     @Override

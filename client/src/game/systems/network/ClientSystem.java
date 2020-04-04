@@ -23,7 +23,7 @@ public class ClientSystem extends MarshalSystem {
     @Override
     public void received(int connectionId, Object object) {
         Gdx.app.postRunnable(() -> {
-            Log.info(object.toString());
+            Log.debug(object.toString());
             if (object instanceof IResponse) {
                 ((IResponse) object).accept(responseProcessor);
             } else if (object instanceof INotification) {

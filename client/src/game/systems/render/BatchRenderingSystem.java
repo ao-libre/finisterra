@@ -49,7 +49,7 @@ public class BatchRenderingSystem extends BaseSystem {
         try {
             tempSpriteBatch = new TextureArraySpriteBatch();
         } catch (Exception ex) {
-            Log.info("Tu dispositivo no es compatible con el SpriteBatch mejorado. Usando sistema original...");
+            Log.debug("Tu dispositivo no es compatible con el SpriteBatch mejorado. Usando sistema original...");
             tempSpriteBatch = new SpriteBatch();
         }
         return tempSpriteBatch;

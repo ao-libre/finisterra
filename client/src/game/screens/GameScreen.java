@@ -71,7 +71,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
         long start = System.currentTimeMillis();
         initWorldConfiguration(assetManager, clientConfiguration);
-        Log.info("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
+        Log.debug("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
     }
 
     private void initWorldConfiguration(AOAssetManager assetManager, ClientConfiguration clientConfiguration) {
