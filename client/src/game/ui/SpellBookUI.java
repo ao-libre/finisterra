@@ -1,35 +1,37 @@
 package game.ui;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import component.entity.character.info.SpellBook;
 import game.utils.Skins;
 import shared.model.Spell;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
-public class SpellView extends Table {
+public abstract class SpellBookUI extends Table {
 
     private static final int MAX_SPELLS = 6;
-    public Optional<Spell> toCast = Optional.empty();
-    public Optional<Spell> selected = Optional.empty();
-    private ImageButton castButton;
-    private Window spellTable;
-    private List<SpellSlot> slots = new ArrayList<>(MAX_SPELLS);
-    private int base;
+    private final ImageButton castButton;
+    public Optional<SpellSlotUI> selected = Optional.empty();
+    private List<SpellSlotUI> slots = new ArrayList<>(MAX_SPELLS);
 
-    public SpellView() {
+    public SpellBookUI() {
         super(Skins.COMODORE_SKIN);
-        spellTable = new Window("", Skins.COMODORE_SKIN, "inventory");
+        Window spellTable = new Window("", Skins.COMODORE_SKIN, "inventory");
         for (int i = 0; i < MAX_SPELLS; i++) {
-            SpellSlot slot = new SpellSlot(this, null);
+            SpellSlotUI slot = new SpellSlotUI() {
+                @Override
+                public void onSpellClick(SpellSlotUI spellSlotUI) {
+                    selected.ifPresent(slot -> slot.setSelected(false));
+                    selected = Optional.ofNullable(spellSlotUI);
+                    if (spellSlotUI != null) {
+                        spellSlotUI.setSelected(true);
+                    }
+                }
+            };
             slots.add(slot);
             spellTable.add(slot).width(SpellSlot.SIZE).height(SpellSlot.SIZE).row();
             if (i < MAX_SPELLS - 1) {
@@ -42,28 +44,17 @@ public class SpellView extends Table {
         spellTable.toFront();
     }
 
-    private void changeCursor() {
-//        WorldUtils.getWorld().ifPresent(world -> {
-//            world.getSystem(UserInterfaceSystem.class).getConsole().addInfo("Haz click para lanzar el hechizo");
-//            world.getSystem(UserInterfaceSystem.class).getInventory().cleanShoot();
-//        });
-//        Cursors.setCursor("select");
+    public void update(SpellBook spellBook, int base) {
+        Integer[] spells = spellBook.spells;
+        for (int i = 0; i < MAX_SPELLS; i++) {
+            if (i < spells.length) {
+                slots.get(i).setSpell(getSpell(spells[i + base]));
+            }
+        }
     }
 
-    public void updateSpells() {
-//        WorldUtils.getWorld().ifPresent(world -> {
-//            SpellsSystem spellsSystem = world.getSystem(SpellsSystem.class);
-//            Spell[] spells = spellsSystem.getSpells();
-//            Spell[] spellsToShow = new Spell[MAX_SPELLS];
-//            System.arraycopy(spells, base, spellsToShow, 0, Math.min(MAX_SPELLS, spells.length));
-//            for (int i = 0; i < MAX_SPELLS; i++) {
-//                slots.get(i).setSpell(spellsToShow[i]);
-//            }
-//        });
-    }
-
-    public void addSpelltoSpellview(Spell spell, int slotPosition) {
-        slots.get(slotPosition).setSpell(spell);
+    public void clearCast() {
+        castButton.setChecked(false);
     }
 
     private ImageButton createCastButton() {
@@ -71,45 +62,29 @@ public class SpellView extends Table {
         staff.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                selected.ifPresent(spell -> preparedToCast(spell));
-                super.clicked(event, x, y);
+                selected.ifPresent(spell -> onCastClicked(spell));
+                staff.setChecked(selected.isPresent());
             }
         });
         return staff;
     }
 
-    void selected(Spell spell) {
-        selected = Optional.ofNullable(spell);
-    }
+    protected abstract void onCastClicked(SpellSlotUI spell);
 
-    void preparedToCast(Spell spell) {
-        toCast = Optional.ofNullable(spell);
-        changeCursor();
-    }
+    protected abstract Spell getSpell(Integer spellId);
 
-    public boolean isOver() {
-        return Stream.of(spellTable.getChildren().items)
-                .filter(SpellSlot.class::isInstance)
-                .map(SpellSlot.class::cast)
-                .anyMatch(SpellSlot::isOver) || castButton.isOver();
-    }
-
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-//        int player = GameScreen.getPlayer();
-//        Color backup = batch.getColor();
-//        if (player >= 0) {
-//            E e = E(player);
-//            if (e != null && e.hasAttack()) {
-//                batch.setColor(Colors.COMBAT);
-//            }
-//        }
+//    @Override
+//    public void draw(Batch batch, float parentAlpha) {
+////        int player = GameScreen.getPlayer();
+////        Color backup = batch.getColor();
+////        if (player >= 0) {
+////            E e = E(player);
+////            if (e != null && e.hasAttack()) {
+////                batch.setColor(Colors.COMBAT);
+////            }
+////        }
 //        super.draw(batch, parentAlpha);
-//        batch.setColor(backup);
-    }
+////        batch.setColor(backup);
+//    }
 
-    public void cleanCast() {
-        toCast = Optional.empty();
-        castButton.setChecked(false);
-    }
 }

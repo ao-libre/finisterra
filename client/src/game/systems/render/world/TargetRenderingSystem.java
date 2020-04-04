@@ -1,6 +1,6 @@
 package game.systems.render.world;
 
-import camera.Focused;
+import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.Texture;
 import game.systems.render.BatchRenderingSystem;
 import game.systems.ui.UserInterfaceSystem;
 import game.utils.Colors;
-import position.WorldPos;
-import position.WorldPosOffsets;
+import component.position.WorldPos;
+import component.position.WorldPosOffsets;
 import shared.model.map.Tile;
 import shared.util.WorldPosConversion;
 

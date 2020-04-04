@@ -1,4 +1,4 @@
-package graphic;
+package design.graphic;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

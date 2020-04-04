@@ -3,14 +3,14 @@ package server.systems.combat;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
-import console.ConsoleMessage;
-import entity.character.states.Heading;
-import entity.character.status.Health;
-import entity.world.CombatMessage;
-import graphics.Effect;
-import graphics.EffectBuilder;
-import physics.AttackAnimation;
-import position.WorldPos;
+import component.console.ConsoleMessage;
+import component.entity.character.states.Heading;
+import component.entity.character.status.Health;
+import component.entity.world.CombatMessage;
+import component.graphic.Effect;
+import component.graphic.EffectBuilder;
+import component.physics.AttackAnimation;
+import component.position.WorldPos;
 import server.database.model.modifiers.Modifiers;
 import server.systems.CharacterTrainingSystem;
 import server.systems.entity.SoundEntitySystem;
@@ -332,7 +332,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     /**
      * Send combat notification to user and near by entities
      *
-     * @param victim        entity id
+     * @param victim        component.entity id
      * @param combatMessage message
      */
     private void notify(int victim, CombatMessage combatMessage) {
@@ -341,9 +341,9 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     }
 
     /**
-     * Send an update to entity with current health
+     * Send an update to component.entity with current health
      *
-     * @param victim entity id
+     * @param victim component.entity id
      */
     private void update(int victim) {
         E v = E(victim);
@@ -362,7 +362,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
             fxUpdate.withComponents(worldPos);
         }
         entityUpdateSystem.add(victim, fxUpdate.build(), UpdateTo.ALL);
-        world.delete(fxE);
+        E(fxE).clear();
     }
 
     private WorldManager getWorldManager() {

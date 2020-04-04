@@ -2,7 +2,7 @@ package server.network;
 
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import entity.character.info.Bag;
+import component.entity.character.info.Bag;
 import server.systems.ServerSystem;
 import server.systems.manager.ItemManager;
 import server.systems.manager.ObjectManager;

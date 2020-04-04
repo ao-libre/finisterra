@@ -1,7 +1,7 @@
-package map;
+package design.map;
 
 import com.esotericsoftware.minlog.Log;
-import map.MapsToWorld.Coord;
+import design.map.MapsToWorld.Coord;
 import shared.model.map.Tile;
 
 import java.util.Comparator;

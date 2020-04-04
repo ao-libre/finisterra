@@ -1,4 +1,4 @@
-package movement;
+package component.movement;
 
 import com.artemis.Component;
 import com.artemis.annotations.PooledWeaver;

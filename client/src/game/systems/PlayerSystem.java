@@ -1,11 +1,11 @@
 package game.systems;
 
-import camera.Focused;
+import component.camera.Focused;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import game.systems.network.ClientSystem;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import position.WorldPos;
+import component.position.WorldPos;
 
 @Wire
 public class PlayerSystem extends PassiveSystem {

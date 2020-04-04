@@ -1,6 +1,6 @@
 package game.systems.render.world;
 
-import camera.Focused;
+import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;

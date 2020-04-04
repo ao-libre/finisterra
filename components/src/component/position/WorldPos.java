@@ -1,4 +1,4 @@
-package position;
+package component.position;
 
 import com.artemis.Component;
 import com.artemis.annotations.PooledWeaver;

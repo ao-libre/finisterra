@@ -1,15 +1,51 @@
 package game.systems.ui.console;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.artemis.Aspect;
+import com.artemis.annotations.Wire;
+import com.artemis.systems.IteratingSystem;
+import com.esotericsoftware.minlog.Log;
+import component.console.ConsoleMessage;
+import game.systems.resources.MessageSystem;
 import game.ui.AOConsole;
-import net.mostlyoriginal.api.system.core.PassiveSystem;
+import shared.util.Messages;
 
-public class ConsoleSystem extends PassiveSystem {
+import static com.artemis.E.E;
 
-    public void addInfo(String messages) {
+@Wire
+public class ConsoleSystem extends IteratingSystem {
+
+    private MessageSystem messageSystem;
+    private AOConsole console;
+
+    public ConsoleSystem() {
+        super(Aspect.all(ConsoleMessage.class));
+        console = new AOConsole();
     }
 
-    public Actor getActor() {
-        return new AOConsole();
+    @Override
+    protected void process(int entityId) {
+        ConsoleMessage consoleMessage = E(entityId).getConsoleMessage();
+        String message = messageSystem.getMessage(Messages.valueOf(consoleMessage.getMessageId()), consoleMessage.getMessageParams());
+        switch (consoleMessage.getKind()) {
+            case INFO:
+                console.addInfo(message);
+                break;
+            case ERROR:
+                console.addError(message);
+                break;
+            case COMBAT:
+                console.addCombat(message);
+                break;
+            case WARNING:
+                console.addWarning(message);
+                break;
+        }
+        Log.info("Delete from world: " + entityId);
+        E(entityId).clear();
     }
+
+    public AOConsole getConsole() {
+        return console;
+    }
+
 }

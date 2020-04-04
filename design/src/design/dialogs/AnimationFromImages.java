@@ -10,7 +10,7 @@ import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
 import design.screens.views.View;
 import game.systems.resources.AnimationsSystem;
-import graphics.AOImageActor;
+import design.graphic.AOImageActor;
 import model.textures.AOAnimation;
 import model.textures.AOImage;
 import org.jetbrains.annotations.NotNull;

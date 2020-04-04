@@ -7,7 +7,7 @@ import com.artemis.EntityEdit;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
-import entity.character.info.Bag;
+import component.entity.character.info.Bag;
 import game.AOGame;
 import game.screens.LobbyScreen;
 import game.screens.RoomScreen;
@@ -55,18 +55,18 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
                 updateActions(entityUpdate.entityId, () -> updateEntity(entityUpdate));
             }
         }
-        int localEntity = networkedEntitySystem.get(entityUpdate.entityId);
+        int localEntity = networkedEntitySystem.getLocalId(entityUpdate.entityId);
         E localE = E(localEntity);
         if (localE != null && localE.hasRef()) {
-            // Map ref to local entity
-            localE.refId(networkedEntitySystem.get(localE.refId()));
+            // Map ref to local component.entity
+            localE.refId(networkedEntitySystem.getLocalId(localE.refId()));
         }
     }
 
     private void updateActions(int id, Runnable update) {
         // TODO move to cameraShakeSystem
         if (networkedEntitySystem.exists(id)) {
-            int networkedEntity = networkedEntitySystem.get(id);
+            int networkedEntity = networkedEntitySystem.getLocalId(id);
             if (networkedEntity == playerSystem.get().id()) {
                 E e = E(networkedEntity);
                 int preHealth = e.getHealth().min;
@@ -107,7 +107,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     @Override
     public void processNotification(MovementNotification movementNotification) {
         if (networkedEntitySystem.exists(movementNotification.getPlayerId())) {
-            int playerId = networkedEntitySystem.get(movementNotification.getPlayerId());
+            int playerId = networkedEntitySystem.getLocalId(movementNotification.getPlayerId());
             E(playerId).movementAdd(movementNotification.getDestination());
         }
     }
@@ -120,7 +120,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
     }
 
     private void updateEntity(EntityUpdate entityUpdate) {
-        int entityId = networkedEntitySystem.get(entityUpdate.entityId);
+        int entityId = networkedEntitySystem.getLocalId(entityUpdate.entityId);
         Entity entity = world.getEntity(entityId);
         EntityEdit edit = entity.edit();
         for (Component component : entityUpdate.components) {

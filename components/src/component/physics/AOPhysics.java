@@ -1,4 +1,4 @@
-package physics;
+package component.physics;
 
 import com.artemis.Component;
 import com.artemis.annotations.PooledWeaver;

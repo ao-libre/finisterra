@@ -2,6 +2,7 @@ package game.systems.screen;
 
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.utils.BufferUtils;
@@ -10,6 +11,7 @@ import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.handlers.AOAssetManager;
 import game.systems.ui.console.ConsoleSystem;
+import game.utils.CursorSystem;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.util.Messages;
 
@@ -19,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 @Wire
 public class ScreenSystem extends PassiveSystem {
 
+    private CursorSystem cursorSystem;
     private ConsoleSystem consoleSystem;
 
     private int windowedWidth;
@@ -27,7 +30,6 @@ public class ScreenSystem extends PassiveSystem {
     // Take a screenshot of the render.
     public void takeScreenshot() {
         try {
-
             // Fetch assetManager
             AOAssetManager assetManager = AOGame.getGlobalAssetManager();
 
@@ -44,8 +46,8 @@ public class ScreenSystem extends PassiveSystem {
             BufferUtils.copy(pixels, 0, pixmap.getPixels(), pixels.length);
             PixmapIO.writePNG(Gdx.files.local(screenshotPath), pixmap);
 
-            // Render the message in the game console.
-            consoleSystem.addInfo(assetManager.getMessages(Messages.SCREENSHOT, screenshotPath));
+            // Render the message in the game component.console.
+            consoleSystem.getConsole().addInfo(assetManager.getMessages(Messages.SCREENSHOT, screenshotPath));
 
             // Clear/dispose the pixmap object.
             pixmap.dispose();
@@ -59,12 +61,22 @@ public class ScreenSystem extends PassiveSystem {
     // Toggle between Windowed Mode and Fullscreen.
     public void toggleFullscreen() {
         if (Gdx.graphics.isFullscreen()) {
-            Gdx.graphics.setWindowedMode(this.windowedWidth, this.windowedHeight);
+            setWindowed();
         } else {
             this.windowedWidth = (int) getWidth();
             this.windowedHeight = (int) getHeight();
-            Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+            setFullScreen();
         }
+    }
+
+    private void setFullScreen() {
+        Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+        resolutionChanged();
+    }
+
+    private void setWindowed() {
+        Gdx.graphics.setWindowedMode(this.windowedWidth, this.windowedHeight);
+        resolutionChanged();
     }
 
     private float getHeight() {
@@ -74,4 +86,16 @@ public class ScreenSystem extends PassiveSystem {
     private float getWidth() {
         return Gdx.graphics.getWidth();
     }
+
+    public void changeResolution(Graphics.DisplayMode displayMode) {
+        this.windowedWidth = displayMode.width;
+        this.windowedHeight = displayMode.height;
+        setWindowed();
+    }
+
+    public void resolutionChanged() {
+        // notify other systems
+        cursorSystem.reload();
+    }
+
 }

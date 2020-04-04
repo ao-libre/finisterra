@@ -5,14 +5,14 @@ import com.artemis.E;
 import com.artemis.EBag;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
-import entity.character.Character;
-import entity.character.states.Immobile;
-import entity.npc.AIMovement;
-import entity.npc.NPC;
-import entity.world.Footprint;
-import movement.Destination;
-import physics.AOPhysics;
-import position.WorldPos;
+import component.entity.character.Character;
+import component.entity.character.states.Immobile;
+import component.entity.npc.AIMovement;
+import component.entity.npc.NPC;
+import component.entity.world.Footprint;
+import component.movement.Destination;
+import component.physics.AOPhysics;
+import component.position.WorldPos;
 import server.systems.IntervalFluidIteratingSystem;
 import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
@@ -28,7 +28,7 @@ import shared.util.MapHelper;
 
 import java.util.*;
 
-import static physics.AOPhysics.Movement.*;
+import static component.physics.AOPhysics.Movement.*;
 import static server.utils.WorldUtils.WorldUtils;
 
 @Wire

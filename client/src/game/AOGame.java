@@ -9,7 +9,6 @@ import game.handlers.DefaultAOAssetManager;
 import game.screens.GameScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
-import game.utils.Cursors;
 import shared.util.LogSystem;
 
 /**
@@ -41,7 +40,6 @@ public class AOGame extends Game implements AssetManagerHolder {
     public void create() {
         Log.setLogger(new LogSystem());
         Log.info("AOGame", "Creating AOGame...");
-        Cursors.setCursor("hand");
         ScreenManager.getInstance().initialize(this);
         toLoading();
         this.fpsSync = new Sync();

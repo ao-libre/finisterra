@@ -5,14 +5,14 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import entity.character.info.Bag;
+import component.entity.character.info.Bag;
 import game.systems.PlayerSystem;
 import game.systems.network.ClientSystem;
 import game.systems.resources.ObjectSystem;
 import game.systems.ui.UserInterfaceContributionSystem;
 import game.systems.ui.UserInterfaceSystem;
 import game.ui.Inventory;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.network.interaction.DropItem;
 import shared.network.interaction.TakeItemRequest;
 import shared.network.inventory.InventoryUpdate;
@@ -39,7 +39,28 @@ public class InventorySystem extends UserInterfaceContributionSystem {
 
     @Override
     public void calculate(int entityId) {
-        inventory = new Inventory(this);
+        inventory = new Inventory() {
+
+            @Override
+            protected void doubleClick() {
+                use();
+            }
+
+            @Override
+            protected void dragAndDropOut(int i, int x, int y) {
+                dropItem(i, getWorldPos(x, y));
+            }
+
+            @Override
+            protected void swap(int originIndex, int targetIndex) {
+                InventorySystem.this.swap(originIndex, targetIndex);
+            }
+
+            @Override
+            protected TextureRegion getGraphic(Bag.Item item) {
+                return InventorySystem.this.getGraphic(item.objId);
+            }
+        };
         inventory.update(E(entityId).getBag());
     }
 
@@ -82,6 +103,7 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     public void use() {
+        // TODO handle usable items
         clientSystem.send(new ItemActionRequest(getSelectedIndex()));
     }
 
@@ -127,6 +149,7 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     public Optional<WorldPos> getWorldPos(int x, int y) {
+        // TODO handle valid component.position to avoid droping items over blocks
         return Optional.of(userInterfaceSystem.getWorldPos(x, y));
     }
 

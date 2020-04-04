@@ -1,4 +1,4 @@
-package network;
+package component.network;
 
 import com.artemis.Component;
 import com.artemis.annotations.PooledWeaver;

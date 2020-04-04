@@ -1,8 +1,6 @@
 package shared.network.interaction;
 
-import position.WorldPos;
-import shared.network.interfaces.INotification;
-import shared.network.interfaces.INotificationProcessor;
+import component.position.WorldPos;
 import shared.network.interfaces.IRequest;
 import shared.network.interfaces.IRequestProcessor;
 

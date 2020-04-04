@@ -1,6 +1,6 @@
 package shared.network.inventory;
 
-import entity.character.info.Bag;
+import component.entity.character.info.Bag;
 import shared.network.interfaces.INotification;
 import shared.network.interfaces.INotificationProcessor;
 

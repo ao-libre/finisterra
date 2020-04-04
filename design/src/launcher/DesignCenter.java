@@ -29,7 +29,7 @@ import game.systems.resources.AnimationsSystem;
 import game.systems.resources.DescriptorsSystem;
 import game.systems.resources.ObjectSystem;
 import game.utils.Skins;
-import graphics.AnimationDrawable;
+import design.graphic.AnimationDrawable;
 import shared.util.LogSystem;
 
 import java.util.Arrays;

@@ -3,20 +3,20 @@ package server.systems.combat;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
-import console.ConsoleMessage;
-import entity.character.attributes.Attribute;
-import entity.character.states.Buff;
-import entity.character.states.Immobile;
-import entity.character.status.Health;
-import entity.character.status.Mana;
-import entity.character.status.Stamina;
-import entity.world.CombatMessage;
-import entity.world.Dialog;
-import graphics.Effect;
-import graphics.EffectBuilder;
+import component.console.ConsoleMessage;
+import component.entity.character.attributes.Attribute;
+import component.entity.character.states.Buff;
+import component.entity.character.states.Immobile;
+import component.entity.character.status.Health;
+import component.entity.character.status.Mana;
+import component.entity.character.status.Stamina;
+import component.entity.world.CombatMessage;
+import component.entity.world.Dialog;
+import component.graphic.Effect;
+import component.graphic.EffectBuilder;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import physics.AttackAnimation;
-import position.WorldPos;
+import component.physics.AttackAnimation;
+import component.position.WorldPos;
 import server.systems.CharacterTrainingSystem;
 import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.MapManager;
@@ -185,7 +185,7 @@ public class MagicCombatSystem extends PassiveSystem {
                     fxUpdate.withComponents(worldPos);
                 }
                 entityUpdateSystem.add(target, fxUpdate.build(), UpdateTo.ALL);
-                worldManager.unregisterEntity(fxE);
+                E(fxE).clear();
             }
 
             stamina.min -= requiredStamina;

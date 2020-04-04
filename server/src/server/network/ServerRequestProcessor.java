@@ -4,12 +4,12 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
-import entity.character.info.Bag;
-import entity.world.Dialog;
-import entity.world.Object;
-import movement.Destination;
-import physics.AOPhysics;
-import position.WorldPos;
+import component.entity.character.info.Bag;
+import component.entity.world.Dialog;
+import component.entity.world.Object;
+import component.movement.Destination;
+import component.physics.AOPhysics;
+import component.position.WorldPos;
 import server.systems.CommandSystem;
 import server.systems.MeditateSystem;
 import server.systems.ServerSystem;
@@ -90,7 +90,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     /**
      * Process {@link MovementRequest}. If it is valid, move player and notify.
      *
-     * @param request      movement request
+     * @param request      component.movement request
      * @param connectionId id
      * @see MovementRequest
      */
@@ -133,7 +133,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
             if (nextPos.map != oldPos.map) {
                 entityUpdateSystem.add(EntityUpdateBuilder.of(playerId).withComponents(E(playerId).getWorldPos()).build(), UpdateTo.NEAR);
             } else {
-                // TODO convert notification into entity update
+                // TODO convert notification into component.entity update
                 worldManager.notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, request.movement)));
             }
         } else {
@@ -290,7 +290,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         }
         update.add(slot, bag.items[slot]); // should remove item if count <= 0
         networkManager.sendTo(networkManager.getConnectionByPlayer(playerId), update);
-        // add new obj entity to world
+        // add new obj component.entity to world
         int object = world.create();
         E(object).worldPos()
                 .worldPosMap(dropItem.getPosition().map)

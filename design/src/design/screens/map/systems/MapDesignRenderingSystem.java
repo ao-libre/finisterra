@@ -1,6 +1,6 @@
 package design.screens.map.systems;
 
-import camera.Focused;
+import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
@@ -10,7 +10,7 @@ import game.systems.map.MapManager;
 import game.systems.render.BatchRenderingSystem;
 import game.systems.render.world.RenderingSystem;
 import game.utils.Colors;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.util.MapHelper;

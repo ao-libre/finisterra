@@ -2,12 +2,12 @@ package design.screens.views;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
+import component.graphic.EffectBuilder;
 import design.designers.SpellDesigner;
 import design.editors.GenericEditor;
 import design.editors.fields.FieldEditor;
+import design.graphic.AOAnimationActor;
 import design.screens.ScreenEnum;
-import graphics.AOAnimationActor;
-import graphics.EffectBuilder;
 import model.descriptors.FXDescriptor;
 import model.textures.BundledAnimation;
 import org.jetbrains.annotations.NotNull;

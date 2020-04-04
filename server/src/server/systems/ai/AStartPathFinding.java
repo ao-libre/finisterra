@@ -5,7 +5,7 @@ import com.badlogic.gdx.ai.pfa.indexed.IndexedAStarPathFinder;
 import com.badlogic.gdx.ai.pfa.indexed.IndexedGraph;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
-import position.WorldPos;
+import component.position.WorldPos;
 
 public class AStartPathFinding {
     private static final int[][] NEIGHBORHOOD = new int[][]{

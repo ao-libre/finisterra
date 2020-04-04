@@ -1,8 +1,8 @@
-package console;
+package component.console;
 
 import com.artemis.Component;
 
-import static console.ConsoleMessage.Kind.*;
+import static component.console.ConsoleMessage.Kind.*;
 
 
 public class ConsoleMessage extends Component {

@@ -18,7 +18,7 @@ import shared.util.Messages;
 
 import java.util.Optional;
 
-import static entity.character.info.Bag.Item;
+import static component.entity.character.info.Bag.Item;
 
 public class Slot extends ImageButton {
 
@@ -52,6 +52,10 @@ public class Slot extends ImageButton {
 
     Optional<Item> getItem() {
         return item;
+    }
+
+    public TextureRegion getGraphic() {
+        return graphic;
     }
 
     void setItem(Item item, TextureRegion graphic) {

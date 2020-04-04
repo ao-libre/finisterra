@@ -1,6 +1,6 @@
 package game.systems.sound;
 
-import sound.AOSound;
+import component.sound.AOSound;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import game.systems.PlayerSystem;
 import game.systems.resources.SoundsSystem;
 import game.systems.world.WorldSystem;
-import position.WorldPos;
+import component.position.WorldPos;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,7 +71,7 @@ public class SoundSytem extends IteratingSystem {
     protected void process(int entityId) {
         int mainPlayer = playerSystem.get().id();
         WorldPos playerPos = E(mainPlayer).getWorldPos();
-        // check distance to entity if has worldpos and update volume
+        // check distance to component.entity if has worldpos and update volume
         E soundEntity = E(entityId);
         if (soundEntity.hasWorldPos() || soundEntity.hasRef()) {
             Optional.ofNullable(soundEntity.hasWorldPos() ? soundEntity.getWorldPos() : getRefPos(soundEntity.refId())).ifPresent(soundPos -> {

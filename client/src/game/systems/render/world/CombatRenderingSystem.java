@@ -13,15 +13,15 @@ import com.esotericsoftware.minlog.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import entity.character.parts.Body;
-import entity.world.CombatMessage;
+import component.entity.character.parts.Body;
+import component.entity.world.CombatMessage;
 import game.systems.resources.DescriptorsSystem;
 import game.systems.render.BatchRenderingSystem;
 import game.utils.Colors;
 import game.utils.Pos2D;
 import game.utils.Skins;
 import org.jetbrains.annotations.NotNull;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.model.map.Tile;
 
 import java.util.concurrent.TimeUnit;

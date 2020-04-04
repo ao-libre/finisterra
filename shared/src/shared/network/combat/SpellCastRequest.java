@@ -1,7 +1,7 @@
 package shared.network.combat;
 
 import com.badlogic.gdx.utils.TimeUtils;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.model.Spell;
 import shared.network.interfaces.IRequest;
 import shared.network.interfaces.IRequestProcessor;

@@ -72,9 +72,11 @@ public class Server {
         final WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
         ServerStrategy strategy = new ServerStrategy(tcpPort, udpPort);
         builder
+                .with(new ClearSystem())
                 .with(new ServerSystem(strategy))
                 .with(new ServerNotificationProcessor())
                 .with(new FluidEntityPlugin())
+                .with(new ComponentManager())
                 .with(new EntityFactorySystem())
                 .with(new ItemManager())
                 .with(new ServerRequestProcessor())

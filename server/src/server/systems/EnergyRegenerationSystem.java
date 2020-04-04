@@ -3,7 +3,7 @@ package server.systems;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import entity.character.status.Stamina;
+import component.entity.character.status.Stamina;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.UpdateTo;
 import shared.network.notifications.EntityUpdate;

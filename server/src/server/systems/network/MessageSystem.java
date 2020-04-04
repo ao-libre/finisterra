@@ -1,11 +1,13 @@
 package server.systems.network;
 
 import com.artemis.BaseSystem;
-import console.ConsoleMessage;
+import component.console.ConsoleMessage;
 import shared.util.EntityUpdateBuilder;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.artemis.E.E;
 
 public class MessageSystem extends BaseSystem {
 
@@ -25,7 +27,7 @@ public class MessageSystem extends BaseSystem {
     @Override
     protected void processSystem() {
         // when finishes
-        messages.forEach((key, value) -> world.delete(value));
+        messages.forEach((key, value) -> E(value).clear());
         // clear messages queue after all system processing
         messages.clear();
     }

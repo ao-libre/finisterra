@@ -1,7 +1,7 @@
 package game.systems.resources;
 
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.util.MapHelper;

@@ -3,7 +3,7 @@ package server.systems.combat;
 import com.artemis.BaseSystem;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import entity.character.status.Stamina;
+import component.entity.character.status.Stamina;
 import server.database.model.modifiers.Modifiers;
 import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.WorldManager;

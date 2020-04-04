@@ -7,19 +7,19 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import entity.character.parts.Body;
+import component.entity.character.parts.Body;
 import game.systems.resources.AnimationsSystem;
 import game.systems.resources.DescriptorsSystem;
 import game.systems.resources.ParticlesSystem;
 import game.systems.world.NetworkedEntitySystem;
 import game.systems.render.BatchRenderingSystem;
 import game.utils.Pos2D;
-import graphics.Effect;
+import component.graphic.Effect;
 import model.descriptors.BodyDescriptor;
 import model.descriptors.FXDescriptor;
 import model.textures.BundledAnimation;
-import position.WorldPos;
-import position.WorldPosOffsets;
+import component.position.WorldPos;
+import component.position.WorldPosOffsets;
 import shared.model.map.Tile;
 
 import java.util.HashMap;
@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.artemis.E.E;
-import static graphics.Effect.NO_REF;
+import static component.graphic.Effect.NO_REF;
 
 @Wire
 public class EffectRenderingSystem extends FluidIteratingSystem {
@@ -103,7 +103,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
             if (effect.entityReference != NO_REF) {
                 int networkedEntity = effect.entityReference;
                 if (networkedEntitySystem.exists(networkedEntity)) {
-                    int entityId = networkedEntitySystem.get(networkedEntity);
+                    int entityId = networkedEntitySystem.getLocalId(networkedEntity);
                     E entity = E(entityId);
                     if (entity != null) {
                         candidate = entity;
@@ -164,7 +164,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                 if (fxs.containsKey(id)) {
                     BundledAnimation anim = fxs.get(id);
                     if (anim.isAnimationFinished()) {
-                        networkedEntitySystem.getNetworkedId(id).ifPresent(networkedEntitySystem::unregisterEntity);
+                        e.clear();
                     } else {
                         anim.setAnimationTime(anim.getAnimationTime() + getWorld().getDelta() * (anim.getAnimation().getKeyFrames().length * 0.33f));
                     }

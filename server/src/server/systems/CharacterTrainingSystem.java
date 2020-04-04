@@ -3,12 +3,12 @@ package server.systems;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.math.MathUtils;
-import console.ConsoleMessage;
-import entity.character.status.Health;
-import entity.character.status.Level;
-import entity.world.CombatMessage;
-import graphics.Effect;
-import graphics.EffectBuilder;
+import component.console.ConsoleMessage;
+import component.entity.character.status.Health;
+import component.entity.character.status.Level;
+import component.entity.world.CombatMessage;
+import component.graphic.Effect;
+import component.graphic.EffectBuilder;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.database.model.modifiers.Modifiers;
 import server.systems.entity.SoundEntitySystem;
@@ -127,7 +127,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
     }
 
     private void notifyUpgrade(int userId, int mana, float health, Pair<Integer, Integer> hit, int stamina) {
-        // send message to user console
+        // send message to user component.console
         messageSystem.add(userId, ConsoleMessage.info(Messages.LEVEL_UP.name(), Float.toString(health), Integer.toString(mana), hit.getValue().toString(), Integer.toString(stamina)));
 
         // send user stat info
@@ -137,12 +137,12 @@ public class CharacterTrainingSystem extends PassiveSystem {
                 .build();
         entityUpdateSystem.add(update, UpdateTo.ENTITY);
 
-        // TODO effect entity system
+        // TODO effect component.entity system
         int fxE = world.create();
         Effect effect = new EffectBuilder().attachTo(userId).withLoops(1).withFX(FXs.FX_LEVEL_UP).build();
         EntityUpdate fxUpdate = EntityUpdateBuilder.of(fxE).withComponents(effect).build();
         entityUpdateSystem.add(fxUpdate, UpdateTo.NEAR);
-        worldManager.unregisterEntity(fxE);
+        E(fxE).clear();
     }
 
     private void setNextRequiredExperience(Level level) {

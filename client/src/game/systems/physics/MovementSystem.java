@@ -6,10 +6,10 @@ import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
 import game.systems.world.WorldSystem;
-import movement.Destination;
-import physics.AOPhysics;
-import position.WorldPos;
-import position.WorldPosOffsets;
+import component.movement.Destination;
+import component.physics.AOPhysics;
+import component.position.WorldPos;
+import component.position.WorldPosOffsets;
 import shared.model.map.Tile;
 
 import static com.artemis.E.E;

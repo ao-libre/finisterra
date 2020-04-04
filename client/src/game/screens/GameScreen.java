@@ -33,6 +33,7 @@ import game.systems.physics.PlayerInputSystem;
 import game.systems.render.BatchRenderingSystem;
 import game.systems.render.world.*;
 import game.systems.resources.*;
+import game.systems.screen.MouseSystem;
 import game.systems.screen.ScreenSystem;
 import game.systems.sound.SoundSytem;
 import game.systems.ui.UserInterfaceSystem;
@@ -43,8 +44,10 @@ import game.systems.ui.console.ConsoleSystem;
 import game.systems.ui.dialog.DialogSystem;
 import game.systems.ui.stats.StatsSystem;
 import game.systems.ui.user.UserSystem;
+import game.systems.world.ClearSystem;
 import game.systems.world.NetworkedEntitySystem;
 import game.systems.world.WorldSystem;
+import game.utils.CursorSystem;
 import net.mostlyoriginal.api.system.render.ClearScreenSystem;
 import shared.model.map.Tile;
 
@@ -73,9 +76,9 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
 
     private void initWorldConfiguration(AOAssetManager assetManager, ClientConfiguration clientConfiguration) {
         worldConfigBuilder = new WorldConfigurationBuilder()
-                .with(HIGH, new SuperMapper())
+                .with(HIGH, new SuperMapper(), new ClearSystem())
                 .with(LOGIC,
-                        // Player movement
+                        // Player component.movement
                         new PlayerInputSystem(),
                         new MovementProcessorSystem(),
                         new MovementAnimationSystem(),
@@ -96,6 +99,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                         new TiledMapSystem(),
                         new AnimationsSystem(assetManager),
                         new DescriptorsSystem(assetManager),
+                        new MessageSystem(assetManager),
                         new MapSystem(),
                         new MusicSystem(),
                         new ObjectSystem(),
@@ -128,6 +132,8 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
 
                 // UI
                 .with(UI,
+                        new MouseSystem(),
+                        new CursorSystem(),
                         new InventorySystem(),
                         new SpellSystem(),
                         new ActionBarSystem(),
@@ -177,6 +183,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
 
     @Override
     public void dispose() {
+        // TODO CHECK
         world.getSystem(ClientSystem.class).stop();
         world.getSystem(UserInterfaceSystem.class).dispose();
     }

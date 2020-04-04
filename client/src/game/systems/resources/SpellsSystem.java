@@ -1,7 +1,7 @@
 package game.systems.resources;
 
 import com.artemis.annotations.Wire;
-import entity.character.info.SpellBook;
+import component.entity.character.info.SpellBook;
 import game.AOGame;
 import game.handlers.AOAssetManager;
 import game.systems.PlayerSystem;

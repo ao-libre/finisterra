@@ -3,9 +3,9 @@ package server.systems;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
-import entity.character.states.Heading;
+import component.entity.character.states.Heading;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import position.WorldPos;
+import component.position.WorldPos;
 import server.database.model.attributes.Attributes;
 import server.systems.ai.PathFindingSystem;
 import server.systems.manager.*;
@@ -70,7 +70,7 @@ public class EntityFactorySystem extends PassiveSystem {
                 break;
         }
         entity.charHeroHeroId(hero.ordinal());
-        // set position
+        // set component.position
         setEntityPosition(entity, team);
         // set head and body
         setHeadAndBody(name, entity);

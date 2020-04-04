@@ -8,36 +8,28 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import entity.character.info.Bag;
-import entity.character.info.Bag.Item;
-import game.AOGame;
-import game.handlers.AOAssetManager;
-import game.systems.ui.action_bar.systems.InventorySystem;
+import component.entity.character.info.Bag;
+import component.entity.character.info.Bag.Item;
 import game.utils.Skins;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class Inventory extends Window {
+public abstract class Inventory extends Window {
 
     private static final int COLUMNS = 5;
     private static final int ROWS = 4;
     private static final int SIZE = COLUMNS * ROWS;
-    private final ClickListener mouseListener;
-    public boolean toShoot = false;
     private int base;
 
     private ArrayList<Slot> slots;
-    private AOAssetManager assetManager;
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
-    private InventorySystem inventorySystem;
 
-    public Inventory(InventorySystem inventorySystem) {
+    public Inventory() {
         super("", Skins.COMODORE_SKIN, "inventory");
-        this.inventorySystem = inventorySystem;
         int columnsCounter = 1;
         setMovable(false);
         this.slots = new ArrayList<>();
@@ -51,8 +43,7 @@ public class Inventory extends Window {
             }
             columnsCounter++;
         }
-        addListener(mouseListener = getMouseListener());
-        this.assetManager = AOGame.getGlobalAssetManager();
+        addListener(getMouseListener());
     }
 
     public void selectItem(float x, float y, int tapCount) {
@@ -62,7 +53,7 @@ public class Inventory extends Window {
             slot.setSelected(true);
             slot.getItem().ifPresent(item -> {
                 if (tapCount >= 2) {
-                    inventorySystem.use();
+                    doubleClick();
                 }
             });
         });
@@ -77,7 +68,8 @@ public class Inventory extends Window {
                     }
                     return false;
                 })
-                .map(Slot.class::cast).findFirst();
+                .map(Slot.class::cast)
+                .findFirst();
     }
 
     private ClickListener getMouseListener() {
@@ -124,10 +116,9 @@ public class Inventory extends Window {
                         Slot target = slot.get();
                         int targetIndex = base + slots.indexOf(target);
                         int originIndex = base + slots.indexOf(dragging.get());
-                        inventorySystem.swap(originIndex, targetIndex);
-
+                        swap(originIndex, targetIndex);
                     } else {
-                        inventorySystem.dropItem(draggingIndex(), inventorySystem.getWorldPos((int) x, (int) y));
+                        dragAndDropOut(draggingIndex(), (int) x, (int) y);
                     }
                 }
                 dragging = Optional.empty();
@@ -148,59 +139,15 @@ public class Inventory extends Window {
         Item[] userItems = userBag.items;
         for (int i = 0; i < SIZE; i++) {
             Item item = base + i < userItems.length ? userItems[base + i] : null;
-            slots.get(i).setItem(item, getGraphic(item));
+            slots.get(i).setItem(item, item != null ? getGraphic(item) : null);
         }
     }
-
-    private TextureRegion getGraphic(Item item) {
-        return Optional.ofNullable(item).map(i -> inventorySystem.getGraphic(i.objId)).orElse(null);
-    }
-
-//    public void getShoot() {
-//        ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null).getSystem(ObjectSystem.class);
-//        Item[] items = E(GameScreen.getPlayer()).getInventory().items;
-//
-//        AtomicBoolean bowPresent = new AtomicBoolean(false);
-//        AtomicBoolean arrowPresent = new AtomicBoolean(false);
-//        for (int i = 0; i < items.length; i++) {
-//            if (items[i] != null) {
-//                int inventoryIndex = i;
-//                objectSystem.getObject(items[i].objId).ifPresent(obj -> {
-//                    if (items[inventoryIndex].equipped && obj.getType().equals(Type.WEAPON)) {
-//                        WeaponObj weaponObj = (WeaponObj) obj;
-//                        if (weaponObj.getKind().equals(WeaponKind.BOW)) {
-//                            bowPresent.set(true);
-//                        }
-//                    }
-//                    if (items[inventoryIndex].equipped && obj.getType().equals(Type.ARROW)) {
-//                        arrowPresent.set(true);
-//                    }
-//                });
-//            }
-//        }
-//        if (bowPresent.get() && arrowPresent.get()) {
-//            WorldUtils.getWorld().ifPresent(world -> {
-//                world.getSystem(UserInterfaceSystem.class).getConsole().addInfo(assetManager.getMessages(Messages.CLICK_TO_SHOOT));
-//                Cursors.setCursor("arrow");
-//                toShoot = true;
-//            });
-//        } else {
-//            WorldUtils.getWorld().ifPresent(world -> {
-//                world.getSystem(UserInterfaceSystem.class).getConsole().addInfo(assetManager.getMessages(Messages.DONT_HAVE_BOW_AND_ARROW));
-//            });
-//        }
-//    }
-
-    public void cleanShoot() {
-        toShoot = false;
-    }
-
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        dragging.flatMap(Slot::getItem).ifPresent(item -> {
-            TextureRegion graphic = inventorySystem.getGraphic(item.objId);
+        dragging.ifPresent(slot -> {
+            TextureRegion graphic = slot.getGraphic();
             if (graphic != null) {
                 int x1 = Gdx.input.getX() - (graphic.getRegionWidth() / 2);
                 int y1 = Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2);
@@ -223,9 +170,13 @@ public class Inventory extends Window {
         return base + slots.indexOf(dragging.get());
     }
 
+    protected abstract void doubleClick();
 
-    public boolean isOver() {
-        return mouseListener.isOver();
-    }
+    protected abstract void dragAndDropOut(int i, int x, int y);
+
+    protected abstract void swap(int originIndex, int targetIndex);
+
+    protected abstract TextureRegion getGraphic(Item item);
+
 
 }

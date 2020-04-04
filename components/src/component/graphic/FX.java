@@ -1,4 +1,4 @@
-package design.graphic;
+package component.graphic;
 
 import com.artemis.Component;
 import com.artemis.annotations.DelayedComponentRemoval;

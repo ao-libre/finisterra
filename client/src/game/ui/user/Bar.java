@@ -1,5 +1,6 @@
 package game.ui.user;
 
+import com.artemis.E;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -18,9 +19,11 @@ public class Bar extends Actor {
     private final Label points;
     private final Drawable bar = Skins.COMODORE_SKIN.getDrawable("bar");
     private final Kind kind;
+    private E e;
 
-    Bar(Kind kind) {
+    Bar(Kind kind, E e) {
         this.kind = kind;
+        this.e = e;
         points = new Label("", Skins.COMODORE_SKIN);
         points.setAlignment(Align.right);
         points.setFontScale(0.6f);
@@ -28,41 +31,40 @@ public class Bar extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-//        int player = GameScreen.getPlayer();
-//        final E entity = E(player);
-//        if (entity == null) {
-//            return;
-//        }
-//        Color originalColor = batch.getColor();
-//        float barX = getX();
-//        float barY = getY();
-//        int min = 0, max = 0;
-//        switch (kind) {
-//            case HP:
-//                if (!entity.hasHealth()) {
-//                    return;
-//                }
-//                min = entity.getHealth().min;
-//                max = entity.getHealth().max;
-//                break;
-//            case MANA:
-//                if (!entity.hasMana()) {
-//                    return;
-//                }
-//                min = entity.getMana().min;
-//                max = entity.getMana().max;
-//                break;
-//            case ENERGY:
-//                if (!entity.hasStamina()) {
-//                    return;
-//                }
-//                min = entity.getStamina().min;
-//                max = entity.getStamina().max;
-//        }
-//
-//        drawBar(batch, barX, barY, min, max);
-//        drawText(batch, min, max, barX, barY + 1);
-//        batch.setColor(originalColor);
+        final E entity = e;
+        if (entity == null) {
+            return;
+        }
+        Color originalColor = batch.getColor();
+        float barX = getX();
+        float barY = getY();
+        int min = 0, max = 0;
+        switch (kind) {
+            case HP:
+                if (!entity.hasHealth()) {
+                    return;
+                }
+                min = entity.getHealth().min;
+                max = entity.getHealth().max;
+                break;
+            case MANA:
+                if (!entity.hasMana()) {
+                    return;
+                }
+                min = entity.getMana().min;
+                max = entity.getMana().max;
+                break;
+            case ENERGY:
+                if (!entity.hasStamina()) {
+                    return;
+                }
+                min = entity.getStamina().min;
+                max = entity.getStamina().max;
+        }
+
+        drawBar(batch, barX, barY, min, max);
+        drawText(batch, min, max, barX, barY + 1);
+        batch.setColor(originalColor);
     }
 
     private void drawBar(Batch batch, float barX, float barY, float min, int max) {

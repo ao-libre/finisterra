@@ -1,6 +1,17 @@
-package game.systems.ui;
+package game.systems.resources;
 
-import com.artemis.BaseSystem;
+import com.artemis.annotations.Wire;
+import game.handlers.AOAssetManager;
+import shared.util.Messages;
 
-public class MessageSystem extends BaseSystem {
+@Wire
+public class MessageSystem extends AssetSystem {
+
+    public MessageSystem(AOAssetManager assetManager) {
+        super(assetManager);
+    }
+
+    public String getMessage(Messages key, String... params) {
+        return getAssetManager().getMessages(key, params);
+    }
 }

@@ -1,4 +1,4 @@
-package map;
+package design.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;

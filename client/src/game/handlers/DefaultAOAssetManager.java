@@ -1,6 +1,5 @@
 package game.handlers;
 
-import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.I18NBundleLoader;
@@ -40,7 +39,7 @@ import static game.loaders.DescriptorsLoader.*;
 import static game.loaders.DescriptorsLoader.DescriptorParameter.descriptor;
 import static game.utils.Resources.GAME_DESCRIPTORS_PATH;
 
-@Wire
+// TODO convert to SYSTEM!
 public class DefaultAOAssetManager extends AssetManager implements AOAssetManager {
 
     private static final Class<ArrayList<AOImage>> IMAGE_CLASS;

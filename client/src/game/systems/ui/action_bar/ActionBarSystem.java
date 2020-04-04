@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.esotericsoftware.minlog.Log;
-import entity.character.info.Bag;
-import entity.character.info.SpellBook;
+import component.entity.character.info.Bag;
+import component.entity.character.info.SpellBook;
 import game.systems.ui.UserInterfaceContributionSystem;
 import game.systems.ui.action_bar.systems.InventorySystem;
 import game.systems.ui.action_bar.systems.SpellSystem;
@@ -33,7 +33,7 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
         inventorySystem.calculate(entityId);
         spellSystem.calculate(entityId);
         Table actionBar = new Table(Skins.COMODORE_SKIN);
-        Log.info("Creating Action Bar for entity: " + entityId);
+        Log.info("Creating Action Bar for component.entity: " + entityId);
         SwitchButtons buttons = new SwitchButtons();
         buttons.addListener(state -> {
             switch (state) {

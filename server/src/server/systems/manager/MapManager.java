@@ -3,7 +3,7 @@ package server.systems.manager;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
-import position.WorldPos;
+import component.position.WorldPos;
 import server.systems.EntityFactorySystem;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.UpdateTo;
@@ -17,7 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static com.artemis.E.E;
-import static server.utils.WorldUtils.WorldUtils;
 import static shared.util.MapHelper.CacheStrategy.NEVER_EXPIRE;
 
 /**
@@ -29,6 +28,7 @@ public class MapManager extends DefaultManager {
     private WorldManager worldManager;
     private EntityUpdateSystem entityUpdateSystem;
     private EntityFactorySystem entityFactorySystem;
+    private ComponentManager componentManager;
 
     private MapHelper helper;
     private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
@@ -141,7 +141,7 @@ public class MapManager extends DefaultManager {
     }
 
     /**
-     * Remove entity from map and unlink near entities
+     * Remove component.entity from map and unlink near entities
      *
      * @param entity id
      */
@@ -161,7 +161,7 @@ public class MapManager extends DefaultManager {
     }
 
     /**
-     * Add entity to map and calculate near entities
+     * Add component.entity to map and calculate near entities
      *
      * @param player id
      */
@@ -255,7 +255,7 @@ public class MapManager extends DefaultManager {
         if (nearEntities.containsKey(entity1)) {
             nearEntities.get(entity1).remove(entity2);
         }
-        // always notify that this entity is not longer in range
+        // always notify that this component.entity is not longer in range
         worldManager.sendEntityRemove(entity1, entity2);
     }
 
@@ -269,7 +269,7 @@ public class MapManager extends DefaultManager {
     private void linkEntities(int entity1, int entity2) {
         Set<Integer> near = nearEntities.computeIfAbsent(entity1, (i) -> new HashSet<>());
         if (near.add(entity2)) {
-            EntityUpdate update = EntityUpdateBuilder.of(entity2).withComponents(WorldUtils(world).getComponents(entity2)).build();
+            EntityUpdate update = EntityUpdateBuilder.of(entity2).withComponents(componentManager.getComponents(entity2, ComponentManager.Visibility.CLIENT_PUBLIC)).build();
             entityUpdateSystem.add(entity1, update, UpdateTo.ENTITY);
         }
     }

@@ -11,14 +11,14 @@ import com.esotericsoftware.minlog.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import entity.character.Character;
-import entity.character.info.Name;
+import component.entity.character.Character;
+import component.entity.character.info.Name;
 import game.systems.render.BatchRenderingSystem;
 import game.utils.Colors;
 import game.utils.Pos2D;
 import game.utils.Skins;
 import org.jetbrains.annotations.NotNull;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.interfaces.Hero;
 import shared.model.map.Tile;
 

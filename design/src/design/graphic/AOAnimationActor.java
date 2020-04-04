@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-package graphic;
+package design.graphic;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;

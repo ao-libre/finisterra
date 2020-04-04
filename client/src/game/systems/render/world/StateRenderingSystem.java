@@ -3,9 +3,9 @@ package game.systems.render.world;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import entity.character.states.Immobile;
+import component.entity.character.states.Immobile;
 import game.systems.PlayerSystem;
-import position.WorldPos;
+import component.position.WorldPos;
 
 @Wire(injectInherited = true)
 public class StateRenderingSystem extends RenderingSystem {
@@ -17,7 +17,7 @@ public class StateRenderingSystem extends RenderingSystem {
     }
 
     private void drawMessage(int entityId) {
-        // search position
+        // search component.position
         // draw [P] in cyan color
         // TODO
     }

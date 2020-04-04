@@ -3,10 +3,9 @@ package server.systems.manager;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import entity.character.equipment.Helmet;
-import entity.character.equipment.Shield;
-import entity.character.equipment.Weapon;
-import entity.character.parts.Body;
+import component.entity.character.equipment.Helmet;
+import component.entity.character.equipment.Shield;
+import component.entity.character.equipment.Weapon;
 import server.systems.EntityFactorySystem;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.UpdateTo;
@@ -28,9 +27,9 @@ public class ItemConsumers extends DefaultManager {
 
     private WorldManager worldManager;
     private EntityUpdateSystem entityUpdateSystem;
+    private EntityFactorySystem entityFactorySystem;
 
     public final BiConsumer<Integer, Obj> WEAR = wear();
-    private EntityFactorySystem entityFactorySystem;
     public final BiConsumer<Integer, Obj> TAKE_OFF = takeOff();
 
     public ItemConsumers() {
@@ -45,7 +44,7 @@ public class ItemConsumers extends DefaultManager {
             } else if (obj instanceof ArmorObj) {
                 Hero hero = Hero.getHeroes().get(entity.getCharHero().heroId);
                 entityFactorySystem.setNakedBody(entity, Race.values()[hero.getRaceId()]);
-                remove(player, Body.class);
+                update(player, entity.getBody());
             } else if (obj instanceof HelmetObj) {
                 entity.removeHelmet();
                 remove(player, Helmet.class);

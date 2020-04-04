@@ -1,10 +1,10 @@
 package game.systems.world;
 
 import com.artemis.annotations.Wire;
-import entity.character.states.Heading;
+import component.entity.character.states.Heading;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import physics.AOPhysics;
-import position.WorldPos;
+import component.physics.AOPhysics;
+import component.position.WorldPos;
 
 @Wire
 public class WorldSystem extends PassiveSystem {

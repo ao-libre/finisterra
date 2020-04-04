@@ -1,6 +1,6 @@
 package game.systems.ui;
 
-import camera.Focused;
+import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
-import com.esotericsoftware.minlog.Log;
 import game.systems.camera.CameraSystem;
 import game.systems.input.InputSystem;
 import game.systems.map.TiledMapSystem;
@@ -25,7 +24,7 @@ import game.systems.ui.dialog.DialogSystem;
 import game.systems.ui.stats.StatsSystem;
 import game.systems.ui.user.UserSystem;
 import game.utils.Skins;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.util.WorldPosConversion;
 
 @Wire
@@ -57,7 +56,12 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
         Skins.COMODORE_SKIN.getFont("flipped").setUseIntegerPositions(false);
         Skins.COMODORE_SKIN.getFont("flipped-with-border").setUseIntegerPositions(false);
 
-        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        InputMultiplexer inputMultiplexer = new InputMultiplexer() {
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                return super.touchUp(screenX, screenY, pointer, button);
+            }
+        };
         inputMultiplexer.addProcessor(stage);
         inputMultiplexer.addProcessor(inputSystem);
         Gdx.input.setInputProcessor(inputMultiplexer);
@@ -66,8 +70,10 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
     @Override
     protected void inserted(int entityId) {
         super.inserted(entityId);
+
         actionBarSystem.calculate(entityId);
-        Log.info("Creating UI for entity: " + entityId);
+        userSystem.calculate(entityId);
+
         Table table = new Table();
         table.setFillParent(true);
         fillTable(table);
@@ -79,7 +85,7 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
         final Actor dialogUI = dialogSystem.getActor();
         stage.addActor(dialogUI);
 
-        Container<Actor> consoleUI = new Container<>(consoleSystem.getActor());
+        Container<Actor> consoleUI = new Container<>(consoleSystem.getConsole());
         table.add(consoleUI).top().colspan(2).minHeight(Gdx.graphics.getHeight() * 0.15f).maxHeight(Gdx.graphics.getHeight() * 0.15f);
         table.row();
 
@@ -93,9 +99,9 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
         table.add(userUI).bottom().colspan(2);
 
         table.addListener(new InputListener() {
+
             @Override
             public boolean scrolled(InputEvent event, float x, float y, int amount) {
-                Log.info("Scrolled event handled by UI");
                 return isInUI(dialogUI, x, y) ||
                         isInUI(consoleUI, x, y) ||
                         isInUI(userStatsUI, x, y) ||
@@ -115,7 +121,7 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
         });
     }
 
-    // Should only process player entity
+    // Should only process player component.entity
     @Override
     protected void process(int entityId) {
         stage.act(Gdx.graphics.getDeltaTime());
@@ -132,6 +138,10 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
         WorldPos worldPos = WorldPosConversion.toWorld(screenPos.x, screenPos.y);
         worldPos.map = mapSystem.mapNumber;
         return worldPos;
+    }
+
+    public WorldPos getMouseWorldPos() {
+        return getWorldPos(Gdx.input.getX(), Gdx.input.getY());
     }
 
     public void resize(int width, int height) {

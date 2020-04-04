@@ -1,4 +1,4 @@
-package design.graphic;
+package component.graphic;
 
 public class EffectBuilder {
     Effect effect;

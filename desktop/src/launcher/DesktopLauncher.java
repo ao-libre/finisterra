@@ -1,5 +1,6 @@
 package launcher;
 
+import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.glutils.HdpiMode;
@@ -31,12 +32,14 @@ public class DesktopLauncher {
         Init initConfig = config.getInitConfig();
         Video video = initConfig.getVideo();
 
+        Graphics.DisplayMode displayMode = Lwjgl3ApplicationConfiguration.getDisplayMode();
+
         /**
          * Build LWJGL configuration
          */
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
         cfg.setTitle("Finisterra - Argentum Online Java");
-        cfg.setWindowedMode(video.getWidth(), video.getHeight());
+        cfg.setWindowedMode(displayMode.width, displayMode.height);
         cfg.useVsync(video.getVsync());
         cfg.setIdleFPS(72);
         cfg.setResizable(initConfig.isResizeable());
@@ -61,7 +64,7 @@ public class DesktopLauncher {
             cfg.setWindowIcon(Resources.CLIENT_ICON);
         }
 
-        // Log in console. Un-comment the rest if you wish to debug Config.json's I/O
+        // Log in component.console. Un-comment the rest if you wish to debug Config.json's I/O
         Log.info("AOGame", "Initializing game...");
         //Log.info("[Parameters - Window] Width: " + video.getWidth());
         //Log.info("[Parameters - Window] Height: " + video.getHeight());

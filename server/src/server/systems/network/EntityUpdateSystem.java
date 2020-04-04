@@ -2,13 +2,15 @@ package server.systems.network;
 
 import com.artemis.BaseSystem;
 import com.artemis.Component;
+import com.artemis.annotations.Wire;
+import server.systems.manager.ComponentManager;
 import server.systems.manager.WorldManager;
-import server.utils.WorldUtils;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
 import shared.util.EntityUpdateBuilder;
 
 import java.util.Deque;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,9 +18,11 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static com.artemis.E.E;
 
+@Wire
 public class EntityUpdateSystem extends BaseSystem {
 
     private WorldManager worldManager;
+    private ComponentManager componentManager;
 
     private final Map<Integer, Deque<EntityUpdate>> entityUpdates;
     private final Map<Integer, Deque<EntityUpdate>> publicUpdates;
@@ -43,10 +47,14 @@ public class EntityUpdateSystem extends BaseSystem {
     }
 
     public void add(int entity, EntityUpdate update, UpdateTo updateTo) {
-        // search all updates of this update entity and remove them
+        // search all updates of this update component.entity and remove them
         if (update instanceof RemoveEntity) {
-            entityUpdates.get(entity).removeIf(entityUpdate -> entityUpdate.entityId == update.entityId);
-            publicUpdates.get(entity).removeIf(entityUpdate -> entityUpdate.entityId == update.entityId);
+            if (entityUpdates.containsKey(entity)) {
+                entityUpdates.get(entity).removeIf(entityUpdate -> entityUpdate.entityId == update.entityId);
+            }
+            if (publicUpdates.containsKey(entity)) {
+                publicUpdates.get(entity).removeIf(entityUpdate -> entityUpdate.entityId == update.entityId);
+            }
         }
 
         switch (updateTo) {
@@ -77,16 +85,16 @@ public class EntityUpdateSystem extends BaseSystem {
 
     }
 
-    // Attach entity to another entity and send update to all near entities including entity
+    // Attach component.entity to another component.entity and send update to all near entities including component.entity
     public void attach(int entity, int entityToAttach) {
         E(entityToAttach).refId(entity);
-        Component[] components = WorldUtils.WorldUtils(world).getComponents(entityToAttach);
+        List<Component> components = componentManager.getComponents(entityToAttach, ComponentManager.Visibility.CLIENT_PUBLIC);
         EntityUpdate update = EntityUpdateBuilder.of(entityToAttach).withComponents(components).build();
         add(entity, update, UpdateTo.ALL);
     }
 
     public void detach(int entity, Integer sEntity) {
-        world.delete(sEntity); // TODO unregister in worldManager?
         add(entity, EntityUpdateBuilder.delete(sEntity), UpdateTo.ALL);
+        world.delete(sEntity); // TODO unregister in worldManager?
     }
 }

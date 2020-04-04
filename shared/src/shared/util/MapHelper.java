@@ -7,7 +7,7 @@ import com.esotericsoftware.minlog.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 

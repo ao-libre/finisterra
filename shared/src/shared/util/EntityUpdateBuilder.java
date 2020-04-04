@@ -35,6 +35,10 @@ public class EntityUpdateBuilder {
         return this;
     }
 
+    public EntityUpdateBuilder withComponents(List<Component> components) {
+        return withComponents(components.toArray(new Component[0]));
+    }
+
     public EntityUpdateBuilder remove(Class... toRemove) {
         this.toRemove.addAll(Arrays.asList(toRemove));
         return this;

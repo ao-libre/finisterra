@@ -3,12 +3,12 @@ package server.systems;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import console.ConsoleMessage;
-import entity.character.states.Meditating;
-import entity.character.status.Mana;
-import entity.world.CombatMessage;
-import graphics.Effect;
-import graphics.EffectBuilder;
+import component.console.ConsoleMessage;
+import component.entity.character.states.Meditating;
+import component.entity.character.status.Mana;
+import component.entity.world.CombatMessage;
+import component.graphic.Effect;
+import component.graphic.EffectBuilder;
 import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.WorldManager;
 import server.systems.network.EntityUpdateSystem;
@@ -59,7 +59,7 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
 
                 update.withComponents(mana);
 
-                // send console message
+                // send component.console message
                 ConsoleMessage consoleMessage = ConsoleMessage.info(Messages.MANA_RECOVERED.name(), Integer.toString(recoveredMana));
                 messageSystem.add(player.id(), consoleMessage);
             }
@@ -117,7 +117,7 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
         Integer entityId = userMeditations.get(userId);
         worldManager.notifyUpdate(userId, new RemoveEntity(entityId));
         userMeditations.remove(userId);
-        E(entityId).deleteFromWorld();
+        E(entityId).clear();
         E(userId).removeMeditating();
         soundEntitySystem.remove(userId, 18);
     }

@@ -4,7 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.FluidIteratingSystem;
 import com.artemis.annotations.Wire;
-import entity.character.states.Buff;
+import component.entity.character.states.Buff;
 import server.systems.manager.WorldManager;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.UpdateTo;

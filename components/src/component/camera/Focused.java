@@ -1,4 +1,4 @@
-package camera;
+package component.camera;
 
 import com.artemis.Component;
 import com.artemis.annotations.PooledWeaver;

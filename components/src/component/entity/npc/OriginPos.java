@@ -2,7 +2,7 @@ package component.entity.npc;
 
 import com.artemis.Component;
 import com.artemis.annotations.PooledWeaver;
-import position.WorldPos;
+import component.position.WorldPos;
 
 import java.util.Objects;
 

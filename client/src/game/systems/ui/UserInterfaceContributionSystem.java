@@ -1,6 +1,6 @@
 package game.systems.ui;
 
-import camera.Focused;
+import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.BaseEntitySystem;
 import com.badlogic.gdx.scenes.scene2d.Actor;

@@ -4,10 +4,10 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
-import movement.Destination;
-import movement.RandomMovement;
-import physics.AOPhysics;
-import position.WorldPos;
+import component.movement.Destination;
+import component.movement.RandomMovement;
+import component.physics.AOPhysics;
+import component.position.WorldPos;
 import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
 import server.systems.network.EntityUpdateSystem;
@@ -47,7 +47,7 @@ public class RandomMovementSystem extends IteratingSystem {
     protected void process(int entityId) {
         Optional<AOPhysics.Movement> randomMovement = randomMovement();
         randomMovement.ifPresent(mov -> {
-            // update server entity
+            // update server component.entity
             moveEntity(entityId, mov);
         });
     }

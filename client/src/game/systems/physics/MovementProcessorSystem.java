@@ -1,18 +1,18 @@
 package game.systems.physics;
 
-import camera.Focused;
+import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
-import entity.character.states.Heading;
+import component.entity.character.states.Heading;
 import game.systems.PlayerSystem;
 import game.systems.network.ClientSystem;
 import game.systems.resources.MapSystem;
 import game.systems.world.NetworkedEntitySystem;
-import movement.Destination;
-import physics.AOPhysics;
-import position.WorldPos;
+import component.movement.Destination;
+import component.physics.AOPhysics;
+import component.position.WorldPos;
 import shared.model.map.Map;
 import shared.model.map.WorldPosition;
 import shared.network.interaction.MeditateRequest;

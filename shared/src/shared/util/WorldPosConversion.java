@@ -1,8 +1,8 @@
 package shared.util;
 
-import physics.AOPhysics;
-import position.WorldPos;
-import position.WorldPosOffsets;
+import component.physics.AOPhysics;
+import component.position.WorldPos;
+import component.position.WorldPosOffsets;
 import shared.model.map.Tile;
 
 public class WorldPosConversion {

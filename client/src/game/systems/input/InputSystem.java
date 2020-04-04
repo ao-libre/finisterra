@@ -4,11 +4,11 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.camera.CameraSystem;
 import game.systems.resources.MusicSystem;
+import game.systems.screen.MouseSystem;
 import game.systems.screen.ScreenSystem;
 import game.systems.ui.action_bar.ActionBarSystem;
 import game.systems.ui.action_bar.systems.InventorySystem;
@@ -32,6 +32,7 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
     private ActionBarSystem actionBarSystem;
     private MusicSystem musicSystem;
     private DialogSystem dialogSystem;
+    private MouseSystem mouseSystem;
 
 
     @Override
@@ -70,7 +71,8 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+        mouseSystem.onClick();
+        return true;
     }
 
     @Override
@@ -85,7 +87,6 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
-        Log.info("Scrolled event handled by camera system (zooming)");
         cameraSystem.zoom(amount, CameraSystem.ZOOM_TIME);
         return true;
     }

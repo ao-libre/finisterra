@@ -1,8 +1,8 @@
-package movement;
+package component.movement;
 
 import com.artemis.Component;
 import com.artemis.annotations.PooledWeaver;
-import position.WorldPos;
+import component.position.WorldPos;
 
 import java.io.Serializable;
 

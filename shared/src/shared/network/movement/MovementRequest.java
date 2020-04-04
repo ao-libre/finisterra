@@ -1,6 +1,6 @@
 package shared.network.movement;
 
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.network.interfaces.IRequest;
 import shared.network.interfaces.IRequestProcessor;
 

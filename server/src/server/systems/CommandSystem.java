@@ -1,7 +1,7 @@
 package server.systems;
 
 import com.artemis.annotations.Wire;
-import console.ConsoleMessage;
+import component.console.ConsoleMessage;
 import server.systems.manager.DefaultManager;
 import server.systems.manager.WorldManager;
 import server.systems.network.MessageSystem;

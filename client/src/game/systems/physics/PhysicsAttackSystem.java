@@ -3,8 +3,8 @@ package game.systems.physics;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
-import physics.Attack;
-import physics.AttackAnimation;
+import component.physics.Attack;
+import component.physics.AttackAnimation;
 
 import static com.artemis.E.E;
 

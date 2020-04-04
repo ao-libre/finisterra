@@ -10,9 +10,9 @@ import game.systems.map.MapManager;
 import game.systems.world.NetworkedEntitySystem;
 import game.systems.camera.CameraSystem;
 import game.systems.map.TiledMapSystem;
-import graphics.Effect;
-import graphics.RenderBefore;
-import position.WorldPos;
+import component.graphic.Effect;
+import component.graphic.RenderBefore;
+import component.position.WorldPos;
 import shared.model.map.Tile;
 
 import java.util.HashSet;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static graphics.Effect.NO_REF;
+import static component.graphic.Effect.NO_REF;
 
 @Wire
 public class WorldRenderingSystem extends BaseSystem {
@@ -75,7 +75,7 @@ public class WorldRenderingSystem extends BaseSystem {
                     } else if (e.getEffect().entityReference != NO_REF) {
                         int entityReference = e.getEffect().entityReference;
                         if (networkedEntitySystem.exists(entityReference)) {
-                            int entityId = networkedEntitySystem.get(entityReference);
+                            int entityId = networkedEntitySystem.getLocalId(entityReference);
                             E entity = E.E(entityId);
                             if (entity != null && entity.hasWorldPos()) {
                                 return entity.getWorldPos().equals(pos);
