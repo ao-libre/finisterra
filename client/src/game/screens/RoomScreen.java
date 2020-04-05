@@ -141,10 +141,4 @@ public class RoomScreen extends AbstractScreen {
         clientSystem.getKryonetClient().sendToAll(new ChangeHeroRequest(defaultHero));
     }
 
-    @Override
-    public void dispose() {
-        clientSystem.stop();
-        MusicSystem.FIRSTBGM.stop();
-        super.dispose();
-    }
 }
