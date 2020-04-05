@@ -38,7 +38,7 @@ allprojects {
         artemisVersion = '2.3.0'            //Artemis EntityComponentSystem & Network manager (TCP/UDP)
         artemisContribVersion = '2.4.0'     //Kinda the same but developed by someone else.
         gdxAIVersion = '1.8.2'              //Artificial Intelligence
-	    tinyfdVersion = '3.2.3'
+	    tinyfdVersion = '3.2.1'
 	    jupiterVersion = '5.5.2'            //Test map caching.
 	    guavaVersion = '28.1-jre'           //Collection types used for map information.
 	    ini4jVersion = '0.5.4'
