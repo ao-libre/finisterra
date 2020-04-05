@@ -38,6 +38,8 @@ public class LoginScreen extends AbstractScreen {
     }
 
     void bGMusic() {
+        Music backgroundmusic= MusicSystem.BACKGROUNDMUSIC;
+        backgroundmusic.stop();
         Music firstBGMusic = MusicSystem.FIRSTBGM;
         firstBGMusic.setVolume(0);
         firstBGMusic.play();
