@@ -40,9 +40,12 @@ public class MusicSystem extends PassiveSystem {
         super.initialize();
         AOGame game = (AOGame) Gdx.app.getApplicationListener();
         assetManager = game.getAssetManager();
+        current = FIRSTBGM;
+        current.stop();
         current = BACKGROUNDMUSIC;
         current.setVolume(0.20f);
         current.play();
+        current.setLooping(false);
     }
 
     public void playMusic(int musicID) {
