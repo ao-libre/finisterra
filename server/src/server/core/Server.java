@@ -15,6 +15,7 @@ import server.systems.ai.RespawnSystem;
 import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.combat.RangedCombatSystem;
+import server.systems.entity.EffectEntitySystem;
 import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.*;
 import server.systems.network.EntityUpdateSystem;
@@ -97,6 +98,7 @@ public class Server {
                 .with(new EnergyRegenerationSystem(ENERGY_REGENERATION_INTERVAL))
                 .with(new MeditateSystem(MEDITATE_INTERVAL))
                 .with(new FootprintSystem(FOOTPRINT_LIVE_TIME))
+                .with(new EffectEntitySystem())
                 .with(new SoundEntitySystem())
                 .with(new RandomMovementSystem())
                 .with(new RespawnSystem())

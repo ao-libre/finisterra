@@ -8,12 +8,11 @@ import component.entity.character.info.Bag;
 import component.entity.character.status.Health;
 import component.entity.character.status.Stamina;
 import component.entity.world.CombatMessage;
-import component.graphic.Effect;
-import component.graphic.EffectBuilder;
 import component.physics.AttackAnimation;
 import component.position.WorldPos;
 import server.database.model.modifiers.Modifiers;
 import server.systems.CharacterTrainingSystem;
+import server.systems.entity.EffectEntitySystem;
 import server.systems.manager.MapManager;
 import server.systems.manager.ObjectManager;
 import server.systems.manager.WorldManager;
@@ -44,6 +43,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     private ObjectManager objectManager;
     private CharacterTrainingSystem characterTrainingSystem;
     private MessageSystem messageSystem;
+    private EffectEntitySystem effectEntitySystem;
 
     public void shoot(int userId, AttackRequest attackRequest) {
         final WorldPos targetPos = attackRequest.getWorldPos();
@@ -343,30 +343,11 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     }
 
     private void sendFX(int victim) {
-        E v = E(victim);
-        int fxE = world.create();
-        EntityUpdateBuilder fxUpdate = EntityUpdateBuilder.of(fxE);
-        Effect effect = new EffectBuilder().attachTo(victim).withLoops(1).withFX(FXs.FX_BLOOD).build();
-        fxUpdate.withComponents(effect);
-        if (v.hasWorldPos()) {
-            WorldPos worldPos = v.getWorldPos();
-            fxUpdate.withComponents(worldPos);
-        }
-        entityUpdateSystem.add(victim, fxUpdate.build(), UpdateTo.ALL);
-        E(fxE).clear();
+        effectEntitySystem.addFX(victim, FXs.FX_BLOOD, 1);
     }
 
     private String getName(int userId) {
         return E(userId).getName().text;
-    }
-
-    private WorldManager getWorldManager() {
-        return world.getSystem(WorldManager.class);
-    }
-
-    @Override
-    protected void processSystem() {
-
     }
 
     private enum AttackPlace {

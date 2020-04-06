@@ -7,12 +7,11 @@ import component.console.ConsoleMessage;
 import component.entity.character.states.Heading;
 import component.entity.character.status.Health;
 import component.entity.world.CombatMessage;
-import component.graphic.Effect;
-import component.graphic.EffectBuilder;
 import component.physics.AttackAnimation;
 import component.position.WorldPos;
 import server.database.model.modifiers.Modifiers;
 import server.systems.CharacterTrainingSystem;
+import server.systems.entity.EffectEntitySystem;
 import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.MapManager;
 import server.systems.manager.ObjectManager;
@@ -46,6 +45,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     private CharacterTrainingSystem characterTrainingSystem;
     private MessageSystem messageSystem;
     private SoundEntitySystem soundEntitySystem;
+    private EffectEntitySystem effectEntitySystem;
 
     @Override
     protected void failed(int entityId, Optional<Integer> targetId) {
@@ -352,23 +352,8 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     }
 
     private void sendFX(int victim) {
-        E v = E(victim);
-        int fxE = world.create();
-        EntityUpdateBuilder fxUpdate = EntityUpdateBuilder.of(fxE);
-        Effect effect = new EffectBuilder().attachTo(victim).withLoops(1).withFX(FXs.FX_BLOOD).build();
-        fxUpdate.withComponents(effect);
-        if (v.hasWorldPos()) {
-            WorldPos worldPos = v.getWorldPos();
-            fxUpdate.withComponents(worldPos);
-        }
-        entityUpdateSystem.add(victim, fxUpdate.build(), UpdateTo.ALL);
-        E(fxE).clear();
+        effectEntitySystem.addFX(victim, FXs.FX_BLOOD, 1);
     }
-
-    private WorldManager getWorldManager() {
-        return world.getSystem(WorldManager.class);
-    }
-
 
     private enum AttackKind {
         WEAPON,

@@ -18,7 +18,7 @@ public class ParticlesSystem extends PassiveSystem {
     protected void initialize() {
         super.initialize();
         AOAssetManager assetManager = AOGame.getGlobalAssetManager();
-        PARTICLES.put(1, new ParticleEffectPool(assetManager.getParticle("blue-meditation.p"), 1, 100));
+        PARTICLES.put(1, new ParticleEffectPool(assetManager.getParticle("meditate1.party"), 1, 100));
         PARTICLES.put(2, new ParticleEffectPool(assetManager.getParticle("aura1.party"), 1, 100));
     }
 }

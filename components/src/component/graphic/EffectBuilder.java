@@ -3,13 +3,12 @@ package component.graphic;
 public class EffectBuilder {
     Effect effect;
 
-    public EffectBuilder() {
+    private EffectBuilder() {
         this.effect = new Effect();
     }
 
-    public EffectBuilder attachTo(int entityReference) {
-        effect.entityReference = entityReference;
-        return this;
+    public static EffectBuilder create() {
+        return new EffectBuilder();
     }
 
     public EffectBuilder withFX(int fx) {

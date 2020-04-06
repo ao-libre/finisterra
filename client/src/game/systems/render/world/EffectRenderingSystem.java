@@ -8,18 +8,18 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import component.entity.character.parts.Body;
+import component.graphic.Effect;
+import component.position.WorldPos;
+import component.position.WorldPosOffsets;
+import game.systems.render.BatchRenderingSystem;
 import game.systems.resources.AnimationsSystem;
 import game.systems.resources.DescriptorsSystem;
 import game.systems.resources.ParticlesSystem;
 import game.systems.world.NetworkedEntitySystem;
-import game.systems.render.BatchRenderingSystem;
 import game.utils.Pos2D;
-import component.graphic.Effect;
 import model.descriptors.BodyDescriptor;
 import model.descriptors.FXDescriptor;
 import model.textures.BundledAnimation;
-import component.position.WorldPos;
-import component.position.WorldPosOffsets;
 import shared.model.map.Tile;
 
 import java.util.HashMap;
@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.artemis.E.E;
-import static component.graphic.Effect.NO_REF;
 
 @Wire
 public class EffectRenderingSystem extends FluidIteratingSystem {
@@ -59,11 +58,11 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
             switch (effect.type) {
                 case PARTICLE:
                     ParticleEffect particle = ParticlesSystem.getParticle(effectId);
-                    particle.flipY();
+                    particle.start();
+                    particle.setEmittersCleanUpBlendFunction(false);
                     particleEffects.put(entityId, particle);
                     break;
                 case FX:
-                    FXDescriptor fxDescriptor = descriptorsSystem.getFX(effectId);
                     BundledAnimation bundledAnimation = animationsSystem.getFX(effect);
                     fxs.put(entityId, bundledAnimation);
                     break;
@@ -78,8 +77,9 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
         particleEffects.remove(entityId);
     }
 
-    private void doBegin() {
 
+    // TODO refactor doBegin and doEnd to avoid calling multiple times
+    private void doBegin() {
         batchRenderingSystem.addTask((batch) -> {
                     srcFunc = batch.getBlendSrcFunc();
                     dstFunc = batch.getBlendDstFunc();
@@ -98,20 +98,14 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
 
     void drawEffect(E e, Optional<WorldPos> forcePos) {
         E candidate = e;
-        if (e.hasEffect()) {
-            Effect effect = e.getEffect();
-            if (effect.entityReference != NO_REF) {
-                int networkedEntity = effect.entityReference;
-                if (networkedEntitySystem.exists(networkedEntity)) {
-                    int entityId = networkedEntitySystem.getLocalId(networkedEntity);
-                    E entity = E(entityId);
-                    if (entity != null) {
-                        candidate = entity;
-                    }
-                }
+        if (e.hasRef()) {
+            E entity = E(e.refId());
+            if (entity != null) {
+                candidate = entity;
             }
-            drawEffect(e, forcePos.orElse(candidate.getWorldPos()), candidate.getWorldPosOffsets());
         }
+
+        drawEffect(e, forcePos.orElse(candidate.getWorldPos()), candidate.getWorldPosOffsets());
     }
 
     private void drawEffect(E e, WorldPos pos, WorldPosOffsets offsets) {
@@ -139,8 +133,9 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                 if (particleEffects.containsKey(entityId)) {
                     ParticleEffect particleEffect = particleEffects.get(entityId);
                     particleEffect.setPosition(screenPos.x + Tile.TILE_PIXEL_WIDTH / 2, screenPos.y);
-                    batchRenderingSystem.addTask((batch) ->
-                            particleEffect.draw(batch, world.getDelta())
+                    batchRenderingSystem.addTask((batch) -> {
+                                particleEffect.draw(batch, world.getDelta());
+                            }
                     );
                 }
                 break;

@@ -74,6 +74,7 @@ public class EntityUpdateSystem extends BaseSystem {
     private void addUpdate(int entity, EntityUpdate update, Map<Integer, Deque<EntityUpdate>> updates) {
         updates.putIfAbsent(entity, new ConcurrentLinkedDeque<>());
         updates.computeIfPresent(entity, (id, otherUpdate) -> {
+            // TODO fix, join all, can be more than one
             Optional<EntityUpdate> toJoin = otherUpdate.stream().filter(u -> u.entityId == update.entityId).findFirst();
             if (toJoin.isPresent()) {
                 EntityUpdateBuilder.join(toJoin.get(), update);

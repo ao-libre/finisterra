@@ -7,10 +7,9 @@ import component.console.ConsoleMessage;
 import component.entity.character.status.Health;
 import component.entity.character.status.Level;
 import component.entity.world.CombatMessage;
-import component.graphic.Effect;
-import component.graphic.EffectBuilder;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.database.model.modifiers.Modifiers;
+import server.systems.entity.EffectEntitySystem;
 import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.NPCManager;
 import server.systems.manager.WorldManager;
@@ -40,6 +39,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
     private WorldManager worldManager;
     private NPCManager npcManager;
     private SoundEntitySystem soundEntitySystem;
+    private EffectEntitySystem effectEntitySystem;
     private MessageSystem messageSystem;
 
     public void userTakeDamage(int entityId, int target, int effectiveDamage) {
@@ -64,6 +64,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
                     .withComponents(e.getGold(), CombatMessage.energy("+" + gold))
                     .build();
             entityUpdateSystem.add(update, UpdateTo.NEAR);
+            messageSystem.add(userId, ConsoleMessage.warning(Messages.GOLD_GAIN.name(), gold + ""));
         }
     }
 
@@ -136,29 +137,23 @@ public class CharacterTrainingSystem extends PassiveSystem {
                 .withComponents(e.getLevel(), e.getHealth(), e.getMana(), e.getHit(), e.getStamina())
                 .build();
         entityUpdateSystem.add(update, UpdateTo.ENTITY);
-
-        // TODO effect component.entity system
-        int fxE = world.create();
-        Effect effect = new EffectBuilder().attachTo(userId).withLoops(1).withFX(FXs.FX_LEVEL_UP).build();
-        EntityUpdate fxUpdate = EntityUpdateBuilder.of(fxE).withComponents(effect).build();
-        entityUpdateSystem.add(fxUpdate, UpdateTo.NEAR);
-        E(fxE).clear();
+        effectEntitySystem.addFX(userId, FXs.FX_LEVEL_UP, 1);
     }
 
     private void setNextRequiredExperience(Level level) {
-        float modifier = 1;
+        float modifier;
         if (level.level < 15) {
-            modifier = 1.4f;
+            modifier = 1.2f;
         } else if (level.level < 21) {
-            modifier = 1.35f;
+            modifier = 1.25f;
         } else if (level.level < 26) {
             modifier = 1.3f;
         } else if (level.level < 35) {
-            modifier = 1.2f;
+            modifier = 1.35f;
         } else if (level.level < 40) {
-            modifier = 1.3f;
+            modifier = 1.36f;
         } else {
-            modifier = 1.475f;
+            modifier = 1.4f;
         }
         level.expToNextLevel *= modifier;
     }
