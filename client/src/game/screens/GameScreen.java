@@ -12,6 +12,7 @@ import game.AOGame;
 import game.ClientConfiguration;
 import game.handlers.AOAssetManager;
 import game.systems.PlayerSystem;
+import game.systems.actions.IntervalSystem;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.anim.IdleAnimationSystem;
 import game.systems.anim.MovementAnimationSystem;
@@ -28,7 +29,7 @@ import game.systems.network.GameNotificationProcessor;
 import game.systems.network.TimeSync;
 import game.systems.physics.MovementProcessorSystem;
 import game.systems.physics.MovementSystem;
-import game.systems.physics.PhysicsAttackSystem;
+import game.systems.physics.AttackAnimationSystem;
 import game.systems.physics.PlayerInputSystem;
 import game.systems.render.BatchRenderingSystem;
 import game.systems.render.world.*;
@@ -78,6 +79,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
         worldConfigBuilder = new WorldConfigurationBuilder()
                 .with(HIGH, new SuperMapper(), new ClearSystem())
                 .with(LOGIC,
+                        new IntervalSystem(),
                         // Player component.movement
                         new PlayerInputSystem(),
                         new MovementProcessorSystem(),
@@ -94,7 +96,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
 
                         // Logic systems
                         new NetworkedEntitySystem(),
-                        new PhysicsAttackSystem(),
+                        new AttackAnimationSystem(),
                         new SoundSytem(),
                         new TiledMapSystem(),
                         new AnimationsSystem(assetManager),

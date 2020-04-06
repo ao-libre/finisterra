@@ -3,9 +3,11 @@ package game.systems.screen;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
+import component.position.WorldPos;
 import game.systems.PlayerSystem;
+import game.systems.actions.IntervalSystem;
+import game.systems.actions.PlayerActionSystem;
 import game.systems.network.ClientSystem;
-import game.systems.network.TimeSync;
 import game.systems.resources.MapSystem;
 import game.systems.resources.MessageSystem;
 import game.systems.resources.ObjectSystem;
@@ -14,15 +16,12 @@ import game.systems.ui.action_bar.systems.SpellSystem;
 import game.systems.ui.console.ConsoleSystem;
 import game.utils.CursorSystem;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import component.position.WorldPos;
 import shared.model.Spell;
-import shared.network.combat.SpellCastRequest;
 import shared.util.Messages;
 
 @Wire
 public class MouseSystem extends PassiveSystem {
 
-    private TimeSync timeSyncSystem;
     private CursorSystem cursorSystem;
     private ClientSystem clientSystem;
     private PlayerSystem playerSystem;
@@ -31,6 +30,8 @@ public class MouseSystem extends PassiveSystem {
     private ObjectSystem objectSystem;
     private MessageSystem messageSystem;
     private SpellSystem spellSystem;
+    private IntervalSystem intervalSystem;
+    private PlayerActionSystem playerActionSystem;
 
     private UserInterfaceSystem userInterfaceSystem;
 
@@ -85,13 +86,8 @@ public class MouseSystem extends PassiveSystem {
     public void spell(Spell spell) {
         if (spell != null) {
             setAction(new MouseActionContext(CursorSystem.AOCursor.SELECT, (pos) -> {
-                E player = playerSystem.get();
-                if (!player.hasAttack() || player.getAttack().interval - world.getDelta() < 0) {
-                    long rtt = timeSyncSystem.getRtt();
-                    long timeOffset = timeSyncSystem.getTimeOffset();
-                    clientSystem.send(new SpellCastRequest(spell, pos, rtt + timeOffset));
-                    spellSystem.clearCast();
-                }
+                playerActionSystem.castSpell(spell, pos);
+
             }));
         }
     }

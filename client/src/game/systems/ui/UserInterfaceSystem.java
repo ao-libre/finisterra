@@ -73,6 +73,7 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
 
         actionBarSystem.calculate(entityId);
         userSystem.calculate(entityId);
+        statsSystem.calculate(entityId);
 
         Table table = new Table();
         table.setFillParent(true);

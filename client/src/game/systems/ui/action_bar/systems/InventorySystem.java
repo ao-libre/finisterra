@@ -6,13 +6,15 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import component.entity.character.info.Bag;
+import component.position.WorldPos;
 import game.systems.PlayerSystem;
+import game.systems.actions.IntervalSystem;
+import game.systems.actions.PlayerActionSystem;
 import game.systems.network.ClientSystem;
 import game.systems.resources.ObjectSystem;
 import game.systems.ui.UserInterfaceContributionSystem;
 import game.systems.ui.UserInterfaceSystem;
 import game.ui.Inventory;
-import component.position.WorldPos;
 import shared.network.interaction.DropItem;
 import shared.network.interaction.TakeItemRequest;
 import shared.network.inventory.InventoryUpdate;
@@ -30,6 +32,8 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     private PlayerSystem playerSystem;
     private ObjectSystem objectSystem;
     private UserInterfaceSystem userInterfaceSystem;
+    private PlayerActionSystem playerActionSystem;
+    private IntervalSystem intervalSystem;
 
     private Inventory inventory;
 
@@ -99,12 +103,14 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     public void equip() {
-        clientSystem.send(new ItemActionRequest(getSelectedIndex()));
+        if (intervalSystem.canUse()) { // TODO distinguir de usar
+            clientSystem.send(new ItemActionRequest(getSelectedIndex()));
+        }
     }
 
     public void use() {
         // TODO handle usable items
-        clientSystem.send(new ItemActionRequest(getSelectedIndex()));
+        playerActionSystem.useItem(getSelectedIndex());
     }
 
     public void show() {
