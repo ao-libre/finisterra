@@ -18,6 +18,7 @@ import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.MeditateRequest;
 import shared.network.inventory.ItemActionRequest;
+import shared.network.inventory.ItemActionRequest.ItemAction;
 import shared.util.Messages;
 
 @Wire
@@ -48,10 +49,8 @@ public class PlayerActionSystem extends PassiveSystem {
 
     public void useItem(int selectedIndex) {
         if (intervalSystem.canUse()) {
-            clientSystem.send(new ItemActionRequest(selectedIndex));
+            clientSystem.send(new ItemActionRequest(selectedIndex, ItemAction.USE.ordinal()));
             playerSystem.get().useIntervalValue(Intervals.USE_INTERVAL);
-        } else {
-            consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.CANT_USE_THAT_FAST));
         }
     }
 
@@ -66,5 +65,9 @@ public class PlayerActionSystem extends PassiveSystem {
         } else {
             consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.CANT_MAGIC_THAT_FAST));
         }
+    }
+
+    public void equipItem(int selectedIndex) {
+        clientSystem.send(new ItemActionRequest(selectedIndex, ItemAction.EQUIP.ordinal()));
     }
 }

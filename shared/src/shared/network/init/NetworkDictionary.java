@@ -100,6 +100,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 MeditateRequest.class,
                 TalkRequest.class,
                 ItemActionRequest.class,
+                ItemActionRequest.ItemAction.class,
                 TakeItemRequest.class,
                 SpellCastRequest.class,
                 TimeSyncRequest.class,

@@ -34,6 +34,7 @@ import shared.network.interaction.TalkRequest;
 import shared.network.interfaces.DefaultRequestProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
+import shared.network.inventory.ItemActionRequest.ItemAction;
 import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
@@ -179,10 +180,10 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
             if (item == null) {
                 return;
             }
-            if (itemManager.isEquippable(item)) {
+            if (itemAction.getAction() == ItemAction.EQUIP.ordinal() && itemManager.isEquippable(item)) {
                 // modify user equipment
                 itemManager.equip(playerId, itemIndex, item);
-            } else if (itemManager.isUsable(item)) {
+            } else if (itemAction.getAction() == ItemAction.USE.ordinal() && itemManager.isUsable(item)) {
                 itemManager.use(playerId, item);
             }
         }

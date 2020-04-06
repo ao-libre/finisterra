@@ -17,6 +17,7 @@ import shared.network.inventory.InventoryUpdate;
 import shared.network.notifications.EntityUpdate;
 import shared.util.EntityUpdateBuilder;
 import shared.objects.types.*;
+import shared.util.ItemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,16 +50,12 @@ public class ItemManager extends DefaultManager {
 
     public boolean isEquippable(Bag.Item item) {
         Optional<Obj> object = objectManager.getObject(item.objId);
-        if (object.isPresent()) {
-            Obj obj = object.get();
-            return obj instanceof ObjWithClasses;
-        }
-        return false;
+        return object.map(ItemUtils::canEquip).orElse(false);
     }
 
     public boolean isUsable(Bag.Item item) {
         Optional<Obj> object = objectManager.getObject(item.objId);
-        return object.map(obj -> (obj.getType().equals(Type.POTION) || obj.getType().equals(Type.SPELL))).orElse(false);
+        return object.map(ItemUtils::canUse).orElse(false);
     }
 
     public void use(int player, Bag.Item item) {
