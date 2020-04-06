@@ -16,6 +16,8 @@ import component.entity.combat.AttackPower;
 import component.entity.combat.EvasionPower;
 import component.entity.npc.*;
 import component.entity.world.Footprint;
+import component.physics.AttackInterval;
+import component.physics.UseInterval;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import org.reflections.Reflections;
 
@@ -40,6 +42,8 @@ public class ComponentManager extends PassiveSystem {
         allClasses.remove(OriginPos.class);
         allClasses.remove(Respawn.class);
         allClasses.remove(Footprint.class);
+        allClasses.remove(AttackInterval.class);
+        allClasses.remove(UseInterval.class);
 
         componentsByVisibility.put(Visibility.CLIENT_ALL, Sets.newHashSet(allClasses));
 

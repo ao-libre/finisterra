@@ -106,7 +106,7 @@ public class MeditateSystem extends IntervalFluidIteratingSystem {
                 player.meditating();
                 consoleMessage = ConsoleMessage.info(Messages.MEDITATE_START.name());
                 update.withComponents(player.getMeditating());
-                soundEntitySystem.add(player.id(), 18, true); // TODO make sound loop
+                soundEntitySystem.add(player.id(), 18, true);
             }
         }
         messageSystem.add(userId, consoleMessage);
