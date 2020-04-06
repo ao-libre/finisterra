@@ -12,7 +12,7 @@ import game.AOGame;
 import game.ClientConfiguration;
 import game.handlers.AOAssetManager;
 import game.systems.PlayerSystem;
-import game.systems.actions.IntervalSystem;
+import shared.systems.IntervalSystem;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.anim.IdleAnimationSystem;
 import game.systems.anim.MovementAnimationSystem;

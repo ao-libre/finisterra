@@ -20,4 +20,18 @@ public class PlayerSystem extends PassiveSystem {
         return get().getWorldPos();
     }
 
+    public boolean canSpellAttack() {
+        E player = get();
+        return !player.hasAttackInterval() && !player.isMeditating();
+    }
+
+    public boolean canPhysicAttack() {
+        E player = get();
+        return !player.hasAttackInterval() && !player.isMeditating();
+    }
+
+    public boolean canUse() {
+        E player = get();
+        return !player.hasUseInterval() && !player.hasAttackInterval() && !player.isMeditating();
+    }
 }

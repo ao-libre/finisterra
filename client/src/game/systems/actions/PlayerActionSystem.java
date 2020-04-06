@@ -19,6 +19,7 @@ import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.MeditateRequest;
 import shared.network.inventory.ItemActionRequest;
 import shared.network.inventory.ItemActionRequest.ItemAction;
+import shared.systems.IntervalSystem;
 import shared.util.Messages;
 
 @Wire
@@ -39,7 +40,7 @@ public class PlayerActionSystem extends PassiveSystem {
     }
 
     public void attack() {
-        if (intervalSystem.canPhysicAttack()) {
+        if (playerSystem.canPhysicAttack()) {
             clientSystem.send(new AttackRequest(AttackType.PHYSICAL));
             playerSystem.get().attackIntervalValue(Intervals.ATTACK_INTERVAL);
         } else {
@@ -48,7 +49,7 @@ public class PlayerActionSystem extends PassiveSystem {
     }
 
     public void useItem(int selectedIndex) {
-        if (intervalSystem.canUse()) {
+        if (playerSystem.canUse()) {
             clientSystem.send(new ItemActionRequest(selectedIndex, ItemAction.USE.ordinal()));
             playerSystem.get().useIntervalValue(Intervals.USE_INTERVAL);
         }
@@ -56,7 +57,7 @@ public class PlayerActionSystem extends PassiveSystem {
 
     public void castSpell(Spell spell, WorldPos pos) {
         E player = playerSystem.get();
-        if (intervalSystem.canSpellAttack()) {
+        if (playerSystem.canSpellAttack()) {
             long rtt = timeSyncSystem.getRtt();
             long timeOffset = timeSyncSystem.getTimeOffset();
             clientSystem.send(new SpellCastRequest(spell, pos, rtt + timeOffset));

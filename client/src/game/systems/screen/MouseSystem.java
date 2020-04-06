@@ -5,7 +5,7 @@ import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
 import component.position.WorldPos;
 import game.systems.PlayerSystem;
-import game.systems.actions.IntervalSystem;
+import shared.systems.IntervalSystem;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.network.ClientSystem;
 import game.systems.resources.MapSystem;

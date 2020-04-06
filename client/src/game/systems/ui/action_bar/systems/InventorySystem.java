@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import component.entity.character.info.Bag;
 import component.position.WorldPos;
 import game.systems.PlayerSystem;
-import game.systems.actions.IntervalSystem;
+import shared.systems.IntervalSystem;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.network.ClientSystem;
 import game.systems.resources.ObjectSystem;

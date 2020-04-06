@@ -4,6 +4,7 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
+import component.console.ConsoleMessage;
 import component.entity.character.info.Bag;
 import component.entity.world.Dialog;
 import component.entity.world.Object;
@@ -18,8 +19,10 @@ import server.systems.combat.PhysicalCombatSystem;
 import server.systems.combat.RangedCombatSystem;
 import server.systems.manager.*;
 import server.systems.network.EntityUpdateSystem;
+import server.systems.network.MessageSystem;
 import server.systems.network.UpdateTo;
 import server.utils.WorldUtils;
+import shared.interfaces.Intervals;
 import shared.model.AttackType;
 import shared.model.lobby.Player;
 import shared.model.map.Map;
@@ -40,9 +43,10 @@ import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
 import shared.network.notifications.EntityUpdate;
-import shared.util.EntityUpdateBuilder;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
+import shared.util.EntityUpdateBuilder;
+import shared.util.Messages;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +74,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     private CommandSystem commandSystem;
     private ObjectManager objectManager;
     private EntityUpdateSystem entityUpdateSystem;
+    private MessageSystem messageSystem;
 
     private List<WorldPos> getArea(WorldPos worldPos, int range /*impar*/) {
         List<WorldPos> positions = new ArrayList<>();
@@ -154,11 +159,21 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(AttackRequest attackRequest, int connectionId) {
         int playerId = networkManager.getPlayerByConnection(connectionId);
+        E entity = E(playerId);
         AttackType type = attackRequest.type();
-        if (type.equals(AttackType.RANGED)) {
-            rangedCombatSystem.shoot(playerId, attackRequest);
+        if (!entity.hasAttackInterval()) {
+            if (type.equals(AttackType.RANGED)) {
+                rangedCombatSystem.shoot(playerId, attackRequest);
+            } else {
+                physicalCombatSystem.entityAttack(playerId, Optional.empty());
+            }
+            entity.attackIntervalValue(Intervals.ATTACK_INTERVAL);
         } else {
-            physicalCombatSystem.entityAttack(playerId, Optional.empty());
+            messageSystem.add(playerId,
+                    ConsoleMessage.error((type.equals(AttackType.RANGED) ?
+                            Messages.CANT_SHOOT_THAT_FAST :
+                            Messages.CANT_ATTACK_THAT_FAST)
+                            .name()));
         }
     }
 
@@ -184,7 +199,13 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
                 // modify user equipment
                 itemManager.equip(playerId, itemIndex, item);
             } else if (itemAction.getAction() == ItemAction.USE.ordinal() && itemManager.isUsable(item)) {
-                itemManager.use(playerId, item);
+                if (!player.hasUseInterval()) {
+                    itemManager.use(playerId, item);
+                    player.useIntervalValue(Intervals.USE_INTERVAL);
+                } else {
+                    messageSystem.add(playerId,
+                            ConsoleMessage.error(Messages.CANT_USE_THAT_FAST.name()));
+                }
             }
         }
     }
@@ -256,7 +277,14 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(SpellCastRequest spellCastRequest, int connectionId) {
         int playerId = networkManager.getPlayerByConnection(connectionId);
-        magicCombatSystem.spell(playerId, spellCastRequest);
+        E entity = E(playerId);
+        if (!entity.hasAttackInterval()) {
+            magicCombatSystem.spell(playerId, spellCastRequest);
+            entity.attackIntervalValue(Intervals.MAGIC_ATTACK_INTERVAL);
+        } else {
+            messageSystem.add(playerId,
+                    ConsoleMessage.error(Messages.CANT_MAGIC_THAT_FAST.name()));
+        }
     }
 
     @Override

@@ -121,25 +121,28 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
         int entityId = e.id();
         switch (effect.type) {
             case FX:
-                BundledAnimation anim = fxs.get(entityId);
-                int effectId = effect.effectId;
-                FXDescriptor fxDescriptor = descriptorsSystem.getFX(effectId);
-                TextureRegion graphic = anim.getGraphic();
-                batchRenderingSystem.addTask((batch) ->
-                        {
-                            float x = screenPos.x + (Tile.TILE_PIXEL_WIDTH - graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX();
-                            float y = screenPos.y - graphic.getRegionHeight() + 20 + fxDescriptor.getOffsetY();
-                            batch.draw(graphic, x, y);
-                        }
-                );
+                if (fxs.containsKey(entityId)) {
+                    BundledAnimation anim = fxs.get(entityId);
+                    int effectId = effect.effectId;
+                    FXDescriptor fxDescriptor = descriptorsSystem.getFX(effectId);
+                    TextureRegion graphic = anim.getGraphic();
+                    batchRenderingSystem.addTask((batch) ->
+                            {
+                                float x = screenPos.x + (Tile.TILE_PIXEL_WIDTH - graphic.getRegionWidth()) / 2 + fxDescriptor.getOffsetX();
+                                float y = screenPos.y - graphic.getRegionHeight() + 20 + fxDescriptor.getOffsetY();
+                                batch.draw(graphic, x, y);
+                            }
+                    );
+                }
                 break;
             case PARTICLE:
-                ParticleEffect particleEffect = particleEffects.get(entityId);
-                float x = particleEffect.getBoundingBox().getWidth();
-                particleEffect.setPosition(screenPos.x + Tile.TILE_PIXEL_WIDTH / 2, screenPos.y);
-                batchRenderingSystem.addTask((batch) ->
-                        particleEffect.draw(batch, world.getDelta())
-                );
+                if (particleEffects.containsKey(entityId)) {
+                    ParticleEffect particleEffect = particleEffects.get(entityId);
+                    particleEffect.setPosition(screenPos.x + Tile.TILE_PIXEL_WIDTH / 2, screenPos.y);
+                    batchRenderingSystem.addTask((batch) ->
+                            particleEffect.draw(batch, world.getDelta())
+                    );
+                }
                 break;
         }
         doEnd();
