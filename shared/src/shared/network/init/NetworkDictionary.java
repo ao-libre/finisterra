@@ -34,7 +34,7 @@ import component.movement.RandomMovement;
 import net.mostlyoriginal.api.network.marshal.common.MarshalDictionary;
 import component.network.Network;
 import component.physics.AOPhysics;
-import component.physics.Attack;
+import component.physics.AttackInterval;
 import component.physics.AttackAnimation;
 import component.position.WorldPos;
 import component.position.WorldPosOffsets;
@@ -100,6 +100,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 MeditateRequest.class,
                 TalkRequest.class,
                 ItemActionRequest.class,
+                ItemActionRequest.ItemAction.class,
                 TakeItemRequest.class,
                 SpellCastRequest.class,
                 TimeSyncRequest.class,
@@ -289,7 +290,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Moving.class,
                 RandomMovement.class,
                 Network.class,
-                Attack.class,
+                AttackInterval.class,
                 Agility.class,
                 Strength.class,
                 Intelligence.class,

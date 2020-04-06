@@ -89,8 +89,11 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     private void addComponentsToEntity(Entity newEntity, EntityUpdate entityUpdate) {
         EntityEdit edit = newEntity.edit();
-        for (Component component : entityUpdate.components) {
-            edit.add(component);
+        Component[] components = entityUpdate.components;
+        if (components != null) {
+            for (Component component : components) {
+                edit.add(component);
+            }
         }
     }
 

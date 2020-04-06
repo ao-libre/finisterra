@@ -21,6 +21,7 @@ import server.systems.network.EntityUpdateSystem;
 import server.systems.network.MessageSystem;
 import shared.model.lobby.Player;
 import shared.model.map.Map;
+import shared.systems.IntervalSystem;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -78,6 +79,7 @@ public class Server {
                 .with(new FluidEntityPlugin())
                 .with(new ComponentManager())
                 .with(new EntityFactorySystem())
+                .with(new IntervalSystem())
                 .with(new ItemManager())
                 .with(new ServerRequestProcessor())
                 .with(new ItemConsumers())

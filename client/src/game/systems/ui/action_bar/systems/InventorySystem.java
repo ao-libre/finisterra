@@ -4,20 +4,23 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import component.entity.character.info.Bag;
+import component.position.WorldPos;
 import game.systems.PlayerSystem;
+import shared.systems.IntervalSystem;
+import game.systems.actions.PlayerActionSystem;
 import game.systems.network.ClientSystem;
 import game.systems.resources.ObjectSystem;
 import game.systems.ui.UserInterfaceContributionSystem;
 import game.systems.ui.UserInterfaceSystem;
 import game.ui.Inventory;
-import component.position.WorldPos;
 import shared.network.interaction.DropItem;
 import shared.network.interaction.TakeItemRequest;
 import shared.network.inventory.InventoryUpdate;
-import shared.network.inventory.ItemActionRequest;
 import shared.objects.types.Obj;
+import shared.util.ItemUtils;
 
 import java.util.Optional;
 
@@ -30,6 +33,8 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     private PlayerSystem playerSystem;
     private ObjectSystem objectSystem;
     private UserInterfaceSystem userInterfaceSystem;
+    private PlayerActionSystem playerActionSystem;
+    private IntervalSystem intervalSystem;
 
     private Inventory inventory;
 
@@ -48,7 +53,8 @@ public class InventorySystem extends UserInterfaceContributionSystem {
 
             @Override
             protected void dragAndDropOut(int i, int x, int y) {
-                dropItem(i, getWorldPos(x, y));
+                Vector2 screenCoordinates = localToScreenCoordinates(new Vector2(x, y));
+                dropItem(i, getWorldPos(screenCoordinates.x, screenCoordinates.y));
             }
 
             @Override
@@ -99,12 +105,20 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     public void equip() {
-        clientSystem.send(new ItemActionRequest(getSelectedIndex()));
+        getSelectedObject().ifPresent(obj -> {
+            if (ItemUtils.canEquip(obj)) {
+                playerActionSystem.equipItem(getSelectedIndex());
+            }
+        });
     }
 
     public void use() {
-        // TODO handle usable items
-        clientSystem.send(new ItemActionRequest(getSelectedIndex()));
+        getSelectedObject().ifPresent(obj -> {
+            if (ItemUtils.canUse(obj)) {
+                playerActionSystem.useItem(getSelectedIndex());
+            }
+        });
+
     }
 
     public void show() {
@@ -115,7 +129,12 @@ public class InventorySystem extends UserInterfaceContributionSystem {
         inventory.setVisible(false);
     }
 
-    public Optional<Obj> getObject(int objId) {
+    private Optional<Obj> getSelectedObject() {
+        Optional<Bag.Item> selected = Optional.ofNullable(getSelected());
+        return selected.flatMap(item -> getObject(item.objId));
+    }
+
+    private Optional<Obj> getObject(int objId) {
         return objectSystem.getObject(objId);
     }
 
@@ -123,7 +142,7 @@ public class InventorySystem extends UserInterfaceContributionSystem {
         return objectSystem.getObject(objId).map(obj -> objectSystem.getGraphic(obj)).orElse(null);
     }
 
-    public void swap(int originIndex, int targetIndex) {
+    private void swap(int originIndex, int targetIndex) {
         E playerEntity = playerSystem.get();
         InventoryUpdate update = new InventoryUpdate(playerEntity.getNetwork().id);
         Bag.Item[] userItems = playerEntity.bagItems();
@@ -142,15 +161,15 @@ public class InventorySystem extends UserInterfaceContributionSystem {
         inventory.update(playerEntity.getBag());
     }
 
-    final <T> void swap(T[] a, int i, int j) {
+    private <T> void swap(T[] a, int i, int j) {
         T t = a[i];
         a[i] = a[j];
         a[j] = t;
     }
 
-    public Optional<WorldPos> getWorldPos(int x, int y) {
-        // TODO handle valid component.position to avoid droping items over blocks
-        return Optional.of(userInterfaceSystem.getWorldPos(x, y));
+    public Optional<WorldPos> getWorldPos(float x, float y) {
+        // TODO handle valid position to avoid droping items over blocks
+        return Optional.of(userInterfaceSystem.getWorldPos((int) x, (int) y));
     }
 
     public void update(Bag bag) {
