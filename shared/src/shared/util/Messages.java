@@ -42,6 +42,7 @@ public enum Messages {
 
     // CHARACTER TRAINING SYSTEM
     EXP_GAIN,
+    GOLD_GAIN,
     LEVEL_UP,
 
     // AO INPUT PROCESSOR

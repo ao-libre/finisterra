@@ -30,4 +30,8 @@ public class Pos2D {
                 y * Tile.TILE_PIXEL_HEIGHT + Tile.TILE_PIXEL_HEIGHT);
     }
 
+    @Override
+    public String toString() {
+        return "X: " + x + " - Y: " + y;
+    }
 }

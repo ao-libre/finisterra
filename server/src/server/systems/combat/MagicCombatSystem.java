@@ -12,12 +12,11 @@ import component.entity.character.status.Mana;
 import component.entity.character.status.Stamina;
 import component.entity.world.CombatMessage;
 import component.entity.world.Dialog;
-import component.graphic.Effect;
-import component.graphic.EffectBuilder;
-import net.mostlyoriginal.api.system.core.PassiveSystem;
 import component.physics.AttackAnimation;
 import component.position.WorldPos;
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.systems.CharacterTrainingSystem;
+import server.systems.entity.EffectEntitySystem;
 import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.MapManager;
 import server.systems.manager.ObjectManager;
@@ -50,6 +49,7 @@ public class MagicCombatSystem extends PassiveSystem {
     private ObjectManager objectManager;
     private CharacterTrainingSystem characterTrainingSystem;
     private EntityUpdateSystem entityUpdateSystem;
+    private EffectEntitySystem effectEntitySystem;
     private MessageSystem messageSystem;
     private SoundEntitySystem soundEntitySystem;
 
@@ -176,16 +176,7 @@ public class MagicCombatSystem extends PassiveSystem {
             }
 
             if (fxGrh > 0) {
-                int fxE = world.create();
-                EntityUpdateBuilder fxUpdate = EntityUpdateBuilder.of(fxE);
-                Effect effect = new EffectBuilder().attachTo(target).withLoops(Math.max(1, spell.getLoops())).withFX(fxGrh).build();
-                fxUpdate.withComponents(effect).build();
-                if (targetEntity.hasWorldPos()) {
-                    WorldPos worldPos = targetEntity.getWorldPos();
-                    fxUpdate.withComponents(worldPos);
-                }
-                entityUpdateSystem.add(target, fxUpdate.build(), UpdateTo.ALL);
-                E(fxE).clear();
+                effectEntitySystem.addFX(target, fxGrh, Math.max(1, spell.getLoops()));
             }
 
             stamina.min -= requiredStamina;

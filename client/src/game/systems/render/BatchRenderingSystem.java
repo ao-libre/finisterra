@@ -55,7 +55,6 @@ public class BatchRenderingSystem extends BaseSystem {
         return tempSpriteBatch;
     }
 
-
     public void resize(float width, float height) {
         // Faked light system (alpha blending)
         // if lightBuffer was created before, dispose, we recreate a new one

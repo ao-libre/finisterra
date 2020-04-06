@@ -4,13 +4,19 @@ import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.artemis.E.E;
 
 public class NetworkedEntitySystem extends PassiveSystem {
 
-    private final Map<Integer, Integer> networkedEntities = new HashMap<>();
-    private final Map<Integer, Integer> localEntities = new HashMap<>();
+    private final Map<Integer, Integer> networkedEntities;
+    private final Map<Integer, Integer> localEntities;
+
+    public NetworkedEntitySystem() {
+        localEntities = new ConcurrentHashMap<>();
+        networkedEntities = new ConcurrentHashMap<>();
+    }
 
     public void registerEntity(int networkId, int entityId) {
         E(entityId).networkId(networkId);

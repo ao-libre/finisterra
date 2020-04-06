@@ -55,6 +55,12 @@ public class EntityUpdateBuilder {
     }
 
     public static EntityUpdate join(EntityUpdate u1, EntityUpdate u2) {
+        if (u1 instanceof RemoveEntity) {
+            return u1;
+        }
+        if (u2 instanceof RemoveEntity) {
+            return u2;
+        }
         // TODO refactor
         // Add new components
         Stream<Component> components = Stream.of(u1.components);

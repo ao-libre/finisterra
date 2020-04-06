@@ -77,7 +77,7 @@ public class SpellView extends View<Spell, SpellDesigner> {
                     .filter(FXDescriptor.class::isInstance)
                     .ifPresent(fx -> {
                         FXDescriptor descriptor = (FXDescriptor) fx;
-                        BundledAnimation anim = getAnimationHandler().getFX(new EffectBuilder().withFX(descriptor.id).build());
+                        BundledAnimation anim = getAnimationHandler().getFX(EffectBuilder.create().withFX(descriptor.id).build());
                         AOAnimationActor animation = new AOAnimationActor(anim);
                         add(animation);
                     });
