@@ -37,6 +37,7 @@ public class EntityFactorySystem extends PassiveSystem {
     private ObjectManager objectManager;
     private SpellManager spellManager;
     private PathFindingSystem pathFindingSystem;
+    private NPCManager npcManager;
 
 
     public void createObject(int objIndex, int objCount, WorldPos pos) {
@@ -50,7 +51,7 @@ public class EntityFactorySystem extends PassiveSystem {
     }
 
     public void createNPC(int npcIndex, WorldPos pos) {
-        NPC npc = world.getSystem(NPCManager.class).getNpcs().get(npcIndex);
+        NPC npc = npcManager.getNpcs().get(npcIndex);
         int npcId = NPCToEntity.getNpcEntity(world, npcIndex, pos, npc);
         worldManager.registerEntity(npcId);
     }
@@ -495,18 +496,7 @@ public class EntityFactorySystem extends PassiveSystem {
 
 
     private void setEntityPosition(E entity, Team team) {
-        WorldPos spot = null;
-        switch (team) {
-            case REAL_ARMY:
-                spot = new WorldPos(10, 10, 290);
-                break;
-            case CAOS_ARMY:
-                spot = new WorldPos(90, 90, 290);
-                break;
-            case NO_TEAM:
-                spot = new WorldPos(50, 50, 290);
-                break;
-        }
+        WorldPos spot = new WorldPos(50, 50, 1);
         setWorldPosition(entity, spot);
     }
 

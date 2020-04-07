@@ -44,6 +44,9 @@ public class NPCToEntity {
         if (npc.isAttackable()) {
             npcEntity.attackable();
         }
+        if (!npc.getName().isBlank()) {
+            npcEntity.nameText(npc.getName());
+        }
 
         npcEntity.originPosMap(pos.map).originPosX(pos.x).originPosY(pos.y);
         npcEntity.worldPosMap(pos.map).worldPosX(pos.x).worldPosY(pos.y);
