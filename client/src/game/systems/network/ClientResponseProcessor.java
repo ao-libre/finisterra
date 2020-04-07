@@ -60,7 +60,7 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
         if (game.getScreen() instanceof RoomScreen) {
             RoomScreen roomScreen = (RoomScreen) game.getScreen();
             GameScreen gameScreen = (GameScreen) ScreenEnum.GAME.getScreen(game.getWorld());
-            clientSystem.getKryonetClient().sendToAll(new PlayerLoginRequest(roomScreen.getPlayer()));
+            clientSystem.send(new PlayerLoginRequest(roomScreen.getPlayer()));
             game.toGame(gameScreen);
         }
     }
@@ -106,7 +106,7 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
 
             //@todo pasar al lobby del servidor
             //hotfix para recuperar funcionalidad
-            clientSystem.getKryonetClient().sendToAll(new JoinLobbyRequest(accountLoginResponse.getUsername()));
+            clientSystem.send(new JoinLobbyRequest(accountLoginResponse.getUsername()));
         }
         else {
             Dialog dialog = new Dialog("Error", screen.getSkin());

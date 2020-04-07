@@ -70,7 +70,7 @@ public class LobbyScreen extends AbstractScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                clientSystem.getKryonetClient().sendToAll(new CreateRoomRequest());
+                clientSystem.send(new CreateRoomRequest());
             }
         });
 
@@ -81,7 +81,7 @@ public class LobbyScreen extends AbstractScreen {
                 super.clicked(event, x, y);
                 Room selected = roomList.getSelected();
                 if (selected != null && !selected.isFull()) {
-                    clientSystem.getKryonetClient().sendToAll(new JoinRoomRequest(selected.getId()));
+                    clientSystem.send(new JoinRoomRequest(selected.getId()));
                 }
             }
         });

@@ -85,7 +85,7 @@ public class RoomScreen extends AbstractScreen {
         start.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                clientSystem.getKryonetClient().sendToAll(new StartGameRequest(room.getId()));
+                clientSystem.send(new StartGameRequest(room.getId()));
             }
         });
 
@@ -93,7 +93,7 @@ public class RoomScreen extends AbstractScreen {
         changeTeam.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                clientSystem.getKryonetClient().sendToAll(new ChangeTeamRequest());
+                clientSystem.send(new ChangeTeamRequest());
             }
         });
 
@@ -101,7 +101,7 @@ public class RoomScreen extends AbstractScreen {
         readyButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                clientSystem.getKryonetClient().sendToAll(new ChangeReadyStateRequest());
+                clientSystem.send(new ChangeReadyStateRequest());
             }
         });
 
@@ -115,7 +115,7 @@ public class RoomScreen extends AbstractScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 Hero hero = heroSelect.getSelected();
                 me.setHero(hero);
-                clientSystem.getKryonetClient().sendToAll(new ChangeHeroRequest(hero));
+                clientSystem.send(new ChangeHeroRequest(hero));
             }
         });
 
@@ -139,7 +139,7 @@ public class RoomScreen extends AbstractScreen {
         Hero defaultHero = Hero.getRandom();
         heroSelect.setSelected(defaultHero);
         me.setHero(defaultHero);
-        clientSystem.getKryonetClient().sendToAll(new ChangeHeroRequest(defaultHero));
+        clientSystem.send(new ChangeHeroRequest(defaultHero));
     }
 
     @Override

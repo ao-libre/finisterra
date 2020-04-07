@@ -123,8 +123,7 @@ public class SignUpScreen extends AbstractScreen {
                     if (clientSystem.getState() == MarshalState.STOPPED) {
 
                         // Seteamos la info. del servidor al que nos vamos a conectar.
-                        clientSystem.getKryonetClient().setHost(ip);
-                        clientSystem.getKryonetClient().setPort(port);
+                        clientSystem.setHost(ip, port);
 
                         // Inicializamos la conexion.
                         clientSystem.start();
@@ -133,7 +132,7 @@ public class SignUpScreen extends AbstractScreen {
                         if (clientSystem.getState() == MarshalState.STARTED) {
 
                             // Enviamos la peticion de inicio de sesion.
-                            clientSystem.getKryonetClient().sendToAll(new AccountCreationRequest(username, email, password1));
+                            clientSystem.send(new AccountCreationRequest(username, email, password1));
 
                         } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
                             AOAssetManager assetManager = AOGame.getGlobalAssetManager();

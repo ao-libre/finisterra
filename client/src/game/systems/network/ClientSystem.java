@@ -57,23 +57,19 @@ public class ClientSystem extends MarshalSystem {
         super.disconnected(connectionId);
         AOGame game = (AOGame) Gdx.app.getApplicationListener();
         if (game.getScreen() instanceof GameScreen) {
-            Gdx.app.postRunnable(game::toLogin);
+            Gdx.app.postRunnable(game::toLogin); //@fixme
         }
-    }
-
-    public void setNotificationProcessor(GameNotificationProcessor notificationProcessor) {
-        this.notificationProcessor = notificationProcessor;
-    }
-
-    public void setResponseProcessor(ClientResponseProcessor responseProcessor) {
-        this.responseProcessor = responseProcessor;
     }
 
     public void send(Object object) {
         getKryonetClient().sendToAll(object);
     }
 
-    public KryonetClientMarshalStrategy getKryonetClient() {
+    public void setHost(String address, int port) {
+        getKryonetClient().setHost(address, port);
+    }
+
+    private KryonetClientMarshalStrategy getKryonetClient() {
         return (KryonetClientMarshalStrategy) getMarshal();
     }
 }
