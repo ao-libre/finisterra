@@ -42,13 +42,15 @@ public class AOImageActor extends Image {
         this.image = image;
         setScaling(Scaling.fit);
         if (image != null) {
-            AOTexture texture = animationsSystem.getTexture(image.getId());
-            if (texture != null) {
-                TextureRegion texture1 = texture.getTexture();
-                if (texture1.isFlipY()) {
-                    texture1.flip(false, true);
+            if (animationsSystem.hasTexture(image.getId())) {
+                AOTexture texture = animationsSystem.getTexture(image.getId());
+                if (texture != null) {
+                    TextureRegion texture1 = texture.getTexture();
+                    if (texture1.isFlipY()) {
+                        texture1.flip(false, true);
+                    }
+                    setDrawable(new TextureRegionDrawable(texture1));
                 }
-                setDrawable(new TextureRegionDrawable(texture1));
             }
         }
     }
