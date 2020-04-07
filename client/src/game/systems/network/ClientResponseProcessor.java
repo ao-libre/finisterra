@@ -35,7 +35,7 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
 
         switch (createRoomResponse.getStatus()) {
             case CREATED:
-                game.toRoom(lobby.getClientSystem(), createRoomResponse.getRoom(), createRoomResponse.getPlayer());
+                game.toRoom(createRoomResponse.getRoom(), createRoomResponse.getPlayer());
                 break;
             case MAX_ROOM_LIMIT:
                 lobby.roomMaxLimit();
@@ -112,7 +112,7 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
 
             //@todo pasar al lobby del servidor
             //hotfix para recuperar funcionalidad
-            screen.getClientSystem().getKryonetClient().sendToAll(new JoinLobbyRequest(accountLoginResponse.getUsername()));
+            game.getClientSystem().getKryonetClient().sendToAll(new JoinLobbyRequest(accountLoginResponse.getUsername()));
         }
         else {
             Dialog dialog = new Dialog("Error", screen.getSkin());
