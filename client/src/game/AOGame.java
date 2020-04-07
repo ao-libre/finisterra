@@ -100,6 +100,8 @@ public class AOGame extends Game implements AssetManagerHolder {
         return assetManager;
     }
 
+    public World getWorld() { return world; }
+
     @Override
     public void render() {
 //        fpsSync.sync(100);

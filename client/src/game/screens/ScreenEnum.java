@@ -1,5 +1,6 @@
 package game.screens;
 
+import com.artemis.World;
 import com.badlogic.gdx.Screen;
 import game.ClientConfiguration;
 import game.handlers.AOAssetManager;
@@ -43,7 +44,7 @@ public enum ScreenEnum {
     GAME {
         @Override
         public Screen getScreen(Object... params) {
-            return new GameScreen((ClientConfiguration) params[0], (AOAssetManager) params[1]);
+            return new GameScreen((World) params[0]);
         }
     };
 

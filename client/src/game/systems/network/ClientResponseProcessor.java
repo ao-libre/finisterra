@@ -20,6 +20,7 @@ import shared.network.time.TimeSyncResponse;
 @Wire
 public class ClientResponseProcessor extends BaseSystem implements IResponseProcessor {
 
+    private AOGame game = (AOGame) Gdx.app.getApplicationListener();
     private TimeSync timeSync;
     private MovementProcessorSystem movementProcessorSystem;
 
@@ -30,7 +31,6 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
 
     @Override
     public void processResponse(CreateRoomResponse createRoomResponse) {
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
         LobbyScreen lobby = (LobbyScreen) game.getScreen();
 
         switch (createRoomResponse.getStatus()) {
@@ -45,13 +45,11 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
 
     @Override
     public void processResponse(JoinLobbyResponse joinLobbyResponse) {
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
         game.toLobby(joinLobbyResponse.getPlayer(), joinLobbyResponse.getRooms());
     }
 
     @Override
     public void processResponse(JoinRoomResponse joinRoomResponse) {
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
         game.toRoom(joinRoomResponse.getRoom(), joinRoomResponse.getPlayer());
     }
 
@@ -60,10 +58,9 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
         AOGame game = (AOGame) Gdx.app.getApplicationListener();
         if (game.getScreen() instanceof RoomScreen) {
             RoomScreen roomScreen = (RoomScreen) game.getScreen();
-            GameScreen gameScreen = (GameScreen) ScreenEnum.GAME.getScreen(game.getClientConfiguration(), game.getAssetManager());
+            GameScreen gameScreen = (GameScreen) ScreenEnum.GAME.getScreen(game.getWorld());
             ClientSystem clientSystem = new ClientSystem(startGameResponse.getHost(), startGameResponse.getTcpPort());
             clientSystem.start();
-            gameScreen.initWorld(clientSystem);
             clientSystem.getKryonetClient().sendToAll(new PlayerLoginRequest(roomScreen.getPlayer()));
             game.toGame(gameScreen);
         }
@@ -79,7 +76,6 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
 
     @Override
     public void processResponse(AccountCreationResponse accountCreationResponse) {
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
         AbstractScreen screen = (AbstractScreen) game.getScreen();
 
         if (accountCreationResponse.isSuccessful()) {
@@ -99,7 +95,6 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
 
     @Override
     public void processResponse(AccountLoginResponse accountLoginResponse) {
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
         LoginScreen screen = (LoginScreen) game.getScreen();
 
         if (accountLoginResponse.isSuccessful()) {
