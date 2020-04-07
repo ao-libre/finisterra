@@ -33,5 +33,5 @@ Read more [here](https://github.com/EsotericSoftware/kryonet)
 It allows us to create application game logic, create screens and render all that we need using OpenGL.
 
 ## Networks
-[Web](https://finisterra.argentumonline.org/) -  [Discord](https://discord.gg/qCJPGbY) - 
+[Web](https://finisterra.argentumonline.org/) -  [Discord](https://discord.gg/qCJPGbY)
 
