@@ -74,7 +74,7 @@ tasks.dist.doLast {
 def OS = OperatingSystem.current()
 
 // Determine where the bundled application is going to be.
-def releasePath = "${projectDir}/bundled-APP"
+def releasePath = "${buildDir}/releases"
 
 // creates application bundle (executable + runtime)
 task bundle(type: Exec, dependsOn: [dist, jlink]) {
@@ -87,7 +87,7 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
     }
 
     def commands = [
-            JPackagePath.concat("/jdk-14/bin/jpackage"),
+            JPackagePath,
             '--type', 'app-image',
             '--name', project.appName,
             '--vendor', "Argentum Online Libre",

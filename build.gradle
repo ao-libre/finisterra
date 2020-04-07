@@ -1,5 +1,4 @@
 import org.gradle.internal.jvm.Jvm
-import org.gradle.internal.os.OperatingSystem
 
 buildscript {
     ext {
@@ -90,56 +89,22 @@ subprojects {
     }
 }
 
+
+// Get current Operating System
+def OS = org.gradle.internal.os.OperatingSystem.current()
+
 configure(subprojects.findAll { it.name == 'server' || it.name == 'desktop' }) {
     
     apply plugin: "de.undercouch.download"
 	
     ext {
         jdkPath = Jvm.current().getJavaHome().path
-        JPackagePath = "${rootDir}/JPackage"
-        prebuiltJRE = "${rootDir}/JPackage/bundled-JRE"
-        JPackageCompressed = OperatingSystem.current().isWindows() ? "jpackage.zip" : "jpackage.tar.gz"
-    }
-
-    // Downloads the JPackage binary and decompresses it.
-    task downloadJPackage(type: Download) {
-
-        switch(OperatingSystem.current()) {
-            case OperatingSystem.MAC_OS:
-                src 'https://download.java.net/java/GA/jdk14/076bab302c7b4508975440c56f6cc26a/36/GPL/openjdk-14_osx-x64_bin.tar.gz'
-                break;
-            case OperatingSystem.WINDOWS:
-                src 'https://download.java.net/java/GA/jdk14/076bab302c7b4508975440c56f6cc26a/36/GPL/openjdk-14_windows-x64_bin.zip'
-                break;
-            case OperatingSystem.LINUX:
-                src 'https://download.java.net/java/GA/jdk14/076bab302c7b4508975440c56f6cc26a/36/GPL/openjdk-14_linux-x64_bin.tar.gz'
-                break;
-        }
-
-        dest(file(JPackagePath.concat("/${JPackageCompressed}")))
-        overwrite(false)
-
-        // We put it in a doLast{} block because otherwise it (the task) auto-executes.
-        doLast {
-            if (!file(JPackagePath.concat("/jdk-14")).exists()) {
-                copy {
-
-                    if (OperatingSystem.current().isWindows()) {
-                        from zipTree("${JPackagePath}/${JPackageCompressed}")
-                    } else {
-                        from tarTree("${JPackagePath}/${JPackageCompressed}")
-                    }
-                    
-                    into JPackagePath
-
-                }
-            }
-        }
-
+        JPackagePath = OS.isMacOsX() ? jdkPath.concat("/Contents/Home/bin/jpackage") : jdkPath.concat("/bin/jpackage")
+        prebuiltJRE = "${buildDir}/bundled-JRE"
     }
 
     // creates a replacement runtime via jlink command (much smaller than JPackage. Up to 38MB)
-    task jlink(type: Exec, dependsOn: downloadJPackage) {
+    task jlink(type: Exec) {
 
         // Overwrite previous bundled jre.
         if (file(prebuiltJRE).exists()) {
