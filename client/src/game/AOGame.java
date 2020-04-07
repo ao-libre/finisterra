@@ -1,5 +1,6 @@
 package game;
 
+import com.artemis.World;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -25,15 +26,17 @@ public class AOGame extends Game implements AssetManagerHolder {
     private final AOAssetManager assetManager;
     private final ClientConfiguration clientConfiguration;
     private final ClientSystem clientSystem;
+    private World world;
     private Sync fpsSync;
 
     public AOGame(ClientConfiguration clientConfiguration) {
         Log.setLogger(new LogSystem());
         this.clientConfiguration = clientConfiguration;
-        assetManager = new DefaultAOAssetManager(clientConfiguration);
-        clientSystem = new ClientSystem();
+        this.assetManager = new DefaultAOAssetManager(clientConfiguration);
+        this.clientSystem = new ClientSystem();
         clientSystem.setNotificationProcessor(new GameNotificationProcessor());
         clientSystem.setResponseProcessor(new ClientResponseProcessor());
+        this.world = new WorldConstructor(assetManager, clientSystem, clientConfiguration).getWorld();
     }
 
     /*

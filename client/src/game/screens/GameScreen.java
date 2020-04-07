@@ -62,99 +62,14 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     private static final int DECORATION_PRIORITY = 3;
     private static final int UI = 0;
 
-    public static World world;
+    public World world;
     private WorldConfigurationBuilder worldConfigBuilder;
     private FPSLogger fpsLogger = new FPSLogger();
 
-    public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
+    public GameScreen(World world) {
         long start = System.currentTimeMillis();
-        initWorldConfiguration(assetManager, clientConfiguration);
+        this.world = world;
         Log.debug("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
-    }
-
-    private void initWorldConfiguration(AOAssetManager assetManager, ClientConfiguration clientConfiguration) {
-        worldConfigBuilder = new WorldConfigurationBuilder()
-                .with(HIGH, new SuperMapper(), new ClearSystem())
-                .with(LOGIC,
-                        new IntervalSystem(),
-                        // Player component.movement
-                        new PlayerInputSystem(),
-                        new MovementProcessorSystem(),
-                        new MovementAnimationSystem(),
-                        new IdleAnimationSystem(),
-                        new MovementSystem(),
-                        new PlayerSystem(),
-
-                        // Camera
-                        new CameraSystem(),
-                        new CameraFocusSystem(),
-                        new CameraMovementSystem(),
-                        new CameraShakeSystem(),
-
-                        // Logic systems
-                        new LocalReferenceSystem(),
-                        new NetworkedEntitySystem(),
-                        new AttackAnimationSystem(),
-                        new SoundSytem(),
-                        new TiledMapSystem(),
-                        new AnimationsSystem(assetManager),
-                        new DescriptorsSystem(assetManager),
-                        new MessageSystem(assetManager),
-                        new MapSystem(),
-                        new MusicSystem(),
-                        new ObjectSystem(),
-                        new ParticlesSystem(),
-                        new SoundsSystem(),
-                        new SpellsSystem(),
-                        new FontsSystem(),
-                        new PlayerActionSystem(),
-                        new InputSystem(),
-                        new ScreenSystem(),
-                        new WorldSystem())
-                // Rendering
-                .with(PRE_ENTITY_RENDER_PRIORITY, new ClearScreenSystem(),
-                        new MapGroundRenderingSystem(),
-                        new ObjectRenderingSystem(),
-                        new TargetRenderingSystem(),
-                        new NameRenderingSystem())
-
-                .with(ENTITY_RENDER_PRIORITY, new EffectRenderingSystem(),
-                        new CharacterRenderingSystem(),
-                        new WorldRenderingSystem())
-
-                .with(POST_ENTITY_RENDER_PRIORITY, new CombatRenderingSystem(),
-                        new DialogRenderingSystem(),
-                        new MapLastLayerRenderingSystem())
-
-                .with(DECORATION_PRIORITY, new StateRenderingSystem(),
-                        new CharacterStatesRenderingSystem(),
-                        new BatchRenderingSystem())
-
-                // UI
-                .with(UI,
-                        new MouseSystem(),
-                        new CursorSystem(),
-                        new InventorySystem(),
-                        new SpellSystem(),
-                        new ActionBarSystem(),
-                        new ConsoleSystem(),
-                        new DialogSystem(),
-                        new StatsSystem(),
-                        new UserSystem(),
-                        new UserInterfaceSystem())
-
-                // Other
-                .with(new MapManager(), new TagManager(), new UuidEntityManager(), clientConfiguration);
-
-    }
-
-    public void initWorld(ClientSystem clientSystem) {
-        worldConfigBuilder.with(HIGH,
-                new ClientResponseProcessor(),
-                new GameNotificationProcessor(),
-                clientSystem,
-                new TimeSync());
-        world = new World(worldConfigBuilder.build()); // preload Artemis world
     }
 
     @Override
