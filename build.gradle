@@ -26,7 +26,7 @@ allprojects {
     apply plugin: "eclipse"
 	
     group = 'Finisterra'
-    version = '0.1.13'
+    version = '0.1.15'
 
     ext {
         appName = 'Finisterra'
@@ -89,17 +89,13 @@ subprojects {
     }
 }
 
-
-// Get current Operating System
-def OS = org.gradle.internal.os.OperatingSystem.current()
-
 configure(subprojects.findAll { it.name == 'server' || it.name == 'desktop' }) {
     
     apply plugin: "de.undercouch.download"
 	
     ext {
         jdkPath = Jvm.current().getJavaHome().path
-        JPackagePath = OS.isMacOsX() ? jdkPath.concat("/Contents/Home/bin/jpackage") : jdkPath.concat("/bin/jpackage")
+        JPackagePath = jdkPath.concat("/bin/jpackage")
         prebuiltJRE = "${buildDir}/bundled-JRE"
     }
 
@@ -132,4 +128,5 @@ configure(subprojects.findAll { it.name == 'server' || it.name == 'desktop' }) {
         }
 
     }
+
 }

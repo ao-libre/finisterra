@@ -1,9 +1,0 @@
-dist: bionic
-language: java
-install: true
-
-jdk:
-  - openjdk14
-
-script:
-  - ./gradlew bundle
