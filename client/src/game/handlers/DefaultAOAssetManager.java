@@ -178,8 +178,13 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     // TODO: fix asap
     @Override
     public Sound getSound(int key) {
-        if (Gdx.files.internal(Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION).exists()) {
-            return get(Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION);
+        String soundFile = Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION;
+        if (Gdx.files.internal(soundFile).exists()) {
+            if (!isLoaded(soundFile)) {
+                load(soundFile, Sound.class);
+                finishLoading();
+            }
+            return get(soundFile);
         } else {
             return null;
         }

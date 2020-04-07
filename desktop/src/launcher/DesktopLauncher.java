@@ -12,6 +12,11 @@ import game.ClientConfiguration.Init.Video;
 import game.utils.Resources;
 import shared.util.LogSystem;
 
+import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class DesktopLauncher {
 
     public static void main(String[] arg) {
@@ -78,6 +83,20 @@ public class DesktopLauncher {
         /**
          * Launch application
          */
-        new Lwjgl3Application(new AOGame(config), cfg);
+        try {
+            new Lwjgl3Application(new AOGame(config), cfg);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            try
+            {
+                PrintWriter pw = new PrintWriter(new File("error.txt"));
+                e.printStackTrace(pw);
+                pw.close();
+            }
+            catch (IOException e1)
+            {
+                e1.printStackTrace();
+            }
+        }
     }
 }
