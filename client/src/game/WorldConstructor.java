@@ -2,6 +2,7 @@ package game;
 
 import com.artemis.SuperMapper;
 import com.artemis.World;
+import com.artemis.WorldConfiguration;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
@@ -52,7 +53,6 @@ import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
 public class WorldConstructor implements WorldScreen {
 
     private World world;
-    private WorldConfigurationBuilder worldConfigBuilder;
     private ClientSystem clientSystem;
 
     private static final int LOGIC = 10;
@@ -62,8 +62,8 @@ public class WorldConstructor implements WorldScreen {
     private static final int DECORATION_PRIORITY = 3;
     private static final int UI = 0;
 
-    private void initWorldConfiguration(AOAssetManager assetManager, ClientSystem clientSystem, ClientConfiguration clientConfiguration) {
-        worldConfigBuilder = new WorldConfigurationBuilder()
+    private WorldConfigurationBuilder initWorldConfiguration(AOAssetManager assetManager, ClientSystem clientSystem, ClientConfiguration clientConfiguration) {
+        return new WorldConfigurationBuilder()
                 .with(HIGH,
                         new ClientResponseProcessor(),
                         new GameNotificationProcessor(),
@@ -107,24 +107,27 @@ public class WorldConstructor implements WorldScreen {
                         new ScreenSystem(),
                         new WorldSystem())
                 // Rendering
-                .with(PRE_ENTITY_RENDER_PRIORITY, new ClearScreenSystem(),
+                .with(PRE_ENTITY_RENDER_PRIORITY,
+                        new ClearScreenSystem(),
                         new MapGroundRenderingSystem(),
                         new ObjectRenderingSystem(),
                         new TargetRenderingSystem(),
                         new NameRenderingSystem())
 
-                .with(ENTITY_RENDER_PRIORITY, new EffectRenderingSystem(),
+                .with(ENTITY_RENDER_PRIORITY,
+                        new EffectRenderingSystem(),
                         new CharacterRenderingSystem(),
                         new WorldRenderingSystem())
 
-                .with(POST_ENTITY_RENDER_PRIORITY, new CombatRenderingSystem(),
+                .with(POST_ENTITY_RENDER_PRIORITY,
+                        new CombatRenderingSystem(),
                         new DialogRenderingSystem(),
                         new MapLastLayerRenderingSystem())
 
-                .with(DECORATION_PRIORITY, new StateRenderingSystem(),
+                .with(DECORATION_PRIORITY,
+                        new StateRenderingSystem(),
                         new CharacterStatesRenderingSystem(),
                         new BatchRenderingSystem())
-
                 // UI
                 .with(UI,
                         new MouseSystem(),
@@ -139,12 +142,16 @@ public class WorldConstructor implements WorldScreen {
                         new UserInterfaceSystem())
 
                 // Other
-                .with(new MapManager(), new TagManager(), new UuidEntityManager(), clientConfiguration);
+                .with(new MapManager(),
+                        new TagManager(),
+                        new UuidEntityManager(),
+                        clientConfiguration);
 
     }
 
     public WorldConstructor(AOAssetManager assetManager, ClientSystem clientSystem, ClientConfiguration clientConfiguration) {
-        initWorldConfiguration(assetManager, clientSystem, clientConfiguration);
+        WorldConfiguration builtWorld = initWorldConfiguration(assetManager, clientSystem, clientConfiguration).build();
+        this.world = new World(builtWorld);
     }
 
     @Override
