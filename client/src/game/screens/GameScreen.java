@@ -86,7 +86,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                         new PlayerSystem(),
 
                         // Camera
-                        new CameraSystem(AOGame.GAME_SCREEN_ZOOM),
+                        new CameraSystem(),
                         new CameraFocusSystem(),
                         new CameraMovementSystem(),
                         new CameraShakeSystem(),

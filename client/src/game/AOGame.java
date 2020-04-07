@@ -19,9 +19,6 @@ import shared.util.LogSystem;
 
 public class AOGame extends Game implements AssetManagerHolder {
 
-    public static final float GAME_SCREEN_ZOOM = 1f;
-    public static final float GAME_SCREEN_MAX_ZOOM = 1.3f;
-
     private final AOAssetManager assetManager;
     private final ClientConfiguration clientConfiguration;
     private Sync fpsSync;
