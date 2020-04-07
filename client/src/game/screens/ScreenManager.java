@@ -2,24 +2,12 @@ package game.screens;
 
 import com.badlogic.gdx.Screen;
 import game.AOGame;
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 
-public class ScreenManager {
-
-    private static ScreenManager instance;
-
+public class ScreenManager extends PassiveSystem {
     private AOGame game;
 
-    private ScreenManager() {
-    }
-
-    public static ScreenManager getInstance() {
-        if (instance == null) {
-            instance = new ScreenManager();
-        }
-        return instance;
-    }
-
-    public void initialize(AOGame game) {
+    public ScreenManager(AOGame game) {
         this.game = game;
     }
 
@@ -28,6 +16,26 @@ public class ScreenManager {
         // Show new screen
         Screen newScreen = screenEnum.getScreen(params);
         game.setScreen(newScreen);
+    }
+
+    private void toLoading() {
+        showScreen(ScreenEnum.LOADING);
+    }
+
+    public void toLogin() {
+        showScreen(ScreenEnum.LOGIN);
+    }
+
+    public void toSignUp(Object... params) {
+        showScreen(ScreenEnum.SIGNUP, params);
+    }
+
+    public void toLobby(Object... params) {
+        showScreen(ScreenEnum.LOBBY, params);
+    }
+
+    public void toRoom(Object... params) {
+        showScreen(ScreenEnum.ROOM, params);
     }
 
 }

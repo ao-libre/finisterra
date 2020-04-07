@@ -36,7 +36,7 @@ public class AOGame extends Game implements AssetManagerHolder {
         this.clientSystem = new ClientSystem();
         clientSystem.setNotificationProcessor(new GameNotificationProcessor());
         clientSystem.setResponseProcessor(new ClientResponseProcessor());
-        this.world = new WorldConstructor(assetManager, clientSystem, clientConfiguration).getWorld();
+        this.world = new WorldConstructor(this, assetManager, clientSystem, clientConfiguration).getWorld();
     }
 
     /*
@@ -63,34 +63,6 @@ public class AOGame extends Game implements AssetManagerHolder {
         // @todo load platform-independent configuration (network, etc.)
     }
 
-    // Muestra la pantalla de carga.
-    private void toLoading() {
-        ScreenManager.getInstance().showScreen(ScreenEnum.LOADING);
-    }
-
-    // Muestra la pantalla de inicio de sesion.
-    public void toLogin() {
-        ScreenManager.getInstance().showScreen(ScreenEnum.LOGIN);
-    }
-
-    // Muestra la pantalla del lobby.
-    public void toSignUp(Object... params) {
-        ScreenManager.getInstance().showScreen(ScreenEnum.SIGNUP, params);
-    }
-
-    public void toLobby(Object... params) {
-        ScreenManager.getInstance().showScreen(ScreenEnum.LOBBY, params);
-    }
-
-    // Muestra la pantalla de la sala de jugadores.
-    public void toRoom(Object... params) {
-        ScreenManager.getInstance().showScreen(ScreenEnum.ROOM, params);
-    }
-
-    public void toGame(GameScreen gameScreen) {
-        setScreen(gameScreen);
-    }
-
     public ClientConfiguration getClientConfiguration() {
         return clientConfiguration;
     }
@@ -101,6 +73,10 @@ public class AOGame extends Game implements AssetManagerHolder {
     }
 
     public World getWorld() { return world; }
+
+    public void toGame(GameScreen gameScreen) {
+        setScreen(gameScreen);
+    }
 
     @Override
     public void render() {

@@ -20,7 +20,8 @@ import shared.network.time.TimeSyncResponse;
 @Wire
 public class ClientResponseProcessor extends BaseSystem implements IResponseProcessor {
 
-    private AOGame game = (AOGame) Gdx.app.getApplicationListener();
+    private ScreenManager screenManager;
+    private ClientSystem clientSystem;
     private TimeSync timeSync;
     private MovementProcessorSystem movementProcessorSystem;
 
@@ -35,7 +36,7 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
 
         switch (createRoomResponse.getStatus()) {
             case CREATED:
-                game.toRoom(createRoomResponse.getRoom(), createRoomResponse.getPlayer());
+                screenManager.toRoom(createRoomResponse.getRoom(), createRoomResponse.getPlayer());
                 break;
             case MAX_ROOM_LIMIT:
                 lobby.roomMaxLimit();
@@ -45,12 +46,12 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
 
     @Override
     public void processResponse(JoinLobbyResponse joinLobbyResponse) {
-        game.toLobby(joinLobbyResponse.getPlayer(), joinLobbyResponse.getRooms());
+        screenManager.toLobby(joinLobbyResponse.getPlayer(), joinLobbyResponse.getRooms());
     }
 
     @Override
     public void processResponse(JoinRoomResponse joinRoomResponse) {
-        game.toRoom(joinRoomResponse.getRoom(), joinRoomResponse.getPlayer());
+        screenManager.toRoom(joinRoomResponse.getRoom(), joinRoomResponse.getPlayer());
     }
 
     @Override
@@ -59,8 +60,6 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
         if (game.getScreen() instanceof RoomScreen) {
             RoomScreen roomScreen = (RoomScreen) game.getScreen();
             GameScreen gameScreen = (GameScreen) ScreenEnum.GAME.getScreen(game.getWorld());
-            ClientSystem clientSystem = new ClientSystem(startGameResponse.getHost(), startGameResponse.getTcpPort());
-            clientSystem.start();
             clientSystem.getKryonetClient().sendToAll(new PlayerLoginRequest(roomScreen.getPlayer()));
             game.toGame(gameScreen);
         }
@@ -79,7 +78,7 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
         AbstractScreen screen = (AbstractScreen) game.getScreen();
 
         if (accountCreationResponse.isSuccessful()) {
-            game.toLogin();
+            screenManager.toLogin();
             Dialog dialog = new Dialog("Exito", screen.getSkin());
             dialog.text("Cuenta creada con exito");
             dialog.button("OK");
@@ -107,7 +106,7 @@ public class ClientResponseProcessor extends BaseSystem implements IResponseProc
 
             //@todo pasar al lobby del servidor
             //hotfix para recuperar funcionalidad
-            game.getClientSystem().getKryonetClient().sendToAll(new JoinLobbyRequest(accountLoginResponse.getUsername()));
+            clientSystem.getKryonetClient().sendToAll(new JoinLobbyRequest(accountLoginResponse.getUsername()));
         }
         else {
             Dialog dialog = new Dialog("Error", screen.getSkin());

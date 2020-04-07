@@ -7,6 +7,7 @@ import com.artemis.WorldConfigurationBuilder;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import game.handlers.AOAssetManager;
+import game.screens.ScreenManager;
 import game.screens.WorldScreen;
 import game.systems.PlayerSystem;
 import game.systems.actions.PlayerActionSystem;
@@ -53,7 +54,6 @@ import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
 public class WorldConstructor implements WorldScreen {
 
     private World world;
-    private ClientSystem clientSystem;
 
     private static final int LOGIC = 10;
     private static final int PRE_ENTITY_RENDER_PRIORITY = 6;
@@ -62,7 +62,10 @@ public class WorldConstructor implements WorldScreen {
     private static final int DECORATION_PRIORITY = 3;
     private static final int UI = 0;
 
-    private WorldConfigurationBuilder initWorldConfiguration(AOAssetManager assetManager, ClientSystem clientSystem, ClientConfiguration clientConfiguration) {
+    private WorldConfigurationBuilder initWorldConfiguration(AOGame game,
+                                                             AOAssetManager assetManager,
+                                                             ClientSystem clientSystem,
+                                                             ClientConfiguration clientConfiguration) {
         return new WorldConfigurationBuilder()
                 .with(HIGH,
                         new ClientResponseProcessor(),
@@ -145,12 +148,17 @@ public class WorldConstructor implements WorldScreen {
                 .with(new MapManager(),
                         new TagManager(),
                         new UuidEntityManager(),
-                        clientConfiguration);
+                        clientConfiguration,
+                        new ScreenManager(game));
 
     }
 
-    public WorldConstructor(AOAssetManager assetManager, ClientSystem clientSystem, ClientConfiguration clientConfiguration) {
-        WorldConfiguration builtWorld = initWorldConfiguration(assetManager, clientSystem, clientConfiguration).build();
+    public WorldConstructor(AOGame game,
+                            AOAssetManager assetManager,
+                            ClientSystem clientSystem,
+                            ClientConfiguration clientConfiguration) {
+
+        WorldConfiguration builtWorld = initWorldConfiguration(game, assetManager, clientSystem, clientConfiguration).build();
         this.world = new World(builtWorld);
     }
 
