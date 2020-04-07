@@ -1,5 +1,6 @@
 package game.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -30,9 +31,9 @@ public class RoomScreen extends AbstractScreen {
     private SelectBox<Hero> heroSelect;
     private LoginScreen loginScreen;
 
-    public RoomScreen(ClientSystem clientSystem, Room room, Player me) {
+    public RoomScreen(Room room, Player me) {
         super();
-        this.clientSystem = clientSystem;
+        clientSystem = ((AOGame) Gdx.app.getApplicationListener()).getClientSystem();
         this.room = room;
         this.me = me;
         selectRandomHero();

@@ -9,6 +9,9 @@ import game.handlers.DefaultAOAssetManager;
 import game.screens.GameScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
+import game.systems.network.ClientResponseProcessor;
+import game.systems.network.ClientSystem;
+import game.systems.network.GameNotificationProcessor;
 import shared.util.LogSystem;
 
 /**
@@ -21,12 +24,16 @@ public class AOGame extends Game implements AssetManagerHolder {
 
     private final AOAssetManager assetManager;
     private final ClientConfiguration clientConfiguration;
+    private final ClientSystem clientSystem;
     private Sync fpsSync;
 
     public AOGame(ClientConfiguration clientConfiguration) {
         Log.setLogger(new LogSystem());
         this.clientConfiguration = clientConfiguration;
-        this.assetManager = new DefaultAOAssetManager(clientConfiguration);
+        assetManager = new DefaultAOAssetManager(clientConfiguration);
+        clientSystem = new ClientSystem();
+        clientSystem.setNotificationProcessor(new GameNotificationProcessor());
+        clientSystem.setResponseProcessor(new ClientResponseProcessor());
     }
 
     /*
@@ -36,6 +43,10 @@ public class AOGame extends Game implements AssetManagerHolder {
     public static AOAssetManager getGlobalAssetManager() {
         AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
         return game.getAssetManager();
+    }
+
+    public ClientSystem getClientSystem() { // @todo inyectar ClientSystem en consumidores
+        return clientSystem;
     }
 
     // Crea la ventana del juego.

@@ -16,6 +16,10 @@ public class ClientSystem extends MarshalSystem {
     private ClientResponseProcessor responseProcessor;
     private GameNotificationProcessor notificationProcessor;
 
+    public ClientSystem() {
+        super(new NetworkDictionary(), new KryonetClientMarshalStrategy());
+    }
+
     public ClientSystem(String host, int port) {
         super(new NetworkDictionary(), new KryonetClientMarshalStrategy(host, port));
     }

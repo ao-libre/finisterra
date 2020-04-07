@@ -32,7 +32,7 @@ public class LoginScreen extends AbstractScreen {
 
     public LoginScreen() {
         super();
-        init();
+        clientSystem = ((AOGame)Gdx.app.getApplicationListener()).getClientSystem();
         // utilice bgmusic  para subir gradualmente el sonido.
         bGMusic();
     }
@@ -64,14 +64,6 @@ public class LoginScreen extends AbstractScreen {
             connectThenLogin();
         }
         */
-    }
-
-    private void init() {
-        clientSystem = new ClientSystem("127.0.0.1", 7666); // @todo implement empty constructor
-        clientSystem.setNotificationProcessor(new GameNotificationProcessor());
-        clientSystem.setResponseProcessor(new ClientResponseProcessor());
-
-        // TODO MusicHandler.playMusic(101);
     }
 
     @Override
@@ -107,7 +99,7 @@ public class LoginScreen extends AbstractScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 if (((TextButton)actor).isPressed()) {
                     AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                    game.toSignUp(clientSystem);
+                    game.toSignUp();
                 }
             }
         });
@@ -196,9 +188,5 @@ public class LoginScreen extends AbstractScreen {
                 }
             }
         }
-    }
-
-    public ClientSystem getClientSystem() {
-        return clientSystem;
     }
 }

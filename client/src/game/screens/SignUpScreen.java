@@ -25,8 +25,8 @@ public class SignUpScreen extends AbstractScreen {
     private TextButton registerButton;
     private List<ClientConfiguration.Network.Server> serverList;
 
-    public SignUpScreen(ClientSystem clientSystem) {
-        this.clientSystem = clientSystem;
+    public SignUpScreen() {
+        clientSystem = ((AOGame)Gdx.app.getApplicationListener()).getClientSystem();
     }
 
     @Override

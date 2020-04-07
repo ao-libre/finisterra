@@ -23,8 +23,7 @@ public enum ScreenEnum {
     SIGNUP {
         @Override
         public Screen getScreen(Object... params) {
-            ClientSystem clientSystem = (ClientSystem) params[0];
-            return new SignUpScreen(clientSystem);
+            return new SignUpScreen();
         }
     },
     LOBBY {

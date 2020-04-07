@@ -1,5 +1,6 @@
 package game.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
@@ -27,9 +28,9 @@ public class LobbyScreen extends AbstractScreen {
     private final Set<Room> rooms;
     private List<Room> roomList;
 
-    public LobbyScreen(ClientSystem clientSystem, Player player, Room[] rooms) {
+    public LobbyScreen(Player player, Room[] rooms) {
         super();
-        this.clientSystem = clientSystem;
+        clientSystem = ((AOGame) Gdx.app.getApplicationListener()).getClientSystem();
         this.player = player;
         this.rooms = Arrays.stream(rooms).collect(Collectors.toSet());
         updateRooms();
@@ -98,9 +99,4 @@ public class LobbyScreen extends AbstractScreen {
     private void updateRooms() {
         roomList.setItems(new Array<>(rooms.toArray()));
     }
-
-    public ClientSystem getClientSystem() {
-        return clientSystem;
-    }
-
 }
