@@ -253,7 +253,11 @@ public abstract class Inventory extends Window {
     }
     private void updateCount(Item item, int i){
         if(item != null) {
-            itemCount.get( i ).setText( item.count );
+            if (item.count > 1) {
+                itemCount.get( i ).setText( item.count );
+            }else {
+                itemCount.get( i ).setText( "" );
+            }
         }else {
             itemCount.get( i ).setText( "" );
         }
