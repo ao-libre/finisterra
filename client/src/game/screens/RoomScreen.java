@@ -1,19 +1,18 @@
 package game.screens;
 
-import com.badlogic.gdx.Gdx;
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
-import game.AOGame;
 import game.handlers.AOAssetManager;
+import game.systems.lobby.LobbySystem;
 import game.systems.resources.MusicSystem;
 import game.systems.network.ClientSystem;
 import shared.interfaces.Hero;
 import shared.model.lobby.Player;
-import shared.model.lobby.Room;
 import shared.model.lobby.Team;
 import shared.network.lobby.StartGameRequest;
 import shared.network.lobby.player.ChangeHeroRequest;
@@ -21,48 +20,31 @@ import shared.network.lobby.player.ChangeReadyStateRequest;
 import shared.network.lobby.player.ChangeTeamRequest;
 import shared.util.Messages;
 
+@Wire
 public class RoomScreen extends AbstractScreen {
-    private final ClientSystem clientSystem;
-    private final Room room;
-    private final Player me;
+
+    private AOAssetManager assetManager;
+    private ClientSystem clientSystem;
+    private LobbySystem lobbySystem;
+
     private List<Player> criminalList;
     private List<Player> armyList;
     private TextButton start;
     private SelectBox<Hero> heroSelect;
-    private LoginScreen loginScreen;
 
-    public RoomScreen(Room room, Player me) {
-        super();
-        clientSystem = ((AOGame) Gdx.app.getApplicationListener()).getClientSystem();
-        this.room = room;
-        this.me = me;
+    public RoomScreen() {
         selectRandomHero();
         updatePlayers();
         checkStart();
     }
 
-    public Player getPlayer() {
-        return me;
-    }
-
     public void updatePlayers() {
-        criminalList.setItems(room.getPlayers().stream().filter(player -> player.getTeam().equals(Team.CAOS_ARMY)).toArray(Player[]::new));
-        armyList.setItems(room.getPlayers().stream().filter(player -> player.getTeam().equals(Team.REAL_ARMY)).toArray(Player[]::new));
-    }
-
-    public Room getRoom() {
-        return room;
+        criminalList.setItems(lobbySystem.getCurrentRoom().getPlayers().stream().filter(player -> player.getTeam().equals(Team.CAOS_ARMY)).toArray(Player[]::new));
+        armyList.setItems(lobbySystem.getCurrentRoom().getPlayers().stream().filter(player -> player.getTeam().equals(Team.REAL_ARMY)).toArray(Player[]::new));
     }
 
     @Override
-    protected void keyPressed(int keyCode) {
-    }
-
-    @Override
-    void createContent() {
-        // Load translations.
-        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
-
+    protected void createUI() {
         Window table = new Window("", getSkin());
         table.setColor(1, 1, 1, 0.8f);
         Table teams = new Table(getSkin());
@@ -85,7 +67,7 @@ public class RoomScreen extends AbstractScreen {
         start.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                clientSystem.send(new StartGameRequest(room.getId()));
+                clientSystem.send(new StartGameRequest(lobbySystem.getCurrentRoom().getId()));
             }
         });
 
@@ -114,7 +96,7 @@ public class RoomScreen extends AbstractScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Hero hero = heroSelect.getSelected();
-                me.setHero(hero);
+                lobbySystem.getPlayer().setHero(hero);
                 clientSystem.send(new ChangeHeroRequest(hero));
             }
         });
@@ -132,19 +114,18 @@ public class RoomScreen extends AbstractScreen {
     }
 
     public void checkStart() {
-        start.setDisabled(!room.getPlayers().stream().allMatch(Player::isReady));
+        start.setDisabled(!lobbySystem.getCurrentRoom().getPlayers().stream().allMatch(Player::isReady));
     }
 
     private void selectRandomHero() {
         Hero defaultHero = Hero.getRandom();
         heroSelect.setSelected(defaultHero);
-        me.setHero(defaultHero);
+        lobbySystem.getPlayer().setHero(defaultHero);
         clientSystem.send(new ChangeHeroRequest(defaultHero));
     }
 
     @Override
     public void dispose() {
-        clientSystem.stop();
         MusicSystem.FIRSTBGM.stop();
         super.dispose();
     }

@@ -1,67 +1,27 @@
 package game.screens;
 
-import com.badlogic.gdx.Gdx;
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Array;
-import game.AOGame;
-import game.handlers.AOAssetManager;
+import game.systems.lobby.LobbySystem;
 import game.systems.network.ClientSystem;
-import shared.model.lobby.Player;
 import shared.model.lobby.Room;
 import shared.network.lobby.CreateRoomRequest;
 import shared.network.lobby.JoinRoomRequest;
-import shared.util.Messages;
 
-import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+@Wire
 public class LobbyScreen extends AbstractScreen {
 
-    private final Player player;
-    private final ClientSystem clientSystem;
-    private final Set<Room> rooms;
+    private ClientSystem clientSystem;
+    private LobbySystem lobbySystem;
+
     private List<Room> roomList;
 
-    public LobbyScreen(Player player, Room[] rooms) {
-        super();
-        clientSystem = ((AOGame) Gdx.app.getApplicationListener()).getClientSystem();
-        this.player = player;
-        this.rooms = Arrays.stream(rooms).collect(Collectors.toSet());
-        updateRooms();
-    }
-
-    public void roomCreated(Room room) {
-        rooms.add(room);
-        updateRooms();
-    }
-
-    public void roomClosed(Room room) {
-        rooms.remove(room);
-        updateRooms();
-    }
-
-    public void roomMaxLimit() {
-        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
-
-        Dialog dialog = new Dialog(assetManager.getMessages(Messages.MAX_ROOM_LIMIT_CREATION_TITLE), getSkin());
-        dialog.text(assetManager.getMessages(Messages.MAX_ROOM_LIMIT_CREATION_DESCRIPTION));
-        dialog.button("OK");
-        dialog.show(getStage());
-    }
-
     @Override
-    protected void keyPressed(int keyCode) {
-
-    }
-
-    @Override
-    void createContent() {
+    protected void createUI() {
         roomList = new List<>(getSkin());
 
         Table container = new Table(getSkin());
@@ -93,10 +53,5 @@ public class LobbyScreen extends AbstractScreen {
         container.add(createRoomButton);
         container.getColor().a = 0.8f;
         getMainTable().add(container);
-
-    }
-
-    private void updateRooms() {
-        roomList.setItems(new Array<>(rooms.toArray()));
     }
 }

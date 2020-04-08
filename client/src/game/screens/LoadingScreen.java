@@ -1,5 +1,6 @@
 package game.screens;
 
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,27 +14,20 @@ import game.utils.Resources;
 
 import static com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.ProgressBarStyle;
 
+@Wire
 public class LoadingScreen extends AbstractScreen {
 
     private AOAssetManager assetManager;
+    private ScreenManager screenManager;
+
     private Texture progressBar;
     private Texture progressBarKnob;
     private ProgressBar progress;
     private boolean loaded;
     private boolean textureLoading;
 
-    public LoadingScreen() {
-    }
-
     @Override
-    protected void keyPressed(int keyCode) {
-
-    }
-
-    @Override
-    void createContent() {
-        assetManager = AOGame.getGlobalAssetManager();
-
+    protected void createUI() {
         String progressBarPath = Resources.GAME_IMAGES_PATH + "progress-bar.png";
         String progressBarKnobPath = Resources.GAME_IMAGES_PATH + "progress-bar-knob.png";
         assetManager.getAssetManager().load(progressBarPath, Texture.class);
@@ -64,8 +58,7 @@ public class LoadingScreen extends AbstractScreen {
             } else {
                 loaded = true;
                 // we are done loading, let's move to another screen!
-                AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                game.toLogin();
+                screenManager.to(ScreenEnum.LOGIN);
             }
         }
         // display loading information

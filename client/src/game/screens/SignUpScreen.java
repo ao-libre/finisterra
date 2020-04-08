@@ -1,5 +1,6 @@
 package game.screens;
 
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -15,9 +16,12 @@ import shared.util.Messages;
 
 import static game.utils.Resources.CLIENT_CONFIG;
 
+@Wire
 public class SignUpScreen extends AbstractScreen {
 
+    private AOAssetManager assetManager;
     private ClientSystem clientSystem;
+    private ScreenManager screenManager;
 
     private TextField usernameField;
     private TextField passwordField1, passwordField2;
@@ -25,12 +29,8 @@ public class SignUpScreen extends AbstractScreen {
     private TextButton registerButton;
     private List<ClientConfiguration.Network.Server> serverList;
 
-    public SignUpScreen() {
-        clientSystem = ((AOGame)Gdx.app.getApplicationListener()).getClientSystem();
-    }
-
     @Override
-    void createContent() {
+    protected void createUI() {
         ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); //@todo esto es un hotfix, el config tendría que cargarse en otro lado
 
         /* Tabla de sign up */
@@ -135,8 +135,6 @@ public class SignUpScreen extends AbstractScreen {
                             clientSystem.send(new AccountCreationRequest(username, email, password1));
 
                         } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
-                            AOAssetManager assetManager = AOGame.getGlobalAssetManager();
-
                             // Mostramos un mensaje de error.
                             Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
                             dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
@@ -155,12 +153,8 @@ public class SignUpScreen extends AbstractScreen {
         public void changed(ChangeEvent event, Actor actor) {
             if (((TextButton)actor).isPressed()) {
                 AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                game.toLogin();
+                screenManager.to(ScreenEnum.LOGIN);
             }
         }
-    }
-
-    @Override
-    protected void keyPressed(int keyCode) {
     }
 }

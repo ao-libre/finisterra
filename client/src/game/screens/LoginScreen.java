@@ -1,5 +1,6 @@
 package game.screens;
 
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -10,8 +11,6 @@ import game.AOGame;
 import game.ClientConfiguration;
 import game.handlers.AOAssetManager;
 import game.systems.resources.MusicSystem;
-import game.systems.network.ClientResponseProcessor;
-import game.systems.network.GameNotificationProcessor;
 import game.systems.network.ClientSystem;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.network.account.AccountLoginRequest;
@@ -19,9 +18,12 @@ import shared.util.Messages;
 
 import static game.utils.Resources.CLIENT_CONFIG;
 
+@Wire
 public class LoginScreen extends AbstractScreen {
 
+    private AOAssetManager assetManager;
     private ClientSystem clientSystem;
+    private ScreenManager screenManager;
 
     private TextField emailField;
     private TextField passwordField;
@@ -31,10 +33,8 @@ public class LoginScreen extends AbstractScreen {
     private List<ClientConfiguration.Network.Server> serverList;
 
     public LoginScreen() {
-        super();
-        clientSystem = ((AOGame)Gdx.app.getApplicationListener()).getClientSystem();
         // utilice bgmusic  para subir gradualmente el sonido.
-        bGMusic();
+        bGMusic(); //@todo mover esto fuera del constructor
     }
 
     void bGMusic() {
@@ -56,18 +56,16 @@ public class LoginScreen extends AbstractScreen {
         }, 0, 0.6f);
     }
 
-    @Override
-    protected void keyPressed(int keyCode) {
-        /*
-        if (keyCode == Input.Keys.ENTER && this.canConnect) {
-            this.canConnect = false;
-            connectThenLogin();
-        }
-        */
-    }
+//    @Override
+//    protected void keyPressed(int keyCode) {
+//        if (keyCode == Input.Keys.ENTER && this.canConnect) {
+//            this.canConnect = false;
+//            connectThenLogin();
+//        }
+//    }
 
     @Override
-    void createContent() {
+    protected void createUI() {
         ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); //@todo esto es un hotfix, el config tendría que cargarse en otro lado
         ClientConfiguration.Account account = config.getAccount();
 
@@ -99,7 +97,7 @@ public class LoginScreen extends AbstractScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 if (((TextButton)actor).isPressed()) {
                     AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                    game.toSignUp();
+                    screenManager.to(ScreenEnum.SIGN_UP);
                 }
             }
         });
@@ -175,8 +173,6 @@ public class LoginScreen extends AbstractScreen {
                             clientSystem.send(new AccountLoginRequest(email, password));
 
                         } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
-                            AOAssetManager assetManager = AOGame.getGlobalAssetManager();
-
                             // Mostramos un mensaje de error.
                             Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
                             dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));

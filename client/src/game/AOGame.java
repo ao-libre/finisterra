@@ -25,6 +25,7 @@ public class AOGame extends Game implements AssetManagerHolder {
     private final AOAssetManager assetManager;
     private final ClientConfiguration clientConfiguration;
     private final ClientSystem clientSystem;
+    private final ScreenManager screenManager;
     private World world;
     private Sync fpsSync;
 
@@ -37,8 +38,9 @@ public class AOGame extends Game implements AssetManagerHolder {
         this.clientConfiguration = clientConfiguration;
         this.assetManager = new DefaultAOAssetManager(clientConfiguration);
         this.clientSystem = new ClientSystem();
-        clientSystem.setNotificationProcessor(new GameNotificationProcessor());
+        clientSystem.setNotificationProcessor(new GameNotificationProcessor()); //@fixme
         clientSystem.setResponseProcessor(new ClientResponseProcessor());
+        this.screenManager = new ScreenManager(this);
         this.world = new WorldConstructor(this, assetManager, clientSystem, clientConfiguration).getWorld();
     }
 
@@ -47,8 +49,7 @@ public class AOGame extends Game implements AssetManagerHolder {
     public void create() {
         Log.setLogger(new LogSystem());
         Log.debug("AOGame", "Creating AOGame...");
-        ScreenManager.getInstance().initialize(this);
-        toLoading();
+        screenManager.to(ScreenEnum.LOADING);
         this.fpsSync = new Sync();
         // @todo load platform-independent configuration (network, etc.)
     }
