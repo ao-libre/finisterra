@@ -4,7 +4,6 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -12,17 +11,17 @@ import com.esotericsoftware.minlog.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import entity.character.parts.Body;
-import entity.world.Dialog;
-import entity.world.Dialog.Kind;
-import game.handlers.DescriptorHandler;
-import game.handlers.FontsHandler;
+import component.entity.character.parts.Body;
+import component.entity.world.Dialog;
+import component.entity.world.Dialog.Kind;
+import game.systems.resources.DescriptorsSystem;
+import game.systems.render.BatchRenderingSystem;
 import game.utils.Colors;
+import game.utils.Pos2D;
 import game.utils.Skins;
-import position.Pos2D;
-import position.WorldPos;
+import org.jetbrains.annotations.NotNull;
+import component.position.WorldPos;
 import shared.model.map.Tile;
-import shared.util.Util;
 
 import java.util.concurrent.TimeUnit;
 
@@ -34,13 +33,12 @@ public class DialogRenderingSystem extends RenderingSystem {
     private static final int DISTANCE_TO_TOP = (int) (5 * SCALE);
     private static final float TIME = 0.3f;
     private static final float VELOCITY = DISTANCE_TO_TOP / TIME * SCALE;
-    private DescriptorHandler descriptorHandler;
     private final LoadingCache<Dialog, Table> labels = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
-            .build(new CacheLoader<Dialog, Table>() {
+            .build(new CacheLoader<>() {
                 @Override
-                public Table load(Dialog dialog) {
+                public Table load(@NotNull Dialog dialog) {
                     Table table = new Table(Skins.COMODORE_SKIN);
                     table.setRound(false);
                     String text = dialog.text;
@@ -49,14 +47,16 @@ public class DialogRenderingSystem extends RenderingSystem {
                     float prefWidth = label.getPrefWidth();
                     label.setWrap(true);
                     label.setAlignment(Align.center);
-                    Log.info("Width: " + prefWidth);
+                    Log.debug("Width: " + prefWidth);
                     table.add(label).width(Math.min(prefWidth + 20, MAX_LENGTH));
                     return table;
                 }
             });
+    private DescriptorsSystem descriptorsSystem;
+    private BatchRenderingSystem batchRenderingSystem;
 
-    public DialogRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(Dialog.class, Body.class, WorldPos.class), batch, CameraKind.WORLD);
+    public DialogRenderingSystem() {
+        super(Aspect.all(Dialog.class, Body.class, WorldPos.class));
     }
 
     private Color setColor(Dialog dialog, Label label) {
@@ -67,7 +67,7 @@ public class DialogRenderingSystem extends RenderingSystem {
 
     @Override
     protected void process(E player) {
-        Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
+        Pos2D playerPos = Pos2D.get(player).toScreen();
         Dialog dialog = player.getDialog();
         dialog.time -= world.getDelta();
         if (dialog.time > 0) {
@@ -85,7 +85,7 @@ public class DialogRenderingSystem extends RenderingSystem {
         final float x = playerPos.x + (Tile.TILE_PIXEL_WIDTH - label.getWidth()) / 2;
         float up = (Dialog.DEFAULT_TIME - dialog.time) * VELOCITY;
         up = Math.min(up, DISTANCE_TO_TOP);
-        float offsetY = descriptorHandler.getBody(player.getBody().index).getHeadOffsetY() * SCALE;
+        float offsetY = descriptorsSystem.getBody(player.getBody().index).getHeadOffsetY() * SCALE;
         final float y = playerPos.y - 55 * SCALE + offsetY - up + label.getHeight();
 
         label.setPosition(x, y);
@@ -94,7 +94,7 @@ public class DialogRenderingSystem extends RenderingSystem {
         if (dialog.time < ALPHA_TIME) {
             dialog.alpha = dialog.time / ALPHA_TIME;
         }
-        label.draw(getBatch(), dialog.alpha);
+        batchRenderingSystem.addTask(batch -> label.draw(batch, dialog.alpha));
         child.getStyle().fontColor = color;
     }
 }

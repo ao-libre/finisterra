@@ -11,7 +11,7 @@ import com.esotericsoftware.minlog.Log;
 import design.designers.DescriptorDesigner;
 import design.editors.fields.FieldEditor.FieldListener;
 import game.screens.WorldScreen;
-import graphics.AOAnimationActor;
+import design.graphic.AOAnimationActor;
 import model.descriptors.BodyDescriptor;
 import model.descriptors.Descriptor;
 import model.descriptors.FXDescriptor;
@@ -50,7 +50,7 @@ public abstract class DescriptorView<T extends Descriptor> extends View<T, Descr
                 copy.setOffsetY(original.getOffsetY());
             }
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            Log.error("DescriptorView","Error at copy()", e);
+            Log.error("DescriptorView", "Error at copy()", e);
         }
         return newDescriptor;
     }

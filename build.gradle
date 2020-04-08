@@ -1,5 +1,4 @@
 import org.gradle.internal.jvm.Jvm
-import org.gradle.internal.os.OperatingSystem
 
 buildscript {
     ext {
@@ -27,18 +26,18 @@ allprojects {
     apply plugin: "eclipse"
 	
     group = 'Finisterra'
-    version = '0.1.13'
+    version = '0.1.15'
 
     ext {
         appName = 'Finisterra'
 
         // Control global de las versiones de las dependencias.
-        gdxVersion = '1.9.11-SNAPSHOT'      //Graphic Engine Library.
+        gdxVersion = '1.9.10'               //Graphic Engine Library.
         kryoVersion = '4.0.2'               //Object Serialization API, override dependency of KryoNet.
-        artemisVersion = '2.2.0'            //Artemis EntityComponentSystem & Network manager (TCP/UDP)
+        artemisVersion = '2.3.0'            //Artemis EntityComponentSystem & Network manager (TCP/UDP)
         artemisContribVersion = '2.4.0'     //Kinda the same but developed by someone else.
         gdxAIVersion = '1.8.2'              //Artificial Intelligence
-	    tinyfdVersion = '3.2.3'
+	    tinyfdVersion = '3.2.1'
 	    jupiterVersion = '5.5.2'            //Test map caching.
 	    guavaVersion = '28.1-jre'           //Collection types used for map information.
 	    ini4jVersion = '0.5.4'
@@ -61,8 +60,8 @@ subprojects {
     apply plugin: "java-library"
 
     // Establecemos la version de Java a usar.
-    sourceCompatibility = JavaVersion.VERSION_13
-    targetCompatibility = JavaVersion.VERSION_13
+    sourceCompatibility = JavaVersion.VERSION_14
+    targetCompatibility = JavaVersion.VERSION_14
 
     // Configuraciones del compilador Java
     tasks.withType(JavaCompile) {
@@ -96,50 +95,12 @@ configure(subprojects.findAll { it.name == 'server' || it.name == 'desktop' }) {
 	
     ext {
         jdkPath = Jvm.current().getJavaHome().path
-        JPackagePath = "${rootDir}/JPackage"
-        prebuiltJRE = "${rootDir}/JPackage/bundled-JRE"
-        JPackageCompressed = OperatingSystem.current().isWindows() ? "jpackage.zip" : "jpackage.tar.gz"
-    }
-
-    // Downloads the JPackage binary and decompresses it.
-    task downloadJPackage(type: Download) {
-
-        switch(OperatingSystem.current()) {
-            case OperatingSystem.MAC_OS:
-                src 'https://download.java.net/java/early_access/jdk14/27/GPL/openjdk-14-ea+27_osx-x64_bin.tar.gz'
-                break;
-            case OperatingSystem.WINDOWS:
-                src 'https://download.java.net/java/early_access/jdk14/27/GPL/openjdk-14-ea+27_windows-x64_bin.zip'
-                break;
-            case OperatingSystem.LINUX:
-                src 'https://download.java.net/java/early_access/jdk14/27/GPL/openjdk-14-ea+27_linux-x64_bin.tar.gz'
-                break;
-        }
-
-        dest(file(JPackagePath.concat("/${JPackageCompressed}")))
-        overwrite(false)
-
-        // We put it in a doLast{} block because otherwise it (the task) auto-executes.
-        doLast {
-            if (!file(JPackagePath.concat("/jdk-14")).exists()) {
-                copy {
-
-                    if (OperatingSystem.current().isWindows()) {
-                        from zipTree("${JPackagePath}/${JPackageCompressed}")
-                    } else {
-                        from tarTree("${JPackagePath}/${JPackageCompressed}")
-                    }
-                    
-                    into JPackagePath
-
-                }
-            }
-        }
-
+        JPackagePath = jdkPath.concat("/bin/jpackage")
+        prebuiltJRE = "${buildDir}/bundled-JRE"
     }
 
     // creates a replacement runtime via jlink command (much smaller than JPackage. Up to 38MB)
-    task jlink(type: Exec, dependsOn: downloadJPackage) {
+    task jlink(type: Exec) {
 
         // Overwrite previous bundled jre.
         if (file(prebuiltJRE).exists()) {
@@ -167,4 +128,5 @@ configure(subprojects.findAll { it.name == 'server' || it.name == 'desktop' }) {
         }
 
     }
+
 }

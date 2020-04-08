@@ -3,26 +3,27 @@ package server.systems.combat;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
-import entity.character.info.Inventory;
-import entity.character.status.Health;
-import entity.character.status.Stamina;
-import entity.world.CombatMessage;
-import graphics.Effect;
-import physics.AttackAnimation;
-import position.WorldPos;
+import component.console.ConsoleMessage;
+import component.entity.character.info.Bag;
+import component.entity.character.status.Health;
+import component.entity.character.status.Stamina;
+import component.entity.world.CombatMessage;
+import component.physics.AttackAnimation;
+import component.position.WorldPos;
 import server.database.model.modifiers.Modifiers;
 import server.systems.CharacterTrainingSystem;
+import server.systems.entity.EffectEntitySystem;
 import server.systems.manager.MapManager;
 import server.systems.manager.ObjectManager;
 import server.systems.manager.WorldManager;
+import server.systems.network.MessageSystem;
+import server.systems.network.UpdateTo;
 import shared.interfaces.CharClass;
 import shared.interfaces.FXs;
 import shared.network.combat.AttackRequest;
-import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
-import shared.network.sound.SoundNotification;
 import shared.objects.types.*;
+import shared.util.EntityUpdateBuilder;
 import shared.util.Messages;
 
 import java.util.*;
@@ -31,35 +32,35 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.artemis.E.E;
 
 
-
-@Wire
+@Wire(injectInherited = true)
 public class RangedCombatSystem extends AbstractCombatSystem {
 
-    private Optional<Integer> target;
     private static final int TIME_TO_MOVE_1_TILE = 200;
-
+    private Optional<Integer> target;
     // Injected Systems
     private MapManager mapManager;
     private WorldManager worldManager;
     private ObjectManager objectManager;
     private CharacterTrainingSystem characterTrainingSystem;
+    private MessageSystem messageSystem;
+    private EffectEntitySystem effectEntitySystem;
 
     public void shoot(int userId, AttackRequest attackRequest) {
         final WorldPos targetPos = attackRequest.getWorldPos();
         final long timestamp = attackRequest.getTimestamp();
         target = getTargetx(userId, targetPos, timestamp);
 
-        if (!target.isPresent ( )) {
-            energyUse ( userId );
-            worldManager.notifyUpdate ( userId, EntityUpdateBuilder.of ( userId ).withComponents ( new AttackAnimation ( ) ).build ( ) );
-            final ConsoleMessage combat = ConsoleMessage.combat(Messages.ATTACK_FAILED);
-            worldManager.sendEntityUpdate(userId, combat);
-            notify(userId, CombatMessage.physic( "Fallas!"));
-        }else
-        if (canAttack ( userId, target )) {
-            energyUse ( userId );
-            worldManager.notifyUpdate ( userId, EntityUpdateBuilder.of ( userId ).withComponents ( new AttackAnimation ( ) ).build ( ) );
-            doHit ( userId, target.get ( ), damageCalculation ( userId, target.get ( ) ) );
+        EntityUpdate update = EntityUpdateBuilder.of(userId).withComponents(new AttackAnimation()).build();
+        entityUpdateSystem.add(update, UpdateTo.ALL);
+
+        if (!target.isPresent()) {
+            energyUse(userId);
+            final ConsoleMessage combat = ConsoleMessage.combat(Messages.ATTACK_FAILED.name());
+            messageSystem.add(userId, combat);
+            notify(userId, CombatMessage.physic("Fallas!"));
+        } else if (canAttack(userId, target)) {
+            energyUse(userId);
+            doHit(userId, target.get(), damageCalculation(userId, target.get()));
         }
     }
 
@@ -68,8 +69,9 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         Stamina stamina = e.getStamina();
         stamina.min = Math.max(0, stamina.min - stamina.max * STAMINA_REQUIRED_PERCENT / 120);
         EntityUpdate update = EntityUpdateBuilder.of(userId).withComponents(stamina).build();
-        getWorld().getSystem(WorldManager.class).sendEntityUpdate(userId, update);
-        getWorldManager ( ).notifyUpdate ( userId, new SoundNotification ( 68 ) );
+
+        entityUpdateSystem.add(update, UpdateTo.ENTITY);
+        soundEntitySystem.add(userId, 68);
     }
 
 
@@ -86,10 +88,12 @@ public class RangedCombatSystem extends AbstractCombatSystem {
                 .map(E::id)
                 .findFirst();
     }
+
     @Override
     protected void failed(int entityId, Optional<Integer> targetId) {
         notifyCombat(targetId.orElse(entityId), Messages.ATTACK_FAILED);
     }
+
     private boolean isValidTarget(WorldPos worldPos, long timestamp, E entity) {
         return entity.getWorldPos().equals(worldPos) || footprintOf(entity.id(), worldPos, timestamp);
     }
@@ -100,6 +104,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
                 .stream()
                 .anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()) && (timestamp - E(footprint).getFootprint().timestamp <= TIME_TO_MOVE_1_TILE));
     }
+
     @Override
     public boolean canAttack(int entityId, Optional<Integer> target) {
         final E userEntity = E(entityId);
@@ -111,8 +116,8 @@ public class RangedCombatSystem extends AbstractCombatSystem {
             notifyCombat(entityId, Messages.DEAD_CANT_ATTACK);
             return false;
         }
-        if (userEntity.getName().text.equals ( getName ( target.get () ) )){
-            notifyCombat ( entityId, Messages.CANT_ATTACK_YOURSELF);
+        if (userEntity.getName().text.equals(getName(target.get()))) {
+            notifyCombat(entityId, Messages.CANT_ATTACK_YOURSELF);
             return false;
         }
 
@@ -138,11 +143,11 @@ public class RangedCombatSystem extends AbstractCombatSystem {
 
             // TODO attack power can be bow
             int evasionPower = evasionPower(targetId) + (E(targetId).hasShield() ? shieldEvasionPower(targetId) : 0);
-            double prob = Math.max(10, Math.min(90, 50 + (projectileAttackPower (entityId) - evasionPower) * 0.4));
+            double prob = Math.max(10, Math.min(90, 50 + (projectileAttackPower(entityId) - evasionPower) * 0.4));
             if (ThreadLocalRandom.current().nextInt(101) <= prob) {
                 return true;
             } else {
-                energyUse ( entityId );
+                energyUse(entityId);
                 int skills = 200;
                 prob = Math.max(10, Math.min(90, 100 * 100 / skills));
 
@@ -151,7 +156,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
                     notifyCombat(targetId, Messages.SHIELD_DEFENSE);
                     notifyCombat(entityId, Messages.DEFENDED_WITH_SHIELD, getName(targetId));
                     // TODO shield animation
-                    worldManager.notifyUpdate(targetId, new SoundNotification (37));
+                    soundEntitySystem.add(targetId, 37);
                 } else {
                     notifyCombat(entityId, Messages.ATTACK_FAILED);
                     notifyCombat(targetId, Messages.ATTACKED_AND_FAILED, getName(entityId));
@@ -161,11 +166,12 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         }
         return false;
     }
+
     @Override
     public int damageCalculation(int userId, int entityId) {
         E entity = E(userId);
         final Optional<Obj> obj = entity.hasWeapon() ? objectManager.getObject(entity.getWeapon().index) : Optional.empty();
-        final Optional< WeaponObj > weapon =
+        final Optional<WeaponObj> weapon =
                 obj.isPresent() && Type.WEAPON.equals(obj.get().getType()) ? Optional.of((WeaponObj) obj.get()) : Optional.empty();
 
         int baseDamage = getBaseDamage(entity, weapon);
@@ -177,7 +183,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     }
 
     @Override
-    Optional< Integer > getTarget(int userId) {
+    Optional<Integer> getTarget(int userId) {
         return target;
     }
 
@@ -220,8 +226,8 @@ public class RangedCombatSystem extends AbstractCombatSystem {
             Log.info("Modifier: " + modifier);
             Optional<ArrowObj> arrow = getarrow(entity);
             int arrowDamage =
-                        arrow.map( arrowObj -> random.nextInt( arrowObj.getMinHit(), arrowObj.getMaxHit() + 1 ) )
-                                .orElse( 0 );
+                    arrow.map(arrowObj -> random.nextInt(arrowObj.getMinHit(), arrowObj.getMaxHit() + 1))
+                            .orElse(0);
             Log.info("Arrow Damage: " + arrowDamage);
             int weaponDamage =
                     weapon.map(weaponObj -> random.nextInt(weaponObj.getMinHit(), weaponObj.getMaxHit() + 1))
@@ -239,16 +245,17 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         }
         return baseDamage;
     }
+
     //obtiene el tipo de flecha
-    private Optional< ArrowObj> getarrow(E entity) {
-        Inventory.Item[] items = entity.getInventory ().items;
+    private Optional<ArrowObj> getarrow(E entity) {
+        Bag.Item[] items = entity.getBag().items;
         Optional<ArrowObj> arrowObj = Optional.empty();
-        for (int i=0; i < items.length; i++ ){
+        for (int i = 0; i < items.length; i++) {
             if (items[i] != null) {
                 if (items[i].equipped) {
-                    Obj obj = objectManager.getObject ( items[i].objId ).get ( );
-                    if (obj.getType ( ).equals ( Type.ARROW )) {
-                        arrowObj = Optional.of( (ArrowObj) objectManager.getObject( items[i].objId ).get() );
+                    Obj obj = objectManager.getObject(items[i].objId).get();
+                    if (obj.getType().equals(Type.ARROW)) {
+                        arrowObj = Optional.of((ArrowObj) objectManager.getObject(items[i].objId).get());
                     }
                 }
             }
@@ -263,7 +270,8 @@ public class RangedCombatSystem extends AbstractCombatSystem {
                         doCriticAttack(userId, entityId, damage) :
                         doNormalAttack(userId, entityId, damage);
 
-        worldManager.notifyUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(new AttackAnimation()).build());
+        EntityUpdate update = EntityUpdateBuilder.of(userId).withComponents(new AttackAnimation()).build();
+        entityUpdateSystem.add(update, UpdateTo.ALL);
         notify(entityId, CombatMessage.physic(" " + damage));
 
         final E target = E(entityId);
@@ -274,14 +282,14 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         sendFX(entityId);
         if (health.min > 0) {
             update(entityId);
-            getWorldManager ( ).notifyUpdate ( userId, new SoundNotification ( 10 ) );
+            soundEntitySystem.add(userId, 10);
         } else {
             // TODO die
             characterTrainingSystem.takeGold(userId, entityId);
             notifyCombat(userId, Messages.KILL, getName(entityId));
             notifyCombat(entityId, Messages.KILLED, getName(userId));
             worldManager.entityDie(entityId);
-            getWorldManager ( ).notifyUpdate ( userId, new SoundNotification ( 126 ) );
+            soundEntitySystem.add(userId, 126);
         }
     }
 
@@ -291,8 +299,8 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     }
 
     private void notifyCombat(int userId, Messages message, String... messageParams) {
-        final ConsoleMessage combat = ConsoleMessage.combat(message, messageParams);
-        worldManager.sendEntityUpdate(userId, combat);
+        final ConsoleMessage combat = ConsoleMessage.combat(message.name(), messageParams);
+        messageSystem.add(userId, combat);
     }
 
     private int doNormalAttack(int userId, int entityId, int damage) {
@@ -315,36 +323,31 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     /**
      * Send combat notification to user and near by entities
      *
-     * @param victim        entity id
+     * @param victim        component.entity id
      * @param combatMessage message
      */
     private void notify(int victim, CombatMessage combatMessage) {
-        worldManager.notifyUpdate(victim, EntityUpdateBuilder.of(victim).withComponents(combatMessage).build());
+        EntityUpdate update = EntityUpdateBuilder.of(victim).withComponents(combatMessage).build();
+        entityUpdateSystem.add(update, UpdateTo.ALL);
     }
 
     /**
-     * Send an update to entity with current health
+     * Send an update to component.entity with current health
      *
-     * @param victim entity id
+     * @param victim component.entity id
      */
     private void update(int victim) {
         E v = E(victim);
         EntityUpdate update = EntityUpdateBuilder.of(victim).withComponents(v.getHealth()).build();
-        worldManager.sendEntityUpdate(victim, update);
+        entityUpdateSystem.add(update, UpdateTo.ENTITY);
     }
 
     private void sendFX(int victim) {
-        E v = E(victim);
-        int fxE = world.create();
-        EntityUpdateBuilder fxUpdate = EntityUpdateBuilder.of(fxE);
-        Effect effect = new Effect.EffectBuilder().attachTo(victim).withLoops(1).withFX( FXs.FX_BLOOD).build();
-        fxUpdate.withComponents(effect);
-        if (v.hasWorldPos()) {
-            WorldPos worldPos = v.getWorldPos();
-            fxUpdate.withComponents(worldPos);
-        }
-        worldManager.notifyUpdate(victim, fxUpdate.build());
-        world.delete(fxE);
+        effectEntitySystem.addFX(victim, FXs.FX_BLOOD, 1);
+    }
+
+    private String getName(int userId) {
+        return E(userId).getName().text;
     }
 
     private enum AttackPlace {
@@ -358,18 +361,5 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         public static RangedCombatSystem.AttackPlace getRandom() {
             return VALUES.get(RANDOM.nextInt(SIZE));
         }
-    }
-
-    private String getName(int userId) {
-        return E(userId).getName().text;
-    }
-
-    private WorldManager getWorldManager() {
-        return world.getSystem(WorldManager.class);
-    }
-
-    @Override
-    protected void processSystem() {
-
     }
 }

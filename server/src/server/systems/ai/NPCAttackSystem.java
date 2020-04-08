@@ -2,24 +2,31 @@ package server.systems.ai;
 
 import com.artemis.Aspect;
 import com.artemis.E;
-import entity.character.states.Heading;
-import entity.character.status.Hit;
-import entity.npc.NPC;
-import position.WorldPos;
+import com.artemis.annotations.Wire;
+import component.entity.character.states.Heading;
+import component.entity.character.status.Hit;
+import component.entity.npc.NPC;
+import component.position.WorldPos;
 import server.systems.IntervalFluidIteratingSystem;
-import server.systems.combat.CombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.manager.MapManager;
-import server.systems.manager.WorldManager;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import server.utils.WorldUtils;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.network.notifications.EntityUpdate;
+import shared.util.EntityUpdateBuilder;
 
 import java.util.Optional;
 
 import static com.artemis.E.E;
 import static server.utils.WorldUtils.WorldUtils;
 
+@Wire
 public class NPCAttackSystem extends IntervalFluidIteratingSystem {
+
+    private MapManager mapManager;
+    private PhysicalCombatSystem combatSystem;
+    private EntityUpdateSystem entityUpdateSystem;
 
     // should interval be per npc?
     public NPCAttackSystem(float interval) {
@@ -28,9 +35,7 @@ public class NPCAttackSystem extends IntervalFluidIteratingSystem {
 
     @Override
     protected void process(E e) {
-        CombatSystem system = world.getSystem(PhysicalCombatSystem.class);
-        world
-                .getSystem(MapManager.class)
+        mapManager
                 .getNearEntities(e.id())
                 .stream()
                 .filter(e2 -> E(e2) != null)
@@ -38,7 +43,7 @@ public class NPCAttackSystem extends IntervalFluidIteratingSystem {
                 .filter(e2 -> E(e2).hasWorldPos())
                 .filter(e2 -> inRange(e.id(), e2))
                 .findFirst()
-                .ifPresent(target -> system.entityAttack(e.id(), Optional.of(target)));
+                .ifPresent(target -> combatSystem.entityAttack(e.id(), Optional.of(target)));
 
     }
 
@@ -53,7 +58,8 @@ public class NPCAttackSystem extends IntervalFluidIteratingSystem {
             if (!npc.isImmobile() && !facingPos.equals(targetPos)) {
                 // move heading
                 npc.headingCurrent(worldUtils.getHeading(npcPos, targetPos));
-                world.getSystem(WorldManager.class).notifyUpdate(e, EntityUpdateBuilder.of(e).withComponents(npc.getHeading()).build());
+                EntityUpdate update = EntityUpdateBuilder.of(e).withComponents(npc.getHeading()).build();
+                entityUpdateSystem.add(update, UpdateTo.ALL);
                 facingPos = targetPos;
             }
         }

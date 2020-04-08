@@ -1,6 +1,5 @@
 package server.core;
 
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
@@ -17,6 +16,7 @@ public class ServerStrategy extends KryonetMarshalStrategy {
         this.tcpPort = tcpPort;
         this.udpPort = udpPort;
         endpoint = new Server();
+        Log.set(Log.LEVEL_DEBUG);
     }
 
     @Override

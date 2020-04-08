@@ -1,24 +1,26 @@
 package server.systems.manager;
 
-import camera.Focused;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import entity.character.states.CanWrite;
-import entity.npc.OriginPos;
-import physics.AOPhysics;
-import position.WorldPos;
+import component.camera.Focused;
+import component.entity.character.states.CanWrite;
+import component.entity.npc.OriginPos;
+import component.physics.AOPhysics;
+import component.position.WorldPos;
 import server.systems.EntityFactorySystem;
 import server.systems.ServerSystem;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import shared.model.lobby.Player;
 import shared.model.npcs.NPC;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
+import shared.util.EntityUpdateBuilder;
 
 import java.util.List;
 
 import static com.artemis.E.E;
-import static server.utils.WorldUtils.WorldUtils;
 
 @Wire
 public class WorldManager extends DefaultManager {
@@ -28,6 +30,8 @@ public class WorldManager extends DefaultManager {
     private SpellManager spellManager;
     private ObjectManager objectManager;
     private EntityFactorySystem entityFactorySystem;
+    private EntityUpdateSystem entityUpdateSystem;
+    private ComponentManager componentManager;
 
     public void registerEntity(int id) {
         mapManager.updateEntity(id);
@@ -96,8 +100,10 @@ public class WorldManager extends DefaultManager {
                 e.getMana().min = e.getMana().max;
                 resetUpdate.withComponents(e.getMana());
             }
-            sendEntityUpdate(entityId, resetUpdate.build());
-            notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(e.getWorldPos()).build());
+            entityUpdateSystem.add(resetUpdate.build(), UpdateTo.ENTITY);
+
+            EntityUpdate update = EntityUpdateBuilder.of(entityId).withComponents(e.getWorldPos()).build();
+            entityUpdateSystem.add(update, UpdateTo.ALL);
         }
     }
 
@@ -107,11 +113,11 @@ public class WorldManager extends DefaultManager {
 
     public void login(int connectionId, Player player) {
         final int entity = entityFactorySystem.createPlayer(player.getPlayerName(), player.getHero(), player.getTeam());
-        List<Component> components = WorldUtils(getWorld()).getComponents(getWorld().getEntity(entity));
+        List<Component> components = componentManager.getComponents(entity, ComponentManager.Visibility.CLIENT_ALL);
         components.add(new Focused());
         components.add(new AOPhysics());
         components.add(new CanWrite());
-        networkManager.sendTo(connectionId, EntityUpdateBuilder.of(entity).withComponents(components.toArray(new Component[0])).build());
         registerEntity(connectionId, entity);
+        entityUpdateSystem.add(EntityUpdateBuilder.of(entity).withComponents(components.toArray(new Component[0])).build(), UpdateTo.ENTITY);
     }
 }

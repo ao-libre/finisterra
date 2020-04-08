@@ -4,7 +4,6 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -12,15 +11,15 @@ import com.esotericsoftware.minlog.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import entity.character.Character;
-import entity.character.info.Name;
+import component.entity.character.info.Name;
+import component.position.WorldPos;
+import game.systems.render.BatchRenderingSystem;
 import game.utils.Colors;
+import game.utils.Pos2D;
 import game.utils.Skins;
-import position.Pos2D;
-import position.WorldPos;
+import org.jetbrains.annotations.NotNull;
 import shared.interfaces.Hero;
 import shared.model.map.Tile;
-import shared.util.Util;
 
 import java.util.concurrent.TimeUnit;
 
@@ -29,12 +28,13 @@ import static com.artemis.E.E;
 @Wire(injectInherited = true)
 public class NameRenderingSystem extends RenderingSystem {
 
+    private BatchRenderingSystem batchRenderingSystem;
     private final LoadingCache<Integer, Table> names = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
             .build(new CacheLoader<Integer, Table>() {
                 @Override
-                public Table load(Integer integer) {
+                public Table load(@NotNull Integer integer) {
                     Table table = new Table(Skins.COMODORE_SKIN);
                     table.setRound(false);
                     E e = E(integer);
@@ -45,7 +45,7 @@ public class NameRenderingSystem extends RenderingSystem {
                     float prefWidth = label.getPrefWidth();
                     label.setWrap(true);
                     label.setAlignment(Align.center);
-                    Log.info("Width: " + prefWidth);
+                    Log.debug("Width: " + prefWidth);
                     table.add(label).width(Math.min(prefWidth + 20, 200));
                     return table;
                 }
@@ -53,13 +53,13 @@ public class NameRenderingSystem extends RenderingSystem {
 
             });
 
-    public NameRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(Character.class, WorldPos.class, Name.class), batch, CameraKind.WORLD);
+    public NameRenderingSystem() {
+        super(Aspect.all(WorldPos.class, Name.class));
     }
 
     @Override
     protected void process(E player) {
-        Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
+        Pos2D playerPos = Pos2D.get(player).toScreen();
 
         float nameY = drawName(player, playerPos);
         drawClanName(player, playerPos, nameY);
@@ -72,10 +72,13 @@ public class NameRenderingSystem extends RenderingSystem {
         final float fontY = screenPos.y + 10;
         Label label = (Label) nameLabel.getChild(0);
         label.getStyle().font.setUseIntegerPositions(false);
-        Color color = setColor(player, label);
-        nameLabel.setPosition(fontX, fontY);
-        nameLabel.draw(getBatch(), 1);
-        label.getStyle().fontColor = color;
+        batchRenderingSystem.addTask(batch -> {
+                    Color color = setColor(player, label);
+                    nameLabel.setPosition(fontX, fontY);
+                    nameLabel.draw(batch, 1);
+                    label.getStyle().fontColor = color;
+                }
+        );
         return fontY;
     }
 
@@ -87,13 +90,11 @@ public class NameRenderingSystem extends RenderingSystem {
         } else if (player.hasCharHero()) {
             clanOrHero = Hero.values()[player.getCharHero().heroId].name();
         }
-        if (clanOrHero == null) {
-        }
     }
 
     private Color setColor(E player, Label label) {
         Color previous = new Color(label.getStyle().fontColor);
-        label.getStyle().fontColor = player.hasCriminal() ? Colors.CRIMINAL : Colors.CITIZEN;
+        label.getStyle().fontColor = player.hasCriminal() ? Colors.CRIMINAL : player.hasNPC() ? Colors.GREY : Colors.CITIZEN;
         return previous;
     }
 

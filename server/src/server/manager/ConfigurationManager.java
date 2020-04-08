@@ -18,17 +18,25 @@ public class ConfigurationManager {
     private ServerConfiguration serverConfiguration;
     private CharConfiguration charConfiguration;
 
+    private ConfigurationManager() {
+        loadServerConfig();
+        loadCharsConfig();
+    }
+
+    public static ConfigurationManager getInstance() {
+        if (manager == null) {
+            manager = new ConfigurationManager();
+        }
+
+        return manager;
+    }
+
     public ServerConfiguration getServerConfig() {
         return serverConfiguration;
     }
 
     public CharConfiguration getCharConfig() {
         return charConfiguration;
-    }
-
-    private ConfigurationManager() {
-        loadServerConfig();
-        loadCharsConfig();
     }
 
     private void loadServerConfig() {
@@ -56,13 +64,5 @@ public class ConfigurationManager {
             charConfiguration.loadDefaultValues();
             charConfiguration.save();
         }
-    }
-
-    public static ConfigurationManager getInstance() {
-        if (manager == null) {
-            manager = new ConfigurationManager();
-        }
-
-        return manager;
     }
 }

@@ -1,7 +1,7 @@
 package shared.network.combat;
 
 import com.badlogic.gdx.utils.TimeUtils;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.model.AttackType;
 import shared.network.interfaces.IRequest;
 import shared.network.interfaces.IRequestProcessor;
@@ -14,6 +14,7 @@ public class AttackRequest implements IRequest {
 
     public AttackRequest() {
     }
+
     public AttackRequest(AttackType type, WorldPos worldPos, long timestamp) {
         this.type = type;
         this.worldPos = worldPos;

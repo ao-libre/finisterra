@@ -5,8 +5,8 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.utils.TimeUtils;
-import entity.world.Footprint;
-import position.WorldPos;
+import component.entity.world.Footprint;
+import component.position.WorldPos;
 import server.systems.manager.MapManager;
 
 import java.util.Set;

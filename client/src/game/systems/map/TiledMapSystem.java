@@ -16,12 +16,12 @@
  *******************************************************************************/
 package game.systems.map;
 
-import camera.Focused;
+import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
-import game.handlers.MapHandler;
-import position.WorldPos;
+import game.systems.resources.MapSystem;
+import component.position.WorldPos;
 import shared.model.map.Map;
 import shared.util.MapHelper;
 
@@ -50,21 +50,21 @@ public class TiledMapSystem extends IteratingSystem {
      */
     private void changeMap(int number) {
         this.mapNumber = number;
-        this.map = MapHandler.get(number);
+        this.map = MapSystem.get(number);
 
         new Thread(() -> {
-            Map left = MapHandler.get(map.getNeighbour(MapHelper.Dir.LEFT));
+            Map left = MapSystem.get(map.getNeighbour(MapHelper.Dir.LEFT));
             if (left != null) {
-                MapHandler.get(left.getNeighbour(MapHelper.Dir.UP));
-                MapHandler.get(left.getNeighbour(MapHelper.Dir.DOWN));
+                MapSystem.get(left.getNeighbour(MapHelper.Dir.UP));
+                MapSystem.get(left.getNeighbour(MapHelper.Dir.DOWN));
             }
-            Map right = MapHandler.get(map.getNeighbour(MapHelper.Dir.RIGHT));
+            Map right = MapSystem.get(map.getNeighbour(MapHelper.Dir.RIGHT));
             if (right != null) {
-                MapHandler.get(right.getNeighbour(MapHelper.Dir.UP));
-                MapHandler.get(right.getNeighbour(MapHelper.Dir.DOWN));
+                MapSystem.get(right.getNeighbour(MapHelper.Dir.UP));
+                MapSystem.get(right.getNeighbour(MapHelper.Dir.DOWN));
             }
-            MapHandler.get(map.getNeighbour(MapHelper.Dir.UP));
-            MapHandler.get(map.getNeighbour(MapHelper.Dir.DOWN));
+            MapSystem.get(map.getNeighbour(MapHelper.Dir.UP));
+            MapSystem.get(map.getNeighbour(MapHelper.Dir.DOWN));
 
         });
     }

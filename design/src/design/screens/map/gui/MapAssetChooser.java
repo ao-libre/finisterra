@@ -12,10 +12,10 @@ import static launcher.DesignCenter.SKIN;
 public class MapAssetChooser extends Window implements MapPalette.SelectionListener {
 
     private final ClickListener mouseListener;
+    private final WorldPosition tileExit = new WorldPosition();
     private int image;
     private int animation;
     private int tileset;
-    private final WorldPosition tileExit = new WorldPosition();
 
     public MapAssetChooser() {
         super("Chooser", SKIN, "main");

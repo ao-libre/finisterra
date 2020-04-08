@@ -3,41 +3,39 @@ package game.systems.render.world;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import entity.character.states.Immobile;
-import game.screens.GameScreen;
-import position.Pos2D;
-import position.WorldPos;
-import shared.util.Util;
-
-import static com.artemis.E.E;
+import component.entity.character.states.Immobile;
+import game.systems.PlayerSystem;
+import component.position.WorldPos;
 
 @Wire(injectInherited = true)
 public class StateRenderingSystem extends RenderingSystem {
 
-    public StateRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(WorldPos.class).one(Immobile.class), batch, CameraKind.WORLD);
+    private PlayerSystem playerSystem;
+
+    public StateRenderingSystem() {
+        super(Aspect.all(WorldPos.class).one(Immobile.class));
     }
 
     private void drawMessage(int entityId) {
-        // search position
-        Pos2D playerPos = Util.toScreen(E(entityId).worldPosPos2D());
+        // search component.position
         // draw [P] in cyan color
         // TODO
     }
 
     @Override
     protected void process(E e) {
-        int entityId = e.id();
-        int currentPlayer = GameScreen.getPlayer();
-        if (currentPlayer == entityId) {
-            drawMessage(entityId);
-        } else if (e.hasClan() && E(currentPlayer).hasClan()) {
-            String entityClan = E(entityId).getClan().name;
-            String playerClan = E(currentPlayer).getClan().name;
-            if (entityClan.equals(playerClan)) {
-                drawMessage(entityId);
-            }
-        }
+        // TODO move to server
+//        int entityId = e.id();
+//        E playerEntity = playerSystem.get();
+//        int currentPlayer = playerEntity.id();
+//        if (currentPlayer == entityId) {
+//            drawMessage(entityId);
+//        } else if (e.hasClan() && playerEntity.hasClan()) {
+//            String entityClan = E(entityId).getClan().name;
+//            String playerClan = playerEntity.getClan().name;
+//            if (entityClan.equals(playerClan)) {
+//                drawMessage(entityId);
+//            }
+//        }
     }
 }

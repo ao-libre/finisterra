@@ -3,24 +3,26 @@ package server.systems.combat;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
-import entity.character.states.Heading;
-import entity.character.status.Health;
-import entity.world.CombatMessage;
-import graphics.Effect;
-import physics.AttackAnimation;
-import position.WorldPos;
+import component.console.ConsoleMessage;
+import component.entity.character.states.Heading;
+import component.entity.character.status.Health;
+import component.entity.world.CombatMessage;
+import component.physics.AttackAnimation;
+import component.position.WorldPos;
 import server.database.model.modifiers.Modifiers;
 import server.systems.CharacterTrainingSystem;
+import server.systems.entity.EffectEntitySystem;
+import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.MapManager;
 import server.systems.manager.ObjectManager;
 import server.systems.manager.WorldManager;
+import server.systems.network.MessageSystem;
+import server.systems.network.UpdateTo;
 import shared.interfaces.CharClass;
 import shared.interfaces.FXs;
-import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
-import shared.network.sound.SoundNotification;
 import shared.objects.types.*;
+import shared.util.EntityUpdateBuilder;
 import shared.util.Messages;
 
 import java.util.*;
@@ -29,7 +31,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.artemis.E.E;
 import static server.utils.WorldUtils.WorldUtils;
 
-@Wire
+@Wire(injectInherited = true)
 public class PhysicalCombatSystem extends AbstractCombatSystem {
 
     private static final String MISS = "Fallas!";
@@ -41,6 +43,9 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     private ObjectManager objectManager;
     private WorldManager worldManager;
     private CharacterTrainingSystem characterTrainingSystem;
+    private MessageSystem messageSystem;
+    private SoundEntitySystem soundEntitySystem;
+    private EffectEntitySystem effectEntitySystem;
 
     @Override
     protected void failed(int entityId, Optional<Integer> targetId) {
@@ -98,11 +103,10 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
                     notifyCombat(targetId, Messages.SHIELD_DEFENSE);
                     notifyCombat(entityId, Messages.DEFENDED_WITH_SHIELD, getName(targetId));
                     // TODO shield animation
-                    worldManager.notifyUpdate(targetId, new SoundNotification(37));
+                    soundEntitySystem.add(targetId, 37);
                 } else {
                     notifyCombat(entityId, Messages.ATTACK_FAILED);
                     notifyCombat(targetId, Messages.ATTACKED_AND_FAILED, getName(entityId));
-
                 }
             }
         }
@@ -222,7 +226,9 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
                                 doCriticAttack(userId, entityId, damage) :
                                 doNormalAttack(userId, entityId, damage);
 
-        worldManager.notifyUpdate(userId, EntityUpdateBuilder.of(userId).withComponents(new AttackAnimation()).build());
+        EntityUpdate update = EntityUpdateBuilder.of(userId).withComponents(new AttackAnimation()).build();
+        entityUpdateSystem.add(update, UpdateTo.ALL);
+
         notify(entityId, userStab ? CombatMessage.stab("" + damage) : CombatMessage.physic("" + damage));
 
         final E target = E(entityId);
@@ -233,20 +239,20 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         sendFX(entityId);
         if (health.min > 0) {
             update(entityId);
-            getWorldManager ( ).notifyUpdate ( userId, new SoundNotification ( 10 ) );
+            soundEntitySystem.add(userId, 10);
         } else {
             // TODO die
             characterTrainingSystem.takeGold(userId, entityId);
             notifyCombat(userId, Messages.KILL, getName(entityId));
             notifyCombat(entityId, Messages.KILLED, getName(userId));
             worldManager.entityDie(entityId);
-            getWorldManager ( ).notifyUpdate ( userId, new SoundNotification ( 126 ) );
+            soundEntitySystem.add(userId, 126);
         }
     }
 
     private void notifyCombat(int userId, Messages message, String... messageParams) {
-        final ConsoleMessage combat = ConsoleMessage.combat(message, messageParams);
-        worldManager.sendEntityUpdate(userId, combat);
+        final ConsoleMessage combat = ConsoleMessage.combat(message.name(), messageParams);
+        messageSystem.add(userId, combat);
     }
 
     private int doNormalAttack(int userId, int entityId, int damage) {
@@ -326,36 +332,27 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     /**
      * Send combat notification to user and near by entities
      *
-     * @param victim        entity id
+     * @param victim        component.entity id
      * @param combatMessage message
      */
     private void notify(int victim, CombatMessage combatMessage) {
-        worldManager.notifyUpdate(victim, EntityUpdateBuilder.of(victim).withComponents(combatMessage).build());
+        EntityUpdate update = EntityUpdateBuilder.of(victim).withComponents(combatMessage).build();
+        entityUpdateSystem.add(update, UpdateTo.ALL);
     }
 
     /**
-     * Send an update to entity with current health
+     * Send an update to component.entity with current health
      *
-     * @param victim entity id
+     * @param victim component.entity id
      */
     private void update(int victim) {
         E v = E(victim);
         EntityUpdate update = EntityUpdateBuilder.of(victim).withComponents(v.getHealth()).build();
-        worldManager.sendEntityUpdate(victim, update);
+        entityUpdateSystem.add(update, UpdateTo.ENTITY);
     }
 
     private void sendFX(int victim) {
-        E v = E(victim);
-        int fxE = world.create();
-        EntityUpdateBuilder fxUpdate = EntityUpdateBuilder.of(fxE);
-        Effect effect = new Effect.EffectBuilder().attachTo(victim).withLoops(1).withFX(FXs.FX_BLOOD).build();
-        fxUpdate.withComponents(effect);
-        if (v.hasWorldPos()) {
-            WorldPos worldPos = v.getWorldPos();
-            fxUpdate.withComponents(worldPos);
-        }
-        worldManager.notifyUpdate(victim, fxUpdate.build());
-        world.delete(fxE);
+        effectEntitySystem.addFX(victim, FXs.FX_BLOOD, 1);
     }
 
     private enum AttackKind {
@@ -368,7 +365,6 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         }
     }
 
-
     private enum AttackPlace {
         HEAD,
         BODY;
@@ -380,8 +376,5 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         public static AttackPlace getRandom() {
             return VALUES.get(RANDOM.nextInt(SIZE));
         }
-    }
-    private WorldManager getWorldManager() {
-        return world.getSystem(WorldManager.class);
     }
 }

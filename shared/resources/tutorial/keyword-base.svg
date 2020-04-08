@@ -2731,7 +2731,7 @@
              id="tspan4597"
              x="214.05643"
              y="465.41495"
-             style="font-size:9.99488163px;line-height:0;letter-spacing:-0.93702018px;word-spacing:0.0187404px;fill:#ffcc00;stroke-width:0.93702018">inventory</tspan></text>
+             style="font-size:9.99488163px;line-height:0;letter-spacing:-0.93702018px;word-spacing:0.0187404px;fill:#ffcc00;stroke-width:0.93702018">bag</tspan></text>
         <ellipse
            ry="3.0269036"
            rx="2.9187999"
@@ -3176,7 +3176,7 @@
              y="465.41495"
              x="214.05643"
              id="tspan4319-0"
-             sodipodi:role="line">inventory</tspan></text>
+             sodipodi:role="line">bag</tspan></text>
       </g>
       <g
          style="display:none"
@@ -3541,7 +3541,7 @@
          id="tspan4866-7"
          x="460.96478"
          y="-320.50677"
-         style="font-size:8.66666698px">inventory</tspan></text>
+         style="font-size:8.66666698px">bag</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:12px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffcc00;fill-opacity:1;stroke:none"

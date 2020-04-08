@@ -3,18 +3,14 @@ package shared.util;
 import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.esotericsoftware.minlog.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import position.WorldPos;
-import shared.model.loaders.MapLoader;
+import component.position.WorldPos;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 
-import java.io.DataInputStream;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
@@ -112,7 +108,7 @@ public class MapHelper {
                 .filter(E::hasWorldPos)
                 .anyMatch(entity -> {
                     boolean samePos = pos.equals(entity.getWorldPos());
-                    boolean hasSameDestination = entity.hasMovement() && entity.getMovement().destinations.stream().anyMatch(destination -> destination.worldPos.equals(pos));
+                    boolean hasSameDestination = entity.hasMovement() && entity.getMovement().destinations.stream().anyMatch(destination -> destination.pos.equals(pos));
                     return (samePos || hasSameDestination);
                 });
     }
@@ -136,19 +132,19 @@ public class MapHelper {
         }
     }
 
-    @Deprecated
-    private Map getMap_old(int i) {
-        FileHandle mapPath = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Alkon/Mapa" + i + ".map");
-        FileHandle infPath = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Alkon/Mapa" + i + ".inf");
-        MapLoader loader = new MapLoader();
-        try (DataInputStream map = new DataInputStream(mapPath.read());
-             DataInputStream inf = new DataInputStream(infPath.read())) {
-            return loader.load(map, inf);
-        } catch (IOException | GdxRuntimeException e) {
-            Log.error("Map I/O","Failed to read map " + i, e);
-            return new Map();
-        }
-    }
+//    @Deprecated
+//    private Map getMap_old(int i) {
+//        FileHandle mapPath = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Alkon/Mapa" + i + ".map");
+//        FileHandle infPath = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Alkon/Mapa" + i + ".inf");
+//        MapLoader loader = new MapLoader();
+//        try (DataInputStream map = new DataInputStream(mapPath.read());
+//             DataInputStream inf = new DataInputStream(infPath.read())) {
+//            return loader.load(map, inf);
+//        } catch (IOException | GdxRuntimeException e) {
+//            Log.error("Map I/O", "Failed to read map " + i, e);
+//            return new Map();
+//        }
+//    }
 
     public boolean hasTileExit(Map map, WorldPos expectedPos) {
         Tile tile = map.getTile(expectedPos.x, expectedPos.y);

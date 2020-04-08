@@ -93,7 +93,7 @@ public class CharConfiguration extends BaseConfiguration {
             private float health;
 
             private void setValues(float weapon, float weaponDamage, float projectile, float projectileDamage,
-                                  float wrestling, float wrestlingDamage, float evasion, float shield, float health) {
+                                   float wrestling, float wrestlingDamage, float evasion, float shield, float health) {
                 this.weapon = weapon;
                 this.weaponDamage = weaponDamage;
                 this.projectile = projectile;

@@ -1,6 +1,6 @@
 package design.screens.views;
 
-import camera.Focused;
+import component.camera.Focused;
 import com.artemis.E;
 import com.artemis.World;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -16,12 +16,11 @@ import com.badlogic.gdx.utils.Array;
 import design.designers.NPCDesigner;
 import design.designers.NPCDesigner.NPCParameters;
 import design.editors.NPCEditor;
-import entity.character.parts.Body;
-import entity.character.states.Heading;
+import component.entity.character.parts.Body;
+import component.entity.character.states.Heading;
 import model.textures.BundledAnimation;
 import org.jetbrains.annotations.NotNull;
-import position.Pos2D;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.model.map.Tile;
 import shared.model.npcs.NPC;
 import shared.model.npcs.NPCToEntity;
@@ -30,7 +29,6 @@ import java.util.Comparator;
 
 import static com.artemis.E.E;
 import static design.editors.fields.FieldEditor.FieldListener;
-import static game.systems.render.world.CharacterRenderingSystem.CharacterDrawer.createDrawer;
 import static launcher.DesignCenter.SKIN;
 
 public class NPCView extends View<NPC, NPCDesigner> {
@@ -197,7 +195,7 @@ public class NPCView extends View<NPC, NPCDesigner> {
             if (entityId >= 0) {
                 float offset = (Tile.TILE_PIXEL_WIDTH - getWidth()) / 2;
                 if (validate()) {
-                    createDrawer(batch, E(entityId), new Pos2D(getX() - offset, getY() + getHeight()), getDescriptorHandler(), getAnimationHandler(), true).draw();
+//                    createDrawer(batch, E(entityId), new Pos2D(getX() - offset, getY() + getHeight()), getDescriptorHandler(), getAnimationHandler(), true).draw();
                 }
             }
         }

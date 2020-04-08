@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.Array;
-import game.handlers.AnimationHandler;
+import game.systems.resources.AnimationsSystem;
 import game.screens.WorldScreen;
 
 import java.util.Arrays;
@@ -43,7 +43,7 @@ public class BundledAnimation {
     private TextureRegion getTexture(int id) {
         Game game = (Game) Gdx.app.getApplicationListener();
         WorldScreen screen = (WorldScreen) game.getScreen();
-        AnimationHandler system = screen.getWorld().getSystem(AnimationHandler.class);
+        AnimationsSystem system = screen.getWorld().getSystem(AnimationsSystem.class);
         return system.getTexture(id).getTexture();
     }
 
@@ -57,6 +57,15 @@ public class BundledAnimation {
 
     public TextureRegion getGraphic() {
         return this.animation.getKeyFrame(this.getAnimationTime());
+    }
+
+    public TextureRegion getPreviousGraphic() {
+        int index = this.animation.getKeyFrameIndex(this.getAnimationTime());
+        return this.animation.getKeyFrames()[index == 0 ? this.animation.getKeyFrames().length - 1 : index - 1];
+    }
+
+    public float getPreviousFrameTransparency() {
+        return 1 - (getAnimationTime() % this.animation.getKeyFrames().length) / this.animation.getFrameDuration();
     }
 
     public TextureRegion getGraphic(int index) {

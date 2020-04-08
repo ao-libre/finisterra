@@ -3,23 +3,21 @@ package game.systems.render.world;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import entity.character.Character;
-import position.Pos2D;
-import position.WorldPos;
-import shared.util.Util;
+import component.entity.character.Character;
+import game.utils.Pos2D;
+import component.position.WorldPos;
 
 @Wire(injectInherited = true)
 public class CharacterStatesRenderingSystem extends RenderingSystem {
 
-    public CharacterStatesRenderingSystem(SpriteBatch batch) {
-        super(Aspect.all(Character.class, WorldPos.class), batch, CameraKind.WORLD);
+    public CharacterStatesRenderingSystem() {
+        super(Aspect.all(Character.class, WorldPos.class));
     }
 
     @Override
     protected void process(E player) {
         if (isInAnyState(player)) {
-            Pos2D playerPos = Util.toScreen(player.worldPosPos2D());
+            Pos2D playerPos = Pos2D.get(player).toScreen();
             if (player.hasWriting()) {
 
             }

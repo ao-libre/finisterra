@@ -11,11 +11,6 @@ public class CreateRoomResponse implements IResponse {
     private Player player;
     private Status status;
 
-    public enum Status {
-        CREATED,
-        MAX_ROOM_LIMIT
-    }
-
     private CreateRoomResponse() {
     }
 
@@ -33,10 +28,17 @@ public class CreateRoomResponse implements IResponse {
         return player;
     }
 
-    public Status getStatus() { return status; }
+    public Status getStatus() {
+        return status;
+    }
 
     @Override
     public void accept(IResponseProcessor processor) {
         processor.processResponse(this);
+    }
+
+    public enum Status {
+        CREATED,
+        MAX_ROOM_LIMIT
     }
 }

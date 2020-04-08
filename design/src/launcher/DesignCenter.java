@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.esotericsoftware.minlog.Log;
-import shared.util.LogSystem;
 import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
 import design.screens.views.View;
@@ -26,8 +25,12 @@ import game.AssetManagerHolder;
 import game.ClientConfiguration;
 import game.handlers.*;
 import game.screens.WorldScreen;
+import game.systems.resources.AnimationsSystem;
+import game.systems.resources.DescriptorsSystem;
+import game.systems.resources.ObjectSystem;
 import game.utils.Skins;
-import graphics.AnimationDrawable;
+import design.graphic.AnimationDrawable;
+import shared.util.LogSystem;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,8 +40,8 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
 
     public static Skin SKIN;
     private AOAssetManager assetManager;
-    private AnimationHandler animationHandler;
-    private DescriptorHandler descriptorHandler;
+    private AnimationsSystem animationsSystem;
+    private DescriptorsSystem descriptorsSystem;
     private World world;
     private AnimationDrawable loadingAnimation;
     private boolean loaded;
@@ -94,19 +97,19 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
         WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
         builder
                 .with(new SuperMapper())
-                .with(new ObjectHandler())
-                .with(animationHandler = new AnimationHandler(assetManager))
-                .with(descriptorHandler = new DescriptorHandler(assetManager));
+                .with(new ObjectSystem())
+                .with(animationsSystem = new AnimationsSystem(assetManager))
+                .with(descriptorsSystem = new DescriptorsSystem(assetManager));
         WorldConfiguration config = builder.build();
         return new World(config);
     }
 
-    public DescriptorHandler getDescriptorHandler() {
-        return descriptorHandler;
+    public DescriptorsSystem getDescriptorsSystem() {
+        return descriptorsSystem;
     }
 
-    public AnimationHandler getAnimationHandler() {
-        return animationHandler;
+    public AnimationsSystem getAnimationsSystem() {
+        return animationsSystem;
     }
 
     @Override

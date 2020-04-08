@@ -1,15 +1,14 @@
 package game.systems.render.world;
 
-import camera.Focused;
+import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import game.handlers.MapHandler;
-import game.managers.MapManager;
+import game.systems.resources.MapSystem;
+import game.systems.map.MapManager;
 import game.systems.map.TiledMapSystem;
 import game.systems.render.world.WorldRenderingSystem.UserRange;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.model.map.Map;
 import shared.util.MapHelper;
 
@@ -19,13 +18,13 @@ import java.util.Optional;
 @Wire(injectInherited = true)
 public class MapLayerRenderingSystem extends RenderingSystem {
 
+    private final List<Integer> layers;
     private MapManager mapManager;
     private TiledMapSystem mapSystem;
     private WorldRenderingSystem worldRenderingSystem;
-    private final List<Integer> layers;
 
-    public MapLayerRenderingSystem(SpriteBatch spriteBatch, List<Integer> layers) {
-        super(Aspect.all(Focused.class), spriteBatch, CameraKind.WORLD);
+    public MapLayerRenderingSystem(List<Integer> layers) {
+        super(Aspect.all(Focused.class));
         this.layers = layers;
     }
 
@@ -43,9 +42,9 @@ public class MapLayerRenderingSystem extends RenderingSystem {
     private void drawRange(Map map, UserRange range) {
         range.forEachTile((x, y) -> {
             Map effectiveMap = map;
-            WorldPos pos = MapHandler.getHelper().getEffectivePosition(mapSystem.mapNumber, x, y);
+            WorldPos pos = MapSystem.getHelper().getEffectivePosition(mapSystem.mapNumber, x, y);
             if (pos.map != mapSystem.mapNumber) {
-                effectiveMap = MapHandler.get(pos.map);
+                effectiveMap = MapSystem.get(pos.map);
             }
             Map finalEffectiveMap = effectiveMap;
             layers.forEach(layer -> drawGraphicInLayer(layer, x, y, finalEffectiveMap, pos));
@@ -58,7 +57,7 @@ public class MapLayerRenderingSystem extends RenderingSystem {
             if (graphic == 0) {
                 return;
             }
-            mapManager.doTileDraw(getBatch(), world.getDelta(), x, y, graphic);
+            mapManager.doTileDraw(world.getDelta(), x, y, graphic);
         });
     }
 

@@ -1,21 +1,12 @@
 package shared.network.notifications;
 
-import shared.network.interfaces.INotification;
-import shared.network.interfaces.INotificationProcessor;
-
-public class RemoveEntity implements INotification {
-
-    public int entityId;
+public class RemoveEntity extends EntityUpdate {
 
     public RemoveEntity() {
     }
 
     public RemoveEntity(int entityId) {
-        this.entityId = entityId;
+        super(entityId);
     }
 
-    @Override
-    public void accept(INotificationProcessor processor) {
-        processor.processNotification(this);
-    }
 }

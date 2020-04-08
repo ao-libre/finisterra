@@ -4,17 +4,20 @@ import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
-import entity.character.attributes.Agility;
-import entity.character.attributes.Attribute;
-import entity.character.attributes.Strength;
-import entity.character.info.Inventory;
-import entity.character.states.Buff;
-import entity.character.status.Health;
-import entity.character.status.Mana;
+import component.entity.character.attributes.Agility;
+import component.entity.character.attributes.Attribute;
+import component.entity.character.attributes.Strength;
+import component.entity.character.info.Bag;
+import component.entity.character.states.Buff;
+import component.entity.character.status.Health;
+import component.entity.character.status.Mana;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 import shared.objects.types.*;
+import shared.util.ItemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,7 @@ public class ItemManager extends DefaultManager {
     private ItemConsumers itemConsumers;
     private ObjectManager objectManager;
     private WorldManager worldManager;
+    private EntityUpdateSystem entityUpdateSystem;
 
     public ItemManager() {
     }
@@ -44,21 +48,17 @@ public class ItemManager extends DefaultManager {
         return itemConsumers;
     }
 
-    public boolean isEquippable(Inventory.Item item) {
+    public boolean isEquippable(Bag.Item item) {
         Optional<Obj> object = objectManager.getObject(item.objId);
-        if (object.isPresent()) {
-            Obj obj = object.get();
-            return obj instanceof ObjWithClasses;
-        }
-        return false;
+        return object.map(ItemUtils::canEquip).orElse(false);
     }
 
-    public boolean isUsable(Inventory.Item item) {
+    public boolean isUsable(Bag.Item item) {
         Optional<Obj> object = objectManager.getObject(item.objId);
-        return object.map(obj -> (obj.getType().equals(Type.POTION) || obj.getType ().equals (Type.SPELL )) ).orElse(false);
+        return object.map(ItemUtils::canUse).orElse(false);
     }
 
-    public void use(int player, Inventory.Item item) {
+    public void use(int player, Bag.Item item) {
         Optional<Obj> object = objectManager.getObject(item.objId);
         object.ifPresent(obj -> {
             if (obj.getType().equals(Type.POTION)) {
@@ -84,43 +84,44 @@ public class ItemManager extends DefaultManager {
                         Agility agility = E(player).getAgility();
                         agility.setCurrentValue(agility.getBaseValue() + random);
                         E(player).buff().getBuff().addAttribute(agility, potion.getEffecTime());
-                        SendAttributeUpdate(player, agility, E(player).getBuff());
+                        sendAttributeUpdate(player, agility, E(player).getBuff());
                         break;
                     case POISON:
                     case STRENGTH:
                         Strength strength = E(player).getStrength();
                         strength.setCurrentValue(strength.getBaseValue() + random);
                         E(player).buff().getBuff().addAttribute(strength, potion.getEffecTime());
-                        SendAttributeUpdate(player, strength, E(player).getBuff());
+                        sendAttributeUpdate(player, strength, E(player).getBuff());
                         break;
                 }
                 // Notify update to user
                 EntityUpdate update = EntityUpdateBuilder.of(player).withComponents(components.toArray(new Component[0])).build();
-                worldManager.sendEntityUpdate(player, update);
+                entityUpdateSystem.add(update, UpdateTo.ENTITY);
                 // TODO remove from inventory
             }
-            if (obj.getType().equals(Type.SPELL)){
+            if (obj.getType().equals(Type.SPELL)) {
                 SpellObj spellObj = (SpellObj) obj;
-                if (E (player).charHeroHeroId () != 0 ) {
-                    E (player).spellBookAddSpell ( spellObj.getSpellIndex ( ) );
+                if (E(player).charHeroHeroId() != 0) {
+                    E(player).spellBookAddSpell(spellObj.getSpellIndex());
                 }
-                Log.info( E ( player ).nameText () + " " +E ( player ).getSpellBook ( ).getMsj() );
+                Log.info(E(player).nameText() + " " + E(player).getSpellBook().getMsj());
             }
         });
     }
 
-    protected void SendAttributeUpdate(int player, Attribute attribute, Buff buff) {
+    protected void sendAttributeUpdate(int player, Attribute attribute, Buff buff) {
         EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(attribute, buff).build();
-        worldManager.sendEntityUpdate(player, updateAGI);
+        entityUpdateSystem.add(updateAGI, UpdateTo.ENTITY);
     }
 
-    public void equip(int player, int index, Inventory.Item item) {
+    public void equip(int player, int index, Bag.Item item) {
         InventoryUpdate update = new InventoryUpdate();
+        // TODO convert InventoryUpdate into EntityUpdate
         modifyUserEquip(player, item, index, update);
         worldManager.sendEntityUpdate(player, update);
     }
 
-    private void modifyUserEquip(int player, Inventory.Item item, int index, InventoryUpdate update) {
+    private void modifyUserEquip(int player, Bag.Item item, int index, InventoryUpdate update) {
         Optional<Obj> object = objectManager.getObject(item.objId);
         object.ifPresent(obj -> {
             item.equipped = !item.equipped;
@@ -137,7 +138,7 @@ public class ItemManager extends DefaultManager {
     }
 
     private void discardItems(E entity, int index, Type type, InventoryUpdate update) {
-        Inventory.Item[] items = entity.getInventory().items;
+        Bag.Item[] items = entity.getBag().items;
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null && index != i) {
                 int inventoryIndex = i;

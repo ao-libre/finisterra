@@ -21,8 +21,8 @@ import design.editors.fields.Listener;
 import design.screens.DesignScreen;
 import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
-import game.handlers.AnimationHandler;
-import game.handlers.DescriptorHandler;
+import game.systems.resources.AnimationsSystem;
+import game.systems.resources.DescriptorsSystem;
 import game.screens.WorldScreen;
 import launcher.DesignCenter;
 import model.ID;
@@ -74,7 +74,7 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         left.add(createButtons()).right().growX().row();
         List<T> list = createList();
         list.setTouchable(Touchable.enabled);
-        ScrollPane listScroll = new ScrollPane( list , SKIN );
+        ScrollPane listScroll = new ScrollPane(list, SKIN);
         listScroll.setFlickScroll(false);
         listScroll.setFadeScrollBars(false);
         listScroll.setScrollbarsVisible(true);
@@ -157,12 +157,12 @@ public abstract class View<T, P extends IDesigner<T, ? extends IDesigner.Paramet
         return itemView;
     }
 
-    public AnimationHandler getAnimationHandler() {
-        return ((DesignCenter) Gdx.app.getApplicationListener()).getAnimationHandler();
+    public AnimationsSystem getAnimationHandler() {
+        return ((DesignCenter) Gdx.app.getApplicationListener()).getAnimationsSystem();
     }
 
-    public DescriptorHandler getDescriptorHandler() {
-        return ((DesignCenter) Gdx.app.getApplicationListener()).getDescriptorHandler();
+    public DescriptorsSystem getDescriptorHandler() {
+        return ((DesignCenter) Gdx.app.getApplicationListener()).getDescriptorsSystem();
     }
 
     @Override

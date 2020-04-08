@@ -4,16 +4,19 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
-import movement.Destination;
-import movement.RandomMovement;
-import physics.AOPhysics;
-import position.WorldPos;
+import component.movement.Destination;
+import component.movement.RandomMovement;
+import component.physics.AOPhysics;
+import component.position.WorldPos;
 import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import server.utils.WorldUtils;
 import shared.model.map.Map;
 import shared.network.movement.MovementNotification;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.network.notifications.EntityUpdate;
+import shared.util.EntityUpdateBuilder;
 
 import java.util.*;
 
@@ -29,6 +32,7 @@ public class RandomMovementSystem extends IteratingSystem {
     private static final Random RANDOM = new Random();
     private MapManager mapManager;
     private WorldManager worldManager;
+    private EntityUpdateSystem entityUpdateSystem;
 
     public RandomMovementSystem() {
         super(Aspect.all(RandomMovement.class));
@@ -43,7 +47,7 @@ public class RandomMovementSystem extends IteratingSystem {
     protected void process(int entityId) {
         Optional<AOPhysics.Movement> randomMovement = randomMovement();
         randomMovement.ifPresent(mov -> {
-            // update server entity
+            // update server component.entity
             moveEntity(entityId, mov);
         });
     }
@@ -73,19 +77,11 @@ public class RandomMovementSystem extends IteratingSystem {
 
         // notify near users
 
-        worldManager.notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build()); // is necessary?
+        EntityUpdate update = EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build();
+        entityUpdateSystem.add(update, UpdateTo.ALL);
         if (nextPos != oldPos) {
-            worldManager.notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov)));
+            worldManager.notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov.ordinal())));
         }
     }
 
-    private List<AOPhysics.Movement> otherMovements(Optional<AOPhysics.Movement> movement) {
-        return movement.isPresent() ? getOther(movement.get()) : VALUES;
-    }
-
-    private List<AOPhysics.Movement> getOther(AOPhysics.Movement movement) {
-        List<AOPhysics.Movement> result = new ArrayList<>(VALUES);
-        result.remove(movement);
-        return result;
-    }
 }

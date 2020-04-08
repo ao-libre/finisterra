@@ -3,7 +3,7 @@ package design.editors;
 import com.badlogic.gdx.files.FileHandle;
 import design.editors.utils.SliceResult;
 import design.editors.utils.Slicer;
-import entity.world.Dialog;
+import component.entity.world.Dialog;
 
 public class SpriteEditor extends Dialog {
 

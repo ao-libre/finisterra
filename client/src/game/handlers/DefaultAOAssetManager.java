@@ -1,6 +1,5 @@
 package game.handlers;
 
-import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.I18NBundleLoader;
@@ -40,7 +39,7 @@ import static game.loaders.DescriptorsLoader.*;
 import static game.loaders.DescriptorsLoader.DescriptorParameter.descriptor;
 import static game.utils.Resources.GAME_DESCRIPTORS_PATH;
 
-@Wire
+// TODO convert to SYSTEM!
 public class DefaultAOAssetManager extends AssetManager implements AOAssetManager {
 
     private static final Class<ArrayList<AOImage>> IMAGE_CLASS;
@@ -165,21 +164,27 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         return get(Resources.GAME_SKIN_FILE);
     }
 
+    // TODO: fix asap
     @Override
     public Music getMusic(int key) {
         if (Gdx.files.internal(Resources.GAME_MUSIC_PATH + key + Resources.GAME_MUSIC_EXTENSION).exists()) {
-            return Gdx.audio.newMusic ( Gdx.files.internal
-                    (Resources.GAME_MUSIC_PATH + key + Resources.GAME_MUSIC_EXTENSION ) );
+            return Gdx.audio.newMusic(Gdx.files.internal
+                    (Resources.GAME_MUSIC_PATH + key + Resources.GAME_MUSIC_EXTENSION));
         } else {
             return null;
         }
     }
 
+    // TODO: fix asap
     @Override
     public Sound getSound(int key) {
-        if (Gdx.files.internal(Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION).exists()) {
-            return Gdx.audio.newSound (Gdx.files.internal
-                    (Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION));
+        String soundFile = Resources.GAME_SOUNDS_PATH + key + Resources.GAME_SOUNDS_EXTENSION;
+        if (Gdx.files.internal(soundFile).exists()) {
+            if (!isLoaded(soundFile)) {
+                load(soundFile, Sound.class);
+                finishLoading();
+            }
+            return get(soundFile);
         } else {
             return null;
         }
@@ -357,6 +362,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         params.imagesDir = Gdx.files.internal(Resources.GAME_PARTICLES_PATH + "images/");
         load(Resources.GAME_PARTICLES_PATH + "aura1.party", ParticleEffect.class, params);
         load(Resources.GAME_PARTICLES_PATH + "blue-meditation.p", ParticleEffect.class, params);
+        load(Resources.GAME_PARTICLES_PATH + "blue-meditation3.p", ParticleEffect.class, params);
         load(Resources.GAME_PARTICLES_PATH + "level-up.p", ParticleEffect.class, params);
         load(Resources.GAME_PARTICLES_PATH + "magic-projectile.p", ParticleEffect.class, params);
         load(Resources.GAME_PARTICLES_PATH + "thunder.p", ParticleEffect.class, params);

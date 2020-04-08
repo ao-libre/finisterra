@@ -5,43 +5,31 @@ import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import game.systems.OrderedEntityProcessingSystem;
 import game.systems.camera.CameraSystem;
 
 import java.util.Comparator;
 
 import static com.artemis.E.E;
-import static game.systems.render.world.RenderingSystem.CameraKind.GUI;
 
 @Wire
 public abstract class RenderingSystem extends OrderedEntityProcessingSystem {
 
     public static final float SCALE = 2;
 
-    private final SpriteBatch batch;
-    private final CameraKind kind;
     private CameraSystem cameraSystem;
 
-    public RenderingSystem(Aspect.Builder aspect, SpriteBatch batch, CameraKind kind) {
+    public RenderingSystem(Aspect.Builder aspect) {
         super(aspect);
-        this.batch = batch;
-        this.kind = kind;
-    }
-
-    public SpriteBatch getBatch() {
-        return batch;
     }
 
     public Camera getCamera() {
-        return kind.equals(GUI) ? cameraSystem.guiCamera : cameraSystem.camera;
+        return cameraSystem.camera;
     }
 
     @Override
     protected void begin() {
         getCamera().update();
-        getBatch().setProjectionMatrix(getCamera().combined);
-        getBatch().begin();
         doBegin();
     }
 
@@ -59,7 +47,6 @@ public abstract class RenderingSystem extends OrderedEntityProcessingSystem {
 
     @Override
     protected void end() {
-        getBatch().end();
         doEnd();
     }
 
@@ -77,8 +64,4 @@ public abstract class RenderingSystem extends OrderedEntityProcessingSystem {
         return Comparator.comparingInt(entity -> E(entity).getWorldPos().y);
     }
 
-    public enum CameraKind {
-        GUI,
-        WORLD
-    }
 }

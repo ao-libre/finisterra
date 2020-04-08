@@ -2,19 +2,26 @@ package server.systems.combat;
 
 import com.artemis.BaseSystem;
 import com.artemis.E;
-import entity.character.status.Stamina;
+import com.artemis.annotations.Wire;
+import component.entity.character.status.Stamina;
 import server.database.model.modifiers.Modifiers;
+import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.WorldManager;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import shared.interfaces.CharClass;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
-import shared.network.sound.SoundNotification;
+import shared.util.EntityUpdateBuilder;
 
 import java.util.Optional;
 
 import static com.artemis.E.E;
 
+@Wire(injectInherited = true)
 public abstract class AbstractCombatSystem extends BaseSystem implements CombatSystem {
+
+    protected EntityUpdateSystem entityUpdateSystem;
+    protected SoundEntitySystem soundEntitySystem;
 
     public static final int STAMINA_REQUIRED_PERCENT = 15;
 
@@ -70,7 +77,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
     @Override
     public void entityAttack(int entityId, Optional<Integer> targetId) {
         Optional<Integer> realTargetId = targetId.isPresent() ? targetId : getTarget(entityId);
-        getWorldManager ( ).notifyUpdate ( entityId, new SoundNotification ( 2 ) );
+        soundEntitySystem.add(entityId, 2);
         if (canAttack(entityId, realTargetId)) {
             hit(entityId, realTargetId.get());
         } else {
@@ -81,7 +88,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
             Stamina stamina = userEntity.getStamina();
             stamina.min = Math.max(0, stamina.min - stamina.max * STAMINA_REQUIRED_PERCENT / 100);
             EntityUpdate update = EntityUpdateBuilder.of(entityId).withComponents(stamina).build();
-            getWorld().getSystem(WorldManager.class).sendEntityUpdate(entityId, update);
+            entityUpdateSystem.add(update, UpdateTo.ENTITY);
         }
     }
 
@@ -108,6 +115,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
     @Override
     protected void processSystem() {
     }
+
     private WorldManager getWorldManager() {
         return world.getSystem(WorldManager.class);
     }

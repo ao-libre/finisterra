@@ -42,9 +42,9 @@ public class AOSkinLoader extends AsynchronousAssetLoader<AOSkin, AOSkinLoader.A
 
     @Override
     public AOSkin loadSync(AssetManager manager, String fileName, FileHandle file, AOSkinParameter parameter) {
-        Log.info("Skins", "Loading skin");
+        Log.debug("Skins", "Loading skin");
         AOSkin aoSkin = newSkin(file);
-        Log.info("Skins", "Skin loaded");
+        Log.debug("Skins", "Skin loaded");
         return aoSkin;
     }
 

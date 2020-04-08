@@ -1,7 +1,6 @@
 package shared.network.movement;
 
-import physics.AOPhysics;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.network.interfaces.IRequest;
 import shared.network.interfaces.IRequestProcessor;
 
@@ -12,12 +11,12 @@ public class MovementRequest implements IRequest {
     public boolean valid;
     public int requestNumber;
     public WorldPos predicted;
-    public AOPhysics.Movement movement;
+    public int movement;
 
     public MovementRequest() {
     }
 
-    public MovementRequest(int requestNumber, WorldPos predicted, AOPhysics.Movement movement, boolean valid) {
+    public MovementRequest(int requestNumber, WorldPos predicted, int movement, boolean valid) {
         this.requestNumber = requestNumber;
         this.predicted = predicted;
         this.movement = movement;

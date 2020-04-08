@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
 import shared.model.map.Tile;
 
+import static com.artemis.E.E;
+
 @Wire
 public class CameraSystem extends BaseSystem {
 
@@ -16,13 +18,12 @@ public class CameraSystem extends BaseSystem {
     private final float minZoom;
     private final float maxZoom;
     public OrthographicCamera camera;
-    public OrthographicCamera guiCamera;
     private float desiredZoom = AOGame.GAME_SCREEN_ZOOM;
-    // member variables:
+
     private float timeToCameraZoomTarget, cameraZoomOrigin, cameraZoomDuration;
 
 
-    public CameraSystem(float zoom, float maxZoom, float width, float height) {
+    private CameraSystem(float zoom, float maxZoom, float width, float height) {
         this.maxZoom = maxZoom;
         this.minZoom = zoom;
         float zoomFactorInverter = 1f / zoom;
@@ -30,9 +31,6 @@ public class CameraSystem extends BaseSystem {
                 height * zoomFactorInverter);
     }
 
-    /**
-     * @param zoom How much
-     */
     public CameraSystem(float zoom) {
         this(zoom, AOGame.GAME_SCREEN_MAX_ZOOM);
     }
@@ -43,13 +41,6 @@ public class CameraSystem extends BaseSystem {
 
     private void setupViewport(float width, float height) {
         createGameCamera(width, height);
-        createGuiCamera(width, height);
-    }
-
-    private void createGuiCamera(float width, float height) {
-        guiCamera = new OrthographicCamera(Tile.TILE_PIXEL_WIDTH * 24, Tile.TILE_PIXEL_WIDTH * 24 * (height / width));
-        guiCamera.setToOrtho(false, Tile.TILE_PIXEL_WIDTH * 24, Tile.TILE_PIXEL_WIDTH * 24 * (height / width));
-        guiCamera.update();
     }
 
     private void createGameCamera(float width, float height) {
@@ -60,7 +51,6 @@ public class CameraSystem extends BaseSystem {
 
     @Override
     protected void processSystem() {
-        // in render():
         if (timeToCameraZoomTarget >= 0) {
             timeToCameraZoomTarget -= getWorld().getDelta();
             float progress = timeToCameraZoomTarget < 0 ? 1 : 1f - timeToCameraZoomTarget / cameraZoomDuration;
@@ -73,5 +63,13 @@ public class CameraSystem extends BaseSystem {
         desiredZoom += inout * 0.025f;
         desiredZoom = MathUtils.clamp(desiredZoom, AOGame.GAME_SCREEN_ZOOM, maxZoom);
         timeToCameraZoomTarget = cameraZoomDuration = duration;
+    }
+
+    @Override
+    protected void initialize() {
+        super.initialize();
+        E(world.create())
+                .aOCamera()
+                .worldPosOffsets();
     }
 }

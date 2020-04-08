@@ -1,6 +1,5 @@
 package game.screens;
 
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -9,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import game.AOGame;
 import game.handlers.AOAssetManager;
-import game.handlers.MusicHandler;
+import game.systems.resources.MusicSystem;
 import game.systems.network.ClientSystem;
 import shared.interfaces.Hero;
 import shared.model.lobby.Player;
@@ -44,7 +43,7 @@ public class RoomScreen extends AbstractScreen {
     public Player getPlayer() {
         return me;
     }
-    
+
     public void updatePlayers() {
         criminalList.setItems(room.getPlayers().stream().filter(player -> player.getTeam().equals(Team.CAOS_ARMY)).toArray(Player[]::new));
         armyList.setItems(room.getPlayers().stream().filter(player -> player.getTeam().equals(Team.REAL_ARMY)).toArray(Player[]::new));
@@ -145,7 +144,7 @@ public class RoomScreen extends AbstractScreen {
     @Override
     public void dispose() {
         clientSystem.stop();
-        MusicHandler.FIRSTBGM.stop ();
+        MusicSystem.FIRSTBGM.stop();
         super.dispose();
     }
 }
