@@ -31,21 +31,27 @@ jobs:
 
   notify:
     runs-on: ubuntu-latest
+    
     steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
       - name: Build succeeded
         if: success()
         uses: Ilshidur/action-discord@master
         with:
-          args: 'Branch ${{ GITHUB_REF##*/ }} build successfully'
+          args: 'Branch ${{ steps.extract_branch.outputs.branch }} build successfully'
 
       - name: Build failed
         if: failure()
         uses: Ilshidur/action-discord@master
         with:
-          args: 'Branch ${{ GITHUB_REF##*/ }} build failed'
+          args: 'Branch ${{ steps.extract_branch.outputs.branch }} build failed'
 
       - name: Build cancelled
         if: cancelled()
         uses: Ilshidur/action-discord@master
         with:
-          args: 'Branch ${{ GITHUB_REF##*/ }} build cancelled'
+          args: 'Branch ${{ steps.extract_branch.outputs.branch }} build cancelled'
