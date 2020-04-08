@@ -2,13 +2,18 @@ package server.systems.entity;
 
 import com.artemis.annotations.Wire;
 import component.graphic.Effect;
+import component.graphic.EffectBuilder;
+import component.position.WorldPos;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
+import shared.util.EntityUpdateBuilder;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.artemis.E.E;
+import static shared.network.notifications.EntityUpdate.NO_ENTITY;
 
 @Wire
 public class EffectEntitySystem extends PassiveSystem {
@@ -23,19 +28,26 @@ public class EffectEntitySystem extends PassiveSystem {
     }
 
     public void addFX(int entity, int fxNumber, int loops) {
-        int effectEntityId = world.create();
-        E(effectEntityId)
-                .effectLoops(loops)
-                .effectEffectId(fxNumber)
-                .effectType(Effect.Type.FX);
+        Effect effect = EffectBuilder
+                .create()
+                .withFX(fxNumber)
+                .withLoops(loops)
+                .build();
+        int effectEntityId = NO_ENTITY;
         if (Effect.LOOP_INFINITE == loops) {
+            // create entity and save
+            effectEntityId = world.create();
             entityFXs
                     .computeIfAbsent(entity, integer -> new ConcurrentHashMap<>())
                     .put(fxNumber, effectEntityId);
-        } else {
-            E(effectEntityId).clear();
         }
-        entityUpdateSystem.attach(entity, effectEntityId);
+
+        EntityUpdateBuilder of = EntityUpdateBuilder.of(effectEntityId);
+        of.withComponents(effect);
+        if (E(entity).hasWorldPos()) {
+            of.withComponents(E(entity).getWorldPos());
+        }
+        entityUpdateSystem.add(entity, of.build(), UpdateTo.ALL);
     }
 
     public void addEffect(int entity, int particleNumber, int loops) {
@@ -44,10 +56,23 @@ public class EffectEntitySystem extends PassiveSystem {
                 .effectLoops(loops)
                 .effectEffectId(particleNumber)
                 .effectType(Effect.Type.PARTICLE);
+
+        doAdd(entity, particleNumber, loops, effectEntityId, entityEffects);
+    }
+
+    private void doAdd(int entity, int fxNumber, int loops, int effectEntityId, Map<Integer, Map<Integer, Integer>> entityFXs) {
+        if (E(entity).hasWorldPos()) {
+            // copy worldPos to effect
+            WorldPos worldPos = E(entity).getWorldPos();
+            E(effectEntityId)
+                    .worldPosMap(worldPos.map)
+                    .worldPosX(worldPos.x)
+                    .worldPosY(worldPos.y);
+        }
         if (Effect.LOOP_INFINITE == loops) {
-            entityEffects
+            entityFXs
                     .computeIfAbsent(entity, integer -> new ConcurrentHashMap<>())
-                    .put(particleNumber, effectEntityId);
+                    .put(fxNumber, effectEntityId);
         } else {
             E(effectEntityId).clear();
         }

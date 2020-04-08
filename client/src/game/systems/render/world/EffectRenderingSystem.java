@@ -173,7 +173,7 @@ public class EffectRenderingSystem extends FluidIteratingSystem {
                     ParticleEffect particleEffect = particleEffects.get(id);
                     if (particleEffect.isComplete()) {
                         particleEffect.dispose();
-                        e.deleteFromWorld();
+                        e.clear();
                     }
                 }
                 break;

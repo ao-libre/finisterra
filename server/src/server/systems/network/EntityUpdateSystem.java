@@ -3,20 +3,20 @@ package server.systems.network;
 import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.annotations.Wire;
+import com.esotericsoftware.minlog.Log;
 import server.systems.manager.ComponentManager;
 import server.systems.manager.WorldManager;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
 import shared.util.EntityUpdateBuilder;
 
-import java.util.Deque;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.stream.Collectors;
 
 import static com.artemis.E.E;
+import static shared.network.notifications.EntityUpdate.NO_ENTITY;
 
 @Wire
 public class EntityUpdateSystem extends BaseSystem {
@@ -73,20 +73,28 @@ public class EntityUpdateSystem extends BaseSystem {
 
     private void addUpdate(int entity, EntityUpdate update, Map<Integer, Deque<EntityUpdate>> updates) {
         updates.putIfAbsent(entity, new ConcurrentLinkedDeque<>());
-        updates.computeIfPresent(entity, (id, otherUpdate) -> {
-            // TODO fix, join all, can be more than one
-            Optional<EntityUpdate> toJoin = otherUpdate.stream().filter(u -> u.entityId == update.entityId).findFirst();
-            if (toJoin.isPresent()) {
-                EntityUpdateBuilder.join(toJoin.get(), update);
+        updates.computeIfPresent(entity, (id, idUpdates) -> {
+            // find updates for same entity and merge update to avoid multiple packets
+            Set<EntityUpdate> toMerge = idUpdates
+                    .stream()
+                    .filter(u -> u.entityId != NO_ENTITY)
+                    .filter(u -> u.entityId == update.entityId)
+                    .collect(Collectors.toSet());
+            if (toMerge.size() > 1) {
+                Log.debug("Updates to be merged: ");
+                toMerge.forEach(it -> Log.debug(" - " + it.toString()));
+                EntityUpdate mergedUpdate = EntityUpdateBuilder.merge(toMerge);
+                toMerge.forEach(idUpdates::remove);
+                idUpdates.add(mergedUpdate);
+                Log.debug("Update merged: " + mergedUpdate.toString());
             } else {
-                otherUpdate.add(update);
+                idUpdates.add(update);
             }
-            return otherUpdate;
+            return idUpdates;
         });
-
     }
 
-    // Attach component.entity to another component.entity and send update to all near entities including component.entity
+    // Attach entity to another entity and send update to all near entities including component.entity
     public void attach(int entity, int entityToAttach) {
         E(entityToAttach).refId(entity);
         List<Component> components = componentManager.getComponents(entityToAttach, ComponentManager.Visibility.CLIENT_PUBLIC);
@@ -96,6 +104,6 @@ public class EntityUpdateSystem extends BaseSystem {
 
     public void detach(int entity, Integer sEntity) {
         add(entity, EntityUpdateBuilder.delete(sEntity), UpdateTo.ALL);
-        world.delete(sEntity); // TODO unregister in worldManager?
+        world.delete(sEntity);
     }
 }

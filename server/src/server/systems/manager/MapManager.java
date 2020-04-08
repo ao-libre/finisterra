@@ -86,7 +86,8 @@ public class MapManager extends DefaultManager {
      * @return a set of near entities or empty
      */
     public Set<Integer> getNearEntities(int entityId) {
-        return nearEntities.getOrDefault(entityId, ConcurrentHashMap.newKeySet());
+        Set<Integer> nearEntities = this.nearEntities.getOrDefault(entityId, ConcurrentHashMap.newKeySet());
+        return nearEntities;
     }
 
     public Set<Integer> getEntities(WorldPos pos) {

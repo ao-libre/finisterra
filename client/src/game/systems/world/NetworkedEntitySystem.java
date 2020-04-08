@@ -50,6 +50,10 @@ public class NetworkedEntitySystem extends PassiveSystem {
         return networkedEntities.get(networkId);
     }
 
+    public boolean existsLocal(int localId) {
+        return networkedEntities.containsKey(localId);
+    }
+
     public int getNetworkId(int localId) {
         return localEntities.get(localId);
     }

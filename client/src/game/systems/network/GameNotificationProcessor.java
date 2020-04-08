@@ -7,6 +7,7 @@ import com.artemis.EntityEdit;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
+import component.entity.Ref;
 import component.entity.character.info.Bag;
 import game.AOGame;
 import game.screens.LobbyScreen;
@@ -27,7 +28,10 @@ import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
 
+import java.util.stream.Stream;
+
 import static com.artemis.E.E;
+import static shared.network.notifications.EntityUpdate.NO_ENTITY;
 
 @Wire
 public class GameNotificationProcessor extends DefaultNotificationProcessor {
@@ -41,25 +45,53 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     @Override
     public void processNotification(EntityUpdate entityUpdate) {
-        if (!networkedEntitySystem.exists(entityUpdate.entityId)) {
+        if (entityUpdate instanceof RemoveEntity) {
+            if (networkedEntitySystem.exists(entityUpdate.entityId)) {
+                networkedEntitySystem.unregisterEntity(entityUpdate.entityId);
+            } else {
+                Log.debug("This should never happen");
+            }
+            return;
+        }
+        if (entityUpdate.entityId == NO_ENTITY) {
+            Entity noneEntity = world.createEntity();
+            addComponentsToEntity(noneEntity, entityUpdate);
+        } else if (!networkedEntitySystem.exists(entityUpdate.entityId)) {
             Log.debug("Network entity doesn't exist: " + entityUpdate.entityId + ". So we create it");
             Entity newEntity = getWorld().createEntity();
             networkedEntitySystem.registerEntity(entityUpdate.entityId, newEntity.getId());
             addComponentsToEntity(newEntity, entityUpdate);
         } else {
             Log.debug("Network entity exists: " + entityUpdate.entityId + ". Updating");
-            if (entityUpdate instanceof RemoveEntity) {
-                networkedEntitySystem.unregisterEntity(entityUpdate.entityId);
-                return;
-            } else {
-                updateEntity(entityUpdate);
-            }
+            updateEntity(entityUpdate);
         }
-        int localEntity = networkedEntitySystem.getLocalId(entityUpdate.entityId);
-        E localE = E(localEntity);
-        if (localE != null && localE.hasRef()) {
-            // Map ref to local component.entity
-            localE.refId(networkedEntitySystem.getLocalId(localE.refId()));
+
+    }
+
+    private void linkRefToLocal(EntityUpdate entityUpdate) {
+        if (Stream.of(entityUpdate.components)
+                .anyMatch(component -> component.getClass().equals(Ref.class))) {
+            int localEntity = networkedEntitySystem.getLocalId(entityUpdate.entityId);
+            E localE = E(localEntity);
+            if (localE != null && localE.hasRef()) {
+                // Map ref to local component.entity
+                Log.debug("Entity " + localE.id() + " has a reference to network id: " + localE.refId());
+                int networkId = localE.refId();
+                if (networkedEntitySystem.exists(networkId)) {
+                    int newLocalRef = networkedEntitySystem.getLocalId(networkId);
+                    Log.debug("Updating ref to: " + newLocalRef);
+                    localE.refId(newLocalRef);
+                } else {
+                    // ref no longer exists, remove ref
+                    Log.debug("Ref doesn't exist");
+                    localE.removeRef();
+                    if (!localE.hasWorldPos()) {
+                        Log.debug("It doesn't have worldPos nor valid Ref. Entity deleted");
+                        // if don't have worldPos, delete entity
+                        localE.deleteFromWorld();
+                    }
+                }
+            }
         }
     }
 
@@ -91,9 +123,7 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         EntityEdit edit = newEntity.edit();
         Component[] components = entityUpdate.components;
         if (components != null) {
-            for (Component component : components) {
-                edit.add(component);
-            }
+            addComponents(edit, components);
         }
     }
 
@@ -101,12 +131,16 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         int entityId = networkedEntitySystem.getLocalId(entityUpdate.entityId);
         Entity entity = world.getEntity(entityId);
         EntityEdit edit = entity.edit();
-        for (Component component : entityUpdate.components) {
-            // this should replace if already exists
-            edit.add(component);
-        }
+        addComponents(edit, entityUpdate.components);
         for (Class remove : entityUpdate.toRemove) {
             edit.remove(remove);
+        }
+    }
+
+    private void addComponents(EntityEdit edit, Component[] components) {
+        for (Component component : components) {
+            // this should replace if already exists
+            edit.add(component);
         }
     }
 

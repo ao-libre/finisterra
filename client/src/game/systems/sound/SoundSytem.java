@@ -71,7 +71,7 @@ public class SoundSytem extends IteratingSystem {
     protected void process(int entityId) {
         int mainPlayer = playerSystem.get().id();
         WorldPos playerPos = E(mainPlayer).getWorldPos();
-        // check distance to component.entity if has worldpos and update volume
+        // check distance to entity if has worldpos and update volume
         E soundEntity = E(entityId);
         if (soundEntity.hasWorldPos() || soundEntity.hasRef()) {
             Optional.ofNullable(soundEntity.hasWorldPos() ? soundEntity.getWorldPos() : getRefPos(soundEntity.refId())).ifPresent(soundPos -> {
@@ -82,6 +82,9 @@ public class SoundSytem extends IteratingSystem {
                     soundsSystem.updatePan(soundIndexPair.soundID, soundIndexPair.soundIndex, distanceX == 0 ? distanceX : MathUtils.clamp(1 / distanceX, -1, 1), MathUtils.clamp(1 / distance, -1, 1));
                 }
             });
+            if (!soundEntity.getAOSound().shouldLoop) {
+                soundEntity.clearTime(soundsSystem.getDuration(soundEntity.aOSoundId()));
+            }
         }
 
     }
