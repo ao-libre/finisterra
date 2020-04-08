@@ -29,20 +29,23 @@ jobs:
         wrapper-directory: gradle
         arguments: compileJava
 
-    - name: Build succeeded
-      if: success()
-      uses: Ilshidur/action-discord@master
-      with:
-        args: 'Branch ${GITHUB_REF##*/} build successfully on ${{ matrix.os }}'
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build succeeded
+        if: success()
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'Branch ${{ GITHUB_REF##*/ }} build successfully'
 
-    - name: Build failed
-      if: failure()
-      uses: Ilshidur/action-discord@master
-      with:
-        args: 'Branch ${GITHUB_REF##*/} build failed on ${{ matrix.os }}'
+      - name: Build failed
+        if: failure()
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'Branch ${{ GITHUB_REF##*/ }} build failed'
 
-    - name: Build cancelled
-      if: cancelled()
-      uses: Ilshidur/action-discord@master
-      with:
-        args: 'Branch ${GITHUB_REF##*/} build cancelled on ${{ matrix.os }}'
+      - name: Build cancelled
+        if: cancelled()
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'Branch ${{ GITHUB_REF##*/ }} build cancelled'
