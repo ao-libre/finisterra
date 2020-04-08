@@ -2,6 +2,7 @@ package game.systems.resources;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.backends.lwjgl3.audio.OpenALSound;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
 import game.handlers.AOAssetManager;
@@ -71,4 +72,9 @@ public class SoundsSystem extends PassiveSystem {
         sound.stop(soundIndex);
     }
 
+    // seconds
+    public float getDuration(int soundID) {
+        Sound sound = assetManager.getSound(soundID);
+        return sound instanceof OpenALSound ? ((OpenALSound) sound).duration() : 0;
+    }
 }

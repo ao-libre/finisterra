@@ -1,8 +1,14 @@
 package server.systems.entity;
 
 import com.artemis.annotations.Wire;
+import component.entity.Ref;
+import component.position.WorldPos;
+import component.sound.AOSound;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
+import shared.network.notifications.EntityUpdate;
+import shared.util.EntityUpdateBuilder;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,15 +27,30 @@ public class SoundEntitySystem extends PassiveSystem {
     }
 
     public void add(int entity, int soundNumber) {
-        add(entity, soundNumber, false);
+        // add temporal sound
+        EntityUpdateBuilder builder = EntityUpdateBuilder.none()
+                .withComponents(new AOSound(soundNumber, false))
+                .withComponents(new Ref(entity));
+        if (E(entity).hasWorldPos()) {
+            builder.withComponents(E(entity).getWorldPos());
+        }
+        EntityUpdate soundUpdate = builder.build();
+        entityUpdateSystem.add(entity, soundUpdate, UpdateTo.ALL);
     }
 
     public void add(int entity, int soundNumber, boolean loop) {
         int soundEntity = world.create();
-        // create Sound component
         E(soundEntity)
                 .aOSoundId(soundNumber)
                 .aOSoundShouldLoop(loop);
+
+        if (E(entity).hasWorldPos()) {
+            WorldPos worldPos = E(entity).getWorldPos();
+            E(soundEntity)
+                    .worldPosMap(worldPos.map)
+                    .worldPosX(worldPos.x)
+                    .worldPosY(worldPos.y);
+        }
         entitySounds
                 .computeIfAbsent(entity, integer -> new ConcurrentHashMap<>())
                 .put(soundNumber, soundEntity);

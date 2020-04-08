@@ -6,18 +6,17 @@ import com.google.common.collect.Sets;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static shared.network.notifications.EntityUpdate.NO_ENTITY;
 
 public class EntityUpdateBuilder {
 
     private EntityUpdate entityUpdate;
-    private Set<Component> components = new HashSet<>();
-    private Set<Class> toRemove = new HashSet<>();
+    private Map<Class<? extends Component>, Component> components = new HashMap<>();
+    private Set<Class<? extends Component>> toRemove = new HashSet<>();
 
     public static EntityUpdate delete(int entityId) {
         return new RemoveEntity(entityId);
@@ -30,8 +29,31 @@ public class EntityUpdateBuilder {
         return builder;
     }
 
+    public static EntityUpdateBuilder none() {
+        EntityUpdateBuilder builder = new EntityUpdateBuilder();
+        builder.entityUpdate = new EntityUpdate();
+        builder.entityUpdate.entityId = NO_ENTITY;
+        return builder;
+    }
+
+    public static EntityUpdate merge(Set<EntityUpdate> toMerge) {
+        int id = toMerge.iterator().next().entityId;
+        if (toMerge.stream().anyMatch(RemoveEntity.class::isInstance)) {
+            return delete(id);
+        }
+        EntityUpdateBuilder builder = EntityUpdateBuilder.of(id);
+        toMerge.forEach(update -> {
+            builder.withComponents(update.components);
+            builder.remove(update.toRemove);
+        });
+        return builder.build();
+    }
+
     public EntityUpdateBuilder withComponents(Component... components) {
-        this.components.addAll(Arrays.asList(components));
+        for (Component component : components) {
+            // override if exists
+            this.components.put(component.getClass(), component);
+        }
         return this;
     }
 
@@ -39,8 +61,10 @@ public class EntityUpdateBuilder {
         return withComponents(components.toArray(new Component[0]));
     }
 
-    public EntityUpdateBuilder remove(Class... toRemove) {
-        this.toRemove.addAll(Arrays.asList(toRemove));
+    public EntityUpdateBuilder remove(Class<? extends Component>... toRemove) {
+        if(toRemove != null) {
+            this.toRemove.addAll(Arrays.asList(toRemove));
+        }
         return this;
     }
 
@@ -49,7 +73,7 @@ public class EntityUpdateBuilder {
     }
 
     public EntityUpdate build() {
-        entityUpdate.components = components.toArray(new Component[0]);
+        entityUpdate.components = components.values().toArray(new Component[0]);
         entityUpdate.toRemove = toRemove.toArray(new Class[0]);
         return entityUpdate;
     }

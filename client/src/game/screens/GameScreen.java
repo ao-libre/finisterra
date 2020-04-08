@@ -12,6 +12,7 @@ import game.AOGame;
 import game.ClientConfiguration;
 import game.handlers.AOAssetManager;
 import game.systems.PlayerSystem;
+import game.systems.network.*;
 import shared.systems.IntervalSystem;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.anim.IdleAnimationSystem;
@@ -23,10 +24,6 @@ import game.systems.camera.CameraSystem;
 import game.systems.input.InputSystem;
 import game.systems.map.MapManager;
 import game.systems.map.TiledMapSystem;
-import game.systems.network.ClientResponseProcessor;
-import game.systems.network.ClientSystem;
-import game.systems.network.GameNotificationProcessor;
-import game.systems.network.TimeSync;
 import game.systems.physics.MovementProcessorSystem;
 import game.systems.physics.MovementSystem;
 import game.systems.physics.AttackAnimationSystem;
@@ -95,6 +92,7 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
                         new CameraShakeSystem(),
 
                         // Logic systems
+                        new LocalReferenceSystem(),
                         new NetworkedEntitySystem(),
                         new AttackAnimationSystem(),
                         new SoundSytem(),

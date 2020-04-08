@@ -228,7 +228,7 @@ public class MagicCombatSystem extends PassiveSystem {
         mana.min -= requiredMana;
         // update mana
         EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(mana).build();
-        worldManager.sendEntityUpdate(playerId, update);
+        entityUpdateSystem.add(update, UpdateTo.ENTITY);
     }
 
     private void sendAttributeUpdate(int player, Attribute attribute, Buff buff) {

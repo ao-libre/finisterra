@@ -20,6 +20,7 @@ import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.*;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.MessageSystem;
+import server.systems.network.ServerReferenceSystem;
 import shared.model.lobby.Player;
 import shared.model.map.Map;
 import shared.systems.IntervalSystem;
@@ -81,6 +82,7 @@ public class Server {
                 .with(new ComponentManager())
                 .with(new EntityFactorySystem())
                 .with(new IntervalSystem())
+                .with(new ServerReferenceSystem())
                 .with(new ItemManager())
                 .with(new ServerRequestProcessor())
                 .with(new ItemConsumers())
