@@ -3,6 +3,7 @@ package server.systems.manager;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
+import com.esotericsoftware.minlog.Log;
 import component.camera.Focused;
 import component.entity.character.states.CanWrite;
 import component.entity.npc.OriginPos;
@@ -15,7 +16,6 @@ import server.systems.network.UpdateTo;
 import shared.model.lobby.Player;
 import shared.model.npcs.NPC;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.RemoveEntity;
 import shared.util.EntityUpdateBuilder;
 
 import java.util.List;
@@ -48,15 +48,9 @@ public class WorldManager extends DefaultManager {
         getWorld().delete(entityId);
     }
 
-    void sendEntityRemove(int user, int entity) {
-        if (networkManager.playerHasConnection(user)) {
-            networkManager
-                    .sendTo(networkManager.getConnectionByPlayer(user), new RemoveEntity(entity));
-        }
-    }
-
     public void sendEntityUpdate(int user, Object update) {
         if (networkManager.playerHasConnection(user)) {
+            Log.debug("Sending update: " + update.toString() + " to " + user);
             networkManager.sendTo(networkManager.getConnectionByPlayer(user), update);
         }
     }
