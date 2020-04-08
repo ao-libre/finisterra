@@ -137,7 +137,7 @@ public class LoginScreen extends AbstractScreen {
     private class LoginButtonListener extends ChangeListener {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
-            if (((TextButton)actor).isPressed()) {
+            if (((TextButton) actor).isPressed()) {
                 //El boton fue apretado
                 loginButton.setDisabled(true);
                 Timer.schedule(new Timer.Task() { //@todo implementar API que tome lambdas () -> {}
@@ -160,38 +160,39 @@ public class LoginScreen extends AbstractScreen {
                 String ip = server.getHostname();
                 int port = server.getPort();
 
-            //@todo encapsular todo este chequeo en el cliente
-            if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
+                //@todo encapsular todo este chequeo en el cliente
+                if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
 
-                if (clientSystem.getState() != MarshalState.STOPPED) {
-                    clientSystem.stop();
-                }
+                    if (clientSystem.getState() != MarshalState.STOPPED) {
+                        clientSystem.stop();
+                    }
 
-                // Si no estamos tratando de conectarnos al servidor, intentamos conectarnos.
-                if (clientSystem.getState() == MarshalState.STOPPED) {
+                    // Si no estamos tratando de conectarnos al servidor, intentamos conectarnos.
+                    if (clientSystem.getState() == MarshalState.STOPPED) {
 
-                    // Seteamos la info. del servidor al que nos vamos a conectar.
-                    clientSystem.getKryonetClient().setHost(ip);
-                    clientSystem.getKryonetClient().setPort(port);
+                        // Seteamos la info. del servidor al que nos vamos a conectar.
+                        clientSystem.getKryonetClient().setHost(ip);
+                        clientSystem.getKryonetClient().setPort(port);
 
-                    // Inicializamos la conexion.
-                    clientSystem.start();
+                        // Inicializamos la conexion.
+                        clientSystem.start();
 
-                    // Si pudimos conectarnos, mandamos la peticion para loguearnos a la cuenta.
-                    if (clientSystem.getState() == MarshalState.STARTED) {
+                        // Si pudimos conectarnos, mandamos la peticion para loguearnos a la cuenta.
+                        if (clientSystem.getState() == MarshalState.STARTED) {
 
-                        // Enviamos la peticion de inicio de sesion.
-                        clientSystem.getKryonetClient().sendToAll(new AccountLoginRequest(email, password));
+                            // Enviamos la peticion de inicio de sesion.
+                            clientSystem.getKryonetClient().sendToAll(new AccountLoginRequest(email, password));
 
-                    } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
-                        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
+                        } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
+                            AOAssetManager assetManager = AOGame.getGlobalAssetManager();
 
-                        // Mostramos un mensaje de error.
-                        Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
-                        dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
-                        dialog.button("OK");
-                        dialog.show(getStage());
-                }
+                            // Mostramos un mensaje de error.
+                            Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
+                            dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
+                            dialog.button("OK");
+                            dialog.show(getStage());
+                        }
+                    }
                 }
             }
         }

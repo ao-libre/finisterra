@@ -77,7 +77,7 @@ public class SpellView extends Table {
      *
      * @return staff
      */
-    @NotNull
+
     private ImageButton createCastButton() {
         ImageButton staff = new ImageButton(Skins.COMODORE_SKIN, "staff");
         staff.addListener(new ClickListener() {
