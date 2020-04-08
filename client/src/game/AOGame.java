@@ -16,11 +16,10 @@ import game.systems.network.GameNotificationProcessor;
 import shared.util.LogSystem;
 
 /**
- * Represents the game application.
- * Implements {@link ApplicationListener}.
- * This should be the primary instance of the app.
+ * Esta es la <b>clase principal</b> de la aplicación.
+ * Ver la documentación de libGDX sobre {@link ApplicationListener}
+ * para detalles del funcionamiento interno.
  */
-
 public class AOGame extends Game implements AssetManagerHolder {
 
     private final AOAssetManager assetManager;
@@ -29,6 +28,10 @@ public class AOGame extends Game implements AssetManagerHolder {
     private World world;
     private Sync fpsSync;
 
+    /**
+     * Constructor de la clase.
+     * Acá no hay contexto de libGDX, ver {@link AOGame#create()}
+     */
     public AOGame(ClientConfiguration clientConfiguration) {
         Log.setLogger(new LogSystem());
         this.clientConfiguration = clientConfiguration;
@@ -37,19 +40,6 @@ public class AOGame extends Game implements AssetManagerHolder {
         clientSystem.setNotificationProcessor(new GameNotificationProcessor());
         clientSystem.setResponseProcessor(new ClientResponseProcessor());
         this.world = new WorldConstructor(this, assetManager, clientSystem, clientConfiguration).getWorld();
-    }
-
-    /*
-        Este metodo te permite acceder a el objeto que administra los recursos del juego
-        desde CUALQUIER parte del proyecto.
-    */
-    public static AOAssetManager getGlobalAssetManager() {
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        return game.getAssetManager();
-    }
-
-    public ClientSystem getClientSystem() { // @todo inyectar ClientSystem en consumidores
-        return clientSystem;
     }
 
     // Crea la ventana del juego.
@@ -61,21 +51,6 @@ public class AOGame extends Game implements AssetManagerHolder {
         toLoading();
         this.fpsSync = new Sync();
         // @todo load platform-independent configuration (network, etc.)
-    }
-
-    public ClientConfiguration getClientConfiguration() {
-        return clientConfiguration;
-    }
-
-    @Override
-    public AOAssetManager getAssetManager() {
-        return assetManager;
-    }
-
-    public World getWorld() { return world; }
-
-    public void toGame(GameScreen gameScreen) {
-        setScreen(gameScreen);
     }
 
     @Override
@@ -92,5 +67,33 @@ public class AOGame extends Game implements AssetManagerHolder {
         Gdx.app.exit();
         Log.debug("Thank you for playing! See you soon...");
         System.exit(0);
+    }
+
+    /*
+        Este metodo te permite acceder a el objeto que administra los recursos del juego
+        desde CUALQUIER parte del proyecto.
+    */
+    public static AOAssetManager getGlobalAssetManager() {
+        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
+        return game.getAssetManager();
+    }
+
+    @Override
+    public AOAssetManager getAssetManager() {
+        return assetManager;
+    }
+
+    public ClientConfiguration getClientConfiguration() {
+        return clientConfiguration;
+    }
+
+    public ClientSystem getClientSystem() { // @todo inyectar ClientSystem en consumidores
+        return clientSystem;
+    }
+
+    public World getWorld() { return world; }
+
+    public void toGame(GameScreen gameScreen) {
+        setScreen(gameScreen);
     }
 }
