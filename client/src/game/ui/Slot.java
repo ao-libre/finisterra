@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Tooltip;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import game.AOGame;
 import game.handlers.AOAssetManager;
+import game.screens.GameScreen;
+import game.systems.resources.ObjectSystem;
 import game.utils.Skins;
 import shared.objects.types.*;
 import shared.util.Messages;
@@ -67,8 +69,8 @@ public class Slot extends ImageButton {
         if (tooltip != null) {
             removeListener(tooltip);
         }
-//        tooltip = getTooltip(item);
-//        addListener(tooltip);
+        tooltip = getTooltip(item);
+        addListener(tooltip);
     }
 
     @Override
@@ -96,12 +98,11 @@ public class Slot extends ImageButton {
     }
 
     public Tooltip<Actor> getTooltip(Item item) {
-//        int objID = item.objId;
-//        ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null).getSystem(ObjectSystem.class);
-//        Optional<Obj> obj = objectSystem.getObject(objID);
-//        Actor content = createTooltipContent(obj.get());
-//        return new Tooltip<>(content);
-        return null;
+        int objID = item.objId;
+        ObjectSystem objectSystem = GameScreen.world.getSystem(ObjectSystem.class);
+        Optional<Obj> obj = objectSystem.getObject(objID);
+        Actor content = createTooltipContent(obj.get());
+        return new Tooltip<>(content);
     }
 
     private Actor createTooltipContent(Obj obj) {
