@@ -7,7 +7,6 @@ import com.artemis.EntityEdit;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
-import component.entity.Ref;
 import component.entity.character.info.Bag;
 import game.AOGame;
 import game.screens.LobbyScreen;
@@ -27,8 +26,6 @@ import shared.network.lobby.player.ChangePlayerNotification;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
-
-import java.util.stream.Stream;
 
 import static com.artemis.E.E;
 import static shared.network.notifications.EntityUpdate.NO_ENTITY;
@@ -66,33 +63,6 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
             updateEntity(entityUpdate);
         }
 
-    }
-
-    private void linkRefToLocal(EntityUpdate entityUpdate) {
-        if (Stream.of(entityUpdate.components)
-                .anyMatch(component -> component.getClass().equals(Ref.class))) {
-            int localEntity = networkedEntitySystem.getLocalId(entityUpdate.entityId);
-            E localE = E(localEntity);
-            if (localE != null && localE.hasRef()) {
-                // Map ref to local component.entity
-                Log.debug("Entity " + localE.id() + " has a reference to network id: " + localE.refId());
-                int networkId = localE.refId();
-                if (networkedEntitySystem.exists(networkId)) {
-                    int newLocalRef = networkedEntitySystem.getLocalId(networkId);
-                    Log.debug("Updating ref to: " + newLocalRef);
-                    localE.refId(newLocalRef);
-                } else {
-                    // ref no longer exists, remove ref
-                    Log.debug("Ref doesn't exist");
-                    localE.removeRef();
-                    if (!localE.hasWorldPos()) {
-                        Log.debug("It doesn't have worldPos nor valid Ref. Entity deleted");
-                        // if don't have worldPos, delete entity
-                        localE.deleteFromWorld();
-                    }
-                }
-            }
-        }
     }
 
     @Override
