@@ -296,6 +296,6 @@ public abstract class Inventory extends Window {
     protected abstract void swap(int originIndex, int targetIndex);
 
     protected abstract TextureRegion getGraphic(Item item);
-
+    
 
 }

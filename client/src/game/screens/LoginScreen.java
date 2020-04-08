@@ -137,7 +137,7 @@ public class LoginScreen extends AbstractScreen {
     private class LoginButtonListener extends ChangeListener {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
-            if (((TextButton)actor).isPressed()) {
+            if (((TextButton) actor).isPressed()) {
                 //El boton fue apretado
                 loginButton.setDisabled(true);
                 Timer.schedule(new Timer.Task() { //@todo implementar API que tome lambdas () -> {}
@@ -191,10 +191,10 @@ public class LoginScreen extends AbstractScreen {
                             dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
                             dialog.button("OK");
                             dialog.show(getStage());
-                    }
+                        }
                     }
                 }
-           }
+            }
         }
     }
 

@@ -8,10 +8,12 @@ import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.util.AOJson;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
- * @todo distinguish between Desktop-specific configuration (LWJGL configuration) and platform-independent configuration (Client, Network, etc.).
- * @see {@link AOGame}
+ * Este es el POJO del archivo de configuracion del cliente [Config.json]
+ * @see AOGame
  */
 public class ClientConfiguration extends PassiveSystem {
 
@@ -19,20 +21,37 @@ public class ClientConfiguration extends PassiveSystem {
     private Account account;
     private Network network;
 
+    /**
+     * Obtiene el archivo Config.json y lee el JSON.
+     *
+     * @param path La ruta donde se encuentra el Config.json a cargar.
+     *
+     * @throws FileNotFoundException Si no se encuentra el archivo.
+	 * @throws IOException Si por alguna misteriosa razon no se puede leer el archivo.
+     */
     public static ClientConfiguration loadConfig(String path) {
-        Json configObject = new AOJson();
-        try (FileInputStream is = new FileInputStream(path)) {
-            // Before GDX initialization
+        
+		Json configObject = new AOJson();      
+		try (FileInputStream is = new FileInputStream(path)) {        
+			// Before GDX initialization
             // DO NOT USE 'Gdx.Files', because 'Gdx.Files' in the launcher is always NULL!
             return configObject.fromJson(ClientConfiguration.class, is);
-        } catch (Exception ex) {
-            Log.error("Client configuration", "File not found!", ex); // @todo check for other errors
-        }
+            
+		} catch (FileNotFoundException ex) {
+            Log.error("Client configuration" , "File not found!", ex);
+        
+		} catch (IOException ex) {
+		    Log.error("Client configuration" , "It appears we've encountered an unexpected I/O error!", ex);
+		}
 
         return null;
     }
 
-    // useful for client json sample creation
+    /**
+     *  Crea un objeto con los valores de configuracion por defecto por si el archivo no existe.
+     *
+     * @return configOutput El objeto con los valores por defecto.
+     */
     public static ClientConfiguration createConfig() {
         // Default values will not be written down
         ClientConfiguration configOutput = new ClientConfiguration();
@@ -69,6 +88,17 @@ public class ClientConfiguration extends PassiveSystem {
         return configOutput;
     }
 
+    /**
+     * Este metodo guarda el archivo Config.json.
+     *
+     * @see this#createConfig()
+     * @param path La ruta donde queres que se guarde el Config.json generado.
+    */
+    public void save(String path) {
+        Json json = new AOJson();
+        json.toJson(this, new FileHandle(path));
+    }
+
     public Init getInitConfig() {
         return initConfig;
     }
@@ -93,12 +123,9 @@ public class ClientConfiguration extends PassiveSystem {
         this.network = network;
     }
 
-    public void save(String path) {
-        Json json = new AOJson();
-        json.toJson(this, new FileHandle(path));
-    }
-
-    // @todo this is Desktop specific
+    /**
+     * De aca en adelante esta el POJO usado para leer/escribir el archivo Config.json
+     */
     public static class Init {
         private String language;
         private Video video;

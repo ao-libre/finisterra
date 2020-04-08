@@ -20,6 +20,12 @@ public class ClientSystem extends MarshalSystem {
         super(new NetworkDictionary(), new KryonetClientMarshalStrategy(host, port));
     }
 
+    /**
+     * Recibimos y procesamos los datos del servidor.
+     *
+     * @param connectionId ID de la conexion.
+     * @param object Objeto (+ datos, obvio) enviados por el servidor.
+     */
     @Override
     public void received(int connectionId, Object object) {
         Gdx.app.postRunnable(() -> {
@@ -37,6 +43,11 @@ public class ClientSystem extends MarshalSystem {
         });
     }
 
+    /**
+     * Nos desconectamos del servidor.
+     *
+     * @param connectionId ID de la conexion.
+     */
     @Override
     public void disconnected(int connectionId) {
         super.disconnected(connectionId);
