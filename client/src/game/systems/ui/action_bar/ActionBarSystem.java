@@ -46,7 +46,7 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
             }
         });
 
-        actionBar.add(buttons).top().row();
+        actionBar.add(buttons).top().right().row();
 
         Stack stack = new Stack();
         E e = E(entityId);

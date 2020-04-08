@@ -1,15 +1,21 @@
 package game.ui;
 
+import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import component.entity.character.info.Bag;
 import component.entity.character.info.Bag.Item;
+import game.screens.GameScreen;
+import game.systems.PlayerSystem;
 import game.utils.Skins;
 
 import java.util.ArrayList;
@@ -23,29 +29,122 @@ public abstract class Inventory extends Window {
     private static final int SIZE = COLUMNS * ROWS;
     private int base;
 
+    private PlayerSystem playerSystem;
     private ArrayList<Slot> slots;
+    private ArrayList< Label > itemCount;
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
+    private boolean expanded;
+
 
     public Inventory() {
         super("", Skins.COMODORE_SKIN, "inventory");
-        int columnsCounter = 1;
         setMovable(false);
         this.slots = new ArrayList<>();
-        for (int i = 0; i < SIZE; i++) {
-            Slot newSlot = new Slot();
-            slots.add(newSlot);
-            add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE);
-            if (columnsCounter > ROWS - 1) {
-                row();
-                columnsCounter = 0;
-            }
-            columnsCounter++;
-        }
-        addListener(getMouseListener());
+        this.itemCount = new ArrayList<>();
+        createui();
     }
 
+    private void createui(){
+        clear();
+        if (expanded){
+            int columnsCounter = 1,rowCounter = 0, loops = 0 ;
+            add();
+            for (int i = 0; i < SIZE; i++) {
+                Slot newSlot = new Slot();
+                Label count = new Label( "",getSkin() );
+                count.setFontScale( 0.7f );
+                itemCount.add( count );
+                slots.add(newSlot);
+                add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE);
+                if (columnsCounter > ROWS - 1) {
+                    row();
+                    for (int x = 0; x < 5; x++) {
+                        if (x == 0){
+                            add();
+                        }else {
+                            switch( loops ) {
+                                case 0:
+                                    add( itemCount.get( x ) ).height( 10 );
+                                    break;
+                                case 1:
+                                    add( itemCount.get( x + 4 ) ).height( 10 );
+                                    break;
+                                case 2:
+                                    add( itemCount.get( x + 8 ) ).height( 10 );
+                                    break;
+                                case 3:
+                                    add( itemCount.get( x + 12 ) ).height( 10 );
+                                    break;
+                                case 4:
+                                    add( itemCount.get( x + 16 ) ).height( 10 );
+                                    break;
+                            }
+                        }
+                    }
+                    row();
+                    for (int x = 0; x < 5; x++) {
+                        if (x == 0) {
+                            add();
+                        }else {
+                            add( new Image( getSkin().getDrawable( "separator" ) ) );
+                        }
+                    }
+                    row();
+                    if (rowCounter==1){
+                        add(button()).width(Slot.SIZE).height(Slot.SIZE);
+                    }else {
+                        add();
+                    }
+                    columnsCounter = 0;
+                    rowCounter++;
+                    loops++;
+                }
+                columnsCounter++;
+            }
+            addListener(getMouseListener());
+        } else {
+            for (int i = 0; i < 5; i++) {
+                Slot newSlot = new Slot();
+                Label count = new Label( "",getSkin() );
+                count.setFontScale( 0.7f );
+                slots.add(newSlot);
+                itemCount.add( count );
+                if (i == 2){
+                    add(button()).width(Slot.SIZE).height(Slot.SIZE);
+                    add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
+                    add();
+                    add( itemCount.get( i ) ).height( 10 ).row();
+                    add();
+                    add( new Image( getSkin().getDrawable("separator"))).row();
+                } else {
+                    add();
+                    add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
+                    add();
+                    add( itemCount.get( i ) ).height( 10 ).row();
+                    add();
+                    add( new Image( getSkin().getDrawable("separator"))).row();
+                }
+            }
+            addListener(getMouseListener());
+        }
+    }
+
+    private ImageTextButton button(){
+        playerSystem = GameScreen.world.getSystem( PlayerSystem.class );
+        E player = playerSystem.get();
+        ImageTextButton imageButton = new ImageTextButton("",Skins.COMODORE_SKIN, "inventory-expand-collapse" );
+        imageButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                expanded = !expanded;
+                createui();
+                update( player.getBag() );
+            }
+        });
+        return imageButton;
+    }
     public void selectItem(float x, float y, int tapCount) {
         selected.ifPresent(slot -> slot.setSelected(false));
         selected = getSlot(x, y);
@@ -137,9 +236,26 @@ public abstract class Inventory extends Window {
 
     public void update(int base, Bag userBag) {
         Item[] userItems = userBag.items;
-        for (int i = 0; i < SIZE; i++) {
-            Item item = base + i < userItems.length ? userItems[base + i] : null;
-            slots.get(i).setItem(item, item != null ? getGraphic(item) : null);
+        if (expanded) {
+            for (int i = 0; i < SIZE; i++) {
+                Item item = base + i < userItems.length ? userItems[base + i] : null;
+                slots.get( i ).setItem( item, item != null ? getGraphic( item ) : null );
+                updateCount( item, i+1 );
+            }
+        } else {
+            for (int i = 0; i < 5; i++) {
+                Item item = base + i < userItems.length ? userItems[base + i] : null;
+                slots.get( i ).setItem( item, item != null ? getGraphic( item ) : null );
+                updateCount( item, i );
+            }
+        }
+
+    }
+    private void updateCount(Item item, int i){
+        if(item != null) {
+            itemCount.get( i ).setText( item.count );
+        }else {
+            itemCount.get( i ).setText( "" );
         }
     }
 
