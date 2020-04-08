@@ -5,6 +5,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
 import component.position.WorldPos;
 import server.systems.EntityFactorySystem;
+import server.systems.ServerSystem;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.UpdateTo;
 import shared.model.map.Tile;
@@ -29,6 +30,7 @@ public class MapManager extends DefaultManager {
     private EntityUpdateSystem entityUpdateSystem;
     private EntityFactorySystem entityFactorySystem;
     private ComponentManager componentManager;
+    private ServerSystem serverSystem;
 
     private MapHelper helper;
     private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
@@ -256,8 +258,8 @@ public class MapManager extends DefaultManager {
         if (nearEntities.containsKey(entity1)) {
             nearEntities.get(entity1).remove(entity2);
         }
-        // always notify that this component.entity is not longer in range
-        worldManager.sendEntityRemove(entity1, entity2);
+        // always notify that this entity is not longer in range
+        entityUpdateSystem.add(entity1, EntityUpdateBuilder.delete(entity2), UpdateTo.ENTITY);
     }
 
 
@@ -270,8 +272,10 @@ public class MapManager extends DefaultManager {
     private void linkEntities(int entity1, int entity2) {
         Set<Integer> near = nearEntities.computeIfAbsent(entity1, (i) -> new HashSet<>());
         if (near.add(entity2)) {
-            EntityUpdate update = EntityUpdateBuilder.of(entity2).withComponents(componentManager.getComponents(entity2, ComponentManager.Visibility.CLIENT_PUBLIC)).build();
-            entityUpdateSystem.add(entity1, update, UpdateTo.ENTITY);
+            if (serverSystem.playerHasConnection(entity1)) { // if its a player or networked entity, send new entity
+                EntityUpdate update = EntityUpdateBuilder.of(entity2).withComponents(componentManager.getComponents(entity2, ComponentManager.Visibility.CLIENT_PUBLIC)).build();
+                entityUpdateSystem.add(entity1, update, UpdateTo.ENTITY);
+            }
         }
     }
 

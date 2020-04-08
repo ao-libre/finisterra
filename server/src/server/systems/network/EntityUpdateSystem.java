@@ -35,10 +35,16 @@ public class EntityUpdateSystem extends BaseSystem {
     @Override
     protected void processSystem() {
         // send all updates
-        entityUpdates.forEach((id, update) -> worldManager.sendEntityUpdate(id, update.toArray(new EntityUpdate[0])));
+        entityUpdates.forEach((id, update) -> {
+            worldManager.sendEntityUpdate(id, update.toArray(new EntityUpdate[0]));
+        });
         entityUpdates.clear();
 
-        publicUpdates.forEach((id, update) -> worldManager.notifyToNearEntities(id, update.toArray(new EntityUpdate[0])));
+        publicUpdates.forEach((id, update) -> {
+            Log.debug("Notifying near to: " + id);
+            worldManager.notifyToNearEntities(id, update.toArray(new EntityUpdate[0]));
+            Log.debug("Notifications ended for: " + id);
+        });
         publicUpdates.clear();
     }
 
@@ -47,6 +53,7 @@ public class EntityUpdateSystem extends BaseSystem {
     }
 
     public void add(int entity, EntityUpdate update, UpdateTo updateTo) {
+        Log.debug("Will add update: " + update.toString() + " " + updateTo.name());
         // search all updates of this update component.entity and remove them
         if (update instanceof RemoveEntity) {
             if (entityUpdates.containsKey(entity)) {
@@ -80,6 +87,7 @@ public class EntityUpdateSystem extends BaseSystem {
                     .filter(u -> u.entityId != NO_ENTITY)
                     .filter(u -> u.entityId == update.entityId)
                     .collect(Collectors.toSet());
+            toMerge.add(update);
             if (toMerge.size() > 1) {
                 Log.debug("Updates to be merged: ");
                 toMerge.forEach(it -> Log.debug(" - " + it.toString()));
