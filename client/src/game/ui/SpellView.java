@@ -42,6 +42,9 @@ public class SpellView extends Table {
         spellTable.toFront();
     }
 
+    /**
+     * Cambia el cursor al seleccionar un hechizo.
+     */
     private void changeCursor() {
 //        WorldUtils.getWorld().ifPresent(world -> {
 //            world.getSystem(UserInterfaceSystem.class).getConsole().addInfo("Haz click para lanzar el hechizo");
@@ -50,6 +53,9 @@ public class SpellView extends Table {
 //        Cursors.setCursor("select");
     }
 
+    /**
+     * Actualiza la lista de hechizos en la UI.
+     */
     public void updateSpells() {
 //        WorldUtils.getWorld().ifPresent(world -> {
 //            SpellsSystem spellsSystem = world.getSystem(SpellsSystem.class);
@@ -65,6 +71,12 @@ public class SpellView extends Table {
     public void addSpelltoSpellview(Spell spell, int slotPosition) {
         slots.get(slotPosition).setSpell(spell);
     }
+
+    /**
+     * Interfaz de Usuario: Crea el boton para lanzar el hechizo.
+     *
+     * @return staff
+     */
 
     private ImageButton createCastButton() {
         ImageButton staff = new ImageButton(Skins.COMODORE_SKIN, "staff");

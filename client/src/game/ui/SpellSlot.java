@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import game.utils.Resources;
 import game.utils.Skins;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import shared.model.Spell;
 
 public class SpellSlot extends ImageButton {
@@ -21,7 +23,7 @@ public class SpellSlot extends ImageButton {
     private final SpellView spellView;
     private final ClickListener clickListener;
     private Spell spell;
-    private Tooltip tooltip;
+    private Tooltip<?> tooltip;
 
     SpellSlot(SpellView spellView, Spell spell) {
         super(Skins.COMODORE_SKIN, "icon-container");
@@ -49,12 +51,14 @@ public class SpellSlot extends ImageButton {
         addListener(tooltip);
     }
 
-    private Tooltip getTooltip(Spell spell) {
+    @NotNull
+    private Tooltip<?> getTooltip(Spell spell) {
         Actor content = createTooltipContent(spell);
         return new Tooltip<>(content);
     }
 
-    private Actor createTooltipContent(Spell spell) {
+    @NotNull
+    private Actor createTooltipContent(@NotNull Spell spell) {
         String name = spell.getName();
         String desc = spell.getDesc();
         int minhp = spell.getMinHP();
@@ -100,7 +104,7 @@ public class SpellSlot extends ImageButton {
         selection.draw(batch, getX(), getY(), SIZE, SIZE);
     }
 
-    private void drawSpell(Batch batch) {
+    private void drawSpell(@NotNull Batch batch) {
         Texture graphic = getSpellIcon();
         Color current = new Color(batch.getColor());
         batch.setColor(current.r, current.g, current.b, ICON_ALPHA);
@@ -117,8 +121,9 @@ public class SpellSlot extends ImageButton {
         return clickListener != null && clickListener.isOver();
     }
 
+    @NotNull
+    @Contract(" -> new")
     private Texture getSpellIcon() {
-        Texture icon = new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getId() + ".png"));
-        return icon;
+        return new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getId() + ".png"));
     }
 }

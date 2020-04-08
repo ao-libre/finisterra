@@ -30,6 +30,9 @@ import java.util.Optional;
 import static com.artemis.E.E;
 import static game.systems.render.world.CharacterRenderingSystem.CharacterDrawer.createDrawer;
 
+/**
+ * Clase para el renderizado de personajes
+ */
 @Wire(injectInherited = true)
 public class CharacterRenderingSystem extends RenderingSystem {
 
@@ -107,31 +110,34 @@ public class CharacterRenderingSystem extends RenderingSystem {
             return characterDrawer;
         }
 
+        /**
+         * Dibuja los cuerpos en la direccion en la que se encuentren
+         */
         public void draw() {
             int current = player.getHeading().current;
-            switch (current) {
-                case Heading.HEADING_NORTH:
+            switch (current) { //¿A que direccion esta mirando?
+                case Heading.HEADING_NORTH: //Norte
                     drawWeapon();
                     drawShield();
                     drawBody();
                     drawHead();
                     drawHelmet();
                     break;
-                case Heading.HEADING_SOUTH:
+                case Heading.HEADING_SOUTH: //Sur
                     drawBody();
                     drawHead();
                     drawHelmet();
                     drawWeapon();
                     drawShield();
                     break;
-                case Heading.HEADING_EAST:
+                case Heading.HEADING_EAST: //Este
                     drawShield();
                     drawBody();
                     drawHead();
                     drawHelmet();
                     drawWeapon();
                     break;
-                case Heading.HEADING_WEST:
+                case Heading.HEADING_WEST: //Oeste
                     drawWeapon();
                     drawBody();
                     drawHead();
@@ -141,6 +147,9 @@ public class CharacterRenderingSystem extends RenderingSystem {
             }
         }
 
+        /**
+         * Calcula la posicion del personaje en la pantalla
+         */
         private void calculateOffsets() {
             final Body body = player.getBody();
             BodyDescriptor bodyDescriptor = descriptorsSystem.getBody(body.index);
@@ -156,6 +165,9 @@ public class CharacterRenderingSystem extends RenderingSystem {
             bodyPixelOffsetY = screenPos.y - (bodyRegion.getRegionHeight() - Tile.TILE_PIXEL_HEIGHT) - Tile.TILE_PIXEL_HEIGHT;
         }
 
+        /**
+         * Renderizado de cuerpos
+         */
         void drawBody() {
             float offsetY = -getMovementOffsetY() * SCALE;
             float x = bodyPixelOffsetX + idle / 4;
@@ -190,6 +202,9 @@ public class CharacterRenderingSystem extends RenderingSystem {
             );
         }
 
+        /**
+         * Renderizado de cabezas
+         */
         void drawHead() {
             if (player.hasHead()) {
                 final Head head = player.getHead();
@@ -207,6 +222,9 @@ public class CharacterRenderingSystem extends RenderingSystem {
             return getMovementOffset(bodyAnimationOffsetY);
         }
 
+        /**
+         * Renderizado de Cascos
+         */
         void drawHelmet() {
             if (player.hasHelmet()) {
                 Helmet helmet = player.getHelmet();
@@ -217,6 +235,9 @@ public class CharacterRenderingSystem extends RenderingSystem {
             }
         }
 
+        /**
+         * Renderizado de Armas
+         */
         void drawWeapon() {
             if (player.hasWeapon()) {
                 Weapon weapon = player.getWeapon();
@@ -226,6 +247,9 @@ public class CharacterRenderingSystem extends RenderingSystem {
         }
 
 
+        /**
+         * Renderizado de Escudos
+         */
         void drawShield() {
             if (player.hasShield()) {
                 Shield shield = player.getShield();
@@ -249,6 +273,14 @@ public class CharacterRenderingSystem extends RenderingSystem {
             }
         }
 
+        /**
+         * Renderiza un grafico (de cuerpo) en pantalla
+         * @param region
+         * @param x
+         * @param y
+         * @param offsetX
+         * @param offsetY
+         */
         private void drawTexture(TextureRegion region, float x, float y, float offsetX, float offsetY) {
             drawTexture(region, x, y, offsetX, offsetY, 1);
         }
