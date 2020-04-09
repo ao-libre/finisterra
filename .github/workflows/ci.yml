@@ -29,16 +29,11 @@ jobs:
         wrapper-directory: .
         arguments: compileJava
 
+    - name: Create post_message file
+      run: echo '' >> post_message.txt
+
     - name: Set false to post_message (failed)
       if: failure()
-      run: echo 'false' > post_message.txt
-
-    - name: Set true to post_message (success)
-      if: success()
-      run: echo 'true' > post_message.txt
-
-    - name: Set false to post_message (cancelled)
-      if: cancelled()
       run: echo 'false' > post_message.txt
 
     - name: Upload file post_message.txt
@@ -67,7 +62,7 @@ jobs:
         run: echo "::set-output name=post_message::$(<pass_file/post_message.txt)"
 
       - name: Build succeeded
-        if: steps.set_output.outputs.post_message == 'true'
+        if: steps.set_output.outputs.post_message == ''
         uses: Ilshidur/action-discord@master
         with:
           args: 'Branch ${{ steps.extract_branch.outputs.branch }} build successfully'
