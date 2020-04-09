@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+env:
+  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  DISCORD_USERNAME: ${{ secrets.DISCORD_USERNAME }}
+  DISCORD_AVATAR: ${{ secrets.DISCORD_AVATAR }}
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout 
+      uses: actions/checkout@v2
+    - name: Setup Java
+      uses: actions/setup-java@v1
+      with:
+        java-version: 14
+    - name: Build
+      uses: eskatos/gradle-command-action@v1
+      with:
+        wrapper-directory: .
+        arguments: compileJava
+
+    - name: Create post_message file
+      run: echo '' >> post_message.txt
+
+    - name: Set false to post_message (failed)
+      if: failure()
+      run: echo 'false' > post_message.txt
+
+    - name: Upload file post_message.txt
+      uses: actions/upload-artifact@v1
+      with:
+        name: pass_file
+        path: post_message.txt
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: always()
+    steps:
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - name: Download file post_message.txt
+        uses: actions/download-artifact@v1
+        with:
+          name: pass_file
+
+      - name: Read file post_message.txt and set output parameter
+        id: set_output
+        run: echo "::set-output name=post_message::$(<pass_file/post_message.txt)"
+
+      - name: Build succeeded
+        if: steps.set_output.outputs.post_message == ''
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'Branch ${{ steps.extract_branch.outputs.branch }} build successfully'
+
+      - name: Build failed
+        if: steps.set_output.outputs.post_message == 'false'
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'Branch ${{ steps.extract_branch.outputs.branch }} build failed'
