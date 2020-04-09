@@ -2,7 +2,6 @@ package game.systems.lobby;
 
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.utils.Array;
 import game.handlers.AOAssetManager;
 import game.screens.ScreenManager;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
@@ -56,10 +55,6 @@ public class LobbySystem extends PassiveSystem {
         Dialog dialog = new Dialog(assetManager.getMessages(Messages.MAX_ROOM_LIMIT_CREATION_TITLE), getSkin());
         dialog.text(assetManager.getMessages(Messages.MAX_ROOM_LIMIT_CREATION_DESCRIPTION));
         dialog.button("OK");
-        dialog.show(screenManager.getScreen().getStage());
-    }
-
-    private void updateRooms() {
-        roomList.setItems(new Array<>(rooms.toArray())); //@fixme
+        dialog.show(screenManager.getAbstractScreen().getStage());
     }
 }

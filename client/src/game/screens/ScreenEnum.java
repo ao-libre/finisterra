@@ -8,11 +8,11 @@ public enum ScreenEnum {
     SIGN_UP(new SignUpScreen()),
     LOBBY(new LobbyScreen()),
     ROOM(new RoomScreen()),
-    GAME(new GameScreen()); //@fixme
+    GAME(new GameScreen());
 
     private Screen screen;
 
-    private ScreenEnum(Screen screen) {
+    ScreenEnum(Screen screen) {
         this.screen = screen;
     }
 

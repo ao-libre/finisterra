@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import game.systems.lobby.LobbySystem;
 import game.systems.network.ClientSystem;
 import shared.model.lobby.Room;
@@ -53,5 +54,17 @@ public class LobbyScreen extends AbstractScreen {
         container.add(createRoomButton);
         container.getColor().a = 0.8f;
         getMainTable().add(container);
+    }
+
+    @Override
+    public void render(float delta) {
+        //@todo no hace falta actualizar en todos los frames
+        updateRooms();
+
+        super.render(delta);
+    }
+
+    private void updateRooms() {
+        roomList.setItems(new Array<>(lobbySystem.getRooms().toArray()));
     }
 }

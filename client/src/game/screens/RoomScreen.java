@@ -34,13 +34,6 @@ public class RoomScreen extends AbstractScreen {
 
     public RoomScreen() {
         selectRandomHero();
-        updatePlayers();
-        checkStart();
-    }
-
-    public void updatePlayers() {
-        criminalList.setItems(lobbySystem.getCurrentRoom().getPlayers().stream().filter(player -> player.getTeam().equals(Team.CAOS_ARMY)).toArray(Player[]::new));
-        armyList.setItems(lobbySystem.getCurrentRoom().getPlayers().stream().filter(player -> player.getTeam().equals(Team.REAL_ARMY)).toArray(Player[]::new));
     }
 
     @Override
@@ -113,6 +106,11 @@ public class RoomScreen extends AbstractScreen {
         getMainTable().add(table).pad(30).grow();
     }
 
+    public void updatePlayers() {
+        criminalList.setItems(lobbySystem.getCurrentRoom().getPlayers().stream().filter(player -> player.getTeam().equals(Team.CAOS_ARMY)).toArray(Player[]::new));
+        armyList.setItems(lobbySystem.getCurrentRoom().getPlayers().stream().filter(player -> player.getTeam().equals(Team.REAL_ARMY)).toArray(Player[]::new));
+    }
+
     public void checkStart() {
         start.setDisabled(!lobbySystem.getCurrentRoom().getPlayers().stream().allMatch(Player::isReady));
     }
@@ -125,8 +123,17 @@ public class RoomScreen extends AbstractScreen {
     }
 
     @Override
+    public void render(float delta) {
+        //@todo no hace falta actualizar en todos los frames
+        updatePlayers();
+        checkStart();
+
+        super.render(delta);
+    }
+
+    @Override
     public void dispose() {
-        MusicSystem.FIRSTBGM.stop();
+        MusicSystem.FIRSTBGM.stop(); //@todo mover esto a screen.hide() o screen.pause()
         super.dispose();
     }
 }

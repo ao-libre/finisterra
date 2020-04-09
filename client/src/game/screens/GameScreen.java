@@ -5,6 +5,7 @@ import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.esotericsoftware.minlog.Log;
@@ -62,14 +63,13 @@ public class GameScreen extends ScreenAdapter implements WorldScreen {
     private static final int DECORATION_PRIORITY = 3;
     private static final int UI = 0;
 
-    public World world;
-    private WorldConfigurationBuilder worldConfigBuilder;
+    private World world;
     private FPSLogger fpsLogger = new FPSLogger();
 
-    public GameScreen(World world) {
-        long start = System.currentTimeMillis();
-        this.world = world;
-        Log.debug("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
+    public GameScreen() {
+        // @todo refactorizar este acceso estático
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        this.world = game.getWorld();
     }
 
     @Override

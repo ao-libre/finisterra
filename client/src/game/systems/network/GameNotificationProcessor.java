@@ -119,8 +119,6 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         } else {
             lobbySystem.getCurrentRoom().remove(joinRoomNotification.getPlayer());
         }
-        room.updatePlayers(); //@fixme
-        room.checkStart();
     }
 
     @Override
@@ -133,7 +131,5 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         Player player = changePlayerNotification.getPlayer();
         lobbySystem.getCurrentRoom().remove(player);
         lobbySystem.getCurrentRoom().add(player);
-        room.updatePlayers(); //@fixme
-        room.checkStart();
     }
 }

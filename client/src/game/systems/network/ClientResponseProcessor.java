@@ -76,16 +76,16 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
     public void processResponse(AccountCreationResponse accountCreationResponse) {
         if (accountCreationResponse.isSuccessful()) {
             screenManager.to(ScreenEnum.LOGIN);
-            Dialog dialog = new Dialog("Exito", screenManager.getScreen().getSkin());
+            Dialog dialog = new Dialog("Exito", screenManager.getAbstractScreen().getSkin());
             dialog.text("Cuenta creada con exito");
             dialog.button("OK");
-            dialog.show(screenManager.getScreen().getStage()); //@todo crear dialogsystem
+            dialog.show(screenManager.getAbstractScreen().getStage()); //@todo crear dialogsystem
         }
         else {
-            Dialog dialog = new Dialog("Error", screenManager.getScreen().getSkin());
+            Dialog dialog = new Dialog("Error", screenManager.getAbstractScreen().getSkin());
             dialog.text("Error al crear la cuenta");
             dialog.button("OK");
-            dialog.show(screenManager.getScreen().getStage());
+            dialog.show(screenManager.getAbstractScreen().getStage());
         }
     }
 
@@ -96,10 +96,10 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
             clientSystem.send(new JoinLobbyRequest(accountLoginResponse.getUsername()));
         }
         else {
-            Dialog dialog = new Dialog("Error", screenManager.getScreen().getSkin());
+            Dialog dialog = new Dialog("Error", screenManager.getAbstractScreen().getSkin());
             dialog.text("Error al loguearse");
             dialog.button("OK");
-            dialog.show(screenManager.getScreen().getStage());
+            dialog.show(screenManager.getAbstractScreen().getStage());
         }
     }
 }
