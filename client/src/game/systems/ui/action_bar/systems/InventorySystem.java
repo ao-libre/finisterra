@@ -31,6 +31,7 @@ import static com.artemis.E.E;
 @Wire
 public class InventorySystem extends UserInterfaceContributionSystem {
 
+
     private ClientSystem clientSystem;
     private PlayerSystem playerSystem;
     private ObjectSystem objectSystem;
@@ -183,5 +184,8 @@ public class InventorySystem extends UserInterfaceContributionSystem {
 
     public void update(Bag bag) {
         inventory.update(bag);
+    }
+    public void toggleExpanded(){
+        inventory.toggleExpanded(playerSystem.get().getBag());
     }
 }

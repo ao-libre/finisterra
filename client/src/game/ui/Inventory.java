@@ -1,6 +1,5 @@
 package game.ui;
 
-import com.artemis.E;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -8,13 +7,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import component.entity.character.info.Bag;
 import component.entity.character.info.Bag.Item;
-import game.screens.GameScreen;
 import game.systems.PlayerSystem;
 import game.utils.Skins;
 
@@ -49,8 +46,7 @@ public abstract class Inventory extends Window {
     private void createui(){
         clear();
         if (expanded){
-            int columnsCounter = 1,rowCounter = 0, loops = 0 ;
-            add();
+            int columnsCounter = 1, loops = 0 ;
             for (int i = 0; i < SIZE; i++) {
                 Slot newSlot = new Slot();
                 Label count = new Label( "",getSkin() );
@@ -60,91 +56,57 @@ public abstract class Inventory extends Window {
                 add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE);
                 if (columnsCounter > ROWS - 1) {
                     row();
-                    for (int x = 0; x < 5; x++) {
-                        if (x == 0){
-                            add();
-                        }else {
-                            switch( loops ) {
-                                case 0:
-                                    add( itemCount.get( x ) ).height( 10 );
-                                    break;
-                                case 1:
-                                    add( itemCount.get( x + 4 ) ).height( 10 );
-                                    break;
-                                case 2:
-                                    add( itemCount.get( x + 8 ) ).height( 10 );
-                                    break;
-                                case 3:
-                                    add( itemCount.get( x + 12 ) ).height( 10 );
-                                    break;
-                                case 4:
-                                    add( itemCount.get( x + 16 ) ).height( 10 );
-                                    break;
-                            }
+                    for (int x = 0; x < 4; x++) {
+                        switch( loops ) {
+                            case 0:
+                                add( itemCount.get( x ) ).height( 10 );
+                                break;
+                            case 1:
+                                add( itemCount.get( x + 4 ) ).height( 10 );
+                                break;
+                            case 2:
+                                add( itemCount.get( x + 8 ) ).height( 10 );
+                                break;
+                            case 3:
+                                add( itemCount.get( x + 12 ) ).height( 10 );
+                                break;
+                            case 4:
+                                add( itemCount.get( x + 16 ) ).height( 10 );
+                                break;
                         }
                     }
                     row();
-                    for (int x = 0; x < 5; x++) {
-                        if (x == 0) {
-                            add();
-                        }else {
-                            add( new Image( getSkin().getDrawable( "separator" ) ) );
-                        }
+                    for (int y= 0; y < 4; y++) {
+                        add(new Image(getSkin().getDrawable("separator")));
                     }
                     row();
-                    if (rowCounter==1){
-                        add(button()).width(Slot.SIZE).height(Slot.SIZE);
-                    }else {
-                        add();
-                    }
                     columnsCounter = 0;
-                    rowCounter++;
                     loops++;
                 }
                 columnsCounter++;
+
             }
-            addListener(getMouseListener());
         } else {
             for (int i = 0; i < 5; i++) {
                 Slot newSlot = new Slot();
-                Label count = new Label( "",getSkin() );
-                count.setFontScale( 0.7f );
+                Label count = new Label("", getSkin());
+                count.setFontScale(0.7f);
                 slots.add(newSlot);
                 itemCount.add( count );
-                if (i == 2){
-                    add(button()).width(Slot.SIZE).height(Slot.SIZE);
-                    add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
-                    add();
-                    add( itemCount.get( i ) ).height( 10 ).row();
-                    add();
-                    add( new Image( getSkin().getDrawable("separator"))).row();
-                } else {
-                    add();
-                    add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
-                    add();
-                    add( itemCount.get( i ) ).height( 10 ).row();
-                    add();
-                    add( new Image( getSkin().getDrawable("separator"))).row();
-                }
+                add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
+                add(itemCount.get( i )).height(10).row();
+                add(new Image(getSkin().getDrawable("separator"))).row();
             }
-            addListener(getMouseListener());
         }
+        addListener(getMouseListener());
     }
 
-    private ImageTextButton button(){
-        playerSystem = GameScreen.world.getSystem( PlayerSystem.class );
-        E player = playerSystem.get();
-        ImageTextButton imageButton = new ImageTextButton("",Skins.COMODORE_SKIN, "inventory-expand-collapse" );
-        imageButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                expanded = !expanded;
-                createui();
-                update( player.getBag() );
-            }
-        });
-        return imageButton;
+    public void toggleExpanded(Bag bag){
+        expanded = !expanded;
+        createui();
+        update( bag );
     }
+
     public void selectItem(float x, float y, int tapCount) {
         selected.ifPresent(slot -> slot.setSelected(false));
         selected = getSlot(x, y);
@@ -240,7 +202,7 @@ public abstract class Inventory extends Window {
             for (int i = 0; i < SIZE; i++) {
                 Item item = base + i < userItems.length ? userItems[base + i] : null;
                 slots.get( i ).setItem( item, item != null ? getGraphic( item ) : null );
-                updateCount( item, i+1 );
+                updateCount( item, i );
             }
         } else {
             for (int i = 0; i < 5; i++) {
