@@ -7,11 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
-import game.screens.GameScreen;
 import game.utils.Colors;
 import game.utils.Skins;
-
-import static com.artemis.E.E;
 
 public class Bar extends Actor {
 
@@ -22,9 +19,11 @@ public class Bar extends Actor {
     private final Label points;
     private final Drawable bar = Skins.COMODORE_SKIN.getDrawable("bar");
     private final Kind kind;
+    private E e;
 
-    Bar(Kind kind) {
+    Bar(Kind kind, E e) {
         this.kind = kind;
+        this.e = e;
         points = new Label("", Skins.COMODORE_SKIN);
         points.setAlignment(Align.right);
         points.setFontScale(0.6f);
@@ -32,8 +31,7 @@ public class Bar extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        int player = GameScreen.getPlayer();
-        final E entity = E(player);
+        final E entity = e;
         if (entity == null) {
             return;
         }

@@ -5,6 +5,7 @@ import shared.network.account.AccountCreationRequest;
 import shared.network.account.AccountLoginRequest;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
+import shared.network.interaction.DropItem;
 import shared.network.interaction.MeditateRequest;
 import shared.network.interaction.NpcInteractionRequest;
 import shared.network.interaction.TakeItemRequest;
@@ -117,6 +118,11 @@ public class DefaultRequestProcessor extends BaseSystem implements IRequestProce
 
     @Override
     public void processRequest(NpcInteractionRequest npcInteractionRequest, int connectionId) {
+		
+    }
+
+    @Override
+    public void processRequest(DropItem dropItem, int connectionId) {
 
     }
 

@@ -1,7 +1,5 @@
 package game.ui;
 
-import com.artemis.E;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -9,20 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import game.handlers.SpellHandler;
-import game.screens.GameScreen;
-import game.utils.Colors;
-import game.utils.Cursors;
 import game.utils.Skins;
-import game.utils.WorldUtils;
 import shared.model.Spell;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
-
-import static com.artemis.E.E;
 
 public class SpellView extends Table {
 
@@ -51,29 +42,41 @@ public class SpellView extends Table {
         spellTable.toFront();
     }
 
+    /**
+     * Cambia el cursor al seleccionar un hechizo.
+     */
     private void changeCursor() {
-        WorldUtils.getWorld().ifPresent(world -> {
-            world.getSystem(GUI.class).getConsole().addInfo("Haz click para lanzar el hechizo");
-            world.getSystem(GUI.class).getInventory().cleanShoot();
-        });
-        Cursors.setCursor("select");
+//        WorldUtils.getWorld().ifPresent(world -> {
+//            world.getSystem(UserInterfaceSystem.class).getConsole().addInfo("Haz click para lanzar el hechizo");
+//            world.getSystem(UserInterfaceSystem.class).getInventory().cleanShoot();
+//        });
+//        Cursors.setCursor("select");
     }
 
+    /**
+     * Actualiza la lista de hechizos en la UI.
+     */
     public void updateSpells() {
-        WorldUtils.getWorld().ifPresent(world -> {
-            SpellHandler spellHandler = world.getSystem(SpellHandler.class);
-            Spell[] spells = spellHandler.getSpells();
-            Spell[] spellsToShow = new Spell[MAX_SPELLS];
-            System.arraycopy(spells, base, spellsToShow, 0, Math.min(MAX_SPELLS, spells.length));
-            for (int i = 0; i < MAX_SPELLS; i++) {
-                slots.get(i).setSpell(spellsToShow[i]);
-            }
-        });
+//        WorldUtils.getWorld().ifPresent(world -> {
+//            SpellsSystem spellsSystem = world.getSystem(SpellsSystem.class);
+//            Spell[] spells = spellsSystem.getSpells();
+//            Spell[] spellsToShow = new Spell[MAX_SPELLS];
+//            System.arraycopy(spells, base, spellsToShow, 0, Math.min(MAX_SPELLS, spells.length));
+//            for (int i = 0; i < MAX_SPELLS; i++) {
+//                slots.get(i).setSpell(spellsToShow[i]);
+//            }
+//        });
     }
 
     public void addSpelltoSpellview(Spell spell, int slotPosition) {
         slots.get(slotPosition).setSpell(spell);
     }
+
+    /**
+     * Interfaz de Usuario: Crea el boton para lanzar el hechizo.
+     *
+     * @return staff
+     */
 
     private ImageButton createCastButton() {
         ImageButton staff = new ImageButton(Skins.COMODORE_SKIN, "staff");
@@ -107,16 +110,16 @@ public class SpellView extends Table {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        int player = GameScreen.getPlayer();
-        Color backup = batch.getColor();
-        if (player >= 0) {
-            E e = E(player);
-            if (e != null && e.hasAttack()) {
-                batch.setColor(Colors.COMBAT);
-            }
-        }
-        super.draw(batch, parentAlpha);
-        batch.setColor(backup);
+//        int player = GameScreen.getPlayer();
+//        Color backup = batch.getColor();
+//        if (player >= 0) {
+//            E e = E(player);
+//            if (e != null && e.hasAttack()) {
+//                batch.setColor(Colors.COMBAT);
+//            }
+//        }
+//        super.draw(batch, parentAlpha);
+//        batch.setColor(backup);
     }
 
     public void cleanCast() {

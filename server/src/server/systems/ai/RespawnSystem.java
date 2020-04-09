@@ -4,7 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.FluidIteratingSystem;
 import com.artemis.annotations.Wire;
-import entity.npc.Respawn;
+import component.entity.npc.Respawn;
 import server.systems.EntityFactorySystem;
 
 @Wire

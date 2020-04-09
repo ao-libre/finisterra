@@ -1,8 +1,7 @@
 package game.systems.render.world;
 
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import game.managers.MapManager;
+import game.systems.map.MapManager;
 
 @Wire(injectInherited = true)
 public class MapLastLayerRenderingSystem extends MapLayerRenderingSystem {

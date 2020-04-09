@@ -1,49 +1,46 @@
 package shared.network.init;
 
-import camera.Focused;
+import component.sound.AOSound;
+import component.camera.Focused;
 import com.artemis.Component;
 import com.artemis.FluidIteratingSystem;
-import entity.Description;
-import entity.character.attributes.*;
-import entity.character.equipment.Armor;
-import entity.character.equipment.Helmet;
-import entity.character.equipment.Shield;
-import entity.character.equipment.Weapon;
-import entity.character.info.*;
-import entity.character.parts.Body;
-import entity.character.parts.Head;
-import entity.character.states.*;
-import entity.character.status.*;
-import entity.combat.AttackPower;
-import entity.combat.EvasionPower;
-import entity.npc.*;
-import entity.world.CombatMessage;
-import entity.world.Dialog;
-import entity.world.Footprint;
-import entity.world.Ground;
-import graphics.Effect;
-import graphics.FX;
-import graphics.RenderBefore;
-import map.Cave;
-import map.Map;
-import movement.Destination;
-import movement.Moving;
-import movement.RandomMovement;
+import component.console.ConsoleMessage;
+import component.entity.Description;
+import component.entity.Ref;
+import component.entity.character.attributes.*;
+import component.entity.character.equipment.Armor;
+import component.entity.character.equipment.Helmet;
+import component.entity.character.equipment.Shield;
+import component.entity.character.equipment.Weapon;
+import component.entity.character.info.*;
+import component.entity.character.parts.Body;
+import component.entity.character.parts.Head;
+import component.entity.character.states.*;
+import component.entity.character.status.*;
+import component.entity.combat.AttackPower;
+import component.entity.combat.EvasionPower;
+import component.entity.npc.*;
+import component.entity.world.CombatMessage;
+import component.entity.world.Dialog;
+import component.entity.world.Footprint;
+import component.entity.world.Ground;
+import component.graphic.Effect;
+import component.graphic.EffectBuilder;
+import component.graphic.FX;
+import component.graphic.RenderBefore;
+import component.movement.Destination;
+import component.movement.Moving;
+import component.movement.RandomMovement;
 import net.mostlyoriginal.api.network.marshal.common.MarshalDictionary;
-import network.Network;
-import physics.AOPhysics;
-import physics.Attack;
-import physics.AttackAnimation;
-import position.WorldPosOffsets;
-import position.WorldPos;
+import component.network.Network;
+import component.physics.AOPhysics;
+import component.physics.AttackInterval;
+import component.physics.AttackAnimation;
+import component.position.WorldPos;
+import component.position.WorldPosOffsets;
 import shared.interfaces.CharClass;
 import shared.interfaces.Constants;
 import shared.interfaces.Hero;
-import shared.map.AutoTiler;
-import shared.map.model.MapDescriptor;
-import shared.map.model.TILE_BITS;
-import shared.map.model.TerrainType;
-import shared.map.model.TilesetConfig;
 import shared.model.AttackType;
 import shared.model.Spell;
 import shared.model.loaders.ObjectLoader;
@@ -72,15 +69,14 @@ import shared.network.lobby.player.*;
 import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
-import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
-import shared.network.sound.SoundNotification;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
 import shared.objects.factory.ObjectFactory;
 import shared.objects.types.*;
 import shared.objects.types.common.*;
+import shared.util.EntityUpdateBuilder;
 import shared.util.MapHelper;
 import shared.util.Messages;
 
@@ -101,6 +97,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 MeditateRequest.class,
                 TalkRequest.class,
                 ItemActionRequest.class,
+                ItemActionRequest.ItemAction.class,
                 TakeItemRequest.class,
                 SpellCastRequest.class,
                 TimeSyncRequest.class,
@@ -112,7 +109,8 @@ public class NetworkDictionary extends MarshalDictionary {
 
                 // Game Notifications
                 EntityUpdate.class,
-                EntityUpdate.EntityUpdateBuilder.class,
+                EntityUpdate[].class,
+                EntityUpdateBuilder.class,
                 RemoveEntity.class,
                 MovementNotification.class,
                 InventoryUpdate.class,
@@ -185,19 +183,11 @@ public class NetworkDictionary extends MarshalDictionary {
                 Loader.class,
                 Reader.class,
                 FluidIteratingSystem.class,
-                SoundNotification.class,
-                SoundNotification.SoundState.class,
 
                 ObjectLoader.class,
                 SpellLoader.class,
                 SpellLoader.SpellSetter.class,
                 DescriptorsReader.class,
-                AutoTiler.class,
-                MapDescriptor.class,
-                MapDescriptor.MapDescriptorBuilder.class,
-                TilesetConfig.class,
-                TerrainType.class,
-                TILE_BITS.class,
                 Type.class,
                 ObjectFactory.class,
                 ArmorObj.class,
@@ -238,21 +228,21 @@ public class NetworkDictionary extends MarshalDictionary {
                 WoodObj.class,
 
                 // Components
+                AOSound.class,
+                Ref.class,
                 OriginPos.class,
                 Effect.class,
-                Effect.EffectBuilder.class,
+                EffectBuilder.class,
                 RenderBefore.class,
                 Effect.Type.class,
                 EvasionPower.class,
                 AttackPower.class,
                 NPC.class,
                 SpellBook.class,
-                Map.class,
-                Cave.class,
                 Obj.class,
-                Inventory.class,
-                Inventory.Item.class,
-                Inventory.Item[].class,
+                Bag.class,
+                Bag.Item.class,
+                Bag.Item[].class,
                 Optional.class,
                 WorldPosOffsets.class,
                 AOPhysics.class,
@@ -271,7 +261,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Navigating.class,
                 Resting.class,
                 Writing.class,
-                entity.world.Object.class,
+                component.entity.world.Object.class,
                 Ground.class,
                 PotionKind.class,
                 Criminal.class,
@@ -284,7 +274,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Stamina.class,
                 Thirst.class,
                 CanWrite.class,
-                entity.character.Character.class,
+                component.entity.character.Character.class,
                 Body.class,
                 Dialog.class,
                 Dialog.Kind.class,
@@ -298,7 +288,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Moving.class,
                 RandomMovement.class,
                 Network.class,
-                Attack.class,
+                AttackInterval.class,
                 Agility.class,
                 Strength.class,
                 Intelligence.class,

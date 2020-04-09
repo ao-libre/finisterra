@@ -1,7 +1,0 @@
-Content-Type: text/x-zim-wiki
-Wiki-Format: zim 0.4
-Creation-Date: 2019-11-09T02:04:31-03:00
-
-====== Ingles ======
-Created sábado 09 noviembre 2019
-

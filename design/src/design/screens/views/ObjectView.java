@@ -7,7 +7,7 @@ import design.designers.ObjectDesigner;
 import design.editors.GenericEditor;
 import design.editors.fields.FieldEditor;
 import design.screens.ScreenEnum;
-import graphics.AOImageActor;
+import design.graphic.AOImageActor;
 import model.textures.AOImage;
 import org.jetbrains.annotations.NotNull;
 import shared.objects.types.Obj;

@@ -1,6 +1,6 @@
 package game.systems.render;
 
-import camera.Focused;
+import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.BaseSystem;
 import com.artemis.E;
@@ -16,7 +16,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.esotericsoftware.minlog.Log;
 import game.utils.Pos2D;
 import game.utils.Resources;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.model.map.Tile;
 
 import java.util.Deque;
@@ -49,12 +49,11 @@ public class BatchRenderingSystem extends BaseSystem {
         try {
             tempSpriteBatch = new TextureArraySpriteBatch();
         } catch (Exception ex) {
-            Log.info("Tu dispositivo no es compatible con el SpriteBatch mejorado. Usando sistema original...");
+            Log.debug("Tu dispositivo no es compatible con el SpriteBatch mejorado. Usando sistema original...");
             tempSpriteBatch = new SpriteBatch();
         }
         return tempSpriteBatch;
     }
-
 
     public void resize(float width, float height) {
         // Faked light system (alpha blending)

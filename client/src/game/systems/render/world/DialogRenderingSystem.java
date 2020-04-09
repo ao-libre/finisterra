@@ -11,16 +11,16 @@ import com.esotericsoftware.minlog.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import entity.character.parts.Body;
-import entity.world.Dialog;
-import entity.world.Dialog.Kind;
-import game.handlers.DescriptorHandler;
+import component.entity.character.parts.Body;
+import component.entity.world.Dialog;
+import component.entity.world.Dialog.Kind;
+import game.systems.resources.DescriptorsSystem;
 import game.systems.render.BatchRenderingSystem;
 import game.utils.Colors;
 import game.utils.Pos2D;
 import game.utils.Skins;
 import org.jetbrains.annotations.NotNull;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.model.map.Tile;
 
 import java.util.concurrent.TimeUnit;
@@ -47,12 +47,12 @@ public class DialogRenderingSystem extends RenderingSystem {
                     float prefWidth = label.getPrefWidth();
                     label.setWrap(true);
                     label.setAlignment(Align.center);
-                    Log.info("Width: " + prefWidth);
+                    Log.debug("Width: " + prefWidth);
                     table.add(label).width(Math.min(prefWidth + 20, MAX_LENGTH));
                     return table;
                 }
             });
-    private DescriptorHandler descriptorHandler;
+    private DescriptorsSystem descriptorsSystem;
     private BatchRenderingSystem batchRenderingSystem;
 
     public DialogRenderingSystem() {
@@ -85,7 +85,7 @@ public class DialogRenderingSystem extends RenderingSystem {
         final float x = playerPos.x + (Tile.TILE_PIXEL_WIDTH - label.getWidth()) / 2;
         float up = (Dialog.DEFAULT_TIME - dialog.time) * VELOCITY;
         up = Math.min(up, DISTANCE_TO_TOP);
-        float offsetY = descriptorHandler.getBody(player.getBody().index).getHeadOffsetY() * SCALE;
+        float offsetY = descriptorsSystem.getBody(player.getBody().index).getHeadOffsetY() * SCALE;
         final float y = playerPos.y - 55 * SCALE + offsetY - up + label.getHeight();
 
         label.setPosition(x, y);

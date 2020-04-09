@@ -35,6 +35,7 @@ dependencies {
 
 	testImplementation group: "org.junit.jupiter", name: "junit-jupiter-api", version: "$jupiterVersion"
     testImplementation group: "org.junit.jupiter", name: "junit-jupiter-engine", version: "$jupiterVersion"
+    implementation group: "org.reflections", name: "reflections", version: "$reflectionsVersion"
 }
 
 task dist(type: Jar) {
@@ -73,7 +74,7 @@ tasks.dist.doLast {
 def OS = OperatingSystem.current()
 
 // Determine where the bundled application is going to be.
-def releasePath = "${projectDir}/bundled-APP"
+def releasePath = "${buildDir}/releases"
 
 // creates application bundle (executable + runtime)
 task bundle(type: Exec, dependsOn: [dist, jlink]) {
@@ -86,7 +87,7 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
     }
 
     def commands = [
-            JPackagePath.concat("/jdk-14/bin/jpackage"),
+            JPackagePath,
             '--type', 'app-image',
             '--name', project.appName,
             '--vendor', "Argentum Online Libre",
@@ -115,7 +116,7 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
 
             switch(OS) {
                 case OperatingSystem.MAC_OS:
-                    into("${releasePath}/${project.appName}/Contents/Resources/")
+                    into("${releasePath}/${project.appName}.app/Contents/Resources/")
                     break;
                 case OperatingSystem.WINDOWS:
                     into("${releasePath}/${project.appName}")
@@ -135,4 +136,11 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
         }
     }
 
+    task packageDistribution(type: Zip, dependsOn:[bundle]) {
+        archiveFileName = "finisterra-server-".concat((OS.isMacOsX() ? "MacOS" : OS.isLinux() ? "Linux" : "Windows")).concat(".zip")
+        destinationDirectory = file("${project.buildDir}/releases/")
+
+        from "${releasePath}/${project.appName}".concat(OS.isMacOsX() ? ".app" : "")
+    }
 }
+

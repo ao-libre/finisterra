@@ -1,29 +1,25 @@
 package game.systems.render.world;
 
-import camera.Focused;
+import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import game.systems.render.BatchRenderingSystem;
-import game.ui.GUI;
+import game.systems.ui.UserInterfaceSystem;
 import game.utils.Colors;
-import game.utils.WorldUtils;
-import position.WorldPosOffsets;
-import position.WorldPos;
+import component.position.WorldPos;
+import component.position.WorldPosOffsets;
 import shared.model.map.Tile;
-import shared.util.Util;
-
-import java.util.Optional;
+import shared.util.WorldPosConversion;
 
 @Wire(injectInherited = true)
 public class TargetRenderingSystem extends RenderingSystem {
 
     private static final Texture TARGET = new Texture(Gdx.files.local("data/ui/images/target.png"));
-    private GUI gui;
+    private UserInterfaceSystem userInterfaceSystem;
     private BatchRenderingSystem batchRenderingSystem;
 
     public TargetRenderingSystem() {
@@ -32,18 +28,13 @@ public class TargetRenderingSystem extends RenderingSystem {
 
     @Override
     protected void process(E e) {
-        if (gui.getSpellView().toCast.isPresent()) {
-            Optional<WorldPos> worldPos = WorldUtils.mouseToWorldPos();
-            if (worldPos.isPresent()) {
-                batchRenderingSystem.addTask(batch -> {
-                    Color prevColor = new Color(batch.getColor());
-                    batch.setColor(Colors.rgba(255, 255, 255, 0.5f));
-                    WorldPosOffsets mousePos = Util.toScreen(worldPos.get());
-                    batch.draw(TARGET, mousePos.x, mousePos.y, Tile.TILE_PIXEL_WIDTH, Tile.TILE_PIXEL_HEIGHT);
-                    batch.setColor(prevColor);
-                });
-
-            }
-        }
+        WorldPos worldPos = userInterfaceSystem.getWorldPos(Gdx.input.getX(), Gdx.input.getY());
+        batchRenderingSystem.addTask(batch -> {
+            Color prevColor = new Color(batch.getColor());
+            batch.setColor(Colors.rgba(255, 255, 255, 0.5f));
+            WorldPosOffsets mousePos = WorldPosConversion.toScreen(worldPos);
+            batch.draw(TARGET, mousePos.x, mousePos.y, Tile.TILE_PIXEL_WIDTH, Tile.TILE_PIXEL_HEIGHT);
+            batch.setColor(prevColor);
+        });
     }
 }

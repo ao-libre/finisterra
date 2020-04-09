@@ -11,14 +11,13 @@ import com.esotericsoftware.minlog.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import entity.character.Character;
-import entity.character.info.Name;
+import component.entity.character.info.Name;
+import component.position.WorldPos;
 import game.systems.render.BatchRenderingSystem;
 import game.utils.Colors;
 import game.utils.Pos2D;
 import game.utils.Skins;
 import org.jetbrains.annotations.NotNull;
-import position.WorldPos;
 import shared.interfaces.Hero;
 import shared.model.map.Tile;
 
@@ -46,7 +45,7 @@ public class NameRenderingSystem extends RenderingSystem {
                     float prefWidth = label.getPrefWidth();
                     label.setWrap(true);
                     label.setAlignment(Align.center);
-                    Log.info("Width: " + prefWidth);
+                    Log.debug("Width: " + prefWidth);
                     table.add(label).width(Math.min(prefWidth + 20, 200));
                     return table;
                 }
@@ -55,7 +54,7 @@ public class NameRenderingSystem extends RenderingSystem {
             });
 
     public NameRenderingSystem() {
-        super(Aspect.all(Character.class, WorldPos.class, Name.class));
+        super(Aspect.all(WorldPos.class, Name.class));
     }
 
     @Override
@@ -95,7 +94,7 @@ public class NameRenderingSystem extends RenderingSystem {
 
     private Color setColor(E player, Label label) {
         Color previous = new Color(label.getStyle().fontColor);
-        label.getStyle().fontColor = player.hasCriminal() ? Colors.CRIMINAL : Colors.CITIZEN;
+        label.getStyle().fontColor = player.hasCriminal() ? Colors.CRIMINAL : player.hasNPC() ? Colors.GREY : Colors.CITIZEN;
         return previous;
     }
 

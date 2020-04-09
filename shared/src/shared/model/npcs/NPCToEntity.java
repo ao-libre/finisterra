@@ -2,8 +2,8 @@ package shared.model.npcs;
 
 import com.artemis.E;
 import com.artemis.World;
-import entity.character.states.Heading;
-import position.WorldPos;
+import component.entity.character.states.Heading;
+import component.position.WorldPos;
 
 public class NPCToEntity {
 
@@ -43,6 +43,9 @@ public class NPCToEntity {
         }
         if (npc.isAttackable()) {
             npcEntity.attackable();
+        }
+        if (!npc.getName().isBlank()) {
+            npcEntity.nameText(npc.getName());
         }
 
         npcEntity.originPosMap(pos.map).originPosX(pos.x).originPosY(pos.y);

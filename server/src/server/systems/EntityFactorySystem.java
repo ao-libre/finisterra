@@ -3,9 +3,9 @@ package server.systems;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
-import entity.character.states.Heading;
+import component.entity.character.states.Heading;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import position.WorldPos;
+import component.position.WorldPos;
 import server.database.model.attributes.Attributes;
 import server.systems.ai.PathFindingSystem;
 import server.systems.manager.*;
@@ -37,6 +37,7 @@ public class EntityFactorySystem extends PassiveSystem {
     private ObjectManager objectManager;
     private SpellManager spellManager;
     private PathFindingSystem pathFindingSystem;
+    private NPCManager npcManager;
 
 
     public void createObject(int objIndex, int objCount, WorldPos pos) {
@@ -50,7 +51,7 @@ public class EntityFactorySystem extends PassiveSystem {
     }
 
     public void createNPC(int npcIndex, WorldPos pos) {
-        NPC npc = world.getSystem(NPCManager.class).getNpcs().get(npcIndex);
+        NPC npc = npcManager.getNpcs().get(npcIndex);
         int npcId = NPCToEntity.getNpcEntity(world, npcIndex, pos, npc);
         worldManager.registerEntity(npcId);
     }
@@ -70,7 +71,7 @@ public class EntityFactorySystem extends PassiveSystem {
                 break;
         }
         entity.charHeroHeroId(hero.ordinal());
-        // set position
+        // set component.position
         setEntityPosition(entity, team);
         // set head and body
         setHeadAndBody(name, entity);
@@ -200,9 +201,9 @@ public class EntityFactorySystem extends PassiveSystem {
     }
 
     private void setInventory(int player, Hero hero, Team team) {
-        E(player).inventory();
+        E(player).bag();
         addPotion(player, PotionKind.HP);
-        E(player).getInventory().add(480, true);// flechas)
+        E(player).getBag().add(480, true);// flechas)
 
         if (E(player).manaMax() > 0) {
             addPotion(player, PotionKind.MANA);
@@ -212,28 +213,28 @@ public class EntityFactorySystem extends PassiveSystem {
 
         getHelmet(hero).ifPresent(helmet -> {
             E(player).helmetIndex(helmet.getId());
-            E(player).getInventory().add(helmet.getId(), true);
+            E(player).getBag().add(helmet.getId(), true);
         });
         getArmor(hero, team).ifPresent(armor -> {
             E(player).armorIndex(armor.getId());
             E(player).bodyIndex(((ArmorObj) armor).getBodyNumber());
-            E(player).getInventory().add(armor.getId(), true);
+            E(player).getBag().add(armor.getId(), true);
         });
         final Set<Obj> weapons = getWeapon(hero, team);
         if (!weapons.isEmpty()) {
             final Obj next = weapons.iterator().next();
-            E(player).getInventory().add(next.getId(), true);
+            E(player).getBag().add(next.getId(), true);
             E(player).weaponIndex(next.getId());
             weapons.forEach(weapon -> {
                 if (weapon != next) {
-                    E(player).getInventory().add(weapon.getId(), false);
+                    E(player).getBag().add(weapon.getId(), false);
                 }
             });
         }
 
         getShield(hero, team).ifPresent(shield -> {
             E(player).shieldIndex(shield.getId());
-            E(player).getInventory().add(shield.getId(), true);
+            E(player).getBag().add(shield.getId(), true);
         });
     }
 
@@ -254,7 +255,7 @@ public class EntityFactorySystem extends PassiveSystem {
                     return potionKind != null && potionKind.equals(kind);
                 }) //
                 .findFirst() //
-                .ifPresent(obj -> E(player).getInventory().add(obj.getId(), false));
+                .ifPresent(obj -> E(player).getBag().add(obj.getId(), false));
     }
 
     private Optional<Obj> getArmor(Hero hero, Team team) {
@@ -430,7 +431,7 @@ public class EntityFactorySystem extends PassiveSystem {
             Set<CharClass> forbiddenClasses = ((ObjWithClasses) obj).getForbiddenClasses();
             Log.info("Item found for class: " + clazz.name() + " and forbidden classes are: " + Arrays
                     .toString(forbiddenClasses.toArray()));
-            E(player).getInventory().add(obj.getId(), true);
+            E(player).getBag().add(obj.getId(), true);
         });
         return result;
     }

@@ -2,6 +2,12 @@ package game.utils;
 
 import com.badlogic.gdx.Input;
 
+/**
+ * Aca se setea la distribucion de las teclas alternativa del juego.
+ *
+ * @see game.managers.AOInputProcessor#keyUp(int) activa/desactiva teclas alternativas.
+ * @see com.badlogic.gdx.Input.Keys para ver las constantes que representan las teclas en LibGDX.
+ */
 public class AlternativeKeys {
 
     public static final int ATTACK_1 = Input.Keys.SPACE;

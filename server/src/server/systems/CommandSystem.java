@@ -3,9 +3,10 @@ package server.systems;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.Array;
+import component.console.ConsoleMessage;
 import server.systems.manager.DefaultManager;
 import server.systems.manager.WorldManager;
-import shared.network.notifications.ConsoleMessage;
+import server.systems.network.MessageSystem;
 import shared.util.Messages;
 
 @Wire
@@ -18,12 +19,13 @@ public class CommandSystem extends DefaultManager {
     // Injected Systems
     private ServerSystem networkManager;
     private WorldManager worldManager;
+    private MessageSystem messageSystem;
 
     public void handleCommand(String command, int senderId) {
         // Example command to get the online players
         if (command.equalsIgnoreCase(CMD_PLAYERS_COUNT)) {
             String connections = String.valueOf(networkManager.getAmountConnections());
-            worldManager.sendEntityUpdate(senderId, ConsoleMessage.info(Messages.PLAYERS_ONLINE, connections));
+            messageSystem.add(senderId, ConsoleMessage.info(Messages.PLAYERS_ONLINE.name(), connections));
         }
         if (command.equalsIgnoreCase( CMD_PLAYER_SET_HOME_CITY )){
             final int capacity = 17;

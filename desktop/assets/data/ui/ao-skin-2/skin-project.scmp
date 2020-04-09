@@ -371,7 +371,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/inventory-spells-window.png"
+			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/bag-spells-window.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -380,7 +380,7 @@ atlasData: {
 			}
 			tint: null
 			tintName: null
-			name: inventory-spells-window
+			name: bag-spells-window
 			tiled: false
 			minWidth: -1
 			minHeight: -1
@@ -1973,7 +1973,7 @@ jsonData: {
 			}
 			{
 				class: com.ray3k.skincomposer.data.StyleData
-				name: inventory
+				name: bag
 				clazz: com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 				properties: {
 					imageUp: {
@@ -4031,7 +4031,7 @@ jsonData: {
 			}
 			{
 				class: com.ray3k.skincomposer.data.StyleData
-				name: inventory
+				name: bag
 				clazz: com.badlogic.gdx.scenes.scene2d.ui.Window
 				properties: {
 					background: {

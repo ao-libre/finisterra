@@ -9,15 +9,14 @@ import game.handlers.DefaultAOAssetManager;
 import game.screens.GameScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
-import game.utils.Cursors;
 import shared.util.LogSystem;
 
 /**
  * Represents the game application.
  * Implements {@link ApplicationListener}.
- * <p>
  * This should be the primary instance of the app.
  */
+
 public class AOGame extends Game implements AssetManagerHolder {
 
     public static final float GAME_SCREEN_ZOOM = 1f;
@@ -28,34 +27,42 @@ public class AOGame extends Game implements AssetManagerHolder {
     private Sync fpsSync;
 
     public AOGame(ClientConfiguration clientConfiguration) {
+        Log.setLogger(new LogSystem());
         this.clientConfiguration = clientConfiguration;
         this.assetManager = new DefaultAOAssetManager(clientConfiguration);
     }
 
+    /*
+        Este metodo te permite acceder a el objeto que administra los recursos del juego
+        desde CUALQUIER parte del proyecto.
+    */
     public static AOAssetManager getGlobalAssetManager() {
         AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
         return game.getAssetManager();
     }
 
+    // Crea la ventana del juego.
     @Override
     public void create() {
         Log.setLogger(new LogSystem());
-        Log.info("AOGame", "Creating AOGame...");
-        Cursors.setCursor("hand");
+        Log.debug("AOGame", "Creating AOGame...");
         ScreenManager.getInstance().initialize(this);
         toLoading();
         this.fpsSync = new Sync();
         // @todo load platform-independent configuration (network, etc.)
     }
 
+    // Muestra la pantalla de carga.
     private void toLoading() {
         ScreenManager.getInstance().showScreen(ScreenEnum.LOADING);
     }
 
+    // Muestra la pantalla de inicio de sesion.
     public void toLogin() {
         ScreenManager.getInstance().showScreen(ScreenEnum.LOGIN);
     }
 
+    // Muestra la pantalla del lobby.
     public void toSignUp(Object... params) {
         ScreenManager.getInstance().showScreen(ScreenEnum.SIGNUP, params);
     }
@@ -64,6 +71,7 @@ public class AOGame extends Game implements AssetManagerHolder {
         ScreenManager.getInstance().showScreen(ScreenEnum.LOBBY, params);
     }
 
+    // Muestra la pantalla de la sala de jugadores.
     public void toRoom(Object... params) {
         ScreenManager.getInstance().showScreen(ScreenEnum.ROOM, params);
     }
@@ -89,11 +97,11 @@ public class AOGame extends Game implements AssetManagerHolder {
 
     @Override
     public void dispose() {
-        Log.info("AOGame", "Closing client...");
+        Log.debug("AOGame", "Closing client...");
         screen.dispose();
-        getAssetManager().dispose();
+        assetManager.dispose();
         Gdx.app.exit();
-        Log.info("Thank you for playing! See you soon...");
+        Log.debug("Thank you for playing! See you soon...");
         System.exit(0);
     }
 }

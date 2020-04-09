@@ -1,6 +1,6 @@
 package shared.network.inventory;
 
-import entity.character.info.Inventory;
+import component.entity.character.info.Bag;
 import shared.network.interfaces.INotification;
 import shared.network.interfaces.INotificationProcessor;
 
@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class InventoryUpdate implements INotification {
 
     private int id;
-    private HashMap<Integer, Inventory.Item> updates = new HashMap<>();
+    private HashMap<Integer, Bag.Item> updates = new HashMap<>();
 
     public InventoryUpdate() {
     }
@@ -18,7 +18,7 @@ public class InventoryUpdate implements INotification {
         this.id = id;
     }
 
-    public void add(int i, Inventory.Item item) {
+    public void add(int i, Bag.Item item) {
         updates.put(i, item);
     }
 
@@ -32,7 +32,7 @@ public class InventoryUpdate implements INotification {
     }
 
 
-    public HashMap<Integer, Inventory.Item> getUpdates() {
+    public HashMap<Integer, Bag.Item> getUpdates() {
         return updates;
     }
 

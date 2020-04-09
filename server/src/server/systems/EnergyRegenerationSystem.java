@@ -2,12 +2,17 @@ package server.systems;
 
 import com.artemis.Aspect;
 import com.artemis.E;
-import entity.character.status.Stamina;
-import server.systems.manager.WorldManager;
+import com.artemis.annotations.Wire;
+import component.entity.character.status.Stamina;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 
+@Wire
 public class EnergyRegenerationSystem extends IntervalFluidIteratingSystem {
+
+    private EntityUpdateSystem entityUpdateSystem;
 
     public static final int REGENERATION_PERCENT = 10;
 
@@ -25,8 +30,7 @@ public class EnergyRegenerationSystem extends IntervalFluidIteratingSystem {
 
             // notify user
             EntityUpdate update = EntityUpdateBuilder.of(e.id()).withComponents(stamina).build();
-            WorldManager worldManager = world.getSystem(WorldManager.class);
-            worldManager.sendEntityUpdate(e.id(), update);
+            entityUpdateSystem.add(update, UpdateTo.ENTITY);
         }
     }
 }

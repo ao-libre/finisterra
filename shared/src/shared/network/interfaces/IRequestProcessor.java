@@ -4,6 +4,7 @@ import shared.network.account.AccountCreationRequest;
 import shared.network.account.AccountLoginRequest;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
+import shared.network.interaction.DropItem;
 import shared.network.interaction.MeditateRequest;
 import shared.network.interaction.NpcInteractionRequest;
 import shared.network.interaction.TakeItemRequest;
@@ -58,4 +59,7 @@ public interface IRequestProcessor {
     void processRequest(AccountLoginRequest accountLoginRequest, int connectionId);
 
     void processRequest(NpcInteractionRequest npcInteractionRequest, int connectionId);
+
+    void processRequest(DropItem dropItem, int connectionId);
+
 }
