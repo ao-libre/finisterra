@@ -7,7 +7,6 @@ import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import game.handlers.AOAssetManager;
 import game.handlers.DefaultAOAssetManager;
-import game.screens.GameScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
 import game.systems.network.ClientSystem;
@@ -48,51 +47,45 @@ public class AOGame extends Game implements AssetManagerHolder {
         Log.setLogger(new LogSystem());
         Log.debug("AOGame", "Creating AOGame...");
         screenManager.to(ScreenEnum.LOADING);
-        this.fpsSync = new Sync();
-        // @todo load platform-independent configuration (network, etc.)
+        //this.fpsSync = new Sync();
     }
 
-    @Override
-    public void render() {
+//    @Override
+//    public void render() {
 //        fpsSync.sync(100);
-        super.render();
-    }
+//        super.render();
+//    }
 
+    /**
+     * @todo disponer de todos los recursos utilizados y cerrar threads creados
+     * Al final, la JVM debería cerrar sola.
+     */
     @Override
     public void dispose() {
         Log.debug("AOGame", "Closing client...");
         screen.dispose();
+        // @todo screenManager.dispose();
         assetManager.dispose();
-        Gdx.app.exit();
+        clientSystem.stop(); // @todo asegurarse que el thread de Kryonet cierre
         Log.debug("Thank you for playing! See you soon...");
-        System.exit(0);
+        //System.exit(0);
     }
 
-    /*
-        Este metodo te permite acceder a el objeto que administra los recursos del juego
-        desde CUALQUIER parte del proyecto.
-    */
-    public static AOAssetManager getGlobalAssetManager() {
+    /**
+     * Este metodo te permite acceder a el objeto que administra los recursos del juego
+     * desde CUALQUIER parte del proyecto.
+     */
+    public static AOAssetManager getGlobalAssetManager() { // @todo inyectar AssetManager
         AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
         return game.getAssetManager();
     }
 
     @Override
-    public AOAssetManager getAssetManager() {
+    public AOAssetManager getAssetManager() { // @todo inyectar AssetManager
         return assetManager;
     }
 
-    public ClientConfiguration getClientConfiguration() {
-        return clientConfiguration;
-    }
-
-    public ClientSystem getClientSystem() { // @todo inyectar ClientSystem en consumidores
-        return clientSystem;
-    }
-
-    public World getWorld() { return world; }
-
-    public void toGame(GameScreen gameScreen) {
-        setScreen(gameScreen);
+    public World getWorld() { // @todo ¿por qué es necesario acceder al World?
+        return world;
     }
 }
