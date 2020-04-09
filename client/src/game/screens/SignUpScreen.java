@@ -14,12 +14,11 @@ import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.network.account.AccountCreationRequest;
 import shared.util.Messages;
 
-import static game.utils.Resources.CLIENT_CONFIG;
-
 @Wire
 public class SignUpScreen extends AbstractScreen {
 
     private AOAssetManager assetManager;
+    private ClientConfiguration clientConfiguration;
     private ClientSystem clientSystem;
     private ScreenManager screenManager;
 
@@ -31,8 +30,6 @@ public class SignUpScreen extends AbstractScreen {
 
     @Override
     protected void createUI() {
-        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); //@todo esto es un hotfix, el config tendría que cargarse en otro lado
-
         /* Tabla de sign up */
         Window signUpTable = new Window("", getSkin()); //@todo window es una ventana arrastrable
         Label usernameLabel = new Label("Username:", getSkin());
@@ -69,7 +66,7 @@ public class SignUpScreen extends AbstractScreen {
         /* Tabla de servidores */
         Table serverTable = new Table((getSkin()));
         serverList = new List<>(getSkin());
-        serverList.setItems(config.getNetwork().getServers());
+        serverList.setItems(clientConfiguration.getNetwork().getServers());
         serverTable.add(serverList).width(400).height(300); //@todo Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
 
         /* Tabla principal */
