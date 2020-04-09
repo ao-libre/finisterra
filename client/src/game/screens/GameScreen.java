@@ -56,13 +56,6 @@ import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
 
 public class GameScreen extends ScreenAdapter implements WorldScreen {
 
-    private static final int LOGIC = 10;
-    private static final int PRE_ENTITY_RENDER_PRIORITY = 6;
-    private static final int ENTITY_RENDER_PRIORITY = 5;
-    private static final int POST_ENTITY_RENDER_PRIORITY = 4;
-    private static final int DECORATION_PRIORITY = 3;
-    private static final int UI = 0;
-
     private World world;
     private FPSLogger fpsLogger = new FPSLogger();
 

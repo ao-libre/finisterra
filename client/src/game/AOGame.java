@@ -10,9 +10,7 @@ import game.handlers.DefaultAOAssetManager;
 import game.screens.GameScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
-import game.systems.network.ClientResponseProcessor;
 import game.systems.network.ClientSystem;
-import game.systems.network.GameNotificationProcessor;
 import shared.util.LogSystem;
 
 /**
@@ -38,10 +36,10 @@ public class AOGame extends Game implements AssetManagerHolder {
         this.clientConfiguration = clientConfiguration;
         this.assetManager = new DefaultAOAssetManager(clientConfiguration);
         this.clientSystem = new ClientSystem();
-        clientSystem.setNotificationProcessor(new GameNotificationProcessor()); //@fixme
-        clientSystem.setResponseProcessor(new ClientResponseProcessor());
         this.screenManager = new ScreenManager(this);
-        this.world = new WorldConstructor(this, assetManager, clientSystem, clientConfiguration).getWorld();
+
+        // @todo construir world de forma asincrónica y mostrar pantalla de carga
+        this.world = new WorldConstructor(assetManager, clientConfiguration, clientSystem, screenManager).build();
     }
 
     // Crea la ventana del juego.

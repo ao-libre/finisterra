@@ -8,7 +8,6 @@ import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import game.handlers.AOAssetManager;
 import game.screens.ScreenManager;
-import game.screens.WorldScreen;
 import game.systems.PlayerSystem;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.anim.IdleAnimationSystem;
@@ -51,9 +50,7 @@ import shared.systems.IntervalSystem;
 
 import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
 
-public class WorldConstructor implements WorldScreen {
-
-    private World world;
+public class WorldConstructor {
 
     private static final int LOGIC = 10;
     private static final int PRE_ENTITY_RENDER_PRIORITY = 6;
@@ -62,20 +59,40 @@ public class WorldConstructor implements WorldScreen {
     private static final int DECORATION_PRIORITY = 3;
     private static final int UI = 0;
 
-    private WorldConfigurationBuilder initWorldConfiguration(AOGame game,
-                                                             AOAssetManager assetManager,
-                                                             ClientSystem clientSystem,
-                                                             ClientConfiguration clientConfiguration) {
+    private AOAssetManager assetManager;
+    private ClientConfiguration clientConfiguration;
+    private ClientSystem clientSystem;
+    private ScreenManager screenManager;
+
+    /**
+     * Construye el Artemis World, inicializa e inyecta sistemas.
+     * Este método es bloqueante.
+     */
+    public World build() {
+        return new World(getWorldConfiguration());
+    }
+
+    private WorldConfiguration getWorldConfiguration() {
         return new WorldConfigurationBuilder()
-                .with(HIGH,
+                // Sistemas de uso global (no necesitan prioridad porque son pasivos)
+                .with(assetManager,
+                        clientConfiguration,
+                        screenManager) // @fixme pasar AOAssetManager a sistema
+
+                // Network system (no necesita prioridad porque es asincrónico, funciona por callbacks)
+                .with(clientSystem,
                         new ClientResponseProcessor(),
-                        new GameNotificationProcessor(),
-                        clientSystem,
+                        new GameNotificationProcessor())
+
+                // Sistemas de alta prioridad
+                .with(HIGH,
                         new TimeSync(),
                         new SuperMapper(),
                         new ClearSystem())
+
                 .with(LOGIC,
                         new IntervalSystem(),
+
                         // Player component.movement
                         new PlayerInputSystem(),
                         new MovementProcessorSystem(),
@@ -109,6 +126,7 @@ public class WorldConstructor implements WorldScreen {
                         new InputSystem(),
                         new ScreenSystem(),
                         new WorldSystem())
+
                 // Rendering
                 .with(PRE_ENTITY_RENDER_PRIORITY,
                         new ClearScreenSystem(),
@@ -131,6 +149,7 @@ public class WorldConstructor implements WorldScreen {
                         new StateRenderingSystem(),
                         new CharacterStatesRenderingSystem(),
                         new BatchRenderingSystem())
+
                 // UI
                 .with(UI,
                         new MouseSystem(),
@@ -144,26 +163,22 @@ public class WorldConstructor implements WorldScreen {
                         new UserSystem(),
                         new UserInterfaceSystem())
 
-                // Other
+                // Otros sistemas
                 .with(new MapManager(),
                         new TagManager(),
-                        new UuidEntityManager(),
-                        clientConfiguration,
-                        new ScreenManager(game));
+                        new UuidEntityManager())
 
+                // return WorldConfiguration
+                .build();
     }
 
-    public WorldConstructor(AOGame game,
-                            AOAssetManager assetManager,
+    public WorldConstructor(AOAssetManager assetManager,
+                            ClientConfiguration clientConfiguration,
                             ClientSystem clientSystem,
-                            ClientConfiguration clientConfiguration) {
-
-        WorldConfiguration builtWorld = initWorldConfiguration(game, assetManager, clientSystem, clientConfiguration).build();
-        this.world = new World(builtWorld);
-    }
-
-    @Override
-    public World getWorld() {
-        return world;
+                            ScreenManager screenManager) {
+        this.assetManager = assetManager;
+        this.clientConfiguration = clientConfiguration;
+        this.clientSystem = clientSystem;
+        this.screenManager = screenManager;
     }
 }
