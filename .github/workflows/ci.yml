@@ -28,9 +28,18 @@ jobs:
       with:
         wrapper-directory: .
         arguments: compileJava
-    - name: Create file post_message.txt and write 'false' into it
+
+    - name: Set false to post_message (failed)
       if: failure()
-      run: echo 'false' > post_message.txt|
+      run: echo 'false' > post_message.txt
+
+    - name: Set true to post_message (success)
+      if: success()
+      run: echo 'true' > post_message.txt
+
+    - name: Set false to post_message (cancelled)
+      if: cancelled()
+      run: echo 'false' > post_message.txt
 
     - name: Upload file post_message.txt
       uses: actions/upload-artifact@v1
