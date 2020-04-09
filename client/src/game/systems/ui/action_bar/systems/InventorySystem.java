@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import component.entity.character.info.Bag;
 import component.position.WorldPos;
 import game.systems.PlayerSystem;
+import game.systems.resources.MapSystem;
+import shared.model.map.Tile;
 import shared.systems.IntervalSystem;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.network.ClientSystem;
@@ -168,8 +170,15 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     public Optional<WorldPos> getWorldPos(float x, float y) {
-        // TODO handle valid position to avoid droping items over blocks
-        return Optional.of(userInterfaceSystem.getWorldPos((int) x, (int) y));
+        // TODO handle valid position to avoid droping items over npcs in citys
+        WorldPos dropWorldPos = userInterfaceSystem.getWorldPos((int) x, (int) y);
+        Tile tile = MapSystem.getTile(  dropWorldPos);
+        if (!tile.isBlocked()) {
+            return Optional.of( userInterfaceSystem.getWorldPos( (int) x, (int) y ) );
+        } else {
+            return Optional.of( playerSystem.getWorldPos() );
+        }
+
     }
 
     public void update(Bag bag) {
