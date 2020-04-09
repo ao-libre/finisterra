@@ -108,6 +108,18 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     @Override
     public boolean canAttack(int entityId, Optional<Integer> target) {
         final E userEntity = E(entityId);
+        if (userEntity.hasWeapon()){
+            WeaponObj userWeapon = (WeaponObj) objectManager.getObject(userEntity.getWeapon().getIndex()).get();
+            if(!userWeapon.getKind().equals( WeaponKind.BOW )){
+                notifyCombat(entityId, Messages.DONT_HAVE_BOW_AND_ARROW);
+                return false;
+            }
+        }
+        if (getarrow( userEntity ).isEmpty()){
+            notifyCombat(entityId, Messages.DONT_HAVE_BOW_AND_ARROW);
+            return false;
+        }
+
         if (userEntity != null && userEntity.hasStamina() && userEntity.getStamina().min < userEntity.getStamina().max * STAMINA_REQUIRED_PERCENT / 100) {
             notifyCombat(entityId, Messages.NOT_ENOUGH_ENERGY);
             return false;
@@ -139,6 +151,10 @@ public class RangedCombatSystem extends AbstractCombatSystem {
             if (!userEntity.isCriminal() && !targetEnity.isCriminal() /* TODO agregar seguro */) {
                 // notifyCombat(userId, CANT_ATTACK_CITIZEN);
                 // TODO descomentar: return false;
+            }
+            if (!targetEnity.isHostile()){
+                notifyCombat(entityId, Messages.INVALID_TARGET);
+                return false;
             }
 
             // TODO attack power can be bow
