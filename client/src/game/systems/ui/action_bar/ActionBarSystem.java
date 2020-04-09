@@ -5,6 +5,7 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.esotericsoftware.minlog.Log;
 import component.entity.character.info.Bag;
 import component.entity.character.info.SpellBook;
+import game.systems.screen.MouseSystem;
 import game.systems.ui.UserInterfaceContributionSystem;
 import game.systems.ui.action_bar.systems.InventorySystem;
 import game.systems.ui.action_bar.systems.SpellSystem;
@@ -25,8 +27,10 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
 
     private InventorySystem inventorySystem;
     private SpellSystem spellSystem;
+    private MouseSystem mouseSystem;
     private Actor actionBar;
     private ImageTextButton expandInventoryButton;
+    private ImageButton castButton, shotButton;
 
     public ActionBarSystem() {
         super(Aspect.one(Bag.class, SpellBook.class));
@@ -52,9 +56,16 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
 
         actionBar.add();
         actionBar.add(buttons).top().right().row();
-
+        Table buttonsTable = new Table();
+        Stack buttonStack = new Stack();
+        castButton = createCastButton();
+        buttonStack.add( castButton );
+        shotButton = createShotButton();
+        buttonStack.add( shotButton );
+        buttonsTable.add( buttonStack ).right().row();
         expandInventoryButton = createExpandInventoryButton();
-        actionBar.add( expandInventoryButton ).padRight( -25f ).width(50).height(50);
+        buttonsTable.add( expandInventoryButton ).right().width(50).height(50);
+        actionBar.add(buttonsTable).padRight( -25f );
 
         Stack stack = new Stack();
         E e = E(entityId);
@@ -77,12 +88,16 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
 
     public void showInventory() {
         spellSystem.hide();
+        castButton.setVisible( false );
+        shotButton.setVisible( true );
         expandInventoryButton.setVisible( true );
         inventorySystem.show();
     }
 
     public void showSpells() {
         expandInventoryButton.setVisible( false );
+        castButton.setVisible( true);
+        shotButton.setVisible( false );
         spellSystem.show();
         inventorySystem.hide();
     }
@@ -103,5 +118,30 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
             }
         });
         return expandInventoryButton;
+    }
+    private ImageButton createCastButton() {
+        ImageButton staff = new ImageButton(Skins.COMODORE_SKIN, "staff");
+        staff.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                spellSystem.castClick();
+            }
+        });
+        return staff;
+    }
+
+    public void clearCast() {
+        castButton.setChecked(false);
+    }
+
+    private ImageButton createShotButton() {
+        ImageButton shotButton = new ImageButton( Skins.COMODORE_SKIN, "disc" );
+        shotButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                mouseSystem.shot();
+            }
+        });
+        return shotButton;
     }
 }
