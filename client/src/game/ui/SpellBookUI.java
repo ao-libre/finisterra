@@ -1,8 +1,8 @@
 package game.ui;
 
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import component.entity.character.info.SpellBook;
 import game.utils.Skins;
 import shared.model.Spell;
@@ -14,7 +14,6 @@ import java.util.Optional;
 public abstract class SpellBookUI extends Table {
 
     private static final int MAX_SPELLS = 6;
-    private final ImageButton castButton;
     public Optional<SpellSlotUI> selected = Optional.empty();
     private List<SpellSlotUI> slots = new ArrayList<>(MAX_SPELLS);
 
@@ -38,8 +37,6 @@ public abstract class SpellBookUI extends Table {
                 spellTable.add(new Image(getSkin().getDrawable("separator"))).row();
             }
         }
-        castButton = createCastButton();
-        add(castButton).padRight(-25f);
         add(spellTable).right();
         spellTable.toFront();
     }
@@ -53,21 +50,10 @@ public abstract class SpellBookUI extends Table {
         }
     }
 
-    public void clearCast() {
-        castButton.setChecked(false);
+    public void castClick(){
+        selected.ifPresent(spell -> onCastClicked(spell));
     }
 
-    private ImageButton createCastButton() {
-        ImageButton staff = new ImageButton(Skins.COMODORE_SKIN, "staff");
-        staff.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                selected.ifPresent(spell -> onCastClicked(spell));
-                staff.setChecked(selected.isPresent());
-            }
-        });
-        return staff;
-    }
 
     protected abstract void onCastClicked(SpellSlotUI spell);
 

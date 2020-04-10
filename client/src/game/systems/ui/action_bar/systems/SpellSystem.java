@@ -7,6 +7,7 @@ import component.entity.character.info.SpellBook;
 import game.systems.resources.SpellsSystem;
 import game.systems.screen.MouseSystem;
 import game.systems.ui.UserInterfaceContributionSystem;
+import game.systems.ui.action_bar.ActionBarSystem;
 import game.ui.SpellBookUI;
 import game.ui.SpellSlotUI;
 import shared.model.Spell;
@@ -18,6 +19,7 @@ public class SpellSystem  extends UserInterfaceContributionSystem {
 
     private MouseSystem mouseSystem;
     private SpellsSystem spellsSystem;
+    private ActionBarSystem actionBarSystem;
     private SpellBookUI spellView;
 
     public SpellSystem() {
@@ -57,10 +59,14 @@ public class SpellSystem  extends UserInterfaceContributionSystem {
     }
 
     public void clearCast() {
-        spellView.clearCast();
+        actionBarSystem.clearCast();
     }
 
     public boolean isVisible() {
         return spellView.isVisible();
+    }
+
+    public void castClick(){
+        spellView.castClick();
     }
 }
