@@ -95,13 +95,13 @@ public class MagicCombatSystem extends PassiveSystem {
     private void castSpell(int playerId, int target, Spell spell) {
         int requiredMana = spell.getRequiredMana();
         int requiredStamina = spell.getRequiredStamina();
-        Mana mana = E(playerId).getMana();
-        Stamina stamina = E(playerId).getStamina();
+        Mana mana = E( playerId ).getMana();
+        Stamina stamina = E( playerId ).getStamina();
 
-        EntityUpdateBuilder playerUpdateBuilder = EntityUpdateBuilder.of(playerId);
-        EntityUpdateBuilder victimUpdateBuilder = EntityUpdateBuilder.of(target);
-        EntityUpdateBuilder victimUpdateToAllBuilder = EntityUpdateBuilder.of(target);
-        if (E(playerId).healthMin() != 0) {
+        EntityUpdateBuilder playerUpdateBuilder = EntityUpdateBuilder.of( playerId );
+        EntityUpdateBuilder victimUpdateBuilder = EntityUpdateBuilder.of( target );
+        EntityUpdateBuilder victimUpdateToAllBuilder = EntityUpdateBuilder.of( target );
+        if(E( playerId ).healthMin() != 0) {
             if(mana.min > requiredMana) {
                 if(!isValid( target, spell )) {
                     notifyInfo( playerId, Messages.INVALID_TARGET );
@@ -120,84 +120,86 @@ public class MagicCombatSystem extends PassiveSystem {
                         return;
                     }
                     notifyMagic( playerId, Messages.OWNER_MSG, spell.getOwnerMsg() );
-				} else {
+                } else {
                     notifyMagic( playerId, Messages.ORIGIN_MSG, spell.getOriginMsg(), getName( target ) );
                     notifyMagic( target, Messages.TARGET_MSG, getName( playerId ), spell.getTargetMsg() );
                 }
 
-            int fxGrh = spell.getFxGrh();
-            E targetEntity = E(target);
-            int damage;
-            if (spell.getSumHP() > 0) {
-                Health health = targetEntity.getHealth();
-                damage = calculateMagicDamage(playerId, target, spell);
-                health.min += damage;
-                health.min = Math.max(0, health.min);
-                victimUpdateToAllBuilder.withComponents(CombatMessage.magic(damage > 0 ? "+" : "-" + Math.abs(damage)));
-                victimUpdateBuilder.withComponents(health);
-                if (damage > 0) {
-                    notifyMagic(playerId, Messages.HEAL_TO, getName(target), Integer.toString(Math.abs(damage)));
-                    notifyMagic(target, Messages.HEAL_BY, getName(playerId), Integer.toString(Math.abs(damage)));
+                int fxGrh = spell.getFxGrh();
+                E targetEntity = E( target );
+                int damage;
+                if(spell.getSumHP() > 0) {
+                    Health health = targetEntity.getHealth();
+                    damage = calculateMagicDamage( playerId, target, spell );
+                    health.min += damage;
+                    health.min = Math.max( 0, health.min );
+                    victimUpdateToAllBuilder.withComponents( CombatMessage.magic( damage > 0 ? "+" : "-" + Math.abs( damage ) ) );
+                    victimUpdateBuilder.withComponents( health );
+                    if(damage > 0) {
+                        notifyMagic( playerId, Messages.HEAL_TO, getName( target ), Integer.toString( Math.abs( damage ) ) );
+                        notifyMagic( target, Messages.HEAL_BY, getName( playerId ), Integer.toString( Math.abs( damage ) ) );
 
-				}
-
-                if (health.min <= 0) {
-                    worldManager.entityDie(target);
-                    notifyMagic(playerId, Messages.KILL, getName(target));
-                    notifyMagic(target, Messages.KILLED, getName(playerId));
-                    soundEntitySystem.add(playerId, 126);
-
-                }
-                if(spell.isImmobilize()) {
-                    targetEntity.immobile();
-                    victimUpdateToAllBuilder.withComponents( targetEntity.getImmobile() );
-                } else if(spell.isRemoveParalysis()) {
-                    if(targetEntity.isImmobile()) {
-                        targetEntity.immobile( false );
-                        victimUpdateToAllBuilder.remove( Immobile.class );
-                    } else {
-                        notifyInfo( playerId, Messages.NOT_PARALYSIS );
-                        return;
                     }
+
+                    if(health.min <= 0) {
+                        worldManager.entityDie( target );
+                        notifyMagic( playerId, Messages.KILL, getName( target ) );
+                        notifyMagic( target, Messages.KILLED, getName( playerId ) );
+                        soundEntitySystem.add( playerId, 126 );
+
+                    }
+                    if(spell.isImmobilize()) {
+                        targetEntity.immobile();
+                        victimUpdateToAllBuilder.withComponents( targetEntity.getImmobile() );
+                    } else if(spell.isRemoveParalysis()) {
+                        if(targetEntity.isImmobile()) {
+                            targetEntity.immobile( false );
+                            victimUpdateToAllBuilder.remove( Immobile.class );
+                        } else {
+                            notifyInfo( playerId, Messages.NOT_PARALYSIS );
+                            return;
+                        }
+                    }
+
+                    if(spell.isSumStrength()) {
+                        int random = new Random().nextInt( spell.getMaxStrength() - spell.getMinStrength() + 1 ) + spell.getMinStrength();
+                        targetEntity.strengthCurrentValue( targetEntity.strengthCurrentValue() + random );
+                        targetEntity.buff().buffAddAttribute( targetEntity.getStrength(), spell.getStrengthDuration() );
+                        sendAttributeUpdate( target, targetEntity.getStrength(), targetEntity.getBuff() );
+                    }
+
+                    if(spell.isSumAgility()) {
+                        int random = new Random().nextInt( spell.getMaxAgility() - spell.getMinAgility() + 1 ) + spell.getMinAgility();
+                        targetEntity.agilityCurrentValue( targetEntity.agilityCurrentValue() + random );
+                        targetEntity.buff().buffAddAttribute( targetEntity.getAgility(), spell.getAgilityDuration() );
+                        sendAttributeUpdate( target, targetEntity.getAgility(), targetEntity.getBuff() );
+                    }
+
+
+                    if(fxGrh > 0) {
+                        effectEntitySystem.addFX( target, fxGrh, Math.max( 1, spell.getLoops() ) );
+                    }
+
+                    stamina.min -= requiredStamina;
+                    playerUpdateBuilder.withComponents( stamina );
+
+                    updateMana( playerId, requiredMana, mana );
+                    Dialog magicWords = new Dialog( spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS );
+
+
+                    Log.info( "Magic attack " + spell.getMagicWords() );
+                    int spellSound = spell.getWav();
+                    soundEntitySystem.add( playerId, spellSound );
+
+                    EntityUpdate victimUpdate = victimUpdateBuilder.build();
+                    entityUpdateSystem.add( victimUpdate, UpdateTo.ALL );
+
+                    EntityUpdate playerUpdate = playerUpdateBuilder.withComponents( magicWords ).build();
+                    entityUpdateSystem.add( playerUpdate, UpdateTo.ALL );
+                } else {
+                    notifyInfo( playerId, Messages.DEAD_CANT_ATTACK );
                 }
-
-                if(spell.isSumStrength()) {
-                    int random = new Random().nextInt( spell.getMaxStrength() - spell.getMinStrength() + 1 ) + spell.getMinStrength();
-                    targetEntity.strengthCurrentValue( targetEntity.strengthCurrentValue() + random );
-                    targetEntity.buff().buffAddAttribute( targetEntity.getStrength(), spell.getStrengthDuration() );
-                    sendAttributeUpdate( target, targetEntity.getStrength(), targetEntity.getBuff() );
-                }
-
-                if(spell.isSumAgility()) {
-                    int random = new Random().nextInt( spell.getMaxAgility() - spell.getMinAgility() + 1 ) + spell.getMinAgility();
-                    targetEntity.agilityCurrentValue( targetEntity.agilityCurrentValue() + random );
-                    targetEntity.buff().buffAddAttribute( targetEntity.getAgility(), spell.getAgilityDuration() );
-                    sendAttributeUpdate( target, targetEntity.getAgility(), targetEntity.getBuff() );
-                }
-
-
-            if (fxGrh > 0) {
-                effectEntitySystem.addFX(target, fxGrh, Math.max(1, spell.getLoops()));
             }
-
-                stamina.min -= requiredStamina;
-                playerUpdateBuilder.withComponents( stamina );
-
-                updateMana( playerId, requiredMana, mana );
-                Dialog magicWords = new Dialog( spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS );
-
-
-            Log.info("Magic attack " + spell.getMagicWords());
-            int spellSound = spell.getWav();
-            soundEntitySystem.add(playerId, spellSound);
-
-            EntityUpdate victimUpdate = victimUpdateBuilder.build();
-            entityUpdateSystem.add(victimUpdate, UpdateTo.ALL);
-
-            EntityUpdate playerUpdate = playerUpdateBuilder.withComponents(magicWords).build();
-            entityUpdateSystem.add(playerUpdate, UpdateTo.ALL);
-        } else {
-            notifyInfo( playerId, Messages.DEAD_CANT_ATTACK );
         }
     }
 

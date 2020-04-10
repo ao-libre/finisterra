@@ -75,18 +75,18 @@ public class CommandSystem extends DefaultManager {
             while ((i < (capacity - 1)) || homeSet) {
                 if (playerMap == cityMaps.get( i )){
                     player.originPosMap( playerMap ).originPosX( playerX ).originPosY( playerY );
-                    worldManager.sendEntityUpdate(senderId, ConsoleMessage.info( Messages.MULTIUSE, "Home set","","",""));
+                    messageSystem.add(senderId, ConsoleMessage.info("Home set"));
                     homeSet = true;
                 }
                 i++;
             }
             if (!homeSet){
-                worldManager.sendEntityUpdate(senderId, ConsoleMessage.info( Messages.MULTIUSE, "Maps "+ cityMaps, "","",""));
+                messageSystem.add(senderId, ConsoleMessage.info("Maps "+ cityMaps));
             }
         }
         if (command.equalsIgnoreCase( CMD_PLAYER_SEE_HOME_CITY )){
             E player = E.E(senderId);
-            worldManager.sendEntityUpdate(senderId, ConsoleMessage.info( Messages.HOME_POS," " +
+            worldManager.sendEntityUpdate(senderId, ConsoleMessage.info( Messages.HOME_POS.name()," " +
                     + player.originPosMap(), " " + player.originPosX(), " " + player.originPosY()));
         }
 

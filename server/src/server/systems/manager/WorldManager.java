@@ -14,13 +14,13 @@ import server.systems.EntityFactorySystem;
 import server.systems.ServerSystem;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.UpdateTo;
+import shared.interfaces.Race;
 import shared.model.lobby.Player;
 import shared.model.npcs.NPC;
-import shared.network.notifications.EntityUpdate;
+import shared.network.inventory.InventoryUpdate;
 import shared.util.EntityUpdateBuilder;
 
 import java.util.List;
-import java.util.Random;
 
 import static com.artemis.E.E;
 
@@ -85,9 +85,11 @@ public class WorldManager extends DefaultManager {
             unregisterEntity(entity.id());
             npc.getDrops().forEach(itemPair -> dropItem(itemPair.getKey(), itemPair.getValue(), entity.getWorldPos()));
         } else {
+
             // dropeo de items random al morir
-            Inventory.Item items[] = entity.getInventory().items;
+            //Inventory.Item items[] = entity.getInventory().items;
             InventoryUpdate inventoryUpdate = new InventoryUpdate();
+            /*
             for(int i = 0; i<20;i++) {
                 if(items[i] != null) {
                     items[i].equipped = false;
@@ -106,7 +108,9 @@ public class WorldManager extends DefaultManager {
                     }
                 }
             }
-            notifyUpdate( entityId, inventoryUpdate );
+
+             */
+            //notifyUpdate( entityId, inventoryUpdate );
             //setea la hp a 0 porque o sino queda con hp
             entity.getHealth().min = 0;
             // cambio del cuerpo y la cabeza a fantasma
@@ -116,7 +120,7 @@ public class WorldManager extends DefaultManager {
             EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(entityId);
             resetUpdate.withComponents(entity.getHealth());
             resetUpdate.withComponents(entity.getHead(), entity.getBody());
-            resetUpdate.withComponents(entity.getInventory());
+            //resetUpdate.withComponents(entity.getInventory());
             sendEntityUpdate(entityId, resetUpdate.build());
             notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(entity.getWorldPos()).build());
             //a los 20 segundos no revive automaticamente en la posision de origen del jugador
