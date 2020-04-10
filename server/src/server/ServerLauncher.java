@@ -8,6 +8,6 @@ public class ServerLauncher {
 
     public static void main(String[] arg) {
         // Launch application
-        new HeadlessApplication(new Finisterra(ConfigurationManager.getInstance().getServerConfig()));
+        new HeadlessApplication(new Finisterra());
     }
 }

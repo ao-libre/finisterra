@@ -3,59 +3,42 @@ package server.core;
 import com.artemis.FluidEntityPlugin;
 import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
-import com.badlogic.gdx.ApplicationListener;
+import com.artemis.io.JsonArtemisSerializer;
+import com.artemis.managers.WorldSerializationManager;
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import server.configs.ServerConfiguration;
-import server.network.FinisterraRequestProcessor;
-import server.systems.FinisterraSystem;
-import server.systems.manager.ObjectManager;
-import server.systems.manager.SpellManager;
-import server.utils.IpChecker;
-import shared.model.lobby.Lobby;
-import shared.model.lobby.Room;
-import shared.model.map.Map;
-import shared.network.lobby.StartGameResponse;
+import server.manager.ConfigurationManager;
+import server.network.ServerNotificationProcessor;
+import server.network.ServerRequestProcessor;
+import server.systems.*;
+import server.systems.ai.NPCAttackSystem;
+import server.systems.ai.PathFindingSystem;
+import server.systems.ai.RespawnSystem;
+import server.systems.combat.MagicCombatSystem;
+import server.systems.combat.PhysicalCombatSystem;
+import server.systems.combat.RangedCombatSystem;
+import server.systems.entity.EffectEntitySystem;
+import server.systems.entity.SoundEntitySystem;
+import server.systems.manager.*;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.MessageSystem;
+import server.systems.network.ServerReferenceSystem;
+import shared.systems.IntervalSystem;
 import shared.util.LogSystem;
 import shared.util.MapHelper;
+import shared.util.Tick;
 
-import java.net.InetAddress;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static server.systems.Intervals.*;
 import static shared.util.MapHelper.CacheStrategy.NEVER_EXPIRE;
 
-public class Finisterra implements ApplicationListener {
+public class Finisterra extends ApplicationAdapter {
 
-    private final int tcpPort;
-    private final int udpPort;
-    private boolean shouldUseLocalHost;
-    private Set<Server> servers = new HashSet<>();
-    private int lastPort;
-    private int limitRooms;
-    private int maxPlayers;
-    private Lobby lobby;
     private World world;
-    private ObjectManager objectManager;
-    private SpellManager spellManager;
-    private HashMap<Integer, Map> maps = new HashMap<>();
-
-    public Finisterra(ServerConfiguration config) {
-
-        /**
-         * Fetch ports configuration from Server.json
-         */
-        ServerConfiguration.Network.Ports currentPorts = config.getNetwork().getPorts();
-
-        this.tcpPort = currentPorts.getTcpPort();
-        this.udpPort = currentPorts.getUdpPort();
-        this.lastPort = currentPorts.getUdpPort();
-        this.shouldUseLocalHost = config.getNetwork().getuseLocalHost();
-
-        this.limitRooms = config.getRooms().getLimitCreation();
-        this.maxPlayers = config.getRooms().getMaxPlayers();
-    }
+    private float currentTick = 0;
 
     @Override
     public void create() {
@@ -64,88 +47,84 @@ public class Finisterra implements ApplicationListener {
         Log.setLogger(new LogSystem());
         Log.info("Server Initialization", "Initializing Finisterra Server...");
 
-        objectManager = new ObjectManager();
-        spellManager = new SpellManager();
+        loadAsync();
+        createWorld();
 
+        Log.info("Server initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(start - System.currentTimeMillis())) + " seconds.");
+        Log.info("Server initialization", "Finisterra OK");
+    }
+
+    private void loadAsync() {
         Thread thread = new Thread(() -> {
             MapHelper helper = MapHelper.instance(NEVER_EXPIRE);
             helper.loadAll();
         });
         thread.setDaemon(true);
         thread.start();
+    }
 
-        lobby = new Lobby(limitRooms, maxPlayers);
-        WorldConfigurationBuilder worldConfigurationBuilder = new WorldConfigurationBuilder();
-        ServerStrategy strategy = new ServerStrategy(tcpPort, udpPort);
+    private void createWorld() {
+        Log.info("Initializing systems...");
+        final WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
 
-        world = new World(worldConfigurationBuilder
+        ServerConfiguration serverConfig = ConfigurationManager.getInstance().getServerConfig();
+        ServerConfiguration.Network.Ports currentPorts = serverConfig.getNetwork().getPorts();
+
+        WorldSerializationManager serializationManager = new WorldSerializationManager();
+
+        builder
+                .with(new ClearSystem())
+                .with(new ServerSystem(new ServerStrategy(currentPorts.getTcpPort(), currentPorts.getUdpPort())))
+                .with(new ServerNotificationProcessor())
                 .with(new FluidEntityPlugin())
-                .with(new FinisterraSystem(strategy))
-                .with(new FinisterraRequestProcessor())
-                .build());
+                .with(new ComponentManager())
+                .with(new EntityFactorySystem())
+                .with(new IntervalSystem())
+                .with(new ServerReferenceSystem())
+                .with(new ItemManager())
+                .with(new ServerRequestProcessor())
+                .with(new ItemConsumers())
+                .with(new NPCManager())
+                .with(new MapManager())
+                .with(new SpellManager())
+                .with(new ObjectManager())
+                .with(new WorldManager())
+                .with(new PhysicalCombatSystem())
+                .with(new RangedCombatSystem())
+                .with(new CharacterTrainingSystem())
+                .with(new MagicCombatSystem())
+                .with(new PathFindingSystem(PATH_FINDING_INTERVAL))
+                .with(new NPCAttackSystem(NPC_ATTACK_INTERVAL))
+                .with(new EnergyRegenerationSystem(ENERGY_REGENERATION_INTERVAL))
+                .with(new MeditateSystem(MEDITATE_INTERVAL))
+                .with(new FootprintSystem(FOOTPRINT_LIVE_TIME))
+                .with(new EffectEntitySystem())
+                .with(new SoundEntitySystem())
+                .with(new RandomMovementSystem())
+                .with(new RespawnSystem())
+                .with(new BuffSystem())
+                .with(new CommandSystem())
+                .with(new EntityUpdateSystem())
+                .with(new MessageSystem())
+                .with(serializationManager);
+        world = new World(builder.build());
+        serializationManager.setSerializer(new JsonArtemisSerializer(world));
 
-        Log.info("Server initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(start - System.currentTimeMillis())) + " seconds.");
-        Log.info("Server initialization", "Finisterra OK");
-    }
-
-    public void startGame(Room room) {
-        Server roomServer = servers.stream().filter(server -> server.getRoomId() == room.getId()).findFirst().orElseGet(() -> {
-            int tcpPort = getNextPort();
-            int udpPort = getNextPort();
-            Server server = new Server(room.getId(), tcpPort, udpPort, objectManager, spellManager, maps);
-            server.addPlayers(room.getPlayers());
-            servers.add(server);
-            return server;
-        });
-        room.getPlayers().stream().mapToInt(player -> getNetworkManager().getConnectionByPlayer(player)).forEach(connectionId -> {
-            try {
-                if (shouldUseLocalHost) {
-                    Log.info("Network", "Using localhost...");
-                }
-                getNetworkManager().sendTo(connectionId, new StartGameResponse(
-                        shouldUseLocalHost ? InetAddress.getLocalHost().getHostAddress() : IpChecker.getIp(),
-                        roomServer.getTcpPort(), roomServer.getUdpPort()));
-            } catch (Exception e) {
-                Log.error("Network", "Error en startGame()", e);
-            }
-        });
-    }
-
-    private int getNextPort() {
-        return ++lastPort;
-    }
-
-    public Lobby getLobby() {
-        return lobby;
-    }
-
-    private FinisterraSystem getNetworkManager() {
-        return world.getSystem(FinisterraSystem.class);
-    }
-
-    @Override
-    public void resize(int width, int height) {
+        Log.info("World created successfully!");
     }
 
     @Override
     public void render() {
-        world.process();
-        servers.forEach(Server::update);
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
+        currentTick += Gdx.graphics.getDeltaTime() * 1000; // delta is in seconds, so we convert to ms
+        if (currentTick >= Tick.TIME) {
+            world.setDelta(currentTick);
+            currentTick = 0; // reset counter
+            world.process();
+        }
     }
 
     @Override
     public void dispose() {
-        getLobby().getWaitingPlayers().clear();
-        getLobby().getRooms().clear();
-        getNetworkManager().stop();
         System.exit(0);
     }
 }

@@ -56,6 +56,31 @@ public class EntityFactorySystem extends PassiveSystem {
         worldManager.registerEntity(npcId);
     }
 
+    public int create(String name, int heroId) {
+        Hero hero = Hero.values()[heroId];
+        Race race = Race.values()[hero.getRaceId()];
+
+        int player = getWorld().create();
+
+        E entity = E(player);
+        entity
+                .character()
+                .tag(name)
+                .nameText(name)
+                .headingCurrent(Heading.HEADING_SOUTH);
+
+        setEntityPosition(entity);
+        setAttributesAndStats(entity, race);
+        setHead(entity, race);
+        setNakedBody(entity, race);
+        // set inventory
+        setInventory(player, hero, Team.NO_TEAM);
+        // set spells
+        setSpells(player, hero);
+
+
+        return player;
+    }
 
     public int createPlayer(String name, Hero hero, Team team) {
         int player = getWorld().create();
@@ -71,10 +96,7 @@ public class EntityFactorySystem extends PassiveSystem {
                 break;
         }
         entity.charHeroHeroId(hero.ordinal());
-        // set component.position
-        setEntityPosition(entity, team);
-        // set head and body
-        setHeadAndBody(name, entity);
+
         // set class
         setClassAndAttributes(hero, entity);
         // set inventory
@@ -241,7 +263,6 @@ public class EntityFactorySystem extends PassiveSystem {
     private void setHeadAndBody(String name, E entity) {
         entity
                 .headingCurrent(Heading.HEADING_SOUTH)
-                .character()
                 .nameText(name);
     }
 
@@ -495,7 +516,7 @@ public class EntityFactorySystem extends PassiveSystem {
     }
 
 
-    private void setEntityPosition(E entity, Team team) {
+    private void setEntityPosition(E entity) {
         WorldPos spot = new WorldPos(50, 50, 1);
         setWorldPosition(entity, spot);
     }
