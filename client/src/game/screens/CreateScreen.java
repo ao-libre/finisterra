@@ -67,6 +67,7 @@ public class CreateScreen extends AbstractScreen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 screenManager.to(ScreenEnum.LOGIN);
+                registerButton.setDisabled(false);
             }
         });
         createWindow.add(goBackButton).row();

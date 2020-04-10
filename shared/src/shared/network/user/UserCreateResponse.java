@@ -22,6 +22,13 @@ public class UserCreateResponse implements IResponse {
         return userCreateResponse;
     }
 
+    public boolean isSuccessful() {
+        return ok;
+    }
+
+    public String getMessage() {
+        return message;
+    }
 
     @Override
     public void accept(IResponseProcessor processor) {

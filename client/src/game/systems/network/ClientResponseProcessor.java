@@ -4,7 +4,8 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
-import game.screens.*;
+import game.screens.ScreenEnum;
+import game.screens.ScreenManager;
 import game.systems.physics.MovementProcessorSystem;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.network.account.AccountCreationResponse;
@@ -13,7 +14,6 @@ import shared.network.interfaces.IResponseProcessor;
 import shared.network.movement.MovementResponse;
 import shared.network.time.TimeSyncResponse;
 import shared.network.user.UserCreateResponse;
-import shared.network.user.UserLoginRequest;
 import shared.network.user.UserLoginResponse;
 
 @Wire
@@ -65,7 +65,7 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
             */
 
             //hotfix para recuperar funcionalidad
-            clientSystem.send(new UserLoginRequest(accountLoginResponse.getUsername()));
+            screenManager.to(ScreenEnum.CREATE);
         } else {
             Dialog dialog = new Dialog("Error", screenManager.getAbstractScreen().getSkin());
             dialog.text("Error al loguearse");
@@ -76,11 +76,25 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
 
     @Override
     public void processResponse(UserCreateResponse userCreateResponse) {
-
+        if (userCreateResponse.isSuccessful()) {
+            screenManager.to(ScreenEnum.GAME);
+        } else {
+            Dialog dialog = new Dialog("No se pudo crear el personaje!", screenManager.getAbstractScreen().getSkin());
+            dialog.text(userCreateResponse.getMessage());
+            dialog.button("OK");
+            dialog.show(screenManager.getAbstractScreen().getStage());
+        }
     }
 
     @Override
     public void processResponse(UserLoginResponse userLoginResponse) {
-
+        if (userLoginResponse.isSuccessful()) {
+            screenManager.to(ScreenEnum.GAME);
+        } else {
+            Dialog dialog = new Dialog("Error", screenManager.getAbstractScreen().getSkin());
+            dialog.text(userLoginResponse.getMessage());
+            dialog.button("OK");
+            dialog.show(screenManager.getAbstractScreen().getStage());
+        }
     }
 }

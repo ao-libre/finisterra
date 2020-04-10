@@ -2,6 +2,7 @@ package game.systems.resources;
 
 import com.artemis.BaseSystem;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.esotericsoftware.minlog.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -20,6 +21,7 @@ import model.textures.AOAnimation;
 import model.textures.AOImage;
 import model.textures.AOTexture;
 import model.textures.BundledAnimation;
+import org.jetbrains.annotations.NotNull;
 import shared.objects.types.HelmetObj;
 import shared.objects.types.ShieldObj;
 import shared.objects.types.WeaponObj;
@@ -49,7 +51,7 @@ public class AnimationsSystem extends BaseSystem {
     private LoadingCache<AOAnimation, BundledAnimation> previews = CacheBuilder
             .newBuilder()
             .expireAfterAccess(3, TimeUnit.MINUTES)
-            .build(CacheLoader.from(BundledAnimation::new));
+            .build(CacheLoader.from(this::createAnimation));
 
     public AnimationsSystem() {
         tiledAnimations = CacheBuilder
@@ -57,7 +59,7 @@ public class AnimationsSystem extends BaseSystem {
                 .expireAfterAccess(1, TimeUnit.MINUTES)
                 .build(CacheLoader.from(key -> {
                     AOAnimation animation = assetManager.getAnimation(key);
-                    return new BundledAnimation(animation);
+                    return createAnimation(animation);
                 }));
 
         headAnimations = CacheBuilder.newBuilder().expireAfterAccess(3, TimeUnit.MINUTES)
@@ -160,7 +162,20 @@ public class AnimationsSystem extends BaseSystem {
             Log.debug("Fail to create animation for: " + id);
             return null;
         }
-        return new BundledAnimation(animation);
+        return createAnimation(animation);
+    }
+
+    @NotNull
+    private BundledAnimation createAnimation(AOAnimation animation) {
+        return new BundledAnimation(getAnimationTextures(animation), animation.getSpeed());
+    }
+
+    private TextureRegion[] getAnimationTextures(AOAnimation aoAnimation) {
+        return Arrays.stream(aoAnimation.getFrames())
+                .filter(i -> i > 0)
+                .mapToObj(this::getTexture)
+                .map(AOTexture::getTexture)
+                .toArray(TextureRegion[]::new);
     }
 
 

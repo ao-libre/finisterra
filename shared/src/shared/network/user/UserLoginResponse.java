@@ -27,6 +27,10 @@ public class UserLoginResponse implements IResponse {
         return ok;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
     @Override
     public void accept(IResponseProcessor processor) {
         processor.processResponse(this);

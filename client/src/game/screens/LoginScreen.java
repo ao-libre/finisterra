@@ -9,9 +9,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
 import game.AOGame;
 import game.ClientConfiguration;
-import game.handlers.AOAssetManager;
-import game.systems.resources.MusicSystem;
+import game.handlers.DefaultAOAssetManager;
 import game.systems.network.ClientSystem;
+import game.systems.resources.MusicSystem;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.network.account.AccountLoginRequest;
 import shared.util.Messages;
@@ -19,7 +19,8 @@ import shared.util.Messages;
 @Wire
 public class LoginScreen extends AbstractScreen {
 
-    private AOAssetManager assetManager;
+    @Wire
+    private DefaultAOAssetManager assetManager;
     private ClientConfiguration clientConfiguration;
     private ClientSystem clientSystem;
     private ScreenManager screenManager;
@@ -55,7 +56,7 @@ public class LoginScreen extends AbstractScreen {
         }, 0, 0.6f);
     }
 
-//    @Override
+    //    @Override
 //    protected void keyPressed(int keyCode) {
 //        if (keyCode == Input.Keys.ENTER && this.canConnect) {
 //            this.canConnect = false;
@@ -80,8 +81,8 @@ public class LoginScreen extends AbstractScreen {
         seePassword.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (((CheckBox)actor).isPressed()) {
-                    passwordField.setPasswordMode( !passwordField.isPasswordMode() );
+                if (((CheckBox) actor).isPressed()) {
+                    passwordField.setPasswordMode(!passwordField.isPasswordMode());
                 }
             }
         });
@@ -93,7 +94,7 @@ public class LoginScreen extends AbstractScreen {
         newAccountButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (((TextButton)actor).isPressed()) {
+                if (((TextButton) actor).isPressed()) {
                     AOGame game = (AOGame) Gdx.app.getApplicationListener();
                     screenManager.to(ScreenEnum.SIGN_UP);
                 }
@@ -140,7 +141,7 @@ public class LoginScreen extends AbstractScreen {
 
                 clientConfiguration.getAccount().setEmail(email);
                 clientConfiguration.getAccount().setPassword(password);
-//                clientConfiguration.save();
+                // clientConfiguration.save(); TODO this is breaking all
 
                 ClientConfiguration.Network.Server server = serverList.getSelected();
                 if (server == null) return;
@@ -160,6 +161,7 @@ public class LoginScreen extends AbstractScreen {
                         // Seteamos la info. del servidor al que nos vamos a conectar.
                         clientSystem.setHost(ip, port);
 
+
                         // Inicializamos la conexion.
                         clientSystem.start();
 
@@ -171,14 +173,18 @@ public class LoginScreen extends AbstractScreen {
 
                         } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
                             // Mostramos un mensaje de error.
-                            Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
-                            dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
-                            dialog.button("OK");
-                            dialog.show(getStage());
+                            connectionFailed();
                         }
                     }
                 }
             }
         }
+    }
+
+    private void connectionFailed() {
+        Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
+        dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
+        dialog.button("OK");
+        dialog.show(getStage());
     }
 }
