@@ -1,9 +1,8 @@
 package shared.network.init;
 
-import component.sound.AOSound;
-import component.camera.Focused;
 import com.artemis.Component;
 import com.artemis.FluidIteratingSystem;
+import component.camera.Focused;
 import component.console.ConsoleMessage;
 import component.entity.Description;
 import component.entity.Ref;
@@ -31,13 +30,14 @@ import component.graphic.RenderBefore;
 import component.movement.Destination;
 import component.movement.Moving;
 import component.movement.RandomMovement;
-import net.mostlyoriginal.api.network.marshal.common.MarshalDictionary;
 import component.network.Network;
 import component.physics.AOPhysics;
-import component.physics.AttackInterval;
 import component.physics.AttackAnimation;
+import component.physics.AttackInterval;
 import component.position.WorldPos;
 import component.position.WorldPosOffsets;
+import component.sound.AOSound;
+import net.mostlyoriginal.api.network.marshal.common.MarshalDictionary;
 import shared.interfaces.CharClass;
 import shared.interfaces.Constants;
 import shared.interfaces.Hero;
@@ -45,10 +45,6 @@ import shared.model.AttackType;
 import shared.model.Spell;
 import shared.model.loaders.ObjectLoader;
 import shared.model.loaders.SpellLoader;
-import shared.model.lobby.Lobby;
-import shared.model.lobby.Player;
-import shared.model.lobby.Room;
-import shared.model.lobby.Team;
 import shared.model.readers.DescriptorsReader;
 import shared.model.readers.Loader;
 import shared.model.readers.Reader;
@@ -67,8 +63,6 @@ import shared.network.interfaces.INotificationProcessor;
 import shared.network.interfaces.IResponseProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
-import shared.network.lobby.*;
-import shared.network.lobby.player.*;
 import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
@@ -76,9 +70,14 @@ import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
+import shared.network.user.UserCreateRequest;
+import shared.network.user.UserCreateResponse;
+import shared.network.user.UserLoginRequest;
+import shared.network.user.UserLoginResponse;
 import shared.objects.factory.ObjectFactory;
 import shared.objects.types.*;
 import shared.objects.types.common.*;
+import shared.util.AccountSystemUtilities;
 import shared.util.EntityUpdateBuilder;
 import shared.util.MapHelper;
 import shared.util.Messages;
@@ -125,42 +124,16 @@ public class NetworkDictionary extends MarshalDictionary {
                 Messages.class,
 
                 // Login
+                AccountSystemUtilities.class,
                 AccountCreationRequest.class,
                 AccountLoginRequest.class,
                 AccountCreationResponse.class,
                 AccountLoginResponse.class,
 
-                // Lobby
-                Lobby.class,
-                Player.class,
-                Room.class,
-                Room[].class,
-                Team.class,
-
-                // Lobby Player
-                ChangeHeroRequest.class,
-                ChangeReadyStateRequest.class,
-                ChangeTeamRequest.class,
-                ChangePlayerNotification.class,
-
-                // Lobby Requests
-                CreateRoomRequest.class,
-                ExitRoomRequest.class,
-                JoinLobbyRequest.class,
-                JoinRoomRequest.class,
-                StartGameRequest.class,
-                PlayerLoginRequest.class,
-
-                // Lobby Responses
-                CreateRoomResponse.class,
-                CreateRoomResponse.Status.class,
-                JoinLobbyResponse.class,
-                JoinRoomResponse.class,
-                StartGameResponse.class,
-
-                // Lobby Notifications
-                JoinRoomNotification.class,
-                NewRoomNotification.class,
+                UserLoginRequest.class,
+                UserCreateRequest.class,
+                UserLoginResponse.class,
+                UserCreateResponse.class,
 
                 // Other
                 boolean[][].class,

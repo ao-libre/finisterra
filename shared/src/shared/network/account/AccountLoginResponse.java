@@ -4,6 +4,8 @@ import shared.network.interfaces.IResponse;
 import shared.network.interfaces.IResponseProcessor;
 
 public class AccountLoginResponse implements IResponse {
+
+    // TODO add all players
     String username;
     boolean successful;
 

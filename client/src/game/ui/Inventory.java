@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Tooltip;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import component.entity.character.info.Bag;
@@ -139,7 +140,7 @@ public abstract class Inventory extends Window {
         Item[] userItems = userBag.items;
         for (int i = 0; i < SIZE; i++) {
             Item item = base + i < userItems.length ? userItems[base + i] : null;
-            slots.get(i).setItem(item, item != null ? getGraphic(item) : null);
+            slots.get(i).setItem(item, item != null ? getGraphic(item) : null, item != null ? getTooltip(item) : null);
         }
     }
 
@@ -176,6 +177,8 @@ public abstract class Inventory extends Window {
     protected abstract void swap(int originIndex, int targetIndex);
 
     protected abstract TextureRegion getGraphic(Item item);
+
+    protected abstract Tooltip getTooltip(Item item);
     
 
 }

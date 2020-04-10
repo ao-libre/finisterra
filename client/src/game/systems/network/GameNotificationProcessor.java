@@ -9,17 +9,12 @@ import com.esotericsoftware.minlog.Log;
 import component.entity.character.info.Bag;
 import game.systems.PlayerSystem;
 import game.systems.camera.CameraShakeSystem;
-import game.systems.lobby.LobbySystem;
 import game.systems.resources.SoundsSystem;
 import game.systems.ui.UserInterfaceSystem;
 import game.systems.ui.action_bar.systems.InventorySystem;
 import game.systems.world.NetworkedEntitySystem;
-import shared.model.lobby.Player;
 import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.inventory.InventoryUpdate;
-import shared.network.lobby.JoinRoomNotification;
-import shared.network.lobby.NewRoomNotification;
-import shared.network.lobby.player.ChangePlayerNotification;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
@@ -32,7 +27,6 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
     private CameraShakeSystem cameraShakeSystem;
     private InventorySystem inventorySystem;
-    private LobbySystem lobbySystem;
     private NetworkedEntitySystem networkedEntitySystem;
     private PlayerSystem playerSystem;
     private SoundsSystem soundsSystem;
@@ -112,24 +106,4 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         }
     }
 
-    @Override
-    public void processNotification(JoinRoomNotification joinRoomNotification) {
-        if (joinRoomNotification.isEnter()) {
-            lobbySystem.getCurrentRoom().add(joinRoomNotification.getPlayer());
-        } else {
-            lobbySystem.getCurrentRoom().remove(joinRoomNotification.getPlayer());
-        }
-    }
-
-    @Override
-    public void processNotification(NewRoomNotification newRoomNotification) {
-        lobbySystem.getRooms().add(newRoomNotification.getRoom());
-    }
-
-    @Override
-    public void processNotification(ChangePlayerNotification changePlayerNotification) {
-        Player player = changePlayerNotification.getPlayer();
-        lobbySystem.getCurrentRoom().remove(player);
-        lobbySystem.getCurrentRoom().add(player);
-    }
 }

@@ -1,12 +1,10 @@
 package game;
 
-import com.artemis.SuperMapper;
-import com.artemis.World;
-import com.artemis.WorldConfiguration;
-import com.artemis.WorldConfigurationBuilder;
+import com.artemis.*;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
-import game.handlers.AOAssetManager;
+import game.handlers.DefaultAOAssetManager;
+import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
 import game.systems.PlayerSystem;
 import game.systems.actions.PlayerActionSystem;
@@ -48,6 +46,8 @@ import game.utils.CursorSystem;
 import net.mostlyoriginal.api.system.render.ClearScreenSystem;
 import shared.systems.IntervalSystem;
 
+import java.util.Arrays;
+
 import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
 
 public class WorldConstructor {
@@ -59,28 +59,20 @@ public class WorldConstructor {
     private static final int DECORATION_PRIORITY = 3;
     private static final int UI = 0;
 
-    private AOAssetManager assetManager;
-    private ClientConfiguration clientConfiguration;
-    private ClientSystem clientSystem;
-    private ScreenManager screenManager;
-
-    /**
-     * Construye el Artemis World, inicializa e inyecta sistemas.
-     * Este método es bloqueante.
-     */
-    public World build() {
-        return new World(getWorldConfiguration());
-    }
-
-    private WorldConfiguration getWorldConfiguration() {
+    private static WorldConfiguration getWorldConfiguration(ClientConfiguration clientConfiguration, ScreenManager screenManager, DefaultAOAssetManager assetManager) {
         return new WorldConfigurationBuilder()
                 // Sistemas de uso global (no necesitan prioridad porque son pasivos)
-                .with(assetManager,
-                        clientConfiguration,
-                        screenManager) // @fixme pasar AOAssetManager a sistema
+                .with(clientConfiguration,
+                        screenManager)
+
+                // register all screens
+                .with(Arrays.stream(ScreenEnum.values())
+                        .map(ScreenEnum::get)
+                        .map(BaseSystem.class::cast)
+                        .toArray(BaseSystem[]::new))
 
                 // Network system (no necesita prioridad porque es asincrónico, funciona por callbacks)
-                .with(clientSystem,
+                .with(new ClientSystem(),
                         new ClientResponseProcessor(),
                         new GameNotificationProcessor())
 
@@ -112,9 +104,9 @@ public class WorldConstructor {
                         new AttackAnimationSystem(),
                         new SoundSytem(),
                         new TiledMapSystem(),
-                        new AnimationsSystem(assetManager),
-                        new DescriptorsSystem(assetManager),
-                        new MessageSystem(assetManager),
+                        new AnimationsSystem(),
+                        new DescriptorsSystem(),
+                        new MessageSystem(),
                         new MapSystem(),
                         new MusicSystem(),
                         new ObjectSystem(),
@@ -168,17 +160,16 @@ public class WorldConstructor {
                         new TagManager(),
                         new UuidEntityManager())
 
-                // return WorldConfiguration
-                .build();
+                .build()
+                .register(assetManager);
     }
 
-    public WorldConstructor(AOAssetManager assetManager,
-                            ClientConfiguration clientConfiguration,
-                            ClientSystem clientSystem,
-                            ScreenManager screenManager) {
-        this.assetManager = assetManager;
-        this.clientConfiguration = clientConfiguration;
-        this.clientSystem = clientSystem;
-        this.screenManager = screenManager;
+    /**
+     * Construye el Artemis World, inicializa e inyecta sistemas.
+     * Este método es bloqueante.
+     */
+    public static void create(ClientConfiguration clientConfiguration,
+                              ScreenManager screenManager, DefaultAOAssetManager assetManager) {
+        new World(getWorldConfiguration(clientConfiguration, screenManager, assetManager));
     }
 }
