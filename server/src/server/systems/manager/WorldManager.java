@@ -124,25 +124,29 @@ public class WorldManager extends DefaultManager {
             resetUpdate.withComponents(entity.getBag());
             sendEntityUpdate(entityId, resetUpdate.build());
             notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(entity.getWorldPos()).build());
-            //a los 20 segundos no revive automaticamente en la posision de origen del jugador
-            Timer.schedule( new Timer.Task() {
-                @Override
-                public void run() {
-                    Log.info(" pasaron 20 segundos ");
-                    if (entity.hasHealth()) {
-                        if(entity.healthMin() == 0) {
-                            resurrect( entityId, false );
-                        }
+        }
+    }
+
+    public void resurrectRequest(int entityId){
+        E entity = E(entityId);
+        //a los 20 segundos no revive en la posision de origen del jugador
+        Timer.schedule( new Timer.Task() {
+            @Override
+            public void run() {
+                Log.info(" pasaron 20 segundos ");
+                if (entity.hasHealth()) {
+                    if(entity.healthMin() == 0) {
+                        resurrect( entityId, false );
                     }
                 }
-            }, 20);
-        }
+            }
+        }, 20);
     }
 
     /**
      * @param entityId player id
-     * @param resurrected si fue resucitado por un jugador o npc es true
-     *                   caso resurrecion automatica es false y se resucita en la ciudad
+     * @param resurrected true si fue resucitado por un jugador o npc resusita en donde este
+     *                    false se resucita en la ciudad
      */
     public void resurrect(int entityId, boolean resurrected){
         final E entity = E(entityId);
@@ -150,21 +154,17 @@ public class WorldManager extends DefaultManager {
         // RESET USER.
         // reset health
         entity.getHealth().min = entity.getHealth().max;
-        // reset mana
         EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(entityId);
         resetUpdate.withComponents(entity.getHealth());
-        if (entity.hasMana()) {
-            entity.getMana().min = entity.getMana().max;
-            resetUpdate.withComponents(entity.getMana());
-        }
+
         //reset body and head
         //todo obtener body y head de la base de datos del jugador las cabezas actualmente son randoms
         entityFactorySystem.setNakedBody(entity, Race.of(entity));
         entityFactorySystem.setHead(entity, Race.of(entity));
         notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(entity.getBody(), entity.getHead()).build());
-        //todo asignar comando para asignar la posicion de las distintas ciudades
+
         if (!resurrected) {
-            // por si no tiene posision de origen o es la ciudad newbir y el jugador ya no es newbie
+            // por si no tiene posision de origen o esta es la ciudad newbie y el jugador ya no es newbie
             if (entity.originPosMap() == 0 || (entity.getLevel().level>13 && entity.originPosMap()==286)){
                 if (entity.getLevel().level < 13){
                     entity.originPosMap(286).originPosX(50).originPosY(60);
@@ -174,6 +174,7 @@ public class WorldManager extends DefaultManager {
             }
             entity.worldPosMap(entity.originPosMap()).worldPosX(entity.originPosX()).worldPosY(entity.originPosY());
         } else {
+            //se elimina el contador para la resurreccion
             Timer.instance().clear();
         }
         sendEntityUpdate(entityId, resetUpdate.build());

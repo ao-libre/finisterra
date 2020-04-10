@@ -15,6 +15,7 @@ public class CommandSystem extends DefaultManager {
     private static final String CMD_PLAYERS_COUNT = "/playersonline";
     private static final String CMD_PLAYER_SET_HOME_CITY = "/sethome";
     private static final String CMD_PLAYER_SEE_HOME_CITY = "/seehome";
+    private static final String CMD_PLAYER_RESURRECT = "/resurrect";
 
     // Injected Systems
     private ServerSystem networkManager;
@@ -27,6 +28,7 @@ public class CommandSystem extends DefaultManager {
             String connections = String.valueOf(networkManager.getAmountConnections());
             messageSystem.add(senderId, ConsoleMessage.info(Messages.PLAYERS_ONLINE.name(), connections));
         }
+
         if (command.equalsIgnoreCase( CMD_PLAYER_SET_HOME_CITY )){
             final int capacity = 17;
             Array<Integer> cityMaps = new Array(capacity);
@@ -84,10 +86,21 @@ public class CommandSystem extends DefaultManager {
                 messageSystem.add(senderId, ConsoleMessage.info(Messages.MULTIUSE.name(),"Maps "+ cityMaps, "","",""));
             }
         }
+
         if (command.equalsIgnoreCase( CMD_PLAYER_SEE_HOME_CITY )){
             E player = E.E(senderId);
             messageSystem.add(senderId, ConsoleMessage.info( Messages.HOME_POS.name(),
                      String.valueOf(player.originPosMap()), String.valueOf(player.originPosX()), String.valueOf(player.originPosY())));
+        }
+
+        if (command.equalsIgnoreCase( CMD_PLAYER_RESURRECT )){
+            E player = E.E(senderId);
+            if (player.healthMin() == 0) {
+                worldManager.resurrectRequest( senderId );
+                messageSystem.add( senderId, ConsoleMessage.info( "MULTIUSE", "Resucitaras en 20s", "","","" ));
+            } else{
+                messageSystem.add( senderId, ConsoleMessage.info( "MULTIUSE","No estas muerto", "", "",""));
+            }
         }
 
     }
