@@ -1,7 +1,5 @@
 package game.screens;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,6 +32,11 @@ public abstract class AbstractScreen extends PassiveSystem implements Screen {
         mainTable.setFillParent(true);
         mainTable.setBackground(BACKGROUND);
         stage.addActor(mainTable);
+
+    }
+
+    @Override
+    protected void initialize() {
         createUI();
     }
 
@@ -72,17 +75,17 @@ public abstract class AbstractScreen extends PassiveSystem implements Screen {
     }
 
     @Override
-    public void pause () {
+    public void pause() {
         //do nothing
     }
 
     @Override
-    public void resume () {
+    public void resume() {
         //do nothing
     }
 
     @Override
-    public void hide () {
+    public void hide() {
         //do nothing
     }
 

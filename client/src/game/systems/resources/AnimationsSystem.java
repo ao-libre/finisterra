@@ -12,8 +12,8 @@ import component.entity.character.equipment.Shield;
 import component.entity.character.equipment.Weapon;
 import component.entity.character.parts.Body;
 import component.entity.character.parts.Head;
-import game.handlers.AOAssetManager;
 import component.graphic.Effect;
+import game.handlers.DefaultAOAssetManager;
 import model.descriptors.HeadDescriptor;
 import model.descriptors.IDescriptor;
 import model.textures.AOAnimation;
@@ -44,15 +44,14 @@ public class AnimationsSystem extends BaseSystem {
     // Injected Systems
     private DescriptorsSystem descriptorsSystem;
     private ObjectSystem objectSystem;
-    private AOAssetManager assetManager;
+    @Wire
+    private DefaultAOAssetManager assetManager;
     private LoadingCache<AOAnimation, BundledAnimation> previews = CacheBuilder
             .newBuilder()
             .expireAfterAccess(3, TimeUnit.MINUTES)
             .build(CacheLoader.from(BundledAnimation::new));
 
-    public AnimationsSystem(AOAssetManager assetManager) {
-        this.assetManager = assetManager;
-
+    public AnimationsSystem() {
         tiledAnimations = CacheBuilder
                 .newBuilder()
                 .expireAfterAccess(1, TimeUnit.MINUTES)
@@ -171,7 +170,7 @@ public class AnimationsSystem extends BaseSystem {
             Log.debug("Fail to create AO Image: " + id);
             return null;
         }
-        return new AOTexture(image);
+        return new AOTexture(image, assetManager.getTexture(image.getFileNum()));
     }
 
     public boolean hasTexture(int id) {

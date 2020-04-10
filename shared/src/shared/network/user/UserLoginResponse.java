@@ -23,6 +23,10 @@ public class UserLoginResponse implements IResponse {
         return userLoginResponse;
     }
 
+    public boolean isSuccessful() {
+        return ok;
+    }
+
     @Override
     public void accept(IResponseProcessor processor) {
         processor.processResponse(this);

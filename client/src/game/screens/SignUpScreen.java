@@ -1,12 +1,12 @@
 package game.screens;
 
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Timer;
-import game.AOGame;
 import game.ClientConfiguration;
 import game.handlers.AOAssetManager;
 import game.systems.network.ClientSystem;
@@ -49,7 +49,12 @@ public class SignUpScreen extends AbstractScreen {
         registerButton.addListener(new RegisterButtonListener());
 		
 		TextButton goBackButton = new TextButton("Go Back", getSkin());
-        goBackButton.addListener(new GoBackButtonListener());
+        goBackButton.addListener(new ClickListener() {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                screenManager.to(ScreenEnum.LOGIN);
+            }
+        });
 
         signUpTable.getColor().a = 0.8f;
         signUpTable.add(usernameLabel).padRight(5);
@@ -144,14 +149,7 @@ public class SignUpScreen extends AbstractScreen {
         }
     }
 
-    //Listener para goBackButton
-    private class GoBackButtonListener extends ChangeListener {
-        @Override
-        public void changed(ChangeEvent event, Actor actor) {
-            if (((TextButton)actor).isPressed()) {
-                AOGame game = (AOGame) Gdx.app.getApplicationListener();
-                screenManager.to(ScreenEnum.LOGIN);
-            }
-        }
+    @Override
+    protected void keyPressed(int keyCode) {
     }
 }

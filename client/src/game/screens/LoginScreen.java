@@ -140,7 +140,7 @@ public class LoginScreen extends AbstractScreen {
 
                 clientConfiguration.getAccount().setEmail(email);
                 clientConfiguration.getAccount().setPassword(password);
-                clientConfiguration.save();
+//                clientConfiguration.save();
 
                 ClientConfiguration.Network.Server server = serverList.getSelected();
                 if (server == null) return;

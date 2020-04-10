@@ -11,7 +11,7 @@ public class UserCreateRequest implements IRequest {
 
     public UserCreateRequest() {}
 
-    public UserCreateRequest(String name, int heroId, int head) {
+    public UserCreateRequest(String name, int heroId) {
         this.name = name;
         this.heroId = heroId;
     }

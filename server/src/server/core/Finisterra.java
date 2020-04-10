@@ -4,15 +4,16 @@ import com.artemis.FluidEntityPlugin;
 import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
 import com.artemis.io.JsonArtemisSerializer;
+import com.artemis.managers.TagManager;
 import com.artemis.managers.WorldSerializationManager;
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import server.configs.ServerConfiguration;
 import server.manager.ConfigurationManager;
 import server.network.ServerNotificationProcessor;
 import server.network.ServerRequestProcessor;
 import server.systems.*;
+import server.systems.account.AccountSystem;
 import server.systems.ai.NPCAttackSystem;
 import server.systems.ai.PathFindingSystem;
 import server.systems.ai.RespawnSystem;
@@ -25,6 +26,7 @@ import server.systems.manager.*;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.MessageSystem;
 import server.systems.network.ServerReferenceSystem;
+import server.systems.user.UserSystem;
 import shared.systems.IntervalSystem;
 import shared.util.LogSystem;
 import shared.util.MapHelper;
@@ -75,6 +77,8 @@ public class Finisterra extends ApplicationAdapter {
         builder
                 .with(new ClearSystem())
                 .with(new ServerSystem(new ServerStrategy(currentPorts.getTcpPort(), currentPorts.getUdpPort())))
+                .with(new UserSystem())
+                .with(new AccountSystem())
                 .with(new ServerNotificationProcessor())
                 .with(new FluidEntityPlugin())
                 .with(new ComponentManager())
@@ -106,6 +110,7 @@ public class Finisterra extends ApplicationAdapter {
                 .with(new CommandSystem())
                 .with(new EntityUpdateSystem())
                 .with(new MessageSystem())
+                .with(new TagManager())
                 .with(serializationManager);
         world = new World(builder.build());
         serializationManager.setSerializer(new JsonArtemisSerializer(world));
@@ -115,12 +120,12 @@ public class Finisterra extends ApplicationAdapter {
 
     @Override
     public void render() {
-        currentTick += Gdx.graphics.getDeltaTime() * 1000; // delta is in seconds, so we convert to ms
-        if (currentTick >= Tick.TIME) {
-            world.setDelta(currentTick);
+//        currentTick += Gdx.graphics.getDeltaTime() * 1000; // delta is in seconds, so we convert to ms
+//        if (currentTick >= Tick.TIME) {
+            world.setDelta(Tick.TIME);
             currentTick = 0; // reset counter
             world.process();
-        }
+//        }
     }
 
     @Override
