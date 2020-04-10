@@ -1,13 +1,16 @@
 package game.screens;
 
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import game.systems.network.ClientSystem;
 import game.systems.ui.UserInterfaceSystem;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
+@Wire
 public class GameScreen extends PassiveSystem implements Screen {
 
+    private UserInterfaceSystem userInterfaceSystem;
     private FPSLogger fpsLogger = new FPSLogger();
 
     public GameScreen() {}
@@ -32,7 +35,7 @@ public class GameScreen extends PassiveSystem implements Screen {
 
     @Override
     public void show() {
-
+        userInterfaceSystem.show();
     }
 
     @Override

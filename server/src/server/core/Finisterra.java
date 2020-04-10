@@ -7,6 +7,7 @@ import com.artemis.io.JsonArtemisSerializer;
 import com.artemis.managers.TagManager;
 import com.artemis.managers.WorldSerializationManager;
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import server.configs.ServerConfiguration;
 import server.manager.ConfigurationManager;
@@ -30,7 +31,6 @@ import server.systems.user.UserSystem;
 import shared.systems.IntervalSystem;
 import shared.util.LogSystem;
 import shared.util.MapHelper;
-import shared.util.Tick;
 
 import java.util.concurrent.TimeUnit;
 
@@ -120,12 +120,8 @@ public class Finisterra extends ApplicationAdapter {
 
     @Override
     public void render() {
-//        currentTick += Gdx.graphics.getDeltaTime() * 1000; // delta is in seconds, so we convert to ms
-//        if (currentTick >= Tick.TIME) {
-            world.setDelta(Tick.TIME);
-            currentTick = 0; // reset counter
-            world.process();
-//        }
+        world.setDelta(Gdx.graphics.getDeltaTime());
+        world.process();
     }
 
     @Override

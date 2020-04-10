@@ -59,7 +59,7 @@ public class UserSystem extends PassiveSystem {
     }
 
     private boolean userExists(String userName) {
-        File file = new File("Charfile/" + userName);
+        File file = new File("Charfile/" + userName + ".json");
         return file.isFile() && file.canRead();
     }
 
@@ -68,7 +68,7 @@ public class UserSystem extends PassiveSystem {
         if (user != null) {
             IntBag bag = new IntBag();
             bag.add(user.id());
-            try (FileOutputStream outputStream = new FileOutputStream("Charfile/" + name)) {
+            try (FileOutputStream outputStream = new FileOutputStream("Charfile/" + name + ".json")) {
                 worldSerializationManager.save(outputStream, new SaveFileFormat(bag));
             } catch (IOException e) {
                 Log.info("Couldn't save user with name:" + name);
@@ -78,7 +78,7 @@ public class UserSystem extends PassiveSystem {
     }
 
     public Optional<Integer> loadUser(String name) {
-        try (InputStream inputStream = new FileInputStream("Charfile/" + name)) {
+        try (InputStream inputStream = new FileInputStream("Charfile/" + name + ".json")) {
             SaveFileFormat user = worldSerializationManager.load(inputStream, SaveFileFormat.class);
             // we expect one only entity
             return Optional.of(user.entities.get(0));
