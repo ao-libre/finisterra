@@ -83,10 +83,8 @@ public class SpellView extends Table {
         staff.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (E(GameScreen.getPlayer()).healthMin() != 0) {
                     selected.ifPresent(spell -> preparedToCast(spell));
                     super.clicked(event, x, y);
-                }
             }
         });
         return staff;

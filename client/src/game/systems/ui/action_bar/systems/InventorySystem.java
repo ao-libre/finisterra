@@ -9,19 +9,19 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import component.entity.character.info.Bag;
 import component.position.WorldPos;
 import game.systems.PlayerSystem;
-import game.systems.resources.MapSystem;
-import shared.model.map.Tile;
-import shared.systems.IntervalSystem;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.network.ClientSystem;
+import game.systems.resources.MapSystem;
 import game.systems.resources.ObjectSystem;
 import game.systems.ui.UserInterfaceContributionSystem;
 import game.systems.ui.UserInterfaceSystem;
 import game.ui.Inventory;
+import shared.model.map.Tile;
 import shared.network.interaction.DropItem;
 import shared.network.interaction.TakeItemRequest;
 import shared.network.inventory.InventoryUpdate;
 import shared.objects.types.Obj;
+import shared.systems.IntervalSystem;
 import shared.util.ItemUtils;
 
 import java.util.Optional;
@@ -104,15 +104,19 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     public void takeItem() {
-        clientSystem.send(new TakeItemRequest());
+        if(playerSystem.get().healthMin() > 0){
+            clientSystem.send( new TakeItemRequest() );
+        }
     }
 
     public void equip() {
-        getSelectedObject().ifPresent(obj -> {
-            if (ItemUtils.canEquip(obj)) {
-                playerActionSystem.equipItem(getSelectedIndex());
-            }
-        });
+        if(playerSystem.get().healthMin() > 0) {
+            getSelectedObject().ifPresent( obj -> {
+                if(ItemUtils.canEquip( obj )) {
+                    playerActionSystem.equipItem( getSelectedIndex() );
+                }
+            } );
+        }
     }
 
     public void use() {

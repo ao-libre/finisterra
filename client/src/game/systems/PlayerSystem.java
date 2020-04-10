@@ -32,6 +32,6 @@ public class PlayerSystem extends PassiveSystem {
 
     public boolean canUse() {
         E player = get();
-        return !player.hasUseInterval() && !player.hasAttackInterval() && !player.isMeditating();
+        return !player.hasUseInterval() && !player.hasAttackInterval() && !player.isMeditating() && (player.healthMin() >= 1);
     }
 }

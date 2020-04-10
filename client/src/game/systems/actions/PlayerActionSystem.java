@@ -36,7 +36,9 @@ public class PlayerActionSystem extends PassiveSystem {
     private InventorySystem inventorySystem;
 
     public void meditate() {
-        clientSystem.send(new MeditateRequest());
+        if(playerSystem.get().healthMin() > 0) {
+            clientSystem.send( new MeditateRequest() );
+        }
     }
 
     public void attack() {

@@ -6,6 +6,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.minlog.Log;
 import component.camera.Focused;
+import component.entity.character.info.Bag;
 import component.entity.character.states.CanWrite;
 import component.entity.npc.OriginPos;
 import component.physics.AOPhysics;
@@ -18,9 +19,11 @@ import shared.interfaces.Race;
 import shared.model.lobby.Player;
 import shared.model.npcs.NPC;
 import shared.network.inventory.InventoryUpdate;
+import shared.objects.types.Obj;
 import shared.util.EntityUpdateBuilder;
 
 import java.util.List;
+import java.util.Random;
 
 import static com.artemis.E.E;
 
@@ -87,9 +90,9 @@ public class WorldManager extends DefaultManager {
         } else {
 
             // dropeo de items random al morir
-            //Inventory.Item items[] = entity.getInventory().items;
+            Bag.Item items[] = entity.getBag().items;
             InventoryUpdate inventoryUpdate = new InventoryUpdate();
-            /*
+
             for(int i = 0; i<20;i++) {
                 if(items[i] != null) {
                     items[i].equipped = false;
@@ -97,20 +100,18 @@ public class WorldManager extends DefaultManager {
                     Obj item = objectManager.getObject( items[i].objId ).get();
                     itemConsumers.TAKE_OFF.accept( entityId, item );
                     if(!item.isNewbie() || item.isNotDrop()) {
-                        Random random = new Random(  );
+                        Random random = new Random();
                         boolean dropi = random.nextBoolean();
                         Log.info("drop slot "+i +": "+ dropi);
                         if (dropi) {
                             dropItem( item.getId(), items[i].count, entity.getWorldPos() );
-                            entity.getInventory().remove( i );
+                            entity.getBag().remove( i );
                             inventoryUpdate.remove( i );
                         }
                     }
                 }
             }
-
-             */
-            //notifyUpdate( entityId, inventoryUpdate );
+            notifyUpdate( entityId, inventoryUpdate );
             //setea la hp a 0 porque o sino queda con hp
             entity.getHealth().min = 0;
             // cambio del cuerpo y la cabeza a fantasma
@@ -120,7 +121,7 @@ public class WorldManager extends DefaultManager {
             EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(entityId);
             resetUpdate.withComponents(entity.getHealth());
             resetUpdate.withComponents(entity.getHead(), entity.getBody());
-            //resetUpdate.withComponents(entity.getInventory());
+            resetUpdate.withComponents(entity.getBag());
             sendEntityUpdate(entityId, resetUpdate.build());
             notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(entity.getWorldPos()).build());
             //a los 20 segundos no revive automaticamente en la posision de origen del jugador
