@@ -22,7 +22,7 @@ public class CommandSystem extends DefaultManager {
     private WorldManager worldManager;
     private MessageSystem messageSystem;
 
-    private HashMap<String, Consumer<Command>> commands = new HashMap<>();
+    private final HashMap<String, Consumer<Command>> commands = new HashMap<>();
 
     /**
      * Aca se prepara una lista de comandos disponibles para usar desde el cliente.
@@ -34,12 +34,15 @@ public class CommandSystem extends DefaultManager {
             String connections = String.valueOf(networkManager.getAmountConnections());
             messageSystem.add(commandStructure.senderID, ConsoleMessage.info(Messages.PLAYERS_ONLINE.name(), connections));
         });
+        commands.put("salir" , (commandStructure) -> {
+            //TODO: Implementar logout
+        });
     }
 
     /**
      * Ejecuta el comando desde la lista {@link #commands}
-     * @param command String completo del comando.
-     * @param senderID Identificador del jugador.
+     * @param command   String completo del comando.
+     * @param senderID  Identificador del jugador.
      */
     public void handleCommand(@NotNull String command, int senderID) {
         CommandSystem.Command commandStructure = new CommandSystem.Command(senderID, command);
