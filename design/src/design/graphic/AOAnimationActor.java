@@ -48,9 +48,10 @@ public class AOAnimationActor extends DescriptorActor {
         this.animationsSystem = animationsSystem;
     }
 
-    public AOAnimationActor(AOAnimation animation) {
-        this(new BundledAnimation(animation));
-    }
+    //@fixme
+//    public AOAnimationActor(AOAnimation animation) {
+//        this(new BundledAnimation(animation));
+//    }
 
     public AOAnimationActor(BundledAnimation animation) {
         super();
@@ -110,13 +111,17 @@ public class AOAnimationActor extends DescriptorActor {
 
     }
 
+    public void setAnimation(AOAnimation aoAnimation) {
+        this.animation = animationsSystem.createAnimation(aoAnimation);
+    }
+
     public void setAnimationID(int graphic) {
         if (graphic > 0) {
             ScreenEnum.ANIMATION_VIEW
                     .getScreen()
                     .getDesigner()
                     .get(graphic)
-                    .ifPresent(anim -> this.animation = new BundledAnimation((AOAnimation) anim));
+                    .ifPresent(anim -> this.setAnimation((AOAnimation) anim));
         } else {
             Log.info(this.toString(), "Failed to preview descriptor: " + descriptor);
         }

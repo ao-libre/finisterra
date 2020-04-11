@@ -13,7 +13,6 @@ import server.systems.EntityFactorySystem;
 import server.systems.ServerSystem;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.UpdateTo;
-import shared.model.lobby.Player;
 import shared.model.npcs.NPC;
 import shared.network.notifications.EntityUpdate;
 import shared.util.EntityUpdateBuilder;
@@ -105,8 +104,7 @@ public class WorldManager extends DefaultManager {
         entityFactorySystem.createObject(key, value, worldPos);
     }
 
-    public void login(int connectionId, Player player) {
-        final int entity = entityFactorySystem.createPlayer(player.getPlayerName(), player.getHero(), player.getTeam());
+    public void login(int connectionId, int entity) {
         List<Component> components = componentManager.getComponents(entity, ComponentManager.Visibility.CLIENT_ALL);
         components.add(new Focused());
         components.add(new AOPhysics());

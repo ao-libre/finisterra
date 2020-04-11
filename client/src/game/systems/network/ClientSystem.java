@@ -3,8 +3,9 @@ package game.systems.network;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
-import game.AOGame;
 import game.screens.GameScreen;
+import game.screens.ScreenEnum;
+import game.screens.ScreenManager;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import shared.network.init.NetworkDictionary;
 import shared.network.interfaces.INotification;
@@ -15,6 +16,11 @@ public class ClientSystem extends MarshalSystem {
 
     private ClientResponseProcessor responseProcessor;
     private GameNotificationProcessor notificationProcessor;
+    private ScreenManager screenManager;
+
+    public ClientSystem() {
+        super(new NetworkDictionary(), new KryonetClientMarshalStrategy());
+    }
 
     public ClientSystem(String host, int port) {
         super(new NetworkDictionary(), new KryonetClientMarshalStrategy(host, port));
@@ -51,25 +57,20 @@ public class ClientSystem extends MarshalSystem {
     @Override
     public void disconnected(int connectionId) {
         super.disconnected(connectionId);
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
-        if (game.getScreen() instanceof GameScreen) {
-            Gdx.app.postRunnable(game::toLogin);
+        if (screenManager.getScreen() instanceof GameScreen) {
+            Gdx.app.postRunnable(() -> screenManager.to(ScreenEnum.LOGIN));
         }
-    }
-
-    public void setNotificationProcessor(GameNotificationProcessor notificationProcessor) {
-        this.notificationProcessor = notificationProcessor;
-    }
-
-    public void setResponseProcessor(ClientResponseProcessor responseProcessor) {
-        this.responseProcessor = responseProcessor;
     }
 
     public void send(Object object) {
         getKryonetClient().sendToAll(object);
     }
 
-    public KryonetClientMarshalStrategy getKryonetClient() {
+    public void setHost(String address, int port) {
+        getKryonetClient().setHost(address, port);
+    }
+
+    private KryonetClientMarshalStrategy getKryonetClient() {
         return (KryonetClientMarshalStrategy) getMarshal();
     }
 }

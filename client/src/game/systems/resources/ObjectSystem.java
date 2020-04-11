@@ -1,9 +1,8 @@
 package game.systems.resources;
 
-import com.badlogic.gdx.Gdx;
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import game.AssetManagerHolder;
-import game.handlers.AOAssetManager;
+import game.handlers.DefaultAOAssetManager;
 import model.textures.AOImage;
 import model.textures.AOTexture;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
@@ -16,18 +15,18 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Wire
 public class ObjectSystem extends PassiveSystem {
 
     private final Map<Obj, AOTexture> textures = new HashMap<>();
     private final Map<Obj, AOTexture> flipped = new HashMap<>();
     private Map<Integer, Obj> objects = new HashMap<>();
-    private AOAssetManager assetManager;
+    @Wire
+    private DefaultAOAssetManager assetManager;
 
     @Override
     protected void initialize() {
         super.initialize();
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        assetManager = game.getAssetManager();
         objects = assetManager.getObjs();
     }
 
@@ -39,7 +38,8 @@ public class ObjectSystem extends PassiveSystem {
 
         return textures.computeIfAbsent(obj, presentObj -> {
             int grhIndex = presentObj.getGrhIndex();
-            return new AOTexture(getAOImage(grhIndex), false);
+            AOImage aoImage = getAOImage(grhIndex);
+            return new AOTexture(aoImage, assetManager.getTexture(aoImage.getFileNum()), false);
         }).getTexture();
 
     }
@@ -49,7 +49,10 @@ public class ObjectSystem extends PassiveSystem {
     }
 
     public TextureRegion getIngameGraphic(Obj obj) {
-        return flipped.computeIfAbsent(obj, presentObj -> new AOTexture(getAOImage(presentObj.getGrhIndex()), true)).getTexture();
+        return flipped.computeIfAbsent(obj, presentObj -> {
+            AOImage aoImage = getAOImage(presentObj.getGrhIndex());
+            return new AOTexture(aoImage, assetManager.getTexture(aoImage.getFileNum()), true);
+        }).getTexture();
     }
 
     public Set<Obj> getTypeObjects(Type type) {

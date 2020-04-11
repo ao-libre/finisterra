@@ -3,8 +3,6 @@ package game.ui;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import game.AOGame;
-import game.handlers.AOAssetManager;
 import game.utils.Skins;
 import shared.model.Spell;
 
@@ -19,13 +17,11 @@ public class SpellViewExpanded extends Table {
     private static final int MAX_SPELLS = 25;
     private final Window spellTable;
     private final List<SpellSlotEC> slotsEC = new ArrayList<>(MAX_SPELLS);
-    private final AOAssetManager assetManager;
     public Optional<Spell> selected = Optional.empty();
     private int base;
 
     public SpellViewExpanded() {
         super(Skins.COMODORE_SKIN);
-        assetManager = AOGame.getGlobalAssetManager();
         spellTable = new Window("", Skins.COMODORE_SKIN, "inventory");
         int columnsCounter = 1;
         for (int i = 0; i < MAX_SPELLS; i++) {
