@@ -92,4 +92,10 @@ public class MouseSystem extends PassiveSystem {
         }
     }
 
+    public void shot() {
+        setAction(new MouseActionContext(CursorSystem.AOCursor.SELECT, (pos) -> {
+            playerActionSystem.rangedAttack(pos);
+        }));
+    }
+
 }

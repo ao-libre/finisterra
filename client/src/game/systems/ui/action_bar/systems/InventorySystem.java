@@ -13,6 +13,9 @@ import component.entity.character.info.Bag;
 import component.position.WorldPos;
 import game.handlers.DefaultAOAssetManager;
 import game.systems.PlayerSystem;
+import game.systems.resources.MapSystem;
+import shared.model.map.Tile;
+import shared.systems.IntervalSystem;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.network.ClientSystem;
 import game.systems.resources.ObjectSystem;
@@ -43,6 +46,7 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     private IntervalSystem intervalSystem;
     @Wire
     private DefaultAOAssetManager assetManager;
+    private MapSystem mapSystem;
 
     private Inventory inventory;
 
@@ -276,11 +280,23 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     public Optional<WorldPos> getWorldPos(float x, float y) {
-        // TODO handle valid position to avoid droping items over blocks
-        return Optional.of(userInterfaceSystem.getWorldPos((int) x, (int) y));
+        // TODO handle valid position to avoid droping items over npcs in citys
+        WorldPos dropWorldPos = userInterfaceSystem.getWorldPos((int) x, (int) y);
+        Tile tile = mapSystem.getTile(  dropWorldPos);
+        if (!tile.isBlocked()) {
+            return Optional.of( userInterfaceSystem.getWorldPos( (int) x, (int) y ) );
+        } else {
+            return Optional.of( playerSystem.getWorldPos() );
+        }
+
     }
 
     public void update(Bag bag) {
         inventory.update(bag);
     }
+
+    public void toggleExpanded(){
+        inventory.toggleExpanded(playerSystem.get().getBag());
+    }
+
 }

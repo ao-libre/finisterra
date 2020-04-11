@@ -71,4 +71,15 @@ public class PlayerActionSystem extends PassiveSystem {
     public void equipItem(int selectedIndex) {
         clientSystem.send(new ItemActionRequest(selectedIndex, ItemAction.EQUIP.ordinal()));
     }
+
+    public void rangedAttack(WorldPos targetPos) {
+        if (playerSystem.canPhysicAttack()) {
+            long rtt = timeSyncSystem.getRtt();
+            long timeOffset = timeSyncSystem.getTimeOffset();
+            clientSystem.send(new AttackRequest(AttackType.RANGED, targetPos, rtt + timeOffset));
+            playerSystem.get().attackIntervalValue(Intervals.ATTACK_INTERVAL);
+        } else {
+            consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.CANT_ATTACK_THAT_FAST));
+        }
+    }
 }

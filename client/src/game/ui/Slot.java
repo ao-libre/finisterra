@@ -89,13 +89,4 @@ public class Slot extends ImageButton {
         this.selected = selected;
     }
 
-    public Tooltip<Actor> getTooltip(Item item) {
-//        int objID = item.objId;
-//        ObjectSystem objectSystem = WorldUtils.getWorld().orElse(null).getSystem(ObjectSystem.class);
-//        Optional<Obj> obj = objectSystem.getObject(objID);
-//        Actor content = createTooltipContent(obj.get());
-//        return new Tooltip<>(content);
-        return null;
-    }
-
 }
