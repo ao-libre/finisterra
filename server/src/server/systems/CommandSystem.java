@@ -38,6 +38,9 @@ public class CommandSystem extends DefaultManager {
             int connectionId = networkManager.getConnectionByPlayer(commandStructure.senderID);
             networkManager.disconnected(connectionId);
         });
+		commands.put("die" , (commandStructure) -> {
+            worldManager.entityDie(senderId);
+        });
     }
 
     /**
