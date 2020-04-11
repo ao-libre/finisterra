@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public abstract class POJOFactory {
+public abstract class POJO {
 
     /**
      * Fields excluidos de la serializacion.
