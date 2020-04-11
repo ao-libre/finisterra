@@ -1,0 +1,20 @@
+java.lang.RuntimeException: Actor: TextButton: Login
+	at com.badlogic.gdx.scenes.scene2d.Actor.notify(Actor.java:202)
+	at com.badlogic.gdx.scenes.scene2d.Actor.fire(Actor.java:152)
+	at com.badlogic.gdx.scenes.scene2d.ui.Button.setChecked(Button.java:131)
+	at com.badlogic.gdx.scenes.scene2d.ui.Button$1.clicked(Button.java:94)
+	at com.badlogic.gdx.scenes.scene2d.utils.ClickListener.touchUp(ClickListener.java:88)
+	at com.badlogic.gdx.scenes.scene2d.InputListener.handle(InputListener.java:59)
+	at com.badlogic.gdx.scenes.scene2d.Stage.touchUp(Stage.java:351)
+	at com.badlogic.gdx.InputEventQueue.drain(InputEventQueue.java:86)
+	at com.badlogic.gdx.backends.lwjgl3.Lwjgl3Input.update(Lwjgl3Input.java:205)
+	at com.badlogic.gdx.backends.lwjgl3.Lwjgl3Window.update(Lwjgl3Window.java:390)
+	at com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application.loop(Lwjgl3Application.java:137)
+	at com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application.<init>(Lwjgl3Application.java:111)
+	at launcher.DesktopLauncher.main(DesktopLauncher.java:87)
+Caused by: java.lang.NullPointerException
+	at game.screens.LoginScreen.connectionFailed(LoginScreen.java:188)
+	at game.screens.LoginScreen$LoginButtonListener.changed(LoginScreen.java:179)
+	at com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.handle(ChangeListener.java:28)
+	at com.badlogic.gdx.scenes.scene2d.Actor.notify(Actor.java:188)
+	... 12 more

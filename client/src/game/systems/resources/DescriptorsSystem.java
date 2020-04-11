@@ -1,16 +1,16 @@
 package game.systems.resources;
 
-import game.handlers.AOAssetManager;
+import com.artemis.annotations.Wire;
+import game.handlers.DefaultAOAssetManager;
 import model.descriptors.*;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 public class DescriptorsSystem extends PassiveSystem {
 
-    private final AOAssetManager assetManager;
+    @Wire
+    private DefaultAOAssetManager assetManager;
 
-    public DescriptorsSystem(AOAssetManager assetManager) {
-        this.assetManager = assetManager;
-    }
+    public DescriptorsSystem() {}
 
     public BodyDescriptor getBody(int index) {
         return assetManager.getBodies().get(index);

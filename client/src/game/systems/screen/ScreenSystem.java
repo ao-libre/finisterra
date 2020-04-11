@@ -8,8 +8,7 @@ import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.esotericsoftware.minlog.Log;
-import game.AOGame;
-import game.handlers.AOAssetManager;
+import game.handlers.DefaultAOAssetManager;
 import game.systems.ui.console.ConsoleSystem;
 import game.utils.CursorSystem;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
@@ -20,7 +19,8 @@ import java.time.format.DateTimeFormatter;
 
 @Wire
 public class ScreenSystem extends PassiveSystem {
-
+    @Wire
+    private DefaultAOAssetManager assetManager;
     private CursorSystem cursorSystem;
     private ConsoleSystem consoleSystem;
 
@@ -30,9 +30,6 @@ public class ScreenSystem extends PassiveSystem {
     // Take a screenshot of the render.
     public void takeScreenshot() {
         try {
-            // Fetch assetManager
-            AOAssetManager assetManager = AOGame.getGlobalAssetManager();
-
             // Set where we gonna save the screenshot
             String screenshotPath = "Screenshots/Screenshot-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM_HH-mm-ss")) + ".png";
 

@@ -10,31 +10,30 @@ import java.io.IOException;
 public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
 
     protected static final int CONNECTION_TIMEOUT = 3000;
-    private String host;
+    private String address;
     private int port;
 
-    public KryonetClientMarshalStrategy(String host, int port) {
-        this.host = host;
-        this.port = port;
-        endpoint = new Client(8192, 8192);
+    public KryonetClientMarshalStrategy() {
+        endpoint = new Client(8192, 8291);
         Log.set(Log.LEVEL_DEBUG);
     }
 
-    public void setHost(String host) {
-        if (state == MarshalState.STOPPED)
-            this.host = host;
+    public KryonetClientMarshalStrategy(String address, int port) {
+        this();
+        setHost(address, port);
     }
 
-    public void setPort(int port) {
-        if (state == MarshalState.STOPPED)
-            this.port = port;
+    public void setHost(String address, int port) {
+        if (state != MarshalState.STOPPED) throw new IllegalStateException();
+        this.address = address;
+        this.port = port;
     }
 
     @Override
     protected void connectEndpoint() {
         try {
-            ((Client) endpoint).connect(CONNECTION_TIMEOUT, host, port, port + 1);
-            Log.debug("Network", "Connected to " + host + ":" + port);
+            ((Client) endpoint).connect(CONNECTION_TIMEOUT, address, port, port + 1);
+            Log.debug("Network", "Connected to " + address + ":" + port);
             state = MarshalState.STARTED;
         } catch (IOException e) {
             Log.error("Network", "Failed to connect!", e);
@@ -42,16 +41,13 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
         }
     }
 
-    /**
-     * Establish connection / prepare to listen.
-     */
     @Override
     public void start() {
         state = MarshalState.STARTING;
         registerDictionary();
         endpoint.addListener(listener); // can be safely called more than once.
         endpoint.start();
-        connectEndpoint(); // Let it block! Let it block! Let it block! ♫
+        connectEndpoint(); // blocking
     }
 
     @Override

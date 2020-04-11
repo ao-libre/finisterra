@@ -1,11 +1,11 @@
 package game.systems.resources;
 
+import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.minlog.Log;
-import game.AOGame;
-import game.handlers.AOAssetManager;
+import game.handlers.DefaultAOAssetManager;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 import javax.sound.midi.MidiChannel;
@@ -13,13 +13,15 @@ import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 
+@Wire
 public class MusicSystem extends PassiveSystem {
 
     public final static Music FIRSTBGM = Gdx.audio.newMusic(Gdx.files.internal("data/music/101.mp3"));
     public final static Music BACKGROUNDMUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/music/1.mp3"));
     private static final float MUSIC_FADE_STEP = 0.01f;
     private static float volume = 1.0f;
-    private AOAssetManager assetManager;
+    @Wire
+    private DefaultAOAssetManager assetManager;
 
     public Music current;
 
@@ -38,8 +40,6 @@ public class MusicSystem extends PassiveSystem {
     @Override
     protected void initialize() {
         super.initialize();
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
-        assetManager = game.getAssetManager();
         current = BACKGROUNDMUSIC;
         current.setVolume(0.20f);
         current.play();
