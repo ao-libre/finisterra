@@ -519,8 +519,9 @@ public class EntityFactorySystem extends PassiveSystem {
         return obj1.getName().compareTo(obj2.getName());
     }
 
-    private void setEntityPosition(E entity, Team team) {
+    private void setEntityPosition(E entity) {
         WorldPos spot = new WorldPos(50, 60, 286);
+        setWorldPosition(entity, spot);
     }
 
     private void setWorldPosition(E entity, WorldPos spot) {

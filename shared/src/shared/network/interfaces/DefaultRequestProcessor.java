@@ -83,10 +83,6 @@ public class DefaultRequestProcessor extends PassiveSystem implements IRequestPr
 		
     }
 
-    @Override
-    public void processRequest(DropItem dropItem, int connectionId) {
-	
-	}
 	
     @Override
     public void processRequest(UserLoginRequest userLoginRequest, int connectionId) {

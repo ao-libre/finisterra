@@ -16,7 +16,6 @@ import server.systems.ServerSystem;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.UpdateTo;
 import shared.interfaces.Race;
-import shared.model.lobby.Player;
 import shared.model.npcs.NPC;
 import shared.network.inventory.InventoryUpdate;
 import shared.objects.types.Obj;
