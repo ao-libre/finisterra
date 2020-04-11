@@ -35,7 +35,8 @@ public class CommandSystem extends DefaultManager {
             messageSystem.add(commandStructure.senderID, ConsoleMessage.info(Messages.PLAYERS_ONLINE.name(), connections));
         });
         commands.put("salir" , (commandStructure) -> {
-            //TODO: Implementar logout
+            int connectionId = networkManager.getConnectionByPlayer(commandStructure.senderID);
+            networkManager.disconnected(connectionId);
         });
     }
 
