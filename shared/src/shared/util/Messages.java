@@ -105,7 +105,14 @@ public enum Messages {
     WEAPON_WORK,
     WEAPON_STAFF,
     WEAPON_SWORD,
+
+    // sistema de muerte
     HOME_POS,
-    MULTIUSE;
+    HOME_SET,
+    YOU_ARE_ALIVE,
+    TIME_TO_RESURRECT,
+    ONLY_MAPS,
+    // para ir provando antes de crear los mensajes
+    MULTIUSE
 }
 
