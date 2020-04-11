@@ -156,7 +156,7 @@ public class AnimationsSystem extends BaseSystem {
         return previews.getUnchecked(animation);
     }
 
-    private BundledAnimation createAnimation(int id) {
+    public BundledAnimation createAnimation(int id) {
         AOAnimation animation = assetManager.getAnimation(id);
         if (animation == null) {
             Log.debug("Fail to create animation for: " + id);
@@ -166,7 +166,7 @@ public class AnimationsSystem extends BaseSystem {
     }
 
     @NotNull
-    private BundledAnimation createAnimation(AOAnimation animation) {
+    public BundledAnimation createAnimation(AOAnimation animation) {
         return new BundledAnimation(getAnimationTextures(animation), animation.getSpeed());
     }
 
