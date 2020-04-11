@@ -520,7 +520,7 @@ public class EntityFactorySystem extends PassiveSystem {
     }
 
     private void setEntityPosition(E entity) {
-        WorldPos spot = new WorldPos(50, 60, 286);
+        WorldPos spot = new WorldPos(50, 50, 1);
         setWorldPosition(entity, spot);
     }
 
