@@ -1,5 +1,6 @@
 package game.systems.ui;
 
+import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
@@ -14,8 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
-import component.camera.Focused;
-import component.position.WorldPos;
 import game.systems.camera.CameraSystem;
 import game.systems.input.InputSystem;
 import game.systems.map.TiledMapSystem;
@@ -25,6 +24,7 @@ import game.systems.ui.dialog.DialogSystem;
 import game.systems.ui.stats.StatsSystem;
 import game.systems.ui.user.UserSystem;
 import game.utils.Skins;
+import component.position.WorldPos;
 import shared.util.WorldPosConversion;
 
 @Wire
@@ -55,10 +55,13 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
         Skins.COMODORE_SKIN.getFont("simple-with-border").setUseIntegerPositions(false);
         Skins.COMODORE_SKIN.getFont("flipped").setUseIntegerPositions(false);
         Skins.COMODORE_SKIN.getFont("flipped-with-border").setUseIntegerPositions(false);
-    }
 
-    public void show() {
-        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+        InputMultiplexer inputMultiplexer = new InputMultiplexer() {
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                return super.touchUp(screenX, screenY, pointer, button);
+            }
+        };
         inputMultiplexer.addProcessor(stage);
         inputMultiplexer.addProcessor(inputSystem);
         Gdx.input.setInputProcessor(inputMultiplexer);

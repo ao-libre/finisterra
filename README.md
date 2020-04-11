@@ -1,4 +1,4 @@
-# Finisterra ![CI](https://github.com/ao-libre/finisterra/workflows/CI/badge.svg) ![Build Status](https://github.com/ao-libre/finisterra/workflows/Release/badge.svg)  [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/ao-libre/finisterra?include_prereleases)](https://github.com/ao-libre/finisterra/releases) [![Language](https://img.shields.io/badge/lang-espa%C3%B1ol%20%2F%20english-yellow)](#)
+# Finisterra [![Build Status](https://github.com/ao-libre/finisterra/workflows/Release/badge.svg)]  [![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/ao-libre/finisterra?include_prereleases)](https://github.com/ao-libre/finisterra/releases) [![Language](https://img.shields.io/badge/lang-espa%C3%B1ol%20%2F%20english-yellow)](#)
 
 MMORPG de código abierto basado en Argentum Online. Escrito en Java usando Artemis, Kryonet y libGDX.
 

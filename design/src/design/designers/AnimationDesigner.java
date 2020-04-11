@@ -100,8 +100,7 @@ public class AnimationDesigner implements IDesigner<AOAnimation, AnimationParame
         FileHandle dest = Gdx.files.local(Resources.GAME_GRAPHICS_PATH + getFreeId() + ".png");
         fileHandle.copyTo(dest);
 
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        AOAssetManager assetManager = game.getAssetManager();
+        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
 
         if (assetManager instanceof DefaultAOAssetManager) {
             DefaultAOAssetManager defaultAOAssetManager = (DefaultAOAssetManager) assetManager;

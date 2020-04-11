@@ -4,7 +4,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
-import game.utils.Resources;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.util.AOJson;
 
@@ -87,10 +86,6 @@ public class ClientConfiguration extends PassiveSystem {
         servers.add(new Network.Server("localhost", "127.0.0.1", 7666));
 
         return configOutput;
-    }
-
-    public void save() {
-        save(Resources.CLIENT_CONFIG);
     }
 
     /**

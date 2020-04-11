@@ -98,10 +98,9 @@ public class DesignCenter extends Game implements AssetManagerHolder, WorldScree
         builder
                 .with(new SuperMapper())
                 .with(new ObjectSystem())
-                .with(animationsSystem = new AnimationsSystem())
-                .with(descriptorsSystem = new DescriptorsSystem());
+                .with(animationsSystem = new AnimationsSystem(assetManager))
+                .with(descriptorsSystem = new DescriptorsSystem(assetManager));
         WorldConfiguration config = builder.build();
-        config.register(assetManager);
         return new World(config);
     }
 

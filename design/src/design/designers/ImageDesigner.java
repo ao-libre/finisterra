@@ -13,7 +13,6 @@ import design.screens.ScreenEnum;
 import design.screens.views.ImageView;
 import design.screens.views.View;
 import game.AOGame;
-import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import game.handlers.DefaultAOAssetManager;
 import game.utils.Resources;
@@ -52,8 +51,7 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
 
     @Override
     public void load(ImageParameters params) {
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        AOAssetManager assetManager = game.getAssetManager();
+        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
         images = assetManager.getImages();
     }
 
@@ -95,8 +93,7 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
         int freeId = getFreeId();
         FileHandle dest = Gdx.files.local(Resources.GAME_GRAPHICS_PATH + freeId + ".png");
         fileHandle.copyTo(dest);
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        AOAssetManager assetManager = game.getAssetManager();
+        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
         if (assetManager instanceof DefaultAOAssetManager) {
             DefaultAOAssetManager defaultAOAssetManager = (DefaultAOAssetManager) assetManager;
             defaultAOAssetManager.load(dest.path(), Texture.class);

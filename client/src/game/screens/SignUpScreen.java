@@ -1,12 +1,11 @@
 package game.screens;
 
-import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Timer;
+import game.AOGame;
 import game.ClientConfiguration;
 import game.handlers.AOAssetManager;
 import game.systems.network.ClientSystem;
@@ -14,13 +13,11 @@ import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.network.account.AccountCreationRequest;
 import shared.util.Messages;
 
-@Wire
+import static game.utils.Resources.CLIENT_CONFIG;
+
 public class SignUpScreen extends AbstractScreen {
 
-    private AOAssetManager assetManager;
-    private ClientConfiguration clientConfiguration;
     private ClientSystem clientSystem;
-    private ScreenManager screenManager;
 
     private TextField usernameField;
     private TextField passwordField1, passwordField2;
@@ -28,8 +25,14 @@ public class SignUpScreen extends AbstractScreen {
     private TextButton registerButton;
     private List<ClientConfiguration.Network.Server> serverList;
 
+    public SignUpScreen(ClientSystem clientSystem) {
+        this.clientSystem = clientSystem;
+    }
+
     @Override
-    protected void createUI() {
+    void createContent() {
+        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); //@todo esto es un hotfix, el config tendría que cargarse en otro lado
+
         /* Tabla de sign up */
         Window signUpTable = new Window("", getSkin()); //@todo window es una ventana arrastrable
         Label usernameLabel = new Label("Username:", getSkin());
@@ -49,12 +52,7 @@ public class SignUpScreen extends AbstractScreen {
         registerButton.addListener(new RegisterButtonListener());
 		
 		TextButton goBackButton = new TextButton("Go Back", getSkin());
-        goBackButton.addListener(new ClickListener() {
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                screenManager.to(ScreenEnum.LOGIN);
-            }
-        });
+        goBackButton.addListener(new GoBackButtonListener());
 
         signUpTable.getColor().a = 0.8f;
         signUpTable.add(usernameLabel).padRight(5);
@@ -71,7 +69,7 @@ public class SignUpScreen extends AbstractScreen {
         /* Tabla de servidores */
         Table serverTable = new Table((getSkin()));
         serverList = new List<>(getSkin());
-        serverList.setItems(clientConfiguration.getNetwork().getServers());
+        serverList.setItems(config.getNetwork().getServers());
         serverTable.add(serverList).width(400).height(300); //@todo Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
 
         /* Tabla principal */
@@ -125,7 +123,8 @@ public class SignUpScreen extends AbstractScreen {
                     if (clientSystem.getState() == MarshalState.STOPPED) {
 
                         // Seteamos la info. del servidor al que nos vamos a conectar.
-                        clientSystem.setHost(ip, port);
+                        clientSystem.getKryonetClient().setHost(ip);
+                        clientSystem.getKryonetClient().setPort(port);
 
                         // Inicializamos la conexion.
                         clientSystem.start();
@@ -134,9 +133,11 @@ public class SignUpScreen extends AbstractScreen {
                         if (clientSystem.getState() == MarshalState.STARTED) {
 
                             // Enviamos la peticion de inicio de sesion.
-                            clientSystem.send(new AccountCreationRequest(username, email, password1));
+                            clientSystem.getKryonetClient().sendToAll(new AccountCreationRequest(username, email, password1));
 
                         } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
+                            AOAssetManager assetManager = AOGame.getGlobalAssetManager();
+
                             // Mostramos un mensaje de error.
                             Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
                             dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
@@ -145,6 +146,17 @@ public class SignUpScreen extends AbstractScreen {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    //Listener para goBackButton
+    private class GoBackButtonListener extends ChangeListener {
+        @Override
+        public void changed(ChangeEvent event, Actor actor) {
+            if (((TextButton)actor).isPressed()) {
+                AOGame game = (AOGame) Gdx.app.getApplicationListener();
+                game.toLogin();
             }
         }
     }

@@ -14,7 +14,6 @@ import component.position.WorldPos;
 import server.systems.CommandSystem;
 import server.systems.MeditateSystem;
 import server.systems.ServerSystem;
-import server.systems.account.AccountSystem;
 import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.combat.RangedCombatSystem;
@@ -22,16 +21,14 @@ import server.systems.manager.*;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.MessageSystem;
 import server.systems.network.UpdateTo;
-import server.systems.user.UserSystem;
 import server.utils.WorldUtils;
 import shared.interfaces.Intervals;
 import shared.model.AttackType;
+import shared.model.lobby.Player;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.model.map.WorldPosition;
 import shared.model.npcs.NPC;
-import shared.network.account.AccountCreationRequest;
-import shared.network.account.AccountLoginRequest;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.DropItem;
@@ -43,17 +40,18 @@ import shared.network.interfaces.DefaultRequestProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
 import shared.network.inventory.ItemActionRequest.ItemAction;
+import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.movement.MovementNotification;
 import shared.network.movement.MovementRequest;
 import shared.network.movement.MovementResponse;
 import shared.network.notifications.EntityUpdate;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
-import shared.network.user.UserCreateRequest;
-import shared.network.user.UserLoginRequest;
 import shared.util.EntityUpdateBuilder;
 import shared.util.Messages;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.artemis.E.E;
@@ -79,41 +77,22 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     private ObjectManager objectManager;
     private EntityUpdateSystem entityUpdateSystem;
     private MessageSystem messageSystem;
-    private AccountSystem accountSystem;
-    private UserSystem userSystem;
 
-    // Accounts
-
-    @Override
-    public void processRequest(AccountCreationRequest accountCreationRequest, int connectionId) {
-        // Recibimos los datos de la cuenta del cliente.
-        String username = accountCreationRequest.getUsername();
-        String email = accountCreationRequest.getEmail();
-        String password = accountCreationRequest.getPassword();
-
-        accountSystem.createAccount(connectionId, username, email, password);
+    private List<WorldPos> getArea(WorldPos worldPos, int range /*impar*/) {
+        List<WorldPos> positions = new ArrayList<>();
+        int i = range / 2;
+        for (int x = worldPos.x - i; x <= worldPos.x + i; x++) {
+            for (int y = worldPos.y - i; y <= worldPos.y + i; y++) {
+                positions.add(new WorldPos(x, y, worldPos.map));
+            }
+        }
+        return positions;
     }
 
     @Override
-    public void processRequest(AccountLoginRequest accountLoginRequest, int connectionId) {
-        String email = accountLoginRequest.getEmail();
-        String password = accountLoginRequest.getPassword();
-
-        accountSystem.login(connectionId, email, password);
-
-    }
-
-    // Users
-
-    @Override
-    public void processRequest(UserLoginRequest userLoginRequest, int connectionId) {
-        // TODO validate connectionId corresponds to account
-        userSystem.login(connectionId, userLoginRequest.getUserName());
-    }
-
-    @Override
-    public void processRequest(UserCreateRequest request, int connectionId) {
-        userSystem.create(connectionId, request.getName(), request.getHeroId());
+    public void processRequest(PlayerLoginRequest playerLoginRequest, int connectionId) {
+        Player player = playerLoginRequest.getPlayer();
+        worldManager.login(connectionId, player);
     }
 
     /**

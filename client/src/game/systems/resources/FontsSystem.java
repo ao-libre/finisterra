@@ -1,19 +1,21 @@
 package game.systems.resources;
 
-import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import game.handlers.DefaultAOAssetManager;
+import game.AOGame;
+import game.handlers.AOAssetManager;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
-@Wire
 public class FontsSystem extends PassiveSystem {
-    @Wire
-    private DefaultAOAssetManager assetManager;
+
+    private AOAssetManager assetManager;
 
     @Override
     protected void initialize() {
         super.initialize();
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        assetManager = game.getAssetManager();
         initFonts();
     }
 

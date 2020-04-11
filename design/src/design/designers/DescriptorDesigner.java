@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import design.screens.ScreenEnum;
 import design.screens.views.ImageView;
 import game.AOGame;
-import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import game.loaders.DescriptorsLoader;
 import model.descriptors.*;
@@ -37,8 +36,7 @@ public class DescriptorDesigner<T extends Descriptor> implements IDesigner<T, ID
 
     @Override
     public void load(Parameters<T> params) {
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        AOAssetManager assetManager = game.getAssetManager();
+        AOAssetManager assetManager = AOGame.getGlobalAssetManager();
 
         Collection<? extends Descriptor> values = Collections.emptyList();
 

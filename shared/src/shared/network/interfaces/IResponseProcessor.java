@@ -2,22 +2,28 @@ package shared.network.interfaces;
 
 import shared.network.account.AccountCreationResponse;
 import shared.network.account.AccountLoginResponse;
+import shared.network.lobby.CreateRoomResponse;
+import shared.network.lobby.JoinLobbyResponse;
+import shared.network.lobby.JoinRoomResponse;
+import shared.network.lobby.StartGameResponse;
 import shared.network.movement.MovementResponse;
 import shared.network.time.TimeSyncResponse;
-import shared.network.user.UserCreateResponse;
-import shared.network.user.UserLoginResponse;
 
 public interface IResponseProcessor {
 
     void processResponse(MovementResponse movementResponse);
+
+    void processResponse(CreateRoomResponse createRoomResponse);
+
+    void processResponse(JoinLobbyResponse joinLobbyResponse);
+
+    void processResponse(JoinRoomResponse joinRoomResponse);
+
+    void processResponse(StartGameResponse startGameResponse);
 
     void processResponse(TimeSyncResponse timeSyncResponse);
 
     void processResponse(AccountCreationResponse accountCreationResponse);
 
     void processResponse(AccountLoginResponse accountLoginResponse);
-
-    void processResponse(UserCreateResponse userCreateResponse);
-
-    void processResponse(UserLoginResponse userLoginResponse);
 }

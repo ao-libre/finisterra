@@ -1,18 +1,17 @@
 package game.systems.resources;
 
 import com.artemis.annotations.Wire;
-import game.handlers.DefaultAOAssetManager;
-import net.mostlyoriginal.api.system.core.PassiveSystem;
+import game.handlers.AOAssetManager;
 import shared.util.Messages;
 
 @Wire
-public class MessageSystem extends PassiveSystem {
-    @Wire
-    private DefaultAOAssetManager aoAssetManager;
+public class MessageSystem extends AssetSystem {
 
-    public MessageSystem() {}
+    public MessageSystem(AOAssetManager assetManager) {
+        super(assetManager);
+    }
 
     public String getMessage(Messages key, String... params) {
-        return aoAssetManager.getMessages(key, params);
+        return getAssetManager().getMessages(key, params);
     }
 }

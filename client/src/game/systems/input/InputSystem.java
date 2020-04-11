@@ -5,8 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import game.AOGame;
-import game.screens.ScreenEnum;
-import game.screens.ScreenManager;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.camera.CameraSystem;
 import game.systems.resources.MusicSystem;
@@ -28,7 +26,6 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
     private PlayerActionSystem playerActionSystem;
     private CameraSystem cameraSystem;
     private ScreenSystem screenSystem;
-    private ScreenManager screenManager;
 
     private InventorySystem inventorySystem;
     private SpellSystem spellSystem;
@@ -127,7 +124,8 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
                 break;
             case Input.Keys.ESCAPE:
                 // Disconnect & go back to LoginScreen
-                screenManager.to(ScreenEnum.LOGIN);
+                AOGame game = (AOGame) Gdx.app.getApplicationListener();
+                game.toLogin();
                 break;
             case Input.Keys.F2:
                 screenSystem.takeScreenshot();
@@ -178,7 +176,7 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
                 break;
             case Input.Keys.ESCAPE:
                 AOGame game = (AOGame) Gdx.app.getApplicationListener();
-
+                game.toLogin();
                 break;
             case Input.Keys.F2:
                 screenSystem.takeScreenshot();

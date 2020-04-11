@@ -4,15 +4,16 @@
 ### Project-Specific ###
 private/
 build/
+old/
+JPackage/
+Accounts/
+Charfiles/
 desktop/*.tar.gz
 desktop/*.zip
 desktop/jdk*
 desktop/Config.json
 desktop/Screenshots*
-desktop/error*
-server/Accounts/
-server/bundled-APP/
-server/Charfile/
+server/bundled-APP
 *.log
 
 ### Gradle ###

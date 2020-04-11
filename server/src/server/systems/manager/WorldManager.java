@@ -185,7 +185,8 @@ public class WorldManager extends DefaultManager {
         entityFactorySystem.createObject(key, value, worldPos);
     }
 
-    public void login(int connectionId, int entity) {
+    public void login(int connectionId, Player player) {
+        final int entity = entityFactorySystem.createPlayer(player.getPlayerName(), player.getHero(), player.getTeam());
         List<Component> components = componentManager.getComponents(entity, ComponentManager.Visibility.CLIENT_ALL);
         components.add(new Focused());
         components.add(new AOPhysics());

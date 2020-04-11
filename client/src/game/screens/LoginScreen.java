@@ -1,27 +1,27 @@
 package game.screens;
 
-import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
+import game.AOGame;
 import game.ClientConfiguration;
-import game.handlers.DefaultAOAssetManager;
-import game.systems.network.ClientSystem;
+import game.handlers.AOAssetManager;
 import game.systems.resources.MusicSystem;
+import game.systems.network.ClientResponseProcessor;
+import game.systems.network.GameNotificationProcessor;
+import game.systems.network.ClientSystem;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.network.account.AccountLoginRequest;
 import shared.util.Messages;
 
-@Wire
+import static game.utils.Resources.CLIENT_CONFIG;
+
 public class LoginScreen extends AbstractScreen {
 
-    @Wire
-    private DefaultAOAssetManager assetManager;
-    private ClientConfiguration clientConfiguration;
     private ClientSystem clientSystem;
-    private ScreenManager screenManager;
 
     private TextField emailField;
     private TextField passwordField;
@@ -31,8 +31,10 @@ public class LoginScreen extends AbstractScreen {
     private List<ClientConfiguration.Network.Server> serverList;
 
     public LoginScreen() {
+        super();
+        init();
         // utilice bgmusic  para subir gradualmente el sonido.
-        bGMusic(); //@todo mover esto fuera del constructor
+        bGMusic();
     }
 
     void bGMusic() {
@@ -54,17 +56,28 @@ public class LoginScreen extends AbstractScreen {
         }, 0, 0.6f);
     }
 
-    //    @Override
-//    protected void keyPressed(int keyCode) {
-//        if (keyCode == Input.Keys.ENTER && this.canConnect) {
-//            this.canConnect = false;
-//            connectThenLogin();
-//        }
-//    }
+    @Override
+    protected void keyPressed(int keyCode) {
+        /*
+        if (keyCode == Input.Keys.ENTER && this.canConnect) {
+            this.canConnect = false;
+            connectThenLogin();
+        }
+        */
+    }
+
+    private void init() {
+        clientSystem = new ClientSystem("127.0.0.1", 7666); // @todo implement empty constructor
+        clientSystem.setNotificationProcessor(new GameNotificationProcessor());
+        clientSystem.setResponseProcessor(new ClientResponseProcessor());
+
+        // TODO MusicHandler.playMusic(101);
+    }
 
     @Override
-    protected void createUI() {
-        ClientConfiguration.Account account = clientConfiguration.getAccount();
+    void createContent() {
+        ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); //@todo esto es un hotfix, el config tendría que cargarse en otro lado
+        ClientConfiguration.Account account = config.getAccount();
 
         /* Tabla de login */
         Window loginWindow = new Window("", getSkin()); //@todo window es una ventana arrastrable
@@ -79,8 +92,8 @@ public class LoginScreen extends AbstractScreen {
         seePassword.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (((CheckBox) actor).isPressed()) {
-                    passwordField.setPasswordMode(!passwordField.isPasswordMode());
+                if (((CheckBox)actor).isPressed()) {
+                    passwordField.setPasswordMode( !passwordField.isPasswordMode() );
                 }
             }
         });
@@ -92,8 +105,9 @@ public class LoginScreen extends AbstractScreen {
         newAccountButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (((TextButton) actor).isPressed()) {
-                    screenManager.to(ScreenEnum.SIGN_UP);
+                if (((TextButton)actor).isPressed()) {
+                    AOGame game = (AOGame) Gdx.app.getApplicationListener();
+                    game.toSignUp(clientSystem);
                 }
             }
         });
@@ -111,7 +125,7 @@ public class LoginScreen extends AbstractScreen {
         /* Tabla de servidores */
         Table connectionTable = new Table((getSkin()));
         serverList = new List<>(getSkin());
-        serverList.setItems(clientConfiguration.getNetwork().getServers());
+        serverList.setItems(config.getNetwork().getServers());
         connectionTable.add(serverList).width(400).height(300); //@todo Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
 
         /* Tabla principal */
@@ -136,9 +150,10 @@ public class LoginScreen extends AbstractScreen {
                 String email = emailField.getText();
                 String password = passwordField.getText();
 
-                clientConfiguration.getAccount().setEmail(email);
-                clientConfiguration.getAccount().setPassword(password);
-                // clientConfiguration.save(); TODO this is breaking all
+                ClientConfiguration config = ClientConfiguration.loadConfig(CLIENT_CONFIG); //@todo esto es un hotfix, el config tendría que cargarse en otro lado
+                config.getAccount().setEmail(email);
+                config.getAccount().setPassword(password);
+                config.save(CLIENT_CONFIG);
 
                 ClientConfiguration.Network.Server server = serverList.getSelected();
                 if (server == null) return;
@@ -156,8 +171,8 @@ public class LoginScreen extends AbstractScreen {
                     if (clientSystem.getState() == MarshalState.STOPPED) {
 
                         // Seteamos la info. del servidor al que nos vamos a conectar.
-                        clientSystem.setHost(ip, port);
-
+                        clientSystem.getKryonetClient().setHost(ip);
+                        clientSystem.getKryonetClient().setPort(port);
 
                         // Inicializamos la conexion.
                         clientSystem.start();
@@ -166,11 +181,16 @@ public class LoginScreen extends AbstractScreen {
                         if (clientSystem.getState() == MarshalState.STARTED) {
 
                             // Enviamos la peticion de inicio de sesion.
-                            clientSystem.send(new AccountLoginRequest(email, password));
+                            clientSystem.getKryonetClient().sendToAll(new AccountLoginRequest(email, password));
 
                         } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
+                            AOAssetManager assetManager = AOGame.getGlobalAssetManager();
+
                             // Mostramos un mensaje de error.
-                            connectionFailed();
+                            Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
+                            dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
+                            dialog.button("OK");
+                            dialog.show(getStage());
                         }
                     }
                 }
@@ -178,10 +198,7 @@ public class LoginScreen extends AbstractScreen {
         }
     }
 
-    private void connectionFailed() {
-        Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
-        dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
-        dialog.button("OK");
-        dialog.show(getStage());
+    public ClientSystem getClientSystem() {
+        return clientSystem;
     }
 }

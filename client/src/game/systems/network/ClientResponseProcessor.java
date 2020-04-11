@@ -1,32 +1,74 @@
 package game.systems.network;
 
+import com.artemis.BaseSystem;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
-import game.screens.ScreenEnum;
-import game.screens.ScreenManager;
+import game.AOGame;
+import game.screens.*;
 import game.systems.physics.MovementProcessorSystem;
-import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.network.account.AccountCreationResponse;
 import shared.network.account.AccountLoginResponse;
 import shared.network.interfaces.IResponseProcessor;
+import shared.network.lobby.*;
+import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.movement.MovementResponse;
 import shared.network.time.TimeSyncResponse;
-import shared.network.user.UserCreateResponse;
-import shared.network.user.UserLoginResponse;
 
 @Wire
-public class ClientResponseProcessor extends PassiveSystem implements IResponseProcessor {
+public class ClientResponseProcessor extends BaseSystem implements IResponseProcessor {
 
-    private ClientSystem clientSystem;
-    private MovementProcessorSystem movementProcessorSystem;
-    private ScreenManager screenManager;
     private TimeSync timeSync;
+    private MovementProcessorSystem movementProcessorSystem;
 
     @Override
     public void processResponse(MovementResponse movementResponse) {
         movementProcessorSystem.validateRequest(movementResponse.requestNumber, movementResponse.destination);
+    }
+
+    @Override
+    public void processResponse(CreateRoomResponse createRoomResponse) {
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        LobbyScreen lobby = (LobbyScreen) game.getScreen();
+
+        switch (createRoomResponse.getStatus()) {
+            case CREATED:
+                game.toRoom(lobby.getClientSystem(), createRoomResponse.getRoom(), createRoomResponse.getPlayer());
+                break;
+            case MAX_ROOM_LIMIT:
+                lobby.roomMaxLimit();
+                break;
+        }
+    }
+
+    @Override
+    public void processResponse(JoinLobbyResponse joinLobbyResponse) {
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        LoginScreen login = (LoginScreen) game.getScreen();
+        game.toLobby(joinLobbyResponse.getPlayer(), joinLobbyResponse.getRooms(), login.getClientSystem());
+    }
+
+    @Override
+    public void processResponse(JoinRoomResponse joinRoomResponse) {
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        LobbyScreen lobby = (LobbyScreen) game.getScreen();
+        game.toRoom(lobby.getClientSystem(), joinRoomResponse.getRoom(), joinRoomResponse.getPlayer());
+    }
+
+    @Override
+    public void processResponse(StartGameResponse startGameResponse) {
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        if (game.getScreen() instanceof RoomScreen) {
+            RoomScreen roomScreen = (RoomScreen) game.getScreen();
+            GameScreen gameScreen = (GameScreen) ScreenEnum.GAME.getScreen(game.getClientConfiguration(), game.getAssetManager());
+            ClientSystem clientSystem = new ClientSystem(startGameResponse.getHost(), startGameResponse.getTcpPort());
+            clientSystem.start();
+            gameScreen.initWorld(clientSystem);
+            clientSystem.getKryonetClient().sendToAll(new PlayerLoginRequest(roomScreen.getPlayer()));
+            game.toGame(gameScreen);
+        }
     }
 
     @Override
@@ -39,23 +81,29 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
 
     @Override
     public void processResponse(AccountCreationResponse accountCreationResponse) {
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        AbstractScreen screen = (AbstractScreen) game.getScreen();
+
         if (accountCreationResponse.isSuccessful()) {
-            screenManager.to(ScreenEnum.LOGIN);
-            Dialog dialog = new Dialog("Exito", screenManager.getAbstractScreen().getSkin());
+            game.toLogin();
+            Dialog dialog = new Dialog("Exito", screen.getSkin());
             dialog.text("Cuenta creada con exito");
             dialog.button("OK");
-            dialog.show(screenManager.getAbstractScreen().getStage()); //@todo crear dialogsystem
+            dialog.show(screen.getStage());
         }
         else {
-            Dialog dialog = new Dialog("Error", screenManager.getAbstractScreen().getSkin());
+            Dialog dialog = new Dialog("Error", screen.getSkin());
             dialog.text("Error al crear la cuenta");
             dialog.button("OK");
-            dialog.show(screenManager.getAbstractScreen().getStage());
+            dialog.show(screen.getStage());
         }
     }
 
     @Override
     public void processResponse(AccountLoginResponse accountLoginResponse) {
+        AOGame game = (AOGame) Gdx.app.getApplicationListener();
+        LoginScreen screen = (LoginScreen) game.getScreen();
+
         if (accountLoginResponse.isSuccessful()) {
             /*
             Dialog dialog = new Dialog("Exito", screen.getSkin());
@@ -64,37 +112,20 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
             dialog.show(screen.getStage());
             */
 
+            //@todo pasar al lobby del servidor
             //hotfix para recuperar funcionalidad
-            screenManager.to(ScreenEnum.CREATE);
-        } else {
-            Dialog dialog = new Dialog("Error", screenManager.getAbstractScreen().getSkin());
+            screen.getClientSystem().getKryonetClient().sendToAll(new JoinLobbyRequest(accountLoginResponse.getUsername()));
+        }
+        else {
+            Dialog dialog = new Dialog("Error", screen.getSkin());
             dialog.text("Error al loguearse");
             dialog.button("OK");
-            dialog.show(screenManager.getAbstractScreen().getStage());
+            dialog.show(screen.getStage());
         }
     }
 
     @Override
-    public void processResponse(UserCreateResponse userCreateResponse) {
-        if (userCreateResponse.isSuccessful()) {
-            screenManager.to(ScreenEnum.GAME);
-        } else {
-            Dialog dialog = new Dialog("No se pudo crear el personaje!", screenManager.getAbstractScreen().getSkin());
-            dialog.text(userCreateResponse.getMessage());
-            dialog.button("OK");
-            dialog.show(screenManager.getAbstractScreen().getStage());
-        }
-    }
+    protected void processSystem() {
 
-    @Override
-    public void processResponse(UserLoginResponse userLoginResponse) {
-        if (userLoginResponse.isSuccessful()) {
-            screenManager.to(ScreenEnum.GAME);
-        } else {
-            Dialog dialog = new Dialog("Error", screenManager.getAbstractScreen().getSkin());
-            dialog.text(userLoginResponse.getMessage());
-            dialog.button("OK");
-            dialog.show(screenManager.getAbstractScreen().getStage());
-        }
     }
 }
