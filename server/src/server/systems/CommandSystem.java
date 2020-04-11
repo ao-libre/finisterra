@@ -77,29 +77,28 @@ public class CommandSystem extends DefaultManager {
             while ((i < (capacity - 1)) || homeSet) {
                 if (playerMap == cityMaps.get( i )){
                     player.originPosMap( playerMap ).originPosX( playerX ).originPosY( playerY );
-                    messageSystem.add(senderId, ConsoleMessage.info(Messages.MULTIUSE.name(), "Home set", "","",""));
+                    messageSystem.add(senderId, ConsoleMessage.info("HOME_SET"));
                     homeSet = true;
                 }
                 i++;
             }
             if (!homeSet){
-                messageSystem.add(senderId, ConsoleMessage.info(Messages.MULTIUSE.name(),"Maps "+ cityMaps, "","",""));
+                messageSystem.add(senderId, ConsoleMessage.info("ONLY_MAPS", "" +cityMaps));
             }
         }
 
         if (command.equalsIgnoreCase( CMD_PLAYER_SEE_HOME_CITY )){
             E player = E.E(senderId);
-            messageSystem.add(senderId, ConsoleMessage.info( Messages.HOME_POS.name(),
-                     String.valueOf(player.originPosMap()), String.valueOf(player.originPosX()), String.valueOf(player.originPosY())));
+            messageSystem.add(senderId, ConsoleMessage.info( "HOME_POS", String.valueOf(player.originPosMap()), String.valueOf(player.originPosX()), String.valueOf(player.originPosY())));
         }
 
         if (command.equalsIgnoreCase( CMD_PLAYER_RESURRECT )){
             E player = E.E(senderId);
             if (player.healthMin() == 0) {
                 worldManager.resurrectRequest( senderId );
-                messageSystem.add( senderId, ConsoleMessage.info( "MULTIUSE", "Resucitaras en 20s", "","","" ));
+                messageSystem.add( senderId, ConsoleMessage.info("TIME_TO_RESURRECT"));
             } else{
-                messageSystem.add( senderId, ConsoleMessage.info( "MULTIUSE","No estas muerto", "", "",""));
+                messageSystem.add( senderId, ConsoleMessage.info("YOU_ARE_ALIVE"));
             }
         }
 
