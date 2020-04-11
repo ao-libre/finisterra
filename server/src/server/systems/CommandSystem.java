@@ -36,6 +36,11 @@ public class CommandSystem extends DefaultManager {
         });
     }
 
+    /**
+     * Ejecuta el comando desde la lista {@link #commands}
+     * @param command String completo del comando.
+     * @param senderID Identificador del jugador.
+     */
     public void handleCommand(@NotNull String command, int senderID) {
         CommandSystem.Command commandStructure = new CommandSystem.Command(senderID, command);
         try {

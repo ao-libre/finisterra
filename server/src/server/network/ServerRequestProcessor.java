@@ -84,7 +84,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     // Accounts
 
     @Override
-    public void processRequest(AccountCreationRequest accountCreationRequest, int connectionId) {
+    public void processRequest(@NotNull AccountCreationRequest accountCreationRequest, int connectionId) {
         // Recibimos los datos de la cuenta del cliente.
         String username = accountCreationRequest.getUsername();
         String email = accountCreationRequest.getEmail();
@@ -94,33 +94,31 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     }
 
     @Override
-    public void processRequest(AccountLoginRequest accountLoginRequest, int connectionId) {
+    public void processRequest(@NotNull AccountLoginRequest accountLoginRequest, int connectionId) {
         String email = accountLoginRequest.getEmail();
         String password = accountLoginRequest.getPassword();
 
         accountSystem.login(connectionId, email, password);
-
     }
 
     // Users
 
     @Override
-    public void processRequest(UserLoginRequest userLoginRequest, int connectionId) {
+    public void processRequest(@NotNull UserLoginRequest userLoginRequest, int connectionId) {
         // TODO validate connectionId corresponds to account
         userSystem.login(connectionId, userLoginRequest.getUserName());
     }
 
     @Override
-    public void processRequest(UserCreateRequest request, int connectionId) {
+    public void processRequest(@NotNull UserCreateRequest request, int connectionId) {
         userSystem.create(connectionId, request.getName(), request.getHeroId());
     }
 
     /**
      * Process {@link MovementRequest}. If it is valid, move player and notify.
      *
-     * @param request      component.movement request
-     * @param connectionId id
-     * @see MovementRequest
+     * @param request      {@link component.movement}
+     * @param connectionId ID del jugador.
      */
     @Override
     public void processRequest(MovementRequest request, int connectionId) {
@@ -179,7 +177,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      * @param connectionId  user connection id
      */
     @Override
-    public void processRequest(AttackRequest attackRequest, int connectionId) {
+    public void processRequest(@NotNull AttackRequest attackRequest, int connectionId) {
         int playerId = networkManager.getPlayerByConnection(connectionId);
         E entity = E(playerId);
         AttackType type = attackRequest.type();
@@ -206,7 +204,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      * @param connectionId user connection id
      */
     @Override
-    public void processRequest(ItemActionRequest itemAction, int connectionId) {
+    public void processRequest(@NotNull ItemActionRequest itemAction, int connectionId) {
         int playerId = networkManager.getPlayerByConnection(connectionId);
         E player = E(playerId);
         Bag.Item[] userItems = player.bagItems();
@@ -311,7 +309,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     }
 
     @Override
-    public void processRequest(TimeSyncRequest request, int connectionId) {
+    public void processRequest(@NotNull TimeSyncRequest request, int connectionId) {
         long receiveTime = TimeUtils.millis();
         TimeSyncResponse response = new TimeSyncResponse();
         response.receiveTime = receiveTime;
@@ -321,7 +319,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     }
 
     @Override
-    public void processRequest(DropItem dropItem, int connectionId) {
+    public void processRequest(@NotNull DropItem dropItem, int connectionId) {
         int slot = dropItem.getSlot();
         int playerId = networkManager.getPlayerByConnection(connectionId);
         E entity = E(playerId);
