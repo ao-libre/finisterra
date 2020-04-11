@@ -11,6 +11,7 @@ import component.entity.world.Object;
 import component.movement.Destination;
 import component.physics.AOPhysics;
 import component.position.WorldPos;
+import org.jetbrains.annotations.NotNull;
 import server.systems.CommandSystem;
 import server.systems.MeditateSystem;
 import server.systems.ServerSystem;
@@ -251,13 +252,14 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      * @param connectionId user connection id
      */
     @Override
-    public void processRequest(TalkRequest talkRequest, int connectionId) {
+    public void processRequest(@NotNull TalkRequest talkRequest, int connectionId) {
         int playerId = networkManager.getPlayerByConnection(connectionId);
+        String command = talkRequest.getMessage();
 
-        if (talkRequest.getMessage().startsWith("/")) {
-            commandSystem.handleCommand(talkRequest.getMessage(), playerId);
+        if (command.startsWith("/")) {
+            commandSystem.handleCommand(command, playerId);
         } else {
-            EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(new Dialog(talkRequest.getMessage())).build();
+            EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(new Dialog(command)).build();
             entityUpdateSystem.add(update, UpdateTo.ALL);
         }
     }
