@@ -114,9 +114,9 @@ public class WorldManager extends DefaultManager {
             //setea la hp a 0 porque o sino queda con hp
             entity.getHealth().min = 0;
             // cambio del cuerpo y la cabeza a fantasma
-            // TODO arreglar las imagenes de los espiritus falta scalarla x2
+
             entity.bodyIndex(8);
-            entity.headIndex(514);
+            entity.headIndex(513);
             EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(entityId);
             resetUpdate.withComponents(entity.getHealth());
             resetUpdate.withComponents(entity.getHead(), entity.getBody());

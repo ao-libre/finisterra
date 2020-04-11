@@ -16,7 +16,7 @@ public class CommandSystem extends DefaultManager {
     private static final String CMD_PLAYER_SET_HOME_CITY = "/sethome";
     private static final String CMD_PLAYER_SEE_HOME_CITY = "/seehome";
     private static final String CMD_PLAYER_RESURRECT = "/resurrect";
-
+    private static final String CMD_PLAYER_DIE = "/die";
     // Injected Systems
     private ServerSystem networkManager;
     private WorldManager worldManager;
@@ -101,6 +101,10 @@ public class CommandSystem extends DefaultManager {
             } else{
                 messageSystem.add( senderId, ConsoleMessage.info( "MULTIUSE","No estas muerto", "", "",""));
             }
+        }
+
+        if (command.equalsIgnoreCase( CMD_PLAYER_DIE )){
+            worldManager.entityDie( senderId );
         }
 
     }
