@@ -10,6 +10,7 @@ import component.movement.Destination;
 import component.physics.AOPhysics;
 import component.position.WorldPos;
 import component.position.WorldPosOffsets;
+import org.jetbrains.annotations.NotNull;
 import shared.model.map.Tile;
 
 import static com.artemis.E.E;
@@ -56,7 +57,7 @@ public class MovementSystem extends IteratingSystem {
         }
     }
 
-    private boolean movePlayer(E player) {
+    private boolean movePlayer(@NotNull E player) {
         Destination destination = player.movementCurrent();
         float velocity = player.getAOPhysics().getVelocity();
         float delta = world.getDelta() * velocity / Tile.TILE_PIXEL_HEIGHT;
@@ -81,7 +82,7 @@ public class MovementSystem extends IteratingSystem {
         return offsets.x % 1 == 0 && offsets.y % 1 == 0;
     }
 
-    private void adjustPossiblePos(E player) {
+    private void adjustPossiblePos(@NotNull E player) {
         player.getWorldPosOffsets().x = MathUtils.clamp(player.getWorldPosOffsets().x, -1, 1);
         player.getWorldPosOffsets().y = MathUtils.clamp(player.getWorldPosOffsets().y, -1, 1);
     }

@@ -1,18 +1,19 @@
 package game.systems.physics;
 
-import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
+import component.camera.Focused;
 import component.entity.character.states.Heading;
+import component.movement.Destination;
+import component.physics.AOPhysics;
+import component.position.WorldPos;
 import game.systems.PlayerSystem;
 import game.systems.network.ClientSystem;
 import game.systems.resources.MapSystem;
 import game.systems.world.NetworkedEntitySystem;
-import component.movement.Destination;
-import component.physics.AOPhysics;
-import component.position.WorldPos;
+import org.jetbrains.annotations.NotNull;
 import shared.model.map.Map;
 import shared.model.map.WorldPosition;
 import shared.network.interaction.MeditateRequest;
@@ -28,7 +29,7 @@ import static com.artemis.E.E;
 @Wire
 public class MovementProcessorSystem extends IteratingSystem {
 
-    private java.util.Map<Integer, MovementRequest> requests = new ConcurrentHashMap<>();
+    private final java.util.Map<Integer, MovementRequest> requests = new ConcurrentHashMap<>();
     private int requestNumber;
     private NetworkedEntitySystem networkedEntitySystem;
     private ClientSystem clientSystem;
@@ -39,7 +40,7 @@ public class MovementProcessorSystem extends IteratingSystem {
                 WorldPos.class));
     }
 
-    public WorldPos getDelta(WorldPos worldPos) {
+    public WorldPos getDelta(@NotNull WorldPos worldPos) {
         WorldPos correctPos = new WorldPos(worldPos.x, worldPos.y, worldPos.map);
         requests.values().stream().filter(it -> it.valid).forEach(request -> {
             WorldPos nextPos = WorldPosConversion.getNextPos(correctPos, AOPhysics.Movement.values()[request.movement]);
