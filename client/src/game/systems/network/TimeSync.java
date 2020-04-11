@@ -30,7 +30,7 @@ public class TimeSync extends BaseSystem {
     }
 
     private void sendRequest() {
-        client.getKryonetClient().sendToAll(send());
+        client.send(send());
     }
 
     public void receive(TimeSyncResponse response) {

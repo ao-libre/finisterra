@@ -5,24 +5,16 @@ import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.EntityEdit;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import component.entity.character.info.Bag;
-import game.AOGame;
-import game.screens.LobbyScreen;
-import game.screens.RoomScreen;
 import game.systems.PlayerSystem;
 import game.systems.camera.CameraShakeSystem;
 import game.systems.resources.SoundsSystem;
 import game.systems.ui.UserInterfaceSystem;
 import game.systems.ui.action_bar.systems.InventorySystem;
 import game.systems.world.NetworkedEntitySystem;
-import shared.model.lobby.Player;
 import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.inventory.InventoryUpdate;
-import shared.network.lobby.JoinRoomNotification;
-import shared.network.lobby.NewRoomNotification;
-import shared.network.lobby.player.ChangePlayerNotification;
 import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
@@ -33,12 +25,12 @@ import static shared.network.notifications.EntityUpdate.NO_ENTITY;
 @Wire
 public class GameNotificationProcessor extends DefaultNotificationProcessor {
 
-    private NetworkedEntitySystem networkedEntitySystem;
     private CameraShakeSystem cameraShakeSystem;
+    private InventorySystem inventorySystem;
+    private NetworkedEntitySystem networkedEntitySystem;
+    private PlayerSystem playerSystem;
     private SoundsSystem soundsSystem;
     private UserInterfaceSystem userInterfaceSystem;
-    private PlayerSystem playerSystem;
-    private InventorySystem inventorySystem;
 
     @Override
     public void processNotification(EntityUpdate entityUpdate) {
@@ -114,41 +106,4 @@ public class GameNotificationProcessor extends DefaultNotificationProcessor {
         }
     }
 
-    @Override
-    public void processNotification(JoinRoomNotification joinRoomNotification) {
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
-        if (game.getScreen() instanceof RoomScreen) {
-            RoomScreen room = (RoomScreen) game.getScreen();
-            if (joinRoomNotification.isEnter()) {
-                room.getRoom().add(joinRoomNotification.getPlayer());
-            } else {
-                room.getRoom().remove(joinRoomNotification.getPlayer());
-            }
-            room.updatePlayers();
-            room.checkStart();
-        }
-    }
-
-    @Override
-    public void processNotification(NewRoomNotification newRoomNotification) {
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
-        if (game.getScreen() instanceof LobbyScreen) {
-            final LobbyScreen lobby = (LobbyScreen) game.getScreen();
-            lobby.roomCreated(newRoomNotification.getRoom());
-        }
-    }
-
-    @Override
-    public void processNotification(ChangePlayerNotification changePlayerNotification) {
-        AOGame game = (AOGame) Gdx.app.getApplicationListener();
-        if (game.getScreen() instanceof RoomScreen) {
-            Player player = changePlayerNotification.getPlayer();
-            RoomScreen room = (RoomScreen) game.getScreen();
-            room.getRoom().getPlayers().remove(player);
-            room.getRoom().getPlayers().add(player);
-            room.updatePlayers();
-            room.checkStart();
-        }
-
-    }
 }

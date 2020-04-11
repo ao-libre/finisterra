@@ -29,6 +29,7 @@ test {
 
 dependencies {
     implementation project(":shared")
+    implementation group: "net.onedaybeard.artemis", name: "artemis-odb-serializer-json", version: "$artemisVersion"
     implementation group: "com.badlogicgames.gdx", name: "gdx-backend-lwjgl3", version: "$gdxVersion"
 	implementation group: "com.badlogicgames.gdx", name: "gdx-backend-headless", version: "$gdxVersion"
 	implementation group: "com.badlogicgames.gdx", name: "gdx-ai", version: "$gdxAIVersion"
