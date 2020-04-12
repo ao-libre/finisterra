@@ -12,6 +12,7 @@ import shared.network.interaction.TalkRequest;
 import shared.util.Messages;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 @Wire
@@ -22,7 +23,7 @@ public class CommandSystem extends DefaultManager {
     private WorldManager worldManager;
     private MessageSystem messageSystem;
 
-    private final HashMap<String, Consumer<Command>> commands = new HashMap<>();
+    private final Map<String, Consumer<Command>> commands = new HashMap<>();
 
     /**
      * Aca se prepara una lista de comandos disponibles para usar desde el cliente.
@@ -38,9 +39,7 @@ public class CommandSystem extends DefaultManager {
             int connectionId = networkManager.getConnectionByPlayer(commandStructure.senderID);
             networkManager.disconnected(connectionId);
         });
-		commands.put("die" , (commandStructure) -> {
-            worldManager.entityDie(commandStructure.senderID);
-        });
+		commands.put("die" , (commandStructure) -> worldManager.entityDie(commandStructure.senderID));
     }
 
     /**
@@ -55,6 +54,16 @@ public class CommandSystem extends DefaultManager {
         } catch (Exception ex) {
             Log.error("Command Parser", "Error al ejecutar comando: " + command, ex);
         }
+    }
+
+    /**
+     * Se fija si el comando esta declarado en {@link #commands}
+     * @param command comando a evaluar.
+     * @return boolean Si el comando existe o no en {@link #commands}
+     */
+    public boolean commandExists(@NotNull String command) {
+        String[] presumedCommand = command.split(" ");
+        return commands.containsKey(presumedCommand[0].substring(1));
     }
 
     /**
@@ -73,6 +82,17 @@ public class CommandSystem extends DefaultManager {
             String[] commandToParse = fullCommandString.split(" ");
             this.name = commandToParse[0].substring(1);
             this.params = commandToParse;
+        }
+
+        /**
+         * Se fija si el string pasado como parametro tiene:
+         *  - El prefijo caracteristico que poseen los comandos.
+         *
+         * @param message Mensaje a analizar.
+         * @return boolean Si es un comando o no.
+         */
+        public static boolean isCommand(@NotNull String message) {
+            return message.startsWith("/");
         }
     }
 }

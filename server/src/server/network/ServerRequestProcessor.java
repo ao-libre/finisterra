@@ -181,12 +181,18 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(@NotNull TalkRequest talkRequest, int connectionId) {
         int playerId = networkManager.getPlayerByConnection(connectionId);
-        String command = talkRequest.getMessage();
+        String message = talkRequest.getMessage();
 
-        if (command.startsWith("/")) {
-            commandSystem.handleCommand(command, playerId);
+        // Si es un comando...
+        if (CommandSystem.Command.isCommand(message)) {
+            if (commandSystem.commandExists(message)) {
+                commandSystem.handleCommand(message, playerId);
+            } else {
+                messageSystem.add(playerId, ConsoleMessage.error(Messages.INVALID_COMMAND.name()));
+            }
         } else {
-            EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(new Dialog(command)).build();
+            // No es un comando, entonces es un dialogo.
+            EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(new Dialog(message)).build();
             entityUpdateSystem.add(update, UpdateTo.ALL);
         }
     }
