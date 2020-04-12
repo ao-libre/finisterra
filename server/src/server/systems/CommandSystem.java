@@ -39,7 +39,7 @@ public class CommandSystem extends DefaultManager {
             networkManager.disconnected(connectionId);
         });
 		commands.put("die" , (commandStructure) -> {
-            worldManager.entityDie(senderId);
+            worldManager.entityDie(commandStructure.senderID);
         });
     }
 
