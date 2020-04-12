@@ -38,7 +38,7 @@ public class DialogSystem extends PassiveSystem {
 
     public void talk() {
         if (dialogText.isVisible()) {
-            clientSystem.send(new TalkRequest(getMessage()));
+            clientSystem.send(new TalkRequest(getMessage().trim()));
             dialogText.getStage().setKeyboardFocus(null);
         } else {
             dialogText.getStage().setKeyboardFocus(dialogText);

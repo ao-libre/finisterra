@@ -94,7 +94,6 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         String password = accountLoginRequest.getPassword();
 
         accountSystem.login(connectionId, email, password);
-
     }
 
     // Users
@@ -113,9 +112,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     /**
      * Process {@link MovementRequest}. If it is valid, move player and notify.
      *
-     * @param request      component.movement request
-     * @param connectionId id
-     * @see MovementRequest
+     * @param request      {@link component.movement}
+     * @param connectionId ID del jugador.
      */
     @Override
     public void processRequest(MovementRequest request, int connectionId) {
@@ -183,11 +181,18 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(@NotNull TalkRequest talkRequest, int connectionId) {
         int playerId = networkManager.getPlayerByConnection(connectionId);
+        String message = talkRequest.getMessage();
 
-        if (talkRequest.getMessage().startsWith("/")) {
-            commandSystem.handleCommand(talkRequest.getMessage(), playerId);
+        // Si es un comando...
+        if (CommandSystem.Command.isCommand(message)) {
+            if (commandSystem.commandExists(message)) {
+                commandSystem.handleCommand(message, playerId);
+            } else {
+                messageSystem.add(playerId, ConsoleMessage.error(Messages.INVALID_COMMAND.name()));
+            }
         } else {
-            EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(new Dialog(talkRequest.getMessage())).build();
+            // No es un comando, entonces es un dialogo.
+            EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(new Dialog(message)).build();
             entityUpdateSystem.add(update, UpdateTo.ALL);
         }
     }
