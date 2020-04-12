@@ -22,11 +22,14 @@ import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.combat.RangedCombatSystem;
 import server.systems.entity.EffectEntitySystem;
+import server.systems.entity.MovementSystem;
 import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.*;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.MessageSystem;
 import server.systems.network.ServerReferenceSystem;
+import server.systems.user.ItemActionSystem;
+import server.systems.user.PlayerActionSystem;
 import server.systems.user.UserSystem;
 import shared.systems.IntervalSystem;
 import shared.util.LogSystem;
@@ -111,6 +114,9 @@ public class Finisterra extends ApplicationAdapter {
                 .with(new EntityUpdateSystem())
                 .with(new MessageSystem())
                 .with(new TagManager())
+                .with(new MovementSystem())
+                .with(new PlayerActionSystem())
+                .with(new ItemActionSystem())
                 .with(serializationManager);
         world = new World(builder.build());
         serializationManager.setSerializer(new JsonArtemisSerializer(world));
