@@ -38,6 +38,8 @@ public class PlayerActionSystem extends PassiveSystem {
     public void meditate() {
         if(playerSystem.get().healthMin() > 0) {
             clientSystem.send( new MeditateRequest() );
+        }else {
+            consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.DEAD_CANT));
         }
     }
 

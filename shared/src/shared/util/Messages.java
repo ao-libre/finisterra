@@ -112,6 +112,7 @@ public enum Messages {
     YOU_ARE_ALIVE,
     TIME_TO_RESURRECT,
     ONLY_MAPS,
+    DEAD_CANT,
     // para ir provando antes de crear los mensajes
     MULTIUSE
 }

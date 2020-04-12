@@ -16,9 +16,11 @@ import game.systems.PlayerSystem;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.network.ClientSystem;
 import game.systems.resources.MapSystem;
+import game.systems.resources.MessageSystem;
 import game.systems.resources.ObjectSystem;
 import game.systems.ui.UserInterfaceContributionSystem;
 import game.systems.ui.UserInterfaceSystem;
+import game.systems.ui.console.ConsoleSystem;
 import game.ui.Inventory;
 import shared.model.map.Tile;
 import game.utils.Skins;
@@ -43,6 +45,9 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     private UserInterfaceSystem userInterfaceSystem;
     private PlayerActionSystem playerActionSystem;
     private IntervalSystem intervalSystem;
+    private ConsoleSystem consoleSystem;
+    private MessageSystem messageSystem;
+
     @Wire
     private DefaultAOAssetManager assetManager;
     private MapSystem mapSystem;
@@ -214,6 +219,8 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     public void takeItem() {
         if(playerSystem.get().healthMin() > 0){
             clientSystem.send( new TakeItemRequest() );
+        } else {
+            consoleSystem.getConsole().addWarning( messageSystem.getMessage( Messages.DEAD_CANT));
         }
     }
 
@@ -224,6 +231,8 @@ public class InventorySystem extends UserInterfaceContributionSystem {
                     playerActionSystem.equipItem( getSelectedIndex() );
                 }
             } );
+        }else {
+            consoleSystem.getConsole().addWarning( messageSystem.getMessage( Messages.DEAD_CANT));
         }
     }
 
