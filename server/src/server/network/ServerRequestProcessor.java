@@ -81,7 +81,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     private MessageSystem messageSystem;
     private AccountSystem accountSystem;
     private UserSystem userSystem;
-
+    private NPCManager npcManager;
     // Accounts
 
     @Override
@@ -322,7 +322,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
 
     @Override
     public void processRequest(NpcInteractionRequest npcInteractionRequest, int connectionId) {
-        NPC npc = world.getSystem( NPCManager.class).getNpcs().get(npcInteractionRequest.getTargetEntity());
+        NPC npc = npcManager.getNpcs().get(npcInteractionRequest.getTargetEntity());
         int playerId = networkManager.getPlayerByConnection(connectionId);
         switch( npc.getName()){
             case "Sacerdote":
