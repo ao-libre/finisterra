@@ -150,7 +150,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
             min += shieldObj.getMinDef();
             max += shieldObj.getMaxDef();
         }
-        return ThreadLocalRandom.current().nextInt(min, max);
+        return ThreadLocalRandom.current().nextInt(min, max+1);
     }
 
     private int getHeadDefense(int entityId) {
