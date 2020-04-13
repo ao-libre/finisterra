@@ -56,16 +56,16 @@ public class LoginScreen extends AbstractScreen {
         }, 0, 0.6f);
     }
 
-    //    @Override
+    @Override
     protected void keyPressed(int keyCode) {
         if (keyCode == Input.Keys.ESCAPE) {
             Gdx.app.exit();
         }
- //       if (keyCode == Input.Keys.ENTER && this.canConnect) {
- //           this.canConnect = false;
- //           connectThenLogin();
- //           Gdx.app.exit();
- //       }
+//       if (keyCode == Input.Keys.ENTER && this.canConnect) {
+//           this.canConnect = false;
+//           connectThenLogin();
+//           Gdx.app.exit();
+//       }
     }
 
     @Override
