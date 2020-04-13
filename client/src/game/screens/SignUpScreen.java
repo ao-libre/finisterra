@@ -2,10 +2,8 @@ package game.screens;
 
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Timer;
 import game.ClientConfiguration;
 import game.handlers.AOAssetManager;
@@ -49,9 +47,9 @@ public class SignUpScreen extends AbstractScreen {
         registerButton.addListener(new RegisterButtonListener());
 		
 		TextButton goBackButton = new TextButton("Go Back", getSkin());
-        goBackButton.addListener(new ClickListener() {
+        goBackButton.addListener(new ChangeListener() {
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            public void changed(ChangeEvent event, Actor actor) {
                 screenManager.to(ScreenEnum.LOGIN);
             }
         });
@@ -85,64 +83,62 @@ public class SignUpScreen extends AbstractScreen {
     private class RegisterButtonListener extends ChangeListener {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
-            if (((TextButton)actor).isPressed()) { //@todo implementar PressListener
-                //El boton fue apretado
-                registerButton.setDisabled(true);
-                Timer.schedule(new Timer.Task() { //@todo implementar API que tome lambdas () -> {}
-                    @Override
-                    public void run() {
-                        registerButton.setDisabled(false);
-                    }
-                }, 2);
+            // El botón fue apretado
+            registerButton.setDisabled(true);
+            Timer.schedule(new Timer.Task() { //@todo implementar API que tome lambdas () -> {}
+                @Override
+                public void run() {
+                    registerButton.setDisabled(false);
+                }
+            }, 2);
 
-                String username = usernameField.getText();
-                String email = emailField.getText();
-                String password1 = passwordField1.getText();
-                String password2 = passwordField2.getText();
+            String username = usernameField.getText();
+            String email = emailField.getText();
+            String password1 = passwordField1.getText();
+            String password2 = passwordField2.getText();
 
-                if (!password1.equals(password2)) {
-                    Dialog dialog = new Dialog("Error", getSkin());
-                    dialog.text("Las contraseñas no coinciden.");
-                    dialog.button("OK");
-                    dialog.show(getStage());
-                    return;
+            if (!password1.equals(password2)) {
+                Dialog dialog = new Dialog("Error", getSkin());
+                dialog.text("Las contraseñas no coinciden.");
+                dialog.button("OK");
+                dialog.show(getStage());
+                return;
+            }
+
+            /* Conectar el ClientSystem */
+            ClientConfiguration.Network.Server server = serverList.getSelected();
+            if (server == null) return;
+            String ip = server.getHostname();
+            int port = server.getPort();
+
+            //@todo encapsular todo este chequeo en el cliente
+            if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
+
+                if (clientSystem.getState() != MarshalState.STOPPED) {
+                    clientSystem.stop();
                 }
 
-                /* Conectar el ClientSystem */
-                ClientConfiguration.Network.Server server = serverList.getSelected();
-                if (server == null) return;
-                String ip = server.getHostname();
-                int port = server.getPort();
+                // Si no estamos tratando de conectarnos al servidor, intentamos conectarnos.
+                if (clientSystem.getState() == MarshalState.STOPPED) {
 
-                //@todo encapsular todo este chequeo en el cliente
-                if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
+                    // Seteamos la info. del servidor al que nos vamos a conectar.
+                    clientSystem.setHost(ip, port);
 
-                    if (clientSystem.getState() != MarshalState.STOPPED) {
-                        clientSystem.stop();
-                    }
+                    // Inicializamos la conexion.
+                    clientSystem.start();
 
-                    // Si no estamos tratando de conectarnos al servidor, intentamos conectarnos.
-                    if (clientSystem.getState() == MarshalState.STOPPED) {
+                    // Si pudimos conectarnos, mandamos la peticion para loguearnos a la cuenta.
+                    if (clientSystem.getState() == MarshalState.STARTED) {
 
-                        // Seteamos la info. del servidor al que nos vamos a conectar.
-                        clientSystem.setHost(ip, port);
+                        // Enviamos la peticion de inicio de sesion.
+                        clientSystem.send(new AccountCreationRequest(username, email, password1));
 
-                        // Inicializamos la conexion.
-                        clientSystem.start();
-
-                        // Si pudimos conectarnos, mandamos la peticion para loguearnos a la cuenta.
-                        if (clientSystem.getState() == MarshalState.STARTED) {
-
-                            // Enviamos la peticion de inicio de sesion.
-                            clientSystem.send(new AccountCreationRequest(username, email, password1));
-
-                        } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
-                            // Mostramos un mensaje de error.
-                            Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
-                            dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
-                            dialog.button("OK");
-                            dialog.show(getStage());
-                        }
+                    } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
+                        // Mostramos un mensaje de error.
+                        Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
+                        dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
+                        dialog.button("OK");
+                        dialog.show(getStage());
                     }
                 }
             }
