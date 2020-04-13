@@ -47,6 +47,7 @@ public class MouseSystem extends PassiveSystem {
     protected void initialize() {
 
         defaultAction = new MouseActionContext(CursorSystem.AOCursor.HAND, (worldPos -> {
+            boolean seeNothing = true;
             if (worldPos.equals( oldWorldPos )) {
                 tapCounter++;
             } else {
@@ -73,7 +74,8 @@ public class MouseSystem extends PassiveSystem {
                             }
                         }
                     }
-                    return;
+                    seeNothing = false;
+                    //return;
                 }
             }
             Tile targetTile = mapSystem.getTile(worldPos);
@@ -82,7 +84,9 @@ public class MouseSystem extends PassiveSystem {
                     consoleSystem.getConsole().addInfo(messageSystem.getMessage(Messages.SEE_SOMEONE, String.valueOf(targetTile.getObjCount()))
                             + " " + obj.getName() );
                 });
-            }else {
+                seeNothing = false;
+            }
+            if (seeNothing) {
                 consoleSystem.getConsole().addInfo(messageSystem.getMessage(Messages.SEE_NOTHING));
             }
         }));
