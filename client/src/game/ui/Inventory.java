@@ -262,6 +262,9 @@ public abstract class Inventory extends Window {
     protected abstract TextureRegion getGraphic(Item item);
 
     protected abstract Tooltip getTooltip(Item item);
-    
 
+
+    public boolean getExpanded(){
+        return expanded;
+    }
 }

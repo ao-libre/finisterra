@@ -95,6 +95,9 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
     }
 
     public void showSpells() {
+        if (inventorySystem.isExpanded()){
+            inventorySystem.toggleExpanded();
+        }
         expandInventoryButton.setVisible( false );
         castButton.setVisible( true);
         shotButton.setVisible( false );

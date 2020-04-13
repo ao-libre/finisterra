@@ -1,6 +1,8 @@
 package server.systems;
 
+import com.artemis.E;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.minlog.Log;
 import component.console.ConsoleMessage;
 import org.jetbrains.annotations.Contract;
@@ -40,6 +42,60 @@ public class CommandSystem extends DefaultManager {
             networkManager.disconnected(connectionId);
         });
 		commands.put("die" , (commandStructure) -> worldManager.entityDie(commandStructure.senderID));
+		commands.put("sethome",(commandStructure) ->{
+            int senderId = commandStructure.senderID;
+            final int capacity = 17;
+            Array<Integer> cityMaps = new Array(capacity);
+
+            cityMaps.add( CityMapsNumbers.ABADIA_LINDOS );
+            cityMaps.add( CityMapsNumbers.AFUERAS_BANDERBILL );
+            cityMaps.add( CityMapsNumbers.ARGHAL_OESTE );
+            cityMaps.add( CityMapsNumbers.CENTRO_ARGHAL );
+            cityMaps.add( CityMapsNumbers.CENTRO_BANDERBILL );
+            cityMaps.add( CityMapsNumbers.CENTRO_LINDOS );
+            cityMaps.add( CityMapsNumbers.CIUDAD_ARKHEIN );
+            cityMaps.add( CityMapsNumbers.CIUDAD_BANDERBILL );
+            cityMaps.add( CityMapsNumbers.CIUDAD_LINDOS );
+            cityMaps.add( CityMapsNumbers.CIUDAD_NUEVA_ESPERANZA );
+            cityMaps.add( CityMapsNumbers.MUELLES_ARGHAL );
+            cityMaps.add( CityMapsNumbers.MUELLES_BANDERBILL );
+            cityMaps.add( CityMapsNumbers.NEMAHUAK );
+            cityMaps.add( CityMapsNumbers.NIX );
+            cityMaps.add( CityMapsNumbers.PUENTES_ARKHEIN );
+            cityMaps.add( CityMapsNumbers.PUERTO_ARKHEIN );
+            cityMaps.add( CityMapsNumbers.ULLATHORPE );
+
+            E player = E.E(senderId);
+            int playerMap = player.worldPosMap(), playerX = player.worldPosX(), playerY = player.worldPosY();
+            boolean homeSet = false;
+            int i = 0;
+            while ((i < capacity ) || homeSet) {
+                if (playerMap == cityMaps.get( i )){
+                    player.originPosMap( playerMap ).originPosX( playerX ).originPosY( playerY );
+                    messageSystem.add(senderId, ConsoleMessage.info("HOME_SET"));
+                    homeSet = true;
+                }
+                i++;
+            }
+            if (!homeSet){
+                messageSystem.add(senderId, ConsoleMessage.info("ONLY_MAPS", "" +cityMaps));
+            }
+        } );
+		commands.put("seehome",(commandStructure) -> {
+            E player = E.E(commandStructure.senderID);
+            messageSystem.add(commandStructure.senderID, ConsoleMessage.info( "HOME_POS",
+                    String.valueOf(player.originPosMap()), String.valueOf(player.originPosX()), String.valueOf(player.originPosY())));
+        });
+        commands.put("resurrect",(commandStructure) -> {
+            int senderId = commandStructure.senderID;
+            E player = E.E( senderId );
+            if(player.healthMin() == 0) {
+                worldManager.resurrectRequest( senderId );
+                messageSystem.add( senderId, ConsoleMessage.info( "TIME_TO_RESURRECT" ) );
+            } else {
+                messageSystem.add( senderId, ConsoleMessage.info( "YOU_ARE_ALIVE" ) );
+            }
+        });
     }
 
     /**

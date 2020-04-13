@@ -39,6 +39,7 @@ import static com.artemis.E.E;
 @Wire
 public class InventorySystem extends UserInterfaceContributionSystem {
 
+
     private ClientSystem clientSystem;
     private PlayerSystem playerSystem;
     private ObjectSystem objectSystem;
@@ -205,7 +206,11 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     public void dropItem() {
-        dropItem(getSelectedIndex(), Optional.empty());
+        if (playerSystem.get().healthMin() > 0) {
+            dropItem( getSelectedIndex(), Optional.empty() );
+        }else{
+            consoleSystem.getConsole().addWarning( messageSystem.getMessage( Messages.DEAD_CANT));
+        }
     }
 
     public void dropItem(Optional<WorldPos> pos) {
@@ -213,7 +218,11 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     public void dropItem(int droppingIndex, Optional<WorldPos> pos) {
+        if (playerSystem.get().healthMin() > 0) {
         clientSystem.send(new DropItem(droppingIndex, pos.orElse(playerSystem.getWorldPos())));
+        }else{
+            consoleSystem.getConsole().addWarning( messageSystem.getMessage( Messages.DEAD_CANT));
+        }
     }
 
     public void takeItem() {
@@ -309,6 +318,9 @@ public class InventorySystem extends UserInterfaceContributionSystem {
 
     public void toggleExpanded(){
         inventory.toggleExpanded(playerSystem.get().getBag());
+    }
+    public boolean isExpanded(){
+       return inventory.getExpanded();
     }
 
 }
