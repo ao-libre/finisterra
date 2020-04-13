@@ -1,10 +1,11 @@
 package game.screens;
 
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 import game.systems.network.ClientSystem;
 import shared.interfaces.Hero;
 import shared.network.user.UserCreateRequest;
@@ -52,22 +53,27 @@ public class CreateScreen extends AbstractScreen {
 
 
         TextButton registerButton = new TextButton("Create", getSkin());
-        registerButton.addListener(new ClickListener() {
+        registerButton.addListener(new ChangeListener() {
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            public void changed(ChangeEvent event, Actor actor) {
                 // send request to create user
                 clientSystem.send(new UserCreateRequest(name.getText(), heroSelectBox.getSelected().ordinal()));
                 registerButton.setDisabled(true);
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        registerButton.setDisabled(false);
+                    }
+                }, 2);
             }
         });
         createWindow.add(registerButton).row();
 
         TextButton goBackButton = new TextButton("Go Back", getSkin());
-        goBackButton.addListener(new ClickListener() {
+        goBackButton.addListener(new ChangeListener() {
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            public void changed(ChangeEvent event, Actor actor) {
                 screenManager.to(ScreenEnum.LOGIN);
-                registerButton.setDisabled(false);
             }
         });
         createWindow.add(goBackButton).row();

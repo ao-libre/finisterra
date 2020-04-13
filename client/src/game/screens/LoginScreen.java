@@ -79,9 +79,7 @@ public class LoginScreen extends AbstractScreen {
         seePassword.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (((CheckBox) actor).isPressed()) {
-                    passwordField.setPasswordMode(!passwordField.isPasswordMode());
-                }
+                passwordField.setPasswordMode(!passwordField.isPasswordMode());
             }
         });
 
@@ -92,9 +90,7 @@ public class LoginScreen extends AbstractScreen {
         newAccountButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (((TextButton) actor).isPressed()) {
-                    screenManager.to(ScreenEnum.SIGN_UP);
-                }
+                screenManager.to(ScreenEnum.SIGN_UP);
             }
         });
 
@@ -123,55 +119,53 @@ public class LoginScreen extends AbstractScreen {
     private class LoginButtonListener extends ChangeListener {
         @Override
         public void changed(ChangeEvent event, Actor actor) {
-            if (((TextButton) actor).isPressed()) {
-                //El boton fue apretado
-                loginButton.setDisabled(true);
-                Timer.schedule(new Timer.Task() { //@todo implementar API que tome lambdas () -> {}
-                    @Override
-                    public void run() {
-                        loginButton.setDisabled(false);
-                    }
-                }, 2);
+            // El botón fue apretado
+            loginButton.setDisabled(true);
+            Timer.schedule(new Timer.Task() { //@todo implementar API que tome lambdas () -> {}
+                @Override
+                public void run() {
+                    loginButton.setDisabled(false);
+                }
+            }, 2);
 
-                String email = emailField.getText();
-                String password = passwordField.getText();
+            String email = emailField.getText();
+            String password = passwordField.getText();
 
-                clientConfiguration.getAccount().setEmail(email);
-                clientConfiguration.getAccount().setPassword(password);
-                // clientConfiguration.save(); TODO this is breaking all
+            clientConfiguration.getAccount().setEmail(email);
+            clientConfiguration.getAccount().setPassword(password);
+            // clientConfiguration.save(); TODO this is breaking all
 
-                ClientConfiguration.Network.Server server = serverList.getSelected();
-                if (server == null) return;
-                String ip = server.getHostname();
-                int port = server.getPort();
+            ClientConfiguration.Network.Server server = serverList.getSelected();
+            if (server == null) return;
+            String ip = server.getHostname();
+            int port = server.getPort();
 
-                //@todo encapsular todo este chequeo en el cliente
-                if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
+            //@todo encapsular todo este chequeo en el cliente
+            if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
 
-                    if (clientSystem.getState() != MarshalState.STOPPED) {
-                        clientSystem.stop();
-                    }
+                if (clientSystem.getState() != MarshalState.STOPPED) {
+                    clientSystem.stop();
+                }
 
-                    // Si no estamos tratando de conectarnos al servidor, intentamos conectarnos.
-                    if (clientSystem.getState() == MarshalState.STOPPED) {
+                // Si no estamos tratando de conectarnos al servidor, intentamos conectarnos.
+                if (clientSystem.getState() == MarshalState.STOPPED) {
 
-                        // Seteamos la info. del servidor al que nos vamos a conectar.
-                        clientSystem.setHost(ip, port);
+                    // Seteamos la info. del servidor al que nos vamos a conectar.
+                    clientSystem.setHost(ip, port);
 
 
-                        // Inicializamos la conexion.
-                        clientSystem.start();
+                    // Inicializamos la conexion.
+                    clientSystem.start();
 
-                        // Si pudimos conectarnos, mandamos la peticion para loguearnos a la cuenta.
-                        if (clientSystem.getState() == MarshalState.STARTED) {
+                    // Si pudimos conectarnos, mandamos la peticion para loguearnos a la cuenta.
+                    if (clientSystem.getState() == MarshalState.STARTED) {
 
-                            // Enviamos la peticion de inicio de sesion.
-                            clientSystem.send(new AccountLoginRequest(email, password));
+                        // Enviamos la peticion de inicio de sesion.
+                        clientSystem.send(new AccountLoginRequest(email, password));
 
-                        } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
-                            // Mostramos un mensaje de error.
-                            connectionFailed();
-                        }
+                    } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
+                        // Mostramos un mensaje de error.
+                        connectionFailed();
                     }
                 }
             }
