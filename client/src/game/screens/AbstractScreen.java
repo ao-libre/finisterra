@@ -1,5 +1,6 @@
 package game.screens;
 
+import com.artemis.BaseSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
@@ -89,6 +90,11 @@ public abstract class AbstractScreen extends PassiveSystem implements Screen {
         //do nothing
     }
 
+    /**
+     * <b>Nota:</b> Este método implementa al mismo tiempo:
+     * {@link BaseSystem#dispose()} de Artemis
+     * {@link Screen#dispose()} de libGDX
+     */
     @Override
     public void dispose() {
         getStage().dispose();

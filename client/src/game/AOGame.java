@@ -54,8 +54,7 @@ public class AOGame extends Game {
     public void dispose() {
         Log.debug("AOGame", "Closing client...");
         world.dispose(); /** Llama a {@link BaseSystem#dispose()} en todos los sistemas */
-        screen.dispose(); // @todo que ScreenManager se encargue de disponer de las screens
         assetManager.dispose(); // Libera todos los assets cargados
-        Log.debug("Thank you for playing! See you soon...");
+        Log.debug("AOGame", "Thank you for playing! See you soon...");
     }
 }
