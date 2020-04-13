@@ -1,6 +1,8 @@
 package game.screens;
 
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -55,12 +57,16 @@ public class LoginScreen extends AbstractScreen {
     }
 
     //    @Override
-//    protected void keyPressed(int keyCode) {
-//        if (keyCode == Input.Keys.ENTER && this.canConnect) {
-//            this.canConnect = false;
-//            connectThenLogin();
-//        }
-//    }
+    protected void keyPressed(int keyCode) {
+        if (keyCode == Input.Keys.ESCAPE) {
+            Gdx.app.exit();
+        }
+ //       if (keyCode == Input.Keys.ENTER && this.canConnect) {
+ //           this.canConnect = false;
+ //           connectThenLogin();
+ //           Gdx.app.exit();
+ //       }
+    }
 
     @Override
     protected void createUI() {
