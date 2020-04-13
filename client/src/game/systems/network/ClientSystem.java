@@ -70,9 +70,16 @@ public class ClientSystem extends MarshalSystem {
         getKryonetClient().setHost(address, port);
     }
 
+    @Override
+    protected void dispose() {
+        try {
+            getKryonetClient().getClient().stop(); // Cierra el thread de Kryonet
+            getKryonetClient().getClient().dispose(); // Libera recursos
+        } catch (Exception ignored) {
+        }
+    }
+
     private KryonetClientMarshalStrategy getKryonetClient() {
         return (KryonetClientMarshalStrategy) getMarshal();
     }
-
-    // @todo implementar dispose()
 }
