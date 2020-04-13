@@ -86,6 +86,7 @@ public class PlayerActionSystem extends PassiveSystem {
                 long rtt = timeSyncSystem.getRtt();
                 long timeOffset = timeSyncSystem.getTimeOffset();
                 clientSystem.send( new AttackRequest( AttackType.RANGED, targetPos, rtt + timeOffset ) );
+                spellSystem.clearShot();
                 playerSystem.get().attackIntervalValue( Intervals.ATTACK_INTERVAL );
             } else {
                 consoleSystem.getConsole().addWarning( messageSystem.getMessage( Messages.CANT_ATTACK_THAT_FAST ) );

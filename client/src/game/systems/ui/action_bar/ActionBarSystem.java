@@ -3,6 +3,10 @@ package game.systems.ui.action_bar;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -10,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.esotericsoftware.minlog.Log;
 import component.entity.character.info.Bag;
 import component.entity.character.info.SpellBook;
@@ -138,7 +143,16 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
     }
 
     private ImageButton createShotButton() {
-        ImageButton shotButton = new ImageButton( Skins.COMODORE_SKIN, "disc" );
+        Sprite shotSprite = new Sprite(new Texture( Gdx.files.local("data/graficos2x/16007.png")));
+        shotSprite.rotate90( true );
+        SpriteDrawable shotDrawable = new SpriteDrawable(shotSprite);
+        ImageButton.ImageButtonStyle shotStile = new ImageButton.ImageButtonStyle();
+        shotStile.up = Skins.COMODORE_SKIN.getDrawable( "big-disc" );
+        shotStile.imageUp = shotDrawable.tint( Color.DARK_GRAY);
+        shotStile.imageChecked = shotDrawable.tint(Color.GOLDENROD);
+
+        ImageButton shotButton = new ImageButton(shotStile);
+
         shotButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -147,4 +161,8 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
         });
         return shotButton;
     }
+    public void clearShot() {
+        shotButton.setChecked(false);
+    }
+
 }
