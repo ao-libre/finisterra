@@ -59,3 +59,4 @@ local.properties
 *.ipr
 out/
 **/out/
+desktop/Config.json

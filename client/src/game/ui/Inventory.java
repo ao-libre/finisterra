@@ -147,6 +147,7 @@ public abstract class Inventory extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 int tapCount = getTapCount();
                 selectItem(x, y, tapCount);
+
             }
 
 
@@ -261,6 +262,9 @@ public abstract class Inventory extends Window {
     protected abstract TextureRegion getGraphic(Item item);
 
     protected abstract Tooltip getTooltip(Item item);
-    
 
+
+    public boolean getExpanded(){
+        return expanded;
+    }
 }

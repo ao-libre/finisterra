@@ -149,8 +149,8 @@ public class EntityFactorySystem extends PassiveSystem {
     private void setHit(E entity) {
         entity.hitMax(2).hitMin(1);
     }
-
-    private void setHead(E entity, Race race) {
+    //TODO cambiado a public para poder resetear las heads antes era private, volver a modificar cuando se guarden en DB las cabezas de los pj
+    public void setHead(E entity, Race race) {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         //TODO onlyWoman desde init.json
         int headIndex = 0;
@@ -518,7 +518,6 @@ public class EntityFactorySystem extends PassiveSystem {
         }
         return obj1.getName().compareTo(obj2.getName());
     }
-
 
     private void setEntityPosition(E entity) {
         WorldPos spot = new WorldPos(50, 50, 1);

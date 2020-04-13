@@ -5,7 +5,6 @@ import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
 import component.position.WorldPos;
 import game.systems.PlayerSystem;
-import shared.systems.IntervalSystem;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.network.ClientSystem;
 import game.systems.resources.MapSystem;
@@ -17,6 +16,8 @@ import game.systems.ui.console.ConsoleSystem;
 import game.utils.CursorSystem;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.model.Spell;
+import shared.network.interaction.NpcInteractionRequest;
+import shared.systems.IntervalSystem;
 import shared.util.Messages;
 
 @Wire
@@ -38,10 +39,19 @@ public class MouseSystem extends PassiveSystem {
 
     private MouseActionContext action;
     private MouseActionContext defaultAction;
+    private WorldPos oldWorldPos = new WorldPos();
+    private int tapCounter;
 
     @Override
     protected void initialize() {
+
         defaultAction = new MouseActionContext(CursorSystem.AOCursor.HAND, (worldPos -> {
+            if (worldPos.equals( oldWorldPos )) {
+                tapCounter++;
+            } else {
+                oldWorldPos = worldPos;
+                tapCounter = 0;
+            }
             for (E entity : E.withComponent(WorldPos.class)) {
                 if (entity.getWorldPos().equals(worldPos)) {
                     if (entity.hasObject()) {
@@ -54,6 +64,13 @@ public class MouseSystem extends PassiveSystem {
                     } else if (entity.hasName()) {
                         consoleSystem.getConsole().addInfo(messageSystem.getMessage(Messages.SEE_SOMEONE,
                                 entity.getName().text));
+                        if (entity.hasNPC() && !entity.isHostile()) {
+                            if ( tapCounter > 1) {
+                                Log.info( " id" + entity.nPCId() + " " + entity.getName().text );
+                                clientSystem.send( new NpcInteractionRequest( entity.nPCId() ) );
+                                tapCounter = 0;
+                            }
+                        }
                     }
                     return;
                 }

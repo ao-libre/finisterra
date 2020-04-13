@@ -69,4 +69,8 @@ public class SpellSystem  extends UserInterfaceContributionSystem {
     public void castClick(){
         spellView.castClick();
     }
+
+    public void clearShot() {
+        actionBarSystem.clearShot();
+    }
 }

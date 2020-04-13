@@ -27,12 +27,17 @@ import server.systems.user.PlayerActionSystem;
 import server.systems.user.UserSystem;
 import shared.interfaces.Intervals;
 import shared.model.AttackType;
+import shared.model.map.Map;
+import shared.model.map.Tile;
+import shared.model.map.WorldPosition;
+import shared.model.npcs.NPC;
 import shared.network.account.AccountCreationRequest;
 import shared.network.account.AccountLoginRequest;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.DropItem;
 import shared.network.interaction.MeditateRequest;
+import shared.network.interaction.NpcInteractionRequest;
 import shared.network.interaction.TakeItemRequest;
 import shared.network.interaction.TalkRequest;
 import shared.network.interfaces.DefaultRequestProcessor;
@@ -76,6 +81,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     private PlayerActionSystem playerActionSystem;
     private ItemActionSystem itemActionSystem;
 
+    private NPCManager npcManager;
     // Accounts
 
     @Override
@@ -232,6 +238,25 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     }
 
     @Override
+    public void processRequest(NpcInteractionRequest npcInteractionRequest, int connectionId) {
+        NPC npc = npcManager.getNpcs().get(npcInteractionRequest.getTargetEntity());
+        int playerId = networkManager.getPlayerByConnection(connectionId);
+        switch( npc.getName()){
+            case "Sacerdote":
+                if (E(playerId).healthMin() == 0) {
+                    worldManager.resurrect( playerId, true );
+                } else {
+                    E entity = E(playerId);
+                    entity.getHealth().min = entity.getHealth().max;
+                    EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(playerId);
+                    resetUpdate.withComponents(entity.getHealth());
+                    worldManager.sendEntityUpdate(playerId, resetUpdate.build());
+                }
+                break;
+        }
+    }
+
+	@Override
     public void processRequest(@NotNull DropItem dropItem, int connectionId) {
         playerActionSystem.drop(connectionId, dropItem.getCount(), dropItem.getPosition(), dropItem.getSlot());
     }

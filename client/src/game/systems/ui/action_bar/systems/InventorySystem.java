@@ -13,15 +13,16 @@ import component.entity.character.info.Bag;
 import component.position.WorldPos;
 import game.handlers.DefaultAOAssetManager;
 import game.systems.PlayerSystem;
-import game.systems.resources.MapSystem;
-import shared.model.map.Tile;
-import shared.systems.IntervalSystem;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.network.ClientSystem;
+import game.systems.resources.MapSystem;
+import game.systems.resources.MessageSystem;
 import game.systems.resources.ObjectSystem;
 import game.systems.ui.UserInterfaceContributionSystem;
 import game.systems.ui.UserInterfaceSystem;
+import game.systems.ui.console.ConsoleSystem;
 import game.ui.Inventory;
+import shared.model.map.Tile;
 import game.utils.Skins;
 import shared.network.interaction.DropItem;
 import shared.network.interaction.TakeItemRequest;
@@ -38,12 +39,16 @@ import static com.artemis.E.E;
 @Wire
 public class InventorySystem extends UserInterfaceContributionSystem {
 
+
     private ClientSystem clientSystem;
     private PlayerSystem playerSystem;
     private ObjectSystem objectSystem;
     private UserInterfaceSystem userInterfaceSystem;
     private PlayerActionSystem playerActionSystem;
     private IntervalSystem intervalSystem;
+    private ConsoleSystem consoleSystem;
+    private MessageSystem messageSystem;
+
     @Wire
     private DefaultAOAssetManager assetManager;
     private MapSystem mapSystem;
@@ -201,7 +206,11 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     public void dropItem() {
-        dropItem(getSelectedIndex(), Optional.empty());
+        if (playerSystem.get().healthMin() > 0) {
+            dropItem( getSelectedIndex(), Optional.empty() );
+        }else{
+            consoleSystem.getConsole().addWarning( messageSystem.getMessage( Messages.DEAD_CANT));
+        }
     }
 
     public void dropItem(Optional<WorldPos> pos) {
@@ -209,19 +218,31 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     }
 
     public void dropItem(int droppingIndex, Optional<WorldPos> pos) {
+        if (playerSystem.get().healthMin() > 0) {
         clientSystem.send(new DropItem(droppingIndex, pos.orElse(playerSystem.getWorldPos())));
+        }else{
+            consoleSystem.getConsole().addWarning( messageSystem.getMessage( Messages.DEAD_CANT));
+        }
     }
 
     public void takeItem() {
-        clientSystem.send(new TakeItemRequest());
+        if(playerSystem.get().healthMin() > 0){
+            clientSystem.send( new TakeItemRequest() );
+        } else {
+            consoleSystem.getConsole().addWarning( messageSystem.getMessage( Messages.DEAD_CANT));
+        }
     }
 
     public void equip() {
-        getSelectedObject().ifPresent(obj -> {
-            if (ItemUtils.canEquip(obj)) {
-                playerActionSystem.equipItem(getSelectedIndex());
-            }
-        });
+        if(playerSystem.get().healthMin() > 0) {
+            getSelectedObject().ifPresent( obj -> {
+                if(ItemUtils.canEquip( obj )) {
+                    playerActionSystem.equipItem( getSelectedIndex() );
+                }
+            } );
+        }else {
+            consoleSystem.getConsole().addWarning( messageSystem.getMessage( Messages.DEAD_CANT));
+        }
     }
 
     public void use() {
@@ -297,6 +318,9 @@ public class InventorySystem extends UserInterfaceContributionSystem {
 
     public void toggleExpanded(){
         inventory.toggleExpanded(playerSystem.get().getBag());
+    }
+    public boolean isExpanded(){
+       return inventory.getExpanded();
     }
 
 }
