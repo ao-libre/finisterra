@@ -82,6 +82,7 @@ public enum Messages {
     SPELLS_FULL,
 
     // COMMAND USAGE
+    INVALID_COMMAND,
     PLAYERS_ONLINE,
 
     // ITEM TOOLTIP
