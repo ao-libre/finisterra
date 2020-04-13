@@ -16,6 +16,7 @@ import game.systems.ui.console.ConsoleSystem;
 import game.utils.CursorSystem;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.model.Spell;
+import shared.model.map.Tile;
 import shared.network.interaction.NpcInteractionRequest;
 import shared.systems.IntervalSystem;
 import shared.util.Messages;
@@ -75,7 +76,15 @@ public class MouseSystem extends PassiveSystem {
                     return;
                 }
             }
-            consoleSystem.getConsole().addInfo(messageSystem.getMessage(Messages.SEE_NOTHING));
+            Tile targetTile = mapSystem.getTile(worldPos);
+            if(targetTile.getObjIndex() > 0) {
+                objectSystem.getObject(targetTile.getObjIndex()).ifPresent(obj -> {
+                    consoleSystem.getConsole().addInfo(messageSystem.getMessage(Messages.SEE_SOMEONE, String.valueOf(targetTile.getObjCount()))
+                            + " " + obj.getName() );
+                });
+            }else {
+                consoleSystem.getConsole().addInfo(messageSystem.getMessage(Messages.SEE_NOTHING));
+            }
         }));
         action = defaultAction;
     }
