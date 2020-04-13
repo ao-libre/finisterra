@@ -73,4 +73,6 @@ public class ClientSystem extends MarshalSystem {
     private KryonetClientMarshalStrategy getKryonetClient() {
         return (KryonetClientMarshalStrategy) getMarshal();
     }
+
+    // @todo implementar dispose()
 }

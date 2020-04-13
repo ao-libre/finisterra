@@ -24,5 +24,6 @@ public class ScreenManager extends PassiveSystem {
         return game.getScreen();
     }
 
+    // @todo implementar dispose()
 }
 
