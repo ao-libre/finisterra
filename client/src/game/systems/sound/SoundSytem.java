@@ -53,9 +53,10 @@ public class SoundSytem extends IteratingSystem {
 
         E entity = E(entityId);
         AOSound sound = entity.getAOSound();
-
-        long soundIndex = soundsSystem.playSound(sound.id, sound.shouldLoop);
-        sounds.put(entityId, new SoundIndexPair(sound.id, soundIndex));
+        if (!soundsSystem.isDisableSounds()) {
+            long soundIndex = soundsSystem.playSound( sound.id, sound.shouldLoop );
+            sounds.put( entityId, new SoundIndexPair( sound.id, soundIndex ) );
+        }
     }
 
     @Override

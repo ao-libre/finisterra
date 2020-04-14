@@ -6,10 +6,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.minlog.Log;
 import game.handlers.DefaultAOAssetManager;
-import game.screens.GameScreen;
-import game.screens.LoginScreen;
-import game.screens.ScreenEnum;
-import game.screens.ScreenManager;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 import javax.sound.midi.MidiChannel;
@@ -21,12 +17,13 @@ import javax.sound.midi.Sequencer;
 public class MusicSystem extends PassiveSystem {
 
     private Music FIRSTBGM = Gdx.audio.newMusic(Gdx.files.internal("data/music/101.mp3"));
-    private Music BACKGROUNDMUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/music/1.mp3"));
     private static final float MUSIC_FADE_STEP = 0.01f;
     private static float volume = 1.0f;
+    private Music current;
+    private boolean musicEnable;
     @Wire
     private DefaultAOAssetManager assetManager;
-    private Music current;
+
 
     public static void setVolume(float volume) {
         MusicSystem.volume = volume;
@@ -43,44 +40,53 @@ public class MusicSystem extends PassiveSystem {
     @Override
     //todo falta implementar la forma de saber en que Screen nos encontramos y de esa forma seleccionar diferentes musicas
     protected void initialize() {
-        current = BACKGROUNDMUSIC;
+        musicEnable = true;
+        current = FIRSTBGM;
+        current.setLooping( true );
         current.play();
-        current.setVolume(0.20f);
-        current.setLooping(false);
+        fadeInMusic( 1f,20f );
         }
 
 
     public void playMusic(int musicID) {
-        Music music = assetManager.getMusic(musicID);
-        if (music == null) {
-            Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to play music index: " + musicID + ", but it was not loaded.");
-            return;
+        if (musicEnable) {
+            if(current.isPlaying()) {
+                stopMusic();
+            }
+            current = assetManager.getMusic( musicID );
+            if(current == null) {
+                Log.warn( SoundsSystem.class.getSimpleName(), "Error: tried to play music index: " + musicID + ", but it was not loaded." );
+                return;
+            }
+            current.setVolume( volume );
+            current.play();
+            current.setLooping( true );
+
         }
-        music.setVolume(volume);
-        music.play();
-        music.setLooping(true);
     }
 
-    public void stopMusic(int musicID) {
-        Music music = assetManager.getMusic(musicID);
-        if (music == null) {
-            Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not loaded.");
+    public void stopMusic() {
+        if (current == null) {
+            Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to stop music index: " + current + ", but it was not loaded.");
             return;
         }
-        music.stop();
+        if (current.isLooping()){
+            current.setLooping( false );
+        }
+        current.stop();
     }
 
-    public void fadeInMusic(int musicID, float fadeRate) {
+    public void fadeInMusic(float fadeRate, float maxVol) {
+        current.setVolume( 0f );
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                Music music = assetManager.getMusic(musicID);
-                if (music == null) {
-                    Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not playing or loaded.");
+                if (current == null) {
+                    Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to stop music index: " + current + ", but it was not playing or loaded.");
                     return;
                 }
-                if (music.getVolume() < 1)
-                    music.setVolume(music.getVolume() + MUSIC_FADE_STEP);
+                if (current.getVolume() < maxVol)
+                    current.setVolume(current.getVolume() + MUSIC_FADE_STEP);
                 else {
                     this.cancel();
                 }
@@ -88,20 +94,19 @@ public class MusicSystem extends PassiveSystem {
         }, 0f, fadeRate);
     }
 
-    public void fadeOutMusic(int musicID, float fadeRate) {
+    public void fadeOutMusic( float fadeRate) {
 
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                Music music = assetManager.getMusic(musicID);
-                if (music == null) {
-                    Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to stop music index: " + musicID + ", but it was not playing or loaded.");
+                if (current == null) {
+                    Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to stop music index: " + current + ", but it was not playing or loaded.");
                     return;
                 }
-                if (music.getVolume() >= MUSIC_FADE_STEP)
-                    music.setVolume(music.getVolume() - MUSIC_FADE_STEP);
+                if (current.getVolume() >= MUSIC_FADE_STEP)
+                    current.setVolume(current.getVolume() - MUSIC_FADE_STEP);
                 else {
-                    music.stop();
+                    current.stop();
                     this.cancel();
                 }
             }
@@ -146,5 +151,11 @@ public class MusicSystem extends PassiveSystem {
         } else {
             current.play();
         }
+    }
+    public boolean isMusicEnabled(){
+        return musicEnable;
+    }
+    public void setMusicEnabled(boolean musicEnable){
+        this.musicEnable = musicEnable;
     }
 }
