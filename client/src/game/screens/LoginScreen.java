@@ -1,7 +1,6 @@
 package game.screens;
 
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -17,23 +16,25 @@ import shared.util.Messages;
 @Wire
 public class LoginScreen extends AbstractScreen {
 
-    private MusicSystem musicSystem;
     @Wire
     private DefaultAOAssetManager assetManager;
     private ClientConfiguration clientConfiguration;
     private ClientSystem clientSystem;
     private ScreenManager screenManager;
+    private MusicSystem musicSystem;
 
     private TextField emailField;
     private TextField passwordField;
     private CheckBox rememberMe; //@todo implementar remember me
     private CheckBox seePassword;
+    private CheckBox disableMusic;
+    private CheckBox disableSound;
     private TextButton loginButton;
     private List<ClientConfiguration.Network.Server> serverList;
 
     public LoginScreen() {
         // utilice bgmusic  para subir gradualmente el sonido.
-        new MusicSystem();
+        // new MusicSystem();
     }
 
     //    @Override
@@ -92,9 +93,33 @@ public class LoginScreen extends AbstractScreen {
         serverList.setItems(clientConfiguration.getNetwork().getServers());
         connectionTable.add(serverList).width(400).height(300); //@todo Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
 
+        /* Botones para desactivar el sonido y la musica*/
+        disableMusic = new CheckBox( "Desabilitar Musica",getSkin() );
+        disableMusic.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                musicSystem.setMusicEnabled(!musicSystem.isMusicEnabled());
+                if (musicSystem.isMusicEnabled()){
+                    musicSystem.playMusic( 101 );
+                    musicSystem.fadeInMusic( 1f,20f );
+                }else{
+                    musicSystem.stopMusic();
+                }
+            }
+        });
+        disableSound = new CheckBox( "Desabilitar sonido",getSkin() );
+        disableSound.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                //todo desabilitar el sonido
+            }
+        });
+
         /* Tabla principal */
         getMainTable().add(loginWindow).width(500).height(300).pad(10);
-        getMainTable().add(connectionTable).width(400).height(300).pad(10); //(*) Seteando acá el size, recursivamente tendría que resizear list.
+        getMainTable().add(connectionTable).width(400).height(300).pad(10).row(); //(*) Seteando acá el size, recursivamente tendría que resizear list.
+        getMainTable().add(disableMusic).center();
+        getMainTable().add(disableSound).center();
         getStage().setKeyboardFocus(emailField);
     }
 
