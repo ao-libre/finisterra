@@ -62,7 +62,7 @@ public class ClientConfiguration extends PassiveSystem {
         Init initConfig = configOutput.getInitConfig();
         initConfig.setLanguage("es_AR");
         initConfig.setResizeable(true);
-        initConfig.setDisableAudio(true);
+        initConfig.setDisableAudio(false);
         initConfig.setStartMaximized(true);
 
         // Default values of `Init.Video`
