@@ -6,6 +6,10 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.minlog.Log;
 import game.handlers.DefaultAOAssetManager;
+import game.screens.GameScreen;
+import game.screens.LoginScreen;
+import game.screens.ScreenEnum;
+import game.screens.ScreenManager;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 import javax.sound.midi.MidiChannel;
@@ -22,6 +26,7 @@ public class MusicSystem extends PassiveSystem {
     private static float volume = 1.0f;
     @Wire
     private DefaultAOAssetManager assetManager;
+    private ScreenManager screenManager;
 
     public Music current;
 
@@ -40,10 +45,16 @@ public class MusicSystem extends PassiveSystem {
     @Override
     protected void initialize() {
         super.initialize();
-        current = BACKGROUNDMUSIC;
-        current.setVolume(0.20f);
-        current.play();
+        switch (screenManager){
+            case screenManager.getScreen(LoginScreen):
+                playMusic(FIRSTBGM);
+                break;
+            case screenManager.getScreen(GameScreen):
+                playMusic(BACKGROUNDMUSIC);
+        }
+
     }
+
 
     public void playMusic(int musicID) {
         Music music = assetManager.getMusic(musicID);
