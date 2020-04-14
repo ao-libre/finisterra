@@ -17,7 +17,7 @@ import shared.util.Messages;
 @Wire
 public class LoginScreen extends AbstractScreen {
 
-    private final MusicSystem musicSystem;
+    private MusicSystem musicSystem;
     @Wire
     private DefaultAOAssetManager assetManager;
     private ClientConfiguration clientConfiguration;
@@ -33,7 +33,7 @@ public class LoginScreen extends AbstractScreen {
 
     public LoginScreen() {
         // utilice bgmusic  para subir gradualmente el sonido.
-        musicSystem = new MusicSystem();
+        new MusicSystem();
     }
 
     //    @Override

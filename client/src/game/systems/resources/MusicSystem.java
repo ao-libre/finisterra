@@ -26,7 +26,7 @@ public class MusicSystem extends PassiveSystem {
     private static float volume = 1.0f;
     @Wire
     private DefaultAOAssetManager assetManager;
-    private ScreenManager screenManager;
+    private ScreenEnum screenEnum;
 
     public Music current;
 
@@ -43,10 +43,11 @@ public class MusicSystem extends PassiveSystem {
     }
 
     @Override
+    //todo falta implementar la forma de saber en que Screen nos encontramos
     protected void initialize() {
         super.initialize();
-        switch (screenManager){
-            case screenManager.getScreen(LoginScreen):
+        switch (screenEnum){
+            case screenEnum.getScreen(LoginScreen):
                 playMusic(FIRSTBGM);
                 break;
             case screenManager.getScreen(GameScreen):
