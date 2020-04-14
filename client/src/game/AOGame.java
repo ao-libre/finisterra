@@ -1,16 +1,14 @@
 package game;
 
+import com.artemis.BaseSystem;
 import com.artemis.World;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.esotericsoftware.minlog.Log;
-import game.handlers.AOAssetManager;
-import game.handlers.DefaultAOAssetManager;
 import game.screens.LoadingScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
-import game.systems.network.ClientSystem;
 import shared.util.LogSystem;
 
 /**
@@ -20,7 +18,9 @@ import shared.util.LogSystem;
  */
 public class AOGame extends Game {
 
+    private AssetManager assetManager;
     private ClientConfiguration clientConfiguration;
+    private World world;
 
     /**
      * Constructor de la clase.
@@ -40,24 +40,21 @@ public class AOGame extends Game {
         setScreen(screen);
         screen.onFinished((assetManager) -> {
             ScreenManager screenManager = new ScreenManager(this);
-            WorldConstructor.create(clientConfiguration, screenManager, assetManager);
+            this.assetManager = assetManager;
+            this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
             screenManager.to(ScreenEnum.LOGIN);
         });
     }
 
     /**
-     * @todo disponer de todos los recursos utilizados y cerrar threads creados
-     * Al final, la JVM debería cerrar sola.
+     * Disponer de todos los recursos utilizados y cerrar threads pendientes.
+     * Eventualmente la JVM cierra sola.
      */
     @Override
     public void dispose() {
         Log.debug("AOGame", "Closing client...");
-        screen.dispose();
-        // @todo screenManager.dispose();
-//        assetManager.dispose();
-//        clientSystem.stop(); // @todo asegurarse que el thread de Kryonet cierre
-        Log.debug("Thank you for playing! See you soon...");
-        //System.exit(0);
+        world.dispose(); /** Llama a {@link BaseSystem#dispose()} en todos los sistemas */
+        assetManager.dispose(); // Libera todos los assets cargados
+        Log.debug("AOGame", "Thank you for playing! See you soon...");
     }
-
 }

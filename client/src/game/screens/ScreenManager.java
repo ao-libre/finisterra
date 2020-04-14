@@ -34,6 +34,5 @@ public class ScreenManager extends PassiveSystem {
     public Screen getScreen() {
         return game.getScreen();
     }
-
 }
 

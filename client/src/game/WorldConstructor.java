@@ -17,10 +17,7 @@ import game.systems.camera.CameraSystem;
 import game.systems.input.InputSystem;
 import game.systems.map.MapManager;
 import game.systems.map.TiledMapSystem;
-import game.systems.network.ClientResponseProcessor;
-import game.systems.network.ClientSystem;
-import game.systems.network.GameNotificationProcessor;
-import game.systems.network.TimeSync;
+import game.systems.network.*;
 import game.systems.physics.AttackAnimationSystem;
 import game.systems.physics.MovementProcessorSystem;
 import game.systems.physics.MovementSystem;
@@ -80,6 +77,7 @@ public class WorldConstructor {
                 .with(HIGH,
                         new TimeSync(),
                         new SuperMapper(),
+                        new LocalReferenceSystem(),
                         new ClearSystem())
 
                 .with(LOGIC,
@@ -168,8 +166,8 @@ public class WorldConstructor {
      * Construye el Artemis World, inicializa e inyecta sistemas.
      * Este método es bloqueante.
      */
-    public static void create(ClientConfiguration clientConfiguration,
+    public static World create(ClientConfiguration clientConfiguration,
                               ScreenManager screenManager, DefaultAOAssetManager assetManager) {
-        new World(getWorldConfiguration(clientConfiguration, screenManager, assetManager));
+        return new World(getWorldConfiguration(clientConfiguration, screenManager, assetManager));
     }
 }

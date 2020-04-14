@@ -85,7 +85,14 @@ public class LoadingScreen extends ScreenAdapter {
         // display loading information
         float varProgress = manager.getProgress();
         this.progress.setValue(varProgress * 100);
-        super.render(delta);
+
+        stage.act(delta);
+        stage.draw();
+    }
+
+    @Override
+    public void hide() {
+        stage.dispose();
     }
 
     public void onFinished(Consumer<DefaultAOAssetManager> onFinished) {
