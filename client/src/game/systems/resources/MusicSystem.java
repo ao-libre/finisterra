@@ -6,6 +6,10 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.minlog.Log;
 import game.handlers.DefaultAOAssetManager;
+import game.screens.GameScreen;
+import game.screens.LoginScreen;
+import game.screens.ScreenEnum;
+import game.screens.ScreenManager;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 import javax.sound.midi.MidiChannel;
@@ -16,14 +20,13 @@ import javax.sound.midi.Sequencer;
 @Wire
 public class MusicSystem extends PassiveSystem {
 
-    public final static Music FIRSTBGM = Gdx.audio.newMusic(Gdx.files.internal("data/music/101.mp3"));
-    public final static Music BACKGROUNDMUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/music/1.mp3"));
+    private Music FIRSTBGM = Gdx.audio.newMusic(Gdx.files.internal("data/music/101.mp3"));
+    private Music BACKGROUNDMUSIC = Gdx.audio.newMusic(Gdx.files.internal("data/music/1.mp3"));
     private static final float MUSIC_FADE_STEP = 0.01f;
     private static float volume = 1.0f;
     @Wire
     private DefaultAOAssetManager assetManager;
-
-    public Music current;
+    private Music current;
 
     public static void setVolume(float volume) {
         MusicSystem.volume = volume;
@@ -38,12 +41,14 @@ public class MusicSystem extends PassiveSystem {
     }
 
     @Override
+    //todo falta implementar la forma de saber en que Screen nos encontramos y de esa forma seleccionar diferentes musicas
     protected void initialize() {
-        super.initialize();
         current = BACKGROUNDMUSIC;
-        current.setVolume(0.20f);
         current.play();
-    }
+        current.setVolume(0.20f);
+        current.setLooping(false);
+        }
+
 
     public void playMusic(int musicID) {
         Music music = assetManager.getMusic(musicID);
