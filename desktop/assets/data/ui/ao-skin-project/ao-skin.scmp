@@ -3,7 +3,7 @@ atlasData: {
 	atlasCurrent: true
 	drawables: [
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/action-bar.9.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/action-bar.9.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -17,9 +17,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/bar-frame.9.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/bar-frame.9.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -33,9 +34,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/hover-button.9.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/hover-button.9.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -49,9 +51,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/menu-frame.9.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/menu-frame.9.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -65,9 +68,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/simple-window.9.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/simple-window.9.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -81,9 +85,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/slot-frame.9.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/slot-frame.9.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -97,9 +102,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/big-disc.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/big-disc.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -113,9 +119,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/cross-button.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/cross-button.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -129,9 +136,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/disc.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/disc.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -145,9 +153,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Inventory-Icon.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/Inventory-Icon.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -161,9 +170,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/spells-icon.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/spells-icon.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -177,9 +187,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/unit-counter.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/unit-counter.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -193,9 +204,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/button.9.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/button.9.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -209,9 +221,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/cross-button.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/cross-button.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -225,9 +238,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/hover-button.9.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/hover-button.9.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -241,9 +255,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/hover-button.9.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/hover-button.9.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -257,9 +272,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/scale_bar.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/scale_bar.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -273,9 +289,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/slot-selected.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/slot-selected.png
 			bgColor: {
 				r: 0
 				g: 0
@@ -289,9 +306,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/disc-glow.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/disc-glow.png
 			bgColor: {
 				r: 0
 				g: 0
@@ -305,9 +323,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/text-cursor.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/text-cursor.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -321,9 +340,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/tooltip.9.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/tooltip.9.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -337,9 +357,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/icon-container.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/icon-container.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -353,9 +374,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/separator.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/separator.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -369,9 +391,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/bag-spells-window.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/inventory-spells-window.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -380,14 +403,15 @@ atlasData: {
 			}
 			tint: null
 			tintName: null
-			name: bag-spells-window
+			name: inventory-spells-window
 			tiled: false
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Inventory-Icon.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/Inventory-Icon.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -401,9 +425,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/spells-icon.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/spells-icon.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -417,9 +442,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/spells-icon.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/spells-icon.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -433,9 +459,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Inventory-Icon.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/Inventory-Icon.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -449,9 +476,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/staff-hover-icon.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/staff-hover-icon.png
 			bgColor: {
 				r: 0
 				g: 0
@@ -465,9 +493,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/staff-icon.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/staff-icon.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -481,9 +510,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/staff-selected-icon.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/staff-selected-icon.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -497,9 +527,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/slot-selected2.9.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/slot-selected2.9.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -513,9 +544,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/speech-bubble.9.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/speech-bubble.9.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -529,9 +561,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/bar.9.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/bar.9.png
 			bgColor: {
 				r: 0
 				g: 0
@@ -545,9 +578,10 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
 		}
 		{
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/speech-bubble-flipped.9.png"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/speech-bubble-flipped.9.png
 			bgColor: {
 				r: 1
 				g: 1
@@ -561,6 +595,353 @@ atlasData: {
 			minWidth: -1
 			minHeight: -1
 			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/body-bg.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: body-bg
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/content-bg.jpg
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: content-bg
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/paper-bg.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: paper-bg
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/blank.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: blank
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/blank.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: {
+				r: 0.06666667
+				g: 0.09019608
+				b: 0.14117648
+				a: 0.47666678
+			}
+			tintName: null
+			name: selection
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/blank.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: {
+				r: 0.06666667
+				g: 0.09019608
+				b: 0.14117648
+				a: 1
+			}
+			tintName: null
+			name: secondary
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/blank.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: {
+				r: 1
+				g: 0.65882355
+				b: 0
+				a: 1
+			}
+			tintName: null
+			name: orange
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/blank.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: {
+				r: 1
+				g: 1
+				b: 1
+				a: 0.5027452
+			}
+			tintName: null
+			name: semi-transparent
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/unchecked.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: unchecked
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/checked.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: checked
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/v-scroll.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: v-scroll
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/v-scroll.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: {
+				r: 1
+				g: 0.65882355
+				b: 0
+				a: 1
+			}
+			tintName: null
+			name: v-scroll-knob
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/h-scroll.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: h-scroll
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/h-scroll.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: {
+				r: 1
+				g: 0.65882355
+				b: 0
+				a: 1
+			}
+			tintName: null
+			name: h-scroll-knob
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/h-scroll.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: {
+				r: 1
+				g: 0.8925246
+				b: 0.6866666
+				a: 1
+			}
+			tintName: null
+			name: h-scroll-before
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/select-box.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: select-box
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/window.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: {
+				r: 0.16666669
+				g: 0.13722225
+				b: 0.13722225
+				a: 1
+			}
+			tintName: null
+			name: dark-window
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+		}
+		{
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/window.9.png
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: window
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
 		}
 	]
 	fontDrawables: []
@@ -737,16 +1118,56 @@ jsonData: {
 			}
 			name: ao-yellow
 		}
+		{
+			class: com.ray3k.skincomposer.data.ColorData
+			color: {
+				r: 1
+				g: 1
+				b: 1
+				a: 0.48333344
+			}
+			name: blank-transparent
+		}
+		{
+			class: com.ray3k.skincomposer.data.ColorData
+			color: {
+				r: 1
+				g: 0.65882355
+				b: 0
+				a: 1
+			}
+			name: orange
+		}
+		{
+			class: com.ray3k.skincomposer.data.ColorData
+			color: {
+				r: 0.06666667
+				g: 0.09019608
+				b: 0.14117648
+				a: 1
+			}
+			name: secondary
+		}
+		{
+			class: com.ray3k.skincomposer.data.ColorData
+			color: {
+				r: 0.003921569
+				g: 0.003921569
+				b: 0.003921569
+				a: 0.5433334
+			}
+			name: transparent
+		}
 	]
 	fonts: []
 	freeTypeFonts: [
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: big
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/Livvic-Regular.ttf
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
-			size: 20
+			size: 16
 			mono: false
 			hinting: AutoMedium
 			color: ao-white
@@ -771,28 +1192,57 @@ jsonData: {
 		}
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
-			name: combat
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/GROBOLD.ttf"
+			name: cinzel
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/Cinzel-Bold.otf
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
-			size: 16
+			size: 18
 			mono: false
-			hinting: AutoSlight
+			hinting: AutoMedium
 			color: ao-white
 			gamma: 1.8
 			renderCount: 2
-			borderWidth: 1
-			borderColor: ao-black
+			borderWidth: 0
+			borderColor: null
 			borderStraight: false
 			borderGamma: 1.8
-			shadowOffsetX: -1
-			shadowOffsetY: 1
+			shadowOffsetX: 0
+			shadowOffsetY: 0
 			shadowColor: ao-black
 			spaceX: 0
 			spaceY: 0
 			characters: ""
 			kerning: true
-			flip: true
+			flip: false
+			genMipMaps: false
+			minFilter: Nearest
+			magFilter: Nearest
+			incremental: false
+		}
+		{
+			class: com.ray3k.skincomposer.data.FreeTypeFontData
+			name: cinzel-title
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/Cinzel-Bold.otf
+			previewTTF: SourceSansPro-Regular
+			useCustomSerializer: true
+			size: 14
+			mono: false
+			hinting: AutoMedium
+			color: ao-white
+			gamma: 1.8
+			renderCount: 2
+			borderWidth: 0
+			borderColor: null
+			borderStraight: false
+			borderGamma: 1.8
+			shadowOffsetX: 0
+			shadowOffsetY: 0
+			shadowColor: null
+			spaceX: 0
+			spaceY: 0
+			characters: ""
+			kerning: true
+			flip: false
 			genMipMaps: false
 			minFilter: Nearest
 			magFilter: Nearest
@@ -801,10 +1251,10 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: flipped
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/TAHOMA_0.TTF
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
-			size: 18
+			size: 16
 			mono: false
 			hinting: AutoMedium
 			color: ao-white
@@ -830,27 +1280,56 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: flipped-with-border
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/TAHOMAB0.TTF
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
-			size: 18
+			size: 16
 			mono: false
 			hinting: AutoMedium
 			color: ao-white
 			gamma: 1.8
 			renderCount: 4
-			borderWidth: 1
-			borderColor: ao-black
+			borderWidth: 0
+			borderColor: null
 			borderStraight: false
 			borderGamma: 1
 			shadowOffsetX: -1
-			shadowOffsetY: 1
+			shadowOffsetY: -1
 			shadowColor: ao-black
 			spaceX: 0
 			spaceY: 0
 			characters: ""
 			kerning: true
 			flip: true
+			genMipMaps: true
+			minFilter: Nearest
+			magFilter: Linear
+			incremental: false
+		}
+		{
+			class: com.ray3k.skincomposer.data.FreeTypeFontData
+			name: info
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/Livvic-Light.ttf
+			previewTTF: SourceSansPro-Regular
+			useCustomSerializer: true
+			size: 12
+			mono: false
+			hinting: AutoMedium
+			color: ao-white
+			gamma: 1.8
+			renderCount: 2
+			borderWidth: 0
+			borderColor: null
+			borderStraight: false
+			borderGamma: 1.8
+			shadowOffsetX: 0
+			shadowOffsetY: 0
+			shadowColor: null
+			spaceX: 0
+			spaceY: 0
+			characters: ""
+			kerning: true
+			flip: false
 			genMipMaps: false
 			minFilter: Nearest
 			magFilter: Nearest
@@ -859,10 +1338,10 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: simple
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/TAHOMA_0.TTF
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
-			size: 18
+			size: 14
 			mono: false
 			hinting: AutoMedium
 			color: ao-white
@@ -888,22 +1367,22 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: simple-with-border
-			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
+			file: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin_data/TAHOMAB0.TTF
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
-			size: 18
+			size: 9
 			mono: false
-			hinting: AutoMedium
+			hinting: None
 			color: ao-white
 			gamma: 1.8
 			renderCount: 4
-			borderWidth: 1
+			borderWidth: 1.5
 			borderColor: ao-black
-			borderStraight: false
-			borderGamma: 1
-			shadowOffsetX: -1
-			shadowOffsetY: 1
-			shadowColor: ao-black
+			borderStraight: true
+			borderGamma: 1.8
+			shadowOffsetX: 0
+			shadowOffsetY: 0
+			shadowColor: null
 			spaceX: 0
 			spaceY: 0
 			characters: ""
@@ -1222,6 +1701,204 @@ jsonData: {
 					}
 				}
 				deletable: false
+				parent: null
+			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: ui
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.CheckBox
+				properties: {
+					checkboxOn: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: checkboxOn
+						optional: false
+						value: checked
+					}
+					checkboxOff: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: checkboxOff
+						optional: false
+						value: unchecked
+					}
+					checkboxOnOver: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: checkboxOnOver
+						optional: true
+						value: null
+					}
+					checkboxOver: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: checkboxOver
+						optional: true
+						value: null
+					}
+					checkboxOnDisabled: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: checkboxOnDisabled
+						optional: true
+						value: null
+					}
+					checkboxOffDisabled: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: checkboxOffDisabled
+						optional: true
+						value: null
+					}
+					font: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: font
+						optional: false
+						value: cinzel
+					}
+					fontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: fontColor
+						optional: true
+						value: ao-white
+					}
+					downFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: downFontColor
+						optional: true
+						value: null
+					}
+					overFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: overFontColor
+						optional: true
+						value: null
+					}
+					checkedFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: checkedFontColor
+						optional: true
+						value: null
+					}
+					checkedOverFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: checkedOverFontColor
+						optional: true
+						value: null
+					}
+					disabledFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: disabledFontColor
+						optional: true
+						value: null
+					}
+					up: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: up
+						optional: true
+						value: null
+					}
+					down: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: down
+						optional: true
+						value: null
+					}
+					over: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: over
+						optional: true
+						value: null
+					}
+					focused: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: focused
+						optional: true
+						value: null
+					}
+					checked: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: checked
+						optional: true
+						value: null
+					}
+					checkedOver: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: checkedOver
+						optional: true
+						value: null
+					}
+					checkedFocused: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: checkedFocused
+						optional: true
+						value: null
+					}
+					disabled: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: disabled
+						optional: true
+						value: null
+					}
+					pressedOffsetX: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: float
+						name: pressedOffsetX
+						optional: true
+						value: 0
+					}
+					pressedOffsetY: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: float
+						name: pressedOffsetY
+						optional: true
+						value: 0
+					}
+					unpressedOffsetX: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: float
+						name: unpressedOffsetX
+						optional: true
+						value: 0
+					}
+					unpressedOffsetY: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: float
+						name: unpressedOffsetY
+						optional: true
+						value: 0
+					}
+					checkedOffsetX: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: float
+						name: checkedOffsetX
+						optional: true
+						value: 0
+					}
+					checkedOffsetY: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: float
+						name: checkedOffsetY
+						optional: true
+						value: 0
+					}
+				}
+				deletable: true
 				parent: null
 			}
 		]
@@ -1973,7 +2650,7 @@ jsonData: {
 			}
 			{
 				class: com.ray3k.skincomposer.data.StyleData
-				name: bag
+				name: inventory
 				clazz: com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 				properties: {
 					imageUp: {
@@ -2858,7 +3535,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: simple
+						value: cinzel
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -2888,14 +3565,14 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: big
+						value: cinzel-title
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
 						type: com.badlogic.gdx.graphics.Color
 						name: fontColor
 						optional: true
-						value: ao-white
+						value: orange
 					}
 					background: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -2918,14 +3595,14 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: simple
+						value: info
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
 						type: com.badlogic.gdx.graphics.Color
 						name: fontColor
 						optional: true
-						value: ao-light-grey
+						value: null
 					}
 					background: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -2979,6 +3656,66 @@ jsonData: {
 						name: font
 						optional: false
 						value: flipped-with-border
+					}
+					fontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: fontColor
+						optional: true
+						value: ao-white
+					}
+					background: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: null
+					}
+				}
+				deletable: true
+				parent: null
+			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: ui
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.Label
+				properties: {
+					font: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: font
+						optional: false
+						value: cinzel
+					}
+					fontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: fontColor
+						optional: true
+						value: orange
+					}
+					background: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: null
+					}
+				}
+				deletable: true
+				parent: null
+			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: bar
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.Label
+				properties: {
+					font: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: font
+						optional: false
+						value: simple-with-border
 					}
 					fontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -3056,6 +3793,64 @@ jsonData: {
 					}
 				}
 				deletable: false
+				parent: null
+			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: ui
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.List
+				properties: {
+					font: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: font
+						optional: false
+						value: cinzel
+					}
+					fontColorSelected: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: fontColorSelected
+						optional: false
+						value: secondary
+					}
+					fontColorUnselected: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: fontColorUnselected
+						optional: false
+						value: ao-white
+					}
+					selection: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: selection
+						optional: false
+						value: orange
+					}
+					down: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: down
+						optional: true
+						value: null
+					}
+					over: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: over
+						optional: true
+						value: selection
+					}
+					background: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: null
+					}
+				}
+				deletable: true
 				parent: null
 			}
 		]
@@ -3255,6 +4050,71 @@ jsonData: {
 				deletable: true
 				parent: null
 			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: ui
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.ProgressBar
+				properties: {
+					background: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: false
+						value: h-scroll
+					}
+					disabledBackground: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: disabledBackground
+						optional: true
+						value: null
+					}
+					knob: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: knob
+						optional: true
+						value: h-scroll-knob
+					}
+					disabledKnob: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: disabledKnob
+						optional: true
+						value: null
+					}
+					knobBefore: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: knobBefore
+						optional: true
+						value: h-scroll-before
+					}
+					knobAfter: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: knobAfter
+						optional: true
+						value: null
+					}
+					disabledKnobBefore: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: disabledKnobBefore
+						optional: true
+						value: null
+					}
+					disabledKnobAfter: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: disabledKnobAfter
+						optional: true
+						value: null
+					}
+				}
+				deletable: true
+				parent: null
+			}
 		]
 		com.badlogic.gdx.scenes.scene2d.ui.ScrollPane: [
 			{
@@ -3359,6 +4219,57 @@ jsonData: {
 				deletable: true
 				parent: null
 			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: ui
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
+				properties: {
+					background: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: null
+					}
+					corner: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: corner
+						optional: true
+						value: semi-transparent
+					}
+					hScroll: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: hScroll
+						optional: true
+						value: h-scroll
+					}
+					hScrollKnob: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: hScrollKnob
+						optional: true
+						value: h-scroll-knob
+					}
+					vScroll: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: vScroll
+						optional: true
+						value: v-scroll
+					}
+					vScrollKnob: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: vScrollKnob
+						optional: true
+						value: v-scroll-knob
+					}
+				}
+				deletable: true
+				parent: null
+			}
 		]
 		com.badlogic.gdx.scenes.scene2d.ui.SelectBox: [
 			{
@@ -3431,6 +4342,78 @@ jsonData: {
 					}
 				}
 				deletable: false
+				parent: null
+			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: ui
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.SelectBox
+				properties: {
+					font: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: font
+						optional: false
+						value: cinzel
+					}
+					fontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: fontColor
+						optional: false
+						value: ao-white
+					}
+					disabledFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: disabledFontColor
+						optional: true
+						value: ao-light-grey
+					}
+					background: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: select-box
+					}
+					scrollStyle: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle
+						name: scrollStyle
+						optional: false
+						value: ui
+					}
+					listStyle: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle
+						name: listStyle
+						optional: false
+						value: ui
+					}
+					backgroundOver: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: backgroundOver
+						optional: true
+						value: null
+					}
+					backgroundOpen: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: backgroundOpen
+						optional: true
+						value: null
+					}
+					backgroundDisabled: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: backgroundDisabled
+						optional: true
+						value: null
+					}
+				}
+				deletable: true
 				parent: null
 			}
 		]
@@ -3785,6 +4768,162 @@ jsonData: {
 				deletable: false
 				parent: null
 			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: ui
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.TextButton
+				properties: {
+					font: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: font
+						optional: false
+						value: cinzel
+					}
+					fontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: fontColor
+						optional: true
+						value: ao-white
+					}
+					downFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: downFontColor
+						optional: true
+						value: ao-orange
+					}
+					overFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: overFontColor
+						optional: true
+						value: orange
+					}
+					checkedFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: checkedFontColor
+						optional: true
+						value: null
+					}
+					checkedOverFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: checkedOverFontColor
+						optional: true
+						value: null
+					}
+					disabledFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: disabledFontColor
+						optional: true
+						value: ao-grey
+					}
+					up: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: up
+						optional: true
+						value: null
+					}
+					down: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: down
+						optional: true
+						value: null
+					}
+					over: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: over
+						optional: true
+						value: null
+					}
+					focused: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: focused
+						optional: true
+						value: null
+					}
+					checked: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: checked
+						optional: true
+						value: null
+					}
+					checkedOver: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: checkedOver
+						optional: true
+						value: null
+					}
+					checkedFocused: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: checkedFocused
+						optional: true
+						value: null
+					}
+					disabled: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: disabled
+						optional: true
+						value: null
+					}
+					pressedOffsetX: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: float
+						name: pressedOffsetX
+						optional: true
+						value: 0
+					}
+					pressedOffsetY: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: float
+						name: pressedOffsetY
+						optional: true
+						value: 0
+					}
+					unpressedOffsetX: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: float
+						name: unpressedOffsetX
+						optional: true
+						value: 0
+					}
+					unpressedOffsetY: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: float
+						name: unpressedOffsetY
+						optional: true
+						value: 0
+					}
+					checkedOffsetX: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: float
+						name: checkedOffsetX
+						optional: true
+						value: 0
+					}
+					checkedOffsetY: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: float
+						name: checkedOffsetY
+						optional: true
+						value: 0
+					}
+				}
+				deletable: true
+				parent: null
+			}
 		]
 		com.badlogic.gdx.scenes.scene2d.ui.TextField: [
 			{
@@ -3811,7 +4950,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.Color
 						name: focusedFontColor
 						optional: true
-						value: ao-white
+						value: null
 					}
 					disabledFontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -3825,7 +4964,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: button
+						value: secondary
 					}
 					focusedBackground: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -3853,7 +4992,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: selection
 						optional: true
-						value: null
+						value: semi-transparent
 					}
 					messageFont: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -3871,6 +5010,92 @@ jsonData: {
 					}
 				}
 				deletable: false
+				parent: null
+			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: ui
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.TextField
+				properties: {
+					font: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: font
+						optional: false
+						value: cinzel
+					}
+					fontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: fontColor
+						optional: false
+						value: secondary
+					}
+					focusedFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: focusedFontColor
+						optional: true
+						value: null
+					}
+					disabledFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: disabledFontColor
+						optional: true
+						value: null
+					}
+					background: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: semi-transparent
+					}
+					focusedBackground: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: focusedBackground
+						optional: true
+						value: null
+					}
+					disabledBackground: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: disabledBackground
+						optional: true
+						value: null
+					}
+					cursor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: cursor
+						optional: true
+						value: text-cursor
+					}
+					selection: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: selection
+						optional: true
+						value: selection
+					}
+					messageFont: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: messageFont
+						optional: true
+						value: null
+					}
+					messageFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: messageFontColor
+						optional: true
+						value: null
+					}
+				}
+				deletable: true
 				parent: null
 			}
 		]
@@ -4002,14 +5227,14 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: simple-window
+						value: dark-window
 					}
 					titleFont: {
 						class: com.ray3k.skincomposer.data.StyleProperty
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: titleFont
 						optional: false
-						value: simple-with-border
+						value: cinzel
 					}
 					titleFontColor: {
 						class: com.ray3k.skincomposer.data.StyleProperty
@@ -4031,7 +5256,7 @@ jsonData: {
 			}
 			{
 				class: com.ray3k.skincomposer.data.StyleData
-				name: bag
+				name: inventory
 				clazz: com.badlogic.gdx.scenes.scene2d.ui.Window
 				properties: {
 					background: {
@@ -4066,6 +5291,154 @@ jsonData: {
 				deletable: true
 				parent: null
 			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: ui
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.Window
+				properties: {
+					background: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: body-bg
+					}
+					titleFont: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: titleFont
+						optional: false
+						value: cinzel
+					}
+					titleFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: titleFontColor
+						optional: true
+						value: null
+					}
+					stageBackground: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: stageBackground
+						optional: true
+						value: null
+					}
+				}
+				deletable: true
+				parent: null
+			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: body
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.Window
+				properties: {
+					background: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: body-bg
+					}
+					titleFont: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: titleFont
+						optional: false
+						value: cinzel
+					}
+					titleFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: titleFontColor
+						optional: true
+						value: null
+					}
+					stageBackground: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: stageBackground
+						optional: true
+						value: null
+					}
+				}
+				deletable: true
+				parent: null
+			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: paper
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.Window
+				properties: {
+					background: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: paper-bg
+					}
+					titleFont: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: titleFont
+						optional: false
+						value: cinzel
+					}
+					titleFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: titleFontColor
+						optional: true
+						value: null
+					}
+					stageBackground: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: stageBackground
+						optional: true
+						value: null
+					}
+				}
+				deletable: true
+				parent: null
+			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: content
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.Window
+				properties: {
+					background: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: content-bg
+					}
+					titleFont: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: titleFont
+						optional: false
+						value: cinzel
+					}
+					titleFontColor: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.graphics.Color
+						name: titleFontColor
+						optional: true
+						value: null
+					}
+					stageBackground: {
+						class: com.ray3k.skincomposer.data.StyleProperty
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: stageBackground
+						optional: true
+						value: null
+					}
+				}
+				deletable: true
+				parent: null
+			}
 		]
 	}
 	customClasses: []
@@ -4077,7 +5450,7 @@ preferences: {
 	}
 	last-import-export-path: {
 		class: java.lang.String
-		value: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/ao-skin.json"
+		value: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/ao-skin.json
 	}
 	id: {
 		class: java.lang.Integer
@@ -4092,5 +5465,6 @@ preferences: {
 		value: true
 	}
 }
-saveFile: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project.scmp"
+saveFile: C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-project/ao-skin.scmp
+version: 34
 }
