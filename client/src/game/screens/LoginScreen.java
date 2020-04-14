@@ -1,6 +1,9 @@
 package game.screens;
 
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -116,12 +119,29 @@ public class LoginScreen extends AbstractScreen {
                 soundsSystem.setDisableSounds(!soundsSystem.isDisableSounds());
             }
         });
+        /* Agrega la imagen del logo */
+        Cell<Image> logoCell = getMainTable().add(new Image( new Texture( Gdx.files.local("data/ui/images/logo-big.png")))).center();
+        logoCell.row();
+
+        /* Tabla botones */
+        Window buttonsTable = new Window("OPCIONES", getSkin());
+        buttonsTable.setMovable( false );
+        buttonsTable.background( getSkin().getDrawable("menu-frame"));
+        buttonsTable.getTitleLabel().setColor( Color.GOLD );
+        buttonsTable.getTitleLabel().setAlignment( 2 );
+        buttonsTable.setHeight( 100 );
+        buttonsTable.add(disableMusic).width(500).pad(10);
+        buttonsTable.add(disableSound).width(400).pad(10);
+
+        /* Tabla para loguin y servers */
+        Table login_server = new Table();
+        login_server.add(loginWindow).width(500).height(300).padLeft(10).padRight( 10 ).padTop( 10 );
+        login_server.add(connectionTable).width(400).height(300).padLeft(10).padRight( 10 ).padTop( 10 ); //(*) Seteando acá el size, recursivamente tendría que resizear list.
+
 
         /* Tabla principal */
-        getMainTable().add(loginWindow).width(500).height(300).pad(10);
-        getMainTable().add(connectionTable).width(400).height(300).pad(10).row(); //(*) Seteando acá el size, recursivamente tendría que resizear list.
-        getMainTable().add(disableMusic).center();
-        getMainTable().add(disableSound).center();
+        getMainTable().add(login_server).row();
+        getMainTable().add(buttonsTable).height( 100 ).width( 920 ).pad(3);
         getStage().setKeyboardFocus(emailField);
     }
 
