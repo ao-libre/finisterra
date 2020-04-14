@@ -1,10 +1,10 @@
 package server.database;
 
-import shared.objects.factory.POJOFactory;
+import shared.objects.factory.POJO;
 
 import java.util.ArrayList;
 
-public class Account extends POJOFactory {
+public class Account extends POJO {
 
     /**
      * Fields excluidos de la serializacion.
@@ -40,19 +40,19 @@ public class Account extends POJOFactory {
     public void addCharacter(String character) { characters.add(character); }
 
     public static boolean exists(String email){
-        return POJOFactory.exists(DIR_CUENTAS + email + POJOFactory.EXTENSION);
+        return POJO.exists(DIR_CUENTAS + email + POJO.EXTENSION);
     }
 
     public static Account load(String email){
-        return POJOFactory.load(Account.class, DIR_CUENTAS + email + POJOFactory.EXTENSION);
+        return POJO.load(Account.class, DIR_CUENTAS + email + POJO.EXTENSION);
     }
 
     public void save() {
-        super.save(this, DIR_CUENTAS + this.email + POJOFactory.EXTENSION);
+        super.save(this, DIR_CUENTAS + this.email + POJO.EXTENSION);
     }
 
     public void update() {
         // Misma cosa, distinto nombre para que se entienda mejor.
-        super.save(this, DIR_CUENTAS + this.email + POJOFactory.EXTENSION);
+        super.save(this, DIR_CUENTAS + this.email + POJO.EXTENSION);
     }
 }

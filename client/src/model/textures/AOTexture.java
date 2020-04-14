@@ -1,21 +1,17 @@
 package model.textures;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import game.AssetManagerHolder;
 
 public class AOTexture {
 
     private TextureRegion textureRegion;
 
-    public AOTexture(AOImage image) {
-        this(image, true);
+    public AOTexture(AOImage image, Texture texture) {
+        this(image,texture, true);
     }
 
-    public AOTexture(AOImage image, boolean flipY) {
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        Texture texture = game.getAssetManager().getTexture(image.getFileNum());
+    public AOTexture(AOImage image, Texture texture, boolean flipY) {
         this.textureRegion = new TextureRegion(texture,
                 image.getX(), image.getY(), image.getWidth(), image.getHeight());
         this.textureRegion.flip(false, flipY);

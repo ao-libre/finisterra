@@ -1,5 +1,9 @@
 package game.utils;
 
+/**
+ * Aca es donde se declara el nombre de las carpetas
+ * de donde se obtienen los recursos del cliente.
+*/
 public class Resources {
 
     // Paths

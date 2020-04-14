@@ -5,20 +5,25 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.utils.Array;
 import game.utils.Colors;
 import game.utils.Skins;
 
-import java.util.LinkedList;
+public class AOConsole extends ScrollPane {
 
-public class AOConsole extends Actor {
+    private static final float MAX_MESSAGES = 100;
+    private final Array<Label> messages = new Array<>(Label.class);
 
-    private static final int LINE_HEIGHT = 20;
-    private static final float MAX_MESSAGES = 9;
-    private final LinkedList<Actor> messages;
+    public AOConsole() {
+        super(createStack());
+        setSmoothScrolling(true);
+        setFadeScrollBars(true);
+    }
 
-    AOConsole() {
-        super();
-        this.messages = new LinkedList<>();
+    private static Actor createStack() {
+        return new VerticalGroup();
     }
 
     public void addInfo(String message) {
@@ -40,33 +45,19 @@ public class AOConsole extends Actor {
     private void addMessage(String message, Color color) {
         LabelStyle labelStyle = new LabelStyle(Skins.COMODORE_SKIN.getFont("big"), color);
         Label label = new Label(message, labelStyle);
-        label.setX(getX());
-        if (messages.size() >= MAX_MESSAGES) {
-            messages.pollLast();
+        if (!messages.isEmpty() && messages.items.length >= MAX_MESSAGES) {
+            messages.removeIndex(0);
+            ((VerticalGroup) getActor()).removeActor(((VerticalGroup) getActor()).getChild(0), true);
         }
-        messages.offerFirst(label);
-        setY();
-    }
-
-    private void setY() {
-        float v = getY() - messages.size() * LINE_HEIGHT;
-        for (int i = 0; i < messages.size(); i++) {
-            messages.get(i).setY(v + i * LINE_HEIGHT);
-        }
+        messages.add(label);
+        ((VerticalGroup) getActor()).addActor(label);
+        layout();
+        scrollTo(0, 0, 0, 0);
     }
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        if (messages.isEmpty()) {
-            return;
-        }
-        // draw background
-        messages.forEach(message -> {
-            float index = MAX_MESSAGES - messages.indexOf(message);
-            float alpha = index / MAX_MESSAGES;
-            message.draw(batch, parentAlpha * alpha);
-        });
+        // @todo make it fancy, adding a background and user interaction
+        super.draw(batch, parentAlpha * 0.8f);
     }
-
-
 }

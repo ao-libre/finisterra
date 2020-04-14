@@ -1,18 +1,11 @@
 package shared.network.interfaces;
 
-import com.artemis.BaseSystem;
-import shared.network.interaction.DropItem;
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.network.inventory.InventoryUpdate;
-import shared.network.lobby.JoinRoomNotification;
-import shared.network.lobby.NewRoomNotification;
-import shared.network.lobby.player.ChangePlayerNotification;
 import shared.network.movement.MovementNotification;
-import shared.network.notifications.ConsoleMessage;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.RemoveEntity;
-import shared.network.sound.SoundNotification;
 
-public class DefaultNotificationProcessor extends BaseSystem implements INotificationProcessor {
+public class DefaultNotificationProcessor extends PassiveSystem implements INotificationProcessor {
 
     @Override
     public void defaultProcess(INotification notification) {
@@ -25,17 +18,7 @@ public class DefaultNotificationProcessor extends BaseSystem implements INotific
     }
 
     @Override
-    public void processNotification(RemoveEntity removeEntity) {
-
-    }
-
-    @Override
     public void processNotification(InventoryUpdate inventoryUpdate) {
-
-    }
-
-    @Override
-    public void processNotification(DropItem dropItem) {
 
     }
 
@@ -44,33 +27,5 @@ public class DefaultNotificationProcessor extends BaseSystem implements INotific
 
     }
 
-    @Override
-    public void processNotification(JoinRoomNotification joinRoomNotification) {
 
-    }
-
-    @Override
-    public void processNotification(NewRoomNotification newRoomNotification) {
-
-    }
-
-    @Override
-    public void processNotification(ConsoleMessage consoleMessage) {
-
-    }
-
-    @Override
-    public void processNotification(SoundNotification soundNotification) {
-
-    }
-
-    @Override
-    public void processNotification(ChangePlayerNotification changePlayerNotification) {
-
-    }
-
-    @Override
-    protected void processSystem() {
-
-    }
 }

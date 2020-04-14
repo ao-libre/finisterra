@@ -27,22 +27,22 @@ if (OS.isMacOsX()) {
 }
 
 task dist(type: Jar) {
-	dependsOn classes
-	from files(sourceSets.main.output.classesDirs)
-	from configurations.compileClasspath
-	from configurations.runtimeClasspath
+    dependsOn classes
+    from files(sourceSets.main.output.classesDirs)
+    from configurations.compileClasspath
+    from configurations.runtimeClasspath
 
     manifest {
         attributes 'Main-Class': project.mainClassName
     }
-	
-	doLast {
-		copy {
-			from configurations.runtimeClasspath
-			into("$buildDir/libs")
-		}
-	}
-	
+
+    doLast {
+        copy {
+            from configurations.runtimeClasspath
+            into("$buildDir/libs")
+        }
+    }
+
 }
 
 run.dependsOn(classes)
@@ -64,7 +64,7 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
     }
 
     def commands = [
-            OS.isMacOsX() ? JPackagePath.concat("/jdk-14.jdk/Contents/Home/bin/jpackage") : JPackagePath.concat("/jdk-14/bin/jpackage"),
+            JPackagePath,
             '--type', 'app-image',
             '--name', project.appName,
             '--vendor', "Argentum Online Libre",
@@ -76,7 +76,7 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
             '--main-jar', "${project.name}-${project.version}.jar"
     ]
 
-    switch(OS) {
+    switch (OS) {
         case OperatingSystem.MAC_OS:
             commands << "--icon"
             commands << assetsPath.concat("/data/icons/ao.icns")
@@ -101,7 +101,7 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
             from(assetsPath)
             from("${projectDir}/Config.json")
 
-            switch(OS) {
+            switch (OS) {
                 case OperatingSystem.MAC_OS:
                     into("${releasePath}/${project.appName}.app/Contents/Resources/")
                     break;
@@ -122,5 +122,12 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
         System.out.println("Application '${project.appName}' packaged.")
         System.out.println(" -> location: ${releasePath}/${project.appName}/")
 
+    }
+
+    task packageDistribution(type: Zip, dependsOn: [bundle]) {
+        archiveFileName = "finisterra-client-".concat((OS.isMacOsX() ? "MacOS" : OS.isLinux() ? "Linux" : "Windows")).concat(".zip")
+        destinationDirectory = file("${project.buildDir}/releases/")
+
+        from "${releasePath}/${project.appName}".concat(OS.isMacOsX() ? ".app" : "")
     }
 }

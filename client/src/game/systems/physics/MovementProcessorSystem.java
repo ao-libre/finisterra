@@ -1,22 +1,24 @@
 package game.systems.physics;
 
-import camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
-import entity.character.states.Heading;
-import game.handlers.MapHandler;
-import game.managers.WorldManager;
-import game.screens.GameScreen;
-import movement.Destination;
-import physics.AOPhysics;
-import position.WorldPos;
+import component.camera.Focused;
+import component.entity.character.states.Heading;
+import component.movement.Destination;
+import component.physics.AOPhysics;
+import component.position.WorldPos;
+import game.systems.PlayerSystem;
+import game.systems.network.ClientSystem;
+import game.systems.resources.MapSystem;
+import game.systems.world.NetworkedEntitySystem;
+import org.jetbrains.annotations.NotNull;
 import shared.model.map.Map;
 import shared.model.map.WorldPosition;
 import shared.network.interaction.MeditateRequest;
 import shared.network.movement.MovementRequest;
-import shared.util.Util;
+import shared.util.WorldPosConversion;
 
 import java.util.Optional;
 import java.util.Set;
@@ -27,19 +29,21 @@ import static com.artemis.E.E;
 @Wire
 public class MovementProcessorSystem extends IteratingSystem {
 
-    private static java.util.Map<Integer, MovementRequest> requests = new ConcurrentHashMap<>();
-    private static int requestNumber;
-    private WorldManager worldManager;
+    private final java.util.Map<Integer, MovementRequest> requests = new ConcurrentHashMap<>();
+    private int requestNumber;
+    private NetworkedEntitySystem networkedEntitySystem;
+    private ClientSystem clientSystem;
+    private PlayerSystem playerSystem;
 
     public MovementProcessorSystem() {
         super(Aspect.all(Focused.class, AOPhysics.class,
                 WorldPos.class));
     }
 
-    public static WorldPos getDelta(WorldPos worldPos) {
+    public WorldPos getDelta(@NotNull WorldPos worldPos) {
         WorldPos correctPos = new WorldPos(worldPos.x, worldPos.y, worldPos.map);
         requests.values().stream().filter(it -> it.valid).forEach(request -> {
-            WorldPos nextPos = Util.getNextPos(correctPos, AOPhysics.Movement.values()[request.movement]);
+            WorldPos nextPos = WorldPosConversion.getNextPos(correctPos, AOPhysics.Movement.values()[request.movement]);
             correctPos.x = nextPos.x;
             correctPos.y = nextPos.y;
             correctPos.map = nextPos.map;
@@ -47,11 +51,11 @@ public class MovementProcessorSystem extends IteratingSystem {
         return correctPos;
     }
 
-    public static void validateRequest(int requestNumber, WorldPos destination) {
+    public void validateRequest(int requestNumber, WorldPos destination) {
         WorldPos predicted = requests.get(requestNumber).predicted;
         requests.remove(requestNumber);
         if (!predicted.equals(destination)) {
-            E player = E.E(GameScreen.getPlayer());
+            E player = playerSystem.get();
             if (!player.hasMovement()) {
                 return;
             }
@@ -90,16 +94,16 @@ public class MovementProcessorSystem extends IteratingSystem {
             if (movementIntention.isPresent()) {
                 AOPhysics.Movement movement = movementIntention.get();
                 player.headingCurrent(getHeading(movement));
-                WorldPos expectedPos = Util.getNextPos(pos, movement);
-                Set<Integer> nearEntities = worldManager.getEntities();
+                WorldPos expectedPos = WorldPosConversion.getNextPos(pos, movement);
+                Set<Integer> nearEntities = networkedEntitySystem.getAll();
                 nearEntities.remove(entity);
-                Map map = MapHandler.get(expectedPos.map);
-                boolean blocked = MapHandler.getHelper().isBlocked(map, expectedPos);
-                boolean occupied = MapHandler.getHelper().hasEntity(nearEntities, expectedPos);
+                Map map = MapSystem.get(expectedPos.map);
+                boolean blocked = MapSystem.getHelper().isBlocked(map, expectedPos);
+                boolean occupied = MapSystem.getHelper().hasEntity(nearEntities, expectedPos);
                 boolean valid = !(blocked ||
                         occupied ||
                         player.hasImmobile());
-                boolean tileExit = MapHandler.getHelper().hasTileExit(map, expectedPos);
+                boolean tileExit = MapSystem.getHelper().hasTileExit(map, expectedPos);
                 if (tileExit) {
                     WorldPosition tileExitPos = map.getTile(expectedPos.x, expectedPos.y).getTileExit();
                     expectedPos = new WorldPos(tileExitPos.getX(), tileExitPos.getY(), tileExitPos.getMap());
@@ -110,12 +114,12 @@ public class MovementProcessorSystem extends IteratingSystem {
                     return;
                 }
                 requests.put(requestNumber, request);
-                GameScreen.getClient().sendToAll(request);
+                clientSystem.send(request);
                 if (valid) { // Prediction
                     Destination destination = new Destination(expectedPos, movement.ordinal());
                     player.movementAdd(destination);
                     if (player.isMeditating()) {
-                        GameScreen.getClient().sendToAll(new MeditateRequest());
+                        clientSystem.send(new MeditateRequest());
                     }
                 }
             }

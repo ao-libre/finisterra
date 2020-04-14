@@ -2,12 +2,12 @@ package design.screens.views;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
+import component.graphic.EffectBuilder;
 import design.designers.SpellDesigner;
 import design.editors.GenericEditor;
 import design.editors.fields.FieldEditor;
+import design.graphic.AOAnimationActor;
 import design.screens.ScreenEnum;
-import graphics.AOAnimationActor;
-import graphics.Effect;
 import model.descriptors.FXDescriptor;
 import model.textures.BundledAnimation;
 import org.jetbrains.annotations.NotNull;
@@ -77,7 +77,7 @@ public class SpellView extends View<Spell, SpellDesigner> {
                     .filter(FXDescriptor.class::isInstance)
                     .ifPresent(fx -> {
                         FXDescriptor descriptor = (FXDescriptor) fx;
-                        BundledAnimation anim = getAnimationHandler().getFX(new Effect.EffectBuilder().withFX(descriptor.id).build());
+                        BundledAnimation anim = getAnimationHandler().getFX(EffectBuilder.create().withFX(descriptor.id).build());
                         AOAnimationActor animation = new AOAnimationActor(anim);
                         add(animation);
                     });

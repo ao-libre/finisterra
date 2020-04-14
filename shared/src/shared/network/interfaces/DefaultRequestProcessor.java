@@ -1,23 +1,22 @@
 package shared.network.interfaces;
 
-import com.artemis.BaseSystem;
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.network.account.AccountCreationRequest;
 import shared.network.account.AccountLoginRequest;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
+import shared.network.interaction.DropItem;
 import shared.network.interaction.MeditateRequest;
+import shared.network.interaction.NpcInteractionRequest;
 import shared.network.interaction.TakeItemRequest;
 import shared.network.interaction.TalkRequest;
 import shared.network.inventory.ItemActionRequest;
-import shared.network.lobby.*;
-import shared.network.lobby.player.ChangeHeroRequest;
-import shared.network.lobby.player.ChangeReadyStateRequest;
-import shared.network.lobby.player.ChangeTeamRequest;
-import shared.network.lobby.player.PlayerLoginRequest;
 import shared.network.movement.MovementRequest;
 import shared.network.time.TimeSyncRequest;
+import shared.network.user.UserCreateRequest;
+import shared.network.user.UserLoginRequest;
 
-public class DefaultRequestProcessor extends BaseSystem implements IRequestProcessor {
+public class DefaultRequestProcessor extends PassiveSystem implements IRequestProcessor {
 
     @Override
     public void processRequest(MovementRequest request, int connectionId) {
@@ -55,52 +54,7 @@ public class DefaultRequestProcessor extends BaseSystem implements IRequestProce
     }
 
     @Override
-    public void processRequest(JoinRoomRequest joinRoomRequest, int connectionId) {
-
-    }
-
-    @Override
-    public void processRequest(ExitRoomRequest exitRoomRequest, int connectionId) {
-
-    }
-
-    @Override
-    public void processRequest(CreateRoomRequest createRoomRequest, int connectionId) {
-
-    }
-
-    @Override
-    public void processRequest(JoinLobbyRequest joinLobbyRequest, int connectionId) {
-
-    }
-
-    @Override
-    public void processRequest(StartGameRequest startGameRequest, int connectionId) {
-
-    }
-
-    @Override
-    public void processRequest(PlayerLoginRequest playerLoginRequest, int connectionId) {
-
-    }
-
-    @Override
     public void processRequest(TimeSyncRequest timeSyncRequest, int connectionId) {
-
-    }
-
-    @Override
-    public void processRequest(ChangeTeamRequest changeTeamRequest, int connectionId) {
-
-    }
-
-    @Override
-    public void processRequest(ChangeReadyStateRequest changeReadyStateRequest, int connectionId) {
-
-    }
-
-    @Override
-    public void processRequest(ChangeHeroRequest changeHeroRequest, int connectionId) {
 
     }
 
@@ -115,6 +69,24 @@ public class DefaultRequestProcessor extends BaseSystem implements IRequestProce
     }
 
     @Override
-    protected void processSystem() {
+    public void processRequest(DropItem dropItem, int connectionId) {
+
     }
+
+    @Override
+    public void processRequest(UserCreateRequest userCreateRequest, int connectionId) {
+        
+    }
+
+    @Override
+    public void processRequest(NpcInteractionRequest npcInteractionRequest, int connectionId) {
+		
+    }
+
+	
+    @Override
+    public void processRequest(UserLoginRequest userLoginRequest, int connectionId) {
+
+    }
+
 }

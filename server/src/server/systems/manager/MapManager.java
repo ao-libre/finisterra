@@ -3,11 +3,14 @@ package server.systems.manager;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
-import position.WorldPos;
+import component.position.WorldPos;
 import server.systems.EntityFactorySystem;
+import server.systems.ServerSystem;
+import server.systems.network.EntityUpdateSystem;
+import server.systems.network.UpdateTo;
 import shared.model.map.Tile;
 import shared.network.notifications.EntityUpdate;
-import shared.network.notifications.EntityUpdate.EntityUpdateBuilder;
+import shared.util.EntityUpdateBuilder;
 import shared.util.MapHelper;
 
 import java.util.*;
@@ -15,7 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static com.artemis.E.E;
-import static server.utils.WorldUtils.WorldUtils;
 import static shared.util.MapHelper.CacheStrategy.NEVER_EXPIRE;
 
 /**
@@ -25,7 +27,10 @@ import static shared.util.MapHelper.CacheStrategy.NEVER_EXPIRE;
 public class MapManager extends DefaultManager {
 
     private WorldManager worldManager;
+    private EntityUpdateSystem entityUpdateSystem;
     private EntityFactorySystem entityFactorySystem;
+    private ComponentManager componentManager;
+    private ServerSystem serverSystem;
 
     private MapHelper helper;
     private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
@@ -83,7 +88,8 @@ public class MapManager extends DefaultManager {
      * @return a set of near entities or empty
      */
     public Set<Integer> getNearEntities(int entityId) {
-        return nearEntities.getOrDefault(entityId, ConcurrentHashMap.newKeySet());
+        Set<Integer> nearEntities = this.nearEntities.getOrDefault(entityId, ConcurrentHashMap.newKeySet());
+        return nearEntities;
     }
 
     public Set<Integer> getEntities(WorldPos pos) {
@@ -138,7 +144,7 @@ public class MapManager extends DefaultManager {
     }
 
     /**
-     * Remove entity from map and unlink near entities
+     * Remove component.entity from map and unlink near entities
      *
      * @param entity id
      */
@@ -158,7 +164,7 @@ public class MapManager extends DefaultManager {
     }
 
     /**
-     * Add entity to map and calculate near entities
+     * Add component.entity to map and calculate near entities
      *
      * @param player id
      */
@@ -253,7 +259,7 @@ public class MapManager extends DefaultManager {
             nearEntities.get(entity1).remove(entity2);
         }
         // always notify that this entity is not longer in range
-        worldManager.sendEntityRemove(entity1, entity2);
+        entityUpdateSystem.add(entity1, EntityUpdateBuilder.delete(entity2), UpdateTo.ENTITY);
     }
 
 
@@ -266,8 +272,10 @@ public class MapManager extends DefaultManager {
     private void linkEntities(int entity1, int entity2) {
         Set<Integer> near = nearEntities.computeIfAbsent(entity1, (i) -> new HashSet<>());
         if (near.add(entity2)) {
-            EntityUpdate update = EntityUpdateBuilder.of(entity2).withComponents(WorldUtils(world).getComponents(entity2)).build();
-            worldManager.sendEntityUpdate(entity1, update);
+            if (serverSystem.playerHasConnection(entity1)) { // if its a player or networked entity, send new entity
+                EntityUpdate update = EntityUpdateBuilder.of(entity2).withComponents(componentManager.getComponents(entity2, ComponentManager.Visibility.CLIENT_PUBLIC)).build();
+                entityUpdateSystem.add(entity1, update, UpdateTo.ENTITY);
+            }
         }
     }
 

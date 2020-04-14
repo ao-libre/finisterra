@@ -3,9 +3,9 @@ package server.systems;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
-import entity.character.states.Heading;
+import component.entity.character.states.Heading;
+import component.position.WorldPos;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import position.WorldPos;
 import server.database.model.attributes.Attributes;
 import server.systems.ai.PathFindingSystem;
 import server.systems.manager.*;
@@ -13,7 +13,6 @@ import shared.interfaces.CharClass;
 import shared.interfaces.Hero;
 import shared.interfaces.Race;
 import shared.model.Spell;
-import shared.model.lobby.Team;
 import shared.model.npcs.NPC;
 import shared.model.npcs.NPCToEntity;
 import shared.objects.types.*;
@@ -37,6 +36,7 @@ public class EntityFactorySystem extends PassiveSystem {
     private ObjectManager objectManager;
     private SpellManager spellManager;
     private PathFindingSystem pathFindingSystem;
+    private NPCManager npcManager;
 
 
     public void createObject(int objIndex, int objCount, WorldPos pos) {
@@ -50,34 +50,57 @@ public class EntityFactorySystem extends PassiveSystem {
     }
 
     public void createNPC(int npcIndex, WorldPos pos) {
-        NPC npc = world.getSystem(NPCManager.class).getNpcs().get(npcIndex);
+        NPC npc = npcManager.getNpcs().get(npcIndex);
         int npcId = NPCToEntity.getNpcEntity(world, npcIndex, pos, npc);
         worldManager.registerEntity(npcId);
     }
 
+    public int create(String name, int heroId) {
+        Hero hero = Hero.values()[heroId];
+        Race race = Race.values()[hero.getRaceId()];
 
-    public int createPlayer(String name, Hero hero, Team team) {
+        int player = getWorld().create();
+
+        E entity = E(player);
+        entity
+                .character()
+                .tag(name)
+                .nameText(name)
+                .headingCurrent(Heading.HEADING_SOUTH)
+                .charHeroHeroId(heroId);
+
+        setEntityPosition(entity);
+        setAttributesAndStats(entity, race);
+        setHead(entity, race);
+        setNakedBody(entity, race);
+        // set inventory
+        setInventory(player, hero);
+        // set spells
+        setSpells(player, hero);
+
+
+        return player;
+    }
+
+    public int createPlayer(String name, Hero hero) {
         int player = getWorld().create();
 
         E entity = E(player);
         entity.character();
-        switch (team) {
-            case NO_TEAM:
-                entity.gM();
-                break;
-            case CAOS_ARMY:
-                entity.criminal();
-                break;
-        }
+//        switch (team) {
+//            case NO_TEAM:
+//                entity.gM();
+//                break;
+//            case CAOS_ARMY:
+//                entity.criminal();
+//                break;
+//        }
         entity.charHeroHeroId(hero.ordinal());
-        // set position
-        setEntityPosition(entity, team);
-        // set head and body
-        setHeadAndBody(name, entity);
+
         // set class
         setClassAndAttributes(hero, entity);
         // set inventory
-        setInventory(player, hero, team);
+        setInventory(player, hero);
         // set spells
         setSpells(player, hero);
 
@@ -126,8 +149,8 @@ public class EntityFactorySystem extends PassiveSystem {
     private void setHit(E entity) {
         entity.hitMax(2).hitMin(1);
     }
-
-    private void setHead(E entity, Race race) {
+    //TODO cambiado a public para poder resetear las heads antes era private, volver a modificar cuando se guarden en DB las cabezas de los pj
+    public void setHead(E entity, Race race) {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         //TODO onlyWoman desde init.json
         int headIndex = 0;
@@ -199,10 +222,10 @@ public class EntityFactorySystem extends PassiveSystem {
         entity.healthMin(DEFAULT_STAMINA + random);
     }
 
-    private void setInventory(int player, Hero hero, Team team) {
-        E(player).inventory();
+    private void setInventory(int player, Hero hero) {
+        E(player).bag();
         addPotion(player, PotionKind.HP);
-        E(player).getInventory().add(480, true);// flechas)
+        E(player).getBag().add(480, true);// flechas)
 
         if (E(player).manaMax() > 0) {
             addPotion(player, PotionKind.MANA);
@@ -212,35 +235,34 @@ public class EntityFactorySystem extends PassiveSystem {
 
         getHelmet(hero).ifPresent(helmet -> {
             E(player).helmetIndex(helmet.getId());
-            E(player).getInventory().add(helmet.getId(), true);
+            E(player).getBag().add(helmet.getId(), true);
         });
-        getArmor(hero, team).ifPresent(armor -> {
+        getArmor(hero).ifPresent(armor -> {
             E(player).armorIndex(armor.getId());
             E(player).bodyIndex(((ArmorObj) armor).getBodyNumber());
-            E(player).getInventory().add(armor.getId(), true);
+            E(player).getBag().add(armor.getId(), true);
         });
-        final Set<Obj> weapons = getWeapon(hero, team);
+        final Set<Obj> weapons = getWeapon(hero);
         if (!weapons.isEmpty()) {
             final Obj next = weapons.iterator().next();
-            E(player).getInventory().add(next.getId(), true);
+            E(player).getBag().add(next.getId(), true);
             E(player).weaponIndex(next.getId());
             weapons.forEach(weapon -> {
                 if (weapon != next) {
-                    E(player).getInventory().add(weapon.getId(), false);
+                    E(player).getBag().add(weapon.getId(), false);
                 }
             });
         }
 
-        getShield(hero, team).ifPresent(shield -> {
+        getShield(hero).ifPresent(shield -> {
             E(player).shieldIndex(shield.getId());
-            E(player).getInventory().add(shield.getId(), true);
+            E(player).getBag().add(shield.getId(), true);
         });
     }
 
     private void setHeadAndBody(String name, E entity) {
         entity
                 .headingCurrent(Heading.HEADING_SOUTH)
-                .character()
                 .nameText(name);
     }
 
@@ -254,10 +276,10 @@ public class EntityFactorySystem extends PassiveSystem {
                     return potionKind != null && potionKind.equals(kind);
                 }) //
                 .findFirst() //
-                .ifPresent(obj -> E(player).getInventory().add(obj.getId(), false));
+                .ifPresent(obj -> E(player).getBag().add(obj.getId(), false));
     }
 
-    private Optional<Obj> getArmor(Hero hero, Team team) {
+    private Optional<Obj> getArmor(Hero hero) {
         final Random random = new Random();
         Optional<Obj> result = Optional.empty();
         List<Integer> noTeam;
@@ -270,7 +292,8 @@ public class EntityFactorySystem extends PassiveSystem {
                 real = Collections.singletonList(680);
                 chaos = Collections.singletonList(683);
 
-                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
+//                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
+                set = noTeam;
                 result = objectManager.getObject(set.get(random.nextInt(set.size())));
                 break;
             case GUERRERO:
@@ -278,47 +301,48 @@ public class EntityFactorySystem extends PassiveSystem {
                 real = Arrays.asList(681, 694);
                 chaos = Arrays.asList(685, 695);
 
-                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
+                set = noTeam;
+//                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
                 result = objectManager.getObject(set.get(random.nextInt(set.size())));
                 break;
             case MAGO:
                 noTeam = Arrays.asList(525, 969);
                 real = Arrays.asList(549, 682);
                 chaos = Arrays.asList(558, 686);
-
-                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
+                set = noTeam;
+//                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
                 result = objectManager.getObject(set.get(random.nextInt(set.size())));
                 break;
             case BARDO:
                 noTeam = Arrays.asList(519, 359, 484);
                 real = Collections.singletonList(520);
                 chaos = Collections.singletonList(523);
-
-                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
+                set = noTeam;
+//                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
                 result = objectManager.getObject(set.get(random.nextInt(set.size())));
                 break;
             case ARQUERO:
                 noTeam = Arrays.asList(964, 965);
                 real = Collections.singletonList(1040);
                 chaos = Collections.singletonList(1041);
-
-                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
+                set = noTeam;
+//                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
                 result = objectManager.getObject(set.get(random.nextInt(set.size())));
                 break;
             case ASESINO:
                 noTeam = Arrays.asList(356, 495);
                 real = Arrays.asList(521, 691);
                 chaos = Arrays.asList(684, 701);
-
-                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
+                set = noTeam;
+//                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
                 result = objectManager.getObject(set.get(random.nextInt(set.size())));
                 break;
             case CLERIGO:
                 noTeam = Arrays.asList(356, 495);
                 real = Collections.singletonList(521);
                 chaos = Collections.singletonList(523);
-
-                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
+                set = noTeam;
+//                set = team.equals(Team.NO_TEAM) ? noTeam : team.equals(Team.CAOS_ARMY) ? chaos : real;
                 result = objectManager.getObject(set.get(random.nextInt(set.size())));
                 break;
         }
@@ -350,13 +374,15 @@ public class EntityFactorySystem extends PassiveSystem {
         return result;
     }
 
-    private Optional<Obj> getShield(Hero hero, Team team) {
+    private Optional<Obj> getShield(Hero hero) {
         Optional<Obj> result = Optional.empty();
         switch (hero) {
             case PALADIN:
             case CLERIGO:
             case GUERRERO:
-                result = objectManager.getObject(team.equals(Team.NO_TEAM) ? 130 : team.equals(Team.REAL_ARMY) ? 1038 : 1037);
+//                int id = team.equals(Team.NO_TEAM) ? 130 : team.equals(Team.REAL_ARMY) ? 1038 : 1037;
+                int id = 130;
+                result = objectManager.getObject(id);
                 break;
             case BARDO:
             case ASESINO:
@@ -368,7 +394,7 @@ public class EntityFactorySystem extends PassiveSystem {
         return result;
     }
 
-    private Set<Obj> getWeapon(Hero hero, Team type) {
+    private Set<Obj> getWeapon(Hero hero) {
         Set<Obj> result = new HashSet<>();
         switch (hero) {
             case PALADIN:
@@ -430,7 +456,7 @@ public class EntityFactorySystem extends PassiveSystem {
             Set<CharClass> forbiddenClasses = ((ObjWithClasses) obj).getForbiddenClasses();
             Log.info("Item found for class: " + clazz.name() + " and forbidden classes are: " + Arrays
                     .toString(forbiddenClasses.toArray()));
-            E(player).getInventory().add(obj.getId(), true);
+            E(player).getBag().add(obj.getId(), true);
         });
         return result;
     }
@@ -493,20 +519,8 @@ public class EntityFactorySystem extends PassiveSystem {
         return obj1.getName().compareTo(obj2.getName());
     }
 
-
-    private void setEntityPosition(E entity, Team team) {
-        WorldPos spot = null;
-        switch (team) {
-            case REAL_ARMY:
-                spot = new WorldPos(10, 10, 290);
-                break;
-            case CAOS_ARMY:
-                spot = new WorldPos(90, 90, 290);
-                break;
-            case NO_TEAM:
-                spot = new WorldPos(50, 50, 290);
-                break;
-        }
+    private void setEntityPosition(E entity) {
+        WorldPos spot = new WorldPos(50, 50, 1);
         setWorldPosition(entity, spot);
     }
 

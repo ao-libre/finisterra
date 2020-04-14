@@ -1,16 +1,16 @@
 package design.screens.map.systems;
 
-import camera.Focused;
+import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import game.handlers.MapHandler;
-import game.managers.MapManager;
+import game.systems.resources.MapSystem;
+import game.systems.map.MapManager;
 import game.systems.render.BatchRenderingSystem;
 import game.systems.render.world.RenderingSystem;
 import game.utils.Colors;
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.util.MapHelper;
@@ -30,7 +30,7 @@ public class MapDesignRenderingSystem extends RenderingSystem {
 
     public MapDesignRenderingSystem() {
         super(Aspect.all(Focused.class, WorldPos.class));
-        helper = MapHandler.getHelper();
+        helper = MapSystem.getHelper();
         sr.setColor(Colors.TRANSPARENT_RED);
         sr.setAutoShapeType(true);
     }

@@ -1,0 +1,47 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Release
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  gradle:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+        - os: macos-latest
+          OS_NAME: MacOS
+        - os: ubuntu-latest
+          OS_NAME: Linux
+        - os: windows-latest
+          OS_NAME: Windows
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Setup Java
+      uses: actions/setup-java@v1
+      with:
+        java-version: 14
+
+    - name: Package
+      uses: eskatos/gradle-command-action@v1
+      with:
+        arguments: packageDistribution
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          desktop/build/releases/finisterra-client-${{ matrix.OS_NAME }}.zip
+          server/build/releases/finisterra-server-${{ matrix.OS_NAME }}.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,13 +1,16 @@
 package server;
 
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
+import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import server.core.Finisterra;
-import server.manager.ConfigurationManager;
+import shared.util.Tick;
 
 public class ServerLauncher {
 
     public static void main(String[] arg) {
         // Launch application
-        new HeadlessApplication(new Finisterra(ConfigurationManager.getInstance().getServerConfig()));
+        HeadlessApplicationConfiguration config = new HeadlessApplicationConfiguration();
+        config.renderInterval = Tick.TIME / 1000;
+        new HeadlessApplication(new Finisterra());
     }
 }

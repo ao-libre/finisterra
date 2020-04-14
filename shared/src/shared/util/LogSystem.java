@@ -60,7 +60,7 @@ public class LogSystem extends Log.Logger {
             }
         }
 
-        // We keep printing the logs in the console.
+        // We keep printing the logs in the component.console.
         System.out.println(builder);
 
     }

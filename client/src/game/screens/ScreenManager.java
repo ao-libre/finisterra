@@ -2,32 +2,37 @@ package game.screens;
 
 import com.badlogic.gdx.Screen;
 import game.AOGame;
+import game.systems.resources.MusicSystem;
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 
-public class ScreenManager {
-
-    private static ScreenManager instance;
-
+public class ScreenManager extends PassiveSystem {
     private AOGame game;
+    private MusicSystem musicSystem;
 
-    private ScreenManager() {
-    }
-
-    public static ScreenManager getInstance() {
-        if (instance == null) {
-            instance = new ScreenManager();
-        }
-        return instance;
-    }
-
-    public void initialize(AOGame game) {
+    public ScreenManager(AOGame game) {
         this.game = game;
     }
 
     // Show in the game the screen which enum type is received
-    public void showScreen(ScreenEnum screenEnum, Object... params) {
-        // Show new screen
-        Screen newScreen = screenEnum.getScreen(params);
-        game.setScreen(newScreen);
+    public void to(ScreenEnum screen) {
+        switch( screen ){
+            case LOGIN:
+                musicSystem.playMusic( 101 );
+                musicSystem.fadeInMusic( 1f,20f );
+                break;
+            case GAME:
+                musicSystem.playMusic( 1 );
+                break;
+        }
+        game.setScreen(screen.get());
     }
 
+    public AbstractScreen getAbstractScreen() {
+        return (AbstractScreen) getScreen();
+    }
+
+    public Screen getScreen() {
+        return game.getScreen();
+    }
 }
+

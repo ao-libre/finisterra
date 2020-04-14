@@ -1,6 +1,9 @@
 package shared.util;
 
 public enum Messages {
+    // USAGE
+    CANT_USE_THAT_FAST,
+
     // PHYSICAL COMBAT
     DEAD_CANT_ATTACK,
     CANT_ATTACK_DEAD,
@@ -18,6 +21,7 @@ public enum Messages {
     VICTIM_STAB_HIT,
     USER_NORMAL_HIT,
     VICTIM_NORMAL_HIT,
+    CANT_ATTACK_THAT_FAST,
 
     // MAGIC COMBAT
     DAMAGE_TO,
@@ -28,6 +32,7 @@ public enum Messages {
     NOT_ENOUGHT_MANA,
     NOT_PARALYSIS,
     CANT_ATTACK_YOURSELF,
+    CANT_MAGIC_THAT_FAST,
 
     // MEDITATE SYSTEM
     MANA_RECOVERED,
@@ -37,6 +42,7 @@ public enum Messages {
 
     // CHARACTER TRAINING SYSTEM
     EXP_GAIN,
+    GOLD_GAIN,
     LEVEL_UP,
 
     // AO INPUT PROCESSOR
@@ -76,6 +82,7 @@ public enum Messages {
     SPELLS_FULL,
 
     // COMMAND USAGE
+    INVALID_COMMAND,
     PLAYERS_ONLINE,
 
     // ITEM TOOLTIP
@@ -98,7 +105,16 @@ public enum Messages {
     WEAPON_POLE,
     WEAPON_WORK,
     WEAPON_STAFF,
-    WEAPON_SWORD
+    WEAPON_SWORD,
 
-
+    // sistema de muerte
+    HOME_POS,
+    HOME_SET,
+    YOU_ARE_ALIVE,
+    TIME_TO_RESURRECT,
+    ONLY_MAPS,
+    DEAD_CANT,
+    // para ir provando antes de crear los mensajes
+    MULTIUSE
 }
+

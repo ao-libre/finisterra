@@ -1,99 +1,60 @@
 package game;
 
+import com.artemis.BaseSystem;
+import com.artemis.World;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.esotericsoftware.minlog.Log;
-import game.handlers.AOAssetManager;
-import game.handlers.DefaultAOAssetManager;
-import game.screens.GameScreen;
+import game.screens.LoadingScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
-import game.utils.Cursors;
 import shared.util.LogSystem;
 
 /**
- * Represents the game application.
- * Implements {@link ApplicationListener}.
- * <p>
- * This should be the primary instance of the app.
+ * Esta es la <b>clase principal</b> de la aplicación.
+ * Ver la documentación de libGDX sobre {@link ApplicationListener}
+ * para detalles del funcionamiento interno.
  */
-public class AOGame extends Game implements AssetManagerHolder {
+public class AOGame extends Game {
 
-    public static final float GAME_SCREEN_ZOOM = 1f;
-    public static final float GAME_SCREEN_MAX_ZOOM = 1.3f;
+    private AssetManager assetManager;
+    private ClientConfiguration clientConfiguration;
+    private World world;
 
-    private final AOAssetManager assetManager;
-    private final ClientConfiguration clientConfiguration;
-    private Sync fpsSync;
-
+    /**
+     * Constructor de la clase.
+     * Acá no hay contexto de libGDX, ver {@link AOGame#create()}
+     */
     public AOGame(ClientConfiguration clientConfiguration) {
+        Log.setLogger(new LogSystem());
         this.clientConfiguration = clientConfiguration;
-        this.assetManager = new DefaultAOAssetManager(clientConfiguration);
     }
 
-    public static AOAssetManager getGlobalAssetManager() {
-        AssetManagerHolder game = (AssetManagerHolder) Gdx.app.getApplicationListener();
-        return game.getAssetManager();
-    }
-
+    // Crea la ventana del juego.
     @Override
     public void create() {
-        Log.setLogger(new LogSystem());
-        Log.info("AOGame", "Creating AOGame...");
-        Cursors.setCursor("hand");
-        ScreenManager.getInstance().initialize(this);
-        toLoading();
-        this.fpsSync = new Sync();
-        // @todo load platform-independent configuration (network, etc.)
+        Log.debug("AOGame", "Creating AOGame...");
+        // Create Loading screen
+        LoadingScreen screen = new LoadingScreen(clientConfiguration);
+        setScreen(screen);
+        screen.onFinished((assetManager) -> {
+            ScreenManager screenManager = new ScreenManager(this);
+            this.assetManager = assetManager;
+            this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
+            screenManager.to(ScreenEnum.LOGIN);
+        });
     }
 
-    private void toLoading() {
-        ScreenManager.getInstance().showScreen(ScreenEnum.LOADING);
-    }
-
-    public void toLogin() {
-        ScreenManager.getInstance().showScreen(ScreenEnum.LOGIN);
-    }
-
-    public void toSignUp(Object... params) {
-        ScreenManager.getInstance().showScreen(ScreenEnum.SIGNUP, params);
-    }
-
-    public void toLobby(Object... params) {
-        ScreenManager.getInstance().showScreen(ScreenEnum.LOBBY, params);
-    }
-
-    public void toRoom(Object... params) {
-        ScreenManager.getInstance().showScreen(ScreenEnum.ROOM, params);
-    }
-
-    public void toGame(GameScreen gameScreen) {
-        setScreen(gameScreen);
-    }
-
-    public ClientConfiguration getClientConfiguration() {
-        return clientConfiguration;
-    }
-
-    @Override
-    public AOAssetManager getAssetManager() {
-        return assetManager;
-    }
-
-    @Override
-    public void render() {
-//        fpsSync.sync(100);
-        super.render();
-    }
-
+    /**
+     * Disponer de todos los recursos utilizados y cerrar threads pendientes.
+     * Eventualmente la JVM cierra sola.
+     */
     @Override
     public void dispose() {
-        Log.info("AOGame", "Closing client...");
-        screen.dispose();
-        getAssetManager().dispose();
-        Gdx.app.exit();
-        Log.info("Thank you for playing! See you soon...");
-        System.exit(0);
+        Log.debug("AOGame", "Closing client...");
+        world.dispose(); /** Llama a {@link BaseSystem#dispose()} en todos los sistemas */
+        assetManager.dispose(); // Libera todos los assets cargados
+        Log.debug("AOGame", "Thank you for playing! See you soon...");
     }
 }

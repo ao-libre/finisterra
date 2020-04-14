@@ -1,204 +1,59 @@
 package game.screens;
 
-import com.artemis.Entity;
-import com.artemis.SuperMapper;
-import com.artemis.World;
-import com.artemis.WorldConfigurationBuilder;
-import com.artemis.managers.TagManager;
-import com.artemis.managers.UuidEntityManager;
-import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.audio.Music;
+import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.esotericsoftware.minlog.Log;
-import game.AOGame;
-import game.ClientConfiguration;
-import game.handlers.*;
-import game.managers.MapManager;
-import game.managers.WorldManager;
-import game.network.ClientResponseProcessor;
-import game.network.GameNotificationProcessor;
-import game.network.KryonetClientMarshalStrategy;
-import game.systems.anim.IdleAnimationSystem;
-import game.systems.anim.MovementAnimationSystem;
-import game.systems.camera.CameraFocusSystem;
-import game.systems.camera.CameraMovementSystem;
-import game.systems.camera.CameraShakeSystem;
-import game.systems.camera.CameraSystem;
-import game.systems.map.TiledMapSystem;
-import game.systems.network.ClientSystem;
-import game.systems.network.TimeSync;
-import game.systems.physics.MovementProcessorSystem;
-import game.systems.physics.MovementSystem;
-import game.systems.physics.PhysicsAttackSystem;
-import game.systems.physics.PlayerInputSystem;
-import game.systems.render.BatchRenderingSystem;
-import game.systems.render.world.*;
-import game.systems.sound.SoundSytem;
-import game.ui.GUI;
-import net.mostlyoriginal.api.system.render.ClearScreenSystem;
-import shared.model.map.Tile;
+import game.systems.ui.UserInterfaceSystem;
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 
-import java.util.concurrent.TimeUnit;
+@Wire
+public class GameScreen extends PassiveSystem implements Screen {
 
-import static com.artemis.E.E;
-import static com.artemis.WorldConfigurationBuilder.Priority.HIGH;
-
-public class GameScreen extends ScreenAdapter implements WorldScreen {
-
-    private static final int HANDLER_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL + 3;
-    private static final int ENTITY_RENDER_PRIORITY = WorldConfigurationBuilder.Priority.NORMAL + 2;
-    private static final int PRE_ENTITY_RENDER_PRIORITY = ENTITY_RENDER_PRIORITY + 1;
-    private static final int POST_ENTITY_RENDER_PRIORITY = ENTITY_RENDER_PRIORITY - 1;
-    private static final int DECORATION_PRIORITY = ENTITY_RENDER_PRIORITY - 2;
-    private static final int GUI = DECORATION_PRIORITY - 1;
-
-    public static World world;
-    public static int player = -1;
-    private final ClientConfiguration clientConfiguration;
-    private final AOAssetManager assetManager;
-    private final Music backgroundMusic = MusicHandler.BACKGROUNDMUSIC;
-    private WorldConfigurationBuilder worldConfigBuilder;
+    private UserInterfaceSystem userInterfaceSystem;
     private FPSLogger fpsLogger = new FPSLogger();
 
-    public GameScreen(ClientConfiguration clientConfiguration, AOAssetManager assetManager) {
-
-        this.clientConfiguration = clientConfiguration;
-        this.assetManager = assetManager;
-        long start = System.currentTimeMillis();
-        initWorldConfiguration();
-        Log.info("Game screen initialization", "Elapsed time: " + TimeUnit.MILLISECONDS.toSeconds(Math.abs(System.currentTimeMillis() - start)));
-    }
-
-    public static int getPlayer() {
-        return player;
-    }
-
-    public static void setPlayer(int player) {
-        GameScreen.player = player;
-        world.getSystem(GUI.class).getInventory().updateUserInventory(0);
-        world.getSystem(GUI.class).getSpellView().updateSpells();
-        world.getSystem(GUI.class).getSpellViewExpanded().updateSpells();
-
-    }
-
-    public static KryonetClientMarshalStrategy getClient() {
-        return world.getSystem(ClientSystem.class).getKryonetClient();
-    }
-
-    @Override
-    public World getWorld() {
-        return world;
-    }
-
-    private void initWorldConfiguration() {
-        worldConfigBuilder = new WorldConfigurationBuilder();
-        worldConfigBuilder.with(new SuperMapper())
-                .with(HIGH, new TimeSync())
-                // Player movement
-                .with(HIGH, new PlayerInputSystem())
-                .with(HIGH, new MovementProcessorSystem())
-                .with(HIGH, new MovementAnimationSystem())
-                .with(HIGH, new IdleAnimationSystem())
-                .with(HIGH, new MovementSystem())
-                // Camera
-                .with(HIGH, new CameraSystem(AOGame.GAME_SCREEN_ZOOM))
-                .with(HIGH, new CameraFocusSystem())
-                .with(HIGH, new CameraMovementSystem())
-                .with(HIGH, new CameraShakeSystem())
-                // Logic systems
-                .with(HIGH, new WorldManager())
-                .with(HIGH, new PhysicsAttackSystem())
-                // Sound systems
-                .with(HIGH, new SoundSytem())
-                .with(HIGH, new TiledMapSystem())
-                // Handlers
-                .with(HANDLER_PRIORITY, new AnimationHandler(assetManager))
-                .with(HANDLER_PRIORITY, new DescriptorHandler(assetManager))
-                .with(HANDLER_PRIORITY, new MapHandler())
-                .with(HANDLER_PRIORITY, new MusicHandler())
-                .with(HANDLER_PRIORITY, new ObjectHandler())
-                .with(HANDLER_PRIORITY, new ParticlesHandler())
-                .with(HANDLER_PRIORITY, new SoundsHandler())
-                .with(HANDLER_PRIORITY, new SpellHandler())
-                .with(HANDLER_PRIORITY, new FontsHandler())
-                // Rendering
-                .with(PRE_ENTITY_RENDER_PRIORITY, new ClearScreenSystem())
-                .with(PRE_ENTITY_RENDER_PRIORITY, new MapGroundRenderingSystem())
-                .with(PRE_ENTITY_RENDER_PRIORITY, new ObjectRenderingSystem())
-                .with(PRE_ENTITY_RENDER_PRIORITY, new TargetRenderingSystem())
-                .with(PRE_ENTITY_RENDER_PRIORITY, new NameRenderingSystem())
-                .with(ENTITY_RENDER_PRIORITY, new EffectRenderingSystem())
-                .with(ENTITY_RENDER_PRIORITY, new CharacterRenderingSystem())
-                .with(ENTITY_RENDER_PRIORITY, new WorldRenderingSystem())
-                .with(POST_ENTITY_RENDER_PRIORITY, new CombatRenderingSystem())
-                .with(POST_ENTITY_RENDER_PRIORITY, new DialogRenderingSystem())
-                .with(POST_ENTITY_RENDER_PRIORITY, new MapLastLayerRenderingSystem())
-                .with(DECORATION_PRIORITY, new StateRenderingSystem())
-                .with(DECORATION_PRIORITY, new CharacterStatesRenderingSystem())
-                .with(DECORATION_PRIORITY, new BatchRenderingSystem())
-
-                // GUI
-                .with(GUI, new GUI())
-                // Other
-                .with(new MapManager())
-                .with(new TagManager())
-                .with(new UuidEntityManager())
-                .with(clientConfiguration);
-
-    }
-
-    public void initWorld(ClientSystem clientSystem) {
-        worldConfigBuilder
-                .with(HIGH + 1, new ClientResponseProcessor())
-                .with(HIGH + 1, new GameNotificationProcessor())
-                .with(HIGH + 1, clientSystem);
-        world = new World(worldConfigBuilder.build()); // preload Artemis world
-    }
-
-    private void postWorldInit() {
-        Entity cameraEntity = world.createEntity();
-        E(cameraEntity)
-                .aOCamera(true)
-                .worldPosOffsets();
-
-        // for testing
-        backgroundMusic.setVolume(0.20f);
-        backgroundMusic.play();
-    }
-
-    protected void update(float deltaTime) {
-        world.setDelta(deltaTime);
-        world.process();
-    }
-
-    @Override
-    public void show() {
-        this.postWorldInit();
-    }
+    public GameScreen() {}
 
     @Override
     public void render(float delta) {
-        this.update(delta);
+        world.setDelta(delta);
+        world.process();
         fpsLogger.log();
     }
 
     @Override
     public void resize(int width, int height) {
-        CameraSystem cameraSystem = world.getSystem(CameraSystem.class);
-        cameraSystem.camera.viewportWidth = Tile.TILE_PIXEL_WIDTH * 24f;  //We will see width/32f units!
-        cameraSystem.camera.viewportHeight = cameraSystem.camera.viewportWidth * height / width;
-        cameraSystem.camera.update();
+//        CameraSystem cameraSystem = world.getSystem(CameraSystem.class);
+//        cameraSystem.camera.viewportWidth = Tile.TILE_PIXEL_WIDTH * 24f;  //We will see width/32f units!
+//        cameraSystem.camera.viewportHeight = cameraSystem.camera.viewportWidth * height / width;
+//        cameraSystem.camera.update();
+//
+//        getWorld().getSystem(UserInterfaceSystem.class).resize(width, height);
+//        getWorld().getSystem(BatchRenderingSystem.class).resize(width, height);
+    }
 
-        getWorld().getSystem(GUI.class).getStage().getViewport().update(width, height);
+    @Override
+    public void show() {
+        userInterfaceSystem.show();
+    }
 
-        getWorld().getSystem(BatchRenderingSystem.class).resize(width, height);
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void hide() {
+
     }
 
     @Override
     public void dispose() {
-        world.getSystem(ClientSystem.class).stop();
-        world.getSystem(GUI.class).dispose();
-        backgroundMusic.stop();
-    }
 
+    }
 }

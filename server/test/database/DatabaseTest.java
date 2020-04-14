@@ -36,7 +36,7 @@ public class DatabaseTest implements ApplicationListener {
         /** Create test */
         start = System.currentTimeMillis();
         for (int i = 0; i < n; i++) {
-            Account account1 = new Account(email[i], "aFeo3&5l2-+1w");
+            Account account1 = new Account("", email[i], "aFeo3&5l2-+1w");
             account1.save();
         }
         end = System.currentTimeMillis();
@@ -55,7 +55,7 @@ public class DatabaseTest implements ApplicationListener {
         /** Update test */
         start = System.currentTimeMillis();
         for (int i = 0; i < n; i++) {
-            Account account1 = new Account(email[i], "di3m1#0fwp32+");
+            Account account1 = new Account("", email[i], "di3m1#0fwp32+");
             account1.save();
         }
         end = System.currentTimeMillis();

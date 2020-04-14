@@ -12,7 +12,7 @@ import java.util.*
 /**
  * Motivation:  oftentimes a SpriteSheet is given without any further information. For example,
  * a spritesheet with twenty sprites from the famous Megaman series. How do you integrate this into your game?
- * Do you calculate the position and size of each sprite by hand? Of course not, apps like TexturePacker do a wonderful
+ * Do you calculate the component.position and size of each sprite by hand? Of course not, apps like TexturePacker do a wonderful
  * job of taking individual sprites, packing them, and handing you an atlas with all necessary information.
  *
  * However, to do that, you need the individual sprites first! This class, SpriteSheetUnpacker, cuts up a SpriteSheet

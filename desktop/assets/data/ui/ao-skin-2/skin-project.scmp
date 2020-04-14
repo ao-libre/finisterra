@@ -3,7 +3,7 @@ atlasData: {
 	atlasCurrent: true
 	drawables: [
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/action-bar.9.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/action-bar.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -19,7 +19,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/bar-frame.9.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/bar-frame.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -35,7 +35,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/hover-button.9.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/hover-button.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -51,7 +51,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/menu-frame.9.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/menu-frame.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -67,7 +67,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/simple-window.9.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/simple-window.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -83,7 +83,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/slot-frame.9.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/slot-frame.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -99,7 +99,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/big-disc.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/big-disc.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -115,7 +115,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/cross-button.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/cross-button.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -131,7 +131,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/disc.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/disc.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -147,7 +147,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Inventory-Icon.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Inventory-Icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -163,7 +163,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/spells-icon.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/spells-icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -179,7 +179,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/unit-counter.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/unit-counter.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -195,7 +195,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/button.9.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/button.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -211,7 +211,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/cross-button.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/cross-button.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -227,7 +227,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/hover-button.9.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/hover-button.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -243,7 +243,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/hover-button.9.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/hover-button.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -259,7 +259,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/scale_bar.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/scale_bar.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -275,7 +275,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/slot-selected.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/slot-selected.png"
 			bgColor: {
 				r: 0
 				g: 0
@@ -291,7 +291,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/disc-glow.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/disc-glow.png"
 			bgColor: {
 				r: 0
 				g: 0
@@ -307,7 +307,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/text-cursor.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/text-cursor.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -323,7 +323,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/tooltip.9.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/tooltip.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -339,7 +339,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/icon-container.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/icon-container.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -355,7 +355,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/separator.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/separator.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -371,7 +371,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/inventory-spells-window.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/bag-spells-window.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -380,14 +380,14 @@ atlasData: {
 			}
 			tint: null
 			tintName: null
-			name: inventory-spells-window
+			name: bag-spells-window
 			tiled: false
 			minWidth: -1
 			minHeight: -1
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Inventory-Icon.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Inventory-Icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -403,7 +403,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/spells-icon.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/spells-icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -419,7 +419,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/spells-icon.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/spells-icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -435,7 +435,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Inventory-Icon.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Inventory-Icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -451,7 +451,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/staff-hover-icon.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/staff-hover-icon.png"
 			bgColor: {
 				r: 0
 				g: 0
@@ -467,7 +467,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/staff-icon.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/staff-icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -483,7 +483,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/staff-selected-icon.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/staff-selected-icon.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -499,7 +499,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/slot-selected2.9.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/slot-selected2.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -515,7 +515,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/speech-bubble.9.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/speech-bubble.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -531,7 +531,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/bar.9.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/bar.9.png"
 			bgColor: {
 				r: 0
 				g: 0
@@ -547,7 +547,7 @@ atlasData: {
 			customized: false
 		}
 		{
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/speech-bubble-flipped.9.png"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/speech-bubble-flipped.9.png"
 			bgColor: {
 				r: 1
 				g: 1
@@ -743,7 +743,7 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: big
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
 			size: 20
@@ -772,7 +772,7 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: combat
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/GROBOLD.ttf"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/GROBOLD.ttf"
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
 			size: 16
@@ -801,7 +801,7 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: flipped
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
 			size: 18
@@ -830,7 +830,7 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: flipped-with-border
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
 			size: 18
@@ -859,7 +859,7 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: simple
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
 			size: 18
@@ -888,7 +888,7 @@ jsonData: {
 		{
 			class: com.ray3k.skincomposer.data.FreeTypeFontData
 			name: simple-with-border
-			file: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
+			file: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project_data/Adobe Garamond Pro Regular.ttf"
 			previewTTF: SourceSansPro-Regular
 			useCustomSerializer: true
 			size: 18
@@ -1973,7 +1973,7 @@ jsonData: {
 			}
 			{
 				class: com.ray3k.skincomposer.data.StyleData
-				name: inventory
+				name: bag
 				clazz: com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 				properties: {
 					imageUp: {
@@ -4031,7 +4031,7 @@ jsonData: {
 			}
 			{
 				class: com.ray3k.skincomposer.data.StyleData
-				name: inventory
+				name: bag
 				clazz: com.badlogic.gdx.scenes.scene2d.ui.Window
 				properties: {
 					background: {
@@ -4077,7 +4077,7 @@ preferences: {
 	}
 	last-import-export-path: {
 		class: java.lang.String
-		value: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/ao-skin.json"
+		value: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/ao-skin.json"
 	}
 	id: {
 		class: java.lang.Integer
@@ -4092,5 +4092,5 @@ preferences: {
 		value: true
 	}
 }
-saveFile: "/Users/gtamborindeguy/guido/repository/ao-java/desktop/assets/data/ui/ao-skin-2/skin-project.scmp"
+saveFile: "C:/Users/guido/repository/finisterra/desktop/assets/data/ui/ao-skin-2/skin-project.scmp"
 }

@@ -1,12 +1,9 @@
 package server.utils;
 
-import com.artemis.Component;
-import com.artemis.Entity;
 import com.artemis.World;
-import com.artemis.utils.Bag;
-import entity.character.states.Heading;
-import physics.AOPhysics;
-import position.WorldPos;
+import component.entity.character.states.Heading;
+import component.physics.AOPhysics;
+import component.position.WorldPos;
 import shared.interfaces.Constants;
 
 import java.util.ArrayList;
@@ -48,28 +45,22 @@ public class WorldUtils {
                 pos.map);
     }
 
-    public List<Component> getComponents(Entity player) {
-        // TODO implement filter (non relevant components for clients)
-        Bag<Component> components = player.getComponents(new Bag<>());
-        List<Component> componentsToSend = new ArrayList<>();
-        components.forEach(component -> {
-            if (component != null) {
-                componentsToSend.add(component);
-            }
-        });
-        return componentsToSend;
-    }
-
-    public Component[] getComponents(int playerId) {
-        List<Component> components = getComponents(world.getEntity(playerId));
-        return components.toArray(new Component[0]);
-    }
-
     public int getHeading(AOPhysics.Movement movement) {
         return movement == AOPhysics.Movement.UP ? Heading.HEADING_NORTH : movement == AOPhysics.Movement.DOWN ? Heading.HEADING_SOUTH : movement == AOPhysics.Movement.LEFT ? Heading.HEADING_WEST : Heading.HEADING_EAST;
     }
 
     public int getHeading(WorldPos pos1, WorldPos pos2) {
         return pos1.y > pos2.y ? Heading.HEADING_NORTH : pos1.y < pos2.y ? Heading.HEADING_SOUTH : pos1.x > pos2.x ? Heading.HEADING_WEST : Heading.HEADING_EAST;
+    }
+
+    private List<WorldPos> getArea(WorldPos worldPos, int range /*impar*/) {
+        List<WorldPos> positions = new ArrayList<>();
+        int i = range / 2;
+        for (int x = worldPos.x - i; x <= worldPos.x + i; x++) {
+            for (int y = worldPos.y - i; y <= worldPos.y + i; y++) {
+                positions.add(new WorldPos(x, y, worldPos.map));
+            }
+        }
+        return positions;
     }
 }

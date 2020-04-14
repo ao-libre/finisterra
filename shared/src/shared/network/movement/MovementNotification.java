@@ -1,6 +1,6 @@
 package shared.network.movement;
 
-import movement.Destination;
+import component.movement.Destination;
 import shared.network.interfaces.INotification;
 import shared.network.interfaces.INotificationProcessor;
 

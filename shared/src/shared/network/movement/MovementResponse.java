@@ -1,6 +1,6 @@
 package shared.network.movement;
 
-import position.WorldPos;
+import component.position.WorldPos;
 import shared.network.interfaces.IResponse;
 import shared.network.interfaces.IResponseProcessor;
 

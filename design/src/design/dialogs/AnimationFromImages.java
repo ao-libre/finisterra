@@ -9,8 +9,8 @@ import design.designers.AnimationDesigner;
 import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
 import design.screens.views.View;
-import game.handlers.AnimationHandler;
-import graphics.AOImageActor;
+import game.systems.resources.AnimationsSystem;
+import design.graphic.AOImageActor;
 import model.textures.AOAnimation;
 import model.textures.AOImage;
 import org.jetbrains.annotations.NotNull;
@@ -44,13 +44,13 @@ public class AnimationFromImages {
 
         private final int columns;
         private final AnimationDesigner designer;
-        private final AnimationHandler animationHandler;
+        private final AnimationsSystem animationsSystem;
         private final List<AOImage> images;
 
-        public NewAnimation(AnimationDesigner designer, AnimationHandler animationHandler, List<AOImage> images) {
+        public NewAnimation(AnimationDesigner designer, AnimationsSystem animationsSystem, List<AOImage> images) {
             super("New Animation", SKIN);
             this.designer = designer;
-            this.animationHandler = animationHandler;
+            this.animationsSystem = animationsSystem;
             this.images = images;
             columns = Math.max(images.size() / 4, 1);
             createContent();
@@ -137,7 +137,7 @@ public class AnimationFromImages {
             Table imagesTable = new Table();
             imagesTable.defaults().space(5);
             for (int i = 1; i <= images.size(); i++) {
-                SelectableImage image = new SelectableImage(images.get(i - 1), animationHandler);
+                SelectableImage image = new SelectableImage(images.get(i - 1), animationsSystem);
                 image.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
@@ -162,9 +162,9 @@ public class AnimationFromImages {
 
         private final AOImageActor aoImageActor;
 
-        SelectableImage(AOImage image, AnimationHandler animationHandler) {
+        SelectableImage(AOImage image, AnimationsSystem animationsSystem) {
             super(SKIN, "color-base-select");
-            aoImageActor = new AOImageActor(image, animationHandler);
+            aoImageActor = new AOImageActor(image, animationsSystem);
             Container<Image> container = new Container<>();
             container.setActor(aoImageActor);
             container.setClip(true);

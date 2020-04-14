@@ -4,16 +4,15 @@
 ### Project-Specific ###
 private/
 build/
-old/
-JPackage/
-Accounts/
-Charfiles/
 desktop/*.tar.gz
 desktop/*.zip
 desktop/jdk*
 desktop/Config.json
 desktop/Screenshots*
-server/bundled-APP
+desktop/error*
+server/Accounts/
+server/bundled-APP/
+server/Charfile/
 *.log
 
 ### Gradle ###
@@ -60,3 +59,4 @@ local.properties
 *.ipr
 out/
 **/out/
+desktop/Config.json

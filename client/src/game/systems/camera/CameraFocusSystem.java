@@ -1,14 +1,14 @@
 package game.systems.camera;
 
-import camera.AOCamera;
-import camera.Focused;
+import component.camera.AOCamera;
+import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.EBag;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import game.utils.Pos2D;
-import position.WorldPos;
+import component.position.WorldPos;
 
 import static com.artemis.E.E;
 

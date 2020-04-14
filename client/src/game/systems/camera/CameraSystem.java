@@ -7,35 +7,40 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import game.AOGame;
-import game.systems.render.BatchRenderingSystem;
 import shared.model.map.Tile;
+
+import static com.artemis.E.E;
 
 @Wire
 public class CameraSystem extends BaseSystem {
 
-    public final static float ZOOM_TIME = 0.5f;
+    public static final float CAMERA_MIN_ZOOM = 1f;
+    public static final float CAMERA_MAX_ZOOM = 1.3f;
+    public static final float ZOOM_TIME = 0.5f;
+
+    public OrthographicCamera camera;
+
     private final float minZoom;
     private final float maxZoom;
-    public OrthographicCamera camera;
-    private float desiredZoom = AOGame.GAME_SCREEN_ZOOM;
-    // member variables:
+
+    private float desiredZoom;
     private float timeToCameraZoomTarget, cameraZoomOrigin, cameraZoomDuration;
 
+    public CameraSystem() {
+        this(CAMERA_MIN_ZOOM, CAMERA_MAX_ZOOM);
+    }
 
-    private CameraSystem(float zoom, float maxZoom, float width, float height) {
+    public CameraSystem(float minZoom, float maxZoom) {
+        this(minZoom, maxZoom, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    }
+
+    private CameraSystem(float minZoom, float maxZoom, float width, float height) {
         this.maxZoom = maxZoom;
-        this.minZoom = zoom;
-        float zoomFactorInverter = 1f / zoom;
+        this.minZoom = minZoom;
+        this.desiredZoom = minZoom;
+        float zoomFactorInverter = 1f / minZoom;
         setupViewport(width * zoomFactorInverter,
                 height * zoomFactorInverter);
-    }
-
-    public CameraSystem(float zoom) {
-        this(zoom, AOGame.GAME_SCREEN_MAX_ZOOM);
-    }
-
-    public CameraSystem(float zoom, float maxZoom) {
-        this(zoom, maxZoom, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     private void setupViewport(float width, float height) {
@@ -60,7 +65,15 @@ public class CameraSystem extends BaseSystem {
     public void zoom(int inout, float duration) {
         cameraZoomOrigin = camera.zoom;
         desiredZoom += inout * 0.025f;
-        desiredZoom = MathUtils.clamp(desiredZoom, AOGame.GAME_SCREEN_ZOOM, maxZoom);
+        desiredZoom = MathUtils.clamp(desiredZoom, minZoom, maxZoom);
         timeToCameraZoomTarget = cameraZoomDuration = duration;
+    }
+
+    @Override
+    protected void initialize() {
+        super.initialize();
+        E(world.create())
+                .aOCamera()
+                .worldPosOffsets();
     }
 }
