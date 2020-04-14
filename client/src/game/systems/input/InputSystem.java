@@ -57,6 +57,10 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
             case Input.Keys.F1:
                 alternativeKeys = !alternativeKeys;
                 break;
+            case Input.Keys.ESCAPE:
+                // @todo Desconectarse del servidor
+                screenManager.to(ScreenEnum.LOGIN);
+                break;
         }
 
         return true;
@@ -94,7 +98,6 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
         return true;
     }
 
-
     private void doActions(int keycode) {
         switch (keycode) {
             case AOKeys.INVENTORY:
@@ -125,10 +128,6 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
             case Input.Keys.L:
                 actionBarSystem.toggle();
                 break;
-            case Input.Keys.ESCAPE:
-                // Disconnect & go back to LoginScreen
-                screenManager.to(ScreenEnum.LOGIN);
-                break;
             case Input.Keys.F2:
                 screenSystem.takeScreenshot();
                 break;
@@ -144,7 +143,6 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
             case Input.Keys.NUM_9:
                 musicSystem.volumeUp(0.1f);
                 break;
-
         }
     }
 
@@ -156,7 +154,6 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
             case AlternativeKeys.SPELLS:
                 actionBarSystem.showSpells();
                 break;
-
             case AlternativeKeys.MEDITATE:
                 playerActionSystem.meditate();
                 break;
@@ -176,10 +173,6 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
             case AlternativeKeys.ATTACK_2:
                 playerActionSystem.attack();
                 break;
-            case Input.Keys.ESCAPE:
-                AOGame game = (AOGame) Gdx.app.getApplicationListener();
-
-                break;
             case Input.Keys.F2:
                 screenSystem.takeScreenshot();
                 break;
@@ -196,8 +189,6 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
             case Input.Keys.NUM_9:
                 musicSystem.volumeUp(0.1f);
                 break;
-
         }
     }
-
 }

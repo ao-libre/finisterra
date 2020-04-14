@@ -166,8 +166,8 @@ public class WorldConstructor {
      * Construye el Artemis World, inicializa e inyecta sistemas.
      * Este método es bloqueante.
      */
-    public static void create(ClientConfiguration clientConfiguration,
+    public static World create(ClientConfiguration clientConfiguration,
                               ScreenManager screenManager, DefaultAOAssetManager assetManager) {
-        new World(getWorldConfiguration(clientConfiguration, screenManager, assetManager));
+        return new World(getWorldConfiguration(clientConfiguration, screenManager, assetManager));
     }
 }

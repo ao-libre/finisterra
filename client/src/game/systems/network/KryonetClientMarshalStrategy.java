@@ -60,4 +60,8 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
     public void sendToAll(Object o) {
         ((Client) endpoint).sendTCP(o);
     }
+
+    protected Client getClient() {
+        return (Client)endpoint;
+    }
 }
