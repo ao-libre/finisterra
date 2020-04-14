@@ -83,6 +83,7 @@ public class TextureArraySpriteBatch implements Batch {
 
 	private ShaderProgram shader = null;
 	private ShaderProgram customShader = null;
+	private static String shaderErrorLog = null;
 
 	private boolean ownsShader;
 
@@ -125,7 +126,8 @@ public class TextureArraySpriteBatch implements Batch {
 	 * @param size The max number of sprites in a single batch. Max of 8191.
 	 * @param defaultShader The default shader to use. This is not owned by the TextureArraySpriteBatch and must be disposed
 	 *           separately.
-	 * @throws IllegalStateException If the device does not support texture arrays.
+	 * @throws IllegalStateException Thrown if the device does not support texture arrays. Make sure to implement a Fallback to
+	 *            {@link SpriteBatch} in case Texture Arrays are not supported on a clients device.
 	 * @See {@link#createDefaultShader()} {@link#getMaxTextureUnits()} */
 	public TextureArraySpriteBatch (int size, ShaderProgram defaultShader) throws IllegalStateException {
 
@@ -135,7 +137,7 @@ public class TextureArraySpriteBatch implements Batch {
 		getMaxTextureUnits();
 
 		if (maxTextureUnits == 0) {
-			throw new IllegalStateException("Texture Arrays are not supported on this device.");
+			throw new IllegalStateException("Texture Arrays are not supported on this device: " + System.lineSeparator() + shaderErrorLog);
 		}
 
 		if (defaultShader == null) {
@@ -209,11 +211,12 @@ public class TextureArraySpriteBatch implements Batch {
 			+ "}\n";
 
 		// The texture is simply selected from an array of textures
-		String fragmentShader = "#ifdef GL_ES\n" //
+		String fragmentShader = (Gdx.graphics.isGL30Available() ? "#version 300 es\n" : "#version 100\n")
+		    + "#ifdef GL_ES\n" //
 			+ "#define LOWP lowp\n" //
 			+ "precision mediump float;\n" //
 			+ "#else\n" //
-			+ "#define LOWP \n" //
+			+ "#define LOWP\n" //
 			+ "#endif\n" //
 			+ "varying LOWP vec4 v_color;\n" //
 			+ "varying vec2 v_texCoords;\n" //
@@ -1370,6 +1373,7 @@ public class TextureArraySpriteBatch implements Batch {
 
 				} catch (Exception e) {
 					maxTextureUnitsLocal /= 2;
+					shaderErrorLog = e.getMessage();
 				}
 			}
 
