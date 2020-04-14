@@ -9,6 +9,7 @@ import game.ClientConfiguration;
 import game.handlers.DefaultAOAssetManager;
 import game.systems.network.ClientSystem;
 import game.systems.resources.MusicSystem;
+import game.systems.resources.SoundsSystem;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.network.account.AccountLoginRequest;
 import shared.util.Messages;
@@ -22,6 +23,7 @@ public class LoginScreen extends AbstractScreen {
     private ClientSystem clientSystem;
     private ScreenManager screenManager;
     private MusicSystem musicSystem;
+    private SoundsSystem soundsSystem;
 
     private TextField emailField;
     private TextField passwordField;
@@ -111,7 +113,7 @@ public class LoginScreen extends AbstractScreen {
         disableSound.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //todo desabilitar el sonido
+                soundsSystem.setDisableSounds(!soundsSystem.isDisableSounds());
             }
         });
 

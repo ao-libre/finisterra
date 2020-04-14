@@ -14,6 +14,8 @@ public class SoundsSystem extends PassiveSystem {
     @Wire
     private DefaultAOAssetManager assetManager;
 
+    private boolean disableSounds;
+
     public long playSound(Integer soundID, boolean loop) {
         Sound sound = assetManager.getSound(soundID);
         if (sound == null) {
@@ -29,7 +31,9 @@ public class SoundsSystem extends PassiveSystem {
     }
 
     public void playSound(Integer soundID) {
-        playSound(soundID, false);
+        if(!disableSounds) {
+            playSound( soundID, false );
+        }
     }
 
     public void updateVolume(Integer soundId, long soundIndex, float volume) {
@@ -69,5 +73,13 @@ public class SoundsSystem extends PassiveSystem {
     public float getDuration(int soundID) {
         Sound sound = assetManager.getSound(soundID);
         return sound instanceof OpenALSound ? ((OpenALSound) sound).duration() : 0;
+    }
+
+    public boolean isDisableSounds() {
+        return disableSounds;
+    }
+
+    public void setDisableSounds(boolean disableSounds) {
+        this.disableSounds = disableSounds;
     }
 }
