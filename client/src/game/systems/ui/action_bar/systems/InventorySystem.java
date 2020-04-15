@@ -20,6 +20,7 @@ import game.systems.resources.MessageSystem;
 import game.systems.resources.ObjectSystem;
 import game.systems.ui.UserInterfaceContributionSystem;
 import game.systems.ui.UserInterfaceSystem;
+import game.systems.ui.action_bar.ActionBarSystem;
 import game.systems.ui.console.ConsoleSystem;
 import game.ui.Inventory;
 import shared.model.map.Tile;
@@ -48,6 +49,7 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     private IntervalSystem intervalSystem;
     private ConsoleSystem consoleSystem;
     private MessageSystem messageSystem;
+    private ActionBarSystem actionBarSystem;
 
     @Wire
     private DefaultAOAssetManager assetManager;
@@ -314,6 +316,7 @@ public class InventorySystem extends UserInterfaceContributionSystem {
 
     public void update(Bag bag) {
         inventory.update(bag);
+        actionBarSystem.updateGoldLabel(playerSystem.get().goldCount());
     }
 
     public void toggleExpanded(){

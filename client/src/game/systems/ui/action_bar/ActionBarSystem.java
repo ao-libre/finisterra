@@ -9,15 +9,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.esotericsoftware.minlog.Log;
 import component.entity.character.info.Bag;
 import component.entity.character.info.SpellBook;
+import game.systems.PlayerSystem;
 import game.systems.screen.MouseSystem;
 import game.systems.ui.UserInterfaceContributionSystem;
 import game.systems.ui.action_bar.systems.InventorySystem;
@@ -33,9 +31,12 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
     private InventorySystem inventorySystem;
     private SpellSystem spellSystem;
     private MouseSystem mouseSystem;
+    private PlayerSystem playerSystem;
+
     private Actor actionBar;
     private ImageTextButton expandInventoryButton;
     private ImageButton castButton, shotButton;
+    private Label goldLabel;
 
     public ActionBarSystem() {
         super(Aspect.one(Bag.class, SpellBook.class));
@@ -83,6 +84,12 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
             stack.add(spellSystem.getActor());
         }
         actionBar.add(stack).top().right().row();
+        actionBar.add();
+        goldLabel = new Label( "",Skins.COMODORE_SKIN);
+        goldLabel.setAlignment( 1 );
+        goldLabel.setText(String.valueOf(playerSystem.get().goldCount()));
+        goldLabel.setColor(Color.GOLDENROD);
+        actionBar.add(goldLabel);
         this.actionBar = actionBar;
     }
 
@@ -163,6 +170,10 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
     }
     public void clearShot() {
         shotButton.setChecked(false);
+    }
+
+    public void updateGoldLabel(int goldCount){
+        goldLabel.setText(String.valueOf(goldCount));
     }
 
 }
