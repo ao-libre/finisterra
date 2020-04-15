@@ -3,6 +3,7 @@ package game.screens;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -37,6 +38,7 @@ public class LoginScreen extends AbstractScreen {
     private CheckBox disableSound;
     private TextButton loginButton;
     private List<ClientConfiguration.Network.Server> serverList;
+    private Preferences preferences = Gdx.app.getPreferences("Finisterra");;
 
     public LoginScreen() {
     }
@@ -102,12 +104,22 @@ public class LoginScreen extends AbstractScreen {
         connectionTable.add(serverList).width(400).height(300); //@todo Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
 
         /* Botones para desactivar el sonido y la musica*/
+
+        /* Musica */
         disableMusic = new CheckBox( "Desabilitar Musica",getSkin() );
+        if(preferences.getBoolean( "MusicOff" )){
+            disableMusic.setChecked( true );
+            musicSystem.stopMusic();
+            musicSystem.setDisableMusic( true );
+        }
+
         disableMusic.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                musicSystem.setMusicEnabled(!musicSystem.isMusicEnabled());
-                if (musicSystem.isMusicEnabled()){
+                musicSystem.setDisableMusic(!musicSystem.isDisableMusic());
+                preferences.putBoolean( "MusicOff", disableMusic.isChecked() );
+                preferences.flush();
+                if (!musicSystem.isDisableMusic()){
                     musicSystem.playMusic( 101 );
                     musicSystem.fadeInMusic( 1f,20f );
                 }else{
@@ -115,13 +127,22 @@ public class LoginScreen extends AbstractScreen {
                 }
             }
         });
+
+        /* Sonido */
         disableSound = new CheckBox( "Desabilitar sonido",getSkin() );
+        if(preferences.getBoolean( "SoundOff" )){
+            disableSound.setChecked( true );
+            soundsSystem.setDisableSounds( true );
+        }
         disableSound.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                preferences.putBoolean( "SoundOff", disableSound.isChecked() );
+                preferences.flush();
                 soundsSystem.setDisableSounds(!soundsSystem.isDisableSounds());
             }
         });
+
         /* Agrega la imagen del logo */
         Cell<Image> logoCell = getMainTable().add(new Image( new Texture( Gdx.files.local("data/ui/images/logo-big.png")))).center();
         logoCell.row();
@@ -140,7 +161,6 @@ public class LoginScreen extends AbstractScreen {
         Table login_server = new Table();
         login_server.add(loginWindow).width(500).height(300).padLeft(10).padRight( 10 ).padTop( 10 );
         login_server.add(connectionTable).width(400).height(300).padLeft(10).padRight( 10 ).padTop( 10 ); //(*) Seteando acá el size, recursivamente tendría que resizear list.
-
 
         /* Tabla principal */
         getMainTable().add(login_server).row();
