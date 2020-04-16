@@ -6,6 +6,7 @@ import com.esotericsoftware.minlog.Log;
 import game.screens.GameScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
+import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import shared.network.init.NetworkDictionary;
 import shared.network.interfaces.INotification;
@@ -22,8 +23,8 @@ public class ClientSystem extends MarshalSystem {
         super(new NetworkDictionary(), new KryonetClientMarshalStrategy());
     }
 
-    public ClientSystem(String host, int port) {
-        super(new NetworkDictionary(), new KryonetClientMarshalStrategy(host, port));
+    public ClientSystem(String address, int port) {
+        super(new NetworkDictionary(), new KryonetClientMarshalStrategy(address, port));
     }
 
     /**
@@ -60,6 +61,21 @@ public class ClientSystem extends MarshalSystem {
         if (screenManager.getScreen() instanceof GameScreen) {
             Gdx.app.postRunnable(() -> screenManager.to(ScreenEnum.LOGIN));
         }
+    }
+
+    public boolean connect() {
+        // Inicializamos la conexion.
+        start();
+        return (getState() == MarshalState.FAILED_TO_START);
+    }
+
+    public boolean connect(String address, int port) {
+        if (getState() != MarshalState.STOPPED) {
+            stop();
+        }
+        // Seteamos la info. del servidor al que nos vamos a conectar.
+        setHost(address, port);
+        return connect();
     }
 
     public void send(Object object) {

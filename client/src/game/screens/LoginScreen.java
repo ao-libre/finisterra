@@ -15,7 +15,6 @@ import game.handlers.DefaultAOAssetManager;
 import game.systems.network.ClientSystem;
 import game.systems.resources.MusicSystem;
 import game.systems.resources.SoundsSystem;
-import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.network.account.AccountLoginRequest;
 import shared.util.Messages;
 
@@ -192,39 +191,17 @@ public class LoginScreen extends AbstractScreen {
             String ip = server.getHostname();
             int port = server.getPort();
 
-            //@todo encapsular todo este chequeo en el cliente
-            if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
-
-                if (clientSystem.getState() != MarshalState.STOPPED) {
-                    clientSystem.stop();
-                }
-
-                // Si no estamos tratando de conectarnos al servidor, intentamos conectarnos.
-                if (clientSystem.getState() == MarshalState.STOPPED) {
-
-                    // Seteamos la info. del servidor al que nos vamos a conectar.
-                    clientSystem.setHost(ip, port);
-
-
-                    // Inicializamos la conexion.
-                    clientSystem.start();
-
-                    // Si pudimos conectarnos, mandamos la peticion para loguearnos a la cuenta.
-                    if (clientSystem.getState() == MarshalState.STARTED) {
-
-                        // Enviamos la peticion de inicio de sesion.
-                        clientSystem.send(new AccountLoginRequest(email, password));
-
-                    } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
-                        // Mostramos un mensaje de error.
-                        connectionFailed();
-                    }
-                }
+            // Si podemos conectarnos, mandamos la peticion para loguearnos a la cuenta.
+            if (clientSystem.connect(ip, port)) {
+                clientSystem.send(new AccountLoginRequest(email, password));
+            } else {
+                connectionFailed();
             }
         }
     }
 
     private void connectionFailed() {
+        // Mostramos un mensaje de error.
         Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
         dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
         dialog.button("OK");
