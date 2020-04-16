@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.esotericsoftware.minlog.Log;
 import component.entity.character.info.Bag;
 import component.entity.character.info.SpellBook;
@@ -60,8 +61,9 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
             }
         });
 
-        actionBar.add();
-        actionBar.add(buttons).top().right().row();
+        actionBar.add(buttons).top().right().colspan(2).padRight( 10 ).row();
+
+        /*cast and shot*/
         Table buttonsTable = new Table();
         Stack buttonStack = new Stack();
         castButton = createCastButton();
@@ -71,8 +73,9 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
         buttonsTable.add( buttonStack ).right().row();
         expandInventoryButton = createExpandInventoryButton();
         buttonsTable.add( expandInventoryButton ).right().width(50).height(50);
-        actionBar.add(buttonsTable).padRight( -25f );
+        actionBar.add(buttonsTable).padRight( -25f ).width(100);
 
+        /* Inventary and spellbook  */
         Stack stack = new Stack();
         E e = E(entityId);
         if (e.hasBag()) {
@@ -84,12 +87,18 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
             stack.add(spellSystem.getActor());
         }
         actionBar.add(stack).top().right().row();
-        actionBar.add();
-        goldLabel = new Label( "",Skins.COMODORE_SKIN);
-        goldLabel.setAlignment( 1 );
+
+        /*gold table*/
+        Table goldTable = new Table();
+        Cell<Image> goldIconCell = goldTable.add(new Image( new Texture( Gdx.files.local("data/ui/images/gold.png"))));
+        goldIconCell.height(28).width(30).left();
+        goldLabel = new Label("",Skins.COMODORE_SKIN);
         goldLabel.setText(String.valueOf(playerSystem.get().goldCount()));
         goldLabel.setColor(Color.GOLDENROD);
-        actionBar.add(goldLabel);
+        goldLabel.setAlignment( Align.right);
+        goldTable.add(goldLabel).height(28).fillY().right();
+        actionBar.add(goldTable).colspan(2).right().padRight(10);
+
         this.actionBar = actionBar;
     }
 
