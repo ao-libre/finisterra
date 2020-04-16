@@ -16,11 +16,11 @@ import javax.sound.midi.Sequencer;
 @Wire
 public class MusicSystem extends PassiveSystem {
 
-    private Music FIRSTBGM = Gdx.audio.newMusic(Gdx.files.internal("data/music/101.mp3"));
+    private final Music FIRSTBGM = Gdx.audio.newMusic(Gdx.files.internal("data/music/101.mp3"));
     private static final float MUSIC_FADE_STEP = 0.01f;
     private static float volume = 1.0f;
-    private Music current;
-    private boolean musicEnable;
+    private Music current = FIRSTBGM;
+    private boolean disableMusic;
     @Wire
     private DefaultAOAssetManager assetManager;
 
@@ -40,16 +40,17 @@ public class MusicSystem extends PassiveSystem {
     @Override
     //todo falta implementar la forma de saber en que Screen nos encontramos y de esa forma seleccionar diferentes musicas
     protected void initialize() {
-        musicEnable = true;
-        current = FIRSTBGM;
-        current.setLooping( true );
-        current.play();
-        fadeInMusic( 1f,20f );
+        if (!disableMusic) {
+            current = FIRSTBGM;
+            current.setLooping( true );
+            current.play();
+            fadeInMusic( 1f, 20f );
         }
+    }
 
 
     public void playMusic(int musicID) {
-        if (musicEnable) {
+        if (!disableMusic) {
             if(current.isPlaying()) {
                 stopMusic();
             }
@@ -61,7 +62,6 @@ public class MusicSystem extends PassiveSystem {
             current.setVolume( volume );
             current.play();
             current.setLooping( true );
-
         }
     }
 
@@ -152,10 +152,10 @@ public class MusicSystem extends PassiveSystem {
             current.play();
         }
     }
-    public boolean isMusicEnabled(){
-        return musicEnable;
+    public boolean isDisableMusic(){
+        return disableMusic;
     }
-    public void setMusicEnabled(boolean musicEnable){
-        this.musicEnable = musicEnable;
+    public void setDisableMusic(boolean musicEnable){
+        this.disableMusic = musicEnable;
     }
 }
