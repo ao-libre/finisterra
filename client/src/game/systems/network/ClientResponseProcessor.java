@@ -4,6 +4,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
+import game.screens.CharacterSelectionScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
 import game.systems.physics.MovementProcessorSystem;
@@ -23,6 +24,7 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
     private MovementProcessorSystem movementProcessorSystem;
     private ScreenManager screenManager;
     private TimeSync timeSync;
+    private CharacterSelectionScreen characterSelectionScreen;
 
     @Override
     public void processResponse(MovementResponse movementResponse) {
@@ -65,7 +67,11 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
             */
 
             //hotfix para recuperar funcionalidad
-            screenManager.to(ScreenEnum.CREATE);
+            //screenManager.to(ScreenEnum.CREATE);
+            characterSelectionScreen.setUserCharacters( accountLoginResponse.getCharacters() );
+            characterSelectionScreen.setUserAcc(accountLoginResponse.getUsername());
+            characterSelectionScreen.windowsUpdate();
+            screenManager.to(ScreenEnum.CHAR_SELECT);
         } else {
             Dialog dialog = new Dialog("Error", screenManager.getAbstractScreen().getSkin());
             dialog.text("Error al loguearse");

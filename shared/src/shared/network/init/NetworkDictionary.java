@@ -67,10 +67,7 @@ import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
-import shared.network.user.UserCreateRequest;
-import shared.network.user.UserCreateResponse;
-import shared.network.user.UserLoginRequest;
-import shared.network.user.UserLoginResponse;
+import shared.network.user.*;
 import shared.objects.factory.ObjectFactory;
 import shared.objects.types.*;
 import shared.objects.types.common.*;
@@ -79,6 +76,7 @@ import shared.util.EntityUpdateBuilder;
 import shared.util.MapHelper;
 import shared.util.Messages;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
@@ -101,6 +99,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 SpellCastRequest.class,
                 TimeSyncRequest.class,
                 NpcInteractionRequest.class,
+                UserContinueRequest.class,
 
                 // Game Responses
                 MovementResponse.class,
@@ -156,6 +155,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 Loader.class,
                 Reader.class,
                 FluidIteratingSystem.class,
+                ArrayList.class,
 
                 ObjectLoader.class,
                 SpellLoader.class,

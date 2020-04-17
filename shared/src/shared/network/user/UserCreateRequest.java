@@ -8,12 +8,14 @@ public class UserCreateRequest implements IRequest {
     // TODO convert to model
     private String name;
     private int heroId;
+    private String userAcc;
 
     public UserCreateRequest() {}
 
-    public UserCreateRequest(String name, int heroId) {
+    public UserCreateRequest(String name, int heroId, String userAcc) {
         this.name = name;
         this.heroId = heroId;
+        this.userAcc = userAcc;
     }
 
     public String getName() {
@@ -22,6 +24,10 @@ public class UserCreateRequest implements IRequest {
 
     public int getHeroId() {
         return heroId;
+    }
+
+    public String getUserAcc() {
+        return userAcc;
     }
 
     @Override

@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import game.systems.network.ClientSystem;
 import shared.interfaces.Hero;
-import shared.network.user.UserCreateRequest;
 
 @Wire
 public class CreateScreen extends AbstractScreen {
@@ -57,7 +56,7 @@ public class CreateScreen extends AbstractScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 // send request to create user
-                clientSystem.send(new UserCreateRequest(name.getText(), heroSelectBox.getSelected().ordinal()));
+                //clientSystem.send(new UserCreateRequest(name.getText(), heroSelectBox.getSelected().ordinal()));
                 registerButton.setDisabled(true);
                 Timer.schedule(new Timer.Task() {
                     @Override

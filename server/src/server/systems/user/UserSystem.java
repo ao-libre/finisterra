@@ -7,9 +7,12 @@ import com.artemis.managers.WorldSerializationManager;
 import com.artemis.utils.IntBag;
 import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
+import server.database.Account;
 import server.systems.EntityFactorySystem;
 import server.systems.ServerSystem;
+import server.systems.account.AccountSystem;
 import server.systems.manager.WorldManager;
+import shared.network.user.UserContinueRequest;
 import shared.network.user.UserCreateResponse;
 import shared.network.user.UserLoginResponse;
 
@@ -23,6 +26,7 @@ public class UserSystem extends PassiveSystem {
     private WorldManager worldManager;
     private EntityFactorySystem entityFactorySystem;
     private WorldSerializationManager worldSerializationManager;
+    private AccountSystem accountSystem;
 
     public void login(int connectionId, String userName) {
         if (userExists(userName)) {
@@ -42,7 +46,7 @@ public class UserSystem extends PassiveSystem {
         }
     }
 
-    public void create(int connectionId, String name, int heroId) {
+    public void create(int connectionId, String name, int heroId, String userAcc) {
         if (userExists(name)) {
             // send user exists
             serverSystem.sendTo(connectionId,
@@ -51,6 +55,8 @@ public class UserSystem extends PassiveSystem {
             // create and add to account
             int entityId = entityFactorySystem.create(name, heroId);
             saveUser(name);
+            Account account = accountSystem.getAccount( userAcc );
+            account.addCharacter( name,0 );
             // send ok and login
             serverSystem.sendTo(connectionId,
                     UserCreateResponse.ok());
@@ -86,5 +92,15 @@ public class UserSystem extends PassiveSystem {
             e.printStackTrace();
         }
         return Optional.empty();
+    }
+
+    public void userContinue(int connectionId, UserContinueRequest userContinueRequest) {
+        String name = userContinueRequest.getName();
+        if (loadUser(name).isEmpty()){
+            Log.error( "error al cargar el usuario " +name );
+        } else {
+            int entityId = loadUser( name ).get();
+            worldManager.login( connectionId, entityId );
+        }
     }
 }
