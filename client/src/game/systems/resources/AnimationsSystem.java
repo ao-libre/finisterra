@@ -15,7 +15,9 @@ import component.entity.character.parts.Body;
 import component.entity.character.parts.Head;
 import component.graphic.Effect;
 import game.handlers.DefaultAOAssetManager;
+import model.descriptors.Descriptor;
 import model.descriptors.HeadDescriptor;
+import model.descriptors.HelmetDescriptor;
 import model.descriptors.IDescriptor;
 import model.textures.AOAnimation;
 import model.textures.AOImage;
@@ -37,7 +39,7 @@ public class AnimationsSystem extends BaseSystem {
 
     private static LoadingCache<Integer, AOTexture> textures;
     private static LoadingCache<Index, List<AOTexture>> headAnimations;
-    private static LoadingCache<Index, List<BundledAnimation>> helmetAnimations;
+    private static LoadingCache<Index, List<AOTexture>> helmetAnimations;
     private static LoadingCache<Index, List<BundledAnimation>> weaponAnimations;
     private static LoadingCache<Index, List<BundledAnimation>> shieldAnimations;
     private static LoadingCache<Index, List<BundledAnimation>> bodyAnimations;
@@ -68,10 +70,12 @@ public class AnimationsSystem extends BaseSystem {
                     return createTextures(descriptor);
                 }));
         bodyAnimations = createCache((body) -> descriptorsSystem.getBody(body.getIndex()));
-        helmetAnimations = createCache((helmet) -> {
-            HelmetObj helmetObj = (HelmetObj) objectSystem.getObject(helmet.getIndex()).get();
-            return descriptorsSystem.getHelmet(Math.max(helmetObj.getAnimationId(), 0));
-        });
+        helmetAnimations = CacheBuilder.newBuilder().expireAfterAccess(3, TimeUnit.MINUTES)
+                .build(CacheLoader.from(helmet -> {
+                    HelmetObj helmetObj = (HelmetObj) objectSystem.getObject(helmet.getIndex()).get();
+                    HelmetDescriptor descriptor = descriptorsSystem.getHelmet(helmetObj.getAnimationId());
+                    return createTextures(descriptor);
+                }));
         weaponAnimations = createCache((weapon) -> {
             WeaponObj weaponObj = (WeaponObj) objectSystem.getObject(weapon.getIndex()).get();
             return descriptorsSystem.getWeapon(Math.max(weaponObj.getAnimationId(), 0));
@@ -110,7 +114,7 @@ public class AnimationsSystem extends BaseSystem {
         return animations;
     }
 
-    private List<AOTexture> createTextures(HeadDescriptor descriptor) {
+    private List<AOTexture> createTextures(Descriptor descriptor) {
         List<AOTexture> heads = new ArrayList<>();
         int[] indexes = descriptor.getIndexs();
         for (int id : indexes) {
@@ -132,7 +136,7 @@ public class AnimationsSystem extends BaseSystem {
         return weaponAnimations.getUnchecked(weapon).get(current);
     }
 
-    public BundledAnimation getHelmetsAnimation(Helmet helmet, int current) {
+    public AOTexture getHelmetTexture(Helmet helmet, int current) {
         return helmetAnimations.getUnchecked(helmet).get(current);
     }
 

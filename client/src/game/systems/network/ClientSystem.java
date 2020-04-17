@@ -66,7 +66,7 @@ public class ClientSystem extends MarshalSystem {
     public boolean connect() {
         // Inicializamos la conexion.
         start();
-        return (getState() == MarshalState.FAILED_TO_START);
+        return (getState() == MarshalState.STARTED);
     }
 
     public boolean connect(String address, int port) {

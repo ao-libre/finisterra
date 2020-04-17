@@ -86,6 +86,7 @@ public class DesktopLauncher {
         try {
             new Lwjgl3Application(new AOGame(config), cfg);
         } catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(null, e.getMessage());
             try
             {

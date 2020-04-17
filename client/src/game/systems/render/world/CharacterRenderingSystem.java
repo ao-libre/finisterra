@@ -228,10 +228,12 @@ public class CharacterRenderingSystem extends RenderingSystem {
         void drawHelmet() {
             if (player.hasHelmet()) {
                 Helmet helmet = player.getHelmet();
-                BundledAnimation animation = animationsSystem.getHelmetsAnimation(helmet, heading.current);
-                float offsetY = headOffsetY - 4 * SCALE;
-                float offsetX = 4.0f * SCALE;
-                draw(animation, this.bodyPixelOffsetX, this.bodyPixelOffsetY, offsetX, offsetY);
+                AOTexture texture = animationsSystem.getHelmetTexture(helmet, heading.current);
+                if (texture != null) {
+                    float offsetX = 4.0f * SCALE;
+                    float offsetY = headOffsetY - (shouldFlip ? -1 : 1) * 4 * SCALE;
+                    drawTexture(texture.getTexture(), this.bodyPixelOffsetX, this.bodyPixelOffsetY, offsetX, offsetY);
+                }
             }
         }
 
