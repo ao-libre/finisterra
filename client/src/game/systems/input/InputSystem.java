@@ -1,14 +1,13 @@
 package game.systems.input;
 
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import game.AOGame;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.camera.CameraSystem;
+import game.systems.network.ClientSystem;
 import game.systems.resources.MusicSystem;
 import game.systems.screen.MouseSystem;
 import game.systems.screen.ScreenSystem;
@@ -29,6 +28,7 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
     private CameraSystem cameraSystem;
     private ScreenSystem screenSystem;
     private ScreenManager screenManager;
+    private ClientSystem clientSystem;
 
     private InventorySystem inventorySystem;
     private SpellSystem spellSystem;
@@ -58,7 +58,7 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
                 alternativeKeys = !alternativeKeys;
                 break;
             case Input.Keys.ESCAPE:
-                // @todo Desconectarse del servidor
+                clientSystem.stop();
                 screenManager.to(ScreenEnum.LOGIN);
                 break;
         }
