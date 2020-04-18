@@ -33,11 +33,11 @@ public abstract class AbstractScreen extends PassiveSystem implements Screen {
         mainTable.setFillParent(true);
         mainTable.setBackground(BACKGROUND);
         stage.addActor(mainTable);
-
     }
 
     @Override
     protected void initialize() {
+        mainTable.clear();
         createUI();
     }
 
