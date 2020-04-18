@@ -124,7 +124,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
                     playButtonArray.get( i ).addListener( new ChangeListener() {
                         @Override
                         public void changed(ChangeEvent event, Actor actor) {
-                            // send request to create user
+                            // send request to login user
                             clientSystem.send( new UserContinueRequest( charName ) );
                             for (int x = 0; x < 6; x++) {
                                 booleanArrayList.add( x, playButtonArray.get( x ).isDisabled() );
@@ -135,7 +135,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
                                 @Override
                                 public void run() {
                                     for (int y = 0; y < 6; y++) {
-                                        playButtonArray.get( index ).setDisabled( booleanArrayList.get( y ) );
+                                        playButtonArray.get( y ).setDisabled( booleanArrayList.get( y ) );
                                     }
                                 }
                             }, 2 );
@@ -143,16 +143,14 @@ public class CharacterSelectionScreen extends AbstractScreen {
                     } );
                 } else {
                     playButtonArray.get( i ).setDisabled( true );
-
-                    createButtonArray.get( i ).addListener( new ChangeListener() {
-                        @Override
-                        public void changed(ChangeEvent event, Actor actor) {
-                            toggleWindows();
-                            registerButtonListener( index );
-                        }
-                    } );
                 }
-
+                createButtonArray.get( i ).addListener( new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        toggleWindows();
+                        registerButtonListener( index );
+                    }
+                } );
             }
         }
     }
