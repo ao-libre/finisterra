@@ -6,17 +6,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
 import game.ClientConfiguration;
-import game.handlers.AOAssetManager;
+import game.handlers.DefaultAOAssetManager;
 import game.systems.network.ClientSystem;
-import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.network.account.AccountCreationRequest;
-import shared.network.account.AccountLoginRequest;
 import shared.util.Messages;
 
 @Wire
 public class SignUpScreen extends AbstractScreen {
 
-    private AOAssetManager assetManager;
+    @Wire
+    private DefaultAOAssetManager assetManager;
     private ClientConfiguration clientConfiguration;
     private ClientSystem clientSystem;
     private ScreenManager screenManager;
@@ -46,8 +45,8 @@ public class SignUpScreen extends AbstractScreen {
 
         registerButton = new TextButton("Register account", getSkin());
         registerButton.addListener(new RegisterButtonListener());
-		
-		TextButton goBackButton = new TextButton("Go Back", getSkin());
+
+        TextButton goBackButton = new TextButton("Go Back", getSkin());
         goBackButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
