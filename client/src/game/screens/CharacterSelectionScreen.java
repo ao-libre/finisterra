@@ -23,12 +23,15 @@ public class CharacterSelectionScreen extends AbstractScreen {
     private String charName;
     private String userAcc;
     private ArrayList<String> userCharacters;
+    private ArrayList<Table> userTableArray;
+    private ArrayList<Label> nameLabelArray;
+    private ArrayList<TextButton> playButtonArray, createButtonArray;
 
     private Window charSelectWindows, createWindow;
-    private Table characterTable1;
-    private TextButton create, playButton;
-    private Label nameLabel1;
+    private TextButton registerButton ;
     private Stack stack;
+    private TextField name;
+    private SelectBox< Hero > heroSelectBox;
 
     public CharacterSelectionScreen(){
     }
@@ -40,42 +43,17 @@ public class CharacterSelectionScreen extends AbstractScreen {
     @Override
     public void createUI() {
         stack = new Stack();
+        userTableArray = new ArrayList<>();
+        nameLabelArray = new ArrayList<>();
+        playButtonArray = new ArrayList<>();
+        nameLabelArray = new ArrayList<>();
+        createButtonArray = new ArrayList<>();
 
         charSelectWindows = new Window("", getSkin());
         createWindow = new Window("", getSkin());
-        playButton = new TextButton("Jugar", getSkin());
-        playButton.setDisabled( true );
-        create = new TextButton("Create", getSkin());
-        create.addListener( new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                toggleWindows();
-            }
-        } );
-
-        TextButton toLoginbutton = new TextButton("To Login", getSkin());
-        toLoginbutton.addListener( new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                screenManager.to(ScreenEnum.LOGIN);
-            }
-        } );
-
 
         /*ventana de seleccion de personajes*/
-
-        /* tabla para el primer pj */ // todo hacer 6 iguales
-        characterTable1 = new Table();
-        characterTable1.setBackground( getSkin().getDrawable( "menu-frame" ));
-        nameLabel1 = new Label( "",getSkin() );
-        characterTable1.add(nameLabel1).center().colspan( 2 ).row();
-        characterTable1.add().height( 200 ).colspan( 2 ).row();//espacio para agregar imagen del pj
-        characterTable1.add(); // HP labels
-        characterTable1.add().row(); // Mp labels
-        characterTable1.add(playButton).bottom().left().width( 140 );
-        characterTable1.add(create).bottom().right().width( 140 );
-        charSelectWindows.add(characterTable1).width(300).height(300).row();
-        charSelectWindows.add(toLoginbutton).bottom().left().pad( 10 );
+        createUsersTable();
 
         /*ventana de creacion de personajes*/
 
@@ -83,27 +61,20 @@ public class CharacterSelectionScreen extends AbstractScreen {
         Label nameLabel = new Label("Name:", getSkin());
         createWindow.add(nameLabel).row();
 
-        TextField name = new TextField("", getSkin());
+        name = new TextField("", getSkin());
         createWindow.add(name).row();
 
         Label heroLabel = new Label("Hero: ", getSkin());
         createWindow.add(heroLabel).row();
 
-        SelectBox< Hero > heroSelectBox = new SelectBox<>(getSkin());
+        heroSelectBox = new SelectBox<>(getSkin());
         Array<Hero> heros = new Array<>();
         Hero.getHeroes().forEach(heros::add);
         heroSelectBox.setItems(heros);
         createWindow.add(heroSelectBox).row();
 
-        TextButton registerButton = new TextButton("Create", getSkin());
-        registerButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                // send request to create user
-                clientSystem.send(new UserCreateRequest(name.getText(), heroSelectBox.getSelected().ordinal(),userAcc));
-                toggleWindows();
-            }
-        });
+        registerButton = new TextButton("Create", getSkin());
+
         createWindow.add(registerButton).row();
 
         TextButton goBackButton = new TextButton("Go Back", getSkin());
@@ -137,28 +108,84 @@ public class CharacterSelectionScreen extends AbstractScreen {
     }
 
     public void windowsUpdate(){
+
         if (!userCharacters.isEmpty()) {
-            charName = userCharacters.get( 0 );
-            nameLabel1.setText(charName);
-            playButton.setDisabled( false );
-            playButton.addListener(new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    // send request to create user
-                    clientSystem.send(new UserContinueRequest(charName));
-                    playButton.setDisabled(true);
-                    Timer.schedule( new Timer.Task() {
+            for (int i = 0; i < 6; i++) {
+                int index = i;
+                if (!userCharacters.get( i ).isBlank()) {
+                    charName = userCharacters.get( i );
+                    nameLabelArray.get( i ).setText( charName );
+                    playButtonArray.get( i ).setDisabled( false );
+                    playButtonArray.get( i ).addListener( new ChangeListener() {
                         @Override
-                        public void run() {
-                            playButton.setDisabled(false);
+                        public void changed(ChangeEvent event, Actor actor) {
+                            // send request to create user
+                            clientSystem.send( new UserContinueRequest(charName) );
+                            playButtonArray.get( index ).setDisabled( true );
+                            Timer.schedule( new Timer.Task() {
+                                @Override
+                                public void run() {
+                                    playButtonArray.get( index ).setDisabled( false );
+                                }
+                            }, 2 );
                         }
-                    }, 2);
+                    } );
+                }else {
+                    playButtonArray.get( i ).setDisabled(true);
+
+                    createButtonArray.get( i ).addListener( new ChangeListener() {
+                        @Override
+                        public void changed(ChangeEvent event, Actor actor) {
+                            toggleWindows();
+                            registerButtonListener(index);
+                        }
+                    } );
                 }
-            });
 
-        } else {
-            characterTable1.add(create);
+            }
         }
+    }
+    private void createUsersTable(){
 
+        for (int i = 0; i < 6; i++) {
+            Table newSlot = new Table();
+            newSlot.setBackground( getSkin().getDrawable("menu-frame" ));
+            Label userName = new Label("", getSkin());
+            TextButton playTextButton = new TextButton( "Jugar",getSkin() );
+            TextButton createTextButton = new TextButton( "Crear",getSkin() );
+            playButtonArray.add( playTextButton );
+            createButtonArray.add( createTextButton );
+            userTableArray.add( newSlot );
+            nameLabelArray.add( userName );
+            userTableArray.get( i ).add( nameLabelArray.get(i)).colspan( 2 ).row();
+            userTableArray.get( i ).add().height( 200 ).row();
+            userTableArray.get( i ); // HP labels
+            userTableArray.get( i ); // Mp labels
+            userTableArray.get( i ).add(playButtonArray.get( i )).left().width( 120 ).padLeft( 5 );
+            userTableArray.get( i ).add(createButtonArray.get( i )).right().width( 120 ).padRight( 5 );
+            charSelectWindows.add( userTableArray.get(i)).width(300).height(300);
+            if (i==2){
+                charSelectWindows.row();
+            }
+        }
+        charSelectWindows.row();
+        TextButton toLoginButton = new TextButton("To Login", getSkin());
+        toLoginButton.addListener( new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                screenManager.to(ScreenEnum.LOGIN);
+            }
+        } );
+        charSelectWindows.add(toLoginButton).bottom().right();
+    }
+    private void registerButtonListener(int index){
+        registerButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // send request to create user
+                clientSystem.send(new UserCreateRequest(name.getText(), heroSelectBox.getSelected().ordinal(),userAcc));
+                toggleWindows();
+            }
+        });
     }
 }
