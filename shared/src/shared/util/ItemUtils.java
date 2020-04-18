@@ -17,6 +17,7 @@ public class ItemUtils {
         usableObjects.add(Type.FOOD);
         usableObjects.add(Type.MUSICAL);
         usableObjects.add(Type.TELEPORT);
+        usableObjects.add(Type.GOLD);
     }
 
     public static boolean canEquip(Obj obj) {

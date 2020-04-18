@@ -6,16 +6,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
 import game.ClientConfiguration;
-import game.handlers.AOAssetManager;
+import game.handlers.DefaultAOAssetManager;
 import game.systems.network.ClientSystem;
-import net.mostlyoriginal.api.network.marshal.common.MarshalState;
 import shared.network.account.AccountCreationRequest;
 import shared.util.Messages;
 
 @Wire
 public class SignUpScreen extends AbstractScreen {
 
-    private AOAssetManager assetManager;
+    @Wire
+    private DefaultAOAssetManager assetManager;
     private ClientConfiguration clientConfiguration;
     private ClientSystem clientSystem;
     private ScreenManager screenManager;
@@ -45,8 +45,8 @@ public class SignUpScreen extends AbstractScreen {
 
         registerButton = new TextButton("Register account", getSkin());
         registerButton.addListener(new RegisterButtonListener());
-		
-		TextButton goBackButton = new TextButton("Go Back", getSkin());
+
+        TextButton goBackButton = new TextButton("Go Back", getSkin());
         goBackButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -105,47 +105,26 @@ public class SignUpScreen extends AbstractScreen {
                 return;
             }
 
-            /* Conectar el ClientSystem */
+            // Conectar el ClientSystem
             ClientConfiguration.Network.Server server = serverList.getSelected();
             if (server == null) return;
             String ip = server.getHostname();
             int port = server.getPort();
 
-            //@todo encapsular todo este chequeo en el cliente
-            if (clientSystem.getState() != MarshalState.STARTING && clientSystem.getState() != MarshalState.STOPPING) {
-
-                if (clientSystem.getState() != MarshalState.STOPPED) {
-                    clientSystem.stop();
-                }
-
-                // Si no estamos tratando de conectarnos al servidor, intentamos conectarnos.
-                if (clientSystem.getState() == MarshalState.STOPPED) {
-
-                    // Seteamos la info. del servidor al que nos vamos a conectar.
-                    clientSystem.setHost(ip, port);
-
-                    // Inicializamos la conexion.
-                    clientSystem.start();
-
-                    // Si pudimos conectarnos, mandamos la peticion para loguearnos a la cuenta.
-                    if (clientSystem.getState() == MarshalState.STARTED) {
-
-                        // Enviamos la peticion de inicio de sesion.
-                        clientSystem.send(new AccountCreationRequest(username, email, password1));
-
-                    } else if (clientSystem.getState() == MarshalState.FAILED_TO_START) {
-                        // Mostramos un mensaje de error.
-                        Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
-                        dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
-                        dialog.button("OK");
-                        dialog.show(getStage());
-                    }
-                }
+            // Si podemos conectarnos, mandamos la peticion para crear a la cuenta.
+            if (clientSystem.connect(ip, port)) {
+                clientSystem.send(new AccountCreationRequest(username, email, password1));
+            } else {
+                connectionFailed();
             }
         }
     }
 
-    @Override
-    protected void keyPressed(int keyCode) {
+    private void connectionFailed() {
+        // Mostramos un mensaje de error.
+        Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
+        dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
+        dialog.button("OK");
+        dialog.show(getStage());
     }
 }

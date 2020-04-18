@@ -39,7 +39,7 @@ public class ObjectRenderingSystem extends RenderingSystem {
             } else {
                 e.getScale().scale += world.delta * 2;
             }
-            float scale = Interpolation.swingOut.apply(e.getScale().scale);
+            float scale = e.getScale().scale < 1.0f ? Interpolation.swingOut.apply(e.getScale().scale) : 1;
             TextureRegion texture = objectSystem.getIngameGraphic(obj);
             float width = scale * texture.getRegionWidth();
             float height = scale * texture.getRegionHeight();

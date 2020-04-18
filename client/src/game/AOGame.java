@@ -43,6 +43,11 @@ public class AOGame extends Game {
             this.assetManager = assetManager;
             this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
             screenManager.to(ScreenEnum.LOGIN);
+            screenManager.addListener((screenEnum -> {
+                if (screenEnum.equals(ScreenEnum.LOGIN)) {
+                    this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
+                }
+            }));
         });
     }
 
