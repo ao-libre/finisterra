@@ -42,8 +42,9 @@ public class Account extends POJO {
     public boolean isBanned() { return banned; }
     public ArrayList<String> getCharacters() { return characters; }
     public void addCharacter(String character, int index) {
-        characters.add(index, character);
-        Log.info("agregado el pj " +character + "en la posicon " +index + "a la cuenta");
+        // todo delete old charater file
+        characters.set( index, character );
+        Log.info("Agregado el pj " +character + " en la posicon " +index + " a la cuenta.");
         update();
     }
 

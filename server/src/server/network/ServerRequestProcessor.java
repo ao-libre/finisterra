@@ -103,12 +103,12 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
 
     @Override
     public void processRequest(UserContinueRequest userContinueRequest, int connectionId) {
-        userSystem.userContinue(connectionId, userContinueRequest);
+        userSystem.login(connectionId, userContinueRequest.getName());
     }
 
     @Override
     public void processRequest(@NotNull UserCreateRequest request, int connectionId) {
-        userSystem.create(connectionId, request.getName(), request.getHeroId(),request.getUserAcc());
+        userSystem.create(connectionId, request.getName(), request.getHeroId(),request.getUserAcc(),request.getIndex());
     }
 
     /**

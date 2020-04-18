@@ -12,7 +12,6 @@ import server.systems.EntityFactorySystem;
 import server.systems.ServerSystem;
 import server.systems.account.AccountSystem;
 import server.systems.manager.WorldManager;
-import shared.network.user.UserContinueRequest;
 import shared.network.user.UserCreateResponse;
 import shared.network.user.UserLoginResponse;
 
@@ -46,7 +45,7 @@ public class UserSystem extends PassiveSystem {
         }
     }
 
-    public void create(int connectionId, String name, int heroId, String userAcc) {
+    public void create(int connectionId, String name, int heroId, String userAcc, int index) {
         if (userExists(name)) {
             // send user exists
             serverSystem.sendTo(connectionId,
@@ -56,7 +55,7 @@ public class UserSystem extends PassiveSystem {
             int entityId = entityFactorySystem.create(name, heroId);
             saveUser(name);
             Account account = accountSystem.getAccount( userAcc );
-            account.addCharacter( name,0 );
+            account.addCharacter( name, index );
             // send ok and login
             serverSystem.sendTo(connectionId,
                     UserCreateResponse.ok());
@@ -92,15 +91,5 @@ public class UserSystem extends PassiveSystem {
             e.printStackTrace();
         }
         return Optional.empty();
-    }
-
-    public void userContinue(int connectionId, UserContinueRequest userContinueRequest) {
-        String name = userContinueRequest.getName();
-        if (loadUser(name).isEmpty()){
-            Log.error( "error al cargar el usuario " +name );
-        } else {
-            int entityId = loadUser( name ).get();
-            worldManager.login( connectionId, entityId );
-        }
     }
 }
