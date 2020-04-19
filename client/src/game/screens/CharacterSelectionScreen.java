@@ -121,26 +121,8 @@ public class CharacterSelectionScreen extends AbstractScreen {
                     charName = userCharacters.get( i );
                     nameLabelArray.get( i ).setText( charName );
                     playButtonArray.get( i ).setDisabled( false );
-                    playButtonArray.get( i ).addListener( new ChangeListener() {
-                        @Override
-                        public void changed(ChangeEvent event, Actor actor) {
-                            // send request to login user
-                            clientSystem.send( new UserContinueRequest( charName ) );
-                            for (int x = 0; x < 6; x++) {
-                                booleanArrayList.add( x, playButtonArray.get( x ).isDisabled() );
-                                playButtonArray.get( x ).setDisabled( true );
-                            }
-                            playButtonArray.get( index ).setDisabled( true );
-                            Timer.schedule( new Timer.Task() {
-                                @Override
-                                public void run() {
-                                    for (int y = 0; y < 6; y++) {
-                                        playButtonArray.get( y ).setDisabled( booleanArrayList.get( y ) );
-                                    }
-                                }
-                            }, 2 );
-                        }
-                    } );
+                    playButtonListener(i, charName );
+
                 } else {
                     playButtonArray.get( i ).setDisabled( true );
                 }
@@ -201,13 +183,41 @@ public class CharacterSelectionScreen extends AbstractScreen {
         registerButton.addListener( new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // send request to create user
-                clientSystem.send( new UserCreateRequest( name.getText(), heroSelectBox.getSelected().ordinal(), userAcc, index ) );
-                registerButton.setDisabled( true );
+                if (name.getText().isBlank()){
+                    Dialog dialog = new Dialog( "Error", getSkin());
+                    dialog.add("El nombre no puede estar en blanco");
+                    dialog.button("OK");
+                    dialog.show(screenManager.getAbstractScreen().getStage());
+                }else {
+                    // send request to create user
+                    clientSystem.send( new UserCreateRequest( name.getText(), heroSelectBox.getSelected().ordinal(), userAcc, index ) );
+                    registerButton.setDisabled( true );
+                    Timer.schedule( new Timer.Task() {
+                        @Override
+                        public void run() {
+                            registerButton.setDisabled( false );
+                        }
+                    }, 2 );
+                }
+            }
+        } );
+    }
+    private void playButtonListener(int index, String userName ) {
+        playButtonArray.get( index ).addListener( new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                // send request to login user
+                clientSystem.send( new UserContinueRequest( userName ) );
+                for (int x = 0; x < 6; x++) {
+                    booleanArrayList.add( x, playButtonArray.get( x ).isDisabled() );
+                    playButtonArray.get( x ).setDisabled( true );
+                }
                 Timer.schedule( new Timer.Task() {
                     @Override
                     public void run() {
-                        registerButton.setDisabled( false );
+                        for (int y = 0; y < 6; y++) {
+                            playButtonArray.get( y ).setDisabled( booleanArrayList.get( y ) );
+                        }
                     }
                 }, 2 );
             }

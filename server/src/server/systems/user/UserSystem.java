@@ -36,12 +36,12 @@ public class UserSystem extends PassiveSystem {
                                 worldManager.login(connectionId, id);
                             },
                             () -> serverSystem.sendTo(connectionId,
-                                    UserLoginResponse.failed("Hubo un problema al leer el personaje")));
+                                    UserLoginResponse.failed("Hubo un problema al leer el personaje " + userName)));
         } else {
             // don't exist (should never happen)
             // TODO remove from Account ?
             serverSystem.sendTo(connectionId,
-                    UserLoginResponse.failed("Este personaje no existe!"));
+                    UserLoginResponse.failed("Este personaje " +userName + " no existe!"));
         }
     }
 
