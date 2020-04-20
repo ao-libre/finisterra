@@ -9,6 +9,7 @@ import com.esotericsoftware.minlog.Log;
 import game.screens.LoadingScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
+import game.systems.resources.MusicSystem;
 import shared.util.LogSystem;
 
 /**
@@ -21,6 +22,7 @@ public class AOGame extends Game {
     private AssetManager assetManager;
     private ClientConfiguration clientConfiguration;
     private World world;
+    private MusicSystem musicSystem;
 
     /**
      * Constructor de la clase.
@@ -44,8 +46,18 @@ public class AOGame extends Game {
             this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
             screenManager.to(ScreenEnum.LOGIN);
             screenManager.addListener((screenEnum -> {
-                if (screenEnum.equals(ScreenEnum.LOGIN)) {
-                    this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
+                switch( screenEnum ) {
+                    case LOGIN:
+                        this.musicSystem = world.getSystem( MusicSystem.class );
+                        musicSystem.stopMusic();
+                        this.world = WorldConstructor.create( clientConfiguration, screenManager, assetManager );
+                        this.musicSystem = world.getSystem( MusicSystem.class );
+                        musicSystem.playMusic( 101 );
+                        musicSystem.fadeInMusic( 1, 20 );
+                        break;
+                    case GAME:
+                        this.musicSystem = world.getSystem( MusicSystem.class );
+                        musicSystem.playMusic( 1 );
                 }
             }));
         });
