@@ -1,6 +1,9 @@
 package server.systems;
 
+import com.artemis.Component;
 import com.artemis.E;
+import com.artemis.Entity;
+import com.artemis.EntityEdit;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
 import component.entity.character.states.Heading;
@@ -38,6 +41,13 @@ public class EntityFactorySystem extends PassiveSystem {
     private PathFindingSystem pathFindingSystem;
     private NPCManager npcManager;
 
+    // Create entity with current components
+    public int create(Collection<? extends Component> components) {
+        Entity entity = world.createEntity();
+        EntityEdit edit = entity.edit();
+        components.forEach(edit::add);
+        return entity.getId();
+    }
 
     public void createObject(int objIndex, int objCount, WorldPos pos) {
         int objId = world.create();
@@ -150,6 +160,7 @@ public class EntityFactorySystem extends PassiveSystem {
         entity.hitMax(2).hitMin(1);
     }
     //TODO cambiado a public para poder resetear las heads antes era private, volver a modificar cuando se guarden en DB las cabezas de los pj
+
     public void setHead(E entity, Race race) {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         //TODO onlyWoman desde init.json

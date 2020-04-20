@@ -67,6 +67,14 @@ public class LoginScreen extends AbstractScreen {
         passwordField.setPasswordCharacter('*');
         passwordField.setPasswordMode(true);
         rememberMe = new CheckBox("Remember me", getSkin());
+        if(preferences.getBoolean( "rememberMe" )){
+            rememberMe.setChecked( true );
+            if (emailField.getText().isBlank()) {
+                if(!preferences.getString( "userEmail" ).isBlank()){
+                    emailField.setText( preferences.getString( "userEmail" ) );
+                }
+            }
+        }
         seePassword = new CheckBox("See Password", getSkin());
         seePassword.addListener(new ChangeListener() {
             @Override
@@ -178,6 +186,14 @@ public class LoginScreen extends AbstractScreen {
                     loginButton.setDisabled(false);
                 }
             }, 2);
+            if (rememberMe.isChecked()){
+                preferences.putString("userEmail",emailField.getText());
+                preferences.putBoolean("rememberMe",true);
+            } else {
+                preferences.remove( "userEmail" );
+                preferences.putBoolean("rememberMe",false);
+            }
+            preferences.flush();
 
             String email = emailField.getText();
             String password = passwordField.getText();

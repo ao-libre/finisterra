@@ -3,12 +3,8 @@ package server.network;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.esotericsoftware.minlog.Log;
 import component.console.ConsoleMessage;
-import component.entity.character.info.Bag;
 import component.entity.world.Dialog;
-import component.entity.world.Object;
-import component.position.WorldPos;
 import org.jetbrains.annotations.NotNull;
 import server.systems.CommandSystem;
 import server.systems.MeditateSystem;
@@ -18,7 +14,10 @@ import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.combat.RangedCombatSystem;
 import server.systems.entity.MovementSystem;
-import server.systems.manager.*;
+import server.systems.manager.ItemManager;
+import server.systems.manager.MapManager;
+import server.systems.manager.NPCManager;
+import server.systems.manager.WorldManager;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.MessageSystem;
 import server.systems.network.UpdateTo;
@@ -27,27 +26,19 @@ import server.systems.user.PlayerActionSystem;
 import server.systems.user.UserSystem;
 import shared.interfaces.Intervals;
 import shared.model.AttackType;
-import shared.model.map.Map;
-import shared.model.map.Tile;
-import shared.model.map.WorldPosition;
 import shared.model.npcs.NPC;
 import shared.network.account.AccountCreationRequest;
 import shared.network.account.AccountLoginRequest;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
-import shared.network.interaction.DropItem;
-import shared.network.interaction.MeditateRequest;
-import shared.network.interaction.NpcInteractionRequest;
-import shared.network.interaction.TakeItemRequest;
-import shared.network.interaction.TalkRequest;
+import shared.network.interaction.*;
 import shared.network.interfaces.DefaultRequestProcessor;
-import shared.network.inventory.InventoryUpdate;
 import shared.network.inventory.ItemActionRequest;
-import shared.network.inventory.ItemActionRequest.ItemAction;
 import shared.network.movement.MovementRequest;
 import shared.network.notifications.EntityUpdate;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
+import shared.network.user.UserContinueRequest;
 import shared.network.user.UserCreateRequest;
 import shared.network.user.UserLoginRequest;
 import shared.util.EntityUpdateBuilder;
@@ -111,8 +102,13 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     }
 
     @Override
+    public void processRequest(UserContinueRequest userContinueRequest, int connectionId) {
+        userSystem.login(connectionId, userContinueRequest.getName());
+    }
+
+    @Override
     public void processRequest(@NotNull UserCreateRequest request, int connectionId) {
-        userSystem.create(connectionId, request.getName(), request.getHeroId());
+        userSystem.create(connectionId, request.getName(), request.getHeroId(),request.getUserAcc(),request.getIndex());
     }
 
     /**

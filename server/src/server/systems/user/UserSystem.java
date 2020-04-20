@@ -1,48 +1,77 @@
 package server.systems.user;
 
+import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import com.artemis.io.SaveFileFormat;
-import com.artemis.managers.WorldSerializationManager;
-import com.artemis.utils.IntBag;
+import com.esotericsoftware.jsonbeans.Json;
+import com.esotericsoftware.jsonbeans.JsonReader;
+import com.esotericsoftware.jsonbeans.JsonValue;
+import com.esotericsoftware.jsonbeans.OutputType;
 import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
+import server.database.Account;
 import server.systems.EntityFactorySystem;
 import server.systems.ServerSystem;
+import server.systems.account.AccountSystem;
+import server.systems.manager.ComponentManager;
 import server.systems.manager.WorldManager;
+import server.utils.EntityJsonSerializer;
 import shared.network.user.UserCreateResponse;
 import shared.network.user.UserLoginResponse;
 
-import java.io.*;
-import java.util.Optional;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.concurrent.*;
 
 @Wire
 public class UserSystem extends PassiveSystem {
 
+    private EntityJsonSerializer entityJsonSerializer;
     private ServerSystem serverSystem;
     private WorldManager worldManager;
     private EntityFactorySystem entityFactorySystem;
-    private WorldSerializationManager worldSerializationManager;
+    private AccountSystem accountSystem;
+    private ComponentManager componentManager;
+    private Json json;
+    private ExecutorService executor = Executors.newFixedThreadPool(10);
+
+
+    @Override
+    protected void initialize() {
+        json = new Json();
+        json.setOutputType(OutputType.minimal);
+    }
 
     public void login(int connectionId, String userName) {
         if (userExists(userName)) {
             // login
-            loadUser(userName)
-                    .ifPresentOrElse(id -> {
-                                serverSystem.sendTo(connectionId, UserLoginResponse.ok());
-                                worldManager.login(connectionId, id);
-                            },
-                            () -> serverSystem.sendTo(connectionId,
-                                    UserLoginResponse.failed("Hubo un problema al leer el personaje")));
+            try {
+                Integer entityId = loadUser(userName).get(250, TimeUnit.MILLISECONDS);
+                if (entityId != -1) {
+                    serverSystem.sendTo(connectionId, UserLoginResponse.ok());
+                    worldManager.login(connectionId, entityId);
+                } else {
+                    serverSystem.sendTo(connectionId,
+                            UserLoginResponse.failed("No se pudo leer el personaje " + userName + ". Por favor contactate con soporte."));
+                }
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                Log.info("Failed to retrieve user from JSON file");
+                e.printStackTrace();
+                serverSystem.sendTo(connectionId,
+                        UserLoginResponse.failed("Hubo un problema al leer el personaje " + userName));
+            }
+
         } else {
             // don't exist (should never happen)
             // TODO remove from Account ?
             serverSystem.sendTo(connectionId,
-                    UserLoginResponse.failed("Este personaje no existe!"));
+                    UserLoginResponse.failed("Este personaje " + userName + " no existe!"));
         }
     }
 
-    public void create(int connectionId, String name, int heroId) {
+    public void create(int connectionId, String name, int heroId, String userAcc, int index) {
         if (userExists(name)) {
             // send user exists
             serverSystem.sendTo(connectionId,
@@ -51,6 +80,8 @@ public class UserSystem extends PassiveSystem {
             // create and add to account
             int entityId = entityFactorySystem.create(name, heroId);
             saveUser(name);
+            Account account = accountSystem.getAccount(userAcc);
+            account.addCharacter(name, index);
             // send ok and login
             serverSystem.sendTo(connectionId,
                     UserCreateResponse.ok());
@@ -63,28 +94,52 @@ public class UserSystem extends PassiveSystem {
         return file.isFile() && file.canRead();
     }
 
-    public void saveUser(String name) {
-        E user = E.withTag(name);
-        if (user != null) {
-            IntBag bag = new IntBag();
-            bag.add(user.id());
-            try (FileOutputStream outputStream = new FileOutputStream("Charfile/" + name + ".json")) {
-                worldSerializationManager.save(outputStream, new SaveFileFormat(bag));
-            } catch (IOException e) {
-                Log.info("Couldn't save user with name:" + name);
-                e.printStackTrace();
-            }
+    public void save(E e) {
+        boolean canSave = e.hasCharacter() && e.hasName();
+        if (canSave) {
+            String name = e.getName().text;
+            saveUser(name, e);
         }
     }
 
-    public Optional<Integer> loadUser(String name) {
-        try (InputStream inputStream = new FileInputStream("Charfile/" + name + ".json")) {
-            SaveFileFormat user = worldSerializationManager.load(inputStream, SaveFileFormat.class);
-            // we expect one only entity
-            return Optional.of(user.entities.get(0));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
+    public void save(int entityId) {
+        E e = E.E(entityId);
+        save(e);
+    }
+
+    private void saveUser(String name) {
+        E user = E.withTag(name);
+        saveUser(name, user);
+    }
+
+    private void saveUser(String name, E user) {
+        executor.submit(() -> {
+            Collection<Component> components = componentManager.getComponents(user.id(), ComponentManager.Visibility.SERVER);
+            File userFile = new File("Charfile/" + name + ".json");
+            try (FileWriter writer = new FileWriter(userFile)) {
+                json.setWriter(writer);
+                entityJsonSerializer.write(json, components, null);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.info("Failed to write charfile " + name);
+            }
+        });
+    }
+
+    private Future<Integer> loadUser(String name) {
+        return executor.submit(() -> {
+            File userFile = new File("Charfile/" + name + ".json");
+            // read components
+            try {
+                JsonValue jsonData = new JsonReader().parse(userFile);
+                Collection<? extends Component> components = entityJsonSerializer.read(json, jsonData, null);
+                // create user character in world
+                return entityFactorySystem.create(components);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.info("Failed to retrieve user from json charfile");
+                return -1;
+            }
+        });
     }
 }

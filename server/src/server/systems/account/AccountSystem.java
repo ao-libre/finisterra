@@ -5,14 +5,18 @@ import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.database.Account;
 import server.systems.ServerSystem;
+import server.systems.user.UserSystem;
 import shared.network.account.AccountCreationResponse;
 import shared.network.account.AccountLoginResponse;
 import shared.util.AccountSystemUtilities;
+
+import java.util.ArrayList;
 
 @Wire
 public class AccountSystem extends PassiveSystem {
 
     private ServerSystem serverSystem;
+    private UserSystem userSystem;
 
     public void createAccount(int connectionId, String username, String email, String password) {
 
@@ -43,7 +47,33 @@ public class AccountSystem extends PassiveSystem {
         boolean successful = (requestedAccount != null) && (AccountSystemUtilities.checkPassword(password, requestedAccount.getPassword()));
 
         String username = successful ? requestedAccount.getUsername() : null;
+        ArrayList<String> characters = new ArrayList<>();
+        if (successful){
+            if(requestedAccount.getCharacters().isEmpty()) {
+                Log.info("********la cuenta " +requestedAccount.getUsername() +"no tiene pj creando lista" );
+                for (int i = 0;i<6;i++) {
+                    requestedAccount.addCharacter( "", i );
+                }
+            }
+            characters = requestedAccount.getCharacters();
+        } else {
+           characters = null;
+        }
 
-        serverSystem.sendTo(connectionId, new AccountLoginResponse(username, successful));
+        /* todo recuperar el heroID
+        ArrayList<String> charHeroID = new ArrayList<String>();
+        if (!characters.isEmpty()) {
+            for (int i = 0; i < 6; i++) {
+                userSystem.loadUser(characters.get( i )).get();
+                charHeroID.add(i,);
+            }
+        }
+         */
+        serverSystem.sendTo(connectionId, new AccountLoginResponse(email, successful,characters ));
+    }
+    public Account getAccount(String email){
+        Account requestedAccount = Account.load(email);
+        Log.info("***** enviando datos de la cuenta " + requestedAccount.getUsername());
+        return requestedAccount;
     }
 }

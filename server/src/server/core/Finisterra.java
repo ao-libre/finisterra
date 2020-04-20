@@ -3,9 +3,7 @@ package server.core;
 import com.artemis.FluidEntityPlugin;
 import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
-import com.artemis.io.JsonArtemisSerializer;
 import com.artemis.managers.TagManager;
-import com.artemis.managers.WorldSerializationManager;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
@@ -31,6 +29,7 @@ import server.systems.network.ServerReferenceSystem;
 import server.systems.user.ItemActionSystem;
 import server.systems.user.PlayerActionSystem;
 import server.systems.user.UserSystem;
+import server.utils.EntityJsonSerializer;
 import shared.systems.IntervalSystem;
 import shared.util.LogSystem;
 import shared.util.MapHelper;
@@ -75,11 +74,10 @@ public class Finisterra extends ApplicationAdapter {
         ServerConfiguration serverConfig = ConfigurationManager.getInstance().getServerConfig();
         ServerConfiguration.Network.Ports currentPorts = serverConfig.getNetwork().getPorts();
 
-        WorldSerializationManager serializationManager = new WorldSerializationManager();
-
         builder
                 .with(new ClearSystem())
                 .with(new ServerSystem(new ServerStrategy(currentPorts.getTcpPort(), currentPorts.getUdpPort())))
+                .with(new EntityJsonSerializer())
                 .with(new UserSystem())
                 .with(new AccountSystem())
                 .with(new ServerNotificationProcessor())
@@ -117,9 +115,8 @@ public class Finisterra extends ApplicationAdapter {
                 .with(new MovementSystem())
                 .with(new PlayerActionSystem())
                 .with(new ItemActionSystem())
-                .with(serializationManager);
+                .with(new WorldSaveSystem(5*60*1000)); // 5 minutes
         world = new World(builder.build());
-        serializationManager.setSerializer(new JsonArtemisSerializer(world));
 
         Log.info("World created successfully!");
     }

@@ -13,6 +13,7 @@ import shared.network.interaction.TalkRequest;
 import shared.network.inventory.ItemActionRequest;
 import shared.network.movement.MovementRequest;
 import shared.network.time.TimeSyncRequest;
+import shared.network.user.UserContinueRequest;
 import shared.network.user.UserCreateRequest;
 import shared.network.user.UserLoginRequest;
 
@@ -86,6 +87,10 @@ public class DefaultRequestProcessor extends PassiveSystem implements IRequestPr
 	
     @Override
     public void processRequest(UserLoginRequest userLoginRequest, int connectionId) {
+
+    }
+    @Override
+    public void processRequest(UserContinueRequest userContinueRequest, int connectionId) {
 
     }
 

@@ -1,5 +1,6 @@
 package server.database;
 
+import com.esotericsoftware.minlog.Log;
 import shared.objects.factory.POJO;
 
 import java.util.ArrayList;
@@ -30,6 +31,9 @@ public class Account extends POJO {
         this.email = email;
         this.password = password;
         this.banned = false;
+        for (int i =0; i<6;i++){
+            characters.add( "" );
+        }
     }
 
     public String getUsername() { return username; }
@@ -37,7 +41,12 @@ public class Account extends POJO {
     public String getPassword() { return password; }
     public boolean isBanned() { return banned; }
     public ArrayList<String> getCharacters() { return characters; }
-    public void addCharacter(String character) { characters.add(character); }
+    public void addCharacter(String character, int index) {
+        // todo delete old charater file
+        characters.set( index, character );
+        Log.info("Agregado el pj " +character + " en la posicon " +index + " a la cuenta.");
+        update();
+    }
 
     public static boolean exists(String email){
         return POJO.exists(DIR_CUENTAS + email + POJO.EXTENSION);

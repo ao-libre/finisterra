@@ -9,9 +9,10 @@ import java.util.stream.Stream;
 @PooledWeaver
 public class Bag extends Component {
     public final static int SIZE = 20;
-    public Item[] items = new Item[SIZE];
+    public Item[] items;
 
     public Bag() {
+        items = new Item[SIZE];
     }
 
     public Item[] getItems() {
