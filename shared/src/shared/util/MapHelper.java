@@ -27,7 +27,6 @@ import java.util.concurrent.TimeUnit;
         MAX_MAPS            usado para cargar mapas máximos
  */
 
-    private static final int MAX_MAPS = 290; 
 public class MapHelper {
 
     private static final int NEAR_MAX_DISTNACE = 20;
