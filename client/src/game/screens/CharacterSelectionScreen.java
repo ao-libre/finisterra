@@ -1,6 +1,8 @@
 package game.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -28,7 +30,17 @@ public class CharacterSelectionScreen extends AbstractScreen {
     private ArrayList< Label > nameLabelArray, HPLabelArray, MPLabelArray;
     private ArrayList< TextButton > playButtonArray, createButtonArray;
     private ArrayList< Boolean > booleanArrayList;
+    private ArrayList<Image> pjImages;
+    private final Texture noHero = new Texture( Gdx.files.local("data/ui/images/pj/noHero.jpg")),
+            warriorImage =  new Texture( Gdx.files.local("data/ui/images/pj/GUERRERO.jpg")),
+            mageImage =  new Texture( Gdx.files.local("data/ui/images/pj/MAGO.jpg")),
+            assassinImage =  new Texture( Gdx.files.local("data/ui/images/pj/ASESINO.jpg")),
+            paladinImage =  new Texture( Gdx.files.local("data/ui/images/pj/PALADIN.jpg")),
+            bardImage = new Texture( Gdx.files.local("data/ui/images/pj/BARDO.jpg")),
+            archerImage = new Texture( Gdx.files.local("data/ui/images/pj/CAZADOR.jpg")),
+            clericImage = new Texture( Gdx.files.local("data/ui/images/pj/CLERIGO.jpg"));
 
+    private Image heroSelectionImage;
     private Window charSelectWindows, createWindow;
     private TextButton registerButton;
     private Stack stack;
@@ -53,6 +65,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
         HPLabelArray = new ArrayList<>();
         MPLabelArray = new ArrayList<>();
         booleanArrayList = new ArrayList<>();
+        pjImages = new ArrayList<>();
 
         charSelectWindows = new Window( "", getSkin() );
         createWindow = new Window( "", getSkin() );
@@ -61,7 +74,11 @@ public class CharacterSelectionScreen extends AbstractScreen {
         createUsersTable();
 
         /*ventana de creacion de personajes*/
-
+        Table heroImageTable = new Table();
+        heroSelectionImage = new Image(warriorImage);
+        heroImageTable.clear();
+        heroImageTable.add(heroSelectionImage);
+        createWindow.add(heroImageTable).height( 200 ).row();
 
         Label nameLabel = new Label( "Name:", getSkin() );
         createWindow.add( nameLabel ).row();
@@ -71,11 +88,40 @@ public class CharacterSelectionScreen extends AbstractScreen {
 
         Label heroLabel = new Label( "Hero: ", getSkin() );
         createWindow.add( heroLabel ).row();
-
         heroSelectBox = new SelectBox<>( getSkin() );
         Array< Hero > heros = new Array<>();
         Hero.getHeroes().forEach( heros::add );
         heroSelectBox.setItems( heros );
+        heroSelectBox.addListener( new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                heroImageTable.clear();
+                switch(heroSelectBox.getSelected()) {
+                    case GUERRERO:
+                        heroSelectionImage = new Image(warriorImage);
+                        break;
+                    case MAGO:
+                        heroSelectionImage = new Image(mageImage);
+                        break;
+                    case ASESINO:
+                        heroSelectionImage = new Image(assassinImage);
+                        break;
+                    case PALADIN:
+                        heroSelectionImage = new Image(paladinImage);
+                        break;
+                    case BARDO:
+                        heroSelectionImage = new Image(bardImage);
+                        break;
+                    case ARQUERO:
+                        heroSelectionImage = new Image(archerImage);
+                        break;
+                    case CLERIGO:
+                        heroSelectionImage = new Image(clericImage);
+                        break;
+                }
+                heroImageTable.add(heroSelectionImage);
+            }
+        } );
         createWindow.add( heroSelectBox ).row();
 
         registerButton = new TextButton( "Create", getSkin() );
@@ -143,22 +189,25 @@ public class CharacterSelectionScreen extends AbstractScreen {
             Table newSlot = new Table();
             newSlot.setBackground( getSkin().getDrawable( "menu-frame" ) );
             Label userName = new Label( "", getSkin() );
+            Image pjImage = new Image(noHero);
             Label HPLabel = new Label( "????/????", getSkin() );
             HPLabel.setColor( Color.RED );
             Label MPLabel = new Label( "????/????", getSkin() );
             MPLabel.setColor( Color.BLUE );
             TextButton playTextButton = new TextButton( "Jugar", getSkin() );
             TextButton createTextButton = new TextButton( "Crear", getSkin() );
+
             playButtonArray.add( playTextButton );
             createButtonArray.add( createTextButton );
             userTableArray.add( newSlot );
             nameLabelArray.add( userName );
             HPLabelArray.add( HPLabel );
             MPLabelArray.add( MPLabel );
+            pjImages.add( pjImage );
 
             /*dibujar la tablas*/
             userTableArray.get( i ).add( nameLabelArray.get( i ) ).colspan( 2 ).row();
-            userTableArray.get( i ).add().height( 200 ).row();
+            userTableArray.get( i ).add( pjImages.get(i) ).height( 200 ).colspan( 2 ).row();
             userTableArray.get( i ).add( HPLabelArray.get( i ) ).padRight( 10 ).padLeft( 10 );
             userTableArray.get( i ).add( MPLabelArray.get( i ) ).padRight( 10 ).padLeft( 10 ).row();
             userTableArray.get( i ).add( playButtonArray.get( i ) ).left().width( 120 ).padLeft( 5 );
