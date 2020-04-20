@@ -32,13 +32,13 @@ public class CharacterSelectionScreen extends AbstractScreen {
     private ArrayList< Boolean > booleanArrayList;
     private ArrayList<Image> pjImages;
     private final Texture noHero = new Texture( Gdx.files.local("data/ui/images/pj/noHero.jpg")),
-            warriorImage =  new Texture( Gdx.files.local("data/ui/images/pj/GUERRERO.jpg")),
-            mageImage =  new Texture( Gdx.files.local("data/ui/images/pj/MAGO.jpg")),
-            assassinImage =  new Texture( Gdx.files.local("data/ui/images/pj/ASESINO.jpg")),
-            paladinImage =  new Texture( Gdx.files.local("data/ui/images/pj/PALADIN.jpg")),
-            bardImage = new Texture( Gdx.files.local("data/ui/images/pj/BARDO.jpg")),
-            archerImage = new Texture( Gdx.files.local("data/ui/images/pj/CAZADOR.jpg")),
-            clericImage = new Texture( Gdx.files.local("data/ui/images/pj/CLERIGO.jpg"));
+            warriorImage =  new Texture( Gdx.files.local("data/ui/images/pj/guerrero.jpg")),
+            mageImage =  new Texture( Gdx.files.local("data/ui/images/pj/mago.jpg")),
+            assassinImage =  new Texture( Gdx.files.local("data/ui/images/pj/asesino.jpg")),
+            paladinImage =  new Texture( Gdx.files.local("data/ui/images/pj/paladin.jpg")),
+            bardImage = new Texture( Gdx.files.local("data/ui/images/pj/bardo.jpg")),
+            archerImage = new Texture( Gdx.files.local("data/ui/images/pj/cazador.jpg")),
+            clericImage = new Texture( Gdx.files.local("data/ui/images/pj/clerigo.jpg"));
 
     private Image heroSelectionImage;
     private Window charSelectWindows, createWindow;
