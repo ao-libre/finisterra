@@ -15,6 +15,7 @@ import server.systems.EntityFactorySystem;
 import server.systems.ServerSystem;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.UpdateTo;
+import server.systems.user.UserSystem;
 import shared.interfaces.Race;
 import shared.model.npcs.NPC;
 import shared.network.inventory.InventoryUpdate;
@@ -36,6 +37,7 @@ public class WorldManager extends DefaultManager {
     private EntityFactorySystem entityFactorySystem;
     private EntityUpdateSystem entityUpdateSystem;
     private ComponentManager componentManager;
+    private UserSystem userSystem;
 
     public void registerEntity(int id) {
         mapManager.updateEntity(id);
@@ -47,6 +49,7 @@ public class WorldManager extends DefaultManager {
     }
 
     public void unregisterEntity(int entityId) {
+        userSystem.save(entityId);
         networkManager.unregisterUserConnection(entityId);
         mapManager.removeEntity(entityId);
         getWorld().delete(entityId);

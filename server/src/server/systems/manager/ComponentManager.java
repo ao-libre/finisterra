@@ -26,13 +26,13 @@ import java.util.*;
 @Wire
 public class ComponentManager extends PassiveSystem {
 
-    Map<Visibility, Set<Class<? extends Component>>> componentsByVisibility;
+    private Map<Visibility, Set<Class<? extends Component>>> componentsByVisibility;
 
     public ComponentManager() {
         componentsByVisibility = new HashMap<>();
         Reflections reflections = new Reflections("component");
         Set<Class<? extends Component>> allClasses = reflections.getSubTypesOf(Component.class);
-        componentsByVisibility.put(Visibility.SERVER, allClasses);
+        componentsByVisibility.put(Visibility.SERVER, Sets.newHashSet(allClasses));
 
         // remove server only components
         allClasses.remove(Clear.class);
@@ -72,6 +72,10 @@ public class ComponentManager extends PassiveSystem {
         allClasses.remove(EvasionPower.class);
         allClasses.remove(AttackPower.class);
         componentsByVisibility.put(Visibility.CLIENT_PUBLIC, Sets.newHashSet(allClasses));
+    }
+
+    public Collection<Class<? extends Component>> getBy(Visibility visibility) {
+        return componentsByVisibility.get(visibility);
     }
 
     public List<Component> getComponents(int entityId, Visibility visibility) {
