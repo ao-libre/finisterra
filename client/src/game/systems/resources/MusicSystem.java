@@ -138,6 +138,10 @@ public class MusicSystem extends PassiveSystem { // @todo revisar
         this.disableMusic = musicEnable;
     }
 
+    public void setVolume(float volume) {
+        this.volume = volume;
+    }
+
     public void volumeDown(float vol) {
         currentMusic.setVolume(currentMusic.getVolume() - vol);
     }
@@ -146,8 +150,10 @@ public class MusicSystem extends PassiveSystem { // @todo revisar
         currentMusic.setVolume(currentMusic.getVolume() + vol);
     }
 
-    public void setVolume(float volume) {
-        this.volume = volume;
+
+    // Manejo de MIDIs de acá para abajo. @todo Implementar
+
+    public void setMIDIVolume(float volume) {
         try {
             MidiChannel[] channels = MidiSystem.getSynthesizer().getChannels();
             for (MidiChannel channel : channels) {
