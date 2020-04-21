@@ -138,10 +138,10 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
                 musicSystem.toggle();
                 break;
             case Input.Keys.NUM_8:
-                musicSystem.volumeDown(-0.1f);
+                musicSystem.volumeDown();
                 break;
             case Input.Keys.NUM_9:
-                musicSystem.volumeUp(0.1f);
+                musicSystem.volumeUp();
                 break;
         }
     }
@@ -184,10 +184,10 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
                 musicSystem.toggle();
                 break;
             case Input.Keys.NUM_8:
-                musicSystem.volumeDown(-0.1f);
+                musicSystem.volumeDown();
                 break;
             case Input.Keys.NUM_9:
-                musicSystem.volumeUp(0.1f);
+                musicSystem.volumeUp();
                 break;
         }
     }
