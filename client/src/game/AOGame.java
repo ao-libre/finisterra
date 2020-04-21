@@ -45,6 +45,8 @@ public class AOGame extends Game {
             this.assetManager = assetManager;
             this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
             screenManager.to(ScreenEnum.LOGIN);
+            this.musicSystem = world.getSystem( MusicSystem.class );
+            musicSystem.playMusic(101, true);
             screenManager.addListener((screenEnum -> {
                 switch( screenEnum ) {
                     case LOGIN:
@@ -52,12 +54,11 @@ public class AOGame extends Game {
                         musicSystem.stopMusic();
                         this.world = WorldConstructor.create( clientConfiguration, screenManager, assetManager );
                         this.musicSystem = world.getSystem( MusicSystem.class );
-                        musicSystem.playMusic( 101 );
-                        musicSystem.fadeInMusic( 1, 20 );
+                        musicSystem.playMusic(101, true);
                         break;
                     case GAME:
                         this.musicSystem = world.getSystem( MusicSystem.class );
-                        musicSystem.playMusic( 1 );
+                        musicSystem.playMusic(1, true);
                 }
             }));
         });
