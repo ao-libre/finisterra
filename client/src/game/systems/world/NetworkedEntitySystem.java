@@ -25,14 +25,10 @@ public class NetworkedEntitySystem extends PassiveSystem {
     }
 
     public void unregisterEntity(int networkId) {
-        try {
-            int entityId = networkedEntities.get(networkId);
-            localEntities.remove(entityId);
-            world.delete(entityId);
-            networkedEntities.remove(networkId);
-        } catch (Exception e) {
-            Log.error("Couldn't remove entity: " + networkId, e);
-        }
+        int entityId = networkedEntities.get(networkId);
+        localEntities.remove(entityId);
+        world.delete(entityId);
+        networkedEntities.remove(networkId);
     }
 
     public void unregisterLocalEntity(int entityId) {
@@ -51,7 +47,7 @@ public class NetworkedEntitySystem extends PassiveSystem {
     }
 
     public boolean existsLocal(int localId) {
-        return networkedEntities.containsKey(localId);
+        return localEntities.containsKey(localId);
     }
 
     public int getNetworkId(int localId) {
