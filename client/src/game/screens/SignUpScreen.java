@@ -44,10 +44,10 @@ public class SignUpScreen extends AbstractScreen {
         passwordField2.setPasswordCharacter('*');
         passwordField2.setPasswordMode(true);
 
-        registerButton = new TextButton("Register account", getSkin());
+        registerButton = WidgetFactory.createTextButton("Register account");
         registerButton.addListener(new RegisterButtonListener());
 
-        TextButton goBackButton = new TextButton("Go Back", getSkin());
+        TextButton goBackButton = WidgetFactory.createTextButton("Go Back");
         goBackButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

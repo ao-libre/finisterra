@@ -125,11 +125,11 @@ public class CharacterSelectionScreen extends AbstractScreen {
         });
         createWindow.add(heroSelectBox).row();
 
-        registerButton = new TextButton("Create", getSkin());
+        registerButton = WidgetFactory.createTextButton("Create");
 
         createWindow.add(registerButton).row();
 
-        TextButton goBackButton = new TextButton("Go Back", getSkin());
+        TextButton goBackButton = WidgetFactory.createTextButton("Go Back");
         goBackButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -195,8 +195,8 @@ public class CharacterSelectionScreen extends AbstractScreen {
             HPLabel.setColor(Color.RED);
             Label MPLabel = WidgetFactory.createLabel("????/????");
             MPLabel.setColor(Color.BLUE);
-            TextButton playTextButton = new TextButton("Jugar", getSkin());
-            TextButton createTextButton = new TextButton("Crear", getSkin());
+            TextButton playTextButton = WidgetFactory.createTextButton("Jugar");
+            TextButton createTextButton = WidgetFactory.createTextButton("Crear");
 
             playButtonArray.add(playTextButton);
             createButtonArray.add(createTextButton);
@@ -219,7 +219,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
             }
         }
         charSelectWindows.row();
-        TextButton toLoginButton = new TextButton("To Login", getSkin());
+        TextButton toLoginButton = WidgetFactory.createTextButton("To Login");
         toLoginButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

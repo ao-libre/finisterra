@@ -77,7 +77,7 @@ public class LoginScreen extends AbstractScreen {
                 }
             }
         }
-        seePassword = new CheckBox("See Password", getSkin());
+        seePassword = WidgetFactory.createCheckBox("See Password");
         seePassword.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -85,10 +85,10 @@ public class LoginScreen extends AbstractScreen {
             }
         });
 
-        loginButton = new TextButton("Login", getSkin());
+        loginButton = WidgetFactory.createTextButton("Login");
         loginButton.addListener(new LoginButtonListener());
 
-        TextButton newAccountButton = new TextButton("New account", getSkin());
+        TextButton newAccountButton = WidgetFactory.createTextButton("New account");
         newAccountButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -108,7 +108,7 @@ public class LoginScreen extends AbstractScreen {
 
         /* Tabla de servidores */
         Table connectionTable = new Table((getSkin()));
-        serverList = new List<>(getSkin());
+        serverList = WidgetFactory.createList();
         serverList.setItems(clientConfiguration.getNetwork().getServers());
         connectionTable.add(serverList).width(400).height(300); //@todo Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
 

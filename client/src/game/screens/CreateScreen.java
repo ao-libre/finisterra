@@ -52,7 +52,7 @@ public class CreateScreen extends AbstractScreen {
         createWindow.add(heroSelectBox).row();
 
 
-        TextButton registerButton = new TextButton("Create", getSkin());
+        TextButton registerButton = WidgetFactory.createTextButton("Create");
         registerButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -69,7 +69,7 @@ public class CreateScreen extends AbstractScreen {
         });
         createWindow.add(registerButton).row();
 
-        TextButton goBackButton = new TextButton("Go Back", getSkin());
+        TextButton goBackButton = WidgetFactory.createTextButton("Go Back");
         goBackButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
