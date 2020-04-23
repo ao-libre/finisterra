@@ -3,6 +3,7 @@ package game;
 import com.artemis.World;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import game.handlers.DefaultAOAssetManager;
 import game.screens.LoadingScreen;
@@ -66,6 +67,8 @@ public class AOGame extends Game {
     /**
      * libGDX llama a este método cuando la aplicación cierra.
      * @see ApplicationListener#dispose()
+     *
+     * <b>Nota:</b> Para cerrar la aplicación usar {@code Gdx.app.exit()}
      *
      * Disponer de todos los recursos utilizados y cerrar threads pendientes.
      * Eventualmente la JVM cierra sola.
