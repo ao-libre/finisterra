@@ -65,14 +65,23 @@ public class AOGame extends Game {
     }
 
     /**
+     * GDX llama a este método cuando la aplicación cierra.
+     * @see ApplicationListener#dispose()
+     *
      * Disponer de todos los recursos utilizados y cerrar threads pendientes.
      * Eventualmente la JVM cierra sola.
      */
     @Override
     public void dispose() {
         Log.debug("AOGame", "Closing client...");
-        world.dispose(); /** Llama a {@link BaseSystem#dispose()} en todos los sistemas */
-        assetManager.dispose(); // Libera todos los assets cargados
+        if (world != null) {
+            world.dispose(); // Llama a dispose() en todos los sistemas
+            world = null;
+        }
+        if (assetManager != null) {
+            assetManager.dispose(); // Libera todos los assets cargados
+            assetManager = null;
+        }
         Log.debug("AOGame", "Thank you for playing! See you soon...");
     }
 }
