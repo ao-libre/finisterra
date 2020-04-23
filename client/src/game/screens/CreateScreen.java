@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import game.systems.network.ClientSystem;
+import game.ui.WidgetFactory;
 import shared.interfaces.Hero;
 
 @Wire
@@ -35,13 +36,13 @@ public class CreateScreen extends AbstractScreen {
     public void createUI() {
         Window createWindow = new Window("", getSkin());
 
-        Label nameLabel = new Label("Name:", getSkin());
+        Label nameLabel = WidgetFactory.createLabel("Name:");
         createWindow.add(nameLabel).row();
 
         TextField name = new TextField("", getSkin());
         createWindow.add(name).row();
 
-        Label heroLabel = new Label("Hero: ", getSkin());
+        Label heroLabel = WidgetFactory.createLabel("Hero: ");
         createWindow.add(heroLabel).row();
 
         SelectBox<Hero> heroSelectBox = new SelectBox<>(getSkin());

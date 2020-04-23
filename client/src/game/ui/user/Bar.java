@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
+import game.ui.WidgetFactory;
 import game.utils.Colors;
 import game.utils.Skins;
 
@@ -24,7 +25,7 @@ public class Bar extends Actor {
     Bar(Kind kind, E e) {
         this.kind = kind;
         this.e = e;
-        points = new Label("", Skins.COMODORE_SKIN);
+        points = WidgetFactory.createLabel("");
         points.setAlignment(Align.right);
         points.setFontScale(0.6f);
     }

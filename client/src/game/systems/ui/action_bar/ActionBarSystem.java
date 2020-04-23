@@ -22,6 +22,7 @@ import game.systems.ui.UserInterfaceContributionSystem;
 import game.systems.ui.action_bar.systems.InventorySystem;
 import game.systems.ui.action_bar.systems.SpellSystem;
 import game.ui.SwitchButtons;
+import game.ui.WidgetFactory;
 import game.utils.Skins;
 
 import static com.artemis.E.E;
@@ -92,7 +93,7 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
         Table goldTable = new Table();
         Cell<Image> goldIconCell = goldTable.add(new Image( new Texture( Gdx.files.local("data/ui/images/gold.png"))));
         goldIconCell.height(28).width(30).left();
-        goldLabel = new Label("",Skins.COMODORE_SKIN);
+        goldLabel = WidgetFactory.createLabel("");
         goldLabel.setText(String.valueOf(playerSystem.get().goldCount()));
         goldLabel.setColor(Color.GOLDENROD);
         goldLabel.setAlignment( Align.right);

@@ -15,6 +15,7 @@ import game.handlers.DefaultAOAssetManager;
 import game.systems.network.ClientSystem;
 import game.systems.resources.MusicSystem;
 import game.systems.resources.SoundsSystem;
+import game.ui.WidgetFactory;
 import shared.network.account.AccountLoginRequest;
 import shared.util.Messages;
 
@@ -60,9 +61,9 @@ public class LoginScreen extends AbstractScreen {
 
         /* Tabla de login */
         Window loginWindow = new Window("", getSkin()); //@todo window es una ventana arrastrable
-        Label emailLabel = new Label("Email:", getSkin());
+        Label emailLabel = WidgetFactory.createLabel("Email: ");
         emailField = new TextField(account.getEmail(), getSkin());
-        Label passwordLabel = new Label("Password:", getSkin());
+        Label passwordLabel = WidgetFactory.createLabel("Password");
         passwordField = new TextField(account.getPassword(), getSkin());
         passwordField.setPasswordCharacter('*');
         passwordField.setPasswordMode(true);

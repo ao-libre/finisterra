@@ -50,7 +50,7 @@ public abstract class Inventory extends Window {
             int columnsCounter = 1, loops = 0 ;
             for (int i = 0; i < SIZE; i++) {
                 Slot newSlot = new Slot();
-                Label count = new Label( "",getSkin() );
+                Label count = WidgetFactory.createLabel("");
                 count.setFontScale( 0.7f );
                 itemCount.add( count );
                 slots.add(newSlot);
@@ -90,7 +90,7 @@ public abstract class Inventory extends Window {
         } else {
             for (int i = 0; i < 5; i++) {
                 Slot newSlot = new Slot();
-                Label count = new Label("", getSkin());
+                Label count = WidgetFactory.createLabel("");
                 count.setFontScale(0.7f);
                 slots.add(newSlot);
                 itemCount.add( count );

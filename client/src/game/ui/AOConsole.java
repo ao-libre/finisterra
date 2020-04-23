@@ -43,8 +43,7 @@ public class AOConsole extends ScrollPane {
     }
 
     private void addMessage(String message, Color color) {
-        LabelStyle labelStyle = new LabelStyle(Skins.COMODORE_SKIN.getFont("big"), color);
-        Label label = new Label(message, labelStyle);
+        Label label = WidgetFactory.createConsoleLabel(message);
         if (!messages.isEmpty() && messages.items.length >= MAX_MESSAGES) {
             messages.removeIndex(0);
             ((VerticalGroup) getActor()).removeActor(((VerticalGroup) getActor()).getChild(0), true);

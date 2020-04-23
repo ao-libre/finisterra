@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import game.systems.resources.ObjectSystem;
+import game.ui.WidgetFactory;
 import game.utils.Skins;
 import shared.objects.types.*;
 
@@ -121,7 +122,7 @@ public class CharacterScreen extends ScreenAdapter {
             table.setFillParent(true);
             table.right();
             for (Part part : Part.values()) {
-                Label label = new Label(part.name(), Skins.COMODORE_SKIN);
+                Label label = WidgetFactory.createLabel(part.name());
                 table.add(label).left().padTop(20).row();
                 SelectBox<Obj> select = new SelectBox<>(Skins.COMODORE_SKIN);
                 Obj[] items = getItems(part).toArray(new Obj[0]);

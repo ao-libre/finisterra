@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import game.ui.WidgetFactory;
 import game.utils.Resources;
-import game.utils.Skins;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 import java.math.BigDecimal;
@@ -67,7 +67,7 @@ public class StatsSystem extends PassiveSystem {
 
         public IntervalItem(Texture image) {
             this.image = image;
-            this.time = new Label("", Skins.COMODORE_SKIN);
+            this.time = WidgetFactory.createLabel("");
             add(new Image(image)).left();
             add(time).right();
         }

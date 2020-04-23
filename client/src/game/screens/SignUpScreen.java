@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Timer;
 import game.ClientConfiguration;
 import game.handlers.DefaultAOAssetManager;
 import game.systems.network.ClientSystem;
+import game.ui.WidgetFactory;
 import shared.network.account.AccountCreationRequest;
 import shared.util.Messages;
 
@@ -30,15 +31,15 @@ public class SignUpScreen extends AbstractScreen {
     protected void createUI() {
         /* Tabla de sign up */
         Window signUpTable = new Window("", getSkin()); //@todo window es una ventana arrastrable
-        Label usernameLabel = new Label("Username:", getSkin());
+        Label usernameLabel = WidgetFactory.createLabel("Username: ");
         usernameField = new TextField("", getSkin());
-        Label emailLabel = new Label("Email:", getSkin());
+        Label emailLabel = WidgetFactory.createLabel("Email:");
         emailField = new TextField("", getSkin());
-        Label passwordLabel1 = new Label("Password:", getSkin());
+        Label passwordLabel1 = WidgetFactory.createLabel("Password:");
         passwordField1 = new TextField("", getSkin());
         passwordField1.setPasswordCharacter('*');
         passwordField1.setPasswordMode(true);
-        Label passwordLabel2 = new Label("Repeat password:", getSkin());
+        Label passwordLabel2 = WidgetFactory.createLabel("Repeat password:");
         passwordField2 = new TextField("", getSkin());
         passwordField2.setPasswordCharacter('*');
         passwordField2.setPasswordMode(true);

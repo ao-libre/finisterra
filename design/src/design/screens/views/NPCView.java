@@ -18,6 +18,7 @@ import design.designers.NPCDesigner.NPCParameters;
 import design.editors.NPCEditor;
 import component.entity.character.parts.Body;
 import component.entity.character.states.Heading;
+import game.ui.WidgetFactory;
 import model.textures.BundledAnimation;
 import org.jetbrains.annotations.NotNull;
 import component.position.WorldPos;
@@ -90,7 +91,7 @@ public class NPCView extends View<NPC, NPCDesigner> {
             Button table = new Button(SKIN, "color-base-static");
             table.defaults().space(5);
             Table buttons = new Table();
-            label = new Label("", SKIN);
+            label = WidgetFactory.createLabel("");
             Container anim = new Container();
             animationActor = new AnimationActor();
             Button move = new Button(SKIN, "switch");
