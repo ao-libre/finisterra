@@ -84,7 +84,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
         Label nameLabel = WidgetFactory.createLabel("Name:");
         createWindow.add(nameLabel).row();
 
-        name = new TextField("", getSkin());
+        name = WidgetFactory.createTextField("");
         createWindow.add(name).row();
 
         Label heroLabel = WidgetFactory.createLabel("Hero: ");

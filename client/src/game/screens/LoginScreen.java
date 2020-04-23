@@ -63,12 +63,12 @@ public class LoginScreen extends AbstractScreen {
         /* Tabla de login */
         Window loginWindow = new Window("", getSkin()); //@todo window es una ventana arrastrable
         Label emailLabel = WidgetFactory.createLabel("Email: ");
-        emailField = new TextField(account.getEmail(), getSkin());
+        emailField = WidgetFactory.createTextField(account.getEmail());
         Label passwordLabel = WidgetFactory.createLabel("Password");
-        passwordField = new TextField(account.getPassword(), getSkin());
+        passwordField = WidgetFactory.createTextField(account.getPassword());
         passwordField.setPasswordCharacter('*');
         passwordField.setPasswordMode(true);
-        rememberMe = new CheckBox("Remember me", getSkin());
+        rememberMe = WidgetFactory.createCheckBox("Remember me");
         if (preferences.getBoolean("rememberMe")) {
             rememberMe.setChecked(true);
             if (emailField.getText().isBlank()) {

@@ -39,7 +39,7 @@ public class CreateScreen extends AbstractScreen {
         Label nameLabel = WidgetFactory.createLabel("Name:");
         createWindow.add(nameLabel).row();
 
-        TextField name = new TextField("", getSkin());
+        TextField name = WidgetFactory.createTextField("");
         createWindow.add(name).row();
 
         Label heroLabel = WidgetFactory.createLabel("Hero: ");
