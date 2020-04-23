@@ -22,7 +22,7 @@ public class SpellViewExpanded extends Table {
 
     public SpellViewExpanded() {
         super(Skins.COMODORE_SKIN);
-        spellTable = new Window("", Skins.COMODORE_SKIN, "inventory");
+        spellTable = WidgetFactory.createInventoryWindow();
         int columnsCounter = 1;
         for (int i = 0; i < MAX_SPELLS; i++) {
             SpellSlotEC slot = new SpellSlotEC(this, null);

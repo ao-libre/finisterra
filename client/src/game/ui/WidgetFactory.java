@@ -125,6 +125,10 @@ public class WidgetFactory {
         return new Window("", skin.get());
     }
 
+    public static Window createInventoryWindow() {
+        return new Window("", skin.get(), Windows.INVENTORY.name);
+    }
+
     public static Dialog createDialog(String title) {
         return new Dialog(title, skin.get());
     }
@@ -183,6 +187,16 @@ public class WidgetFactory {
 
         ProgressBars(String name) {
 
+            this.name = name;
+        }
+    }
+    enum Windows {
+        INVENTORY("inventory"),
+        SPELLS("spells");
+
+        private String name;
+
+        Windows(String name) {
             this.name = name;
         }
     }

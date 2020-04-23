@@ -26,7 +26,7 @@ public class SpellView extends Table {
 
     public SpellView() {
         super(Skins.COMODORE_SKIN);
-        spellTable = new Window("", Skins.COMODORE_SKIN, "inventory");
+        spellTable = WidgetFactory.createInventoryWindow();
         for (int i = 0; i < MAX_SPELLS; i++) {
             SpellSlot slot = new SpellSlot(this, null);
             slots.add(slot);

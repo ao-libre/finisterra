@@ -68,8 +68,8 @@ public class CharacterSelectionScreen extends AbstractScreen {
         booleanArrayList = new ArrayList<>();
         pjImages = new ArrayList<>();
 
-        charSelectWindows = new Window("", getSkin());
-        createWindow = new Window("", getSkin());
+        charSelectWindows = WidgetFactory.createWindow();
+        createWindow = WidgetFactory.createWindow();
 
         /*ventana de seleccion de personajes*/
         createUsersTable();

@@ -18,7 +18,7 @@ public abstract class SpellBookUI extends Table {
 
     public SpellBookUI() {
         super(Skins.COMODORE_SKIN);
-        Window spellTable = new Window("", Skins.COMODORE_SKIN, "inventory");
+        Window spellTable = WidgetFactory.createInventoryWindow();
         for (int i = 0; i < MAX_SPELLS; i++) {
             SpellSlotUI slot = new SpellSlotUI() {
                 @Override

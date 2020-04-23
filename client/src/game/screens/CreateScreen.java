@@ -34,7 +34,7 @@ public class CreateScreen extends AbstractScreen {
 
     @Override
     public void createUI() {
-        Window createWindow = new Window("", getSkin());
+        Window createWindow = WidgetFactory.createWindow();
 
         Label nameLabel = WidgetFactory.createLabel("Name:");
         createWindow.add(nameLabel).row();

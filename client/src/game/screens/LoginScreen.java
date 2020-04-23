@@ -61,7 +61,7 @@ public class LoginScreen extends AbstractScreen {
         ClientConfiguration.Account account = clientConfiguration.getAccount();
 
         /* Tabla de login */
-        Window loginWindow = new Window("", getSkin()); //@todo window es una ventana arrastrable
+        Window loginWindow = WidgetFactory.createWindow(); //@todo window es una ventana arrastrable
         Label emailLabel = WidgetFactory.createLabel("Email: ");
         emailField = WidgetFactory.createTextField(account.getEmail());
         Label passwordLabel = WidgetFactory.createLabel("Password");
@@ -157,7 +157,7 @@ public class LoginScreen extends AbstractScreen {
         logoCell.row();
 
         /* Tabla botones */
-        Window buttonsTable = new Window("OPCIONES", getSkin());
+        Window buttonsTable = WidgetFactory.createWindow();
         buttonsTable.setMovable(false);
         buttonsTable.background(getSkin().getDrawable("menu-frame"));
         buttonsTable.getTitleLabel().setColor(Color.GOLD);
