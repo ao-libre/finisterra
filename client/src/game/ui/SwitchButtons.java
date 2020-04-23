@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import game.utils.Skins;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +16,8 @@ public class SwitchButtons extends Table {
     private State state = State.INVENTORY;
 
     public SwitchButtons() {
-//        setBackground(Skins.COMODORE_SKIN.getDrawable("inventory-spells-window"));
-        inventory = new ImageButton(Skins.COMODORE_SKIN, "inventory");
-        spells = new ImageButton(Skins.COMODORE_SKIN, "spells");
+        inventory = WidgetFactory.createImageInventoryButton();
+        spells = WidgetFactory.createImageSpellsButton();
         inventory.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

@@ -147,7 +147,7 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
     }
 
     private ImageButton createCastButton() {
-        ImageButton staff = new ImageButton(Skins.COMODORE_SKIN, "staff");
+        ImageButton staff = WidgetFactory.createImageStaffButton();
         staff.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -170,7 +170,7 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
         shotStile.imageUp = shotDrawable.tint(Color.DARK_GRAY);
         shotStile.imageChecked = shotDrawable.tint(Color.GOLDENROD);
 
-        ImageButton shotButton = new ImageButton(shotStile);
+        ImageButton shotButton = WidgetFactory.createImageButton(shotStile);
 
         shotButton.addListener(new ClickListener() {
             @Override

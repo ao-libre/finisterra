@@ -67,6 +67,23 @@ public class WidgetFactory {
         return new ImageButton(skin.get());
     }
 
+    public static ImageButton createImageInventoryButton() {
+        return new ImageButton(skin.get(), ImageButtons.INVENTORY.name);
+    }
+
+    public static ImageButton createImageSpellsButton() {
+        return new ImageButton(skin.get(), ImageButtons.SPELLS.name);
+    }
+
+    public static ImageButton createImageStaffButton() {
+        return new ImageButton(Skins.COMODORE_SKIN, ImageButtons.STAFF.name);
+    }
+
+    // TODO create bow image button
+    public static ImageButton createImageButton(ImageButton.ImageButtonStyle style) {
+        return new ImageButton(style);
+    }
+
     public static CheckBox createCheckBox(String text) {
         return new CheckBox(text, skin.get());
     }
@@ -135,6 +152,19 @@ public class WidgetFactory {
 
         private String name;
         Images(String name) {
+            this.name = name;
+        }
+    }
+
+    enum ImageButtons {
+        INVENTORY("inventory"),
+        SPELLS("spells"),
+        STAFF("staff"),
+        BOW("bow");
+
+        private String name;
+
+        ImageButtons(String name) {
             this.name = name;
         }
     }
