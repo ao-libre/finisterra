@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import game.ClientConfiguration;
 import game.handlers.DefaultAOAssetManager;
 import game.utils.Resources;
 import game.utils.Skins;
@@ -39,8 +38,8 @@ public class LoadingScreen extends ScreenAdapter {
     private boolean textureLoading;
     private Consumer<DefaultAOAssetManager> onFinished;
 
-    public LoadingScreen(ClientConfiguration clientConfiguration) {
-        this.assetManager = new DefaultAOAssetManager(clientConfiguration);
+    public LoadingScreen(DefaultAOAssetManager assetManager) {
+        this.assetManager = assetManager;
         stage = new Stage();
         mainTable = new Table(SKIN);
         mainTable.setFillParent(true);
