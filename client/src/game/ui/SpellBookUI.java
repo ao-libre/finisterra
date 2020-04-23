@@ -1,6 +1,5 @@
 package game.ui;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import component.entity.character.info.SpellBook;
@@ -34,7 +33,7 @@ public abstract class SpellBookUI extends Table {
             slots.add(slot);
             spellTable.add(slot).width(SpellSlot.SIZE).height(SpellSlot.SIZE).row();
             if (i < MAX_SPELLS - 1) {
-                spellTable.add(new Image(getSkin().getDrawable("separator"))).row();
+                spellTable.add(WidgetFactory.createSeparatorImage()).row();
             }
         }
         add(spellTable).right();

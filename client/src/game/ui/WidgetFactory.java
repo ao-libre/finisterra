@@ -1,6 +1,7 @@
 package game.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import component.entity.world.CombatMessage;
 import game.utils.Colors;
@@ -46,8 +47,12 @@ public class WidgetFactory {
         return new Label(text, skin.get(), Labels.SPEECH_BUBBLE.name);
     }
 
-    public static Image createImage() {
-        return new Image();
+    public static Image createImage(Texture image) {
+        return new Image(image);
+    }
+
+    public static Image createSeparatorImage() {
+        return new Image(skin.get().getDrawable(Images.SEPARATOR.name));
     }
 
     public static Button createButton() {
@@ -121,6 +126,15 @@ public class WidgetFactory {
         private String name;
 
         Labels(String name) {
+            this.name = name;
+        }
+    }
+
+    enum Images {
+        SEPARATOR("separator");
+
+        private String name;
+        Images(String name) {
             this.name = name;
         }
     }

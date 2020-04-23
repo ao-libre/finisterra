@@ -2,7 +2,6 @@ package game.ui;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -33,7 +32,7 @@ public class SpellView extends Table {
             slots.add(slot);
             spellTable.add(slot).width(SpellSlot.SIZE).height(SpellSlot.SIZE).row();
             if (i < MAX_SPELLS - 1) {
-                spellTable.add(new Image(getSkin().getDrawable("separator"))).row();
+                spellTable.add(WidgetFactory.createSeparatorImage()).row();
             }
         }
         castButton = createCastButton();

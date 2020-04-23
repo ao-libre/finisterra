@@ -38,7 +38,8 @@ public class LoginScreen extends AbstractScreen {
     private CheckBox disableSound;
     private TextButton loginButton;
     private List<ClientConfiguration.Network.Server> serverList;
-    private Preferences preferences = Gdx.app.getPreferences("Finisterra");;
+    private Preferences preferences = Gdx.app.getPreferences("Finisterra");
+    ;
 
     public LoginScreen() {
     }
@@ -68,11 +69,11 @@ public class LoginScreen extends AbstractScreen {
         passwordField.setPasswordCharacter('*');
         passwordField.setPasswordMode(true);
         rememberMe = new CheckBox("Remember me", getSkin());
-        if(preferences.getBoolean( "rememberMe" )){
-            rememberMe.setChecked( true );
+        if (preferences.getBoolean("rememberMe")) {
+            rememberMe.setChecked(true);
             if (emailField.getText().isBlank()) {
-                if(!preferences.getString( "userEmail" ).isBlank()){
-                    emailField.setText( preferences.getString( "userEmail" ) );
+                if (!preferences.getString("userEmail").isBlank()) {
+                    emailField.setText(preferences.getString("userEmail"));
                 }
             }
         }
@@ -114,65 +115,65 @@ public class LoginScreen extends AbstractScreen {
         /* Botones para desactivar el sonido y la musica*/
 
         /* Musica */
-        disableMusic = new CheckBox( "Desabilitar Musica",getSkin() );
-        if(preferences.getBoolean( "MusicOff" )){
-            disableMusic.setChecked( true );
+        disableMusic = new CheckBox("Desabilitar Musica", getSkin());
+        if (preferences.getBoolean("MusicOff")) {
+            disableMusic.setChecked(true);
             musicSystem.stopMusic();
-            musicSystem.setDisableMusic( true );
+            musicSystem.setDisableMusic(true);
         }
 
         disableMusic.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 musicSystem.setDisableMusic(!musicSystem.isDisableMusic());
-                preferences.putBoolean( "MusicOff", disableMusic.isChecked() );
+                preferences.putBoolean("MusicOff", disableMusic.isChecked());
                 preferences.flush();
-                if (!musicSystem.isDisableMusic()){
-                    musicSystem.playMusic( 101 );
-                    musicSystem.fadeInMusic( 1f,20f );
-                }else{
+                if (!musicSystem.isDisableMusic()) {
+                    musicSystem.playMusic(101);
+                    musicSystem.fadeInMusic(1f, 20f);
+                } else {
                     musicSystem.stopMusic();
                 }
             }
         });
 
         /* Sonido */
-        disableSound = new CheckBox( "Desabilitar sonido",getSkin() );
-        if(preferences.getBoolean( "SoundOff" )){
-            disableSound.setChecked( true );
-            soundsSystem.setDisableSounds( true );
+        disableSound = new CheckBox("Desabilitar sonido", getSkin());
+        if (preferences.getBoolean("SoundOff")) {
+            disableSound.setChecked(true);
+            soundsSystem.setDisableSounds(true);
         }
         disableSound.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                preferences.putBoolean( "SoundOff", disableSound.isChecked() );
+                preferences.putBoolean("SoundOff", disableSound.isChecked());
                 preferences.flush();
                 soundsSystem.setDisableSounds(!soundsSystem.isDisableSounds());
             }
         });
 
         /* Agrega la imagen del logo */
-        Cell<Image> logoCell = getMainTable().add(new Image( new Texture( Gdx.files.local("data/ui/images/logo-big.png")))).center();
+        Cell<Image> logoCell = getMainTable().add(WidgetFactory.createImage(new Texture(Gdx.files.local("data/ui/images/logo-big.png")))).center();
         logoCell.row();
 
         /* Tabla botones */
         Window buttonsTable = new Window("OPCIONES", getSkin());
-        buttonsTable.setMovable( false );
-        buttonsTable.background( getSkin().getDrawable("menu-frame"));
-        buttonsTable.getTitleLabel().setColor( Color.GOLD );
-        buttonsTable.getTitleLabel().setAlignment( 2 );
-        buttonsTable.setHeight( 100 );
+        buttonsTable.setMovable(false);
+        buttonsTable.background(getSkin().getDrawable("menu-frame"));
+        buttonsTable.getTitleLabel().setColor(Color.GOLD);
+        buttonsTable.getTitleLabel().setAlignment(2);
+        buttonsTable.setHeight(100);
         buttonsTable.add(disableMusic).width(500).pad(10);
         buttonsTable.add(disableSound).width(400).pad(10);
 
         /* Tabla para loguin y servers */
         Table login_server = new Table();
-        login_server.add(loginWindow).width(500).height(300).padLeft(10).padRight( 10 ).padTop( 10 );
-        login_server.add(connectionTable).width(400).height(300).padLeft(10).padRight( 10 ).padTop( 10 ); //(*) Seteando acá el size, recursivamente tendría que resizear list.
+        login_server.add(loginWindow).width(500).height(300).padLeft(10).padRight(10).padTop(10);
+        login_server.add(connectionTable).width(400).height(300).padLeft(10).padRight(10).padTop(10); //(*) Seteando acá el size, recursivamente tendría que resizear list.
 
         /* Tabla principal */
         getMainTable().add(login_server).row();
-        getMainTable().add(buttonsTable).height( 100 ).width( 920 ).pad(3);
+        getMainTable().add(buttonsTable).height(100).width(920).pad(3);
         getStage().setKeyboardFocus(emailField);
     }
 
@@ -187,12 +188,12 @@ public class LoginScreen extends AbstractScreen {
                     loginButton.setDisabled(false);
                 }
             }, 2);
-            if (rememberMe.isChecked()){
-                preferences.putString("userEmail",emailField.getText());
-                preferences.putBoolean("rememberMe",true);
+            if (rememberMe.isChecked()) {
+                preferences.putString("userEmail", emailField.getText());
+                preferences.putBoolean("rememberMe", true);
             } else {
-                preferences.remove( "userEmail" );
-                preferences.putBoolean("rememberMe",false);
+                preferences.remove("userEmail");
+                preferences.putBoolean("rememberMe", false);
             }
             preferences.flush();
 

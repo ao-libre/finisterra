@@ -76,7 +76,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
 
         /*ventana de creacion de personajes*/
         Table heroImageTable = new Table();
-        heroSelectionImage = new Image(warriorImage);
+        heroSelectionImage = WidgetFactory.createImage(warriorImage);
         heroImageTable.clear();
         heroImageTable.add(heroSelectionImage);
         createWindow.add(heroImageTable).height(200).row();
@@ -99,25 +99,25 @@ public class CharacterSelectionScreen extends AbstractScreen {
                 heroImageTable.clear();
                 switch (heroSelectBox.getSelected()) {
                     case GUERRERO:
-                        heroSelectionImage = new Image(warriorImage);
+                        heroSelectionImage = WidgetFactory.createImage(warriorImage);
                         break;
                     case MAGO:
-                        heroSelectionImage = new Image(mageImage);
+                        heroSelectionImage = WidgetFactory.createImage(mageImage);
                         break;
                     case ASESINO:
-                        heroSelectionImage = new Image(assassinImage);
+                        heroSelectionImage = WidgetFactory.createImage(assassinImage);
                         break;
                     case PALADIN:
-                        heroSelectionImage = new Image(paladinImage);
+                        heroSelectionImage = WidgetFactory.createImage(paladinImage);
                         break;
                     case BARDO:
-                        heroSelectionImage = new Image(bardImage);
+                        heroSelectionImage = WidgetFactory.createImage(bardImage);
                         break;
                     case ARQUERO:
-                        heroSelectionImage = new Image(archerImage);
+                        heroSelectionImage = WidgetFactory.createImage(archerImage);
                         break;
                     case CLERIGO:
-                        heroSelectionImage = new Image(clericImage);
+                        heroSelectionImage = WidgetFactory.createImage(clericImage);
                         break;
                 }
                 heroImageTable.add(heroSelectionImage);
@@ -190,7 +190,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
             Table newSlot = new Table();
             newSlot.setBackground(getSkin().getDrawable("menu-frame"));
             Label userName = WidgetFactory.createLabel("");
-            Image pjImage = new Image(noHero);
+            Image pjImage = WidgetFactory.createImage(noHero);
             Label HPLabel = WidgetFactory.createLabel("????/????");
             HPLabel.setColor(Color.RED);
             Label MPLabel = WidgetFactory.createLabel("????/????");

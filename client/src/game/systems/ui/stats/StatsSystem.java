@@ -68,7 +68,7 @@ public class StatsSystem extends PassiveSystem {
         public IntervalItem(Texture image) {
             this.image = image;
             this.time = WidgetFactory.createLabel("");
-            add(new Image(image)).left();
+            add(WidgetFactory.createImage(image)).left();
             add(time).right();
         }
 
