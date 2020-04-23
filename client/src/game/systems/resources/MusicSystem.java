@@ -81,9 +81,9 @@ public class MusicSystem extends PassiveSystem { // @todo revisar
 
     public void toggle() {
         if (isPlaying()) {
-            pauseMusic();
+            currentMusic.pause();
         } else {
-            playMusic();
+            currentMusic.play();
         }
     }
 
