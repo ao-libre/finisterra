@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import game.ClientConfiguration;
 import game.handlers.DefaultAOAssetManager;
+import game.ui.WidgetFactory;
 import game.utils.Resources;
 import game.utils.Skins;
 
@@ -63,7 +64,7 @@ public class LoadingScreen extends ScreenAdapter {
         ProgressBarStyle style = new ProgressBarStyle();
         style.background = new SpriteDrawable(new Sprite(progressBar));
         style.knob = new SpriteDrawable(new Sprite(progressBarKnob));
-        progress = new ProgressBar(1, 100, 1, false, style);
+        progress = WidgetFactory.createLoadingProgressBar();
         table.add(progress).expandX();
         mainTable.add(table).expand();
         assetManager.load();

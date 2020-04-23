@@ -124,7 +124,7 @@ public class CharacterScreen extends ScreenAdapter {
             for (Part part : Part.values()) {
                 Label label = WidgetFactory.createLabel(part.name());
                 table.add(label).left().padTop(20).row();
-                SelectBox<Obj> select = new SelectBox<>(Skins.COMODORE_SKIN);
+                SelectBox<Obj> select = WidgetFactory.createSelectBox();
                 Obj[] items = getItems(part).toArray(new Obj[0]);
                 Arrays.sort(items, Comparator.comparingInt(Obj::getId));
                 select.setItems(items);

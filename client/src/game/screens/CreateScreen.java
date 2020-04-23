@@ -45,7 +45,7 @@ public class CreateScreen extends AbstractScreen {
         Label heroLabel = WidgetFactory.createLabel("Hero: ");
         createWindow.add(heroLabel).row();
 
-        SelectBox<Hero> heroSelectBox = new SelectBox<>(getSkin());
+        SelectBox<Hero> heroSelectBox = WidgetFactory.createSelectBox();
         Array<Hero> heros = new Array<>();
         Hero.getHeroes().forEach(heros::add);
         heroSelectBox.setItems(heros);

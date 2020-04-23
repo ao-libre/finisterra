@@ -112,6 +112,11 @@ public class WidgetFactory {
         return new ProgressBar(0, 0, 1, false, skin.get());
     }
 
+    // TODO create loading progessbar
+    public static ProgressBar createLoadingProgressBar() {
+        return new ProgressBar(1, 100, 1, false, skin.get());
+    }
+
     public static Slider createSlider() {
         return new Slider(0, 0, 1, false, skin.get());
     }
@@ -165,6 +170,19 @@ public class WidgetFactory {
         private String name;
 
         ImageButtons(String name) {
+            this.name = name;
+        }
+    }
+
+    enum ProgressBars {
+        LOADING("loading"),
+        HP("hp"),
+        MANA("mana");
+
+        private String name;
+
+        ProgressBars(String name) {
+
             this.name = name;
         }
     }

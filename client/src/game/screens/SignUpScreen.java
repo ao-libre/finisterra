@@ -69,7 +69,7 @@ public class SignUpScreen extends AbstractScreen {
 
         /* Tabla de servidores */
         Table serverTable = new Table((getSkin()));
-        serverList = new List<>(getSkin());
+        serverList = WidgetFactory.createList();
         serverList.setItems(clientConfiguration.getNetwork().getServers());
         serverTable.add(serverList).width(400).height(300); //@todo Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
 
