@@ -78,6 +78,7 @@ public class AOGame extends Game {
         Log.debug("AOGame", "Closing client...");
         if (world != null) world.dispose(); // Llama a dispose() en todos los sistemas
         if (assetManager != null) assetManager.dispose(); // Libera todos los assets cargados
+        super.dispose();
         Log.debug("AOGame", "Thank you for playing! See you soon...");
     }
 }
