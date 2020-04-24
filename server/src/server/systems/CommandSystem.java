@@ -69,7 +69,7 @@ public class CommandSystem extends DefaultManager {
             int playerMap = player.worldPosMap(), playerX = player.worldPosX(), playerY = player.worldPosY();
             boolean homeSet = false;
             int i = 0;
-            while ((i < capacity ) || homeSet) {
+            while ((i < capacity) && !homeSet) {
                 if (playerMap == cityMaps.get( i )){
                     player.originPosMap( playerMap ).originPosX( playerX ).originPosY( playerY );
                     messageSystem.add(senderId, ConsoleMessage.info("HOME_SET"));
