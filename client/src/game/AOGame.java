@@ -1,14 +1,15 @@
 package game;
 
-import com.artemis.BaseSystem;
 import com.artemis.World;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
+import game.handlers.DefaultAOAssetManager;
 import game.screens.LoadingScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
+import game.systems.resources.MusicSystem;
 import shared.util.LogSystem;
 
 /**
@@ -18,9 +19,10 @@ import shared.util.LogSystem;
  */
 public class AOGame extends Game {
 
-    private AssetManager assetManager;
+    private DefaultAOAssetManager assetManager;
     private ClientConfiguration clientConfiguration;
     private World world;
+    private MusicSystem musicSystem;
 
     /**
      * Constructor de la clase.
@@ -36,30 +38,47 @@ public class AOGame extends Game {
     public void create() {
         Log.debug("AOGame", "Creating AOGame...");
         // Create Loading screen
-        LoadingScreen screen = new LoadingScreen(clientConfiguration);
+        assetManager = new DefaultAOAssetManager(clientConfiguration);
+        LoadingScreen screen = new LoadingScreen(assetManager);
         setScreen(screen);
         screen.onFinished((assetManager) -> {
             ScreenManager screenManager = new ScreenManager(this);
-            this.assetManager = assetManager;
             this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
             screenManager.to(ScreenEnum.LOGIN);
+            this.musicSystem = world.getSystem( MusicSystem.class );
+            musicSystem.playMusic(101, true);
             screenManager.addListener((screenEnum -> {
-                if (screenEnum.equals(ScreenEnum.LOGIN)) {
-                    this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
+                switch( screenEnum ) {
+                    case LOGIN:
+                        this.musicSystem = world.getSystem( MusicSystem.class );
+                        musicSystem.stopMusic();
+                        this.world = WorldConstructor.create( clientConfiguration, screenManager, assetManager );
+                        this.musicSystem = world.getSystem( MusicSystem.class );
+                        musicSystem.playMusic(101, true);
+                        break;
+                    case GAME:
+                        this.musicSystem = world.getSystem( MusicSystem.class );
+                        musicSystem.playMusic(1, true);
                 }
             }));
         });
     }
 
     /**
+     * libGDX llama a este método cuando la aplicación cierra.
+     * @see ApplicationListener#dispose()
+     *
+     * <b>Nota:</b> Para cerrar la aplicación usar {@code Gdx.app.exit()}
+     *
      * Disponer de todos los recursos utilizados y cerrar threads pendientes.
      * Eventualmente la JVM cierra sola.
      */
     @Override
     public void dispose() {
         Log.debug("AOGame", "Closing client...");
-        world.dispose(); /** Llama a {@link BaseSystem#dispose()} en todos los sistemas */
-        assetManager.dispose(); // Libera todos los assets cargados
+        if (world != null) world.dispose(); // Llama a dispose() en todos los sistemas
+        if (assetManager != null) assetManager.dispose(); // Libera todos los assets cargados
+        super.dispose();
         Log.debug("AOGame", "Thank you for playing! See you soon...");
     }
 }

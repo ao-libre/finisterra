@@ -128,9 +128,9 @@ public class LoginScreen extends AbstractScreen {
                 musicSystem.setDisableMusic(!musicSystem.isDisableMusic());
                 preferences.putBoolean("MusicOff", disableMusic.isChecked());
                 preferences.flush();
-                if (!musicSystem.isDisableMusic()) {
-                    musicSystem.playMusic(101);
-                    musicSystem.fadeInMusic(1f, 20f);
+
+                if(!musicSystem.isDisableMusic()){
+                    musicSystem.playMusic(101, true);
                 } else {
                     musicSystem.stopMusic();
                 }

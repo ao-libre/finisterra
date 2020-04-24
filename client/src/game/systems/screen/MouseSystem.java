@@ -78,7 +78,10 @@ public class MouseSystem extends PassiveSystem {
                     //return;
                 }
             }
+
             Tile targetTile = mapSystem.getTile(worldPos);
+            if (targetTile == null) return;
+
             if(targetTile.getObjIndex() > 0) {
                 objectSystem.getObject(targetTile.getObjIndex()).ifPresent(obj -> {
                     consoleSystem.getConsole().addInfo(messageSystem.getMessage(Messages.SEE_SOMEONE, String.valueOf(targetTile.getObjCount()))

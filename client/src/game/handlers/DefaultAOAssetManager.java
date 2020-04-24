@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.I18NBundle;
+import com.esotericsoftware.minlog.Log;
 import game.ClientConfiguration;
 import game.loaders.*;
 import game.loaders.ObjectsLoader.ObjectParameter;
@@ -164,14 +165,17 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         return get(Resources.GAME_SKIN_FILE);
     }
 
-    // TODO: fix asap
+    // @todo Revisar
     @Override
     public Music getMusic(int key) {
-        if (Gdx.files.internal(Resources.GAME_MUSIC_PATH + key + Resources.GAME_MUSIC_EXTENSION).exists()) {
-            return Gdx.audio.newMusic(Gdx.files.internal
-                    (Resources.GAME_MUSIC_PATH + key + Resources.GAME_MUSIC_EXTENSION));
-        } else {
-            return null;
+        String path = "data/music/" + key + ".mp3";
+        Music music = null;
+        try {
+            music = getAssetManager().get(path);
+        } catch (Exception e) {
+            Log.error("DefaultAOAssetManager", "Error getting music: " + path, e);
+        } finally {
+            return music;
         }
     }
 
