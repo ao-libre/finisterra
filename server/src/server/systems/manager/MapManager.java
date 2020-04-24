@@ -282,4 +282,18 @@ public class MapManager extends DefaultManager {
     public Map<Integer, Set<Integer>> getEntitiesFootprints() {
         return entitiesFootprints;
     }
+
+    // @todo revisar
+    // quizá tendría que ir en MapHelper
+    public boolean isValidPos(WorldPos pos) {
+        if (helper.hasMap(pos.map)) {
+            shared.model.map.Map map = helper.getMap(pos.map);
+            if (pos.x > 0 && pos.x < map.getWidth()) {
+                if (pos.y > 0 && pos.y < map.getHeight()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

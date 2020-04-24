@@ -5,13 +5,16 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.minlog.Log;
 import component.console.ConsoleMessage;
+import component.position.WorldPos;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import server.systems.manager.DefaultManager;
+import server.systems.manager.MapManager;
 import server.systems.manager.WorldManager;
 import server.systems.network.MessageSystem;
 import shared.network.interaction.TalkRequest;
 import shared.util.EntityUpdateBuilder;
+import shared.util.MapHelper;
 import shared.util.Messages;
 
 import java.util.HashMap;
@@ -23,6 +26,7 @@ public class CommandSystem extends DefaultManager {
 
     // Injected Systems
     private ServerSystem networkManager;
+    private MapManager mapManager;
     private WorldManager worldManager;
     private MessageSystem messageSystem;
 
@@ -103,10 +107,12 @@ public class CommandSystem extends DefaultManager {
             int map = Integer.parseInt(command.params[1]);
             int x = Integer.parseInt(command.params[2]);
             int y = Integer.parseInt(command.params[3]);
-            player.worldPosMap(map).worldPosX(x).worldPosY(y);
-            EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(senderID);
-            resetUpdate.withComponents(player.getWorldPos());
-            worldManager.notifyUpdate(senderID, resetUpdate.build());
+            if (mapManager.isValidPos(new WorldPos(x, y, map))) {
+                player.worldPosMap(map).worldPosX(x).worldPosY(y);
+                EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(senderID);
+                resetUpdate.withComponents(player.getWorldPos());
+                worldManager.notifyUpdate(senderID, resetUpdate.build());
+            }
         });
     }
 
