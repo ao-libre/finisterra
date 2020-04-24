@@ -107,7 +107,7 @@ public class CommandSystem extends DefaultManager {
             int map = Integer.parseInt(command.params[1]);
             int x = Integer.parseInt(command.params[2]);
             int y = Integer.parseInt(command.params[3]);
-            if (mapManager.isValidPos(new WorldPos(x, y, map))) {
+            if (mapManager.getHelper().isValid(new WorldPos(x, y, map))) {
                 player.worldPosMap(map).worldPosX(x).worldPosY(y);
                 EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(senderID);
                 resetUpdate.withComponents(player.getWorldPos());
