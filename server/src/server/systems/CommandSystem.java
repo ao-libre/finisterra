@@ -11,6 +11,7 @@ import server.systems.manager.DefaultManager;
 import server.systems.manager.WorldManager;
 import server.systems.network.MessageSystem;
 import shared.network.interaction.TalkRequest;
+import shared.util.EntityUpdateBuilder;
 import shared.util.Messages;
 
 import java.util.HashMap;
@@ -95,6 +96,17 @@ public class CommandSystem extends DefaultManager {
             } else {
                 messageSystem.add( senderId, ConsoleMessage.info( "YOU_ARE_ALIVE" ) );
             }
+        });
+        commands.put("tp", (command) -> {
+            int senderID  = command.senderID;
+            E player = E.E(senderID);
+            int map = Integer.parseInt(command.params[1]);
+            int x = Integer.parseInt(command.params[2]);
+            int y = Integer.parseInt(command.params[3]);
+            player.worldPosMap(map).worldPosX(x).worldPosY(y);
+            EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(senderID);
+            resetUpdate.withComponents(player.getWorldPos());
+            worldManager.notifyUpdate(senderID, resetUpdate.build());
         });
     }
 
