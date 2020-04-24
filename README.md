@@ -17,6 +17,14 @@ git clone https://github.com/ao-libre/finisterra.git
 cd finisterra
 ./gradlew desktop:run -x :shared:fluid  
 ```
+## Getting Started (IntelliJ)
+Requerido JDK 14
+- Importar como proyecto seleccionando build.gradle
+- Configurar JDK en el IDE:
+  - Settear JDK al proyecto: File -> Project Structure... -> Project (en Project Settings) -> Project SDK
+  - Settear JDK a gradle: buscar `Gradle` en las settings o File -> Settings... -> Build, Execution, Deployment -> Build Tools -> Gradle -> Gradle JVM 
+- Ejectuar la tarea build con gradle:
+  - Desde la pestaña `gradle` (en la barra lateral derecha), navegar y ejecutar la tarea: finisterra -> Tasks -> build -> build
 
 ## Java
 Compatible con Eclipse, Netbeans y IntelliJ
