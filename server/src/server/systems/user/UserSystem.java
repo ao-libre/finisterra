@@ -42,6 +42,7 @@ public class UserSystem extends PassiveSystem {
     protected void initialize() {
         json = new Json();
         json.setOutputType(OutputType.minimal);
+        json.setUsePrototypes(false);
     }
 
     public void login(int connectionId, String userName) {
