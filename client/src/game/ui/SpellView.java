@@ -2,7 +2,6 @@ package game.ui;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -27,13 +26,13 @@ public class SpellView extends Table {
 
     public SpellView() {
         super(Skins.COMODORE_SKIN);
-        spellTable = new Window("", Skins.COMODORE_SKIN, "inventory");
+        spellTable = WidgetFactory.createInventoryWindow();
         for (int i = 0; i < MAX_SPELLS; i++) {
             SpellSlot slot = new SpellSlot(this, null);
             slots.add(slot);
             spellTable.add(slot).width(SpellSlot.SIZE).height(SpellSlot.SIZE).row();
             if (i < MAX_SPELLS - 1) {
-                spellTable.add(new Image(getSkin().getDrawable("separator"))).row();
+                spellTable.add(WidgetFactory.createSeparatorImage()).row();
             }
         }
         castButton = createCastButton();
@@ -79,7 +78,7 @@ public class SpellView extends Table {
      */
 
     private ImageButton createCastButton() {
-        ImageButton staff = new ImageButton(Skins.COMODORE_SKIN, "staff");
+        ImageButton staff = WidgetFactory.createImageStaffButton();
         staff.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

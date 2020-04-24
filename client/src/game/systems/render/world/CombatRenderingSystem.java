@@ -3,10 +3,8 @@ package game.systems.render.world;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 import com.esotericsoftware.minlog.Log;
@@ -15,13 +13,13 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import component.entity.character.parts.Body;
 import component.entity.world.CombatMessage;
-import game.systems.resources.DescriptorsSystem;
+import component.position.WorldPos;
 import game.systems.render.BatchRenderingSystem;
-import game.utils.Colors;
+import game.systems.resources.DescriptorsSystem;
+import game.ui.WidgetFactory;
 import game.utils.Pos2D;
 import game.utils.Skins;
 import org.jetbrains.annotations.NotNull;
-import component.position.WorldPos;
 import shared.model.map.Tile;
 
 import java.util.concurrent.TimeUnit;
@@ -40,10 +38,7 @@ public class CombatRenderingSystem extends RenderingSystem {
                 public Table load(@NotNull CombatMessage message) {
                     Table table = new Table(Skins.COMODORE_SKIN);
                     table.setRound(false);
-                    String text = message.text;
-                    LabelStyle labelStyle = new LabelStyle(Skins.COMODORE_SKIN.getFont("flipped-with-border"), getColor(message));
-                    labelStyle.font.setUseIntegerPositions(false);
-                    Label label = new Label(text, labelStyle);
+                    Label label = WidgetFactory.createCombatLabel(message);
                     message.originalScale = message.kind == CombatMessage.Kind.STAB ? 1.3f : 1f;
                     float prefWidth = label.getPrefWidth();
                     label.setWrap(true);
@@ -98,23 +93,4 @@ public class CombatRenderingSystem extends RenderingSystem {
         }
     }
 
-    private Color getColor(CombatMessage message) {
-        Color color = Color.WHITE.cpy();
-        switch (message.kind) {
-            case MAGIC:
-                color = Colors.MANA.cpy();
-                break;
-            case STAB:
-                color = Colors.GREY.cpy();
-                break;
-            case ENERGY:
-                color = Colors.YELLOW.cpy();
-                break;
-            case PHYSICAL:
-                color = Colors.RED.cpy();
-                break;
-        }
-
-        return color;
-    }
 }

@@ -14,6 +14,7 @@ import com.google.common.cache.LoadingCache;
 import component.entity.character.info.Name;
 import component.position.WorldPos;
 import game.systems.render.BatchRenderingSystem;
+import game.ui.WidgetFactory;
 import game.utils.Colors;
 import game.utils.Pos2D;
 import game.utils.Skins;
@@ -39,7 +40,7 @@ public class NameRenderingSystem extends RenderingSystem {
                     table.setRound(false);
                     E e = E(integer);
                     String text = e.getName().text;
-                    Label label = new Label(text, Skins.COMODORE_SKIN, "flipped");
+                    Label label = WidgetFactory.createFlippedLabel(text);
                     label.getStyle().font.setUseIntegerPositions(false);
                     label.setFontScale(1.1f);
                     float prefWidth = label.getPrefWidth();

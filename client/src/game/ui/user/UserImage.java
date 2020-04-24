@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import component.entity.character.status.Level;
+import game.ui.WidgetFactory;
 import game.utils.Skins;
 import model.textures.RadialProgress;
 import model.textures.RadialSprite;
@@ -22,7 +23,7 @@ public class UserImage extends ImageButton {
     UserImage(E e) {
         super(Skins.COMODORE_SKIN, "big-disc");
         this.e = e;
-        lvlLabel = new Label("", Skins.COMODORE_SKIN, "title-no-background");
+        lvlLabel = WidgetFactory.createTitleLabel("");
         lvlLabel.setAlignment(Align.center);
         radialSprite = new RadialSprite(Skins.COMODORE_SKIN.getRegion("disc-glow"));
         radialProgress = new RadialProgress(Skins.COMODORE_SKIN.getRegion("disc-glow"));

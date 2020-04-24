@@ -22,6 +22,7 @@ import game.systems.ui.UserInterfaceContributionSystem;
 import game.systems.ui.action_bar.systems.InventorySystem;
 import game.systems.ui.action_bar.systems.SpellSystem;
 import game.ui.SwitchButtons;
+import game.ui.WidgetFactory;
 import game.utils.Skins;
 
 import static com.artemis.E.E;
@@ -61,19 +62,19 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
             }
         });
 
-        actionBar.add(buttons).top().right().colspan(2).padRight( 10 ).row();
+        actionBar.add(buttons).top().right().colspan(2).padRight(10).row();
 
         /*cast and shot*/
         Table buttonsTable = new Table();
         Stack buttonStack = new Stack();
         castButton = createCastButton();
-        buttonStack.add( castButton );
+        buttonStack.add(castButton);
         shotButton = createShotButton();
-        buttonStack.add( shotButton );
-        buttonsTable.add( buttonStack ).right().row();
+        buttonStack.add(shotButton);
+        buttonsTable.add(buttonStack).right().row();
         expandInventoryButton = createExpandInventoryButton();
-        buttonsTable.add( expandInventoryButton ).right().width(50).height(50);
-        actionBar.add(buttonsTable).padRight( -25f ).width(100);
+        buttonsTable.add(expandInventoryButton).right().width(50).height(50);
+        actionBar.add(buttonsTable).padRight(-25f).width(100);
 
         /* Inventary and spellbook  */
         Stack stack = new Stack();
@@ -90,12 +91,12 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
 
         /*gold table*/
         Table goldTable = new Table();
-        Cell<Image> goldIconCell = goldTable.add(new Image( new Texture( Gdx.files.local("data/ui/images/gold.png"))));
+        Cell<Image> goldIconCell = goldTable.add(WidgetFactory.createImage(new Texture(Gdx.files.local("data/ui/images/gold.png"))));
         goldIconCell.height(28).width(30).left();
-        goldLabel = new Label("",Skins.COMODORE_SKIN);
+        goldLabel = WidgetFactory.createLabel("");
         goldLabel.setText(String.valueOf(playerSystem.get().goldCount()));
         goldLabel.setColor(Color.GOLDENROD);
-        goldLabel.setAlignment( Align.right);
+        goldLabel.setAlignment(Align.right);
         goldTable.add(goldLabel).height(28).fillY().right();
         actionBar.add(goldTable).colspan(2).right().padRight(10);
 
@@ -109,19 +110,19 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
 
     public void showInventory() {
         spellSystem.hide();
-        castButton.setVisible( false );
-        shotButton.setVisible( true );
-        expandInventoryButton.setVisible( true );
+        castButton.setVisible(false);
+        shotButton.setVisible(true);
+        expandInventoryButton.setVisible(true);
         inventorySystem.show();
     }
 
     public void showSpells() {
-        if (inventorySystem.isExpanded()){
+        if (inventorySystem.isExpanded()) {
             inventorySystem.toggleExpanded();
         }
-        expandInventoryButton.setVisible( false );
-        castButton.setVisible( true);
-        shotButton.setVisible( false );
+        expandInventoryButton.setVisible(false);
+        castButton.setVisible(true);
+        shotButton.setVisible(false);
         spellSystem.show();
         inventorySystem.hide();
     }
@@ -133,9 +134,10 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
             showSpells();
         }
     }
-    private ImageTextButton createExpandInventoryButton(){
-        expandInventoryButton = new ImageTextButton("",Skins.COMODORE_SKIN, "inventory-expand-collapse" );
-        expandInventoryButton.addListener( new ClickListener(){
+
+    private ImageTextButton createExpandInventoryButton() {
+        expandInventoryButton = new ImageTextButton("", Skins.COMODORE_SKIN, "inventory-expand-collapse");
+        expandInventoryButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 inventorySystem.toggleExpanded();
@@ -143,8 +145,9 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
         });
         return expandInventoryButton;
     }
+
     private ImageButton createCastButton() {
-        ImageButton staff = new ImageButton(Skins.COMODORE_SKIN, "staff");
+        ImageButton staff = WidgetFactory.createImageStaffButton();
         staff.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -159,15 +162,15 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
     }
 
     private ImageButton createShotButton() {
-        Sprite shotSprite = new Sprite(new Texture( Gdx.files.local("data/graficos2x/16007.png")));
-        shotSprite.rotate90( true );
+        Sprite shotSprite = new Sprite(new Texture(Gdx.files.local("data/graficos2x/16007.png")));
+        shotSprite.rotate90(true);
         SpriteDrawable shotDrawable = new SpriteDrawable(shotSprite);
         ImageButton.ImageButtonStyle shotStile = new ImageButton.ImageButtonStyle();
-        shotStile.up = Skins.COMODORE_SKIN.getDrawable( "big-disc" );
-        shotStile.imageUp = shotDrawable.tint( Color.DARK_GRAY);
+        shotStile.up = Skins.COMODORE_SKIN.getDrawable("big-disc");
+        shotStile.imageUp = shotDrawable.tint(Color.DARK_GRAY);
         shotStile.imageChecked = shotDrawable.tint(Color.GOLDENROD);
 
-        ImageButton shotButton = new ImageButton(shotStile);
+        ImageButton shotButton = WidgetFactory.createImageButton(shotStile);
 
         shotButton.addListener(new ClickListener() {
             @Override
@@ -177,11 +180,12 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
         });
         return shotButton;
     }
+
     public void clearShot() {
         shotButton.setChecked(false);
     }
 
-    public void updateGoldLabel(int goldCount){
+    public void updateGoldLabel(int goldCount) {
         goldLabel.setText(String.valueOf(goldCount));
     }
 

@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Timer;
 import game.ClientConfiguration;
 import game.handlers.DefaultAOAssetManager;
 import game.systems.network.ClientSystem;
+import game.ui.WidgetFactory;
 import shared.network.account.AccountCreationRequest;
 import shared.util.Messages;
 
@@ -29,24 +30,24 @@ public class SignUpScreen extends AbstractScreen {
     @Override
     protected void createUI() {
         /* Tabla de sign up */
-        Window signUpTable = new Window("", getSkin()); //@todo window es una ventana arrastrable
-        Label usernameLabel = new Label("Username:", getSkin());
-        usernameField = new TextField("", getSkin());
-        Label emailLabel = new Label("Email:", getSkin());
-        emailField = new TextField("", getSkin());
-        Label passwordLabel1 = new Label("Password:", getSkin());
-        passwordField1 = new TextField("", getSkin());
+        Window signUpTable = WidgetFactory.createWindow(); //@todo window es una ventana arrastrable
+        Label usernameLabel = WidgetFactory.createLabel("Username: ");
+        usernameField = WidgetFactory.createTextField("");
+        Label emailLabel = WidgetFactory.createLabel("Email:");
+        emailField = WidgetFactory.createTextField("");
+        Label passwordLabel1 = WidgetFactory.createLabel("Password:");
+        passwordField1 = WidgetFactory.createTextField("");
         passwordField1.setPasswordCharacter('*');
         passwordField1.setPasswordMode(true);
-        Label passwordLabel2 = new Label("Repeat password:", getSkin());
-        passwordField2 = new TextField("", getSkin());
+        Label passwordLabel2 = WidgetFactory.createLabel("Repeat password:");
+        passwordField2 = WidgetFactory.createTextField("");
         passwordField2.setPasswordCharacter('*');
         passwordField2.setPasswordMode(true);
 
-        registerButton = new TextButton("Register account", getSkin());
+        registerButton = WidgetFactory.createTextButton("Register account");
         registerButton.addListener(new RegisterButtonListener());
 
-        TextButton goBackButton = new TextButton("Go Back", getSkin());
+        TextButton goBackButton = WidgetFactory.createTextButton("Go Back");
         goBackButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -68,7 +69,7 @@ public class SignUpScreen extends AbstractScreen {
 
         /* Tabla de servidores */
         Table serverTable = new Table((getSkin()));
-        serverList = new List<>(getSkin());
+        serverList = WidgetFactory.createList();
         serverList.setItems(clientConfiguration.getNetwork().getServers());
         serverTable.add(serverList).width(400).height(300); //@todo Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
 

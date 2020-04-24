@@ -1,6 +1,7 @@
 package game.utils;
 
 import com.badlogic.gdx.graphics.Color;
+import component.entity.world.CombatMessage;
 
 public class Colors {
 
@@ -27,4 +28,23 @@ public class Colors {
         return rgba(r, g, b, 1);
     }
 
+    public static Color get(CombatMessage message) {
+        Color color = Color.WHITE.cpy();
+        switch (message.kind) {
+            case MAGIC:
+                color = Colors.MANA.cpy();
+                break;
+            case STAB:
+                color = Colors.GREY.cpy();
+                break;
+            case ENERGY:
+                color = Colors.YELLOW.cpy();
+                break;
+            case PHYSICAL:
+                color = Colors.RED.cpy();
+                break;
+        }
+
+        return color;
+    }
 }

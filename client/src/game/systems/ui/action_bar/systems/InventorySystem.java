@@ -23,6 +23,7 @@ import game.systems.ui.UserInterfaceSystem;
 import game.systems.ui.action_bar.ActionBarSystem;
 import game.systems.ui.console.ConsoleSystem;
 import game.ui.Inventory;
+import game.ui.WidgetFactory;
 import shared.model.map.Tile;
 import game.utils.Skins;
 import shared.network.interaction.DropItem;
@@ -102,8 +103,8 @@ public class InventorySystem extends UserInterfaceContributionSystem {
                 table.pad(0, 10, 10, 0);
                 table.setSkin(Skins.COMODORE_SKIN);
                 table.background(getBackground());
-                Label title = new Label(" - " + name + " - ", Skins.COMODORE_SKIN, "title-no-background");
-                Label type = new Label(objType.toString(), Skins.COMODORE_SKIN, "desc-no-background");
+                Label title = WidgetFactory.createTitleLabel(" - " + name + " - ");
+                Label type = WidgetFactory.createDescLabel(objType.toString());
                 table.add("").prefWidth(200).fillX().row();
                 table.add(title).center().row();
                 table.add(type).center().row();

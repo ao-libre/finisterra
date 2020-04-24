@@ -6,9 +6,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Tooltip;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Tooltip;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import component.entity.character.info.Bag;
@@ -50,7 +49,7 @@ public abstract class Inventory extends Window {
             int columnsCounter = 1, loops = 0 ;
             for (int i = 0; i < SIZE; i++) {
                 Slot newSlot = new Slot();
-                Label count = new Label( "",getSkin() );
+                Label count = WidgetFactory.createLabel("");
                 count.setFontScale( 0.7f );
                 itemCount.add( count );
                 slots.add(newSlot);
@@ -78,7 +77,7 @@ public abstract class Inventory extends Window {
                     }
                     row();
                     for (int y= 0; y < 4; y++) {
-                        add(new Image(getSkin().getDrawable("separator")));
+                        add(WidgetFactory.createSeparatorImage());
                     }
                     row();
                     columnsCounter = 0;
@@ -90,13 +89,13 @@ public abstract class Inventory extends Window {
         } else {
             for (int i = 0; i < 5; i++) {
                 Slot newSlot = new Slot();
-                Label count = new Label("", getSkin());
+                Label count = WidgetFactory.createLabel("");
                 count.setFontScale(0.7f);
                 slots.add(newSlot);
                 itemCount.add( count );
                 add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
                 add(itemCount.get( i )).height(10).row();
-                add(new Image(getSkin().getDrawable("separator"))).row();
+                add(WidgetFactory.createSeparatorImage()).row();
             }
         }
         addListener(getMouseListener());

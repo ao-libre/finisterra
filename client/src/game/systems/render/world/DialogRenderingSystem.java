@@ -16,6 +16,7 @@ import component.entity.world.Dialog;
 import component.entity.world.Dialog.Kind;
 import game.systems.resources.DescriptorsSystem;
 import game.systems.render.BatchRenderingSystem;
+import game.ui.WidgetFactory;
 import game.utils.Colors;
 import game.utils.Pos2D;
 import game.utils.Skins;
@@ -42,7 +43,7 @@ public class DialogRenderingSystem extends RenderingSystem {
                     Table table = new Table(Skins.COMODORE_SKIN);
                     table.setRound(false);
                     String text = dialog.text;
-                    Label label = new Label(text, Skins.COMODORE_SKIN, dialog.kind == Kind.MAGIC_WORDS ? "flipped" : "speech-bubble");
+                    Label label = dialog.kind == Kind.MAGIC_WORDS ? WidgetFactory.createFlippedLabel(text) : WidgetFactory.createTalkLabel(text);
                     label.getStyle().font.setUseIntegerPositions(false);
                     float prefWidth = label.getPrefWidth();
                     label.setWrap(true);

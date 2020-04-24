@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import game.systems.network.ClientSystem;
+import game.ui.WidgetFactory;
 import shared.interfaces.Hero;
 
 @Wire
@@ -33,25 +34,25 @@ public class CreateScreen extends AbstractScreen {
 
     @Override
     public void createUI() {
-        Window createWindow = new Window("", getSkin());
+        Window createWindow = WidgetFactory.createWindow();
 
-        Label nameLabel = new Label("Name:", getSkin());
+        Label nameLabel = WidgetFactory.createLabel("Name:");
         createWindow.add(nameLabel).row();
 
-        TextField name = new TextField("", getSkin());
+        TextField name = WidgetFactory.createTextField("");
         createWindow.add(name).row();
 
-        Label heroLabel = new Label("Hero: ", getSkin());
+        Label heroLabel = WidgetFactory.createLabel("Hero: ");
         createWindow.add(heroLabel).row();
 
-        SelectBox<Hero> heroSelectBox = new SelectBox<>(getSkin());
+        SelectBox<Hero> heroSelectBox = WidgetFactory.createSelectBox();
         Array<Hero> heros = new Array<>();
         Hero.getHeroes().forEach(heros::add);
         heroSelectBox.setItems(heros);
         createWindow.add(heroSelectBox).row();
 
 
-        TextButton registerButton = new TextButton("Create", getSkin());
+        TextButton registerButton = WidgetFactory.createTextButton("Create");
         registerButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -68,7 +69,7 @@ public class CreateScreen extends AbstractScreen {
         });
         createWindow.add(registerButton).row();
 
-        TextButton goBackButton = new TextButton("Go Back", getSkin());
+        TextButton goBackButton = WidgetFactory.createTextButton("Go Back");
         goBackButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
