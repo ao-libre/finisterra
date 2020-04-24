@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TooltipManager;
 import com.badlogic.gdx.utils.Disposable;
 import component.camera.Focused;
 import component.position.WorldPos;
@@ -58,6 +59,10 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
     }
 
     public void show() {
+        // Configura tooltips
+        TooltipManager.getInstance().initialTime = 0.75f;
+        TooltipManager.getInstance().subsequentTime = 0.25f;
+
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
         inputMultiplexer.addProcessor(stage);
         inputMultiplexer.addProcessor(inputSystem);
