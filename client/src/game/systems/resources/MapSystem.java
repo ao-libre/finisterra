@@ -28,8 +28,6 @@ public class MapSystem extends PassiveSystem {
 
     @Nullable
     public static Tile getTile(WorldPos pos) {
-        Tile tile = MapHelper.getTile(get(pos.map), pos);
-        if (tile == null) Log.warn("MapSystem", "getTile(WorldPos) retorna null. WorldPos = " + pos);
-        return tile;
+        return MapHelper.getTile(get(pos.map), pos);
     }
 }
