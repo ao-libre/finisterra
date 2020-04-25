@@ -60,7 +60,7 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
 
     public void show() {
         // Configura tooltips
-        TooltipManager.getInstance().initialTime = 0.75f;
+        TooltipManager.getInstance().initialTime = 0.25f;
         TooltipManager.getInstance().subsequentTime = 0.25f;
 
         InputMultiplexer inputMultiplexer = new InputMultiplexer();
