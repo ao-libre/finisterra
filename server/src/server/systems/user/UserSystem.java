@@ -118,12 +118,11 @@ public class UserSystem extends PassiveSystem {
 
     private void saveUser(String name, E user) {
         executor.submit(() -> {
-            Collection<Component> components = componentManager.getComponents(user.id(), ComponentManager.Visibility.SERVER);
             Charfile charfiel = new Charfile();
             // guarda collection de compoenntes en json charfiel
             charfiel.components = componentManager.getComponents(user.id(), ComponentManager.Visibility.SERVER);
             charfiel.save(name);
-        });
+       });
     }
 
     public Charfile getCharfile(String userName){
