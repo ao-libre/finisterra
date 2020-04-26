@@ -10,6 +10,7 @@ import com.esotericsoftware.jsonbeans.OutputType;
 import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.database.Account;
+import server.database.Charfile;
 import server.systems.EntityFactorySystem;
 import server.systems.ServerSystem;
 import server.systems.account.AccountSystem;
@@ -38,15 +39,17 @@ public class UserSystem extends PassiveSystem {
     private ExecutorService executor = Executors.newFixedThreadPool(10);
 
 
+
     @Override
     protected void initialize() {
+
         json = new Json();
         json.setOutputType(OutputType.minimal);
         json.setUsePrototypes(false);
     }
 
     public void login(int connectionId, String userName) {
-        if (userExists(userName)) {
+        if (Charfile.exists(userName)){
             // login
             try {
                 Integer entityId = loadUser(userName).get(250, TimeUnit.MILLISECONDS);
@@ -73,7 +76,7 @@ public class UserSystem extends PassiveSystem {
     }
 
     public void create(int connectionId, String name, int heroId, String userAcc, int index) {
-        if (userExists(name)) {
+        if (Charfile.exists(name)) {
             // send user exists
             serverSystem.sendTo(connectionId,
                     UserCreateResponse.failed("Este personaje ya existe!"));
@@ -116,31 +119,33 @@ public class UserSystem extends PassiveSystem {
     private void saveUser(String name, E user) {
         executor.submit(() -> {
             Collection<Component> components = componentManager.getComponents(user.id(), ComponentManager.Visibility.SERVER);
-            File userFile = new File("Charfile/" + name + ".json");
-            try (FileWriter writer = new FileWriter(userFile)) {
-                json.setWriter(writer);
-                entityJsonSerializer.write(json, components, null);
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.info("Failed to write charfile " + name);
-            }
+            Charfile charfiel = new Charfile();
+            // guarda collection de compoenntes en json charfiel
+            charfiel.components = componentManager.getComponents(user.id(), ComponentManager.Visibility.SERVER);
+            charfiel.save(name);
         });
+    }
+
+    public Charfile getCharfile(String userName){
+        Charfile requestedCharfile = Charfile.load(userName);
+        Log.info("***** enviando datos de la personaje ");
+        return requestedCharfile;
     }
 
     private Future<Integer> loadUser(String name) {
         return executor.submit(() -> {
-            File userFile = new File("Charfile/" + name + ".json");
-            // read components
+         // se mantiene mismo logica de retorno para cargar persona, se invoca a la clase charfile para recuperar la
+         // collection de components
             try {
-                JsonValue jsonData = new JsonReader().parse(userFile);
-                Collection<? extends Component> components = entityJsonSerializer.read(json, jsonData, null);
-                // create user character in world
-                return entityFactorySystem.create(components);
+                Charfile requestCharfile =  Charfile.load(name);
+
+                return entityFactorySystem.create(requestCharfile.components);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.info("Failed to retrieve user from json charfile");
                 return -1;
             }
+
         });
     }
 }

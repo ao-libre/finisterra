@@ -1,11 +1,15 @@
 package server.database;
 
+import com.artemis.Component;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
+import shared.objects.factory.POJO;
 import shared.util.AOJson;
 
-public class Charfile {
+import java.util.Collection;
+
+public class Charfile extends POJO {
 
     /**
      * Fields excluidos de la serializacion.
@@ -17,39 +21,31 @@ public class Charfile {
     /**
      * Fields que serán serializados.
      */
-    public String nick;
-    public String email;
-    public String clase;
 
-    public int Head = 0;
-    public int Arma = 0;
-    public int Body = 0;
-    public int Casco = 0;
-    public int Escudo = 0;
+    public static transient final String DIR_CHARFILE = "Charfile/";
 
-    public int Heading = 0;
-    public int Hogar = 0;
-    public String Descripcion = "";
-    public String genero = "";
-    public double TiempoOnline = 0;
-    public String Posicion = "1-50-50";
-    public String LastIP = "127.0.0.1";
-    public boolean Online = false;
+    public Collection<? extends Component> components;
+
 
     public Charfile() { }
 
-    public static Charfile load(String nick) {
-        try  {
-            return json.fromJson(Charfile.class, Gdx.files.local("Charfiles/" + nick + ".json"));
-        } catch (Exception ex) {
-            //Log.error("Charfile" , "Charfile not found!", ex);
-        }
 
-        return null;
+    // se utiliza POJO para leer, grabar y actualizar json
+    public static boolean exists(String name){
+        return POJO.exists(DIR_CHARFILE + name + POJO.EXTENSION);
     }
 
-    public void save() {
-        json.toJson(this, new FileHandle("Charfiles/" + this.nick + ".json"));
+    public static Charfile load(String name){
+        return POJO.load(Charfile.class, DIR_CHARFILE + name + POJO.EXTENSION);
+    }
+
+    public void save(String name) {
+        super.save(this, DIR_CHARFILE + name + POJO.EXTENSION);
+    }
+
+    public void update(String name) {
+        // Misma cosa, distinto nombre para que se entienda mejor.
+        super.save(this, DIR_CHARFILE + name + POJO.EXTENSION);
     }
 
 }
