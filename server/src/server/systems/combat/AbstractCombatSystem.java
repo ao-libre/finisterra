@@ -4,7 +4,7 @@ import com.artemis.BaseSystem;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import component.entity.character.status.Stamina;
-import server.database.model.modifiers.Modifiers;
+import server.systems.entity.ModifierSystem;
 import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.WorldManager;
 import server.systems.network.EntityUpdateSystem;
@@ -16,19 +16,21 @@ import shared.util.EntityUpdateBuilder;
 import java.util.Optional;
 
 import static com.artemis.E.E;
+import static server.database.model.modifiers.Modifiers.*;
 
 @Wire(injectInherited = true)
 public abstract class AbstractCombatSystem extends BaseSystem implements CombatSystem {
 
     protected EntityUpdateSystem entityUpdateSystem;
     protected SoundEntitySystem soundEntitySystem;
+    protected ModifierSystem modifierSystem;
 
     public static final int STAMINA_REQUIRED_PERCENT = 15;
 
     @Override
     public int shieldEvasionPower(int userId) {
         E userEntity = E(userId);
-        float shieldModifier = Modifiers.SHIELD.of(CharClass.of(userEntity));
+        float shieldModifier = modifierSystem.of(SHIELD, CharClass.of(userEntity));
         return (int) (100 * shieldModifier / 2);
     }
 
@@ -37,7 +39,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
         E userEntity = E(userId);
         int power = 0;
         if (userEntity.hasCharHero()) {
-            float temp = 100 + 100 / 33 * userEntity.getAgility().getBaseValue() * Modifiers.EVASION.of(CharClass.of(userEntity));
+            float temp = 100 + 100 / 33 * userEntity.getAgility().getBaseValue() * modifierSystem.of(EVASION, CharClass.of(userEntity));
             power = (int) (temp + 2.5f * Math.max(userEntity.getLevel().level - 12, 0));
         } else if (userEntity.hasEvasionPower()) {
             power = userEntity.getEvasionPower().value;
@@ -50,7 +52,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
         E userEntity = E(userId);
         int power = 0;
         if (userEntity.hasCharHero()) {
-            power = (int) (100 + 3 * userEntity.getAgility().getBaseValue() * Modifiers.WEAPON.of(CharClass.of(userEntity)));
+            power = (int) (100 + 3 * userEntity.getAgility().getBaseValue() * modifierSystem.of(WEAPON, CharClass.of(userEntity)));
         } else if (userEntity.hasAttackPower()) {
             power = userEntity.getAttackPower().value;
         }
@@ -62,7 +64,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
         E userEntity = E(userId);
         int power = 0;
         if (userEntity.hasCharHero()) {
-            power = (int) (100 + 3 * userEntity.getAgility().getBaseValue() * Modifiers.PROJECTILE.of(CharClass.of(userEntity)));
+            power = (int) (100 + 3 * userEntity.getAgility().getBaseValue() * modifierSystem.of(PROJECTILE, CharClass.of(userEntity)));
         } else if (userEntity.hasAttackPower()) {
             power = userEntity.getAttackPower().value;
         }

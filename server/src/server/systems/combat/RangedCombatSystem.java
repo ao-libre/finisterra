@@ -10,7 +10,6 @@ import component.entity.character.status.Stamina;
 import component.entity.world.CombatMessage;
 import component.physics.AttackAnimation;
 import component.position.WorldPos;
-import server.database.model.modifiers.Modifiers;
 import server.systems.CharacterTrainingSystem;
 import server.systems.entity.EffectEntitySystem;
 import server.systems.manager.MapManager;
@@ -30,6 +29,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
+import static server.database.model.modifiers.Modifiers.PROJECTILE_DAMAGE;
 
 
 @Wire(injectInherited = true)
@@ -236,9 +236,8 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     private int getBaseDamage(E entity, Optional<WeaponObj> weapon) {
         int baseDamage = 0;
         if (entity.hasCharHero()) {
-            CharClass clazz = CharClass.of(entity);
             ThreadLocalRandom random = ThreadLocalRandom.current();
-            float modifier = Modifiers.PROJECTILE_DAMAGE.of(clazz);
+            float modifier = modifierSystem.of(PROJECTILE_DAMAGE, CharClass.of(entity));
             Log.info("Modifier: " + modifier);
             Optional<ArrowObj> arrow = getarrow(entity);
             int arrowDamage =

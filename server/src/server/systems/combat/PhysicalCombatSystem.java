@@ -9,9 +9,9 @@ import component.entity.character.status.Health;
 import component.entity.world.CombatMessage;
 import component.physics.AttackAnimation;
 import component.position.WorldPos;
-import server.database.model.modifiers.Modifiers;
 import server.systems.CharacterTrainingSystem;
 import server.systems.entity.EffectEntitySystem;
+import server.systems.entity.ModifierSystem;
 import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.MapManager;
 import server.systems.manager.ObjectManager;
@@ -29,6 +29,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
+import static server.database.model.modifiers.Modifiers.*;
 import static server.utils.WorldUtils.WorldUtils;
 
 @Wire(injectInherited = true)
@@ -46,6 +47,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     private MessageSystem messageSystem;
     private SoundEntitySystem soundEntitySystem;
     private EffectEntitySystem effectEntitySystem;
+    private ModifierSystem modifierSystem;
 
     @Override
     protected void failed(int entityId, Optional<Integer> targetId) {
@@ -172,8 +174,8 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
             AttackKind kind = AttackKind.getKind(entity);
             ThreadLocalRandom random = ThreadLocalRandom.current();
             float modifier = kind == AttackKind.PROJECTILE ?
-                    Modifiers.PROJECTILE_DAMAGE.of(clazz) :
-                    kind == AttackKind.WEAPON ? Modifiers.WEAPON_DAMAGE.of(clazz) : Modifiers.WRESTLING_DAMAGE.of(clazz);
+                    modifierSystem.of(PROJECTILE_DAMAGE, clazz):
+                    kind == AttackKind.WEAPON ? modifierSystem.of(WEAPON_DAMAGE, clazz) : modifierSystem.of(WRESTLING_DAMAGE, clazz);
             Log.info("Modifier: " + modifier);
             int weaponDamage =
                     weapon.map(weaponObj -> random.nextInt(weaponObj.getMinHit(), weaponObj.getMaxHit() + 1))

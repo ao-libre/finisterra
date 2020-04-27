@@ -8,8 +8,8 @@ import component.entity.character.status.Health;
 import component.entity.character.status.Level;
 import component.entity.world.CombatMessage;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import server.database.model.modifiers.Modifiers;
 import server.systems.entity.EffectEntitySystem;
+import server.systems.entity.ModifierSystem;
 import server.systems.entity.SoundEntitySystem;
 import server.systems.manager.NPCManager;
 import server.systems.manager.WorldManager;
@@ -27,6 +27,7 @@ import shared.util.Pair;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static com.artemis.E.E;
+import static server.database.model.modifiers.Modifiers.HEALTH;
 
 @Wire
 public class CharacterTrainingSystem extends PassiveSystem {
@@ -41,6 +42,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
     private SoundEntitySystem soundEntitySystem;
     private EffectEntitySystem effectEntitySystem;
     private MessageSystem messageSystem;
+    private ModifierSystem modifierSystem;
 
     public void userTakeDamage(int entityId, int target, int effectiveDamage) {
         int exp = getExp(target, effectiveDamage);
@@ -190,7 +192,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
     private float addHealth(int userId) {
         E e = E(userId);
         int constitution = e.constitutionBaseValue();
-        float healthModifier = Modifiers.HEALTH.of(CharClass.of(e));
+        float healthModifier = modifierSystem.of(HEALTH, CharClass.of(e));
         float average = healthModifier - (21 - constitution) * 0.5f;
         int hpUp = ThreadLocalRandom.current().nextInt(getMinHealth(average), getMaxHealth(average));
         e.getHealth().max += hpUp;
