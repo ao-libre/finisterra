@@ -13,9 +13,9 @@ import component.entity.world.Footprint;
 import component.movement.Destination;
 import component.physics.AOPhysics;
 import component.position.WorldPos;
-import server.systems.IntervalFluidIteratingSystem;
-import server.systems.manager.MapManager;
-import server.systems.manager.WorldManager;
+import server.systems.world.IntervalFluidIteratingSystem;
+import server.systems.world.MapSystem;
+import server.systems.world.WorldEntitiesSystem;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.UpdateTo;
 import server.utils.WorldUtils;
@@ -35,9 +35,9 @@ import static server.utils.WorldUtils.WorldUtils;
 public class PathFindingSystem extends IntervalFluidIteratingSystem {
 
     private static final int MAX_DISTANCE_TARGET = 10;
-    private MapManager mapManager;
+    private MapSystem mapSystem;
     private EntityUpdateSystem entityUpdateSystem;
-    private WorldManager worldManager;
+    private WorldEntitiesSystem worldEntitiesSystem;
 
     private HashMap<Integer, AStarMap> maps = new HashMap<>();
 
@@ -46,7 +46,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
     }
 
     private AStarMap updateMap(Integer map) {
-        Set<Integer> entitiesInMap = mapManager.getEntitiesInMap(map);
+        Set<Integer> entitiesInMap = mapSystem.getEntitiesInMap(map);
         if (entitiesInMap.stream().noneMatch(e -> E.E(e).isCharacter())) {
             return maps.get(map);
         }
@@ -58,7 +58,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
 
     @Override
     protected void begin() {
-        mapManager.getMaps().forEach(this::updateMap);
+        mapSystem.getMaps().forEach(this::updateMap);
     }
 
     @Override
@@ -128,9 +128,9 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         WorldPos oldPos = new WorldPos(worldPos);
         WorldPos nextPos = worldUtils.getNextPos(worldPos, mov);
 
-        Map map = mapManager.getMap(nextPos.map);
-        boolean blocked = mapManager.getHelper().isBlocked(map, nextPos);
-        boolean occupied = mapManager.getHelper().hasEntity(mapManager.getNearEntities(entityId), nextPos);
+        Map map = mapSystem.getMap(nextPos.map);
+        boolean blocked = mapSystem.getHelper().isBlocked(map, nextPos);
+        boolean occupied = mapSystem.getHelper().hasEntity(mapSystem.getNearEntities(entityId), nextPos);
         Tile tile = MapHelper.getTile(map, nextPos);
         if (player.hasImmobile() || blocked || occupied || (tile != null && tile.getTileExit() != null)) {
             nextPos = oldPos;
@@ -140,11 +140,11 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         player.worldPosX(nextPos.x);
         player.worldPosY(nextPos.y);
 
-        mapManager.movePlayer(entityId, Optional.of(oldPos));
+        mapSystem.movePlayer(entityId, Optional.of(oldPos));
 
         // notify near users
         if (nextPos != oldPos) {
-            worldManager.notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov.ordinal())));
+            worldEntitiesSystem.notifyUpdate(entityId, new MovementNotification(entityId, new Destination(nextPos, mov.ordinal())));
         }
     }
 
@@ -163,13 +163,13 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
     }
 
     private AStarMap createStarMap(int map) {
-        Map realMap = mapManager.getMap(map);
+        Map realMap = mapSystem.getMap(map);
         int height = realMap.getHeight();
         int width = realMap.getWidth();
 
         AStarMap aMap = new AStarMap(width, height);
-        MapHelper helper = mapManager.getHelper();
-        Set<Integer> entitiesInMap = mapManager.getEntitiesInMap(map);
+        MapHelper helper = mapSystem.getHelper();
+        Set<Integer> entitiesInMap = mapSystem.getEntitiesInMap(map);
         for (int x = 1; x < width; x++) {
             for (int y = 1; y < height; y++) {
                 Node nodeAt = aMap.getNodeAt(x, y);

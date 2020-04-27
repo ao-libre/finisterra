@@ -5,7 +5,7 @@ import com.artemis.E;
 import com.artemis.FluidIteratingSystem;
 import com.artemis.annotations.Wire;
 import component.entity.npc.Respawn;
-import server.systems.EntityFactorySystem;
+import server.systems.entity.factory.EntityFactorySystem;
 
 @Wire
 public class RespawnSystem extends FluidIteratingSystem {

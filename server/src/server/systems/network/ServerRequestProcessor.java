@@ -6,21 +6,19 @@ import com.badlogic.gdx.utils.TimeUtils;
 import component.console.ConsoleMessage;
 import component.entity.world.Dialog;
 import org.jetbrains.annotations.NotNull;
-import server.systems.CommandSystem;
-import server.systems.MeditateSystem;
-import server.systems.ServerSystem;
+import server.systems.entity.user.MeditateSystem;
 import server.systems.account.AccountSystem;
 import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.combat.RangedCombatSystem;
-import server.systems.entity.MovementSystem;
-import server.systems.manager.ItemManager;
-import server.systems.manager.MapManager;
-import server.systems.manager.NPCManager;
-import server.systems.manager.WorldManager;
-import server.systems.user.ItemActionSystem;
-import server.systems.user.PlayerActionSystem;
-import server.systems.user.UserSystem;
+import server.systems.world.MovementSystem;
+import server.systems.item.ItemSystem;
+import server.systems.world.MapSystem;
+import server.systems.config.NPCSystem;
+import server.systems.world.WorldEntitiesSystem;
+import server.systems.item.ItemActionSystem;
+import server.systems.entity.user.PlayerActionSystem;
+import server.systems.account.UserSystem;
 import shared.interfaces.Intervals;
 import shared.model.AttackType;
 import shared.model.npcs.NPC;
@@ -53,11 +51,11 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
 
     // Injected Systems
     private ServerSystem networkManager;
-    private MapManager mapManager;
-    private WorldManager worldManager;
+    private MapSystem mapSystem;
+    private WorldEntitiesSystem worldEntitiesSystem;
     private PhysicalCombatSystem physicalCombatSystem;
     private MagicCombatSystem magicCombatSystem;
-    private ItemManager itemManager;
+    private ItemSystem itemSystem;
     private MeditateSystem meditateSystem;
     private RangedCombatSystem rangedCombatSystem;
     private CommandSystem commandSystem;
@@ -69,7 +67,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     private PlayerActionSystem playerActionSystem;
     private ItemActionSystem itemActionSystem;
 
-    private NPCManager npcManager;
+    private NPCSystem npcSystem;
     // Accounts
 
     @Override
@@ -232,18 +230,18 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
 
     @Override
     public void processRequest(NpcInteractionRequest npcInteractionRequest, int connectionId) {
-        NPC npc = npcManager.getNpcs().get(npcInteractionRequest.getTargetEntity());
+        NPC npc = npcSystem.getNpcs().get(npcInteractionRequest.getTargetEntity());
         int playerId = networkManager.getPlayerByConnection(connectionId);
         switch( npc.getName()){
             case "Sacerdote":
                 if (E(playerId).healthMin() == 0) {
-                    worldManager.resurrect( playerId, true );
+                    worldEntitiesSystem.resurrect( playerId, true );
                 } else {
                     E entity = E(playerId);
                     entity.getHealth().min = entity.getHealth().max;
                     EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(playerId);
                     resetUpdate.withComponents(entity.getHealth());
-                    worldManager.sendEntityUpdate(playerId, resetUpdate.build());
+                    worldEntitiesSystem.sendEntityUpdate(playerId, resetUpdate.build());
                 }
                 break;
         }

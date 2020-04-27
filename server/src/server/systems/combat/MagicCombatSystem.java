@@ -15,12 +15,12 @@ import component.entity.world.Dialog;
 import component.physics.AttackAnimation;
 import component.position.WorldPos;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import server.systems.CharacterTrainingSystem;
-import server.systems.entity.EffectEntitySystem;
-import server.systems.entity.SoundEntitySystem;
-import server.systems.manager.MapManager;
-import server.systems.manager.ObjectManager;
-import server.systems.manager.WorldManager;
+import server.systems.entity.training.CharacterTrainingSystem;
+import server.systems.world.EffectEntitySystem;
+import server.systems.world.SoundEntitySystem;
+import server.systems.world.MapSystem;
+import server.systems.config.ObjectSystem;
+import server.systems.world.WorldEntitiesSystem;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.MessageSystem;
 import server.systems.network.UpdateTo;
@@ -44,9 +44,9 @@ public class MagicCombatSystem extends PassiveSystem {
     private static final int TIME_TO_MOVE_1_TILE = 200;
 
     // Injected Systems
-    private MapManager mapManager;
-    private WorldManager worldManager;
-    private ObjectManager objectManager;
+    private MapSystem mapSystem;
+    private WorldEntitiesSystem worldEntitiesSystem;
+    private ObjectSystem objectSystem;
     private CharacterTrainingSystem characterTrainingSystem;
     private EntityUpdateSystem entityUpdateSystem;
     private EffectEntitySystem effectEntitySystem;
@@ -67,7 +67,7 @@ public class MagicCombatSystem extends PassiveSystem {
     }
 
     private Optional<Integer> getTarget(int userId, WorldPos worldPos, long timestamp) {
-        Set<Integer> entities = new HashSet<>(mapManager.getNearEntities(userId));
+        Set<Integer> entities = new HashSet<>(mapSystem.getNearEntities(userId));
         entities.add(userId);
         return entities
                 .stream()
@@ -85,7 +85,7 @@ public class MagicCombatSystem extends PassiveSystem {
     }
 
     private boolean footprintOf(Integer entity, WorldPos worldPos, long timestamp) {
-        final Set<Integer> footprints = mapManager.getEntitiesFootprints().get(entity);
+        final Set<Integer> footprints = mapSystem.getEntitiesFootprints().get(entity);
         return footprints != null && footprints
                 .stream()
                 .anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()) && (timestamp - E(footprint).getFootprint().timestamp <= TIME_TO_MOVE_1_TILE));
@@ -142,7 +142,7 @@ public class MagicCombatSystem extends PassiveSystem {
                     }
 
                     if(health.min <= 0) {
-                        worldManager.entityDie( target );
+                        worldEntitiesSystem.entityDie( target );
                         notifyMagic( playerId, Messages.KILL, getName( target ) );
                         notifyMagic( target, Messages.KILLED, getName( playerId ) );
                         soundEntitySystem.add( playerId, 126 );
@@ -214,7 +214,7 @@ public class MagicCombatSystem extends PassiveSystem {
             // TODO
         } else if (spell.getSumHP() == 2) {
             if (E(target).hasHelmet()) {
-                final Optional<Obj> obj = objectManager.getObject(E(target).getHelmet().index);
+                final Optional<Obj> obj = objectSystem.getObject(E(target).getHelmet().index);
                 obj
                         .filter(HelmetObj.class::isInstance)
                         .map(HelmetObj.class::cast)

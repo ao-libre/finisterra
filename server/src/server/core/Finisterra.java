@@ -7,10 +7,19 @@ import com.artemis.managers.TagManager;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
+import server.systems.account.UserSystem;
+import server.systems.ai.RandomMovementSystem;
 import server.systems.config.ConfigurationSystem;
-import server.systems.network.ServerNotificationProcessor;
-import server.systems.network.ServerRequestProcessor;
-import server.systems.*;
+import server.systems.config.NPCSystem;
+import server.systems.config.ObjectSystem;
+import server.systems.config.SpellSystem;
+import server.systems.entity.factory.ComponentSystem;
+import server.systems.entity.factory.EntityFactorySystem;
+import server.systems.entity.user.*;
+import server.systems.item.ItemActionSystem;
+import server.systems.item.ItemSystem;
+import server.systems.item.ItemUsageSystem;
+import server.systems.network.*;
 import server.systems.account.AccountSystem;
 import server.systems.ai.NPCAttackSystem;
 import server.systems.ai.PathFindingSystem;
@@ -18,16 +27,8 @@ import server.systems.ai.RespawnSystem;
 import server.systems.combat.MagicCombatSystem;
 import server.systems.combat.PhysicalCombatSystem;
 import server.systems.combat.RangedCombatSystem;
-import server.systems.entity.EffectEntitySystem;
-import server.systems.entity.MovementSystem;
-import server.systems.entity.SoundEntitySystem;
-import server.systems.manager.*;
-import server.systems.network.EntityUpdateSystem;
-import server.systems.network.MessageSystem;
-import server.systems.network.ServerReferenceSystem;
-import server.systems.user.ItemActionSystem;
-import server.systems.user.PlayerActionSystem;
-import server.systems.user.UserSystem;
+import server.systems.entity.training.CharacterTrainingSystem;
+import server.systems.world.*;
 import server.utils.EntityJsonSerializer;
 import shared.systems.IntervalSystem;
 import shared.util.LogSystem;
@@ -35,7 +36,7 @@ import shared.util.MapHelper;
 
 import java.util.concurrent.TimeUnit;
 
-import static server.systems.Intervals.*;
+import static server.utils.Intervals.*;
 import static shared.util.MapHelper.CacheStrategy.NEVER_EXPIRE;
 
 public class Finisterra extends ApplicationAdapter {
@@ -79,18 +80,18 @@ public class Finisterra extends ApplicationAdapter {
                 .with(new AccountSystem())
                 .with(new ServerNotificationProcessor())
                 .with(new FluidEntityPlugin())
-                .with(new ComponentManager())
+                .with(new ComponentSystem())
                 .with(new EntityFactorySystem())
                 .with(new IntervalSystem())
                 .with(new ServerReferenceSystem())
-                .with(new ItemManager())
+                .with(new ItemSystem())
                 .with(new ServerRequestProcessor())
-                .with(new ItemConsumers())
-                .with(new NPCManager())
-                .with(new MapManager())
-                .with(new SpellManager())
-                .with(new ObjectManager())
-                .with(new WorldManager())
+                .with(new ItemUsageSystem())
+                .with(new NPCSystem())
+                .with(new MapSystem())
+                .with(new SpellSystem())
+                .with(new ObjectSystem())
+                .with(new WorldEntitiesSystem())
                 .with(new PhysicalCombatSystem())
                 .with(new RangedCombatSystem())
                 .with(new CharacterTrainingSystem())

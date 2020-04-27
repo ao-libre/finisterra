@@ -10,11 +10,11 @@ import component.entity.character.status.Stamina;
 import component.entity.world.CombatMessage;
 import component.physics.AttackAnimation;
 import component.position.WorldPos;
-import server.systems.CharacterTrainingSystem;
-import server.systems.entity.EffectEntitySystem;
-import server.systems.manager.MapManager;
-import server.systems.manager.ObjectManager;
-import server.systems.manager.WorldManager;
+import server.systems.entity.training.CharacterTrainingSystem;
+import server.systems.world.EffectEntitySystem;
+import server.systems.world.MapSystem;
+import server.systems.config.ObjectSystem;
+import server.systems.world.WorldEntitiesSystem;
 import server.systems.network.MessageSystem;
 import server.systems.network.UpdateTo;
 import shared.interfaces.CharClass;
@@ -38,9 +38,9 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     private static final int TIME_TO_MOVE_1_TILE = 200;
     private Optional<Integer> target;
     // Injected Systems
-    private MapManager mapManager;
-    private WorldManager worldManager;
-    private ObjectManager objectManager;
+    private MapSystem mapSystem;
+    private WorldEntitiesSystem worldEntitiesSystem;
+    private ObjectSystem objectSystem;
     private CharacterTrainingSystem characterTrainingSystem;
     private MessageSystem messageSystem;
     private EffectEntitySystem effectEntitySystem;
@@ -76,7 +76,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
 
 
     Optional<Integer> getTargetx(int userId, WorldPos worldPos, long timestamp) {
-        Set<Integer> entities = new HashSet<>(mapManager.getNearEntities(userId));
+        Set<Integer> entities = new HashSet<>(mapSystem.getNearEntities(userId));
         entities.add(userId);
         return entities
                 .stream()
@@ -99,7 +99,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     }
 
     private boolean footprintOf(Integer entity, WorldPos worldPos, long timestamp) {
-        final Set<Integer> footprints = mapManager.getEntitiesFootprints().get(entity);
+        final Set<Integer> footprints = mapSystem.getEntitiesFootprints().get(entity);
         return footprints != null && footprints
                 .stream()
                 .anyMatch(footprint -> worldPos.equals(E(footprint).getWorldPos()) && (timestamp - E(footprint).getFootprint().timestamp <= TIME_TO_MOVE_1_TILE));
@@ -109,7 +109,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     public boolean canAttack(int entityId, Optional<Integer> target) {
         final E userEntity = E(entityId);
         if (userEntity.hasWeapon()){
-            WeaponObj userWeapon = (WeaponObj) objectManager.getObject(userEntity.getWeapon().getIndex()).get();
+            WeaponObj userWeapon = (WeaponObj) objectSystem.getObject(userEntity.getWeapon().getIndex()).get();
             if(!userWeapon.getKind().equals( WeaponKind.BOW )){
                 notifyCombat(entityId, Messages.DONT_HAVE_BOW_AND_ARROW);
                 return false;
@@ -186,7 +186,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     @Override
     public int damageCalculation(int userId, int entityId) {
         E entity = E(userId);
-        final Optional<Obj> obj = entity.hasWeapon() ? objectManager.getObject(entity.getWeapon().index) : Optional.empty();
+        final Optional<Obj> obj = entity.hasWeapon() ? objectSystem.getObject(entity.getWeapon().index) : Optional.empty();
         final Optional<WeaponObj> weapon =
                 obj.isPresent() && Type.WEAPON.equals(obj.get().getType()) ? Optional.of((WeaponObj) obj.get()) : Optional.empty();
 
@@ -208,13 +208,13 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         E entity = E(entityId);
         if (entity.hasArmor()) {
             int index = entity.getArmor().getIndex();
-            ArmorObj armorObj = (ArmorObj) objectManager.getObject(index).get();
+            ArmorObj armorObj = (ArmorObj) objectSystem.getObject(index).get();
             min = armorObj.getMinDef();
             max = armorObj.getMaxDef();
         }
         if (entity.hasShield()) {
             int index = entity.getShield().index;
-            ShieldObj shieldObj = (ShieldObj) objectManager.getObject(index).get();
+            ShieldObj shieldObj = (ShieldObj) objectSystem.getObject(index).get();
             min += shieldObj.getMinDef();
             max += shieldObj.getMaxDef();
         }
@@ -226,7 +226,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         E entity = E(entityId);
         if (entity.hasHelmet()) {
             int index = entity.getHelmet().index;
-            HelmetObj obj = (HelmetObj) objectManager.getObject(index).get();
+            HelmetObj obj = (HelmetObj) objectSystem.getObject(index).get();
             min = obj.getMinDef();
             max = obj.getMaxDef();
         }
@@ -268,9 +268,9 @@ public class RangedCombatSystem extends AbstractCombatSystem {
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null) {
                 if (items[i].equipped) {
-                    Obj obj = objectManager.getObject(items[i].objId).get();
+                    Obj obj = objectSystem.getObject(items[i].objId).get();
                     if (obj.getType().equals(Type.ARROW)) {
-                        arrowObj = Optional.of((ArrowObj) objectManager.getObject(items[i].objId).get());
+                        arrowObj = Optional.of((ArrowObj) objectSystem.getObject(items[i].objId).get());
                     }
                 }
             }
@@ -303,7 +303,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
             characterTrainingSystem.takeGold(userId, entityId);
             notifyCombat(userId, Messages.KILL, getName(entityId));
             notifyCombat(entityId, Messages.KILLED, getName(userId));
-            worldManager.entityDie(entityId);
+            worldEntitiesSystem.entityDie(entityId);
             soundEntitySystem.add(userId, 126);
         }
     }

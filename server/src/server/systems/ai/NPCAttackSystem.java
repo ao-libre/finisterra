@@ -7,9 +7,9 @@ import component.entity.character.states.Heading;
 import component.entity.character.status.Hit;
 import component.entity.npc.NPC;
 import component.position.WorldPos;
-import server.systems.IntervalFluidIteratingSystem;
+import server.systems.world.IntervalFluidIteratingSystem;
 import server.systems.combat.PhysicalCombatSystem;
-import server.systems.manager.MapManager;
+import server.systems.world.MapSystem;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.UpdateTo;
 import server.utils.WorldUtils;
@@ -24,7 +24,7 @@ import static server.utils.WorldUtils.WorldUtils;
 @Wire
 public class NPCAttackSystem extends IntervalFluidIteratingSystem {
 
-    private MapManager mapManager;
+    private MapSystem mapSystem;
     private PhysicalCombatSystem combatSystem;
     private EntityUpdateSystem entityUpdateSystem;
 
@@ -35,7 +35,7 @@ public class NPCAttackSystem extends IntervalFluidIteratingSystem {
 
     @Override
     protected void process(E e) {
-        mapManager
+        mapSystem
                 .getNearEntities(e.id())
                 .stream()
                 .filter(e2 -> E(e2) != null)

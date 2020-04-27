@@ -4,9 +4,9 @@ import com.artemis.BaseSystem;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import component.entity.character.status.Stamina;
-import server.systems.entity.ModifierSystem;
-import server.systems.entity.SoundEntitySystem;
-import server.systems.manager.WorldManager;
+import server.systems.entity.user.ModifierSystem;
+import server.systems.world.SoundEntitySystem;
+import server.systems.world.WorldEntitiesSystem;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.UpdateTo;
 import shared.interfaces.CharClass;
@@ -118,7 +118,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
     protected void processSystem() {
     }
 
-    private WorldManager getWorldManager() {
-        return world.getSystem(WorldManager.class);
+    private WorldEntitiesSystem getWorldManager() {
+        return world.getSystem(WorldEntitiesSystem.class);
     }
 }
