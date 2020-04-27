@@ -7,8 +7,7 @@ import com.artemis.managers.TagManager;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
-import server.configs.ServerConfiguration;
-import server.manager.ConfigurationManager;
+import server.manager.ConfigurationSystem;
 import server.network.ServerNotificationProcessor;
 import server.network.ServerRequestProcessor;
 import server.systems.*;
@@ -71,12 +70,10 @@ public class Finisterra extends ApplicationAdapter {
         Log.info("Initializing systems...");
         final WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
 
-        ServerConfiguration serverConfig = ConfigurationManager.getInstance().getServerConfig();
-        ServerConfiguration.Network.Ports currentPorts = serverConfig.getNetwork().getPorts();
-
         builder
                 .with(new ClearSystem())
-                .with(new ServerSystem(new ServerStrategy(currentPorts.getTcpPort(), currentPorts.getUdpPort())))
+                .with(new ConfigurationSystem())
+                .with(new ServerSystem())
                 .with(new EntityJsonSerializer())
                 .with(new UserSystem())
                 .with(new AccountSystem())

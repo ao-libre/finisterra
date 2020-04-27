@@ -5,7 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
+import server.configs.ServerConfiguration;
 import server.core.ServerStrategy;
+import server.manager.ConfigurationSystem;
 import server.network.ServerNotificationProcessor;
 import server.network.ServerRequestProcessor;
 import server.systems.manager.MapManager;
@@ -27,13 +29,23 @@ public class ServerSystem extends MarshalSystem {
     private ServerNotificationProcessor notificationProcessor;
     private ServerRequestProcessor requestProcessor;
     private WorldManager worldManager;
+    private ConfigurationSystem configurationSystem;
 
     private Deque<NetworkJob> netQueue = new ConcurrentLinkedDeque<>();
     private Map<Integer, Integer> playerByConnection = new ConcurrentHashMap<>();
     private Map<Integer, Integer> connectionByPlayer = new ConcurrentHashMap<>();
 
-    public ServerSystem(MarshalStrategy strategy) {
-        super(new NetworkDictionary(), strategy);
+    public ServerSystem() {
+        super(new NetworkDictionary(), new ServerStrategy());
+    }
+
+    @Override
+    protected void initialize() {
+        MarshalStrategy marshal = getMarshal();
+        if (marshal instanceof ServerStrategy) {
+            ServerConfiguration.Network.Ports ports = configurationSystem.getServerConfig().getNetwork().getPorts();
+            ((ServerStrategy) marshal).prepare(ports.getTcpPort(), ports.getUdpPort());
+        }
         start();
     }
 

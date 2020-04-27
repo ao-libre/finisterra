@@ -1,6 +1,6 @@
 package server.database.model.modifiers;
 
-import server.manager.ConfigurationManager;
+import server.manager.ConfigurationSystem;
 import shared.interfaces.CharClass;
 
 public enum Modifiers {
@@ -15,7 +15,7 @@ public enum Modifiers {
     HEALTH;
 
     public float of(CharClass clazz) {
-        return ConfigurationManager.getInstance().getCharConfig().getCharClass(clazz)
+        return ConfigurationSystem.getInstance().getCharConfig().getCharClass(clazz)
                 .getModifier().getValue(this);
     }
 }
