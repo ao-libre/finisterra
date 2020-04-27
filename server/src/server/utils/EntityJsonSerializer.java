@@ -7,7 +7,7 @@ import com.esotericsoftware.jsonbeans.JsonSerializer;
 import com.esotericsoftware.jsonbeans.JsonValue;
 import component.entity.character.info.Bag;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import server.systems.entity.factory.ComponentSystem;
+import server.systems.world.entity.factory.ComponentSystem;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;

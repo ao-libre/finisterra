@@ -1,27 +1,16 @@
 package server.systems.network;
 
-import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
-import component.console.ConsoleMessage;
-import component.entity.world.Dialog;
 import org.jetbrains.annotations.NotNull;
-import server.systems.entity.user.MeditateSystem;
 import server.systems.account.AccountSystem;
-import server.systems.combat.MagicCombatSystem;
-import server.systems.combat.PhysicalCombatSystem;
-import server.systems.combat.RangedCombatSystem;
-import server.systems.world.MovementSystem;
-import server.systems.item.ItemSystem;
-import server.systems.world.MapSystem;
-import server.systems.config.NPCSystem;
-import server.systems.world.WorldEntitiesSystem;
-import server.systems.item.ItemActionSystem;
-import server.systems.entity.user.PlayerActionSystem;
 import server.systems.account.UserSystem;
-import shared.interfaces.Intervals;
-import shared.model.AttackType;
-import shared.model.npcs.NPC;
+import server.systems.world.entity.npc.NPCActionSystem;
+import server.systems.world.entity.user.MeditateSystem;
+import server.systems.world.entity.user.PlayerActionSystem;
+import server.systems.world.entity.item.ItemActionSystem;
+import server.systems.world.entity.movement.MovementSystem;
+import server.systems.world.WorldEntitiesSystem;
 import shared.network.account.AccountCreationRequest;
 import shared.network.account.AccountLoginRequest;
 import shared.network.combat.AttackRequest;
@@ -30,18 +19,11 @@ import shared.network.interaction.*;
 import shared.network.interfaces.DefaultRequestProcessor;
 import shared.network.inventory.ItemActionRequest;
 import shared.network.movement.MovementRequest;
-import shared.network.notifications.EntityUpdate;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
 import shared.network.user.UserContinueRequest;
 import shared.network.user.UserCreateRequest;
 import shared.network.user.UserLoginRequest;
-import shared.util.EntityUpdateBuilder;
-import shared.util.Messages;
-
-import java.util.Optional;
-
-import static com.artemis.E.E;
 
 /**
  * Every packet received from users will be processed here
@@ -50,25 +32,15 @@ import static com.artemis.E.E;
 public class ServerRequestProcessor extends DefaultRequestProcessor {
 
     // Injected Systems
-    private ServerSystem networkManager;
-    private MapSystem mapSystem;
+    private ServerSystem serverSystem;
     private WorldEntitiesSystem worldEntitiesSystem;
-    private PhysicalCombatSystem physicalCombatSystem;
-    private MagicCombatSystem magicCombatSystem;
-    private ItemSystem itemSystem;
     private MeditateSystem meditateSystem;
-    private RangedCombatSystem rangedCombatSystem;
-    private CommandSystem commandSystem;
-    private EntityUpdateSystem entityUpdateSystem;
-    private MessageSystem messageSystem;
     private AccountSystem accountSystem;
     private UserSystem userSystem;
     private MovementSystem movementSystem;
     private PlayerActionSystem playerActionSystem;
     private ItemActionSystem itemActionSystem;
-
-    private NPCSystem npcSystem;
-    // Accounts
+    private NPCActionSystem npcActionSystem;
 
     @Override
     public void processRequest(@NotNull AccountCreationRequest accountCreationRequest, int connectionId) {
@@ -114,7 +86,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      */
     @Override
     public void processRequest(MovementRequest request, int connectionId) {
-        if (networkManager.connectionHasNoPlayer(connectionId)) return;
+        if (serverSystem.connectionHasNoPlayer(connectionId)) return;
         movementSystem.move(connectionId, request.movement, request.requestNumber);
     }
 
@@ -126,23 +98,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      */
     @Override
     public void processRequest(@NotNull AttackRequest attackRequest, int connectionId) {
-        int playerId = networkManager.getPlayerByConnection(connectionId);
-        E entity = E(playerId);
-        AttackType type = attackRequest.type();
-        if (!entity.hasAttackInterval()) {
-            if (type.equals(AttackType.RANGED)) {
-                rangedCombatSystem.shoot(playerId, attackRequest);
-            } else {
-                physicalCombatSystem.entityAttack(playerId, Optional.empty());
-            }
-            entity.attackIntervalValue(Intervals.ATTACK_INTERVAL);
-        } else {
-            messageSystem.add(playerId,
-                    ConsoleMessage.error((type.equals(AttackType.RANGED) ?
-                            Messages.CANT_SHOOT_THAT_FAST :
-                            Messages.CANT_ATTACK_THAT_FAST)
-                            .name()));
-        }
+        playerActionSystem.attack(connectionId, attackRequest.getTimestamp(), attackRequest.getWorldPos(), attackRequest.type());
     }
 
     /**
@@ -164,7 +120,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      */
     @Override
     public void processRequest(MeditateRequest meditateRequest, int connectionId) {
-        int playerId = networkManager.getPlayerByConnection(connectionId);
+        int playerId = serverSystem.getPlayerByConnection(connectionId);
         meditateSystem.toggle(playerId);
     }
 
@@ -177,21 +133,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      */
     @Override
     public void processRequest(@NotNull TalkRequest talkRequest, int connectionId) {
-        int playerId = networkManager.getPlayerByConnection(connectionId);
-        String message = talkRequest.getMessage();
-
-        // Si es un comando...
-        if (CommandSystem.Command.isCommand(message)) {
-            if (commandSystem.commandExists(message)) {
-                commandSystem.handleCommand(message, playerId);
-            } else {
-                messageSystem.add(playerId, ConsoleMessage.error(Messages.INVALID_COMMAND.name()));
-            }
-        } else {
-            // No es un comando, entonces es un dialogo.
-            EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(new Dialog(message)).build();
-            entityUpdateSystem.add(update, UpdateTo.ALL);
-        }
+        playerActionSystem.talk(connectionId, talkRequest.getMessage());
     }
 
     /**
@@ -207,15 +149,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
 
     @Override
     public void processRequest(SpellCastRequest spellCastRequest, int connectionId) {
-        int playerId = networkManager.getPlayerByConnection(connectionId);
-        E entity = E(playerId);
-        if (!entity.hasAttackInterval()) {
-            magicCombatSystem.spell(playerId, spellCastRequest);
-            entity.attackIntervalValue(Intervals.MAGIC_ATTACK_INTERVAL);
-        } else {
-            messageSystem.add(playerId,
-                    ConsoleMessage.error(Messages.CANT_MAGIC_THAT_FAST.name()));
-        }
+        playerActionSystem.spell(connectionId, spellCastRequest.getSpell(), spellCastRequest.getWorldPos(), spellCastRequest.getTimestamp());
     }
 
     @Override
@@ -225,26 +159,12 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         response.receiveTime = receiveTime;
         response.requestId = request.requestId;
         response.sendTime = TimeUtils.millis();
-        networkManager.sendTo(connectionId, response);
+        serverSystem.sendTo(connectionId, response);
     }
 
     @Override
     public void processRequest(NpcInteractionRequest npcInteractionRequest, int connectionId) {
-        NPC npc = npcSystem.getNpcs().get(npcInteractionRequest.getTargetEntity());
-        int playerId = networkManager.getPlayerByConnection(connectionId);
-        switch( npc.getName()){
-            case "Sacerdote":
-                if (E(playerId).healthMin() == 0) {
-                    worldEntitiesSystem.resurrect( playerId, true );
-                } else {
-                    E entity = E(playerId);
-                    entity.getHealth().min = entity.getHealth().max;
-                    EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(playerId);
-                    resetUpdate.withComponents(entity.getHealth());
-                    worldEntitiesSystem.sendEntityUpdate(playerId, resetUpdate.build());
-                }
-                break;
-        }
+        npcActionSystem.interact(connectionId, npcInteractionRequest.getTargetEntity());
     }
 
 	@Override

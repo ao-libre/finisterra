@@ -5,10 +5,10 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.minlog.Log;
 import component.console.ConsoleMessage;
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import server.utils.CityMapsNumbers;
-import server.systems.manager.DefaultManager;
 import server.systems.world.WorldEntitiesSystem;
 import shared.network.interaction.TalkRequest;
 import shared.util.Messages;
@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 @Wire
-public class CommandSystem extends DefaultManager {
+public class CommandSystem extends PassiveSystem {
 
     // Injected Systems
     private ServerSystem networkManager;
