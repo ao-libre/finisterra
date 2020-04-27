@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import server.systems.manager.DefaultManager;
 import server.systems.manager.WorldManager;
 import server.systems.network.MessageSystem;
+import server.systems.network.ServerRequestProcessor;
 import shared.network.interaction.TalkRequest;
 import shared.util.Messages;
 
@@ -30,7 +31,7 @@ public class CommandSystem extends DefaultManager {
     /**
      * Aca se prepara una lista de comandos disponibles para usar desde el cliente.
      *
-     * @see server.network.ServerRequestProcessor#processRequest(TalkRequest, int)
+     * @see ServerRequestProcessor#processRequest(TalkRequest, int)
      */
     public CommandSystem() {
         commands.put("online", (commandStructure) -> {

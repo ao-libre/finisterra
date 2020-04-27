@@ -1,4 +1,4 @@
-package server.network;
+package server.systems.network;
 
 import com.artemis.E;
 import com.artemis.annotations.Wire;
@@ -18,9 +18,6 @@ import server.systems.manager.ItemManager;
 import server.systems.manager.MapManager;
 import server.systems.manager.NPCManager;
 import server.systems.manager.WorldManager;
-import server.systems.network.EntityUpdateSystem;
-import server.systems.network.MessageSystem;
-import server.systems.network.UpdateTo;
 import server.systems.user.ItemActionSystem;
 import server.systems.user.PlayerActionSystem;
 import server.systems.user.UserSystem;

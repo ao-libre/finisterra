@@ -1,4 +1,4 @@
-package server.network;
+package server.systems.network;
 
 import com.artemis.E;
 import com.artemis.annotations.Wire;

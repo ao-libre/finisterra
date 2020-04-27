@@ -3,7 +3,7 @@ package server.systems.entity;
 import com.artemis.annotations.Wire;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.database.model.modifiers.Modifiers;
-import server.manager.ConfigurationSystem;
+import server.systems.config.ConfigurationSystem;
 import shared.interfaces.CharClass;
 
 @Wire

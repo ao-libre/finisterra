@@ -1,4 +1,4 @@
-package server.manager;
+package server.systems.config;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
