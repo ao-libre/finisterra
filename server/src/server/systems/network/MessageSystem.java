@@ -2,6 +2,7 @@ package server.systems.network;
 
 import component.console.ConsoleMessage;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
+import server.utils.UpdateTo;
 import shared.util.EntityUpdateBuilder;
 
 public class MessageSystem extends PassiveSystem {
