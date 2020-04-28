@@ -9,14 +9,17 @@ import java.io.IOException;
 
 public class ServerStrategy extends KryonetMarshalStrategy {
 
-    private final int tcpPort;
-    private final int udpPort;
+    private int tcpPort;
+    private int udpPort;
 
-    public ServerStrategy(int tcpPort, int udpPort) {
-        this.tcpPort = tcpPort;
-        this.udpPort = udpPort;
+    public ServerStrategy() {
         endpoint = new Server();
         Log.set(Log.LEVEL_DEBUG);
+    }
+
+    public void prepare(int tcpPort, int udpPort) {
+        this.tcpPort = tcpPort;
+        this.udpPort = udpPort;
     }
 
     @Override

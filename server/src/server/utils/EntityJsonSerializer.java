@@ -7,7 +7,7 @@ import com.esotericsoftware.jsonbeans.JsonSerializer;
 import com.esotericsoftware.jsonbeans.JsonValue;
 import component.entity.character.info.Bag;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import server.systems.manager.ComponentManager;
+import server.systems.world.entity.factory.ComponentSystem;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -18,7 +18,7 @@ import java.util.Map;
 @Wire
 public class EntityJsonSerializer extends PassiveSystem implements JsonSerializer<Collection<? extends Component>> {
 
-    private ComponentManager componentManager;
+    private ComponentSystem componentSystem;
 
     private Map<String, Class<? extends Component>> componentClasses;
     private final BagJsonSerializer bagJsonSerializer = new BagJsonSerializer();
@@ -29,7 +29,7 @@ public class EntityJsonSerializer extends PassiveSystem implements JsonSerialize
 
     @Override
     protected void initialize() {
-        Collection<Class<? extends Component>> by = componentManager.getBy(ComponentManager.Visibility.SERVER);
+        Collection<Class<? extends Component>> by = componentSystem.getBy(ComponentSystem.Visibility.SERVER);
         by.forEach(clasz -> componentClasses.put(clasz.getName(), clasz));
     }
 
