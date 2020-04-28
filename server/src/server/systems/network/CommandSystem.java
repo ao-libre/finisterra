@@ -5,12 +5,15 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.minlog.Log;
 import component.console.ConsoleMessage;
+import component.position.WorldPos;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import server.systems.world.MapSystem;
 import server.utils.CityMapsNumbers;
 import server.systems.world.WorldEntitiesSystem;
 import shared.network.interaction.TalkRequest;
+import shared.util.EntityUpdateBuilder;
 import shared.util.Messages;
 
 import java.util.HashMap;
@@ -22,6 +25,7 @@ public class CommandSystem extends PassiveSystem {
 
     // Injected Systems
     private ServerSystem networkManager;
+    private MapSystem mapSystem;
     private WorldEntitiesSystem worldEntitiesSystem;
     private MessageSystem messageSystem;
 
@@ -45,7 +49,7 @@ public class CommandSystem extends PassiveSystem {
 		commands.put("sethome",(commandStructure) ->{
             int senderId = commandStructure.senderID;
             final int capacity = 17;
-            Array<Integer> cityMaps = new Array(capacity);
+            Array<Integer> cityMaps = new Array<>(capacity);
 
             cityMaps.add( CityMapsNumbers.ABADIA_LINDOS );
             cityMaps.add( CityMapsNumbers.AFUERAS_BANDERBILL );
@@ -94,6 +98,19 @@ public class CommandSystem extends PassiveSystem {
                 messageSystem.add( senderId, ConsoleMessage.info( "TIME_TO_RESURRECT" ) );
             } else {
                 messageSystem.add( senderId, ConsoleMessage.info( "YOU_ARE_ALIVE" ) );
+            }
+        });
+        commands.put("tp", (command) -> {
+            int senderID  = command.senderID;
+            E player = E.E(senderID);
+            int map = Integer.parseInt(command.params[1]);
+            int x = Integer.parseInt(command.params[2]);
+            int y = Integer.parseInt(command.params[3]);
+            if (mapSystem.getHelper().isValid(new WorldPos(x, y, map))) {
+                player.worldPosMap(map).worldPosX(x).worldPosY(y);
+                EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(senderID);
+                resetUpdate.withComponents(player.getWorldPos());
+                worldEntitiesSystem.notifyUpdate(senderID, resetUpdate.build());
             }
         });
     }

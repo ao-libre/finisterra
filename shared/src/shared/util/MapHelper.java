@@ -98,6 +98,18 @@ public class MapHelper {
         return maps.asMap().containsKey(mapNumber);
     }
 
+    public boolean isValid(WorldPos pos) {
+        if (hasMap(pos.map)) {
+            shared.model.map.Map map = getMap(pos.map);
+            if (pos.x > 0 && pos.x < map.getWidth()) {
+                if (pos.y > 0 && pos.y < map.getHeight()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public boolean isBlocked(Map map, WorldPos pos) {
         return isBlocked(map, pos.x, pos.y);
     }
