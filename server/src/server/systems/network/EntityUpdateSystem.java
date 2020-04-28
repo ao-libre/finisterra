@@ -4,8 +4,9 @@ import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
-import server.systems.manager.ComponentManager;
-import server.systems.manager.WorldManager;
+import server.systems.world.entity.factory.ComponentSystem;
+import server.systems.world.WorldEntitiesSystem;
+import server.utils.UpdateTo;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
 import shared.util.EntityUpdateBuilder;
@@ -21,8 +22,8 @@ import static shared.network.notifications.EntityUpdate.NO_ENTITY;
 @Wire
 public class EntityUpdateSystem extends BaseSystem {
 
-    private WorldManager worldManager;
-    private ComponentManager componentManager;
+    private WorldEntitiesSystem worldEntitiesSystem;
+    private ComponentSystem componentSystem;
 
     private final Map<Integer, Deque<EntityUpdate>> entityUpdates;
     private final Map<Integer, Deque<EntityUpdate>> publicUpdates;
@@ -36,13 +37,13 @@ public class EntityUpdateSystem extends BaseSystem {
     protected void processSystem() {
         // send all updates
         entityUpdates.forEach((id, update) -> {
-            worldManager.sendEntityUpdate(id, update.toArray(new EntityUpdate[0]));
+            worldEntitiesSystem.sendEntityUpdate(id, update.toArray(new EntityUpdate[0]));
         });
         entityUpdates.clear();
 
         publicUpdates.forEach((id, update) -> {
             Log.debug("Notifying near to: " + id);
-            worldManager.notifyToNearEntities(id, update.toArray(new EntityUpdate[0]));
+            worldEntitiesSystem.notifyToNearEntities(id, update.toArray(new EntityUpdate[0]));
             Log.debug("Notifications ended for: " + id);
         });
         publicUpdates.clear();
@@ -105,7 +106,7 @@ public class EntityUpdateSystem extends BaseSystem {
     // Attach entity to another entity and send update to all near entities including component.entity
     public void attach(int entity, int entityToAttach) {
         E(entityToAttach).refId(entity);
-        List<Component> components = componentManager.getComponents(entityToAttach, ComponentManager.Visibility.CLIENT_PUBLIC);
+        List<Component> components = componentSystem.getComponents(entityToAttach, ComponentSystem.Visibility.CLIENT_PUBLIC);
         EntityUpdate update = EntityUpdateBuilder.of(entityToAttach).withComponents(components).build();
         add(entity, update, UpdateTo.ALL);
     }
