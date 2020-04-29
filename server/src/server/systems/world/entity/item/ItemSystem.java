@@ -15,6 +15,7 @@ import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.systems.config.ObjectSystem;
 import server.systems.world.WorldEntitiesSystem;
 import server.systems.network.EntityUpdateSystem;
+import server.systems.world.entity.factory.SoundEntitySystem;
 import server.utils.UpdateTo;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.notifications.EntityUpdate;
@@ -39,6 +40,7 @@ public class ItemSystem extends PassiveSystem {
     private ObjectSystem objectSystem;
     private WorldEntitiesSystem worldEntitiesSystem;
     private EntityUpdateSystem entityUpdateSystem;
+    private SoundEntitySystem soundEntitySystem;
 
     public ItemSystem() { }
 
@@ -95,12 +97,17 @@ public class ItemSystem extends PassiveSystem {
                     // Notify update to user
                     EntityUpdate update = EntityUpdateBuilder.of( player ).withComponents( components.toArray( new Component[0] ) ).build();
                     entityUpdateSystem.add( update, UpdateTo.ENTITY );
+                    soundEntitySystem.add(player, 46);
                     // TODO remove from inventory
                     break;
                 case SPELL:
                     SpellObj spellObj = (SpellObj) obj;
                     if(E( player ).charHeroHeroId() != 0) {
                         E( player ).spellBookAddSpell( spellObj.getSpellIndex() );
+                    }
+                    if(E( player ).getSpellBook().getMsj().equals( "hechiso agregado" )){
+                        soundEntitySystem.add(player, 109);
+
                     }
                     Log.info( E( player ).nameText() + " " + E( player ).getSpellBook().getMsj() );
                     break;

@@ -52,7 +52,7 @@ public class SpellBook extends Component implements Serializable {
                 setSpells(spells1);
             }
         } else {
-            msj = "ya conoces el hechiso o tu libro de echisos esta lleno";
+            msj = "ya conoces el hechiso o tu libro de hechisos esta lleno";
         }
 
     }
