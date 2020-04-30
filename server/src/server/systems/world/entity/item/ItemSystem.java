@@ -50,6 +50,9 @@ public class ItemSystem extends PassiveSystem {
     }
 
     public boolean isUsable(Bag.Item item) {
+        /* TODO evitar que se use el item si esta lleno
+            comprobar canUse y comprobar que sean distintos minStatus maxStatus
+        */
         Optional<Obj> object = objectSystem.getObject(item.objId);
         return object.map(ItemUtils::canUse).orElse(false);
     }
