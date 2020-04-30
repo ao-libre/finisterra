@@ -69,6 +69,7 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
             //hotfix para recuperar funcionalidad
             //screenManager.to(ScreenEnum.CREATE);
             characterSelectionScreen.setUserCharacters( accountLoginResponse.getCharacters() );
+            characterSelectionScreen.setUserCharactersData( accountLoginResponse.getCharactersData() );
             characterSelectionScreen.setUserAcc(accountLoginResponse.getUsername());
             characterSelectionScreen.windowsUpdate();
             screenManager.to(ScreenEnum.CHAR_SELECT);

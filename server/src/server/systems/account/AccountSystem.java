@@ -1,6 +1,8 @@
 package server.systems.account;
 
 import com.artemis.annotations.Wire;
+import com.esotericsoftware.jsonbeans.JsonReader;
+import com.esotericsoftware.jsonbeans.JsonValue;
 import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.database.Account;
@@ -9,6 +11,7 @@ import shared.network.account.AccountCreationResponse;
 import shared.network.account.AccountLoginResponse;
 import shared.util.AccountSystemUtilities;
 
+import java.io.File;
 import java.util.ArrayList;
 
 @Wire
@@ -59,16 +62,48 @@ public class AccountSystem extends PassiveSystem {
            characters = null;
         }
 
-        /* todo recuperar el heroID
-        ArrayList<String> charHeroID = new ArrayList<String>();
+        // todo recuperar el heroID
+        ArrayList< Integer > charactersData = new ArrayList<>();
+        for (int i = 0; i < 30; i++){
+            charactersData.add( -1 );
+        }
+
         if (!characters.isEmpty()) {
             for (int i = 0; i < 6; i++) {
-                userSystem.loadUser(characters.get( i )).get();
-                charHeroID.add(i,);
+                if (!characters.get( i ).isBlank()) {
+                    String name = characters.get( i );
+                    File file = new File("Charfile/" + name + ".json");
+                    Log.info( "*** obteniendo hero id del pj " + name );
+                    if (file.isFile() && file.canRead()) {
+                        // leer los datos del archivo
+                        try {
+                            JsonValue jsonData = new JsonReader().parse( file );
+                            JsonValue heroIdData = jsonData.get( "component.entity.character.info.CharHero" );
+                            JsonValue hpData = jsonData.get("component.entity.character.status.Health");
+                            JsonValue mpData = jsonData.get("component.entity.character.status.Mana");
+                            int heroid = heroIdData.getInt( "heroId" );
+                            int hpMin = hpData.getInt( "min" );
+                            int hpMax = hpData.getInt( "max" );
+                            int mpMin = mpData.getInt( "min" );
+                            int mpMax = mpData.getInt( "min" );
+                            // asigna los valores
+                            charactersData.set( i, heroid );
+                            charactersData.set( i + 6, hpMin );
+                            charactersData.set( i + 12, hpMax );
+                            charactersData.set( i + 18, mpMin );
+                            charactersData.set( i + 24, mpMax );
+                        } catch (Exception ex) {
+                            Log.info( "error al tratar de leer el personaje " + name );
+                        }
+
+                    } else {
+                        Log.info( "error al tratar de leer el personaje " + name );
+                    }
+                }
             }
         }
-         */
-        serverSystem.sendTo(connectionId, new AccountLoginResponse(email, successful,characters ));
+
+        serverSystem.sendTo(connectionId, new AccountLoginResponse(email, successful,characters, charactersData ));
     }
     public Account getAccount(String email){
         Account requestedAccount = Account.load(email);
