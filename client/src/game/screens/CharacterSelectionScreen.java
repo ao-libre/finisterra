@@ -176,6 +176,9 @@ public class CharacterSelectionScreen extends AbstractScreen {
                     int userHeroID = userCharactersData.get( i );
 
                     switch( userHeroID ){
+                        case -1:
+                            playButtonArray.get( i ).setDisabled( true );
+                            break;
                         case 0:
                             userImageTableArray.get( i ).clearChildren();
                             userImageTableArray.get( i ).add( WidgetFactory.createImage(warriorImage));
@@ -208,8 +211,10 @@ public class CharacterSelectionScreen extends AbstractScreen {
                     HPLabelArray.get( i ).setText( userCharactersData.get( i+6 ) + " / " + userCharactersData.get( i+12 ) );
                     MPLabelArray.get( i ).setText( userCharactersData.get( i+18 ) + " / " + userCharactersData.get( i+24 ) );
                     nameLabelArray.get(i).setText(charName);
-                    playButtonArray.get(i).setDisabled(false);
-                    playButtonListener(i, charName);
+                    if (userHeroID != -1) {
+                        playButtonArray.get( i ).setDisabled( false );
+                        playButtonListener(i, charName);
+                    }
 
                 } else {
                     playButtonArray.get(i).setDisabled(true);
