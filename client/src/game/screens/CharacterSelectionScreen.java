@@ -312,6 +312,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
                     booleanArrayList.add(x, playButtonArray.get(x).isDisabled());
                     playButtonArray.get(x).setDisabled(true);
                 }
+                //TODO revisar que cuando salés de game screen y queres loguear rápidamente crashea el cliente
                 Timer.schedule(new Timer.Task() {
                     @Override
                     public void run() {
