@@ -10,10 +10,10 @@ import com.esotericsoftware.jsonbeans.OutputType;
 import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.database.Account;
-import server.systems.world.entity.factory.ComponentSystem;
-import server.systems.world.entity.factory.EntityFactorySystem;
 import server.systems.network.ServerSystem;
 import server.systems.world.WorldEntitiesSystem;
+import server.systems.world.entity.factory.ComponentSystem;
+import server.systems.world.entity.factory.EntityFactorySystem;
 import server.utils.EntityJsonSerializer;
 import shared.network.user.UserCreateResponse;
 import shared.network.user.UserLoginResponse;
@@ -81,7 +81,16 @@ public class UserSystem extends PassiveSystem {
             int entityId = entityFactorySystem.create(name, heroId);
             saveUser(name);
             Account account = accountSystem.getAccount(userAcc);
-            account.addCharacter(name, index);
+            if (!account.getCharacters().get( index ).isBlank()) {
+                try {
+                    File oldUserFile = new File( "Charfile/" + account.getCharacters().get( index ) + ".json" );
+                    oldUserFile.delete();
+                    Log.info( "old file deleted " +account.getCharacters().get( index ) + ".json");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            account.addCharacter( name, index );
             // send ok and login
             serverSystem.sendTo(connectionId,
                     UserCreateResponse.ok());

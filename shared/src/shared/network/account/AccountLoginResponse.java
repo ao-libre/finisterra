@@ -11,14 +11,17 @@ public class AccountLoginResponse implements IResponse {
     String username;
     boolean successful;
     ArrayList<String> characters;
+    ArrayList<Integer> charactersData;
+
 
     public AccountLoginResponse() {
     }
 
-    public AccountLoginResponse(String username, boolean successful, ArrayList<String> characters) {
+    public AccountLoginResponse(String username, boolean successful, ArrayList<String> characters, ArrayList<Integer> charactersData) {
         this.username = username;
         this.successful = successful;
         this.characters = characters;
+        this.charactersData = charactersData;
     }
 
     public String getUsername() { return username; }
@@ -27,6 +30,9 @@ public class AccountLoginResponse implements IResponse {
     }
     public ArrayList<String> getCharacters(){
         return characters;
+    }
+    public ArrayList< Integer > getCharactersData() {
+        return charactersData;
     }
 
     @Override

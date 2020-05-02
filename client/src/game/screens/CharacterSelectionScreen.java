@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
+import com.esotericsoftware.minlog.Log;
 import game.systems.network.ClientResponseProcessor;
 import game.systems.network.ClientSystem;
 import game.ui.WidgetFactory;
@@ -27,11 +28,11 @@ public class CharacterSelectionScreen extends AbstractScreen {
     private String charName;
     private String userAcc;
     private ArrayList<String> userCharacters;
-    private ArrayList<Table> userTableArray;
+    private ArrayList<Integer> userCharactersData;
+    private ArrayList<Table> userTableArray, userImageTableArray;
     private ArrayList<Label> nameLabelArray, HPLabelArray, MPLabelArray;
     private ArrayList<TextButton> playButtonArray, createButtonArray;
     private ArrayList<Boolean> booleanArrayList;
-    private ArrayList<Image> pjImages;
     private final Texture noHero = new Texture(Gdx.files.local("data/ui/images/pj/noHero.jpg")),
             warriorImage = new Texture(Gdx.files.local("data/ui/images/pj/guerrero.jpg")),
             mageImage = new Texture(Gdx.files.local("data/ui/images/pj/mago.jpg")),
@@ -66,7 +67,9 @@ public class CharacterSelectionScreen extends AbstractScreen {
         HPLabelArray = new ArrayList<>();
         MPLabelArray = new ArrayList<>();
         booleanArrayList = new ArrayList<>();
-        pjImages = new ArrayList<>();
+        userImageTableArray = new ArrayList<>();
+
+
 
         charSelectWindows = WidgetFactory.createWindow();
         createWindow = WidgetFactory.createWindow();
@@ -155,20 +158,63 @@ public class CharacterSelectionScreen extends AbstractScreen {
         this.userCharacters = userCharacters;
     }
 
+    public void setUserCharactersData(ArrayList<Integer> userCharactersData){
+        this.userCharactersData = userCharactersData;
+    }
+
     public void setUserAcc(String userAcc) {
         this.userAcc = userAcc;
     }
 
     public void windowsUpdate() {
-
+        Log.info("" + userCharactersData);
         if (!userCharacters.isEmpty()) {
             for (int i = 0; i < 6; i++) {
                 int index = i;
                 if (!userCharacters.get(i).isBlank()) {
                     charName = userCharacters.get(i);
+                    int userHeroID = userCharactersData.get( i );
+
+                    switch( userHeroID ){
+                        case -1:
+                            playButtonArray.get( i ).setDisabled( true );
+                            break;
+                        case 0:
+                            userImageTableArray.get( i ).clearChildren();
+                            userImageTableArray.get( i ).add( WidgetFactory.createImage(warriorImage));
+                            break;
+                        case 1:
+                            userImageTableArray.get( i ).clearChildren();
+                            userImageTableArray.get( i ).add(WidgetFactory.createImage(mageImage));
+                            break;
+                        case 2:
+                            userImageTableArray.get( i ).clearChildren();
+                            userImageTableArray.get( i ).add( WidgetFactory.createImage(assassinImage));
+                            break;
+                        case 3:
+                            userImageTableArray.get( i ).clearChildren();
+                            userImageTableArray.get( i ).add(WidgetFactory.createImage(paladinImage));
+                            break;
+                        case 4:
+                            userImageTableArray.get( i ).clearChildren();
+                            userImageTableArray.get( i ).add(WidgetFactory.createImage(bardImage));
+                            break;
+                        case 5:
+                            userImageTableArray.get( i ).clearChildren();
+                            userImageTableArray.get( i ).add(WidgetFactory.createImage(archerImage));
+                            break;
+                        case 6:
+                            userImageTableArray.get( i ).clearChildren();
+                            userImageTableArray.get( i ).add(WidgetFactory.createImage(clericImage));
+                            break;
+                    }
+                    HPLabelArray.get( i ).setText( userCharactersData.get( i+6 ) + " / " + userCharactersData.get( i+12 ) );
+                    MPLabelArray.get( i ).setText( userCharactersData.get( i+18 ) + " / " + userCharactersData.get( i+24 ) );
                     nameLabelArray.get(i).setText(charName);
-                    playButtonArray.get(i).setDisabled(false);
-                    playButtonListener(i, charName);
+                    if (userHeroID != -1) {
+                        playButtonArray.get( i ).setDisabled( false );
+                        playButtonListener(i, charName);
+                    }
 
                 } else {
                     playButtonArray.get(i).setDisabled(true);
@@ -189,8 +235,10 @@ public class CharacterSelectionScreen extends AbstractScreen {
         for (int i = 0; i < 6; i++) {
             Table newSlot = new Table();
             newSlot.setBackground(getSkin().getDrawable("menu-frame"));
-            Label userName = WidgetFactory.createLabel("");
+            Table imageTable = new Table();
             Image pjImage = WidgetFactory.createImage(noHero);
+            imageTable.add(pjImage);
+            Label userName = WidgetFactory.createLabel("");
             Label HPLabel = WidgetFactory.createLabel("????/????");
             HPLabel.setColor(Color.RED);
             Label MPLabel = WidgetFactory.createLabel("????/????");
@@ -198,17 +246,18 @@ public class CharacterSelectionScreen extends AbstractScreen {
             TextButton playTextButton = WidgetFactory.createTextButton("Jugar");
             TextButton createTextButton = WidgetFactory.createTextButton("Crear");
 
+
             playButtonArray.add(playTextButton);
             createButtonArray.add(createTextButton);
             userTableArray.add(newSlot);
+            userImageTableArray.add(imageTable);
             nameLabelArray.add(userName);
             HPLabelArray.add(HPLabel);
             MPLabelArray.add(MPLabel);
-            pjImages.add(pjImage);
 
             /*dibujar la tablas*/
             userTableArray.get(i).add(nameLabelArray.get(i)).colspan(2).row();
-            userTableArray.get(i).add(pjImages.get(i)).height(200).colspan(2).row();
+            userTableArray.get(i).add(userImageTableArray.get( i )).height(200).colspan(2).row();
             userTableArray.get(i).add(HPLabelArray.get(i)).padRight(10).padLeft(10);
             userTableArray.get(i).add(MPLabelArray.get(i)).padRight(10).padLeft(10).row();
             userTableArray.get(i).add(playButtonArray.get(i)).left().width(120).padLeft(5);
