@@ -17,6 +17,7 @@ import server.systems.world.entity.factory.EntityFactorySystem;
 import server.utils.EntityJsonSerializer;
 import shared.network.user.UserCreateResponse;
 import shared.network.user.UserLoginResponse;
+import shared.util.UserSystemUtilities;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -35,6 +36,7 @@ public class UserSystem extends PassiveSystem {
     private ComponentSystem componentSystem;
     private Json json;
     private ExecutorService executor = Executors.newFixedThreadPool(10);
+
 
 
     @Override
@@ -72,7 +74,12 @@ public class UserSystem extends PassiveSystem {
     }
 
     public void create(int connectionId, String name, int heroId, String userAcc, int index) {
-        if (userExists(name)) {
+        UserSystemUtilities userSystemUtilities = new UserSystemUtilities();
+
+        if (!userSystemUtilities.userNameIsValid(name)){
+            serverSystem.sendTo(connectionId,
+                    UserCreateResponse.failed(userSystemUtilities.getMsgErrorValid()));
+        }else if (userExists(name)) {
             // send user exists
             serverSystem.sendTo(connectionId,
                     UserCreateResponse.failed("Este personaje ya existe!"));
