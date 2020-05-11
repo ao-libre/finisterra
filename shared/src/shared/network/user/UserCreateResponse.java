@@ -2,11 +2,12 @@ package shared.network.user;
 
 import shared.network.interfaces.IResponse;
 import shared.network.interfaces.IResponseProcessor;
+import shared.util.Messages;
 
 public class UserCreateResponse implements IResponse {
 
     private boolean ok = true;
-    private String message;
+    private Messages message;
 
     public UserCreateResponse() {
     }
@@ -15,7 +16,7 @@ public class UserCreateResponse implements IResponse {
         return new UserCreateResponse();
     }
 
-    public static UserCreateResponse failed(String message) {
+    public static UserCreateResponse failed(Messages message) {
         UserCreateResponse userCreateResponse = new UserCreateResponse();
         userCreateResponse.ok = false;
         userCreateResponse.message = message;
@@ -26,7 +27,7 @@ public class UserCreateResponse implements IResponse {
         return ok;
     }
 
-    public String getMessage() {
+    public Messages getMessage() {
         return message;
     }
 
