@@ -109,7 +109,6 @@ public class MagicCombatSystem extends PassiveSystem {
                     return;
                 }
 
-
                 if(playerId == target) {
                     if(spell.getSumHP() == 2 || spell.isImmobilize() || spell.isParalyze()) {
                         notifyMagic( playerId, Messages.CANT_ATTACK_YOURSELF );
@@ -183,27 +182,8 @@ public class MagicCombatSystem extends PassiveSystem {
                         EntityUpdate playerUpdate = playerUpdateBuilder.withComponents(magicWords).build();
                         entityUpdateSystem.add(playerUpdate, UpdateTo.ALL);
                     }
-
-                } else if(spell.isImmobilize()) {/*Inmovilizar*/
-                        targetEntity.immobile();
-                        victimUpdateToAllBuilder.withComponents( targetEntity.getImmobile() );
-                        updateMana( playerId, requiredMana, mana );
-                 } else if(spell.isRemoveParalysis()) {
-                    if(targetEntity.isImmobile()) {
-                        targetEntity.immobile( false );
-                        victimUpdateToAllBuilder.remove( Immobile.class );
-                        updateMana( playerId, requiredMana, mana );
-                    } else {
-                        notifyInfo( playerId, Messages.NOT_PARALYSIS );
-                        return;
-                    }
-                }else if(spell.isSumStrength()) {/*Sumar fuerza*/
-
-                    int random = new Random().nextInt( spell.getMaxStrength() - spell.getMinStrength() + 1 ) + spell.getMinStrength();
-                    targetEntity.strengthCurrentValue( targetEntity.strengthCurrentValue() + random );
-                    targetEntity.buff().buffAddAttribute( targetEntity.getStrength(), spell.getStrengthDuration() );
-                    sendAttributeUpdate( target, targetEntity.getStrength(), targetEntity.getBuff() );
-                    updateMana( playerId, requiredMana, mana );
+                    if(fxGrh > 0) {
+                        effectEntitySystem.addFX( target, fxGrh, Math.max( 1, spell.getLoops() ) );
 
                 }else if(spell.isSumAgility()) {/*Sumar agilidad*/
 
@@ -212,7 +192,6 @@ public class MagicCombatSystem extends PassiveSystem {
                     targetEntity.buff().buffAddAttribute( targetEntity.getAgility(), spell.getAgilityDuration() );
                     sendAttributeUpdate( target, targetEntity.getAgility(), targetEntity.getBuff() );
                     updateMana( playerId, requiredMana, mana );
-
                 }
 
             }else{
