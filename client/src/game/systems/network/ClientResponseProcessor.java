@@ -4,6 +4,7 @@ import com.artemis.annotations.Wire;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.esotericsoftware.minlog.Log;
+import game.handlers.DefaultAOAssetManager;
 import game.screens.CharacterSelectionScreen;
 import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
@@ -16,6 +17,7 @@ import shared.network.movement.MovementResponse;
 import shared.network.time.TimeSyncResponse;
 import shared.network.user.UserCreateResponse;
 import shared.network.user.UserLoginResponse;
+import shared.util.Messages;
 
 @Wire
 public class ClientResponseProcessor extends PassiveSystem implements IResponseProcessor {
@@ -25,6 +27,8 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
     private ScreenManager screenManager;
     private TimeSync timeSync;
     private CharacterSelectionScreen characterSelectionScreen;
+    @Wire
+    private DefaultAOAssetManager assetManager;
 
     @Override
     public void processResponse(MovementResponse movementResponse) {
@@ -86,10 +90,12 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
         if (userCreateResponse.isSuccessful()) {
             screenManager.to(ScreenEnum.GAME);
         } else {
-            Dialog dialog = new Dialog("No se pudo crear el personaje!", screenManager.getAbstractScreen().getSkin());
-            dialog.text(userCreateResponse.getMessage());
+            // Mostramos un mensaje de error.
+            Dialog dialog = new Dialog(assetManager.getMessages(Messages.USERNAME_ERROR_CREATION_TITLE), screenManager.getAbstractScreen().getSkin());
+            dialog.text(assetManager.getMessages(userCreateResponse.getMessage()));
             dialog.button("OK");
             dialog.show(screenManager.getAbstractScreen().getStage());
+
         }
     }
 

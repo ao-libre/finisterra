@@ -17,6 +17,8 @@ import server.systems.world.entity.factory.EntityFactorySystem;
 import server.utils.EntityJsonSerializer;
 import shared.network.user.UserCreateResponse;
 import shared.network.user.UserLoginResponse;
+import shared.util.Messages;
+import shared.util.UserSystemUtilities;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -35,6 +37,7 @@ public class UserSystem extends PassiveSystem {
     private ComponentSystem componentSystem;
     private Json json;
     private ExecutorService executor = Executors.newFixedThreadPool(10);
+
 
 
     @Override
@@ -72,10 +75,28 @@ public class UserSystem extends PassiveSystem {
     }
 
     public void create(int connectionId, String name, int heroId, String userAcc, int index) {
-        if (userExists(name)) {
+        UserSystemUtilities userSystemUtilities = new UserSystemUtilities();
+
+        if (userSystemUtilities.userNameIsNumeric(name)){
+            serverSystem.sendTo(connectionId,
+                    UserCreateResponse.failed(Messages.USERNAME_NOT_NUEMRIC));
+
+        }else if (!userSystemUtilities.userNameIsNormalChar(name)) {
+            serverSystem.sendTo(connectionId,
+                    UserCreateResponse.failed(Messages.USERNAME_INVALID_CHAR));
+
+        }else if (userSystemUtilities.userNameIsStartNumeric(name)) {
+            serverSystem.sendTo(connectionId,
+                    UserCreateResponse.failed(Messages.USERNAME_NOT_INIT_NUMBER));
+
+        }else if (userSystemUtilities.userNameIsOfensive(name)) {
+            serverSystem.sendTo(connectionId,
+                    UserCreateResponse.failed(Messages.USERNAME_FORBIDDEN));
+
+        }else if (userExists(name)) {
             // send user exists
             serverSystem.sendTo(connectionId,
-                    UserCreateResponse.failed("Este personaje ya existe!"));
+                    UserCreateResponse.failed(Messages.USERNAME_ALREADY_EXIST));
         } else {
             // create and add to account
             int entityId = entityFactorySystem.create(name, heroId);
