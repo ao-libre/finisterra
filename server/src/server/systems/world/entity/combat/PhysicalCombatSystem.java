@@ -38,6 +38,8 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     private static final String MISS = "Fallas!";
     private static final float ASSASIN_STAB_FACTOR = 1.5f;
     private static final float NORMAL_STAB_FACTOR = 1.4f;
+    private static final float CRIT_FACTOR = 1.5f;
+    private static final int CRIT_PROBABILITY = 5;
     private static final int TIME_TO_MOVE_1_TILE = 250;
     // Injected Systems
     private MapSystem mapSystem;
@@ -264,14 +266,14 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
     }
 
     private int doCriticAttack(int userId, int entityId, int damage) {
-        // TODO
-        notifyCombat(userId, Messages.USER_CRITIC_HIT, getName(entityId), Integer.toString(damage));
-        notifyCombat(entityId, Messages.VICTIM_CRITIC_HIT, getName(userId), Integer.toString(damage));
-        return damage;
+        int calculatedDamage = (int) (damage * CRIT_FACTOR);
+        notifyCombat(userId, Messages.USER_CRITIC_HIT, getName(entityId), Integer.toString(calculatedDamage));
+        notifyCombat(entityId, Messages.VICTIM_CRITIC_HIT, getName(userId), Integer.toString(calculatedDamage));
+        return calculatedDamage;
     }
 
     private boolean canCriticAttack(int userId, int entityId) {
-        return false;
+        return ThreadLocalRandom.current().nextInt(1, 101) <= CRIT_PROBABILITY;
     }
 
     private boolean canStab(int userId) {
