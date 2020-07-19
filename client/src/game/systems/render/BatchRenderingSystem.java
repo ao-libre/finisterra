@@ -1,5 +1,6 @@
 package game.systems.render;
 
+import com.badlogic.gdx.graphics.GL30;
 import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.BaseSystem;
@@ -11,7 +12,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureArraySpriteBatch;
+import com.badlogic.gdx.graphics.g2d.ArrayTextureSpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.esotericsoftware.minlog.Log;
 import game.utils.Pos2D;
@@ -33,8 +34,8 @@ public class BatchRenderingSystem extends BaseSystem {
     private final float height;
     private FrameBuffer lightBuffer;
 
-    private Batch batch;
-    private Deque<BatchTask> tasks = new ConcurrentLinkedDeque<>();
+    private final Batch batch;
+    private final Deque<BatchTask> tasks = new ConcurrentLinkedDeque<>();
 
     public BatchRenderingSystem() {
         this.batch = initBatch();
@@ -47,7 +48,7 @@ public class BatchRenderingSystem extends BaseSystem {
     private Batch initBatch() {
         Batch tempSpriteBatch;
         try {
-            tempSpriteBatch = new TextureArraySpriteBatch();
+            tempSpriteBatch = new ArrayTextureSpriteBatch(50, 2560, 1280, 512, GL30.GL_NEAREST, GL30.GL_NEAREST);
         } catch (Exception ex) {
             Log.debug("Tu dispositivo no es compatible con el SpriteBatch mejorado. Usando sistema original...");
             tempSpriteBatch = new SpriteBatch();
