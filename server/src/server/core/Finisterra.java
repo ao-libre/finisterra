@@ -44,7 +44,6 @@ import static shared.util.MapHelper.CacheStrategy.NEVER_EXPIRE;
 public class Finisterra extends ApplicationAdapter {
 
     private World world;
-    private float currentTick = 0;
 
     @Override
     public void create() {
@@ -61,12 +60,19 @@ public class Finisterra extends ApplicationAdapter {
     }
 
     private void loadAsync() {
-        Thread thread = new Thread(() -> {
+        Thread mapHandler = new Thread(() -> {
             MapHelper helper = MapHelper.instance(NEVER_EXPIRE);
             helper.loadAll();
         });
-        thread.setDaemon(true);
-        thread.start();
+        mapHandler.setDaemon(true);
+        mapHandler.start();
+
+        // Este thread chequea que existan las carpetas necesarias para que el servidor opere correctamente.
+        Thread requiredDirectoriesAnalyzer = new Thread(() -> {
+           AccountSystem.checkStorageDirectory();
+           UserSystem.checkStorageDirectory();
+        });
+        requiredDirectoriesAnalyzer.start();
     }
 
     private void createWorld() {

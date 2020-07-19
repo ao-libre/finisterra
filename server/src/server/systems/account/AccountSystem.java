@@ -6,6 +6,7 @@ import com.esotericsoftware.jsonbeans.JsonValue;
 import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.database.Account;
+import server.database.Charfile;
 import server.systems.network.ServerSystem;
 import shared.network.account.AccountCreationResponse;
 import shared.network.account.AccountLoginResponse;
@@ -49,10 +50,10 @@ public class AccountSystem extends PassiveSystem {
         boolean successful = (requestedAccount != null) && (AccountSystemUtilities.checkPassword(password, requestedAccount.getPassword()));
 
         String username = successful ? requestedAccount.getUsername() : null;
-        ArrayList<String> characters = new ArrayList<>();
+        ArrayList<String> characters;
         if (successful){
             if(requestedAccount.getCharacters().isEmpty()) {
-                Log.info("********la cuenta " +requestedAccount.getUsername() +"no tiene pj creando lista" );
+                Log.info("******** la cuenta " + username + " no tiene PJ creando lista" );
                 for (int i = 0;i<6;i++) {
                     requestedAccount.addCharacter( "", i );
                 }
@@ -72,7 +73,7 @@ public class AccountSystem extends PassiveSystem {
             for (int i = 0; i < 6; i++) {
                 if (!characters.get( i ).isBlank()) {
                     String name = characters.get( i );
-                    File file = new File("Charfile/" + name + ".json");
+                    File file = new File(Charfile.DIR_CHARFILES + name + ".json");
                     Log.info( "*** obteniendo hero id del pj " + name );
                     if (file.isFile() && file.canRead()) {
                         // leer los datos del archivo
@@ -109,5 +110,10 @@ public class AccountSystem extends PassiveSystem {
         Account requestedAccount = Account.load(email);
         Log.info("***** enviando datos de la cuenta " + requestedAccount.getUsername());
         return requestedAccount;
+    }
+    public static void checkStorageDirectory() {
+        File accountDir = new File(Account.DIR_CUENTAS);
+        if (accountDir.isDirectory())
+            accountDir.mkdirs();
     }
 }

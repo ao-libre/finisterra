@@ -13,6 +13,7 @@ public class Charfile {
      * Para excluir un field tenes que declararlo como "transient".
      */
     static transient final Json json = new AOJson();
+    public static transient final String DIR_CHARFILES = "CharFiles/";
 
     /**
      * Fields que serán serializados.
