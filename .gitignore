@@ -11,6 +11,7 @@ desktop/Config.json
 desktop/Screenshots*
 desktop/error*
 server/Accounts/
+server/[Cc]har[Ff]iles/
 server/bundled-APP/
 server/Charfile/
 *.log
