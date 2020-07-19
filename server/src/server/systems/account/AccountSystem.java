@@ -47,21 +47,25 @@ public class AccountSystem extends PassiveSystem {
         // Obtenemos la cuenta de la carpeta Accounts.
         Account requestedAccount = Account.load(email);
 
-        boolean successful = (requestedAccount != null) && (AccountSystemUtilities.checkPassword(password, requestedAccount.getPassword()));
+        if (requestedAccount == null) {
+            serverSystem.sendTo(connectionId, new AccountLoginResponse("La cuenta solicitada no existe."));
+            return;
 
-        String username = successful ? requestedAccount.getUsername() : null;
-        ArrayList<String> characters;
-        if (successful){
-            if(requestedAccount.getCharacters().isEmpty()) {
-                Log.info("******** la cuenta " + username + " no tiene PJ creando lista" );
-                for (int i = 0;i<6;i++) {
-                    requestedAccount.addCharacter( "", i );
-                }
-            }
-            characters = requestedAccount.getCharacters();
-        } else {
-           characters = null;
+        } else if (!AccountSystemUtilities.checkPassword(password, requestedAccount.getPassword())) {
+            serverSystem.sendTo(connectionId, new AccountLoginResponse("Los datos ingresados son incorrectos."));
+            return;
         }
+
+        String username = requestedAccount.getUsername();
+
+        ArrayList<String> characters;
+        if(requestedAccount.getCharacters().isEmpty()) {
+            Log.info("******** La cuenta " + username + " no tiene PJ creando lista" );
+            for (int i = 0; i < 6; i++) {
+                requestedAccount.addCharacter( "", i );
+            }
+        }
+        characters = requestedAccount.getCharacters();
 
         // todo recuperar el heroID
         ArrayList< Integer > charactersData = new ArrayList<>();
@@ -104,7 +108,7 @@ public class AccountSystem extends PassiveSystem {
             }
         }
 
-        serverSystem.sendTo(connectionId, new AccountLoginResponse(email, successful,characters, charactersData ));
+        serverSystem.sendTo(connectionId, new AccountLoginResponse(email, characters, charactersData ));
     }
     public Account getAccount(String email){
         Account requestedAccount = Account.load(email);

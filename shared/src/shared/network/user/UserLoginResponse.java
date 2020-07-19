@@ -1,5 +1,7 @@
 package shared.network.user;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import shared.network.interfaces.IResponse;
 import shared.network.interfaces.IResponseProcessor;
 
@@ -11,12 +13,12 @@ public class UserLoginResponse implements IResponse {
     public UserLoginResponse() {
     }
 
-    public static UserLoginResponse ok() {
-        UserLoginResponse userLoginResponse = new UserLoginResponse();
-        return userLoginResponse;
+    @Contract(value = " -> new", pure = true)
+    public static @NotNull UserLoginResponse ok() {
+        return new UserLoginResponse();
     }
 
-    public static UserLoginResponse failed(String message) {
+    public static @NotNull UserLoginResponse failed(String message) {
         UserLoginResponse userLoginResponse = new UserLoginResponse();
         userLoginResponse.ok = false;
         userLoginResponse.message = message;
