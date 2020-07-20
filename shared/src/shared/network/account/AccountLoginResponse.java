@@ -3,6 +3,7 @@ package shared.network.account;
 import org.jetbrains.annotations.NotNull;
 import shared.network.interfaces.IResponse;
 import shared.network.interfaces.IResponseProcessor;
+import shared.util.Messages;
 
 import java.util.ArrayList;
 
@@ -11,13 +12,13 @@ public class AccountLoginResponse implements IResponse {
     // TODO add all players
     String username;
     boolean successful;
-    String error;
+    Messages error;
     ArrayList<String> characters;
     ArrayList<Integer> charactersData;
 
     public AccountLoginResponse() {}
 
-    public AccountLoginResponse(String error) {
+    public AccountLoginResponse(Messages error) {
         this.successful = false;
         this.error = error;
     }
@@ -33,7 +34,7 @@ public class AccountLoginResponse implements IResponse {
     public boolean isSuccessful() {
         return successful;
     }
-    public String getError() { return error; }
+    public Messages getError() { return error; }
     public ArrayList<String> getCharacters(){
         return characters;
     }

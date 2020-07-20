@@ -62,7 +62,7 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
             characterSelectionScreen.windowsUpdate();
             screenManager.to(ScreenEnum.CHAR_SELECT);
         } else {
-            screenManager.showDialog("Error", accountLoginResponse.getError());
+            screenManager.showDialog("Error", assetManager.getMessages( accountLoginResponse.getError() ));
         }
     }
 
@@ -72,7 +72,7 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
             screenManager.to(ScreenEnum.GAME);
         } else {
             // Mostramos un mensaje de error.
-            screenManager.showDialog("Error", assetManager.getMessages(userCreateResponse.getMessage()));
+            screenManager.showDialog("Error", assetManager.getMessages( userCreateResponse.getMessage() ));
         }
     }
 
@@ -81,7 +81,7 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
         if (userLoginResponse.isSuccessful()) {
             screenManager.to(ScreenEnum.GAME);
         } else {
-            screenManager.showDialog("Error" ,userLoginResponse.getMessage());
+            screenManager.showDialog("Error" , userLoginResponse.getMessage());
         }
     }
 }

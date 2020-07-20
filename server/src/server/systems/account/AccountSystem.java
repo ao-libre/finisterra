@@ -11,6 +11,7 @@ import server.systems.network.ServerSystem;
 import shared.network.account.AccountCreationResponse;
 import shared.network.account.AccountLoginResponse;
 import shared.util.AccountSystemUtilities;
+import shared.util.Messages;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,11 +49,11 @@ public class AccountSystem extends PassiveSystem {
         Account requestedAccount = Account.load(email);
 
         if (requestedAccount == null) {
-            serverSystem.sendTo(connectionId, new AccountLoginResponse("La cuenta solicitada no existe."));
+            serverSystem.sendTo(connectionId, new AccountLoginResponse(Messages.NON_EXISTENT_ACCOUNT));
             return;
 
         } else if (!AccountSystemUtilities.checkPassword(password, requestedAccount.getPassword())) {
-            serverSystem.sendTo(connectionId, new AccountLoginResponse("Los datos ingresados son incorrectos."));
+            serverSystem.sendTo(connectionId, new AccountLoginResponse(Messages.ACCOUNT_LOGIN_FAILED));
             return;
         }
 
