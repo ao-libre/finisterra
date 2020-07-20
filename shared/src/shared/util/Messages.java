@@ -123,6 +123,8 @@ public enum Messages {
     USERNAME_NOT_INIT_NUMBER,
     USERNAME_ALREADY_EXIST,
     // para ir provando antes de crear los mensajes
-    MULTIUSE
+    MULTIUSE,
+    NON_EXISTENT_ACCOUNT,
+    ACCOUNT_LOGIN_FAILED,
 }
 

@@ -6,10 +6,12 @@ import com.esotericsoftware.jsonbeans.JsonValue;
 import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.database.Account;
+import server.database.Charfile;
 import server.systems.network.ServerSystem;
 import shared.network.account.AccountCreationResponse;
 import shared.network.account.AccountLoginResponse;
 import shared.util.AccountSystemUtilities;
+import shared.util.Messages;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,21 +48,25 @@ public class AccountSystem extends PassiveSystem {
         // Obtenemos la cuenta de la carpeta Accounts.
         Account requestedAccount = Account.load(email);
 
-        boolean successful = (requestedAccount != null) && (AccountSystemUtilities.checkPassword(password, requestedAccount.getPassword()));
+        if (requestedAccount == null) {
+            serverSystem.sendTo(connectionId, new AccountLoginResponse(Messages.NON_EXISTENT_ACCOUNT));
+            return;
 
-        String username = successful ? requestedAccount.getUsername() : null;
-        ArrayList<String> characters = new ArrayList<>();
-        if (successful){
-            if(requestedAccount.getCharacters().isEmpty()) {
-                Log.info("********la cuenta " +requestedAccount.getUsername() +"no tiene pj creando lista" );
-                for (int i = 0;i<6;i++) {
-                    requestedAccount.addCharacter( "", i );
-                }
-            }
-            characters = requestedAccount.getCharacters();
-        } else {
-           characters = null;
+        } else if (!AccountSystemUtilities.checkPassword(password, requestedAccount.getPassword())) {
+            serverSystem.sendTo(connectionId, new AccountLoginResponse(Messages.ACCOUNT_LOGIN_FAILED));
+            return;
         }
+
+        String username = requestedAccount.getUsername();
+
+        ArrayList<String> characters;
+        if(requestedAccount.getCharacters().isEmpty()) {
+            Log.info("******** La cuenta " + username + " no tiene PJ creando lista" );
+            for (int i = 0; i < 6; i++) {
+                requestedAccount.addCharacter( "", i );
+            }
+        }
+        characters = requestedAccount.getCharacters();
 
         // todo recuperar el heroID
         ArrayList< Integer > charactersData = new ArrayList<>();
@@ -72,7 +78,7 @@ public class AccountSystem extends PassiveSystem {
             for (int i = 0; i < 6; i++) {
                 if (!characters.get( i ).isBlank()) {
                     String name = characters.get( i );
-                    File file = new File("Charfile/" + name + ".json");
+                    File file = new File(Charfile.DIR_CHARFILES + name + ".json");
                     Log.info( "*** obteniendo hero id del pj " + name );
                     if (file.isFile() && file.canRead()) {
                         // leer los datos del archivo
@@ -103,11 +109,16 @@ public class AccountSystem extends PassiveSystem {
             }
         }
 
-        serverSystem.sendTo(connectionId, new AccountLoginResponse(email, successful,characters, charactersData ));
+        serverSystem.sendTo(connectionId, new AccountLoginResponse(email, characters, charactersData ));
     }
     public Account getAccount(String email){
         Account requestedAccount = Account.load(email);
         Log.info("***** enviando datos de la cuenta " + requestedAccount.getUsername());
         return requestedAccount;
+    }
+    public static void checkStorageDirectory() {
+        File accountDir = new File(Account.DIR_CUENTAS);
+        if (accountDir.isDirectory())
+            accountDir.mkdirs();
     }
 }

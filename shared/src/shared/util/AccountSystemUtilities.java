@@ -1,5 +1,6 @@
 package shared.util;
 
+import org.jetbrains.annotations.NotNull;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.regex.Pattern;
@@ -40,7 +41,7 @@ public class AccountSystemUtilities {
      *	or when changing an account's password.
      * @return String - a string of length 60 that is the BCrypt hashed password in crypt(3) format.
      */
-    public static String hashPassword(String password_plaintext) {
+    public static @NotNull String hashPassword(String password_plaintext) {
         int workload = 12;
         String salt = BCrypt.gensalt(workload);
 

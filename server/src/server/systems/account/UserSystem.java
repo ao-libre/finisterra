@@ -9,7 +9,9 @@ import com.esotericsoftware.jsonbeans.JsonValue;
 import com.esotericsoftware.jsonbeans.OutputType;
 import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
+import org.jetbrains.annotations.NotNull;
 import server.database.Account;
+import server.database.Charfile;
 import server.systems.network.ServerSystem;
 import server.systems.world.WorldEntitiesSystem;
 import server.systems.world.entity.factory.ComponentSystem;
@@ -36,9 +38,7 @@ public class UserSystem extends PassiveSystem {
     private AccountSystem accountSystem;
     private ComponentSystem componentSystem;
     private Json json;
-    private ExecutorService executor = Executors.newFixedThreadPool(10);
-
-
+    private final ExecutorService executor = Executors.newFixedThreadPool(10);
 
     @Override
     protected void initialize() {
@@ -104,27 +104,26 @@ public class UserSystem extends PassiveSystem {
             Account account = accountSystem.getAccount(userAcc);
             if (!account.getCharacters().get( index ).isBlank()) {
                 try {
-                    File oldUserFile = new File( "Charfile/" + account.getCharacters().get( index ) + ".json" );
+                    File oldUserFile = new File( Charfile.DIR_CHARFILES + account.getCharacters().get( index ) + ".json" );
                     oldUserFile.delete();
                     Log.info( "old file deleted " +account.getCharacters().get( index ) + ".json");
                 }catch (Exception e){
-                    e.printStackTrace();
+                    Log.error("User System", "Error while creating a user", e);
                 }
             }
             account.addCharacter( name, index );
             // send ok and login
-            serverSystem.sendTo(connectionId,
-                    UserCreateResponse.ok());
+            serverSystem.sendTo(connectionId, UserCreateResponse.ok());
             worldEntitiesSystem.login(connectionId, entityId);
         }
     }
 
     private boolean userExists(String userName) {
-        File file = new File("Charfile/" + userName + ".json");
+        File file = new File(Charfile.DIR_CHARFILES + userName + ".json");
         return file.isFile() && file.canRead();
     }
 
-    public void save(E e) {
+    public void save(@NotNull E e) {
         boolean canSave = e.hasCharacter() && e.hasName();
         if (canSave) {
             String name = e.getName().text;
@@ -145,7 +144,7 @@ public class UserSystem extends PassiveSystem {
     private void saveUser(String name, E user) {
         executor.submit(() -> {
             Collection<Component> components = componentSystem.getComponents(user.id(), ComponentSystem.Visibility.SERVER);
-            File userFile = new File("Charfile/" + name + ".json");
+            File userFile = new File(Charfile.DIR_CHARFILES + name + ".json");
             try (FileWriter writer = new FileWriter(userFile)) {
                 json.setWriter(writer);
                 entityJsonSerializer.write(json, components, null);
@@ -156,9 +155,9 @@ public class UserSystem extends PassiveSystem {
         });
     }
 
-    private Future<Integer> loadUser(String name) {
+    private @NotNull Future<Integer> loadUser(String name) {
         return executor.submit(() -> {
-            File userFile = new File("Charfile/" + name + ".json");
+            File userFile = new File(Charfile.DIR_CHARFILES + name + ".json");
             // read components
             try {
                 JsonValue jsonData = new JsonReader().parse(userFile);
@@ -171,5 +170,10 @@ public class UserSystem extends PassiveSystem {
                 return -1;
             }
         });
+    }
+    public static void checkStorageDirectory() {
+        File charfilesDir = new File(Charfile.DIR_CHARFILES);
+        if (charfilesDir.isDirectory())
+            charfilesDir.mkdirs();
     }
 }

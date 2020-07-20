@@ -12,7 +12,7 @@ import java.util.Map;
  * NPC Logic
  */
 public class NPCSystem extends PassiveSystem {
-    private static ServerDescriptorReader reader = new ServerDescriptorReader();
+    private static final ServerDescriptorReader reader = new ServerDescriptorReader();
     private Map<Integer, NPC> npcs;
 
     public NPCSystem() {

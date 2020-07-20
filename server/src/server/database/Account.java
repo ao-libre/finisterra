@@ -21,7 +21,7 @@ public class Account extends POJO {
     private String email;
     private String password;
     private boolean banned;
-    private ArrayList<String> characters = new ArrayList<>();
+    private final ArrayList<String> characters = new ArrayList<>();
 
     public Account() {
     }

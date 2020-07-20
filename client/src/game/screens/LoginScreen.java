@@ -38,7 +38,7 @@ public class LoginScreen extends AbstractScreen {
     private CheckBox disableSound;
     private TextButton loginButton;
     private List<ClientConfiguration.Network.Server> serverList;
-    private Preferences preferences = Gdx.app.getPreferences("Finisterra");
+    private final Preferences preferences = Gdx.app.getPreferences("Finisterra");
     ;
 
     public LoginScreen() {
@@ -213,16 +213,11 @@ public class LoginScreen extends AbstractScreen {
             if (clientSystem.connect(ip, port)) {
                 clientSystem.send(new AccountLoginRequest(email, password));
             } else {
-                connectionFailed();
+                screenManager.showDialog(
+                        assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE),
+                        assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION)
+                );
             }
         }
-    }
-
-    private void connectionFailed() {
-        // Mostramos un mensaje de error.
-        Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
-        dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
-        dialog.button("OK");
-        dialog.show(getStage());
     }
 }
