@@ -3,6 +3,7 @@ package server.systems.account;
 import com.artemis.Component;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.jsonbeans.Json;
 import com.esotericsoftware.jsonbeans.JsonReader;
 import com.esotericsoftware.jsonbeans.JsonValue;
@@ -81,26 +82,28 @@ public class UserSystem extends PassiveSystem {
             serverSystem.sendTo(connectionId,
                     UserCreateResponse.failed(Messages.USERNAME_NOT_NUEMRIC));
 
-        }else if (!userSystemUtilities.userNameIsNormalChar(name)) {
+        } else if (!userSystemUtilities.userNameIsNormalChar(name)) {
             serverSystem.sendTo(connectionId,
                     UserCreateResponse.failed(Messages.USERNAME_INVALID_CHAR));
 
-        }else if (userSystemUtilities.userNameIsStartNumeric(name)) {
+        } else if (userSystemUtilities.userNameIsStartNumeric(name)) {
             serverSystem.sendTo(connectionId,
                     UserCreateResponse.failed(Messages.USERNAME_NOT_INIT_NUMBER));
 
-        }else if (userSystemUtilities.userNameIsOfensive(name)) {
+        } else if (userSystemUtilities.userNameIsOfensive(name)) {
             serverSystem.sendTo(connectionId,
                     UserCreateResponse.failed(Messages.USERNAME_FORBIDDEN));
 
-        }else if (userExists(name)) {
+        } else if (userExists(name)) {
             // send user exists
             serverSystem.sendTo(connectionId,
                     UserCreateResponse.failed(Messages.USERNAME_ALREADY_EXIST));
         } else {
             // create and add to account
             int entityId = entityFactorySystem.create(name, heroId);
-            saveUser(name);
+            // save entity in the account
+            save(entityId, () -> {});
+            // get the account
             Account account = accountSystem.getAccount(userAcc);
             if (!account.getCharacters().get( index ).isBlank()) {
                 try {
@@ -123,36 +126,35 @@ public class UserSystem extends PassiveSystem {
         return file.isFile() && file.canRead();
     }
 
-    public void save(@NotNull E e) {
-        boolean canSave = e.hasCharacter() && e.hasName();
-        if (canSave) {
-            String name = e.getName().text;
-            saveUser(name, e);
+    /**
+     * Obtenemos los componentes de la entidad, los serializamos en un .json y los guardamos en el Charfile del usuario.
+     *
+     * @param entityId ID de la entidad a guardarle los datos
+     * @param code Código que se ejecutará despues de haber terminado de guardar los datos
+     *             Lo usamos, por ejemplo, cuando un usuario se desconecta para asegurarnos de no borrar la entidad mientras estamos guardando los datos.
+     */
+    public void save(int entityId, Runnable code) {
+		E user = E.E(entityId);
+        if (user.hasCharacter() && user.hasName()) {
+            String name = user.getName().text;
+            executor.submit(() -> {
+                // Obtenemos la informacion de los componentes de la entidad.
+                Collection<Component> components = componentSystem.getComponents(user.id(), ComponentSystem.Visibility.SERVER);
+                // Me fijo que no este vacía.
+                if (!components.isEmpty()) {
+                    // La serializamos y la guardamos en el CharFile.
+                    File userFile = new File(Charfile.DIR_CHARFILES + name + ".json");
+                    try (FileWriter writer = new FileWriter(userFile)) {
+                        json.setWriter(writer);
+                        entityJsonSerializer.write(json, components, null);
+                    } catch (IOException ex) {
+                        Log.error("Failed to write charfile: " + name, ex);
+                    }
+                }
+                // Volvemos al thread principal y ejecutamos el codigo que pasamos en el Runnable.
+                Gdx.app.postRunnable(code);
+            });
         }
-    }
-
-    public void save(int entityId) {
-        E e = E.E(entityId);
-        save(e);
-    }
-
-    private void saveUser(String name) {
-        E user = E.withTag(name);
-        saveUser(name, user);
-    }
-
-    private void saveUser(String name, E user) {
-        executor.submit(() -> {
-            Collection<Component> components = componentSystem.getComponents(user.id(), ComponentSystem.Visibility.SERVER);
-            File userFile = new File(Charfile.DIR_CHARFILES + name + ".json");
-            try (FileWriter writer = new FileWriter(userFile)) {
-                json.setWriter(writer);
-                entityJsonSerializer.write(json, components, null);
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.info("Failed to write charfile " + name);
-            }
-        });
     }
 
     private @NotNull Future<Integer> loadUser(String name) {
@@ -171,9 +173,11 @@ public class UserSystem extends PassiveSystem {
             }
         });
     }
+
     public static void checkStorageDirectory() {
         File charfilesDir = new File(Charfile.DIR_CHARFILES);
         if (charfilesDir.isDirectory())
             charfilesDir.mkdirs();
     }
+
 }
