@@ -5,6 +5,7 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import component.entity.character.Character;
 import component.entity.character.info.Name;
+import org.jetbrains.annotations.NotNull;
 import server.systems.account.UserSystem;
 
 @Wire
@@ -17,7 +18,7 @@ public class WorldSaveSystem extends IntervalFluidIteratingSystem {
     }
 
     @Override
-    protected void process(E e) {
-        userSystem.save(e, () -> {});
+    protected void process(@NotNull E e) {
+        userSystem.save(e.id(), () -> {});
     }
 }
