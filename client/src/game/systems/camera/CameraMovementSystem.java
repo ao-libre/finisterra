@@ -1,12 +1,12 @@
 package game.systems.camera;
 
-import component.camera.AOCamera;
 import com.artemis.Aspect;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import game.systems.render.BatchRenderingSystem;
+import component.camera.AOCamera;
 import component.position.WorldPosOffsets;
+import game.systems.render.BatchRenderingSystem;
 import shared.model.map.Tile;
 
 import static com.artemis.E.E;

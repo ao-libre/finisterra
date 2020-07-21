@@ -49,7 +49,7 @@ public abstract class SpellBookUI extends Table {
         }
     }
 
-    public void castClick(){
+    public void castClick() {
         selected.ifPresent(spell -> onCastClicked(spell));
     }
 

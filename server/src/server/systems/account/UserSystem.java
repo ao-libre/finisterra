@@ -32,6 +32,7 @@ import java.util.concurrent.*;
 @Wire
 public class UserSystem extends PassiveSystem {
 
+    private final ExecutorService executor = Executors.newFixedThreadPool(10);
     private EntityJsonSerializer entityJsonSerializer;
     private ServerSystem serverSystem;
     private WorldEntitiesSystem worldEntitiesSystem;
@@ -39,7 +40,12 @@ public class UserSystem extends PassiveSystem {
     private AccountSystem accountSystem;
     private ComponentSystem componentSystem;
     private Json json;
-    private final ExecutorService executor = Executors.newFixedThreadPool(10);
+
+    public static void checkStorageDirectory() {
+        File charfilesDir = new File(Charfile.DIR_CHARFILES);
+        if (charfilesDir.isDirectory())
+            charfilesDir.mkdirs();
+    }
 
     @Override
     protected void initialize() {
@@ -78,7 +84,7 @@ public class UserSystem extends PassiveSystem {
     public void create(int connectionId, String name, int heroId, String userAcc, int index) {
         UserSystemUtilities userSystemUtilities = new UserSystemUtilities();
 
-        if (userSystemUtilities.userNameIsNumeric(name)){
+        if (userSystemUtilities.userNameIsNumeric(name)) {
             serverSystem.sendTo(connectionId,
                     UserCreateResponse.failed(Messages.USERNAME_NOT_NUEMRIC));
 
@@ -102,19 +108,20 @@ public class UserSystem extends PassiveSystem {
             // create and add to account
             int entityId = entityFactorySystem.create(name, heroId);
             // save entity in the account
-            save(entityId, () -> {});
+            save(entityId, () -> {
+            });
             // get the account
             Account account = accountSystem.getAccount(userAcc);
-            if (!account.getCharacters().get( index ).isBlank()) {
+            if (!account.getCharacters().get(index).isBlank()) {
                 try {
-                    File oldUserFile = new File( Charfile.DIR_CHARFILES + account.getCharacters().get( index ) + ".json" );
+                    File oldUserFile = new File(Charfile.DIR_CHARFILES + account.getCharacters().get(index) + ".json");
                     oldUserFile.delete();
-                    Log.info( "old file deleted " +account.getCharacters().get( index ) + ".json");
-                }catch (Exception e){
+                    Log.info("old file deleted " + account.getCharacters().get(index) + ".json");
+                } catch (Exception e) {
                     Log.error("User System", "Error while creating a user", e);
                 }
             }
-            account.addCharacter( name, index );
+            account.addCharacter(name, index);
             // send ok and login
             serverSystem.sendTo(connectionId, UserCreateResponse.ok());
             worldEntitiesSystem.login(connectionId, entityId);
@@ -130,11 +137,11 @@ public class UserSystem extends PassiveSystem {
      * Obtenemos los componentes de la entidad, los serializamos en un .json y los guardamos en el Charfile del usuario.
      *
      * @param entityId ID de la entidad a guardarle los datos
-     * @param code Código que se ejecutará despues de haber terminado de guardar los datos
-     *             Lo usamos, por ejemplo, cuando un usuario se desconecta para asegurarnos de no borrar la entidad mientras estamos guardando los datos.
+     * @param code     Código que se ejecutará despues de haber terminado de guardar los datos
+     *                 Lo usamos, por ejemplo, cuando un usuario se desconecta para asegurarnos de no borrar la entidad mientras estamos guardando los datos.
      */
     public void save(int entityId, Runnable code) {
-		E user = E.E(entityId);
+        E user = E.E(entityId);
         if (user.hasCharacter() && user.hasName()) {
             String name = user.getName().text;
             executor.submit(() -> {
@@ -174,12 +181,6 @@ public class UserSystem extends PassiveSystem {
                 return -1;
             }
         });
-    }
-
-    public static void checkStorageDirectory() {
-        File charfilesDir = new File(Charfile.DIR_CHARFILES);
-        if (charfilesDir.isDirectory())
-            charfilesDir.mkdirs();
     }
 
 }

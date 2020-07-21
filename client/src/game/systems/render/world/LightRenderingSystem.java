@@ -1,6 +1,5 @@
 package game.systems.render.world;
 
-import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import component.camera.Focused;
 import game.systems.render.BatchRenderingSystem;
 import game.utils.Pos2D;
 import game.utils.Resources;

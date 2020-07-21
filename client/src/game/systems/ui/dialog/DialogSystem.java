@@ -15,17 +15,16 @@ import shared.network.interaction.TalkRequest;
 @Wire
 public class DialogSystem extends PassiveSystem {
 
+    public DialogText dialogText;
     private ClientSystem clientSystem;
     private PlayerSystem playerSystem;
-
-    public DialogText dialogText;
 
     public DialogSystem() {
         dialogText = new DialogText();
         float width = getWidth() * 0.8f;
         dialogText.setSize(width, dialogText.getHeight());
         dialogText.setPosition((getWidth() - width) / 2, getHeight() / 2);
-        dialogText.addListener(new InputListener(){
+        dialogText.addListener(new InputListener() {
             @Override
             public boolean keyUp(InputEvent event, int keycode) {
                 if (keycode == AlternativeKeys.TALK) {

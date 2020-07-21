@@ -1,23 +1,23 @@
 package game.systems.render;
 
-import com.badlogic.gdx.graphics.GL30;
-import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.BaseSystem;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ArrayTextureSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.ArrayTextureSpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.esotericsoftware.minlog.Log;
+import component.camera.Focused;
+import component.position.WorldPos;
 import game.utils.Pos2D;
 import game.utils.Resources;
-import component.position.WorldPos;
 import shared.model.map.Tile;
 
 import java.util.Deque;
@@ -32,10 +32,9 @@ public class BatchRenderingSystem extends BaseSystem {
     private final Texture light;
     private final float width;
     private final float height;
-    private FrameBuffer lightBuffer;
-
     private final Batch batch;
     private final Deque<BatchTask> tasks = new ConcurrentLinkedDeque<>();
+    private FrameBuffer lightBuffer;
 
     public BatchRenderingSystem() {
         this.batch = initBatch();
@@ -103,7 +102,7 @@ public class BatchRenderingSystem extends BaseSystem {
     }
 
     private void drawAll() {
-        batch.setBlendFunction(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
+        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         batch.begin();
         while (tasks.peek() != null) {
             tasks.poll().run(batch);

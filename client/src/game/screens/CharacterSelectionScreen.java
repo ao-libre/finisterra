@@ -20,19 +20,6 @@ import java.util.ArrayList;
 
 public class CharacterSelectionScreen extends AbstractScreen {
 
-    private ClientSystem clientSystem;
-    private ScreenManager screenManager;
-    private ClientResponseProcessor clientResponseProcessor;
-
-
-    private String charName;
-    private String userAcc;
-    private ArrayList<String> userCharacters;
-    private ArrayList<Integer> userCharactersData;
-    private ArrayList<Table> userTableArray, userImageTableArray;
-    private ArrayList<Label> nameLabelArray, HPLabelArray, MPLabelArray;
-    private ArrayList<TextButton> playButtonArray, createButtonArray;
-    private ArrayList<Boolean> booleanArrayList;
     private final Texture noHero = new Texture(Gdx.files.local("data/ui/images/pj/noHero.jpg")),
             warriorImage = new Texture(Gdx.files.local("data/ui/images/pj/guerrero.jpg")),
             mageImage = new Texture(Gdx.files.local("data/ui/images/pj/mago.jpg")),
@@ -41,7 +28,17 @@ public class CharacterSelectionScreen extends AbstractScreen {
             bardImage = new Texture(Gdx.files.local("data/ui/images/pj/bardo.jpg")),
             archerImage = new Texture(Gdx.files.local("data/ui/images/pj/cazador.jpg")),
             clericImage = new Texture(Gdx.files.local("data/ui/images/pj/clerigo.jpg"));
-
+    private ClientSystem clientSystem;
+    private ScreenManager screenManager;
+    private ClientResponseProcessor clientResponseProcessor;
+    private String charName;
+    private String userAcc;
+    private ArrayList<String> userCharacters;
+    private ArrayList<Integer> userCharactersData;
+    private ArrayList<Table> userTableArray, userImageTableArray;
+    private ArrayList<Label> nameLabelArray, HPLabelArray, MPLabelArray;
+    private ArrayList<TextButton> playButtonArray, createButtonArray;
+    private ArrayList<Boolean> booleanArrayList;
     private Image heroSelectionImage;
     private Window charSelectWindows, createWindow;
     private TextButton registerButton;
@@ -68,7 +65,6 @@ public class CharacterSelectionScreen extends AbstractScreen {
         MPLabelArray = new ArrayList<>();
         booleanArrayList = new ArrayList<>();
         userImageTableArray = new ArrayList<>();
-
 
 
         charSelectWindows = WidgetFactory.createWindow();
@@ -144,7 +140,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
         this.userCharacters = userCharacters;
     }
 
-    public void setUserCharactersData(ArrayList<Integer> userCharactersData){
+    public void setUserCharactersData(ArrayList<Integer> userCharactersData) {
         this.userCharactersData = userCharactersData;
     }
 
@@ -159,46 +155,46 @@ public class CharacterSelectionScreen extends AbstractScreen {
                 int index = i;
                 if (!userCharacters.get(i).isBlank()) {
                     charName = userCharacters.get(i);
-                    int userHeroID = userCharactersData.get( i );
+                    int userHeroID = userCharactersData.get(i);
 
-                    switch( userHeroID ){
+                    switch (userHeroID) {
                         case -1:
-                            playButtonArray.get( i ).setDisabled( true );
+                            playButtonArray.get(i).setDisabled(true);
                             break;
                         case 0:
-                            userImageTableArray.get( i ).clearChildren();
-                            userImageTableArray.get( i ).add( WidgetFactory.createImage(warriorImage));
+                            userImageTableArray.get(i).clearChildren();
+                            userImageTableArray.get(i).add(WidgetFactory.createImage(warriorImage));
                             break;
                         case 1:
-                            userImageTableArray.get( i ).clearChildren();
-                            userImageTableArray.get( i ).add(WidgetFactory.createImage(mageImage));
+                            userImageTableArray.get(i).clearChildren();
+                            userImageTableArray.get(i).add(WidgetFactory.createImage(mageImage));
                             break;
                         case 2:
-                            userImageTableArray.get( i ).clearChildren();
-                            userImageTableArray.get( i ).add( WidgetFactory.createImage(assassinImage));
+                            userImageTableArray.get(i).clearChildren();
+                            userImageTableArray.get(i).add(WidgetFactory.createImage(assassinImage));
                             break;
                         case 3:
-                            userImageTableArray.get( i ).clearChildren();
-                            userImageTableArray.get( i ).add(WidgetFactory.createImage(paladinImage));
+                            userImageTableArray.get(i).clearChildren();
+                            userImageTableArray.get(i).add(WidgetFactory.createImage(paladinImage));
                             break;
                         case 4:
-                            userImageTableArray.get( i ).clearChildren();
-                            userImageTableArray.get( i ).add(WidgetFactory.createImage(bardImage));
+                            userImageTableArray.get(i).clearChildren();
+                            userImageTableArray.get(i).add(WidgetFactory.createImage(bardImage));
                             break;
                         case 5:
-                            userImageTableArray.get( i ).clearChildren();
-                            userImageTableArray.get( i ).add(WidgetFactory.createImage(archerImage));
+                            userImageTableArray.get(i).clearChildren();
+                            userImageTableArray.get(i).add(WidgetFactory.createImage(archerImage));
                             break;
                         case 6:
-                            userImageTableArray.get( i ).clearChildren();
-                            userImageTableArray.get( i ).add(WidgetFactory.createImage(clericImage));
+                            userImageTableArray.get(i).clearChildren();
+                            userImageTableArray.get(i).add(WidgetFactory.createImage(clericImage));
                             break;
                     }
-                    HPLabelArray.get( i ).setText( userCharactersData.get( i+6 ) + " / " + userCharactersData.get( i+12 ) );
-                    MPLabelArray.get( i ).setText( userCharactersData.get( i+18 ) + " / " + userCharactersData.get( i+24 ) );
+                    HPLabelArray.get(i).setText(userCharactersData.get(i + 6) + " / " + userCharactersData.get(i + 12));
+                    MPLabelArray.get(i).setText(userCharactersData.get(i + 18) + " / " + userCharactersData.get(i + 24));
                     nameLabelArray.get(i).setText(charName);
                     if (userHeroID != -1) {
-                        playButtonArray.get( i ).setDisabled( false );
+                        playButtonArray.get(i).setDisabled(false);
                         playButtonListener(i, charName);
                     }
 
@@ -243,7 +239,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
 
             /*dibujar la tablas*/
             userTableArray.get(i).add(nameLabelArray.get(i)).colspan(2).row();
-            userTableArray.get(i).add(userImageTableArray.get( i )).height(200).colspan(2).row();
+            userTableArray.get(i).add(userImageTableArray.get(i)).height(200).colspan(2).row();
             userTableArray.get(i).add(HPLabelArray.get(i)).padRight(10).padLeft(10);
             userTableArray.get(i).add(MPLabelArray.get(i)).padRight(10).padLeft(10).row();
             userTableArray.get(i).add(playButtonArray.get(i)).left().width(120).padLeft(5);

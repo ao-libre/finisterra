@@ -4,8 +4,8 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import component.entity.character.status.Stamina;
-import server.systems.world.IntervalFluidIteratingSystem;
 import server.systems.network.EntityUpdateSystem;
+import server.systems.world.IntervalFluidIteratingSystem;
 import server.utils.UpdateTo;
 import shared.network.notifications.EntityUpdate;
 import shared.util.EntityUpdateBuilder;
@@ -13,9 +13,8 @@ import shared.util.EntityUpdateBuilder;
 @Wire
 public class EnergyRegenerationSystem extends IntervalFluidIteratingSystem {
 
-    private EntityUpdateSystem entityUpdateSystem;
-
     public static final int REGENERATION_PERCENT = 10;
+    private EntityUpdateSystem entityUpdateSystem;
 
     public EnergyRegenerationSystem(float interval) {
         super(Aspect.all(Stamina.class), interval);

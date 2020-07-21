@@ -13,14 +13,17 @@ import component.entity.character.status.Health;
 import component.entity.character.status.Mana;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.systems.config.ObjectSystem;
-import server.systems.world.WorldEntitiesSystem;
 import server.systems.network.EntityUpdateSystem;
+import server.systems.world.WorldEntitiesSystem;
 import server.systems.world.entity.factory.SoundEntitySystem;
 import server.utils.UpdateTo;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.notifications.EntityUpdate;
+import shared.objects.types.Obj;
+import shared.objects.types.PotionObj;
+import shared.objects.types.SpellObj;
+import shared.objects.types.Type;
 import shared.util.EntityUpdateBuilder;
-import shared.objects.types.*;
 import shared.util.ItemUtils;
 
 import java.util.ArrayList;
@@ -42,7 +45,8 @@ public class ItemSystem extends PassiveSystem {
     private EntityUpdateSystem entityUpdateSystem;
     private SoundEntitySystem soundEntitySystem;
 
-    public ItemSystem() { }
+    public ItemSystem() {
+    }
 
     public boolean isEquippable(Bag.Item item) {
         Optional<Obj> object = objectSystem.getObject(item.objId);
@@ -62,80 +66,80 @@ public class ItemSystem extends PassiveSystem {
         object.ifPresent(obj -> {
             Type objType = obj.getType();
 
-            switch( objType ) {
+            switch (objType) {
                 case POTION:
                     PotionObj potion = (PotionObj) obj;
                     int max = potion.getMax();
                     int min = potion.getMin();
-                    int random = new Random().nextInt( max - min + 1 ) + min;
-                    List< Component > components = new ArrayList<>();
-                    
-                    switch( potion.getKind() ) {
+                    int random = new Random().nextInt(max - min + 1) + min;
+                    List<Component> components = new ArrayList<>();
+
+                    switch (potion.getKind()) {
                         case HP:
-                            Health health = E( player ).getHealth();
-                            health.min = Math.min( health.min + random, health.max );
-                            components.add( health );
+                            Health health = E(player).getHealth();
+                            health.min = Math.min(health.min + random, health.max);
+                            components.add(health);
                             break;
                         case MANA:
-                            Mana mana = E( player ).getMana();
-                            final int level = E( player ).levelLevel();
+                            Mana mana = E(player).getMana();
+                            final int level = E(player).levelLevel();
                             mana.min += mana.max * 0.04f + (level >> 1) + 40 / level;
-                            mana.min = Math.min( mana.min, mana.max );
-                            components.add( mana );
+                            mana.min = Math.min(mana.min, mana.max);
+                            components.add(mana);
                             break;
                         case AGILITY:
-                            Agility agility = E( player ).getAgility();
-                            agility.setCurrentValue( agility.getBaseValue() + random );
-                            E( player ).buff().getBuff().addAttribute( agility, potion.getEffecTime() );
-                            sendAttributeUpdate( player, agility, E( player ).getBuff() );
+                            Agility agility = E(player).getAgility();
+                            agility.setCurrentValue(agility.getBaseValue() + random);
+                            E(player).buff().getBuff().addAttribute(agility, potion.getEffecTime());
+                            sendAttributeUpdate(player, agility, E(player).getBuff());
                             break;
                         case POISON:
                         case STRENGTH:
-                            Strength strength = E( player ).getStrength();
-                            strength.setCurrentValue( strength.getBaseValue() + random );
-                            E( player ).buff().getBuff().addAttribute( strength, potion.getEffecTime() );
-                            sendAttributeUpdate( player, strength, E( player ).getBuff() );
+                            Strength strength = E(player).getStrength();
+                            strength.setCurrentValue(strength.getBaseValue() + random);
+                            E(player).buff().getBuff().addAttribute(strength, potion.getEffecTime());
+                            sendAttributeUpdate(player, strength, E(player).getBuff());
                             break;
                     }
                     // Notify update to user
-                    EntityUpdate update = EntityUpdateBuilder.of( player ).withComponents( components.toArray( new Component[0] ) ).build();
-                    entityUpdateSystem.add( update, UpdateTo.ENTITY );
+                    EntityUpdate update = EntityUpdateBuilder.of(player).withComponents(components.toArray(new Component[0])).build();
+                    entityUpdateSystem.add(update, UpdateTo.ENTITY);
                     soundEntitySystem.add(player, 46);
                     // TODO remove from inventory
                     break;
                 case SPELL:
                     SpellObj spellObj = (SpellObj) obj;
-                    if(E( player ).charHeroHeroId() != 0) {
-                        E( player ).spellBookAddSpell( spellObj.getSpellIndex() );
+                    if (E(player).charHeroHeroId() != 0) {
+                        E(player).spellBookAddSpell(spellObj.getSpellIndex());
                     }
-                    if(E( player ).getSpellBook().getMsj().equals( "hechiso agregado" )){
+                    if (E(player).getSpellBook().getMsj().equals("hechiso agregado")) {
                         soundEntitySystem.add(player, 109);
 
                     }
-                    Log.info( E( player ).nameText() + " " + E( player ).getSpellBook().getMsj() );
+                    Log.info(E(player).nameText() + " " + E(player).getSpellBook().getMsj());
                     break;
                 case GOLD:
-                    E playerUser = E( player );
+                    E playerUser = E(player);
                     int gold = item.count + playerUser.getGold().getCount();
-                    playerUser.goldCount( gold );
-                    removeGold( player );
+                    playerUser.goldCount(gold);
+                    removeGold(player);
                     break;
             }
-        } );
+        });
     }
 
     protected void sendAttributeUpdate(int player, Attribute attribute, Buff buff) {
         EntityUpdate updateAGI = EntityUpdateBuilder.of(E(player).id()).withComponents(attribute, buff).build();
         entityUpdateSystem.add(updateAGI, UpdateTo.ENTITY);
     }
-	
-    private void removeGold(int player){
+
+    private void removeGold(int player) {
         E entity = E(player);
         Bag.Item[] items = entity.getBag().items;
         for (int i = 0; i < items.length; i++) {
             if (items[i] != null) {
-                if (objectSystem.getObject( items[i].objId ).get().getType().equals( Type.GOLD ) ) {
-                    items[i].count = 0 ;
+                if (objectSystem.getObject(items[i].objId).get().getType().equals(Type.GOLD)) {
+                    items[i].count = 0;
                     //notifica el incremento de oro en el jugador
                     EntityUpdateBuilder goldUpdate = EntityUpdateBuilder.of(player);
                     goldUpdate.withComponents(E(player).getGold());

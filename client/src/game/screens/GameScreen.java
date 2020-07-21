@@ -12,7 +12,8 @@ public class GameScreen extends PassiveSystem implements Screen {
     private UserInterfaceSystem userInterfaceSystem;
     private FPSLogger fpsLogger = new FPSLogger();
 
-    public GameScreen() {}
+    public GameScreen() {
+    }
 
     @Override
     public void render(float delta) {

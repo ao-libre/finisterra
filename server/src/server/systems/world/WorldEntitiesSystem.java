@@ -12,15 +12,15 @@ import component.entity.npc.OriginPos;
 import component.physics.AOPhysics;
 import component.position.WorldPos;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import server.systems.world.entity.factory.ComponentSystem;
-import server.systems.world.entity.factory.EntityFactorySystem;
 import server.systems.account.UserSystem;
-import server.systems.world.entity.item.ItemUsageSystem;
 import server.systems.config.NPCSystem;
 import server.systems.config.ObjectSystem;
 import server.systems.config.SpellSystem;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.ServerSystem;
+import server.systems.world.entity.factory.ComponentSystem;
+import server.systems.world.entity.factory.EntityFactorySystem;
+import server.systems.world.entity.item.ItemUsageSystem;
 import server.utils.UpdateTo;
 import shared.interfaces.Race;
 import shared.model.npcs.NPC;
@@ -102,25 +102,25 @@ public class WorldEntitiesSystem extends PassiveSystem {
             Bag.Item items[] = entity.getBag().items;
             InventoryUpdate inventoryUpdate = new InventoryUpdate();
 
-            for(int i = 0; i<20;i++) {
-                if(items[i] != null) {
+            for (int i = 0; i < 20; i++) {
+                if (items[i] != null) {
                     items[i].equipped = false;
-                    ItemUsageSystem itemUsageSystem = getWorld().getSystem( ItemUsageSystem.class );
-                    Obj item = objectSystem.getObject( items[i].objId ).get();
-                    itemUsageSystem.TAKE_OFF.accept( entityId, item );
-                    if(!item.isNewbie() || item.isNotDrop()) {
+                    ItemUsageSystem itemUsageSystem = getWorld().getSystem(ItemUsageSystem.class);
+                    Obj item = objectSystem.getObject(items[i].objId).get();
+                    itemUsageSystem.TAKE_OFF.accept(entityId, item);
+                    if (!item.isNewbie() || item.isNotDrop()) {
                         Random random = new Random();
                         boolean dropi = random.nextBoolean();
-                        Log.info("drop slot "+i +": "+ dropi);
+                        Log.info("drop slot " + i + ": " + dropi);
                         if (dropi) {
-                            dropItem( item.getId(), items[i].count, entity.getWorldPos() );
-                            entity.getBag().remove( i );
-                            inventoryUpdate.remove( i );
+                            dropItem(item.getId(), items[i].count, entity.getWorldPos());
+                            entity.getBag().remove(i);
+                            inventoryUpdate.remove(i);
                         }
                     }
                 }
             }
-            notifyUpdate( entityId, inventoryUpdate );
+            notifyUpdate(entityId, inventoryUpdate);
             //setea la hp a 0 porque o sino queda con hp
             entity.getHealth().min = 0;
             // cambio del cuerpo y la cabeza a fantasma
@@ -136,16 +136,16 @@ public class WorldEntitiesSystem extends PassiveSystem {
         }
     }
 
-    public void resurrectRequest(int entityId){
+    public void resurrectRequest(int entityId) {
         E entity = E(entityId);
         //a los 20 segundos no revive en la posision de origen del jugador
-        Timer.schedule( new Timer.Task() {
+        Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 Log.info(" pasaron 20 segundos ");
                 if (entity.hasHealth()) {
-                    if(entity.healthMin() == 0) {
-                        resurrect( entityId, false );
+                    if (entity.healthMin() == 0) {
+                        resurrect(entityId, false);
                     }
                 }
             }
@@ -153,13 +153,13 @@ public class WorldEntitiesSystem extends PassiveSystem {
     }
 
     /**
-     * @param entityId player id
+     * @param entityId    player id
      * @param resurrected true si fue resucitado por un jugador o npc resusita en donde este
      *                    false se resucita en la ciudad
      */
-    public void resurrect(int entityId, boolean resurrected){
+    public void resurrect(int entityId, boolean resurrected) {
         final E entity = E(entityId);
-        Log.info( "resuscitanto player "+ entity.getName().text );
+        Log.info("resuscitanto player " + entity.getName().text);
         // RESET USER.
         // reset health
         entity.getHealth().min = entity.getHealth().max;
@@ -174,10 +174,10 @@ public class WorldEntitiesSystem extends PassiveSystem {
 
         if (!resurrected) {
             // por si no tiene posision de origen o esta es la ciudad newbie y el jugador ya no es newbie
-            if (entity.originPosMap() == 0 || (entity.getLevel().level>13 && entity.originPosMap()==286)){
-                if (entity.getLevel().level < 13){
+            if (entity.originPosMap() == 0 || (entity.getLevel().level > 13 && entity.originPosMap() == 286)) {
+                if (entity.getLevel().level < 13) {
                     entity.originPosMap(286).originPosX(50).originPosY(60);
-                }else {
+                } else {
                     entity.originPosMap(1).originPosX(50).originPosY(50);
                 }
             }

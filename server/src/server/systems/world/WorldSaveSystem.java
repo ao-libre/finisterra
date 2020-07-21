@@ -19,6 +19,7 @@ public class WorldSaveSystem extends IntervalFluidIteratingSystem {
 
     @Override
     protected void process(@NotNull E e) {
-        userSystem.save(e.id(), () -> {});
+        userSystem.save(e.id(), () -> {
+        });
     }
 }

@@ -36,9 +36,9 @@ public class PlayerActionSystem extends PassiveSystem {
     private InventorySystem inventorySystem;
 
     public void meditate() {
-        if(playerSystem.get().healthMin() > 0) {
-            clientSystem.send( new MeditateRequest() );
-        }else {
+        if (playerSystem.get().healthMin() > 0) {
+            clientSystem.send(new MeditateRequest());
+        } else {
             consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.DEAD_CANT));
         }
     }
@@ -62,16 +62,16 @@ public class PlayerActionSystem extends PassiveSystem {
     public void castSpell(Spell spell, WorldPos pos) {
         if (playerSystem.get().healthMin() > 0) {
             E player = playerSystem.get();
-            if(playerSystem.canSpellAttack()) {
+            if (playerSystem.canSpellAttack()) {
                 long rtt = timeSyncSystem.getRtt();
                 long timeOffset = timeSyncSystem.getTimeOffset();
-                clientSystem.send( new SpellCastRequest( spell, pos, rtt + timeOffset ) );
+                clientSystem.send(new SpellCastRequest(spell, pos, rtt + timeOffset));
                 spellSystem.clearCast();
-                player.attackIntervalValue( Intervals.MAGIC_ATTACK_INTERVAL );
+                player.attackIntervalValue(Intervals.MAGIC_ATTACK_INTERVAL);
             } else {
-                consoleSystem.getConsole().addWarning( messageSystem.getMessage( Messages.CANT_MAGIC_THAT_FAST ) );
+                consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.CANT_MAGIC_THAT_FAST));
             }
-        }else {
+        } else {
             consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.DEAD_CANT));
         }
     }
@@ -82,16 +82,16 @@ public class PlayerActionSystem extends PassiveSystem {
 
     public void rangedAttack(WorldPos targetPos) {
         if (playerSystem.get().healthMin() > 0) {
-            if(playerSystem.canPhysicAttack()) {
+            if (playerSystem.canPhysicAttack()) {
                 long rtt = timeSyncSystem.getRtt();
                 long timeOffset = timeSyncSystem.getTimeOffset();
-                clientSystem.send( new AttackRequest( AttackType.RANGED, targetPos, rtt + timeOffset ) );
+                clientSystem.send(new AttackRequest(AttackType.RANGED, targetPos, rtt + timeOffset));
                 spellSystem.clearShot();
-                playerSystem.get().attackIntervalValue( Intervals.ATTACK_INTERVAL );
+                playerSystem.get().attackIntervalValue(Intervals.ATTACK_INTERVAL);
             } else {
-                consoleSystem.getConsole().addWarning( messageSystem.getMessage( Messages.CANT_ATTACK_THAT_FAST ) );
+                consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.CANT_ATTACK_THAT_FAST));
             }
-        }else {
+        } else {
             consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.DEAD_CANT));
         }
     }

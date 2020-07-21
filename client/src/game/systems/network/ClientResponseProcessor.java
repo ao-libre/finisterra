@@ -47,8 +47,7 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
         if (accountCreationResponse.isSuccessful()) {
             screenManager.to(ScreenEnum.LOGIN);
             screenManager.showDialog("Aviso", "Cuenta creada con éxito!");
-        }
-        else {
+        } else {
             screenManager.showDialog("Error", "Error al crear la cuenta");
         }
     }
@@ -56,13 +55,13 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
     @Override
     public void processResponse(@NotNull AccountLoginResponse accountLoginResponse) {
         if (accountLoginResponse.isSuccessful()) {
-            characterSelectionScreen.setUserCharacters( accountLoginResponse.getCharacters() );
-            characterSelectionScreen.setUserCharactersData( accountLoginResponse.getCharactersData() );
+            characterSelectionScreen.setUserCharacters(accountLoginResponse.getCharacters());
+            characterSelectionScreen.setUserCharactersData(accountLoginResponse.getCharactersData());
             characterSelectionScreen.setUserAcc(accountLoginResponse.getUsername());
             characterSelectionScreen.windowsUpdate();
             screenManager.to(ScreenEnum.CHAR_SELECT);
         } else {
-            screenManager.showDialog("Error", assetManager.getMessages( accountLoginResponse.getError() ));
+            screenManager.showDialog("Error", assetManager.getMessages(accountLoginResponse.getError()));
         }
     }
 
@@ -72,7 +71,7 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
             screenManager.to(ScreenEnum.GAME);
         } else {
             // Mostramos un mensaje de error.
-            screenManager.showDialog("Error", assetManager.getMessages( userCreateResponse.getMessage() ));
+            screenManager.showDialog("Error", assetManager.getMessages(userCreateResponse.getMessage()));
         }
     }
 
@@ -81,7 +80,7 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
         if (userLoginResponse.isSuccessful()) {
             screenManager.to(ScreenEnum.GAME);
         } else {
-            screenManager.showDialog("Error" , userLoginResponse.getMessage());
+            screenManager.showDialog("Error", userLoginResponse.getMessage());
         }
     }
 }

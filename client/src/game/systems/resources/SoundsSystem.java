@@ -31,8 +31,8 @@ public class SoundsSystem extends PassiveSystem {
     }
 
     public void playSound(Integer soundID) {
-        if(!disableSounds) {
-            playSound( soundID, false );
+        if (!disableSounds) {
+            playSound(soundID, false);
         }
     }
 

@@ -18,10 +18,9 @@ import java.util.Map;
 @Wire
 public class EntityJsonSerializer extends PassiveSystem implements JsonSerializer<Collection<? extends Component>> {
 
-    private ComponentSystem componentSystem;
-
-    private Map<String, Class<? extends Component>> componentClasses;
     private final BagJsonSerializer bagJsonSerializer = new BagJsonSerializer();
+    private ComponentSystem componentSystem;
+    private Map<String, Class<? extends Component>> componentClasses;
 
     public EntityJsonSerializer() {
         componentClasses = new HashMap<>();

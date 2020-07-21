@@ -1,9 +1,11 @@
 package game.systems.world;
 
-import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.artemis.E.E;

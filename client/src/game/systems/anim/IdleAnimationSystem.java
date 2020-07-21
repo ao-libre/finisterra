@@ -8,10 +8,10 @@ import component.entity.character.equipment.Weapon;
 import component.entity.character.parts.Body;
 import component.entity.character.states.Heading;
 import component.entity.character.status.Health;
-import game.systems.resources.AnimationsSystem;
-import model.textures.BundledAnimation;
 import component.movement.Moving;
 import component.physics.AttackAnimation;
+import game.systems.resources.AnimationsSystem;
+import model.textures.BundledAnimation;
 
 import java.util.ArrayList;
 import java.util.List;

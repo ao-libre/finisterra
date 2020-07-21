@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
-import game.AOGame;
 import shared.model.map.Tile;
 
 import static com.artemis.E.E;
@@ -17,12 +16,9 @@ public class CameraSystem extends BaseSystem {
     public static final float CAMERA_MIN_ZOOM = 1f;
     public static final float CAMERA_MAX_ZOOM = 1.3f;
     public static final float ZOOM_TIME = 0.5f;
-
-    public OrthographicCamera camera;
-
     private final float minZoom;
     private final float maxZoom;
-
+    public OrthographicCamera camera;
     private float desiredZoom;
     private float timeToCameraZoomTarget, cameraZoomOrigin, cameraZoomDuration;
 

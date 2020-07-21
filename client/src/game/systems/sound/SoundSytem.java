@@ -1,15 +1,15 @@
 package game.systems.sound;
 
-import component.sound.AOSound;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
+import component.position.WorldPos;
+import component.sound.AOSound;
 import game.systems.PlayerSystem;
 import game.systems.resources.SoundsSystem;
 import game.systems.world.WorldSystem;
-import component.position.WorldPos;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,8 +54,8 @@ public class SoundSytem extends IteratingSystem {
         E entity = E(entityId);
         AOSound sound = entity.getAOSound();
         if (!soundsSystem.isDisableSounds()) {
-            long soundIndex = soundsSystem.playSound( sound.id, sound.shouldLoop );
-            sounds.put( entityId, new SoundIndexPair( sound.id, soundIndex ) );
+            long soundIndex = soundsSystem.playSound(sound.id, sound.shouldLoop);
+            sounds.put(entityId, new SoundIndexPair(sound.id, soundIndex));
         }
     }
 

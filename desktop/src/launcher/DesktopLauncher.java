@@ -77,14 +77,11 @@ public class DesktopLauncher {
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, e.getMessage());
-            try
-            {
+            try {
                 PrintWriter pw = new PrintWriter(new File("error.txt"));
                 e.printStackTrace(pw);
                 pw.close();
-            }
-            catch (IOException e1)
-            {
+            } catch (IOException e1) {
                 e1.printStackTrace();
             }
         }

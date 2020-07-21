@@ -146,11 +146,10 @@ class Sync {
     }
 
     private class RunningAvg {
-        private final long[] slots;
-        private int offset;
-
         private static final long DAMPEN_THRESHOLD = 10 * 1000L * 1000L; // 10ms
         private static final float DAMPEN_FACTOR = 0.9f; // don't change: 0.9f is exactly right!
+        private final long[] slots;
+        private int offset;
 
         public RunningAvg(int slotCount) {
             this.slots = new long[slotCount];

@@ -4,14 +4,17 @@ import com.artemis.BaseSystem;
 import com.artemis.Component;
 import com.artemis.annotations.Wire;
 import com.esotericsoftware.minlog.Log;
-import server.systems.world.entity.factory.ComponentSystem;
 import server.systems.world.WorldEntitiesSystem;
+import server.systems.world.entity.factory.ComponentSystem;
 import server.utils.UpdateTo;
 import shared.network.notifications.EntityUpdate;
 import shared.network.notifications.RemoveEntity;
 import shared.util.EntityUpdateBuilder;
 
-import java.util.*;
+import java.util.Deque;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
@@ -22,11 +25,10 @@ import static shared.network.notifications.EntityUpdate.NO_ENTITY;
 @Wire
 public class EntityUpdateSystem extends BaseSystem {
 
-    private WorldEntitiesSystem worldEntitiesSystem;
-    private ComponentSystem componentSystem;
-
     private final Map<Integer, Deque<EntityUpdate>> entityUpdates;
     private final Map<Integer, Deque<EntityUpdate>> publicUpdates;
+    private WorldEntitiesSystem worldEntitiesSystem;
+    private ComponentSystem componentSystem;
 
     public EntityUpdateSystem() {
         entityUpdates = new ConcurrentHashMap<>();

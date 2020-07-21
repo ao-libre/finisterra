@@ -5,11 +5,11 @@ import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
-import game.systems.world.WorldSystem;
 import component.movement.Destination;
 import component.physics.AOPhysics;
 import component.position.WorldPos;
 import component.position.WorldPosOffsets;
+import game.systems.world.WorldSystem;
 import org.jetbrains.annotations.NotNull;
 import shared.model.map.Tile;
 

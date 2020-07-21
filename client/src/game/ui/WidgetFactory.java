@@ -160,6 +160,7 @@ public class WidgetFactory {
         SEPARATOR("separator");
 
         private String name;
+
         Images(String name) {
             this.name = name;
         }
@@ -190,6 +191,7 @@ public class WidgetFactory {
             this.name = name;
         }
     }
+
     enum Windows {
         INVENTORY("inventory"),
         SPELLS("spells");

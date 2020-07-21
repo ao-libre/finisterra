@@ -128,10 +128,11 @@ public class MusicSystem extends PassiveSystem { // @todo revisar
         }, 0.0f, 0.5f);
     }
 
-    public boolean isDisableMusic(){
+    public boolean isDisableMusic() {
         return disableMusic;
     }
-    public void setDisableMusic(boolean musicEnable){
+
+    public void setDisableMusic(boolean musicEnable) {
         this.disableMusic = musicEnable;
     }
 

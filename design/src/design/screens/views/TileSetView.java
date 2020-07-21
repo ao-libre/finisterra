@@ -7,9 +7,9 @@ import design.designers.ImageDesigner;
 import design.designers.TileSetDesigner;
 import design.editors.TileSetEditor;
 import design.editors.fields.FieldEditor;
+import design.graphic.AOImageActor;
 import design.screens.ScreenEnum;
 import design.screens.map.model.TileSet;
-import design.graphic.AOImageActor;
 import model.textures.AOImage;
 import org.jetbrains.annotations.NotNull;
 

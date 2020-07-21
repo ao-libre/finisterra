@@ -12,6 +12,7 @@ public class ParticlesSystem extends PassiveSystem {
     private static final LongMap<ParticleEffectPool> PARTICLES = new LongMap<>();
     @Wire
     private DefaultAOAssetManager assetManager;
+
     public static ParticleEffect getParticle(int index) {
         return PARTICLES.get(index).obtain();
     }

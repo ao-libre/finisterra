@@ -1,8 +1,7 @@
 package game.systems.resources;
 
-import com.esotericsoftware.minlog.Log;
-import net.mostlyoriginal.api.system.core.PassiveSystem;
 import component.position.WorldPos;
+import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.util.MapHelper;

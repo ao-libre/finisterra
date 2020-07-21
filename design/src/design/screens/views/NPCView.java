@@ -1,6 +1,5 @@
 package design.screens.views;
 
-import component.camera.Focused;
 import com.artemis.E;
 import com.artemis.World;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -13,15 +12,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
+import component.camera.Focused;
+import component.entity.character.parts.Body;
+import component.entity.character.states.Heading;
+import component.position.WorldPos;
 import design.designers.NPCDesigner;
 import design.designers.NPCDesigner.NPCParameters;
 import design.editors.NPCEditor;
-import component.entity.character.parts.Body;
-import component.entity.character.states.Heading;
 import game.ui.WidgetFactory;
 import model.textures.BundledAnimation;
 import org.jetbrains.annotations.NotNull;
-import component.position.WorldPos;
 import shared.model.map.Tile;
 import shared.model.npcs.NPC;
 import shared.model.npcs.NPCToEntity;

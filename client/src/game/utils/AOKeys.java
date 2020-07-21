@@ -4,7 +4,7 @@ import com.badlogic.gdx.Input;
 
 /**
  * Aca se setea la distribucion de las teclas del juego.
-
+ *
  * @see com.badlogic.gdx.Input.Keys para ver las constantes que representan las teclas en LibGDX.
  */
 public class AOKeys {

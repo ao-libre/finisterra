@@ -62,6 +62,6 @@ public class KryonetClientMarshalStrategy extends KryonetMarshalStrategy {
     }
 
     protected Client getClient() {
-        return (Client)endpoint;
+        return (Client) endpoint;
     }
 }

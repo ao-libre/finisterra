@@ -9,7 +9,6 @@ import design.editors.utils.Slicer;
 import design.screens.ScreenEnum;
 import design.screens.views.AnimationView;
 import design.screens.views.ImageView;
-import game.AOGame;
 import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import game.handlers.DefaultAOAssetManager;

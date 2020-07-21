@@ -8,10 +8,10 @@ import component.entity.character.equipment.Shield;
 import component.entity.character.equipment.Weapon;
 import component.entity.character.parts.Body;
 import component.entity.character.states.Heading;
-import game.systems.resources.AnimationsSystem;
-import model.textures.BundledAnimation;
 import component.movement.Moving;
 import component.physics.AttackAnimation;
+import game.systems.resources.AnimationsSystem;
+import model.textures.BundledAnimation;
 import shared.model.map.Tile;
 
 import java.util.Optional;

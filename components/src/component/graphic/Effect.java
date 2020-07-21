@@ -27,20 +27,20 @@ public class Effect extends Component implements Serializable, Index {
         return effectId;
     }
 
-    public int getLoops() {
-        return loops;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
     public void setEffectId(int effectId) {
         this.effectId = effectId;
     }
 
+    public int getLoops() {
+        return loops;
+    }
+
     public void setLoops(int loops) {
         this.loops = loops;
+    }
+
+    public Type getType() {
+        return type;
     }
 
     public void setType(Type type) {

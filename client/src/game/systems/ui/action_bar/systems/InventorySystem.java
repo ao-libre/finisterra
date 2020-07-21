@@ -24,8 +24,8 @@ import game.systems.ui.action_bar.ActionBarSystem;
 import game.systems.ui.console.ConsoleSystem;
 import game.ui.Inventory;
 import game.ui.WidgetFactory;
-import shared.model.map.Tile;
 import game.utils.Skins;
+import shared.model.map.Tile;
 import shared.network.interaction.DropItem;
 import shared.network.interaction.TakeItemRequest;
 import shared.network.inventory.InventoryUpdate;
@@ -210,9 +210,9 @@ public class InventorySystem extends UserInterfaceContributionSystem {
 
     public void dropItem() {
         if (playerSystem.get().healthMin() > 0) {
-            dropItem( getSelectedIndex(), Optional.empty() );
-        }else{
-            consoleSystem.getConsole().addWarning( messageSystem.getMessage( Messages.DEAD_CANT));
+            dropItem(getSelectedIndex(), Optional.empty());
+        } else {
+            consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.DEAD_CANT));
         }
     }
 
@@ -222,29 +222,29 @@ public class InventorySystem extends UserInterfaceContributionSystem {
 
     public void dropItem(int droppingIndex, Optional<WorldPos> pos) {
         if (playerSystem.get().healthMin() > 0) {
-        clientSystem.send(new DropItem(droppingIndex, pos.orElse(playerSystem.getWorldPos())));
-        }else{
-            consoleSystem.getConsole().addWarning( messageSystem.getMessage( Messages.DEAD_CANT));
+            clientSystem.send(new DropItem(droppingIndex, pos.orElse(playerSystem.getWorldPos())));
+        } else {
+            consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.DEAD_CANT));
         }
     }
 
     public void takeItem() {
-        if(playerSystem.get().healthMin() > 0){
-            clientSystem.send( new TakeItemRequest() );
+        if (playerSystem.get().healthMin() > 0) {
+            clientSystem.send(new TakeItemRequest());
         } else {
-            consoleSystem.getConsole().addWarning( messageSystem.getMessage( Messages.DEAD_CANT));
+            consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.DEAD_CANT));
         }
     }
 
     public void equip() {
-        if(playerSystem.get().healthMin() > 0) {
-            getSelectedObject().ifPresent( obj -> {
-                if(ItemUtils.canEquip( obj )) {
-                    playerActionSystem.equipItem( getSelectedIndex() );
+        if (playerSystem.get().healthMin() > 0) {
+            getSelectedObject().ifPresent(obj -> {
+                if (ItemUtils.canEquip(obj)) {
+                    playerActionSystem.equipItem(getSelectedIndex());
                 }
-            } );
-        }else {
-            consoleSystem.getConsole().addWarning( messageSystem.getMessage( Messages.DEAD_CANT));
+            });
+        } else {
+            consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.DEAD_CANT));
         }
     }
 
@@ -306,11 +306,11 @@ public class InventorySystem extends UserInterfaceContributionSystem {
     public Optional<WorldPos> getWorldPos(float x, float y) {
         // TODO handle valid position to avoid droping items over npcs in citys
         WorldPos dropWorldPos = userInterfaceSystem.getWorldPos((int) x, (int) y);
-        Tile tile = mapSystem.getTile(  dropWorldPos);
+        Tile tile = mapSystem.getTile(dropWorldPos);
         if (!tile.isBlocked()) {
-            return Optional.of( userInterfaceSystem.getWorldPos( (int) x, (int) y ) );
+            return Optional.of(userInterfaceSystem.getWorldPos((int) x, (int) y));
         } else {
-            return Optional.of( playerSystem.getWorldPos() );
+            return Optional.of(playerSystem.getWorldPos());
         }
 
     }
@@ -320,11 +320,12 @@ public class InventorySystem extends UserInterfaceContributionSystem {
         actionBarSystem.updateGoldLabel(playerSystem.get().goldCount());
     }
 
-    public void toggleExpanded(){
+    public void toggleExpanded() {
         inventory.toggleExpanded(playerSystem.get().getBag());
     }
-    public boolean isExpanded(){
-       return inventory.getExpanded();
+
+    public boolean isExpanded() {
+        return inventory.getExpanded();
     }
 
 }

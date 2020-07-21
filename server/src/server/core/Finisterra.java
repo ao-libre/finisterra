@@ -7,30 +7,32 @@ import com.artemis.managers.TagManager;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
+import server.systems.account.AccountSystem;
 import server.systems.account.UserSystem;
-import server.systems.world.entity.ai.RandomMovementSystem;
 import server.systems.config.ConfigurationSystem;
 import server.systems.config.NPCSystem;
 import server.systems.config.ObjectSystem;
 import server.systems.config.SpellSystem;
-import server.systems.world.entity.factory.*;
-import server.systems.world.entity.movement.FootprintSystem;
-import server.systems.world.entity.movement.MovementSystem;
-import server.systems.world.entity.npc.NPCActionSystem;
-import server.systems.world.entity.user.*;
-import server.systems.world.entity.item.ItemActionSystem;
-import server.systems.world.entity.item.ItemSystem;
-import server.systems.world.entity.item.ItemUsageSystem;
 import server.systems.network.*;
-import server.systems.account.AccountSystem;
+import server.systems.world.MapSystem;
+import server.systems.world.WorldEntitiesSystem;
+import server.systems.world.WorldSaveSystem;
 import server.systems.world.entity.ai.NPCAttackSystem;
 import server.systems.world.entity.ai.PathFindingSystem;
+import server.systems.world.entity.ai.RandomMovementSystem;
 import server.systems.world.entity.ai.RespawnSystem;
 import server.systems.world.entity.combat.MagicCombatSystem;
 import server.systems.world.entity.combat.PhysicalCombatSystem;
 import server.systems.world.entity.combat.RangedCombatSystem;
+import server.systems.world.entity.factory.*;
+import server.systems.world.entity.item.ItemActionSystem;
+import server.systems.world.entity.item.ItemSystem;
+import server.systems.world.entity.item.ItemUsageSystem;
+import server.systems.world.entity.movement.FootprintSystem;
+import server.systems.world.entity.movement.MovementSystem;
+import server.systems.world.entity.npc.NPCActionSystem;
 import server.systems.world.entity.training.CharacterTrainingSystem;
-import server.systems.world.*;
+import server.systems.world.entity.user.*;
 import server.utils.EntityJsonSerializer;
 import shared.systems.IntervalSystem;
 import shared.util.LogSystem;
@@ -69,8 +71,8 @@ public class Finisterra extends ApplicationAdapter {
 
         // Este thread chequea que existan las carpetas necesarias para que el servidor opere correctamente.
         Thread requiredDirectoriesAnalyzer = new Thread(() -> {
-           AccountSystem.checkStorageDirectory();
-           UserSystem.checkStorageDirectory();
+            AccountSystem.checkStorageDirectory();
+            UserSystem.checkStorageDirectory();
         });
         requiredDirectoriesAnalyzer.start();
     }
@@ -123,7 +125,7 @@ public class Finisterra extends ApplicationAdapter {
                 .with(new MovementSystem())
                 .with(new PlayerActionSystem())
                 .with(new ItemActionSystem())
-                .with(new WorldSaveSystem(5*60*1000)); // 5 minutes
+                .with(new WorldSaveSystem(5 * 60 * 1000)); // 5 minutes
         world = new World(builder.build());
 
         Log.info("World created successfully!");

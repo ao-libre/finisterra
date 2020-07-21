@@ -1,14 +1,14 @@
 package game.systems.render.world;
 
-import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
-import game.systems.resources.MapSystem;
+import component.camera.Focused;
+import component.position.WorldPos;
 import game.systems.map.MapManager;
 import game.systems.map.TiledMapSystem;
 import game.systems.render.world.WorldRenderingSystem.UserRange;
-import component.position.WorldPos;
+import game.systems.resources.MapSystem;
 import shared.model.map.Map;
 import shared.util.MapHelper;
 

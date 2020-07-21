@@ -10,7 +10,8 @@ public class MessageSystem extends PassiveSystem {
     @Wire
     private DefaultAOAssetManager aoAssetManager;
 
-    public MessageSystem() {}
+    public MessageSystem() {
+    }
 
     public String getMessage(Messages key, String... params) {
         return aoAssetManager.getMessages(key, params);

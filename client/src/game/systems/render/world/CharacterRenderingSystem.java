@@ -13,15 +13,15 @@ import component.entity.character.equipment.Weapon;
 import component.entity.character.parts.Body;
 import component.entity.character.parts.Head;
 import component.entity.character.states.Heading;
-import game.systems.resources.AnimationsSystem;
-import game.systems.resources.DescriptorsSystem;
+import component.position.WorldPos;
 import game.systems.render.BatchRenderingSystem;
 import game.systems.render.BatchTask;
+import game.systems.resources.AnimationsSystem;
+import game.systems.resources.DescriptorsSystem;
 import game.utils.Pos2D;
 import model.descriptors.BodyDescriptor;
 import model.textures.AOTexture;
 import model.textures.BundledAnimation;
-import component.position.WorldPos;
 import shared.model.map.Tile;
 
 import java.util.Comparator;
@@ -73,12 +73,12 @@ public class CharacterRenderingSystem extends RenderingSystem {
 
     public static class CharacterDrawer {
         static final float FACTOR = 1.2f;
-        private BatchRenderingSystem batchRenderingSystem;
         private final E player;
         private final Heading heading;
         private final Pos2D screenPos;
         private final DescriptorsSystem descriptorsSystem;
         private final AnimationsSystem animationsSystem;
+        private BatchRenderingSystem batchRenderingSystem;
         private boolean shouldFlip;
         private float headOffsetY;
         // body
@@ -277,6 +277,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
 
         /**
          * Renderiza un grafico (de cuerpo) en pantalla
+         *
          * @param region
          * @param x
          * @param y

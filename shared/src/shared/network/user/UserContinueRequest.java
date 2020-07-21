@@ -8,7 +8,8 @@ public class UserContinueRequest implements IRequest {
     // TODO convert to model
     private String name;
 
-    public UserContinueRequest() {}
+    public UserContinueRequest() {
+    }
 
     public UserContinueRequest(String name) {
         this.name = name;

@@ -10,7 +10,8 @@ public class DescriptorsSystem extends PassiveSystem {
     @Wire
     private DefaultAOAssetManager assetManager;
 
-    public DescriptorsSystem() {}
+    public DescriptorsSystem() {
+    }
 
     public BodyDescriptor getBody(int index) {
         return assetManager.getBodies().get(index);

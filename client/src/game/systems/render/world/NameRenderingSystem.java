@@ -29,7 +29,6 @@ import static com.artemis.E.E;
 @Wire(injectInherited = true)
 public class NameRenderingSystem extends RenderingSystem {
 
-    private BatchRenderingSystem batchRenderingSystem;
     private final LoadingCache<Integer, Table> names = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
@@ -53,6 +52,7 @@ public class NameRenderingSystem extends RenderingSystem {
 
 
             });
+    private BatchRenderingSystem batchRenderingSystem;
 
     public NameRenderingSystem() {
         super(Aspect.all(WorldPos.class, Name.class));

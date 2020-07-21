@@ -4,10 +4,10 @@ import com.artemis.BaseSystem;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import component.entity.character.status.Stamina;
-import server.systems.world.entity.user.ModifierSystem;
-import server.systems.world.entity.factory.SoundEntitySystem;
-import server.systems.world.WorldEntitiesSystem;
 import server.systems.network.EntityUpdateSystem;
+import server.systems.world.WorldEntitiesSystem;
+import server.systems.world.entity.factory.SoundEntitySystem;
+import server.systems.world.entity.user.ModifierSystem;
 import server.utils.UpdateTo;
 import shared.interfaces.CharClass;
 import shared.network.notifications.EntityUpdate;
@@ -21,11 +21,10 @@ import static server.database.model.modifiers.Modifiers.*;
 @Wire(injectInherited = true)
 public abstract class AbstractCombatSystem extends BaseSystem implements CombatSystem {
 
+    public static final int STAMINA_REQUIRED_PERCENT = 15;
     protected EntityUpdateSystem entityUpdateSystem;
     protected SoundEntitySystem soundEntitySystem;
     protected ModifierSystem modifierSystem;
-
-    public static final int STAMINA_REQUIRED_PERCENT = 15;
 
     @Override
     public int shieldEvasionPower(int userId) {

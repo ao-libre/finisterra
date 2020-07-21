@@ -1,7 +1,7 @@
 package game.systems.screen;
 
-import game.utils.CursorSystem;
 import component.position.WorldPos;
+import game.utils.CursorSystem;
 
 import java.util.function.Consumer;
 

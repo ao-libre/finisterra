@@ -8,7 +8,7 @@ public class AOTexture {
     private TextureRegion textureRegion;
 
     public AOTexture(AOImage image, Texture texture) {
-        this(image,texture, true);
+        this(image, texture, true);
     }
 
     public AOTexture(AOImage image, Texture texture, boolean flipY) {

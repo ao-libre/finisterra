@@ -1,14 +1,14 @@
 package game.systems.physics;
 
-import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
+import component.camera.Focused;
+import component.physics.AOPhysics;
 import game.systems.input.InputSystem;
 import game.utils.AOKeys;
 import game.utils.AlternativeKeys;
-import component.physics.AOPhysics;
 
 import static com.artemis.E.E;
 

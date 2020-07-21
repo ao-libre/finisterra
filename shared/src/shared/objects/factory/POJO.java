@@ -1,7 +1,6 @@
 package shared.objects.factory;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
 import shared.util.AOJson;
@@ -12,25 +11,30 @@ import java.io.FileNotFoundException;
 
 public abstract class POJO {
 
+    public static transient final String EXTENSION = ".json";
     /**
      * Fields excluidos de la serializacion.
-     *
+     * <p>
      * Para excluir un field tenes que declararlo como "transient".
      */
     private static transient final Json json = new AOJson();
-    public static transient final String EXTENSION = ".json";
 
     public static <T> T load(Class<T> Class, String path) {
         T result = null;
-        try (FileInputStream is = new FileInputStream(path))  {
+        try (FileInputStream is = new FileInputStream(path)) {
             result = json.fromJson(Class, is);
         } catch (FileNotFoundException ex) {
-            Log.error("Carga de POJO's" , "Archivo no encontrado! Archivo: " + path, ex);
+            Log.error("Carga de POJO's", "Archivo no encontrado! Archivo: " + path, ex);
         } catch (Exception ex) {
             Log.info("Error al LEER este POJO: " + path, ex);
         }
 
         return result;
+    }
+
+    public static boolean exists(String path) {
+        File file = new File(path);
+        return file.isFile() && file.canRead();
     }
 
     public void save(Object object, String path) {
@@ -39,10 +43,5 @@ public abstract class POJO {
         } catch (Exception ex) {
             Log.info("Error al GUARDAR este POJO: " + path, ex);
         }
-    }
-
-    public static boolean exists(String path) {
-        File file = new File(path);
-        return file.isFile() && file.canRead();
     }
 }

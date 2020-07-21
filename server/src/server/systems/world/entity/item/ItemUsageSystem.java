@@ -7,9 +7,9 @@ import component.entity.character.equipment.Helmet;
 import component.entity.character.equipment.Shield;
 import component.entity.character.equipment.Weapon;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
-import server.systems.world.entity.factory.EntityFactorySystem;
-import server.systems.world.WorldEntitiesSystem;
 import server.systems.network.EntityUpdateSystem;
+import server.systems.world.WorldEntitiesSystem;
+import server.systems.world.entity.factory.EntityFactorySystem;
 import server.utils.UpdateTo;
 import shared.interfaces.Hero;
 import shared.interfaces.Race;
@@ -29,9 +29,8 @@ public class ItemUsageSystem extends PassiveSystem {
 
     private WorldEntitiesSystem worldEntitiesSystem;
     private EntityUpdateSystem entityUpdateSystem;
-    private EntityFactorySystem entityFactorySystem;
-
     public final BiConsumer<Integer, Obj> WEAR = wear();
+    private EntityFactorySystem entityFactorySystem;
     public final BiConsumer<Integer, Obj> TAKE_OFF = takeOff();
 
     public ItemUsageSystem() {
@@ -86,4 +85,4 @@ public class ItemUsageSystem extends PassiveSystem {
         EntityUpdate update = EntityUpdateBuilder.of(user).remove(clasz).build();
         entityUpdateSystem.add(update, UpdateTo.ALL);
     }
- }
+}

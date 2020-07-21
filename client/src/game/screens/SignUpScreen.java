@@ -80,6 +80,14 @@ public class SignUpScreen extends AbstractScreen {
         getStage().setKeyboardFocus(usernameField);
     }
 
+    private void connectionFailed() {
+        // Mostramos un mensaje de error.
+        Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
+        dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
+        dialog.button("OK");
+        dialog.show(getStage());
+    }
+
     //Listener para registerButton
     private class RegisterButtonListener extends ChangeListener {
         @Override
@@ -119,13 +127,5 @@ public class SignUpScreen extends AbstractScreen {
                 connectionFailed();
             }
         }
-    }
-
-    private void connectionFailed() {
-        // Mostramos un mensaje de error.
-        Dialog dialog = new Dialog(assetManager.getMessages(Messages.FAILED_TO_CONNECT_TITLE), getSkin());
-        dialog.text(assetManager.getMessages(Messages.FAILED_TO_CONNECT_DESCRIPTION));
-        dialog.button("OK");
-        dialog.show(getStage());
     }
 }

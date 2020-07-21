@@ -40,6 +40,19 @@ public class MovementProcessorSystem extends IteratingSystem {
                 WorldPos.class));
     }
 
+    private static AOPhysics.Movement getDir(WorldPos worldPos, WorldPos destination) {
+        if (worldPos.x < destination.x) {
+            return AOPhysics.Movement.RIGHT;
+        } else if (worldPos.x > destination.x) {
+            return AOPhysics.Movement.LEFT;
+        } else if (worldPos.y < destination.y) {
+            return AOPhysics.Movement.DOWN;
+        } else if (worldPos.y > destination.y) {
+            return AOPhysics.Movement.UP;
+        }
+        return AOPhysics.Movement.DOWN;
+    }
+
     public WorldPos getDelta(@NotNull WorldPos worldPos) {
         WorldPos correctPos = new WorldPos(worldPos.x, worldPos.y, worldPos.map);
         requests.values().stream().filter(it -> it.valid).forEach(request -> {
@@ -69,19 +82,6 @@ public class MovementProcessorSystem extends IteratingSystem {
                 player.getMovement().add(new Destination(destination, getDir(worldPos, destination).ordinal()));
             }
         }
-    }
-
-    private static AOPhysics.Movement getDir(WorldPos worldPos, WorldPos destination) {
-        if (worldPos.x < destination.x) {
-            return AOPhysics.Movement.RIGHT;
-        } else if (worldPos.x > destination.x) {
-            return AOPhysics.Movement.LEFT;
-        } else if (worldPos.y < destination.y) {
-            return AOPhysics.Movement.DOWN;
-        } else if (worldPos.y > destination.y) {
-            return AOPhysics.Movement.UP;
-        }
-        return AOPhysics.Movement.DOWN;
     }
 
     @Override

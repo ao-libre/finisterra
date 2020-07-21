@@ -22,6 +22,7 @@ import shared.util.Messages;
 @Wire
 public class LoginScreen extends AbstractScreen {
 
+    private final Preferences preferences = Gdx.app.getPreferences("Finisterra");
     @Wire
     private DefaultAOAssetManager assetManager;
     private ClientConfiguration clientConfiguration;
@@ -29,7 +30,6 @@ public class LoginScreen extends AbstractScreen {
     private ScreenManager screenManager;
     private MusicSystem musicSystem;
     private SoundsSystem soundsSystem;
-
     private TextField emailField;
     private TextField passwordField;
     private CheckBox rememberMe; //@todo implementar remember me
@@ -38,7 +38,6 @@ public class LoginScreen extends AbstractScreen {
     private CheckBox disableSound;
     private TextButton loginButton;
     private List<ClientConfiguration.Network.Server> serverList;
-    private final Preferences preferences = Gdx.app.getPreferences("Finisterra");
     ;
 
     public LoginScreen() {
@@ -129,7 +128,7 @@ public class LoginScreen extends AbstractScreen {
                 preferences.putBoolean("MusicOff", disableMusic.isChecked());
                 preferences.flush();
 
-                if(!musicSystem.isDisableMusic()){
+                if (!musicSystem.isDisableMusic()) {
                     musicSystem.playMusic(101, true);
                 } else {
                     musicSystem.stopMusic();

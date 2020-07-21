@@ -48,7 +48,7 @@ public class MouseSystem extends PassiveSystem {
 
         defaultAction = new MouseActionContext(CursorSystem.AOCursor.HAND, (worldPos -> {
             boolean seeNothing = true;
-            if (worldPos.equals( oldWorldPos )) {
+            if (worldPos.equals(oldWorldPos)) {
                 tapCounter++;
             } else {
                 oldWorldPos = worldPos;
@@ -67,9 +67,9 @@ public class MouseSystem extends PassiveSystem {
                         consoleSystem.getConsole().addInfo(messageSystem.getMessage(Messages.SEE_SOMEONE,
                                 entity.getName().text));
                         if (entity.hasNPC() && !entity.isHostile()) {
-                            if ( tapCounter > 1) {
-                                Log.info( " id" + entity.nPCId() + " " + entity.getName().text );
-                                clientSystem.send( new NpcInteractionRequest( entity.nPCId() ) );
+                            if (tapCounter > 1) {
+                                Log.info(" id" + entity.nPCId() + " " + entity.getName().text);
+                                clientSystem.send(new NpcInteractionRequest(entity.nPCId()));
                                 tapCounter = 0;
                             }
                         }
@@ -82,10 +82,10 @@ public class MouseSystem extends PassiveSystem {
             Tile targetTile = mapSystem.getTile(worldPos);
             if (targetTile == null) return;
 
-            if(targetTile.getObjIndex() > 0) {
+            if (targetTile.getObjIndex() > 0) {
                 objectSystem.getObject(targetTile.getObjIndex()).ifPresent(obj -> {
                     consoleSystem.getConsole().addInfo(messageSystem.getMessage(Messages.SEE_SOMEONE, String.valueOf(targetTile.getObjCount()))
-                            + " " + obj.getName() );
+                            + " " + obj.getName());
                 });
                 seeNothing = false;
             }

@@ -4,8 +4,8 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import component.entity.character.states.Immobile;
-import game.systems.PlayerSystem;
 import component.position.WorldPos;
+import game.systems.PlayerSystem;
 
 @Wire(injectInherited = true)
 public class StateRenderingSystem extends RenderingSystem {

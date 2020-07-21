@@ -36,15 +36,6 @@ public abstract class SpellSlotUI extends ImageButton {
         return spell != null;
     }
 
-    public void setSpell(Spell spell) {
-        if (spell.equals(this.spell)) return;
-        this.spell = spell;
-        if (graphic != null) {
-            graphic.dispose();
-        }
-        this.graphic = spell != null ? new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getId() + ".png")) : null;
-    }
-
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
@@ -74,6 +65,15 @@ public abstract class SpellSlotUI extends ImageButton {
 
     public Spell getSpell() {
         return spell;
+    }
+
+    public void setSpell(Spell spell) {
+        if (spell.equals(this.spell)) return;
+        this.spell = spell;
+        if (graphic != null) {
+            graphic.dispose();
+        }
+        this.graphic = spell != null ? new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getId() + ".png")) : null;
     }
 
     abstract public void onSpellClick(SpellSlotUI spellSlotUI);

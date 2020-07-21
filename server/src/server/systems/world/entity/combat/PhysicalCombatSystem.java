@@ -9,14 +9,14 @@ import component.entity.character.status.Health;
 import component.entity.world.CombatMessage;
 import component.physics.AttackAnimation;
 import component.position.WorldPos;
-import server.systems.world.entity.training.CharacterTrainingSystem;
-import server.systems.world.entity.factory.EffectEntitySystem;
-import server.systems.world.entity.user.ModifierSystem;
-import server.systems.world.entity.factory.SoundEntitySystem;
-import server.systems.world.MapSystem;
 import server.systems.config.ObjectSystem;
-import server.systems.world.WorldEntitiesSystem;
 import server.systems.network.MessageSystem;
+import server.systems.world.MapSystem;
+import server.systems.world.WorldEntitiesSystem;
+import server.systems.world.entity.factory.EffectEntitySystem;
+import server.systems.world.entity.factory.SoundEntitySystem;
+import server.systems.world.entity.training.CharacterTrainingSystem;
+import server.systems.world.entity.user.ModifierSystem;
 import server.utils.UpdateTo;
 import shared.interfaces.CharClass;
 import shared.interfaces.FXs;
@@ -154,7 +154,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
             min += shieldObj.getMinDef();
             max += shieldObj.getMaxDef();
         }
-        return ThreadLocalRandom.current().nextInt(min, max+1);
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
     private int getHeadDefense(int entityId) {
@@ -176,7 +176,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
             AttackKind kind = AttackKind.getKind(entity);
             ThreadLocalRandom random = ThreadLocalRandom.current();
             float modifier = kind == AttackKind.PROJECTILE ?
-                    modifierSystem.of(PROJECTILE_DAMAGE, clazz):
+                    modifierSystem.of(PROJECTILE_DAMAGE, clazz) :
                     kind == AttackKind.WEAPON ? modifierSystem.of(WEAPON_DAMAGE, clazz) : modifierSystem.of(WRESTLING_DAMAGE, clazz);
             Log.info("Modifier: " + modifier);
             int weaponDamage =

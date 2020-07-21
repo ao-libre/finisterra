@@ -28,7 +28,7 @@ public abstract class Inventory extends Window {
 
     private PlayerSystem playerSystem;
     private ArrayList<Slot> slots;
-    private ArrayList< Label > itemCount;
+    private ArrayList<Label> itemCount;
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
@@ -43,40 +43,40 @@ public abstract class Inventory extends Window {
         createui();
     }
 
-    private void createui(){
+    private void createui() {
         clear();
-        if (expanded){
-            int columnsCounter = 1, loops = 0 ;
+        if (expanded) {
+            int columnsCounter = 1, loops = 0;
             for (int i = 0; i < SIZE; i++) {
                 Slot newSlot = new Slot();
                 Label count = WidgetFactory.createLabel("");
-                count.setFontScale( 0.7f );
-                itemCount.add( count );
+                count.setFontScale(0.7f);
+                itemCount.add(count);
                 slots.add(newSlot);
                 add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE);
                 if (columnsCounter > ROWS - 1) {
                     row();
                     for (int x = 0; x < 4; x++) {
-                        switch( loops ) {
+                        switch (loops) {
                             case 0:
-                                add( itemCount.get( x ) ).height( 10 );
+                                add(itemCount.get(x)).height(10);
                                 break;
                             case 1:
-                                add( itemCount.get( x + 4 ) ).height( 10 );
+                                add(itemCount.get(x + 4)).height(10);
                                 break;
                             case 2:
-                                add( itemCount.get( x + 8 ) ).height( 10 );
+                                add(itemCount.get(x + 8)).height(10);
                                 break;
                             case 3:
-                                add( itemCount.get( x + 12 ) ).height( 10 );
+                                add(itemCount.get(x + 12)).height(10);
                                 break;
                             case 4:
-                                add( itemCount.get( x + 16 ) ).height( 10 );
+                                add(itemCount.get(x + 16)).height(10);
                                 break;
                         }
                     }
                     row();
-                    for (int y= 0; y < 4; y++) {
+                    for (int y = 0; y < 4; y++) {
                         add(WidgetFactory.createSeparatorImage());
                     }
                     row();
@@ -92,19 +92,19 @@ public abstract class Inventory extends Window {
                 Label count = WidgetFactory.createLabel("");
                 count.setFontScale(0.7f);
                 slots.add(newSlot);
-                itemCount.add( count );
+                itemCount.add(count);
                 add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
-                add(itemCount.get( i )).height(10).row();
+                add(itemCount.get(i)).height(10).row();
                 add(WidgetFactory.createSeparatorImage()).row();
             }
         }
         addListener(getMouseListener());
     }
 
-    public void toggleExpanded(Bag bag){
+    public void toggleExpanded(Bag bag) {
         expanded = !expanded;
         createui();
-        update( bag );
+        update(bag);
     }
 
     public void selectItem(float x, float y, int tapCount) {
@@ -202,27 +202,28 @@ public abstract class Inventory extends Window {
         if (expanded) {
             for (int i = 0; i < SIZE; i++) {
                 Item item = base + i < userItems.length ? userItems[base + i] : null;
-                slots.get( i ).setItem( item, item != null ? getGraphic( item ) : null, item != null ? getTooltip(item) : null);
-                updateCount( item, i );
+                slots.get(i).setItem(item, item != null ? getGraphic(item) : null, item != null ? getTooltip(item) : null);
+                updateCount(item, i);
             }
         } else {
             for (int i = 0; i < 5; i++) {
                 Item item = base + i < userItems.length ? userItems[base + i] : null;
-                slots.get( i ).setItem( item, item != null ? getGraphic( item ) : null, item != null ? getTooltip(item) : null);
-                updateCount( item, i );
+                slots.get(i).setItem(item, item != null ? getGraphic(item) : null, item != null ? getTooltip(item) : null);
+                updateCount(item, i);
             }
         }
 
     }
-    private void updateCount(Item item, int i){
-        if(item != null) {
+
+    private void updateCount(Item item, int i) {
+        if (item != null) {
             if (item.count > 1) {
-                itemCount.get( i ).setText( item.count );
-            }else {
-                itemCount.get( i ).setText( "" );
+                itemCount.get(i).setText(item.count);
+            } else {
+                itemCount.get(i).setText("");
             }
-        }else {
-            itemCount.get( i ).setText( "" );
+        } else {
+            itemCount.get(i).setText("");
         }
     }
 
@@ -263,7 +264,7 @@ public abstract class Inventory extends Window {
     protected abstract Tooltip getTooltip(Item item);
 
 
-    public boolean getExpanded(){
+    public boolean getExpanded() {
         return expanded;
     }
 }

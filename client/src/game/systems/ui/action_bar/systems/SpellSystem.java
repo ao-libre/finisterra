@@ -15,7 +15,7 @@ import shared.model.Spell;
 import static com.artemis.E.E;
 
 @Wire
-public class SpellSystem  extends UserInterfaceContributionSystem {
+public class SpellSystem extends UserInterfaceContributionSystem {
 
     private MouseSystem mouseSystem;
     private SpellsSystem spellsSystem;
@@ -66,7 +66,7 @@ public class SpellSystem  extends UserInterfaceContributionSystem {
         return spellView.isVisible();
     }
 
-    public void castClick(){
+    public void castClick() {
         spellView.castClick();
     }
 

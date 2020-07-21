@@ -14,14 +14,14 @@ import com.google.common.cache.LoadingCache;
 import component.entity.character.parts.Body;
 import component.entity.world.Dialog;
 import component.entity.world.Dialog.Kind;
-import game.systems.resources.DescriptorsSystem;
+import component.position.WorldPos;
 import game.systems.render.BatchRenderingSystem;
+import game.systems.resources.DescriptorsSystem;
 import game.ui.WidgetFactory;
 import game.utils.Colors;
 import game.utils.Pos2D;
 import game.utils.Skins;
 import org.jetbrains.annotations.NotNull;
-import component.position.WorldPos;
 import shared.model.map.Tile;
 
 import java.util.concurrent.TimeUnit;

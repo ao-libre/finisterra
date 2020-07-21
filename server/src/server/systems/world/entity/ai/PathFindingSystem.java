@@ -13,10 +13,10 @@ import component.entity.world.Footprint;
 import component.movement.Destination;
 import component.physics.AOPhysics;
 import component.position.WorldPos;
+import server.systems.network.EntityUpdateSystem;
 import server.systems.world.IntervalFluidIteratingSystem;
 import server.systems.world.MapSystem;
 import server.systems.world.WorldEntitiesSystem;
-import server.systems.network.EntityUpdateSystem;
 import server.utils.UpdateTo;
 import server.utils.WorldUtils;
 import shared.model.map.Map;
@@ -106,7 +106,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         } else if (nextNode.y - from.y > 0) {
             // move south
             moveEntity(entityId, DOWN);
-        } else if (nextNode.y - from.y < 0){
+        } else if (nextNode.y - from.y < 0) {
             // move north
             moveEntity(entityId, UP);
         }
@@ -154,7 +154,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         es.forEach(all::add);
         return all.stream()
                 .filter(E::hasWorldPos)
-                .filter(e -> e.healthMin() != 0 )
+                .filter(e -> e.healthMin() != 0)
                 .filter(e -> {
                     int distance = WorldUtils(world).distance(e.getWorldPos(), worldPos);
                     return distance < MAX_DISTANCE_TARGET && distance >= 0;

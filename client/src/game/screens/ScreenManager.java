@@ -8,7 +8,6 @@ import game.handlers.DefaultAOAssetManager;
 import game.systems.resources.MusicSystem;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import org.jetbrains.annotations.NotNull;
-import shared.util.Messages;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +16,8 @@ import java.util.function.Consumer;
 public class ScreenManager extends PassiveSystem {
 
     private final AOGame game;
-    private MusicSystem musicSystem;
     private final List<Consumer<ScreenEnum>> listeners;
+    private MusicSystem musicSystem;
     @Wire
     private DefaultAOAssetManager assetManager;
 

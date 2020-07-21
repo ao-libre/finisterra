@@ -23,13 +23,11 @@ import static com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.ProgressBarStyle;
 @Wire
 public class LoadingScreen extends ScreenAdapter {
 
-    private DefaultAOAssetManager assetManager;
-
     private static final Skin SKIN = Skins.COMODORE_SKIN;
     private static final Texture BACKGROUND_TEXTURE = new Texture(Gdx.files.internal(Resources.GAME_IMAGES_PATH + "background.jpg"));
     private static final SpriteDrawable BACKGROUND = new SpriteDrawable(new Sprite(BACKGROUND_TEXTURE));
-
     private final Stage stage;
+    private DefaultAOAssetManager assetManager;
     private Table mainTable;
 
     private Texture progressBar;

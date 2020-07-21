@@ -1,16 +1,16 @@
 package design.screens.map.systems;
 
-import component.camera.Focused;
 import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import game.systems.resources.MapSystem;
+import component.camera.Focused;
+import component.position.WorldPos;
 import game.systems.map.MapManager;
 import game.systems.render.BatchRenderingSystem;
 import game.systems.render.world.RenderingSystem;
+import game.systems.resources.MapSystem;
 import game.utils.Colors;
-import component.position.WorldPos;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.util.MapHelper;

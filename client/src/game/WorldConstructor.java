@@ -167,7 +167,7 @@ public class WorldConstructor {
      * Este método es bloqueante.
      */
     public static World create(ClientConfiguration clientConfiguration,
-                              ScreenManager screenManager, DefaultAOAssetManager assetManager) {
+                               ScreenManager screenManager, DefaultAOAssetManager assetManager) {
         return new World(getWorldConfiguration(clientConfiguration, screenManager, assetManager));
     }
 }

@@ -2,8 +2,8 @@ package game.systems.map;
 
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import game.systems.resources.AnimationsSystem;
 import game.systems.render.BatchRenderingSystem;
+import game.systems.resources.AnimationsSystem;
 import model.textures.AOTexture;
 import model.textures.BundledAnimation;
 import shared.model.map.Map;

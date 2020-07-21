@@ -11,12 +11,12 @@ import component.entity.world.CombatMessage;
 import component.physics.AttackAnimation;
 import component.position.WorldPos;
 import server.systems.config.ObjectSystem;
-import server.systems.world.entity.training.CharacterTrainingSystem;
 import server.systems.network.MessageSystem;
-import server.utils.UpdateTo;
-import server.systems.world.entity.factory.EffectEntitySystem;
 import server.systems.world.MapSystem;
 import server.systems.world.WorldEntitiesSystem;
+import server.systems.world.entity.factory.EffectEntitySystem;
+import server.systems.world.entity.training.CharacterTrainingSystem;
+import server.utils.UpdateTo;
 import shared.interfaces.CharClass;
 import shared.interfaces.FXs;
 import shared.network.notifications.EntityUpdate;
@@ -105,14 +105,14 @@ public class RangedCombatSystem extends AbstractCombatSystem {
     @Override
     public boolean canAttack(int entityId, Optional<Integer> target) {
         final E userEntity = E(entityId);
-        if (userEntity.hasWeapon()){
+        if (userEntity.hasWeapon()) {
             WeaponObj userWeapon = (WeaponObj) objectSystem.getObject(userEntity.getWeapon().getIndex()).get();
-            if(!userWeapon.getKind().equals( WeaponKind.BOW )){
+            if (!userWeapon.getKind().equals(WeaponKind.BOW)) {
                 notifyCombat(entityId, Messages.DONT_HAVE_BOW_AND_ARROW);
                 return false;
             }
         }
-        if (getarrow( userEntity ).isEmpty()){
+        if (getarrow(userEntity).isEmpty()) {
             notifyCombat(entityId, Messages.DONT_HAVE_BOW_AND_ARROW);
             return false;
         }
@@ -149,7 +149,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
                 // notifyCombat(userId, CANT_ATTACK_CITIZEN);
                 // TODO descomentar: return false;
             }
-            if (!targetEnity.isHostile()){
+            if (!targetEnity.isHostile()) {
                 notifyCombat(entityId, Messages.INVALID_TARGET);
                 return false;
             }

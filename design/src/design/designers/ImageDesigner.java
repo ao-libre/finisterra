@@ -12,7 +12,6 @@ import design.editors.ImageEditor;
 import design.screens.ScreenEnum;
 import design.screens.views.ImageView;
 import design.screens.views.View;
-import game.AOGame;
 import game.AssetManagerHolder;
 import game.handlers.AOAssetManager;
 import game.handlers.DefaultAOAssetManager;

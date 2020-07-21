@@ -14,9 +14,9 @@ import com.esotericsoftware.minlog.Log;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import game.systems.resources.AnimationsSystem;
 import game.systems.map.MapManager;
 import game.systems.render.BatchRenderingSystem;
+import game.systems.resources.AnimationsSystem;
 import org.jetbrains.annotations.NotNull;
 import shared.model.map.Map;
 import shared.model.map.Tile;
@@ -33,6 +33,7 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
     private final Batch mapBatch;
     // injected systems
     private MapManager mapManager;
+    private AnimationsSystem animationsSystem;
     private final LoadingCache<Map, Texture> bufferedLayers = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
@@ -42,8 +43,6 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
                     return renderLayerToBuffer(key, 0);
                 }
             });
-
-    private AnimationsSystem animationsSystem;
     private WorldRenderingSystem worldRenderingSystem;
     private BatchRenderingSystem batchRenderingSystem;
 
