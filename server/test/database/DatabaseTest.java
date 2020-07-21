@@ -7,7 +7,7 @@ import server.database.Account;
 
 /**
  * Aca testeamos el tiempo que le toma al servidor leer/escribir los .json que van a usar para guardar la info. de las cuentas.
- * 
+ * <p>
  * Ejecutar desde {@link DatabaseTestLauncher#main(String[])}
  */
 public class DatabaseTest implements ApplicationListener {
@@ -40,8 +40,8 @@ public class DatabaseTest implements ApplicationListener {
             account1.save();
         }
         end = System.currentTimeMillis();
-        runtime = ((double)(end - start)) / n;
-        Log.info( "Create test", "Average run time: " + runtime + " milliseconds.");
+        runtime = ((double) (end - start)) / n;
+        Log.info("Create test", "Average run time: " + runtime + " milliseconds.");
 
         /** Read test */
         start = System.currentTimeMillis();
@@ -49,8 +49,8 @@ public class DatabaseTest implements ApplicationListener {
             Account account2 = Account.load(email[i]);
         }
         end = System.currentTimeMillis();
-        runtime = ((double)(end - start)) / n;
-        Log.info( "Read test", "Average run time: " + runtime + " milliseconds.");
+        runtime = ((double) (end - start)) / n;
+        Log.info("Read test", "Average run time: " + runtime + " milliseconds.");
 
         /** Update test */
         start = System.currentTimeMillis();
@@ -59,8 +59,8 @@ public class DatabaseTest implements ApplicationListener {
             account1.save();
         }
         end = System.currentTimeMillis();
-        runtime = ((double)(end - start)) / n;
-        Log.info( "Update test", "Average run time: " + runtime + " milliseconds.");
+        runtime = ((double) (end - start)) / n;
+        Log.info("Update test", "Average run time: " + runtime + " milliseconds.");
 
         /** Worst-case find (non-existent entry) */
         start = System.currentTimeMillis();
@@ -68,8 +68,8 @@ public class DatabaseTest implements ApplicationListener {
             Account.load(email2[i]);
         }
         end = System.currentTimeMillis();
-        runtime = ((double)(end - start)) / n;
-        Log.info( "Worst-case find test", "Average run time: " + runtime + " milliseconds.");
+        runtime = ((double) (end - start)) / n;
+        Log.info("Worst-case find test", "Average run time: " + runtime + " milliseconds.");
 
         /** null argument test */
         start = System.currentTimeMillis();
@@ -77,8 +77,8 @@ public class DatabaseTest implements ApplicationListener {
             Account.load(null);
         }
         end = System.currentTimeMillis();
-        runtime = ((double)(end - start)) / n;
-        Log.info( "null argument test", "Average run time: " + runtime + " milliseconds.");
+        runtime = ((double) (end - start)) / n;
+        Log.info("null argument test", "Average run time: " + runtime + " milliseconds.");
 
         // Borramos todos los .json que se usaron en las pruebas.
         Gdx.files.local("Accounts").deleteDirectory();

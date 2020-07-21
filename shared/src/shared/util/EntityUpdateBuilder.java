@@ -49,35 +49,6 @@ public class EntityUpdateBuilder {
         return builder.build();
     }
 
-    public EntityUpdateBuilder withComponents(Component... components) {
-        for (Component component : components) {
-            // override if exists
-            this.components.put(component.getClass(), component);
-        }
-        return this;
-    }
-
-    public EntityUpdateBuilder withComponents(List<Component> components) {
-        return withComponents(components.toArray(new Component[0]));
-    }
-
-    public EntityUpdateBuilder remove(Class<? extends Component>... toRemove) {
-        if(toRemove != null) {
-            this.toRemove.addAll(Arrays.asList(toRemove));
-        }
-        return this;
-    }
-
-    public boolean isEmpty() {
-        return components.isEmpty() && toRemove.isEmpty();
-    }
-
-    public EntityUpdate build() {
-        entityUpdate.components = components.values().toArray(new Component[0]);
-        entityUpdate.toRemove = toRemove.toArray(new Class[0]);
-        return entityUpdate;
-    }
-
     public static EntityUpdate join(EntityUpdate u1, EntityUpdate u2) {
         if (u1 instanceof RemoveEntity) {
             return u1;
@@ -104,5 +75,34 @@ public class EntityUpdateBuilder {
         setToRemove.addAll(Sets.newHashSet(u2.toRemove));
         u1.toRemove = setToRemove.toArray(new Class[0]);
         return u1;
+    }
+
+    public EntityUpdateBuilder withComponents(Component... components) {
+        for (Component component : components) {
+            // override if exists
+            this.components.put(component.getClass(), component);
+        }
+        return this;
+    }
+
+    public EntityUpdateBuilder withComponents(List<Component> components) {
+        return withComponents(components.toArray(new Component[0]));
+    }
+
+    public EntityUpdateBuilder remove(Class<? extends Component>... toRemove) {
+        if (toRemove != null) {
+            this.toRemove.addAll(Arrays.asList(toRemove));
+        }
+        return this;
+    }
+
+    public boolean isEmpty() {
+        return components.isEmpty() && toRemove.isEmpty();
+    }
+
+    public EntityUpdate build() {
+        entityUpdate.components = components.values().toArray(new Component[0]);
+        entityUpdate.toRemove = toRemove.toArray(new Class[0]);
+        return entityUpdate;
     }
 }

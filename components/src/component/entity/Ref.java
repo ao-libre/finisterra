@@ -5,7 +5,8 @@ import com.artemis.Component;
 public class Ref extends Component {
     private int id;
 
-    public Ref() {}
+    public Ref() {
+    }
 
     public Ref(int id) {
         this.id = id;

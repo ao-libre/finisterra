@@ -30,12 +30,12 @@ import java.util.concurrent.TimeUnit;
 public class MapHelper {
 
     private static final int NEAR_MAX_DISTNACE = 20;
-    private static final int BOTTOM_BORDER_TILE = 93; 
-    private static final int TOP_BORDER_TILE = 8;   
+    private static final int BOTTOM_BORDER_TILE = 93;
+    private static final int TOP_BORDER_TILE = 8;
     private static final int LEFT_BORDER_TILE = 10;
     private static final int RIGHT_BORDER_TILE = 91;
 
-    private static final int MAX_MAPS = 290; 
+    private static final int MAX_MAPS = 290;
 
     private static final AOJson JSON = new AOJson();
     private static MapHelper instance;

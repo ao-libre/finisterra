@@ -5,12 +5,12 @@ import com.badlogic.gdx.utils.TimeUtils;
 import org.jetbrains.annotations.NotNull;
 import server.systems.account.AccountSystem;
 import server.systems.account.UserSystem;
+import server.systems.world.WorldEntitiesSystem;
+import server.systems.world.entity.item.ItemActionSystem;
+import server.systems.world.entity.movement.MovementSystem;
 import server.systems.world.entity.npc.NPCActionSystem;
 import server.systems.world.entity.user.MeditateSystem;
 import server.systems.world.entity.user.PlayerActionSystem;
-import server.systems.world.entity.item.ItemActionSystem;
-import server.systems.world.entity.movement.MovementSystem;
-import server.systems.world.WorldEntitiesSystem;
 import shared.network.account.AccountCreationRequest;
 import shared.network.account.AccountLoginRequest;
 import shared.network.combat.AttackRequest;
@@ -75,7 +75,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
 
     @Override
     public void processRequest(@NotNull UserCreateRequest request, int connectionId) {
-        userSystem.create(connectionId, request.getName(), request.getHeroId(),request.getUserAcc(),request.getIndex());
+        userSystem.create(connectionId, request.getName(), request.getHeroId(), request.getUserAcc(), request.getIndex());
     }
 
     /**
@@ -167,7 +167,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         npcActionSystem.interact(connectionId, npcInteractionRequest.getTargetEntity());
     }
 
-	@Override
+    @Override
     public void processRequest(@NotNull DropItem dropItem, int connectionId) {
         playerActionSystem.drop(connectionId, dropItem.getCount(), dropItem.getPosition(), dropItem.getSlot());
     }

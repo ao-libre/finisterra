@@ -7,14 +7,13 @@ import shared.util.AOJson;
 
 public class Charfile {
 
+    public static transient final String DIR_CHARFILES = "CharFiles/";
     /**
      * Fields excluidos de la serializacion.
-     *
+     * <p>
      * Para excluir un field tenes que declararlo como "transient".
      */
     static transient final Json json = new AOJson();
-    public static transient final String DIR_CHARFILES = "CharFiles/";
-
     /**
      * Fields que serán serializados.
      */
@@ -37,10 +36,11 @@ public class Charfile {
     public String LastIP = "127.0.0.1";
     public boolean Online = false;
 
-    public Charfile() { }
+    public Charfile() {
+    }
 
     public static Charfile load(String nick) {
-        try  {
+        try {
             return json.fromJson(Charfile.class, Gdx.files.local("Charfiles/" + nick + ".json"));
         } catch (Exception ex) {
             //Log.error("Charfile" , "Charfile not found!", ex);

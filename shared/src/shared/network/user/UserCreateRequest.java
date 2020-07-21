@@ -10,7 +10,8 @@ public class UserCreateRequest implements IRequest {
     private int heroId, index;
     private String userAcc;
 
-    public UserCreateRequest() {}
+    public UserCreateRequest() {
+    }
 
     public UserCreateRequest(String name, int heroId, String userAcc, int index) {
         this.name = name;

@@ -23,7 +23,7 @@ public class ItemUtils {
     public static boolean canEquip(Obj obj) {
         return obj instanceof ObjWithClasses;
     }
-    
+
     public static boolean canUse(Obj obj) {
         Type objectType = obj.getType();
         return usableObjects.contains(objectType) || isArrow(obj);

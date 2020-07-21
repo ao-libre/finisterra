@@ -10,7 +10,7 @@ public class NpcInteractionRequest implements IRequest {
     public NpcInteractionRequest() {
     }
 
-    public NpcInteractionRequest(int  targetEntity) {
+    public NpcInteractionRequest(int targetEntity) {
         this.targetEntity = targetEntity;
     }
 

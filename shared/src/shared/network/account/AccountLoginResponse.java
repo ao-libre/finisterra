@@ -16,7 +16,8 @@ public class AccountLoginResponse implements IResponse {
     ArrayList<String> characters;
     ArrayList<Integer> charactersData;
 
-    public AccountLoginResponse() {}
+    public AccountLoginResponse() {
+    }
 
     public AccountLoginResponse(Messages error) {
         this.successful = false;
@@ -30,15 +31,23 @@ public class AccountLoginResponse implements IResponse {
         this.charactersData = charactersData;
     }
 
-    public String getUsername() { return username; }
+    public String getUsername() {
+        return username;
+    }
+
     public boolean isSuccessful() {
         return successful;
     }
-    public Messages getError() { return error; }
-    public ArrayList<String> getCharacters(){
+
+    public Messages getError() {
+        return error;
+    }
+
+    public ArrayList<String> getCharacters() {
         return characters;
     }
-    public ArrayList< Integer > getCharactersData() {
+
+    public ArrayList<Integer> getCharactersData() {
         return charactersData;
     }
 
