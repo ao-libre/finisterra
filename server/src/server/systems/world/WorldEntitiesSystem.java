@@ -55,10 +55,11 @@ public class WorldEntitiesSystem extends PassiveSystem {
     }
 
     public void unregisterEntity(int entityId) {
-        userSystem.save(entityId);
-        networkManager.unregisterUserConnection(entityId);
-        mapSystem.removeEntity(entityId);
-        getWorld().delete(entityId);
+        userSystem.save(entityId, () -> {
+            networkManager.unregisterUserConnection(entityId);
+            mapSystem.removeEntity(entityId);
+            getWorld().delete(entityId);
+        });
     }
 
     public void sendEntityUpdate(int user, Object update) {

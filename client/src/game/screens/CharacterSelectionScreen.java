@@ -101,27 +101,13 @@ public class CharacterSelectionScreen extends AbstractScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 heroImageTable.clear();
                 switch (heroSelectBox.getSelected()) {
-                    case GUERRERO:
-                        heroSelectionImage = WidgetFactory.createImage(warriorImage);
-                        break;
-                    case MAGO:
-                        heroSelectionImage = WidgetFactory.createImage(mageImage);
-                        break;
-                    case ASESINO:
-                        heroSelectionImage = WidgetFactory.createImage(assassinImage);
-                        break;
-                    case PALADIN:
-                        heroSelectionImage = WidgetFactory.createImage(paladinImage);
-                        break;
-                    case BARDO:
-                        heroSelectionImage = WidgetFactory.createImage(bardImage);
-                        break;
-                    case ARQUERO:
-                        heroSelectionImage = WidgetFactory.createImage(archerImage);
-                        break;
-                    case CLERIGO:
-                        heroSelectionImage = WidgetFactory.createImage(clericImage);
-                        break;
+                    case GUERRERO -> heroSelectionImage = WidgetFactory.createImage(warriorImage);
+                    case MAGO -> heroSelectionImage = WidgetFactory.createImage(mageImage);
+                    case ASESINO -> heroSelectionImage = WidgetFactory.createImage(assassinImage);
+                    case PALADIN -> heroSelectionImage = WidgetFactory.createImage(paladinImage);
+                    case BARDO -> heroSelectionImage = WidgetFactory.createImage(bardImage);
+                    case ARQUERO -> heroSelectionImage = WidgetFactory.createImage(archerImage);
+                    case CLERIGO -> heroSelectionImage = WidgetFactory.createImage(clericImage);
                 }
                 heroImageTable.add(heroSelectionImage);
             }
