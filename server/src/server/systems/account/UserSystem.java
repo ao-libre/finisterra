@@ -150,6 +150,8 @@ public class UserSystem extends PassiveSystem {
                     } catch (IOException ex) {
                         Log.error("Failed to write charfile: " + name, ex);
                     }
+                } else {
+                    Log.error("User components serialization", "Failed to write component list to charfile " + name + ": the component list IS EMPTY");
                 }
                 // Volvemos al thread principal y ejecutamos el codigo que pasamos en el Runnable.
                 Gdx.app.postRunnable(code);
