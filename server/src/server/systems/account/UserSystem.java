@@ -43,7 +43,7 @@ public class UserSystem extends PassiveSystem {
 
     public static void checkStorageDirectory() {
         File charfilesDir = new File(Charfile.DIR_CHARFILES);
-        if (charfilesDir.isDirectory())
+        if (!charfilesDir.isDirectory())
             charfilesDir.mkdirs();
     }
 

@@ -24,7 +24,7 @@ public class AccountSystem extends PassiveSystem {
 
     public static void checkStorageDirectory() {
         File accountDir = new File(Account.DIR_CUENTAS);
-        if (accountDir.isDirectory())
+        if (!accountDir.isDirectory())
             accountDir.mkdirs();
     }
 
