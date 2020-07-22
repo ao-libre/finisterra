@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.ArrayTextureSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -37,22 +36,11 @@ public class BatchRenderingSystem extends BaseSystem {
     private FrameBuffer lightBuffer;
 
     public BatchRenderingSystem() {
-        this.batch = initBatch();
+        this.batch = new SpriteBatch();
         this.light = new Texture(Gdx.files.internal(Resources.GAME_SHADERS_PATH + GAME_SHADERS_LIGHT));
         width = Tile.TILE_PIXEL_WIDTH * 32f;
         height = Tile.TILE_PIXEL_WIDTH * 32f;
         resize(width, height);
-    }
-
-    private Batch initBatch() {
-        Batch tempSpriteBatch;
-        try {
-            tempSpriteBatch = new ArrayTextureSpriteBatch(50, 2560, 1280, 512, GL30.GL_NEAREST, GL30.GL_NEAREST);
-        } catch (Exception ex) {
-            Log.debug("Tu dispositivo no es compatible con el SpriteBatch mejorado. Usando sistema original...");
-            tempSpriteBatch = new SpriteBatch();
-        }
-        return tempSpriteBatch;
     }
 
     public void resize(float width, float height) {
