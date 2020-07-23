@@ -13,7 +13,8 @@ mainClassName = "launcher.DesignCenterLauncher"
 dependencies {
     implementation project(":desktop")
 	implementation (group: "com.soywiz", name: "kaifu2x", version: "$kaifu2xVersion") {
-		exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-jdk8"
+		exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk7"
+		exclude group: "org.jetbrains.kotlin", module: "kotlin-stdlib-jdk8"
 	}
 	implementation group: "org.jetbrains.kotlinx", name: "kotlinx-coroutines-core", version: "$kotlinxCoroutinesVersion"
 	implementation group: "org.lwjgl", name: "lwjgl-tinyfd", version: "$tinyfdVersion"
