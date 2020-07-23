@@ -6,6 +6,7 @@ import game.systems.render.BatchRenderingSystem;
 import game.systems.resources.AnimationsSystem;
 import model.textures.AOTexture;
 import model.textures.BundledAnimation;
+import org.jetbrains.annotations.NotNull;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.model.map.WorldPosition;
@@ -16,16 +17,13 @@ import java.util.List;
 
 public class MapManager extends BaseSystem {
 
-    public static final List<Integer> LOWER_LAYERS = Arrays.asList(0, 1);
+    public static final List<Integer> LOWER_LAYERS = Arrays.asList(0, 1, 2);
     public static final List<Integer> UPPER_LAYERS = Collections.singletonList(3);
+
     private AnimationsSystem animationsSystem;
     private BatchRenderingSystem batchRenderingSystem;
 
-    public void drawLayer(Map map, int layer) {
-        drawLayer(map, 0, layer, false, false, false);
-    }
-
-    private void drawLayer(Map map, float delta, int layer, boolean drawExit, boolean drawBlock, boolean flip) {
+    private void drawLayer(@NotNull Map map, float delta, int layer, boolean drawExit, boolean drawBlock, boolean flip) {
         for (int x = 0; x < map.getWidth(); x++) {
             for (int y = map.getHeight() - 1; y >= 0; y--) {
                 Tile tile = map.getTile(x, y);
@@ -37,17 +35,17 @@ public class MapManager extends BaseSystem {
                     continue;
                 }
                 if (flip) {
-                    doTileDrawFlipped(delta, x, y, graphic);
+                    doTileDrawFlipped(x, y, graphic);
                 } else {
-                    doTileDraw(delta, x, y, graphic);
+                    doTileDraw(x, y, graphic);
                 }
                 if (drawBlock && tile.isBlocked()) {
                     // draw block
-                    doTileDraw(delta, x, y, 4);
+                    doTileDraw(x, y, 4);
                 }
                 if (drawExit && tile.getTileExit() != null && !(new WorldPosition().equals(tile.getTileExit()))) {
                     // draw exit
-                    doTileDraw(delta, x, y, 3);
+                    doTileDraw(x, y, 3);
                 }
             }
         }
@@ -57,17 +55,17 @@ public class MapManager extends BaseSystem {
         drawLayer(map, delta, layer, drawExit, drawBlock, true);
     }
 
-    private void doTileDrawFlipped(float delta, int x, int y, int graphic) {
+    private void doTileDrawFlipped(int x, int y, int graphic) {
         TextureRegion tileRegion = animationsSystem.hasTexture(graphic) ?
                 getTextureRegion(animationsSystem.getTexture(graphic)) :
-                getAnimation(delta, graphic);
+                getAnimation(graphic);
         if (tileRegion != null && !tileRegion.isFlipY()) {
             tileRegion.flip(false, true);
         }
         doTileDraw(y, x, tileRegion);
     }
 
-    public TextureRegion getAnimation(float delta, int graphic) {
+    public TextureRegion getAnimation(int graphic) {
         TextureRegion tileRegion = null;
         BundledAnimation animation = animationsSystem.getTiledAnimation(graphic);
         if (animation != null) {
@@ -84,10 +82,10 @@ public class MapManager extends BaseSystem {
         return tileRegion;
     }
 
-    public void doTileDraw(float delta, int x, int y, int graphic) {
+    public void doTileDraw(int x, int y, int graphic) {
         TextureRegion tileRegion = animationsSystem.hasTexture(graphic) ?
                 getTextureRegion(animationsSystem.getTexture(graphic)) :
-                getAnimation(delta, graphic);
+                getAnimation(graphic);
         doTileDraw(y, x, tileRegion);
     }
 

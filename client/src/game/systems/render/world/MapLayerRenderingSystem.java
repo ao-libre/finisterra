@@ -57,7 +57,7 @@ public class MapLayerRenderingSystem extends RenderingSystem {
             if (graphic == 0) {
                 return;
             }
-            mapManager.doTileDraw(world.getDelta(), x, y, graphic);
+            mapManager.doTileDraw(x, y, graphic);
         });
     }
 
