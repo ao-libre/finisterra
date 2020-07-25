@@ -58,14 +58,12 @@ public class CharacterSelectionScreen extends AbstractScreen {
         stack = new Stack();
         userTableArray = new ArrayList<>();
         nameLabelArray = new ArrayList<>();
-        playButtonArray = new ArrayList<>();
-        nameLabelArray = new ArrayList<>();
         createButtonArray = new ArrayList<>();
         HPLabelArray = new ArrayList<>();
         MPLabelArray = new ArrayList<>();
-        booleanArrayList = new ArrayList<>();
         userImageTableArray = new ArrayList<>();
-
+        playButtonArray = playButtonArray != null ? playButtonArray : new ArrayList<>();
+        booleanArrayList = booleanArrayList != null ? booleanArrayList : new ArrayList<>();
 
         charSelectWindows = WidgetFactory.createWindow();
         createWindow = WidgetFactory.createWindow();
@@ -194,7 +192,6 @@ public class CharacterSelectionScreen extends AbstractScreen {
                     MPLabelArray.get(i).setText(userCharactersData.get(i + 18) + " / " + userCharactersData.get(i + 24));
                     nameLabelArray.get(i).setText(charName);
                     if (userHeroID != -1) {
-                        playButtonArray.get(i).setDisabled(false);
                         playButtonListener(i, charName);
                     }
 
@@ -291,7 +288,8 @@ public class CharacterSelectionScreen extends AbstractScreen {
                 // send request to login user
                 clientSystem.send(new UserContinueRequest(userName));
                 for (int x = 0; x < 6; x++) {
-                    booleanArrayList.add(x, playButtonArray.get(x).isDisabled());
+                    if (booleanArrayList.size() < 6)
+                        booleanArrayList.add(x, playButtonArray.get(x).isDisabled());
                     playButtonArray.get(x).setDisabled(true);
                 }
                 Timer.schedule(new Timer.Task() {
@@ -301,7 +299,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
                             playButtonArray.get(y).setDisabled(booleanArrayList.get(y));
                         }
                     }
-                }, 2);
+                }, 3);
             }
         });
     }
