@@ -9,7 +9,11 @@ import component.entity.Clear;
 import component.entity.character.attributes.*;
 import component.entity.character.info.CharHero;
 import component.entity.character.info.Gold;
+import component.entity.character.info.Skills;
 import component.entity.character.info.SpellBook;
+import component.entity.character.render.CharAnimation;
+import component.entity.character.render.CharRenderInfo;
+import component.entity.character.render.Display;
 import component.entity.character.states.*;
 import component.entity.character.status.*;
 import component.entity.combat.AttackPower;
@@ -32,6 +36,10 @@ public class ComponentSystem extends PassiveSystem {
         componentsByVisibility = new HashMap<>();
         Reflections reflections = new Reflections("component");
         Set<Class<? extends Component>> allClasses = reflections.getSubTypesOf(Component.class);
+        // client local components
+        allClasses.remove(CharRenderInfo.class);
+        allClasses.remove(Display.class);
+        allClasses.remove(CharAnimation.class);
         componentsByVisibility.put(Visibility.SERVER, Sets.newHashSet(allClasses));
 
         // remove server only components
@@ -71,6 +79,7 @@ public class ComponentSystem extends PassiveSystem {
         allClasses.remove(AttackPower.class);
         allClasses.remove(EvasionPower.class);
         allClasses.remove(AttackPower.class);
+        allClasses.remove(Skills.class);
         componentsByVisibility.put(Visibility.CLIENT_PUBLIC, Sets.newHashSet(allClasses));
     }
 

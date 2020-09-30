@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import game.utils.Colors;
 
@@ -21,7 +22,10 @@ public class AOConsole extends ScrollPane {
     }
 
     private static Actor createStack() {
-        return new VerticalGroup();
+        VerticalGroup verticalGroup = new VerticalGroup();
+        verticalGroup.columnLeft();
+        verticalGroup.grow();
+        return verticalGroup;
     }
 
     public void addInfo(String message) {
@@ -42,6 +46,7 @@ public class AOConsole extends ScrollPane {
 
     private void addMessage(String message, Color color) {
         Label label = WidgetFactory.createConsoleLabel(message, color);
+        label.setAlignment(Align.left);
         if (!messages.isEmpty() && messages.items.length >= MAX_MESSAGES) {
             messages.removeIndex(0);
             ((VerticalGroup) getActor()).removeActor(((VerticalGroup) getActor()).getChild(0), true);

@@ -40,7 +40,7 @@ public class DialogRenderingSystem extends RenderingSystem {
             .build(new CacheLoader<>() {
                 @Override
                 public Table load(@NotNull Dialog dialog) {
-                    Table table = new Table(Skins.COMODORE_SKIN);
+                    Table table = new Table(Skins.CURRENT.get());
                     table.setRound(false);
                     String text = dialog.text;
                     Label label = dialog.kind == Kind.MAGIC_WORDS ? WidgetFactory.createFlippedLabel(text) : WidgetFactory.createTalkLabel(text);

@@ -35,19 +35,4 @@ public class FontsSystem extends PassiveSystem {
 //        MAGIC_COMBAT_FONT = generate(Colors.MANA, 11, Color.BLACK, 0, 1, -1, COMMODORE_FONT);
     }
 
-    private Skin getSkin() {
-        return assetManager.getSkin();
-    }
-
-    public BitmapFont getShadowedFont() {
-        return getSkin().getFont("big-shadow");
-    }
-
-    public BitmapFont getNormalFont() {
-        return getSkin().getFont("small");
-    }
-
-    public BitmapFont getFlippedFont() {
-        return getSkin().getFont("flipped");
-    }
 }

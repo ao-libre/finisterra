@@ -36,8 +36,6 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
     private PlayerSystem playerSystem;
 
     private Actor actionBar;
-    private ImageTextButton expandInventoryButton;
-    private ImageButton castButton, shotButton;
     private Label goldLabel;
 
     public ActionBarSystem() {
@@ -48,58 +46,28 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
     public void calculate(int entityId) {
         inventorySystem.calculate(entityId);
         spellSystem.calculate(entityId);
-        Table actionBar = new Table(Skins.COMODORE_SKIN);
+        Table actionBar = WidgetFactory.createMainWindow();
         Log.debug("Creating Action Bar for component.entity: " + entityId);
         SwitchButtons buttons = new SwitchButtons();
         buttons.addListener(state -> {
             switch (state) {
-                case SPELLS:
-                    showSpells();
-                    break;
-                case INVENTORY:
-                    showInventory();
-                    break;
+                case SPELLS -> showSpells();
+                case INVENTORY -> showInventory();
             }
         });
 
-        actionBar.add(buttons).top().right().colspan(2).padRight(10).row();
-
-        /*cast and shot*/
-        Table buttonsTable = new Table();
-        Stack buttonStack = new Stack();
-        castButton = createCastButton();
-        buttonStack.add(castButton);
-        shotButton = createShotButton();
-        buttonStack.add(shotButton);
-        buttonsTable.add(buttonStack).right().row();
-        expandInventoryButton = createExpandInventoryButton();
-        buttonsTable.add(expandInventoryButton).right().width(50).height(50);
-        actionBar.add(buttonsTable).padRight(-25f).width(100);
+        actionBar.add(buttons).top().padLeft(5).padRight(10).height(45).padTop(-8).growX().row();
 
         /* Inventary and spellbook  */
         Stack stack = new Stack();
         E e = E(entityId);
-        if (e.hasBag()) {
-            // add inventory
+        if (e.hasBag()) { // add inventory
             stack.add(inventorySystem.getActor());
         }
-        if (e.hasSpellBook()) {
-            // add spellbook
+        if (e.hasSpellBook()) { // add spellbook
             stack.add(spellSystem.getActor());
         }
-        actionBar.add(stack).top().right().row();
-
-        /*gold table*/
-        Table goldTable = new Table();
-        Cell<Image> goldIconCell = goldTable.add(WidgetFactory.createImage(new Texture(Gdx.files.local("data/ui/images/gold.png"))));
-        goldIconCell.height(28).width(30).left();
-        goldLabel = WidgetFactory.createLabel("");
-        goldLabel.setText(String.valueOf(playerSystem.get().goldCount()));
-        goldLabel.setColor(Color.GOLDENROD);
-        goldLabel.setAlignment(Align.right);
-        goldTable.add(goldLabel).height(28).fillY().right();
-        actionBar.add(goldTable).colspan(2).right().padRight(10);
-
+        actionBar.add(stack).top().grow().row();
         this.actionBar = actionBar;
     }
 
@@ -110,19 +78,10 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
 
     public void showInventory() {
         spellSystem.hide();
-        castButton.setVisible(false);
-        shotButton.setVisible(true);
-        expandInventoryButton.setVisible(true);
         inventorySystem.show();
     }
 
     public void showSpells() {
-        if (inventorySystem.isExpanded()) {
-            inventorySystem.toggleExpanded();
-        }
-        expandInventoryButton.setVisible(false);
-        castButton.setVisible(true);
-        shotButton.setVisible(false);
         spellSystem.show();
         inventorySystem.hide();
     }
@@ -133,56 +92,6 @@ public class ActionBarSystem extends UserInterfaceContributionSystem {
         } else {
             showSpells();
         }
-    }
-
-    private ImageTextButton createExpandInventoryButton() {
-        expandInventoryButton = new ImageTextButton("", Skins.COMODORE_SKIN, "inventory-expand-collapse");
-        expandInventoryButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                inventorySystem.toggleExpanded();
-            }
-        });
-        return expandInventoryButton;
-    }
-
-    private ImageButton createCastButton() {
-        ImageButton staff = WidgetFactory.createImageStaffButton();
-        staff.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                spellSystem.castClick();
-            }
-        });
-        return staff;
-    }
-
-    public void clearCast() {
-        castButton.setChecked(false);
-    }
-
-    private ImageButton createShotButton() {
-        Sprite shotSprite = new Sprite(new Texture(Gdx.files.local("data/graficos2x/16007.png")));
-        shotSprite.rotate90(true);
-        SpriteDrawable shotDrawable = new SpriteDrawable(shotSprite);
-        ImageButton.ImageButtonStyle shotStile = new ImageButton.ImageButtonStyle();
-        shotStile.up = Skins.COMODORE_SKIN.getDrawable("big-disc");
-        shotStile.imageUp = shotDrawable.tint(Color.DARK_GRAY);
-        shotStile.imageChecked = shotDrawable.tint(Color.GOLDENROD);
-
-        ImageButton shotButton = WidgetFactory.createImageButton(shotStile);
-
-        shotButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                mouseSystem.shot();
-            }
-        });
-        return shotButton;
-    }
-
-    public void clearShot() {
-        shotButton.setChecked(false);
     }
 
     public void updateGoldLabel(int goldCount) {

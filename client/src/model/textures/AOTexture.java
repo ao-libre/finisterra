@@ -16,10 +16,13 @@ public class AOTexture {
                 image.getX(), image.getY(), image.getWidth(), image.getHeight());
         this.textureRegion.flip(false, flipY);
     }
-
-    public void dispose() {
-        this.textureRegion.getTexture().dispose();
-    }
+//
+//    public AOTexture(AOImage image, TextureRegion region, boolean flipY) {
+//        this.textureRegion = new TextureRegion(region);
+//        textureRegion.setRegion(region.getRegionX() + image.getX(), region.getRegionY() + image.getY(),
+//                image.getWidth(), image.getHeight());
+//        textureRegion.flip(false, flipY);
+//    }
 
     public TextureRegion getTexture() {
         return textureRegion;

@@ -27,7 +27,7 @@ public class WorldRenderingSystem extends BaseSystem {
     private MapManager mapManager;
     private CameraSystem cameraSystem;
     private TiledMapSystem tiledMapSystem;
-    private CharacterRenderingSystem characterRenderingSystem;
+    private CharacterRenderSystem characterRenderingSystem;
     private EffectRenderingSystem effectRenderingSystem;
     private NetworkedEntitySystem networkedEntitySystem;
 

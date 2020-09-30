@@ -5,8 +5,11 @@ import com.artemis.E;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import component.entity.character.equipment.Helmet;
 import component.entity.character.equipment.Shield;
 import component.entity.character.equipment.Weapon;
@@ -19,6 +22,8 @@ import game.systems.render.BatchTask;
 import game.systems.resources.AnimationsSystem;
 import game.systems.resources.DescriptorsSystem;
 import game.utils.Pos2D;
+import game.utils.Resources;
+import game.utils.Skins;
 import model.descriptors.BodyDescriptor;
 import model.textures.AOTexture;
 import model.textures.BundledAnimation;
@@ -40,6 +45,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
     private DescriptorsSystem descriptorsSystem;
     private AnimationsSystem animationsSystem;
     private BatchRenderingSystem batchRenderingSystem;
+    private static TextureRegion shadow;
 
     public CharacterRenderingSystem() {
         super(CHAR_ASPECT);
@@ -49,6 +55,11 @@ public class CharacterRenderingSystem extends RenderingSystem {
         float animationTime = bodyAnimation.getAnimationTime();
         float interpolationTime = bodyAnimation.getAnimation().getAnimationDuration() / 2;
         return Interpolation.circle.apply(Math.min(1f, animationTime < interpolationTime ? animationTime / interpolationTime : interpolationTime / animationTime));
+    }
+
+    @Override
+    protected void initialize() {
+        shadow = new TextureRegion(new Texture(Resources.GAME_IMAGES_PATH + "shadow.png"));
     }
 
     @Override
@@ -115,6 +126,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
          */
         public void draw() {
             int current = player.getHeading().current;
+            if (!player.hasNPC()) drawShadow();
             switch (current) { //¿A que direccion esta mirando?
                 case Heading.HEADING_NORTH: //Norte
                     drawWeapon();
@@ -145,6 +157,10 @@ public class CharacterRenderingSystem extends RenderingSystem {
                     drawShield();
                     break;
             }
+        }
+
+        private void drawShadow() {
+            drawTexture(shadow, screenPos.x + ((Tile.TILE_PIXEL_WIDTH - shadow.getRegionWidth()) / 2), screenPos.y - shadow.getRegionHeight(), 0, 0, 0.8f);
         }
 
         /**
@@ -232,7 +248,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
                 if (texture != null) {
                     float offsetX = 4.0f * SCALE;
                     float offsetY = headOffsetY - (shouldFlip ? -1 : 1) * 4 * SCALE;
-                    drawTexture(texture.getTexture(), this.bodyPixelOffsetX, this.bodyPixelOffsetY, offsetX, offsetY);
+                    drawTexture(texture.getTexture(), this.bodyPixelOffsetX, this.bodyPixelOffsetY, offsetX, offsetY + (idle / 2));
                 }
             }
         }

@@ -15,19 +15,21 @@ import static component.entity.character.info.Bag.Item;
 
 public class Slot extends ImageButton {
 
-    static final int SIZE = 64;
+    static final int SIZE = 48;
 
-    private static Drawable selection = Skins.COMODORE_SKIN.getDrawable("slot-selected2");
+    private static Drawable selection = WidgetFactory.createDrawable(WidgetFactory.Drawables.INVENTORY_SLOT_SELECTION.name);
+    private static Drawable overlay = WidgetFactory.createDrawable(WidgetFactory.Drawables.INVENTORY_SLOT_OVERLAY.name);
     private static Texture equip = new Texture(Gdx.files.local("data/ui/images/slot-equipped.png"));
 
     private Optional<Item> item = Optional.empty();
 
+    private boolean dragging;
     private boolean selected;
     private Tooltip tooltip;
     private TextureRegion graphic;
 
     Slot() {
-        super(Skins.COMODORE_SKIN, "icon-container");
+        super(Skins.CURRENT.get(), "slot");
     }
 
     public Slot(Item item) {
@@ -68,24 +70,30 @@ public class Slot extends ImageButton {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
         if (item.isPresent()) {
-            drawItem(batch);
+            if (!dragging) drawItem(batch);
             if (item.get().equipped) {
-                batch.draw(equip, getX(), getY(), SIZE, SIZE);
+                batch.draw(equip, getX(), getY(), getWidth(), getHeight());
             }
+
             if (selected) {
-                selection.draw(batch, getX(), getY(), SIZE, SIZE);
+                selection.draw(batch, getX(), getY(), getWidth(), getHeight());
             }
         }
+        overlay.draw(batch, getX(), getY(), getWidth(), getHeight());
     }
 
     private void drawItem(Batch batch) {
         if (graphic != null) {
-            batch.draw(graphic, getX() + 1, getY() + 1);
+            batch.draw(graphic, getX() + 3, getY() + 3, getWidth() - 6, getHeight() - 6);
         }
     }
 
     void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    void setDragging(boolean dragging) {
+        this.dragging = dragging;
     }
 
 }

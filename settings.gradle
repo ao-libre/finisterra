@@ -1,3 +1,4 @@
 rootProject.name = 'finisterra'
 include 'desktop', 'design', 'client', 'components', 'shared', 'server'
+include 'compatibility'
 

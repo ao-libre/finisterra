@@ -38,8 +38,8 @@ public class BatchRenderingSystem extends BaseSystem {
     public BatchRenderingSystem() {
         this.batch = new SpriteBatch();
         this.light = new Texture(Gdx.files.internal(Resources.GAME_SHADERS_PATH + GAME_SHADERS_LIGHT));
-        width = Tile.TILE_PIXEL_WIDTH * 32f;
-        height = Tile.TILE_PIXEL_WIDTH * 32f;
+        width = Gdx.graphics.getWidth();
+        height = width;
         resize(width, height);
     }
 

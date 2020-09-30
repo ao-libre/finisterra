@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 @PooledWeaver
 public class AOPhysics extends Component implements Serializable {
 
-    public final static float WALKING_VELOCITY = 165.0f;
+    public final static float WALKING_VELOCITY = 32 * 4f;
 
     public Deque<Movement> intentions = new ConcurrentLinkedDeque<>();
     public float velocity = WALKING_VELOCITY;
@@ -20,7 +20,7 @@ public class AOPhysics extends Component implements Serializable {
     }
 
     public float getVelocity() {
-        return velocity * 2;
+        return velocity;
     }
 
     public void setVelocity(float velocity) {

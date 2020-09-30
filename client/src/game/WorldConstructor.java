@@ -22,7 +22,9 @@ import game.systems.physics.AttackAnimationSystem;
 import game.systems.physics.MovementProcessorSystem;
 import game.systems.physics.MovementSystem;
 import game.systems.physics.PlayerInputSystem;
+import game.systems.profiling.ProfilerSystem;
 import game.systems.render.BatchRenderingSystem;
+import game.systems.render.chars.PrerenderCharCache;
 import game.systems.render.world.*;
 import game.systems.resources.*;
 import game.systems.screen.MouseSystem;
@@ -119,6 +121,7 @@ public class WorldConstructor {
 
                 // Rendering
                 .with(PRE_ENTITY_RENDER_PRIORITY,
+                        new PrerenderCharCache(),
                         new ClearScreenSystem(),
                         new MapGroundRenderingSystem(),
                         new ObjectRenderingSystem(),
@@ -127,7 +130,7 @@ public class WorldConstructor {
 
                 .with(ENTITY_RENDER_PRIORITY,
                         new EffectRenderingSystem(),
-                        new CharacterRenderingSystem(),
+                        new CharacterRenderSystem(),
                         new WorldRenderingSystem())
 
                 .with(POST_ENTITY_RENDER_PRIORITY,
@@ -150,13 +153,14 @@ public class WorldConstructor {
                         new ConsoleSystem(),
                         new DialogSystem(),
                         new StatsSystem(),
-                        new UserSystem(),
-                        new UserInterfaceSystem())
+                        new UserInterfaceSystem(),
+                        new UserSystem())
 
                 // Otros sistemas
                 .with(new MapManager(),
                         new TagManager(),
-                        new UuidEntityManager())
+                        new UuidEntityManager(),
+                        new ProfilerSystem())
 
                 .build()
                 .register(assetManager);

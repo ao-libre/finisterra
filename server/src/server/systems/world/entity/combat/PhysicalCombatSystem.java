@@ -53,7 +53,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
 
     @Override
     protected void failed(int entityId, Optional<Integer> targetId) {
-        notify(targetId.isPresent() ? targetId.get() : entityId, CombatMessage.physic(MISS));
+        notify(targetId.orElse(entityId), CombatMessage.physic(MISS));
     }
 
     @Override
@@ -92,18 +92,26 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
                 // TODO descomentar: return false;
             }
 
-            // TODO attack power can be bow
-
-            int evasionPower = evasionPower(targetId) + (E(targetId).hasShield() ? shieldEvasionPower(targetId) : 0);
+            boolean hasShield = E(targetId).hasShield();
+            int evasionPower = evasionPower(targetId) + (hasShield ? shieldEvasionPower(targetId) : 0);
             double prob = Math.max(10, Math.min(90, 50 + (weaponAttackPower(entityId) - evasionPower) * 0.4));
+
             if (ThreadLocalRandom.current().nextInt(101) <= prob) {
                 return true;
             } else {
-                int skills = 200;
-                prob = Math.max(10, Math.min(90, 100 * 100 / skills));
-
+                boolean shieldRejection = false;
+                if (hasShield && E(targetId).hasSkills()) {
+                    int tacticsSkills = E(targetId).skillsTacticas();
+                    int defenseSkills = E(targetId).skillsDefensa();
+                    if (tacticsSkills + defenseSkills > 0) {
+                        prob = Math.max(10, Math.min(90, 100 * defenseSkills / (tacticsSkills + defenseSkills)));
+                    } else {
+                        prob = 10;
+                    }
+                    shieldRejection = ThreadLocalRandom.current().nextInt(101) <= prob;
+                }
                 // shield evasion
-                if (E(targetId).hasShield() && ThreadLocalRandom.current().nextInt(101) <= prob) {
+                if (hasShield && shieldRejection) {
                     notifyCombat(targetId, Messages.SHIELD_DEFENSE);
                     notifyCombat(entityId, Messages.DEFENDED_WITH_SHIELD, getName(targetId));
                     // TODO shield animation
@@ -136,7 +144,7 @@ public class PhysicalCombatSystem extends AbstractCombatSystem {
         AttackPlace place = AttackPlace.getRandom();
         int defense = (place == AttackPlace.HEAD ? getHeadDefense(entityId) : getBodyDefense(entityId));
         Log.info("Defense: " + defense);
-        return Math.max(0, baseDamage - defense);
+        return Math.max(1, baseDamage - defense);
     }
 
     private int getBodyDefense(int entityId) {

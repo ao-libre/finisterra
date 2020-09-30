@@ -3,6 +3,7 @@ package game;
 import com.artemis.World;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.utils.PerformanceCounter;
 import com.esotericsoftware.minlog.Log;
 import game.handlers.DefaultAOAssetManager;
 import game.screens.LoadingScreen;
@@ -40,6 +41,7 @@ public class AOGame extends Game {
         assetManager = new DefaultAOAssetManager(clientConfiguration);
         LoadingScreen screen = new LoadingScreen(assetManager);
         setScreen(screen);
+
         screen.onFinished((assetManager) -> {
             ScreenManager screenManager = new ScreenManager(this);
             this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
@@ -48,16 +50,17 @@ public class AOGame extends Game {
             musicSystem.playMusic(101, true);
             screenManager.addListener((screenEnum -> {
                 switch (screenEnum) {
-                    case LOGIN:
+                    case LOGIN -> {
                         this.musicSystem = world.getSystem(MusicSystem.class);
                         musicSystem.stopMusic();
                         this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
                         this.musicSystem = world.getSystem(MusicSystem.class);
                         musicSystem.playMusic(101, true);
-                        break;
-                    case GAME:
+                    }
+                    case GAME -> {
                         this.musicSystem = world.getSystem(MusicSystem.class);
                         musicSystem.playMusic(1, true);
+                    }
                 }
             }));
         });

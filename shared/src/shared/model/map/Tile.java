@@ -7,8 +7,8 @@ import java.util.Arrays;
 public class Tile {
 
     public static final int EMPTY_INDEX = -1;
-    public static final float TILE_PIXEL_WIDTH = 64.0f;
-    public static final float TILE_PIXEL_HEIGHT = 64.0f;
+    public static final float TILE_PIXEL_WIDTH = 32.0f;
+    public static final float TILE_PIXEL_HEIGHT = 32.0f;
 
     private int[] graphic;
 

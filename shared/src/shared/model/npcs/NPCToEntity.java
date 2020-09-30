@@ -17,7 +17,7 @@ public class NPCToEntity {
                 .headingCurrent(Heading.HEADING_SOUTH)
                 .nameText(npc.getName());
         if (npc.getMovement() == 3) {
-            npcEntity.aOPhysics().aOPhysicsVelocity(85f);
+            npcEntity.aOPhysics().aOPhysicsVelocity(40f);
             npcEntity.aIMovement();
         }
         if (npc.getHead() > 0) {

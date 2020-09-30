@@ -9,6 +9,10 @@ public class DialogText extends Table {
 
     public DialogText() {
         setVisible(false);
+        if (textf == null) {
+            textf = WidgetFactory.createTextField("");
+        }
+        add(textf).growX();
     }
 
     public String getMessage() {
@@ -16,18 +20,13 @@ public class DialogText extends Table {
     }
 
     public void toggle() {
-        if (textf == null) {
-            textf = WidgetFactory.createTextField("");
-        }
+
         setVisible(!isVisible());
         if (isVisible()) {
-            add(textf).fillX();
-            row().colspan(1).expandX().fillX();
             getStage().setKeyboardFocus(textf);
         } else {
             getStage().unfocus(textf);
             textf.setText("");
-            removeActor(textf);
         }
     }
 

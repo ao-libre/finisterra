@@ -11,6 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.PerformanceCounter;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.esotericsoftware.minlog.Log;
 import game.handlers.DefaultAOAssetManager;
 import game.ui.WidgetFactory;
 import game.utils.Resources;
@@ -23,7 +26,7 @@ import static com.badlogic.gdx.scenes.scene2d.ui.ProgressBar.ProgressBarStyle;
 @Wire
 public class LoadingScreen extends ScreenAdapter {
 
-    private static final Skin SKIN = Skins.COMODORE_SKIN;
+    private static final Skin SKIN = Skins.CURRENT.get();
     private static final Texture BACKGROUND_TEXTURE = new Texture(Gdx.files.internal(Resources.GAME_IMAGES_PATH + "background.jpg"));
     private static final SpriteDrawable BACKGROUND = new SpriteDrawable(new Sprite(BACKGROUND_TEXTURE));
     private final Stage stage;
@@ -36,6 +39,8 @@ public class LoadingScreen extends ScreenAdapter {
     private boolean loaded;
     private boolean textureLoading;
     private Consumer<DefaultAOAssetManager> onFinished;
+    private final static float nano2seconds = 1f / 1000000000.0f;
+    private float start;
 
     public LoadingScreen(DefaultAOAssetManager assetManager) {
         this.assetManager = assetManager;
@@ -64,6 +69,7 @@ public class LoadingScreen extends ScreenAdapter {
         progress = WidgetFactory.createLoadingProgressBar();
         table.add(progress).expandX();
         mainTable.add(table).expand();
+        start = TimeUtils.nanoTime();
         assetManager.load();
     }
 
@@ -76,6 +82,7 @@ public class LoadingScreen extends ScreenAdapter {
                 // TODO
 
             } else {
+                Log.info("Loading time " + (TimeUtils.nanoTime() - start) * nano2seconds + "s");
                 loaded = true;
                 onFinished.accept(assetManager);
             }

@@ -31,7 +31,7 @@ public class SpellSystem extends UserInterfaceContributionSystem {
         spellView = new SpellBookUI() {
             @Override
             protected void onCastClicked(SpellSlotUI slot) {
-                if (slot != null) {
+                if (slot != null && slot.getSpell() != null) {
                     mouseSystem.spell(slot.getSpell());
                 }
             }
@@ -58,19 +58,8 @@ public class SpellSystem extends UserInterfaceContributionSystem {
         spellView.setVisible(true);
     }
 
-    public void clearCast() {
-        actionBarSystem.clearCast();
-    }
-
     public boolean isVisible() {
         return spellView.isVisible();
     }
 
-    public void castClick() {
-        spellView.castClick();
-    }
-
-    public void clearShot() {
-        actionBarSystem.clearShot();
-    }
 }

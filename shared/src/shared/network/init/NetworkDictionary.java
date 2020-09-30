@@ -201,6 +201,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 WoodObj.class,
 
                 // Components
+                Skills.class,
                 AOSound.class,
                 Ref.class,
                 OriginPos.class,

@@ -7,104 +7,56 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Tooltip;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import component.entity.character.info.Bag;
 import component.entity.character.info.Bag.Item;
-import game.systems.PlayerSystem;
 import game.utils.Skins;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public abstract class Inventory extends Window {
+public abstract class Inventory extends Table {
 
     private static final int COLUMNS = 5;
-    private static final int ROWS = 4;
+    private static final int ROWS = 5;
     private static final int SIZE = COLUMNS * ROWS;
     private int base;
 
-    private PlayerSystem playerSystem;
     private ArrayList<Slot> slots;
     private ArrayList<Label> itemCount;
     private Optional<Slot> selected = Optional.empty();
     private Optional<Slot> dragging = Optional.empty();
     private Optional<Slot> origin = Optional.empty();
-    private boolean expanded;
 
 
     public Inventory() {
-        super("", Skins.COMODORE_SKIN, "inventory");
-        setMovable(false);
+        super();
         this.slots = new ArrayList<>();
         this.itemCount = new ArrayList<>();
         createui();
     }
 
     private void createui() {
-        clear();
-        if (expanded) {
-            int columnsCounter = 1, loops = 0;
-            for (int i = 0; i < SIZE; i++) {
-                Slot newSlot = new Slot();
-                Label count = WidgetFactory.createLabel("");
-                count.setFontScale(0.7f);
-                itemCount.add(count);
-                slots.add(newSlot);
-                add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE);
-                if (columnsCounter > ROWS - 1) {
-                    row();
-                    for (int x = 0; x < 4; x++) {
-                        switch (loops) {
-                            case 0:
-                                add(itemCount.get(x)).height(10);
-                                break;
-                            case 1:
-                                add(itemCount.get(x + 4)).height(10);
-                                break;
-                            case 2:
-                                add(itemCount.get(x + 8)).height(10);
-                                break;
-                            case 3:
-                                add(itemCount.get(x + 12)).height(10);
-                                break;
-                            case 4:
-                                add(itemCount.get(x + 16)).height(10);
-                                break;
-                        }
-                    }
-                    row();
-                    for (int y = 0; y < 4; y++) {
-                        add(WidgetFactory.createSeparatorImage());
-                    }
-                    row();
-                    columnsCounter = 0;
-                    loops++;
-                }
-                columnsCounter++;
+        int columnsCounter = 1, loops = 0;
+        for (int i = 0; i < SIZE; i++) {
+            Slot newSlot = new Slot();
+            Label count = WidgetFactory.createLabel("");
+            itemCount.add(count);
+            slots.add(newSlot);
+            add(newSlot).width(Slot.SIZE).height(Slot.SIZE).space(0);
+            if (columnsCounter > ROWS - 1) {
+                row();
+                columnsCounter = 0;
+                loops++;
+            }
+            columnsCounter++;
 
-            }
-        } else {
-            for (int i = 0; i < 5; i++) {
-                Slot newSlot = new Slot();
-                Label count = WidgetFactory.createLabel("");
-                count.setFontScale(0.7f);
-                slots.add(newSlot);
-                itemCount.add(count);
-                add(slots.get(i)).width(Slot.SIZE).height(Slot.SIZE).row();
-                add(itemCount.get(i)).height(10).row();
-                add(WidgetFactory.createSeparatorImage()).row();
-            }
         }
         addListener(getMouseListener());
-    }
-
-    public void toggleExpanded(Bag bag) {
-        expanded = !expanded;
-        createui();
-        update(bag);
     }
 
     public void selectItem(float x, float y, int tapCount) {
@@ -124,8 +76,8 @@ public abstract class Inventory extends Window {
         return Stream.of(getChildren().items)
                 .filter(Slot.class::isInstance)
                 .filter(actor -> {
-                    if (x > actor.getX() && x < actor.getWidth() + actor.getX()) {
-                        return y > actor.getY() && y < actor.getHeight() + actor.getY();
+                    if (x >= actor.getX() && x <= actor.getWidth() + actor.getX()) {
+                        return y >= actor.getY() && y <= actor.getHeight() + actor.getY();
                     }
                     return false;
                 })
@@ -146,9 +98,7 @@ public abstract class Inventory extends Window {
             public void clicked(InputEvent event, float x, float y) {
                 int tapCount = getTapCount();
                 selectItem(x, y, tapCount);
-
             }
-
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
@@ -164,6 +114,7 @@ public abstract class Inventory extends Window {
                 super.touchDragged(event, x, y, pointer);
                 if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
                     dragging = origin;
+                    dragging.ifPresent(slot -> slot.setDragging(true));
                 } else {
                     dragging = Optional.empty();
                 }
@@ -179,8 +130,10 @@ public abstract class Inventory extends Window {
                         int targetIndex = base + slots.indexOf(target);
                         int originIndex = base + slots.indexOf(dragging.get());
                         swap(originIndex, targetIndex);
+                        dragging.ifPresent(draggedSlot -> draggedSlot.setDragging(false));
                     } else {
                         dragAndDropOut(draggingIndex(), (int) x, (int) y);
+                        dragging.ifPresent(draggedSlot -> draggedSlot.setDragging(false));
                     }
                 }
                 dragging = Optional.empty();
@@ -199,20 +152,11 @@ public abstract class Inventory extends Window {
 
     public void update(int base, Bag userBag) {
         Item[] userItems = userBag.items;
-        if (expanded) {
-            for (int i = 0; i < SIZE; i++) {
-                Item item = base + i < userItems.length ? userItems[base + i] : null;
-                slots.get(i).setItem(item, item != null ? getGraphic(item) : null, item != null ? getTooltip(item) : null);
-                updateCount(item, i);
-            }
-        } else {
-            for (int i = 0; i < 5; i++) {
-                Item item = base + i < userItems.length ? userItems[base + i] : null;
-                slots.get(i).setItem(item, item != null ? getGraphic(item) : null, item != null ? getTooltip(item) : null);
-                updateCount(item, i);
-            }
+        for (int i = 0; i < SIZE; i++) {
+            Item item = base + i < userItems.length ? userItems[base + i] : null;
+            slots.get(i).setItem(item, item != null ? getGraphic(item) : null, item != null ? getTooltip(item) : null);
+            updateCount(item, i);
         }
-
     }
 
     private void updateCount(Item item, int i) {
@@ -233,9 +177,9 @@ public abstract class Inventory extends Window {
         dragging.ifPresent(slot -> {
             TextureRegion graphic = slot.getGraphic();
             if (graphic != null) {
-                int x1 = Gdx.input.getX() - (graphic.getRegionWidth() / 2);
-                int y1 = Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2);
-                batch.draw(graphic, x1, y1);
+                int x1 = Gdx.input.getX() - (graphic.getRegionWidth() / 2 / 2);
+                int y1 = Gdx.graphics.getHeight() - Gdx.input.getY() - (graphic.getRegionHeight() / 2 / 2);
+                batch.draw(graphic, x1, y1, Slot.SIZE, Slot.SIZE);
             }
         });
     }
@@ -263,8 +207,4 @@ public abstract class Inventory extends Window {
 
     protected abstract Tooltip getTooltip(Item item);
 
-
-    public boolean getExpanded() {
-        return expanded;
-    }
 }

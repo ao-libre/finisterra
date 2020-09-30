@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.I18NBundle;
+import com.badlogic.gdx.utils.PerformanceCounter;
 import com.esotericsoftware.minlog.Log;
 import game.ClientConfiguration;
 import game.loaders.*;
@@ -76,6 +77,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     private Map<Integer, HelmetDescriptor> helmets;
     private Map<Integer, WeaponDescriptor> weapons;
     private Map<Integer, BodyDescriptor> bodies;
+    private TextureAtlas textureAtlas;
 
     public DefaultAOAssetManager(ClientConfiguration clientConfiguration) {
         this.languagesFile = SharedResources.LANGUAGES_FOLDER + "messages";
@@ -100,6 +102,11 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         loadSkins();
         loadFonts();
         loadMessages();
+        loadAtlas();
+    }
+
+    private void loadAtlas() {
+        load(Resources.GAME_ATLAS_PATH + "images.atlas", TextureAtlas.class);
     }
 
     @Override

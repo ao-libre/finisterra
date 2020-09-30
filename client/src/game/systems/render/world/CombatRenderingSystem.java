@@ -36,7 +36,7 @@ public class CombatRenderingSystem extends RenderingSystem {
             .build(new CacheLoader<CombatMessage, Table>() {
                 @Override
                 public Table load(@NotNull CombatMessage message) {
-                    Table table = new Table(Skins.COMODORE_SKIN);
+                    Table table = new Table(Skins.CURRENT.get());
                     table.setRound(false);
                     Label label = WidgetFactory.createCombatLabel(message);
                     message.originalScale = message.kind == CombatMessage.Kind.STAB ? 1.3f : 1f;

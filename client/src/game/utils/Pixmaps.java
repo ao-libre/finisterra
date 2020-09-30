@@ -51,7 +51,7 @@ public class Pixmaps {
         return pixmap;
     }
 
-    protected static Pixmap outline(Pixmap input, Color color) {
+    public static Pixmap outline(Pixmap input, Color color) {
         Pixmap pixmap = copy(input);
         pixmap.setColor(color);
 
