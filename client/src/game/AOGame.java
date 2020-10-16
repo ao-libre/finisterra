@@ -37,7 +37,7 @@ public class AOGame extends Game {
     public void create() {
         Log.debug("AOGame", "Creating AOGame...");
         // Create Loading screen
-        assetManager = new DefaultAOAssetManager(clientConfiguration);
+        assetManager = DefaultAOAssetManager.getInstance();
         LoadingScreen screen = new LoadingScreen(assetManager);
         setScreen(screen);
         screen.onFinished((assetManager) -> {
