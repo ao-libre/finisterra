@@ -77,7 +77,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     private Map<Integer, WeaponDescriptor> weapons;
     private Map<Integer, BodyDescriptor> bodies;
 
-    public DefaultAOAssetManager(ClientConfiguration clientConfiguration) {
+    private DefaultAOAssetManager(ClientConfiguration clientConfiguration) {
         this.languagesFile = SharedResources.LANGUAGES_FOLDER + "messages";
         this.languagesLocale = clientConfiguration.getInitConfig().getLanguage().split("_");
         setLoader(Sequencer.class, new MidiLoader());
@@ -87,6 +87,19 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         setLoader(SPELLS_CLASS, SharedResources.SPELLS_FILE + JSON_EXTENSION, new SpellsLoader());
         setLoader(DESCRIPTORS_CLASS, new DescriptorsLoader());
         setLoader(AOSkin.class, new AOSkinLoader());
+    }
+
+    private static DefaultAOAssetManager instance;
+    private static final Object lock = new Object(); //thread-safety singleton lock
+
+    // singleton
+    public static DefaultAOAssetManager getInstance() {
+        if (instance == null) {
+            synchronized (lock) {
+                if (instance == null) instance = new DefaultAOAssetManager(ClientConfiguration.createConfig());
+            }
+        }
+        return instance;
     }
 
     @Override
