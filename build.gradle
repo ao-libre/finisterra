@@ -129,4 +129,8 @@ configure(subprojects.findAll { it.name == 'server' || it.name == 'desktop' }) {
 
     }
 
+    ext {
+        // expose current version + build date to children projects
+        buildVersion = "$version-${new Date().format('yyyyMMddHHmmss')}"
+    }
 }

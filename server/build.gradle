@@ -112,7 +112,9 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
         copy {
 
             from files(sourceSets.main.output.resourcesDir)
-			from file("$projectDir/Server.json")
+			from ("$projectDir/Server.json") {
+                expand (version: "$buildVersion")
+            }
             from file("$projectDir/Chars.json")
 
             switch(OS) {
