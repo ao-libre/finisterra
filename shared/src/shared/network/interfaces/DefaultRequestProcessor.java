@@ -12,6 +12,7 @@ import shared.network.time.TimeSyncRequest;
 import shared.network.user.UserContinueRequest;
 import shared.network.user.UserCreateRequest;
 import shared.network.user.UserLoginRequest;
+import shared.network.user.UserLogoutRequest;
 
 public class DefaultRequestProcessor extends PassiveSystem implements IRequestProcessor {
 
@@ -91,4 +92,8 @@ public class DefaultRequestProcessor extends PassiveSystem implements IRequestPr
 
     }
 
+    @Override
+    public void processRequest(UserLogoutRequest userLogoutRequest, int connectionId) {
+
+    }
 }
