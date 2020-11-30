@@ -28,6 +28,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.*;
 
 @Wire
@@ -41,6 +43,8 @@ public class UserSystem extends PassiveSystem {
     private AccountSystem accountSystem;
     private ComponentSystem componentSystem;
     private Json json;
+
+    Set<String> onlineUsers = new HashSet<>();
 
     public static void checkStorageDirectory() {
         File charfilesDir = new File(Charfile.DIR_CHARFILES);
@@ -57,14 +61,15 @@ public class UserSystem extends PassiveSystem {
 
     public void login(int connectionId, String userName) {
         //chequea si no hay ya un pj logueado desde ese cliente
-        if (serverSystem.connectionHasNoPlayer( connectionId )) {
-            if(userExists( userName )) {
+        if (!isOnline(userName)) {
+            if(userExists(userName)) {
                 // login
                 try {
                     Integer entityId = loadUser( userName ).get( 250, TimeUnit.MILLISECONDS );
                     if(entityId != -1) {
                         serverSystem.sendTo( connectionId, UserLoginResponse.ok() );
                         worldEntitiesSystem.login( connectionId, entityId );
+                        onlineUsers.add(userName);
                     } else {
                         serverSystem.sendTo( connectionId,
                                 UserLoginResponse.failed( "No se pudo leer el personaje " + userName + ". Por favor contactate con soporte." ) );
@@ -194,4 +199,11 @@ public class UserSystem extends PassiveSystem {
         });
     }
 
+    public boolean isOnline(String username) {
+        return onlineUsers.contains(username);
+    }
+
+    public void logout(String username) {
+        onlineUsers.remove(username);
+    }
 }
