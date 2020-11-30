@@ -1,5 +1,6 @@
 package server.systems.network;
 
+import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
@@ -7,6 +8,7 @@ import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import server.configs.ServerConfiguration;
 import server.core.ServerStrategy;
+import server.systems.account.UserSystem;
 import server.systems.config.ConfigurationSystem;
 import server.systems.world.MapSystem;
 import server.systems.world.WorldEntitiesSystem;
@@ -28,8 +30,12 @@ public class ServerSystem extends MarshalSystem {
     private ServerRequestProcessor requestProcessor;
     private WorldEntitiesSystem worldEntitiesSystem;
     private ConfigurationSystem configurationSystem;
+    private UserSystem userSystem;
 
     private Deque<NetworkJob> netQueue = new ConcurrentLinkedDeque<>();
+
+    // @todo acá se podría usar BiMap de Google Guava
+    // @see https://github.com/google/guava/wiki/NewCollectionTypesExplained#bimap
     private Map<Integer, Integer> playerByConnection = new ConcurrentHashMap<>();
     private Map<Integer, Integer> connectionByPlayer = new ConcurrentHashMap<>();
 
@@ -75,14 +81,23 @@ public class ServerSystem extends MarshalSystem {
     }
 
     @Override
-    public void disconnected(int connectionId) {
-        super.disconnected(connectionId);
-        if (connectionHasNoPlayer(connectionId)) {
+    public void disconnected(int connectionID) {
+        super.disconnected(connectionID);
+        if (connectionHasNoPlayer(connectionID)) {
             return;
         }
         Gdx.app.postRunnable(() -> {
-            worldEntitiesSystem.unregisterEntity(getPlayerByConnection(connectionId));
+            int playerID = getPlayerByConnection(connectionID);
+            E player = E.E(playerID);
+            String username = player.nameText();
+            worldEntitiesSystem.unregisterEntity(getPlayerByConnection(connectionID));
+            userSystem.logout(username);
         });
+    }
+
+    public void closeConnection(int connectionID) {
+        ServerStrategy marshal = (ServerStrategy) getMarshal();
+        marshal.getConnection(connectionID).close();
     }
 
     /**

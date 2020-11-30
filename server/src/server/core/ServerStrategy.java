@@ -1,5 +1,6 @@
 package server.core;
 
+import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 import net.mostlyoriginal.api.network.marshal.common.MarshalState;
@@ -25,7 +26,7 @@ public class ServerStrategy extends KryonetMarshalStrategy {
     @Override
     protected void connectEndpoint() {
         try {
-            ((Server) endpoint).bind(tcpPort, udpPort);
+            ((Server)endpoint).bind(tcpPort, udpPort);
             Log.info("Server initialization", "Listening connections in ports TCP: " + tcpPort + " and UDP: " + udpPort);
             state = MarshalState.STARTED;
         } catch (IOException e) {
@@ -36,11 +37,20 @@ public class ServerStrategy extends KryonetMarshalStrategy {
 
     @Override
     public void sendToAll(Object o) {
-        ((Server) endpoint).sendToAllTCP(o);
+        ((Server)endpoint).sendToAllTCP(o);
     }
 
-    public void sendTo(int connectionId, Object o) {
-        ((Server) endpoint).sendToTCP(connectionId, o);
+    public void sendTo(int connectionID, Object o) {
+        ((Server)endpoint).sendToTCP(connectionID, o);
     }
 
+    public Connection getConnection(int connectionID) {
+        Connection[] connections = ((Server)endpoint).getConnections();
+        for (Connection connection : connections) {
+            if (connection.getID() == connectionID) {
+                return connection;
+            }
+        }
+        return null;
+    }
 }

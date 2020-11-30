@@ -11,6 +11,7 @@ import net.mostlyoriginal.api.network.system.MarshalSystem;
 import shared.network.init.NetworkDictionary;
 import shared.network.interfaces.INotification;
 import shared.network.interfaces.IResponse;
+import shared.network.user.UserLogoutRequest;
 
 @Wire
 public class ClientSystem extends MarshalSystem {
@@ -61,6 +62,16 @@ public class ClientSystem extends MarshalSystem {
         if (screenManager.getScreen() instanceof GameScreen) {
             Gdx.app.postRunnable(() -> screenManager.to(ScreenEnum.LOGIN));
         }
+    }
+
+    public void logout(){
+        send(new UserLogoutRequest());
+    }
+
+    public void disconnect(){
+        getKryonetClient().getClient().close();
+        stop();
+        Log.info( getState() + "" );
     }
 
     public boolean connect() {
