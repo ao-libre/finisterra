@@ -57,8 +57,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     public void processRequest(@NotNull AccountLoginRequest accountLoginRequest, int connectionId) {
         String email = accountLoginRequest.getEmail();
         String password = accountLoginRequest.getPassword();
-
-        accountSystem.login(connectionId, email, password);
+        accountSystem.loginAccount(connectionId, email, password);
     }
 
     // Users

@@ -30,6 +30,9 @@ public class ServerSystem extends MarshalSystem {
     private ConfigurationSystem configurationSystem;
 
     private Deque<NetworkJob> netQueue = new ConcurrentLinkedDeque<>();
+
+    // @todo acá se podría usar BiMap de Google Guava
+    // @see https://github.com/google/guava/wiki/NewCollectionTypesExplained#bimap
     private Map<Integer, Integer> playerByConnection = new ConcurrentHashMap<>();
     private Map<Integer, Integer> connectionByPlayer = new ConcurrentHashMap<>();
 
@@ -83,6 +86,11 @@ public class ServerSystem extends MarshalSystem {
         Gdx.app.postRunnable(() -> {
             worldEntitiesSystem.unregisterEntity(getPlayerByConnection(connectionId));
         });
+    }
+
+    public void closeConnection(int connectionID) {
+        ServerStrategy marshal = (ServerStrategy) getMarshal();
+        marshal.getConnection(connectionID).close();
     }
 
     /**
