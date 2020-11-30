@@ -131,6 +131,8 @@ public class NetworkDictionary extends MarshalDictionary {
                 UserCreateRequest.class,
                 UserLoginResponse.class,
                 UserCreateResponse.class,
+                UserLogoutRequest.class,
+                UserLogoutResponse.class,
 
                 // Other
                 boolean[][].class,

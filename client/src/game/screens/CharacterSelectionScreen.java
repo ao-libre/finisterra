@@ -251,6 +251,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
         toLoginButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                clientSystem.stop();
                 screenManager.to(ScreenEnum.LOGIN);
             }
         });

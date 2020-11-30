@@ -20,6 +20,7 @@ import server.systems.world.entity.factory.EntityFactorySystem;
 import server.utils.EntityJsonSerializer;
 import shared.network.user.UserCreateResponse;
 import shared.network.user.UserLoginResponse;
+import shared.network.user.UserLogoutResponse;
 import shared.util.Messages;
 import shared.util.UserSystemUtilities;
 
@@ -55,30 +56,40 @@ public class UserSystem extends PassiveSystem {
     }
 
     public void login(int connectionId, String userName) {
-        if (userExists(userName)) {
-            // login
-            try {
-                Integer entityId = loadUser(userName).get(250, TimeUnit.MILLISECONDS);
-                if (entityId != -1) {
-                    serverSystem.sendTo(connectionId, UserLoginResponse.ok());
-                    worldEntitiesSystem.login(connectionId, entityId);
-                } else {
-                    serverSystem.sendTo(connectionId,
-                            UserLoginResponse.failed("No se pudo leer el personaje " + userName + ". Por favor contactate con soporte."));
+        //chequea si no hay ya un pj logueado desde ese cliente
+        if (serverSystem.connectionHasNoPlayer( connectionId )) {
+            if(userExists( userName )) {
+                // login
+                try {
+                    Integer entityId = loadUser( userName ).get( 250, TimeUnit.MILLISECONDS );
+                    if(entityId != -1) {
+                        serverSystem.sendTo( connectionId, UserLoginResponse.ok() );
+                        worldEntitiesSystem.login( connectionId, entityId );
+                    } else {
+                        serverSystem.sendTo( connectionId,
+                                UserLoginResponse.failed( "No se pudo leer el personaje " + userName + ". Por favor contactate con soporte." ) );
+                    }
+                } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                    Log.info( "Failed to retrieve user from JSON file" );
+                    e.printStackTrace();
+                    serverSystem.sendTo( connectionId,
+                            UserLoginResponse.failed( "Hubo un problema al leer el personaje " + userName ) );
                 }
-            } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                Log.info("Failed to retrieve user from JSON file");
-                e.printStackTrace();
-                serverSystem.sendTo(connectionId,
-                        UserLoginResponse.failed("Hubo un problema al leer el personaje " + userName));
-            }
 
+            } else {
+                // don't exist (should never happen)
+                // TODO remove from Account ?
+                serverSystem.sendTo( connectionId,
+                        UserLoginResponse.failed( "Este personaje " + userName + " no existe!" ) );
+            }
         } else {
-            // don't exist (should never happen)
-            // TODO remove from Account ?
-            serverSystem.sendTo(connectionId,
-                    UserLoginResponse.failed("Este personaje " + userName + " no existe!"));
+            Log.info( "la coneccion ya tiene un pj activo" );
         }
+    }
+
+    //todo ver si el pj no esta en pelea para evitar desconeccion en ese caso
+    public void userLogout(int connectionId){
+        serverSystem.sendTo( connectionId,new UserLogoutResponse());
     }
 
     public void create(int connectionId, String name, int heroId, String userAcc, int index) {
