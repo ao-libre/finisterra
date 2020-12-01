@@ -10,7 +10,7 @@ MMORPG de código abierto basado en Argentum Online. Escrito en Java usando Arte
 ![game preview image](https://cdn.discordapp.com/attachments/580487031197794313/636899837354442755/readme-repo.png)
 
 ### Fugaz Get Started
-basado en [OpenJDK versión 14](https://jdk.java.net/14/):
+basado en [OpenJDK versión 15](https://jdk.java.net/15/):
 
 ```
 git clone https://github.com/ao-libre/finisterra.git
@@ -18,7 +18,7 @@ cd finisterra
 ./gradlew desktop:run -x :shared:fluid  
 ```
 ## Getting Started (IntelliJ)
-Requerido JDK 14
+Requerido JDK 15
 - Importar como proyecto seleccionando build.gradle
 - Configurar JDK en el IDE:
   - Settear JDK al proyecto: File -> Project Structure... -> Project (en Project Settings) -> Project SDK
