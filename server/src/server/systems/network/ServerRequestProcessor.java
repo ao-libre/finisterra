@@ -87,12 +87,13 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      * Process {@link MovementRequest}. If it is valid, move player and notify.
      *
      * @param request      {@link component.movement}
-     * @param connectionId ID del jugador.
+     * @param connectionID ID del de la conexión.
      */
     @Override
-    public void processRequest(MovementRequest request, int connectionId) {
-        if (serverSystem.connectionHasNoPlayer(connectionId)) return;
-        movementSystem.move(connectionId, request.movement, request.requestNumber);
+    public void processRequest(MovementRequest request, int connectionID) {
+        if (serverSystem.connectionHasPlayer(connectionID)) {
+            movementSystem.move(connectionID, request.movement, request.requestNumber);
+        }
     }
 
     /**
