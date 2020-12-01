@@ -8,7 +8,6 @@ import shared.network.interaction.*;
 import shared.network.inventory.ItemActionRequest;
 import shared.network.movement.MovementRequest;
 import shared.network.time.TimeSyncRequest;
-import shared.network.user.UserContinueRequest;
 import shared.network.user.UserCreateRequest;
 import shared.network.user.UserLoginRequest;
 import shared.network.user.UserLogoutRequest;
@@ -42,8 +41,6 @@ public interface IRequestProcessor {
     void processRequest(UserCreateRequest userCreateRequest, int connectionId);
 
     void processRequest(UserLoginRequest userLoginRequest, int connectionId);
-
-    void processRequest(UserContinueRequest userContinueRequest, int connectionId);
 
     void processRequest(UserLogoutRequest userLogoutRequest, int connectionId);
 }

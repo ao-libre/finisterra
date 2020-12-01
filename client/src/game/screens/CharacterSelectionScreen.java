@@ -13,8 +13,8 @@ import game.systems.network.ClientResponseProcessor;
 import game.systems.network.ClientSystem;
 import game.ui.WidgetFactory;
 import shared.interfaces.Hero;
-import shared.network.user.UserContinueRequest;
 import shared.network.user.UserCreateRequest;
+import shared.network.user.UserLoginRequest;
 
 import java.util.ArrayList;
 
@@ -297,7 +297,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
                     }
                 }
                 // send request to login user
-                clientSystem.send(new UserContinueRequest(userName));
+                clientSystem.send(new UserLoginRequest(userName));
             }
         });
     }

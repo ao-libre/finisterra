@@ -21,7 +21,6 @@ import shared.network.inventory.ItemActionRequest;
 import shared.network.movement.MovementRequest;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
-import shared.network.user.UserContinueRequest;
 import shared.network.user.UserCreateRequest;
 import shared.network.user.UserLoginRequest;
 import shared.network.user.UserLogoutRequest;
@@ -61,16 +60,10 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     }
 
     // Users
-
     @Override
     public void processRequest(@NotNull UserLoginRequest userLoginRequest, int connectionId) {
         // TODO validate connectionId corresponds to account
         userSystem.login(connectionId, userLoginRequest.getUserName());
-    }
-
-    @Override
-    public void processRequest(UserContinueRequest userContinueRequest, int connectionId) {
-        userSystem.login(connectionId, userContinueRequest.getName());
     }
 
     @Override
@@ -87,12 +80,13 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      * Process {@link MovementRequest}. If it is valid, move player and notify.
      *
      * @param request      {@link component.movement}
-     * @param connectionId ID del jugador.
+     * @param connectionID ID del de la conexión.
      */
     @Override
-    public void processRequest(MovementRequest request, int connectionId) {
-        if (serverSystem.connectionHasNoPlayer(connectionId)) return;
-        movementSystem.move(connectionId, request.movement, request.requestNumber);
+    public void processRequest(MovementRequest request, int connectionID) {
+        if (serverSystem.connectionHasPlayer(connectionID)) {
+            movementSystem.move(connectionID, request.movement, request.requestNumber);
+        }
     }
 
     /**
@@ -134,11 +128,12 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      * If not, notify near users that user talked
      *
      * @param talkRequest  talk request with message
-     * @param connectionId user connection id
+     * @param connectionID user connection id
      */
     @Override
-    public void processRequest(@NotNull TalkRequest talkRequest, int connectionId) {
-        playerActionSystem.talk(connectionId, talkRequest.getMessage());
+    public void processRequest(@NotNull TalkRequest talkRequest, int connectionID) {
+        int playerID = serverSystem.getPlayerByConnection(connectionID);
+        if (talkRequest.isValid()) playerActionSystem.talk(playerID, talkRequest.getMessage());
     }
 
     /**
