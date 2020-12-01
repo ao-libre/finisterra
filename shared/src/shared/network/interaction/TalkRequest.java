@@ -18,6 +18,10 @@ public class TalkRequest implements IRequest {
         return message;
     }
 
+    public boolean isValid() {
+        return message.length() < 128;
+    }
+
     @Override
     public void accept(IRequestProcessor processor, int connectionId) {
         processor.processRequest(this, connectionId);

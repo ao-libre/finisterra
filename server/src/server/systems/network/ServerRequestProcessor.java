@@ -135,11 +135,12 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      * If not, notify near users that user talked
      *
      * @param talkRequest  talk request with message
-     * @param connectionId user connection id
+     * @param connectionID user connection id
      */
     @Override
-    public void processRequest(@NotNull TalkRequest talkRequest, int connectionId) {
-        playerActionSystem.talk(connectionId, talkRequest.getMessage());
+    public void processRequest(@NotNull TalkRequest talkRequest, int connectionID) {
+        int playerID = serverSystem.getPlayerByConnection(connectionID);
+        if (talkRequest.isValid()) playerActionSystem.talk(playerID, talkRequest.getMessage());
     }
 
     /**

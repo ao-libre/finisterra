@@ -96,19 +96,17 @@ public class PlayerActionSystem extends PassiveSystem {
         }
     }
 
-    public void talk(int connectionId, String message) {
-        int playerId = serverSystem.getPlayerByConnection(connectionId);
-
+    public void talk(int playerID, String message) {
         // Si es un comando...
         if (CommandSystem.Command.isCommand(message)) {
             if (commandSystem.commandExists(message)) {
-                commandSystem.handleCommand(message, playerId);
+                commandSystem.handleCommand(message, playerID);
             } else {
-                messageSystem.add(playerId, ConsoleMessage.error(Messages.INVALID_COMMAND.name()));
+                messageSystem.add(playerID, ConsoleMessage.error(Messages.INVALID_COMMAND.name()));
             }
         } else {
             // No es un comando, entonces es un dialogo.
-            EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(new Dialog(message)).build();
+            EntityUpdate update = EntityUpdateBuilder.of(playerID).withComponents(new Dialog(message)).build();
             entityUpdateSystem.add(update, UpdateTo.ALL);
         }
     }

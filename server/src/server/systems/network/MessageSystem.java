@@ -12,8 +12,8 @@ public class MessageSystem extends PassiveSystem {
     public MessageSystem() {
     }
 
-    public void add(int entity, ConsoleMessage message) {
-        entityUpdateSystem.add(entity, EntityUpdateBuilder.none().withComponents(message).build(), UpdateTo.ENTITY);
+    public void add(int entityID, ConsoleMessage message) {
+        entityUpdateSystem.add(entityID, EntityUpdateBuilder.none().withComponents(message).build(), UpdateTo.ENTITY);
     }
 
 }
