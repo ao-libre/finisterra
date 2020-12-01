@@ -99,7 +99,6 @@ public class NetworkDictionary extends MarshalDictionary {
                 SpellCastRequest.class,
                 TimeSyncRequest.class,
                 NpcInteractionRequest.class,
-                UserContinueRequest.class,
 
                 // Game Responses
                 MovementResponse.class,

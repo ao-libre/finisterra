@@ -21,7 +21,6 @@ import shared.network.inventory.ItemActionRequest;
 import shared.network.movement.MovementRequest;
 import shared.network.time.TimeSyncRequest;
 import shared.network.time.TimeSyncResponse;
-import shared.network.user.UserContinueRequest;
 import shared.network.user.UserCreateRequest;
 import shared.network.user.UserLoginRequest;
 import shared.network.user.UserLogoutRequest;
@@ -61,16 +60,10 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     }
 
     // Users
-
     @Override
     public void processRequest(@NotNull UserLoginRequest userLoginRequest, int connectionId) {
         // TODO validate connectionId corresponds to account
         userSystem.login(connectionId, userLoginRequest.getUserName());
-    }
-
-    @Override
-    public void processRequest(UserContinueRequest userContinueRequest, int connectionId) {
-        userSystem.login(connectionId, userContinueRequest.getName());
     }
 
     @Override
