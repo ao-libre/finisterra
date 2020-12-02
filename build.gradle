@@ -60,8 +60,8 @@ subprojects {
     apply plugin: "java-library"
 
     // Establecemos la version de Java a usar.
-    sourceCompatibility = JavaVersion.VERSION_14
-    targetCompatibility = JavaVersion.VERSION_14
+    sourceCompatibility = JavaVersion.VERSION_15
+    targetCompatibility = JavaVersion.VERSION_15
 
     // Configuraciones del compilador Java
     tasks.withType(JavaCompile) {
