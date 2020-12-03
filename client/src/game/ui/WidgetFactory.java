@@ -88,8 +88,8 @@ public class WidgetFactory {
         return new CheckBox(text, skin.get());
     }
 
-    public static ButtonGroup createButtonGroup() {
-        return new ButtonGroup();
+    public static <T extends Button> ButtonGroup<T> createButtonGroup() {
+        return new ButtonGroup<>();
     }
 
     public static TextField createTextField(String text) {
@@ -100,12 +100,12 @@ public class WidgetFactory {
         return new TextArea(text, skin.get());
     }
 
-    public static List createList() {
-        return new List(skin.get());
+    public static <T> List<T> createList() {
+        return new List<>(skin.get());
     }
 
-    public static SelectBox createSelectBox() {
-        return new SelectBox(skin.get());
+    public static <T> SelectBox<T> createSelectBox() {
+        return new SelectBox<>(skin.get());
     }
 
     public static ProgressBar createProgressBar() {
@@ -122,7 +122,9 @@ public class WidgetFactory {
     }
 
     public static Window createWindow() {
-        return new Window("", skin.get());
+        Window window = new Window("", skin.get());
+        window.setMovable(false);
+        return window;
     }
 
     public static Window createInventoryWindow() {

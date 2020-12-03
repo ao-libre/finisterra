@@ -32,13 +32,12 @@ public class LoginScreen extends AbstractScreen {
     private SoundsSystem soundsSystem;
     private TextField emailField;
     private TextField passwordField;
-    private CheckBox rememberMe; //@todo implementar remember me
+    private CheckBox rememberMe;
     private CheckBox seePassword;
     private CheckBox disableMusic;
     private CheckBox disableSound;
     private TextButton loginButton;
     private List<ClientConfiguration.Network.Server> serverList;
-    ;
 
     public LoginScreen() {
     }
@@ -46,13 +45,9 @@ public class LoginScreen extends AbstractScreen {
     @Override
     protected void keyPressed(int keyCode) {
         if (keyCode == Input.Keys.ESCAPE) {
+            // @todo dialog pidiendo confirmación
             Gdx.app.exit();
         }
-//       if (keyCode == Input.Keys.ENTER && this.canConnect) {
-//           this.canConnect = false;
-//           connectThenLogin();
-//           Gdx.app.exit();
-//       }
     }
 
     @Override
@@ -60,7 +55,7 @@ public class LoginScreen extends AbstractScreen {
         ClientConfiguration.Account account = clientConfiguration.getAccount();
 
         /* Tabla de login */
-        Window loginWindow = WidgetFactory.createWindow(); //@todo window es una ventana arrastrable
+        Window loginWindow = WidgetFactory.createWindow();
         Label emailLabel = WidgetFactory.createLabel("Email: ");
         emailField = WidgetFactory.createTextField(account.getEmail());
         Label passwordLabel = WidgetFactory.createLabel("Password");
@@ -109,7 +104,8 @@ public class LoginScreen extends AbstractScreen {
         Table connectionTable = new Table((getSkin()));
         serverList = WidgetFactory.createList();
         serverList.setItems(clientConfiguration.getNetwork().getServers());
-        connectionTable.add(serverList).width(400).height(300); //@todo Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
+        // Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
+        connectionTable.add(serverList).colspan(2).width(400).height(250);
 
         /* Botones para desactivar el sonido y la musica*/
 
@@ -152,7 +148,8 @@ public class LoginScreen extends AbstractScreen {
         });
 
         /* Agrega la imagen del logo */
-        Cell<Image> logoCell = getMainTable().add(WidgetFactory.createImage(new Texture(Gdx.files.local("data/ui/images/logo-big.png")))).center();
+        Cell<Image> logoCell = getMainTable().add(WidgetFactory.createImage(new Texture(Gdx.files.local("data/ui/images/logo-big.png"))))
+                .pad(20).center();
         logoCell.row();
 
         /* Tabla botones */
@@ -168,7 +165,8 @@ public class LoginScreen extends AbstractScreen {
         /* Tabla para loguin y servers */
         Table login_server = new Table();
         login_server.add(loginWindow).width(500).height(300).padLeft(10).padRight(10).padTop(10);
-        login_server.add(connectionTable).width(400).height(300).padLeft(10).padRight(10).padTop(10); //(*) Seteando acá el size, recursivamente tendría que resizear list.
+        //(*) Seteando acá el size, recursivamente tendría que resizear list.
+        login_server.add(connectionTable).width(400).height(300).padLeft(10).padRight(10).padTop(10);
 
         /* Tabla principal */
         getMainTable().add(login_server).row();

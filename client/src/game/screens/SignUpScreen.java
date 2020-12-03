@@ -30,7 +30,7 @@ public class SignUpScreen extends AbstractScreen {
     @Override
     protected void createUI() {
         /* Tabla de sign up */
-        Window signUpTable = WidgetFactory.createWindow(); //@todo window es una ventana arrastrable
+        Window signUpTable = WidgetFactory.createWindow();
         Label usernameLabel = WidgetFactory.createLabel("Username: ");
         usernameField = WidgetFactory.createTextField("");
         Label emailLabel = WidgetFactory.createLabel("Email:");
