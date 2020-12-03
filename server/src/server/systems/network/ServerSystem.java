@@ -1,8 +1,9 @@
 package server.systems.network;
 
-import com.artemis.ComponentMapper;
+import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
+import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.minlog.Log;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -25,9 +26,6 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 @Wire
 public class ServerSystem extends MarshalSystem {
-    // Component mappers
-    ComponentMapper<Name> mName;
-
     // Injected Systems
     private MapSystem mapSystem;
     private ServerNotificationProcessor notificationProcessor;
@@ -66,6 +64,8 @@ public class ServerSystem extends MarshalSystem {
                 ((IRequest) object).accept(requestProcessor, connectionID);
             } else if (object instanceof INotification) {
                 ((INotification) object).accept(notificationProcessor);
+            } else if (object instanceof FrameworkMessage) {
+                // Ignorar paquete interno a Kryonet
             } else {
                 // @todo Cerrar conexión por paquete ilegal
                 Log.warn("Received unidentified object: " + object.toString());
@@ -90,7 +90,7 @@ public class ServerSystem extends MarshalSystem {
         if (connectionHasPlayer(connectionID)) {
             Gdx.app.postRunnable(() -> {
                 int playerID = getPlayerByConnection(connectionID);
-                Name username = mName.get(playerID);
+                Name username = E.E(playerID).getName();
                 worldEntitiesSystem.unregisterEntity(playerID);
                 userSystem.logout(username.text);
             });
