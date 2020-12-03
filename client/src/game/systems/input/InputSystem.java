@@ -3,7 +3,6 @@ package game.systems.input;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.camera.CameraSystem;
@@ -58,8 +57,7 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
                 alternativeKeys = !alternativeKeys;
                 break;
             case Input.Keys.ESCAPE:
-                clientSystem.stop();
-                screenManager.to(ScreenEnum.LOGIN);
+                clientSystem.logout();
                 break;
         }
 

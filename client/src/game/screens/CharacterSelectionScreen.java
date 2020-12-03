@@ -13,8 +13,8 @@ import game.systems.network.ClientResponseProcessor;
 import game.systems.network.ClientSystem;
 import game.ui.WidgetFactory;
 import shared.interfaces.Hero;
-import shared.network.user.UserContinueRequest;
 import shared.network.user.UserCreateRequest;
+import shared.network.user.UserLoginRequest;
 
 import java.util.ArrayList;
 
@@ -38,7 +38,6 @@ public class CharacterSelectionScreen extends AbstractScreen {
     private ArrayList<Table> userTableArray, userImageTableArray;
     private ArrayList<Label> nameLabelArray, HPLabelArray, MPLabelArray;
     private ArrayList<TextButton> playButtonArray, createButtonArray;
-    private ArrayList<Boolean> booleanArrayList;
     private Image heroSelectionImage;
     private Window charSelectWindows, createWindow;
     private TextButton registerButton;
@@ -63,7 +62,6 @@ public class CharacterSelectionScreen extends AbstractScreen {
         MPLabelArray = new ArrayList<>();
         userImageTableArray = new ArrayList<>();
         playButtonArray = playButtonArray != null ? playButtonArray : new ArrayList<>();
-        booleanArrayList = booleanArrayList != null ? booleanArrayList : new ArrayList<>();
 
         charSelectWindows = WidgetFactory.createWindow();
         createWindow = WidgetFactory.createWindow();
@@ -192,9 +190,9 @@ public class CharacterSelectionScreen extends AbstractScreen {
                     MPLabelArray.get(i).setText(userCharactersData.get(i + 18) + " / " + userCharactersData.get(i + 24));
                     nameLabelArray.get(i).setText(charName);
                     if (userHeroID != -1) {
+                        playButtonArray.get(i).setDisabled(false);
                         playButtonListener(i, charName);
                     }
-
                 } else {
                     playButtonArray.get(i).setDisabled(true);
                 }
@@ -251,6 +249,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
         toLoginButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                clientSystem.stop();
                 screenManager.to(ScreenEnum.LOGIN);
             }
         });
@@ -285,21 +284,20 @@ public class CharacterSelectionScreen extends AbstractScreen {
         playButtonArray.get(index).addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                // send request to login user
-                clientSystem.send(new UserContinueRequest(userName));
-                for (int x = 0; x < 6; x++) {
-                    if (booleanArrayList.size() < 6)
-                        booleanArrayList.add(x, playButtonArray.get(x).isDisabled());
-                    playButtonArray.get(x).setDisabled(true);
-                }
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        for (int y = 0; y < 6; y++) {
-                            playButtonArray.get(y).setDisabled(booleanArrayList.get(y));
-                        }
+                // deshabilitamos los botones temporalmente
+                for (TextButton playButton : playButtonArray) {
+                    if (!playButton.isDisabled()) {
+                        playButton.setDisabled(true);
+                        Timer.schedule(new Timer.Task() {
+                            @Override
+                            public void run() {
+                                playButton.setDisabled(false);
+                            }
+                        }, 3);
                     }
-                }, 3);
+                }
+                // send request to login user
+                clientSystem.send(new UserLoginRequest(userName));
             }
         });
     }

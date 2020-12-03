@@ -20,6 +20,7 @@ import server.systems.world.entity.factory.EntityFactorySystem;
 import server.utils.EntityJsonSerializer;
 import shared.network.user.UserCreateResponse;
 import shared.network.user.UserLoginResponse;
+import shared.network.user.UserLogoutResponse;
 import shared.util.Messages;
 import shared.util.UserSystemUtilities;
 
@@ -27,6 +28,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.*;
 
 @Wire
@@ -40,6 +43,8 @@ public class UserSystem extends PassiveSystem {
     private AccountSystem accountSystem;
     private ComponentSystem componentSystem;
     private Json json;
+
+    Set<String> onlineUsers = new HashSet<>();
 
     public static void checkStorageDirectory() {
         File charfilesDir = new File(Charfile.DIR_CHARFILES);
@@ -55,30 +60,41 @@ public class UserSystem extends PassiveSystem {
     }
 
     public void login(int connectionId, String userName) {
-        if (userExists(userName)) {
-            // login
-            try {
-                Integer entityId = loadUser(userName).get(250, TimeUnit.MILLISECONDS);
-                if (entityId != -1) {
-                    serverSystem.sendTo(connectionId, UserLoginResponse.ok());
-                    worldEntitiesSystem.login(connectionId, entityId);
-                } else {
-                    serverSystem.sendTo(connectionId,
-                            UserLoginResponse.failed("No se pudo leer el personaje " + userName + ". Por favor contactate con soporte."));
+        //chequea si no hay ya un pj logueado desde ese cliente
+        if (!isOnline(userName)) {
+            if(userExists(userName)) {
+                // login
+                try {
+                    Integer entityId = loadUser( userName ).get( 250, TimeUnit.MILLISECONDS );
+                    if(entityId != -1) {
+                        serverSystem.sendTo( connectionId, UserLoginResponse.ok() );
+                        worldEntitiesSystem.login( connectionId, entityId );
+                        onlineUsers.add(userName);
+                    } else {
+                        serverSystem.sendTo( connectionId,
+                                UserLoginResponse.failed( "No se pudo leer el personaje " + userName + ". Por favor contactate con soporte." ) );
+                    }
+                } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                    Log.info( "Failed to retrieve user from JSON file" );
+                    e.printStackTrace();
+                    serverSystem.sendTo( connectionId,
+                            UserLoginResponse.failed( "Hubo un problema al leer el personaje " + userName ) );
                 }
-            } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                Log.info("Failed to retrieve user from JSON file");
-                e.printStackTrace();
-                serverSystem.sendTo(connectionId,
-                        UserLoginResponse.failed("Hubo un problema al leer el personaje " + userName));
-            }
 
+            } else {
+                // don't exist (should never happen)
+                // TODO remove from Account ?
+                serverSystem.sendTo( connectionId,
+                        UserLoginResponse.failed( "Este personaje " + userName + " no existe!" ) );
+            }
         } else {
-            // don't exist (should never happen)
-            // TODO remove from Account ?
-            serverSystem.sendTo(connectionId,
-                    UserLoginResponse.failed("Este personaje " + userName + " no existe!"));
+            Log.info( "la coneccion ya tiene un pj activo" );
         }
+    }
+
+    //todo ver si el pj no esta en pelea para evitar desconeccion en ese caso
+    public void userLogout(int connectionId){
+        serverSystem.sendTo( connectionId,new UserLogoutResponse());
     }
 
     public void create(int connectionId, String name, int heroId, String userAcc, int index) {
@@ -183,4 +199,11 @@ public class UserSystem extends PassiveSystem {
         });
     }
 
+    public boolean isOnline(String username) {
+        return onlineUsers.contains(username);
+    }
+
+    public void logout(String username) {
+        onlineUsers.remove(username);
+    }
 }

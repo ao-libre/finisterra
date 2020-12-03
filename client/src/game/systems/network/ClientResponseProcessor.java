@@ -17,6 +17,7 @@ import shared.network.movement.MovementResponse;
 import shared.network.time.TimeSyncResponse;
 import shared.network.user.UserCreateResponse;
 import shared.network.user.UserLoginResponse;
+import shared.network.user.UserLogoutResponse;
 
 @Wire
 public class ClientResponseProcessor extends PassiveSystem implements IResponseProcessor {
@@ -81,6 +82,14 @@ public class ClientResponseProcessor extends PassiveSystem implements IResponseP
             screenManager.to(ScreenEnum.GAME);
         } else {
             screenManager.showDialog("Error", userLoginResponse.getMessage());
+        }
+    }
+    @Override
+    public void processResponse(@NotNull UserLogoutResponse userLogoutResponse) {
+        if (userLogoutResponse.isSuccessful()) {
+            clientSystem.disconnect();
+        } else {
+            screenManager.showDialog("Error", userLogoutResponse.getMessage());
         }
     }
 }

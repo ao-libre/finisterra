@@ -6,6 +6,7 @@ import shared.network.movement.MovementResponse;
 import shared.network.time.TimeSyncResponse;
 import shared.network.user.UserCreateResponse;
 import shared.network.user.UserLoginResponse;
+import shared.network.user.UserLogoutResponse;
 
 public interface IResponseProcessor {
 
@@ -20,4 +21,6 @@ public interface IResponseProcessor {
     void processResponse(UserCreateResponse userCreateResponse);
 
     void processResponse(UserLoginResponse userLoginResponse);
+
+    void processResponse(UserLogoutResponse userLogoutResponse);
 }

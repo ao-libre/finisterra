@@ -49,9 +49,9 @@ public class WorldEntitiesSystem extends PassiveSystem {
         mapSystem.updateEntity(id);
     }
 
-    public void registerEntity(int connectionId, int id) {
-        networkManager.registerUserConnection(id, connectionId);
-        registerEntity(id);
+    public void registerEntity(int connectionID, int playerID) {
+        networkManager.registerUserConnection(connectionID, playerID);
+        registerEntity(playerID);
     }
 
     public void unregisterEntity(int entityId) {

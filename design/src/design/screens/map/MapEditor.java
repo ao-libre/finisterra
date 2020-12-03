@@ -28,6 +28,8 @@ import design.screens.map.gui.MapPalette.Selection;
 import design.screens.map.gui.MapProperties;
 import design.screens.map.systems.MapDesignRenderingSystem;
 import design.screens.views.TileSetView;
+import game.ClientConfiguration;
+import game.handlers.DefaultAOAssetManager;
 import game.systems.camera.CameraSystem;
 import game.systems.map.MapManager;
 import game.systems.render.BatchRenderingSystem;
@@ -251,6 +253,9 @@ public class MapEditor extends DesignScreen {
                 .with(new MapManager());
 
         WorldConfiguration config = builder.build();
+
+        config.register(DefaultAOAssetManager.getInstance());
+
         world = new World(config);
         int camera = world.create();
         E(camera).worldPosOffsets().aOCamera();

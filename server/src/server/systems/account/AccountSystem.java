@@ -28,8 +28,7 @@ public class AccountSystem extends PassiveSystem {
             accountDir.mkdirs();
     }
 
-    public void createAccount(int connectionId, String username, String email, String password) {
-
+    public void createAccount(int connectionID, String username, String email, String password) {
         // Hasheamos la contraseña.
         String hashedPassword = AccountSystemUtilities.hashPassword(password);
 
@@ -47,19 +46,21 @@ public class AccountSystem extends PassiveSystem {
             }
         }
 
-        serverSystem.sendTo(connectionId, new AccountCreationResponse(successful));
+        serverSystem.sendTo(connectionID, new AccountCreationResponse(successful));
+        serverSystem.closeConnection(connectionID);
     }
 
-    public void login(int connectionId, String email, String password) {
+    public void loginAccount(int connectionID, String email, String password) {
         // Obtenemos la cuenta de la carpeta Accounts.
         Account requestedAccount = Account.load(email);
 
         if (requestedAccount == null) {
-            serverSystem.sendTo(connectionId, new AccountLoginResponse(Messages.NON_EXISTENT_ACCOUNT));
+            serverSystem.sendTo(connectionID, new AccountLoginResponse(Messages.NON_EXISTENT_ACCOUNT));
+            serverSystem.closeConnection(connectionID);
             return;
-
         } else if (!AccountSystemUtilities.checkPassword(password, requestedAccount.getPassword())) {
-            serverSystem.sendTo(connectionId, new AccountLoginResponse(Messages.ACCOUNT_LOGIN_FAILED));
+            serverSystem.sendTo(connectionID, new AccountLoginResponse(Messages.ACCOUNT_LOGIN_FAILED));
+            serverSystem.closeConnection(connectionID);
             return;
         }
 
@@ -115,7 +116,7 @@ public class AccountSystem extends PassiveSystem {
             }
         }
 
-        serverSystem.sendTo(connectionId, new AccountLoginResponse(email, characters, charactersData));
+        serverSystem.sendTo(connectionID, new AccountLoginResponse(email, characters, charactersData));
     }
 
     public Account getAccount(String email) {

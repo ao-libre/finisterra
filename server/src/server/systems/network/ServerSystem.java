@@ -1,12 +1,19 @@
 package server.systems.network;
 
+import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.Gdx;
+import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.minlog.Log;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Maps;
+import component.entity.character.info.Name;
 import net.mostlyoriginal.api.network.marshal.common.MarshalStrategy;
 import net.mostlyoriginal.api.network.system.MarshalSystem;
 import server.configs.ServerConfiguration;
 import server.core.ServerStrategy;
+import server.systems.account.UserSystem;
 import server.systems.config.ConfigurationSystem;
 import server.systems.world.MapSystem;
 import server.systems.world.WorldEntitiesSystem;
@@ -15,23 +22,20 @@ import shared.network.interfaces.INotification;
 import shared.network.interfaces.IRequest;
 
 import java.util.Deque;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 @Wire
 public class ServerSystem extends MarshalSystem {
-
     // Injected Systems
     private MapSystem mapSystem;
     private ServerNotificationProcessor notificationProcessor;
     private ServerRequestProcessor requestProcessor;
     private WorldEntitiesSystem worldEntitiesSystem;
     private ConfigurationSystem configurationSystem;
+    private UserSystem userSystem;
 
-    private Deque<NetworkJob> netQueue = new ConcurrentLinkedDeque<>();
-    private Map<Integer, Integer> playerByConnection = new ConcurrentHashMap<>();
-    private Map<Integer, Integer> connectionByPlayer = new ConcurrentHashMap<>();
+    private final Deque<NetworkJob> netQueue = new ConcurrentLinkedDeque<>();
+    private final BiMap<Integer, Integer> connectionTable = Maps.synchronizedBiMap(HashBiMap.create());
 
     public ServerSystem() {
         super(new NetworkDictionary(), new ServerStrategy());
@@ -48,21 +52,27 @@ public class ServerSystem extends MarshalSystem {
     }
 
     @Override
-    public void received(int connectionId, Object object) {
-        netQueue.add(new NetworkJob(connectionId, object));
+    public void received(int connectionID, Object object) {
+        netQueue.add(new NetworkJob(connectionID, object));
     }
 
     private void processJob(NetworkJob job) {
-        int connectionId = job.connectionId;
+        int connectionID = job.connectionID;
         Object object = job.receivedObject;
         try {
             if (object instanceof IRequest) {
-                ((IRequest) object).accept(requestProcessor, connectionId);
+                ((IRequest) object).accept(requestProcessor, connectionID);
             } else if (object instanceof INotification) {
                 ((INotification) object).accept(notificationProcessor);
+            } else if (object instanceof FrameworkMessage) {
+                // Ignorar paquete interno a Kryonet
+            } else {
+                // @todo Cerrar conexión por paquete ilegal
+                Log.warn("Received unidentified object: " + object.toString());
             }
         } catch (Exception e) {
-            Log.error("Failed to process Job", e);
+            // @todo ¿cerrar conexión?
+            Log.error("Failed to process object: " + object.toString(), e);
         }
     }
 
@@ -75,68 +85,71 @@ public class ServerSystem extends MarshalSystem {
     }
 
     @Override
-    public void disconnected(int connectionId) {
-        super.disconnected(connectionId);
-        if (connectionHasNoPlayer(connectionId)) {
-            return;
+    public void disconnected(int connectionID) {
+        super.disconnected(connectionID);
+        if (connectionHasPlayer(connectionID)) {
+            Gdx.app.postRunnable(() -> {
+                int playerID = getPlayerByConnection(connectionID);
+                Name username = E.E(playerID).getName();
+                worldEntitiesSystem.unregisterEntity(playerID);
+                userSystem.logout(username.text);
+            });
         }
-        Gdx.app.postRunnable(() -> {
-            worldEntitiesSystem.unregisterEntity(getPlayerByConnection(connectionId));
-        });
+    }
+
+    public void closeConnection(int connectionID) {
+        ServerStrategy marshal = (ServerStrategy) getMarshal();
+        marshal.getConnection(connectionID).close();
     }
 
     /**
      * Object will be serialized and sent using kryo
      *
-     * @param id     connection ID
+     * @param connectionID
      * @param packet Object to send
      */
-    public void sendTo(int id, Object packet) {
+    public void sendTo(int connectionID, Object packet) {
         ServerStrategy marshal = (ServerStrategy) getMarshal();
-        marshal.sendTo(id, packet);
+        marshal.sendTo(connectionID, packet);
     }
 
-    public void registerUserConnection(int playerId, int connectionId) {
-        playerByConnection.put(connectionId, playerId);
-        connectionByPlayer.put(playerId, connectionId);
+    public void registerUserConnection(int connectionID, int playerID) {
+        connectionTable.put(connectionID, playerID);
     }
 
-    public void unregisterUserConnection(int playerId) {
-        if (playerHasConnection(playerId)) {
-            playerByConnection.remove(getConnectionByPlayer(playerId));
-            connectionByPlayer.remove(playerId);
+    public void unregisterUserConnection(int playerID) {
+        if (playerHasConnection(playerID)) {
+            connectionTable.inverse().remove(playerID);
         }
     }
 
-    public boolean connectionHasNoPlayer(int connectionId) {
-        return !playerByConnection.containsKey(connectionId);
+    public boolean connectionHasPlayer(int connectionID) {
+        return connectionTable.containsKey(connectionID);
     }
 
-    public boolean playerHasConnection(int player) {
-        return connectionByPlayer.containsKey(player);
+    public boolean playerHasConnection(int playerID) {
+        return connectionTable.inverse().containsKey(playerID);
     }
 
-    public int getPlayerByConnection(int connectionId) {
-        return playerByConnection.get(connectionId);
+    public int getPlayerByConnection(int connectionID) {
+        return connectionTable.get(connectionID);
     }
 
-    public int getConnectionByPlayer(int playerId) {
-        return connectionByPlayer.get(playerId);
+    public int getConnectionByPlayer(int playerID) {
+        return connectionTable.inverse().get(playerID);
     }
 
     public int getAmountConnections() {
-        return connectionByPlayer.size();
+        return connectionTable.size();
     }
-
 }
 
 final class NetworkJob {
-
-    final int connectionId;
+    final int connectionID;
     final Object receivedObject;
 
-    NetworkJob(int connectionId, Object receivedObject) {
-        this.connectionId = connectionId;
+    NetworkJob(int connectionID, Object receivedObject) {
+        this.connectionID = connectionID;
         this.receivedObject = receivedObject;
     }
 }
