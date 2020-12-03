@@ -111,6 +111,44 @@ public class LoginScreen extends AbstractScreen {
         serverList.setItems(clientConfiguration.getNetwork().getServers());
         // Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
         connectionTable.add(serverList).colspan(2).width(400).height(250);
+        connectionTable.row();
+
+        TextButton addServerButton = WidgetFactory.createTextButton("Añadir servidor");
+        addServerButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                ExtendedDialog dialog = new ExtendedDialog("Añadir servidor", getSkin());
+                TextField ipField = WidgetFactory.createTextField("127.0.0.1");
+                TextField portField = WidgetFactory.createTextField("7666");
+                dialog.getContentTable().add(WidgetFactory.createLabel("IP: "));
+                dialog.getContentTable().add(ipField).row();
+                dialog.getContentTable().add(WidgetFactory.createLabel("PORT: "));
+                dialog.getContentTable().add(portField).row();
+                dialog.button("Aceptar", () -> {
+                    String ip = ipField.getText();
+                    int port;
+                    try {
+                        port = Integer.parseInt(portField.getText());
+                    } catch (NumberFormatException ignored) {
+                        return;
+                    }
+                    clientConfiguration.getNetwork().getServers().add(new Server(ip, port));
+                    serverList.setItems(clientConfiguration.getNetwork().getServers());
+                });
+                dialog.show(getStage());
+            }
+        });
+        connectionTable.add(addServerButton);
+
+        TextButton deleteServerButton = WidgetFactory.createTextButton("Eliminar servidor");
+        deleteServerButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                clientConfiguration.getNetwork().getServers().removeValue(serverList.getSelected(), true);
+                serverList.setItems(clientConfiguration.getNetwork().getServers());
+            }
+        });
+        connectionTable.add(deleteServerButton);
 
         /* Botones para desactivar el sonido y la musica*/
 
