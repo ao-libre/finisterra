@@ -11,10 +11,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
 import game.ClientConfiguration;
+import game.ClientConfiguration.Network.Server;
 import game.handlers.DefaultAOAssetManager;
 import game.systems.network.ClientSystem;
 import game.systems.resources.MusicSystem;
 import game.systems.resources.SoundsSystem;
+import game.ui.ExtendedDialog;
 import game.ui.WidgetFactory;
 import shared.network.account.AccountLoginRequest;
 import shared.util.Messages;
@@ -45,8 +47,11 @@ public class LoginScreen extends AbstractScreen {
     @Override
     protected void keyPressed(int keyCode) {
         if (keyCode == Input.Keys.ESCAPE) {
-            // @todo dialog pidiendo confirmación
-            Gdx.app.exit();
+            ExtendedDialog dialog = new ExtendedDialog("Cerrar juego", getSkin());
+            dialog.text("¿Está seguro que desea cerrar el juego?");
+            dialog.button("Aceptar", Gdx.app::exit);
+            dialog.button("Cancelar");
+            dialog.show(getStage());
         }
     }
 
