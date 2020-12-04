@@ -88,6 +88,9 @@ public class MagicCombatSystem extends PassiveSystem {
     }
 
     // TODO refactor what elements/components to send
+    // @todo verificar por target muerto
+    // @todo implementar hechizo resucitar
+    // @todo usar enums donde corresponda para poder saber qué significan las constantes numéricas
     private void castSpell(int playerId, int target, Spell spell) {
         int requiredMana = spell.getRequiredMana();
         int requiredStamina = spell.getRequiredStamina();
