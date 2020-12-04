@@ -88,6 +88,9 @@ public class MagicCombatSystem extends PassiveSystem {
     }
 
     // TODO refactor what elements/components to send
+    // @todo verificar por target muerto
+    // @todo implementar hechizo resucitar
+    // @todo usar enums donde corresponda para poder saber qué significan las constantes numéricas
     private void castSpell(int playerId, int target, Spell spell) {
         int requiredMana = spell.getRequiredMana();
         int requiredStamina = spell.getRequiredStamina();
@@ -97,6 +100,7 @@ public class MagicCombatSystem extends PassiveSystem {
         EntityUpdateBuilder playerUpdateBuilder = EntityUpdateBuilder.of(playerId);
         EntityUpdateBuilder victimUpdateBuilder = EntityUpdateBuilder.of(target);
         EntityUpdateBuilder victimUpdateToAllBuilder = EntityUpdateBuilder.of(target);
+
         if (E(playerId).healthMin() != 0) {
             if (mana.min > requiredMana) {
                 if (!isValid(target, spell)) {
@@ -110,11 +114,13 @@ public class MagicCombatSystem extends PassiveSystem {
                 }
 
                 if (playerId == target) {
-                    if (spell.getSumHP() == 2 || spell.isImmobilize() || spell.isParalyze()) {
+                    if(spell.getSumHP() == 2 || spell.isImmobilize() || spell.isParalyze()) {
                         notifyMagic(playerId, Messages.CANT_ATTACK_YOURSELF);
                         return;
                     }
-                    notifyMagic(playerId, Messages.OWNER_MSG, spell.getOwnerMsg());
+                    if(spell.isSumStrength() || spell.isSumAgility()){
+                        notifyMagic(playerId, Messages.OWNER_MSG, spell.getOwnerMsg());
+                    }
                 } else {
                     notifyMagic(playerId, Messages.ORIGIN_MSG, spell.getOriginMsg(), getName(target));
                     notifyMagic(target, Messages.TARGET_MSG, getName(playerId), spell.getTargetMsg());
@@ -127,23 +133,31 @@ public class MagicCombatSystem extends PassiveSystem {
                 if (spell.getSumHP() > 0) {
                     Health health = targetEntity.getHealth();
                     damage = calculateMagicDamage(playerId, target, spell);
+                    // @todo si damage = 0 entonces falla el hechizo ¿?
+
                     health.min += damage;
-                    health.min = Math.max(0, health.min);
+                    health.min = Math.min(health.min, health.max);
+                    health.min = Math.max(health.min, 0);
+
                     victimUpdateToAllBuilder.withComponents(CombatMessage.magic(damage > 0 ? "+" : "-" + Math.abs(damage)));
                     victimUpdateBuilder.withComponents(health);
-                    if (damage > 0) {
-                        notifyMagic(playerId, Messages.HEAL_TO, getName(target), Integer.toString(Math.abs(damage)));
-                        notifyMagic(target, Messages.HEAL_BY, getName(playerId), Integer.toString(Math.abs(damage)));
 
+                    if (damage > 0) {
+                        if (playerId == target) {
+                            notifyMagic(playerId, Messages.HEAL_SELF, getName(target), Integer.toString(Math.abs(damage)));
+                        } else {
+                            notifyMagic(playerId, Messages.HEAL_TO, getName(target), Integer.toString(Math.abs(damage)));
+                            notifyMagic(target, Messages.HEAL_BY, getName(playerId), Integer.toString(Math.abs(damage)));
+                        }
                     }
 
                     if (health.min <= 0) {
                         worldEntitiesSystem.entityDie(target);
                         notifyMagic(playerId, Messages.KILL, getName(target));
                         notifyMagic(target, Messages.KILLED, getName(playerId));
-                        soundEntitySystem.add(playerId, 126);
-
+                        soundEntitySystem.add(playerId, 171);
                     }
+
                     if (fxGrh > 0) {
                         effectEntitySystem.addFX(target, fxGrh, Math.max(1, spell.getLoops()));
                     }
@@ -152,9 +166,9 @@ public class MagicCombatSystem extends PassiveSystem {
                     playerUpdateBuilder.withComponents(stamina);
 
                     updateMana(playerId, requiredMana, mana);
+
                     Dialog magicWords = new Dialog(spell.getMagicWords(), Dialog.Kind.MAGIC_WORDS);
 
-                    Log.info("Magic attack " + spell.getMagicWords());
                     int spellSound = spell.getWav();
                     soundEntitySystem.add(playerId, spellSound);
 
@@ -163,11 +177,10 @@ public class MagicCombatSystem extends PassiveSystem {
 
                     EntityUpdate playerUpdate = playerUpdateBuilder.withComponents(magicWords).build();
                     entityUpdateSystem.add(playerUpdate, UpdateTo.ALL);
-
-                } else if (spell.isImmobilize()) {/*Inmovilizar*/
+                } else if (spell.isImmobilize()) { /*Inmovilizar*/
                     targetEntity.immobile();
-                    victimUpdateToAllBuilder.withComponents(targetEntity.getImmobile());
-                    updateMana(playerId, requiredMana, mana);
+                    victimUpdateToAllBuilder.withComponents( targetEntity.getImmobile() );
+                    updateMana( playerId, requiredMana, mana );
                 } else if (spell.isRemoveParalysis()) {
                     if (targetEntity.isImmobile()) {
                         targetEntity.immobile(false);
@@ -175,29 +188,22 @@ public class MagicCombatSystem extends PassiveSystem {
                         updateMana(playerId, requiredMana, mana);
                     } else {
                         notifyInfo(playerId, Messages.NOT_PARALYSIS);
-                        return;
                     }
-                } else if (spell.isSumStrength()) {/*Sumar fuerza*/
-
+                } else if (spell.isSumStrength()) { /*Sumar fuerza*/
                     int random = new Random().nextInt(spell.getMaxStrength() - spell.getMinStrength() + 1) + spell.getMinStrength();
                     targetEntity.strengthCurrentValue(targetEntity.strengthCurrentValue() + random);
                     targetEntity.buff().buffAddAttribute(targetEntity.getStrength(), spell.getStrengthDuration());
                     sendAttributeUpdate(target, targetEntity.getStrength(), targetEntity.getBuff());
                     updateMana(playerId, requiredMana, mana);
-
-                } else if (spell.isSumAgility()) {/*Sumar agilidad*/
-
+                } else if (spell.isSumAgility()) { /*Sumar agilidad*/
                     int random = new Random().nextInt(spell.getMaxAgility() - spell.getMinAgility() + 1) + spell.getMinAgility();
                     targetEntity.agilityCurrentValue(targetEntity.agilityCurrentValue() + random);
                     targetEntity.buff().buffAddAttribute(targetEntity.getAgility(), spell.getAgilityDuration());
                     sendAttributeUpdate(target, targetEntity.getAgility(), targetEntity.getBuff());
                     updateMana(playerId, requiredMana, mana);
-
                 }
-
             } else {
-                notifyInfo(playerId, Messages.NOT_ENOUGHT_MANA);
-
+                notifyInfo(playerId,Messages.NOT_ENOUGHT_MANA);
             }
         } else {
             notifyInfo(playerId, Messages.DEAD_CANT_ATTACK);
@@ -206,27 +212,35 @@ public class MagicCombatSystem extends PassiveSystem {
 
     private int calculateMagicDamage(int user, int target, Spell spell) {
         int damage;
+        int magicDefense;
         final int minHP = spell.getMinHP();
         final int maxHP = spell.getMaxHP();
         damage = ThreadLocalRandom.current().nextInt(minHP, maxHP + 1);
         damage = E(user).levelLevel() + damage;
         characterTrainingSystem.userTakeDamage(user, target, damage);
         if (spell.getSumHP() == 1) { // HEAL
-            // TODO
+
         } else if (spell.getSumHP() == 2) {
             if (E(target).hasHelmet()) {
-                final Optional<Obj> obj = objectSystem.getObject(E(target).getHelmet().index);
-                obj
-                        .filter(HelmetObj.class::isInstance)
-                        .map(HelmetObj.class::cast)
-                        .ifPresent(helmet -> {
-                            // TODO Magic def
-                        });
+                // TODO: ¿la defensa de casco es directamente Magic defense?
+                magicDefense = getHeadDefense(target);
             }
             // TODO anillos
             damage = -damage;
         }
         return damage;
+    }
+
+    private int getHeadDefense(int entityId) {
+        int min = 0, max = 1;
+        E entity = E(entityId);
+        if (entity.hasHelmet()) {
+            int index = entity.getHelmet().index;
+            HelmetObj obj = (HelmetObj) objectSystem.getObject(index).get();
+            min = obj.getMinDef();
+            max = obj.getMaxDef();
+        }
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 
     private void updateMana(int playerId, int requiredMana, Mana mana) {
@@ -244,17 +258,13 @@ public class MagicCombatSystem extends PassiveSystem {
     private boolean isValid(int target, Spell spell) {
         E targetEntity = E(target);
         int spellTarget = spell.getTarget();
-        switch (spellTarget) {
-            case 1:
-            case 3:
-                return targetEntity.isCharacter() || (targetEntity.hasNPC() && targetEntity.isHostile());
-            case 2:
-                return (targetEntity.hasNPC() && targetEntity.isHostile());
-            case 4:
-                return targetEntity == null;
-        }
-
-        return false;
+        // @todo usar un enum para darle significado a estos números
+        return switch (spellTarget) {
+            case 1, 3 -> targetEntity.isCharacter() || (targetEntity.hasNPC() && targetEntity.isHostile());
+            case 2 -> (targetEntity.hasNPC() && targetEntity.isHostile());
+            case 4 -> targetEntity == null;
+            default -> false;
+        };
     }
 
     private void notifyInfo(int userId, Messages messageId, String... messageParams) {

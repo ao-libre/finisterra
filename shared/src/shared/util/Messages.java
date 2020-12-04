@@ -26,6 +26,7 @@ public enum Messages {
     // MAGIC COMBAT
     DAMAGE_TO,
     DAMAGED_BY,
+    HEAL_SELF,
     HEAL_TO,
     HEAL_BY,
     INVALID_TARGET,
