@@ -136,6 +136,15 @@ public class LoginScreen extends AbstractScreen {
             }
         });
 
+        Slider musicVolumeBar = new Slider(0.0f, 1.0f, 0.1f, false, getSkin());
+        musicVolumeBar.setValue(musicSystem.getVolume());
+        musicVolumeBar.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                musicSystem.setVolume(musicVolumeBar.getValue());
+            }
+        });
+
         /* Sonido */
         disableSound = new CheckBox("Desabilitar sonido", getSkin());
         if (preferences.getBoolean("SoundOff")) {
@@ -164,6 +173,8 @@ public class LoginScreen extends AbstractScreen {
         buttonsTable.setHeight(100);
         buttonsTable.add(disableMusic).width(500).pad(10);
         buttonsTable.add(disableSound).width(400).pad(10);
+        buttonsTable.row();
+        buttonsTable.add(musicVolumeBar);
 
         /* Tabla para loguin y servers */
         Table login_server = new Table();
@@ -172,7 +183,7 @@ public class LoginScreen extends AbstractScreen {
 
         /* Tabla principal */
         getMainTable().add(login_server).row();
-        getMainTable().add(buttonsTable).height(100).width(920).pad(3);
+        getMainTable().add(buttonsTable).height(150).width(920).pad(3);
         getStage().setKeyboardFocus(emailField);
     }
 

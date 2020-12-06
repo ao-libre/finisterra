@@ -15,7 +15,7 @@ import javax.sound.midi.Sequencer;
 @Wire
 public class MusicSystem extends PassiveSystem { // @todo revisar
 
-    static private final float MUSIC_FADE_STEP = 0.01f;
+    private static final float MUSIC_FADE_STEP = 0.1f;
 
     @Wire
     private DefaultAOAssetManager assetManager;
@@ -134,6 +134,10 @@ public class MusicSystem extends PassiveSystem { // @todo revisar
 
     public void setDisableMusic(boolean musicEnable) {
         this.disableMusic = musicEnable;
+    }
+
+    public float getVolume() {
+        return volume;
     }
 
     // Control de volumen
