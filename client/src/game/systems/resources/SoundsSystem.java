@@ -14,7 +14,7 @@ public class SoundsSystem extends PassiveSystem {
     @Wire
     private DefaultAOAssetManager assetManager;
 
-    private boolean disableSounds;
+    boolean disabled;
 
     public long playSound(Integer soundID, boolean loop) {
         Sound sound = assetManager.getSound(soundID);
@@ -31,7 +31,7 @@ public class SoundsSystem extends PassiveSystem {
     }
 
     public void playSound(Integer soundID) {
-        if (!disableSounds) {
+        if (!disabled) {
             playSound(soundID, false);
         }
     }
@@ -75,11 +75,11 @@ public class SoundsSystem extends PassiveSystem {
         return sound instanceof OpenALSound ? ((OpenALSound) sound).duration() : 0;
     }
 
-    public boolean isDisableSounds() {
-        return disableSounds;
+    public boolean isDisabled() {
+        return disabled;
     }
 
-    public void setDisableSounds(boolean disableSounds) {
-        this.disableSounds = disableSounds;
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 }
