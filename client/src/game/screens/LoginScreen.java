@@ -140,14 +140,14 @@ public class LoginScreen extends AbstractScreen {
         disableSound = new CheckBox("Desabilitar sonido", getSkin());
         if (preferences.getBoolean("SoundOff")) {
             disableSound.setChecked(true);
-            soundsSystem.setDisableSounds(true);
+            soundsSystem.setDisabled(true);
         }
         disableSound.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 preferences.putBoolean("SoundOff", disableSound.isChecked());
                 preferences.flush();
-                soundsSystem.setDisableSounds(!soundsSystem.isDisableSounds());
+                soundsSystem.setDisabled(!soundsSystem.isDisabled());
             }
         });
 
