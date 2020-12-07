@@ -116,22 +116,15 @@ public class LoginScreen extends AbstractScreen {
         disableMusic = new CheckBox("Desabilitar Musica", getSkin());
         if (preferences.getBoolean("MusicOff")) {
             disableMusic.setChecked(true);
-            musicSystem.stopMusic();
-            musicSystem.setDisableMusic(true);
+            musicSystem.setDisabled(true);
         }
 
         disableMusic.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                musicSystem.setDisableMusic(!musicSystem.isDisableMusic());
+                musicSystem.setDisabled(!musicSystem.isDisabled());
                 preferences.putBoolean("MusicOff", disableMusic.isChecked());
                 preferences.flush();
-
-                if (!musicSystem.isDisableMusic()) {
-                    musicSystem.playMusic(101, true);
-                } else {
-                    musicSystem.stopMusic();
-                }
             }
         });
 
