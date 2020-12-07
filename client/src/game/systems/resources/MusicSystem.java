@@ -5,7 +5,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.minlog.Log;
 import game.handlers.DefaultAOAssetManager;
-import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
@@ -13,12 +12,11 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 
 @Wire
-public class MusicSystem extends PassiveSystem { // @todo revisar
+public class MusicSystem { // @todo revisar
 
     private static final float MUSIC_FADE_STEP = 0.1f;
 
-    @Wire
-    private DefaultAOAssetManager assetManager;
+    @Wire private DefaultAOAssetManager assetManager;
 
     private float volume = 1.0f;
     private boolean disableMusic = false;
@@ -64,7 +62,7 @@ public class MusicSystem extends PassiveSystem { // @todo revisar
     }
 
     public void playMusic() {
-        if (currentMusic != null && isEnabled()) currentMusic.play();
+        if (currentMusic != null && !isDisableMusic()) currentMusic.play();
     }
 
     public void pauseMusic() {

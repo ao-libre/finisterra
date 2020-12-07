@@ -56,7 +56,12 @@ public class WorldConstructor {
     private static final int DECORATION_PRIORITY = 3;
     private static final int UI = 0;
 
-    private static WorldConfiguration getWorldConfiguration(ClientConfiguration clientConfiguration, ScreenManager screenManager, DefaultAOAssetManager assetManager) {
+    private static WorldConfiguration getWorldConfiguration(
+            ClientConfiguration clientConfiguration,
+            ScreenManager screenManager,
+            DefaultAOAssetManager assetManager,
+            MusicSystem musicSystem
+    ) {
         return new WorldConfigurationBuilder()
                 // Sistemas de uso global (no necesitan prioridad porque son pasivos)
                 .with(clientConfiguration,
@@ -106,7 +111,6 @@ public class WorldConstructor {
                         new DescriptorsSystem(),
                         new MessageSystem(),
                         new MapSystem(),
-                        new MusicSystem(),
                         new ObjectSystem(),
                         new ParticlesSystem(),
                         new SoundsSystem(),
@@ -159,15 +163,20 @@ public class WorldConstructor {
                         new UuidEntityManager())
 
                 .build()
-                .register(assetManager);
+                .register(assetManager)
+                .register(musicSystem);
     }
 
     /**
      * Construye el Artemis World, inicializa e inyecta sistemas.
      * Este método es bloqueante.
      */
-    public static World create(ClientConfiguration clientConfiguration,
-                               ScreenManager screenManager, DefaultAOAssetManager assetManager) {
-        return new World(getWorldConfiguration(clientConfiguration, screenManager, assetManager));
+    public static World create(
+            ClientConfiguration clientConfiguration,
+            ScreenManager screenManager,
+            DefaultAOAssetManager assetManager,
+            MusicSystem musicSystem
+    ) {
+        return new World(getWorldConfiguration(clientConfiguration, screenManager, assetManager, musicSystem));
     }
 }

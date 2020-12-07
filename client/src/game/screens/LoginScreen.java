@@ -23,12 +23,11 @@ import shared.util.Messages;
 public class LoginScreen extends AbstractScreen {
 
     private final Preferences preferences = Gdx.app.getPreferences("Finisterra");
-    @Wire
-    private DefaultAOAssetManager assetManager;
+    @Wire private DefaultAOAssetManager assetManager;
+    @Wire private MusicSystem musicSystem;
     private ClientConfiguration clientConfiguration;
     private ClientSystem clientSystem;
     private ScreenManager screenManager;
-    private MusicSystem musicSystem;
     private SoundsSystem soundsSystem;
     private TextField emailField;
     private TextField passwordField;
