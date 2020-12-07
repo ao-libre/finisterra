@@ -23,6 +23,8 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
 
     public static boolean alternativeKeys = false;
 
+    @Wire private MusicSystem musicSystem;
+
     private PlayerActionSystem playerActionSystem;
     private CameraSystem cameraSystem;
     private ScreenSystem screenSystem;
@@ -32,7 +34,6 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
     private InventorySystem inventorySystem;
     private SpellSystem spellSystem;
     private ActionBarSystem actionBarSystem;
-    private MusicSystem musicSystem;
     private DialogSystem dialogSystem;
     private MouseSystem mouseSystem;
 

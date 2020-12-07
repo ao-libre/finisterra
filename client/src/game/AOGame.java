@@ -30,6 +30,7 @@ public class AOGame extends Game {
     public AOGame(ClientConfiguration clientConfiguration) {
         Log.setLogger(new LogSystem());
         this.clientConfiguration = clientConfiguration;
+        musicSystem = new MusicSystem();
     }
 
     // Crea la ventana del juego.
@@ -42,21 +43,18 @@ public class AOGame extends Game {
         setScreen(screen);
         screen.onFinished((assetManager) -> {
             ScreenManager screenManager = new ScreenManager(this);
-            this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
+            this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager, musicSystem);
+            world.inject(musicSystem);
             screenManager.to(ScreenEnum.LOGIN);
-            this.musicSystem = world.getSystem(MusicSystem.class);
             musicSystem.playMusic(101, true);
             screenManager.addListener((screenEnum -> {
                 switch (screenEnum) {
                     case LOGIN:
-                        this.musicSystem = world.getSystem(MusicSystem.class);
                         musicSystem.stopMusic();
-                        this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
-                        this.musicSystem = world.getSystem(MusicSystem.class);
+                        this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager, musicSystem);
                         musicSystem.playMusic(101, true);
                         break;
                     case GAME:
-                        this.musicSystem = world.getSystem(MusicSystem.class);
                         musicSystem.playMusic(1, true);
                 }
             }));

@@ -17,9 +17,7 @@ public class ScreenManager extends PassiveSystem {
 
     private final AOGame game;
     private final List<Consumer<ScreenEnum>> listeners;
-    private MusicSystem musicSystem;
-    @Wire
-    private DefaultAOAssetManager assetManager;
+    @Wire private DefaultAOAssetManager assetManager;
 
     public ScreenManager(AOGame game) {
         this.game = game;
