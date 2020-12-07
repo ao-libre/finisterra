@@ -31,7 +31,6 @@ class SoundIndexPair {
 @Wire
 public class SoundSytem extends IteratingSystem {
 
-    public static float volume = 1.0f;
     private final Map<Integer, SoundIndexPair> sounds;
     private SoundsSystem soundsSystem;
 
@@ -41,10 +40,6 @@ public class SoundSytem extends IteratingSystem {
     public SoundSytem() {
         super(Aspect.all(AOSound.class));
         this.sounds = new HashMap<>();
-    }
-
-    public void setVolume(float volume) {
-        SoundSytem.volume = volume;
     }
 
     @Override

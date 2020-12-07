@@ -199,6 +199,15 @@ public class LoginScreen extends AbstractScreen {
             }
         });
 
+        Slider soundVolumeBar = new Slider(0.0f, 1.0f, 0.1f, false, getSkin());
+        soundVolumeBar.setValue(soundsSystem.getVolume());
+        soundVolumeBar.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                soundsSystem.setVolume(musicVolumeBar.getValue());
+            }
+        });
+
         /* Agrega la imagen del logo */
         Cell<Image> logoCell = getMainTable().add(WidgetFactory.createImage(new Texture(Gdx.files.local("data/ui/images/logo-big.png"))))
                 .pad(20).center();
@@ -215,6 +224,7 @@ public class LoginScreen extends AbstractScreen {
         buttonsTable.add(disableSound).width(400).pad(10);
         buttonsTable.row();
         buttonsTable.add(musicVolumeBar);
+        buttonsTable.add(soundVolumeBar);
 
         /* Tabla para loguin y servers */
         Table login_server = new Table();
