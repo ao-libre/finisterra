@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
@@ -12,11 +13,10 @@ import component.entity.character.info.Name;
 import component.entity.character.status.Health;
 import component.entity.character.status.Mana;
 import component.position.WorldPos;
-import game.systems.render.BatchRenderingSystem;
+import game.systems.render.BatchSystem;
 import game.ui.WidgetFactory;
 import game.utils.Colors;
 import game.utils.Pos2D;
-import game.utils.Skins;
 import org.jetbrains.annotations.NotNull;
 import shared.interfaces.Hero;
 import shared.model.map.Tile;
@@ -53,7 +53,7 @@ public class NameRenderingSystem extends RenderingSystem {
         return bar;
     }
 
-    private BatchRenderingSystem batchRenderingSystem;
+    private BatchSystem batchSystem;
 
     public NameRenderingSystem() {
         super(Aspect.all(WorldPos.class, Name.class));
@@ -90,13 +90,13 @@ public class NameRenderingSystem extends RenderingSystem {
         final float fontX = screenPos.x + ((Tile.TILE_PIXEL_WIDTH - table.getWidth()) / 2);
         final float fontY = screenPos.y + 15;
         table.act(getWorld().getDelta());
-        batchRenderingSystem.addTask(batch -> {
-                    Color color = setColor(player, player.displayLabel());
-                    table.setPosition(fontX, fontY);
-                    table.draw(batch, 1);
-                    player.displayLabel().getStyle().fontColor = color;
-                }
-        );
+        final SpriteBatch batch = batchSystem.getBatch();
+
+        Color color = setColor(player, player.displayLabel());
+        table.setPosition(fontX, fontY);
+        table.draw(batch, 1);
+        player.displayLabel().getStyle().fontColor = color;
+
         return fontY;
     }
 

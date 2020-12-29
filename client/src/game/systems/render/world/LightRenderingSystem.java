@@ -8,9 +8,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import component.camera.Focused;
-import game.systems.render.BatchRenderingSystem;
+import game.systems.render.BatchSystem;
 import game.utils.Pos2D;
 import game.utils.Resources;
 import shared.model.map.Tile;
@@ -28,7 +29,7 @@ public class LightRenderingSystem extends RenderingSystem {
     private int blendDstFunc;
     private int blendSrcFunc;
 
-    private BatchRenderingSystem batchRenderingSystem;
+    private BatchSystem batchSystem;
 
     public LightRenderingSystem() {
         super(Aspect.all(Focused.class));
@@ -46,21 +47,19 @@ public class LightRenderingSystem extends RenderingSystem {
 
     @Override
     protected void doBegin() {
-        batchRenderingSystem.addTask((batch) -> {
-                    prevColor = batch.getColor();
-                    blendDstFunc = batch.getBlendDstFunc();
-                    blendSrcFunc = batch.getBlendSrcFunc();
-                }
-        );
+        final SpriteBatch batch = batchSystem.getBatch();
+
+        prevColor = batch.getColor();
+        blendDstFunc = batch.getBlendDstFunc();
+        blendSrcFunc = batch.getBlendSrcFunc();
+
     }
 
     @Override
     protected void doEnd() {
-        batchRenderingSystem.addTask((batch) -> {
-                    batch.setColor(prevColor);
-                    batch.setBlendFunction(blendSrcFunc, blendDstFunc);
-                }
-        );
+        final SpriteBatch batch = batchSystem.getBatch();
+        batch.setColor(prevColor);
+        batch.setBlendFunction(blendSrcFunc, blendDstFunc);
     }
 
     @Override
@@ -76,8 +75,8 @@ public class LightRenderingSystem extends RenderingSystem {
         float ty = playerPosition.y;
         float x = tx - width / 2;
         float y = ty - height / 2;
-
-        batchRenderingSystem.addTask((batch -> batch.draw(lightBuffer.getColorBufferTexture(), x, y, width, height)));
+        final SpriteBatch batch = batchSystem.getBatch();
+        batch.draw(lightBuffer.getColorBufferTexture(), x, y, width, height);
     }
 
     public void resize(float width, float height) {
@@ -96,17 +95,18 @@ public class LightRenderingSystem extends RenderingSystem {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        Color color = batchRenderingSystem.getBatch().getColor();
+        final SpriteBatch batch = batchSystem.getBatch();
+        Color color = batch.getColor();
 
-        batchRenderingSystem.getBatch().setColor(0.8f, 0.8f, 0.8f, 1f);
+        batch.setColor(0.8f, 0.8f, 0.8f, 1f);
         int lightWidth = (int) Tile.TILE_PIXEL_WIDTH * 30;
         int lightHeight = (int) Tile.TILE_PIXEL_HEIGHT * 28;
-        batchRenderingSystem.getBatch().begin();
-        batchRenderingSystem.getBatch().enableBlending();
-        batchRenderingSystem.getBatch().setBlendFunction(GL20.GL_ZERO, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        batchRenderingSystem.getBatch().draw(light, 0, 0, lightWidth, lightHeight);
-        batchRenderingSystem.getBatch().end();
-        batchRenderingSystem.getBatch().setColor(color);
+        batch.begin();
+        batch.enableBlending();
+        batch.setBlendFunction(GL20.GL_ZERO, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        batch.draw(light, 0, 0, lightWidth, lightHeight);
+        batch.end();
+        batch.setColor(color);
         lightBuffer.end();
     }
 }

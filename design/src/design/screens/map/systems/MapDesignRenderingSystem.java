@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import component.camera.Focused;
 import component.position.WorldPos;
 import game.systems.map.MapManager;
-import game.systems.render.BatchRenderingSystem;
 import game.systems.render.world.RenderingSystem;
 import game.systems.resources.MapSystem;
 import game.utils.Colors;

@@ -14,7 +14,7 @@ import com.google.common.cache.LoadingCache;
 import component.entity.character.parts.Body;
 import component.entity.world.CombatMessage;
 import component.position.WorldPos;
-import game.systems.render.BatchRenderingSystem;
+import game.systems.render.BatchSystem;
 import game.systems.resources.DescriptorsSystem;
 import game.ui.WidgetFactory;
 import game.utils.Pos2D;
@@ -29,7 +29,7 @@ public class CombatRenderingSystem extends RenderingSystem {
 
     public static final float VELOCITY = 1f;
     private DescriptorsSystem descriptorsSystem;
-    private BatchRenderingSystem batchRenderingSystem;
+    private BatchSystem batchSystem;
     private LoadingCache<CombatMessage, Table> messages = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
@@ -86,7 +86,7 @@ public class CombatRenderingSystem extends RenderingSystem {
             final float fontY = playerPos.y + combatMessage.offset + bodyOffset - 60 * SCALE
                     + label.getHeight();
             label.setPosition(fontX, fontY);
-            batchRenderingSystem.addTask((batch -> label.draw(batch, 1)));
+            label.draw(batchSystem.getBatch(), 1);
         } else {
             messages.invalidate(player.getCombatMessage());
             player.removeCombatMessage();

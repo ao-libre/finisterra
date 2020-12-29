@@ -50,13 +50,13 @@ public class DesktopLauncher {
         // Build LWJGL configuration
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
         cfg.setTitle("Finisterra");
-        if (displayMode.equals(Lwjgl3ApplicationConfiguration.getDisplayMode())) {
+//        if (displayMode.equals(Lwjgl3ApplicationConfiguration.getDisplayMode())) {
             cfg.setFullscreenMode(displayMode);
             cfg.setDecorated(false);
-        } else {
-            cfg.setWindowedMode(displayMode.width, displayMode.height);
-            cfg.setDecorated(true);
-        }
+//        } else {
+//            cfg.setWindowedMode(displayMode.width, displayMode.height);
+//            cfg.setDecorated(true);
+//        }
         cfg.useVsync(true);
         cfg.setIdleFPS(60);
         cfg.setResizable(false);

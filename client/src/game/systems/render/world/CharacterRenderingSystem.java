@@ -6,10 +6,9 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import component.entity.character.equipment.Helmet;
 import component.entity.character.equipment.Shield;
 import component.entity.character.equipment.Weapon;
@@ -17,13 +16,11 @@ import component.entity.character.parts.Body;
 import component.entity.character.parts.Head;
 import component.entity.character.states.Heading;
 import component.position.WorldPos;
-import game.systems.render.BatchRenderingSystem;
-import game.systems.render.BatchTask;
+import game.systems.render.BatchSystem;
 import game.systems.resources.AnimationsSystem;
 import game.systems.resources.DescriptorsSystem;
 import game.utils.Pos2D;
 import game.utils.Resources;
-import game.utils.Skins;
 import model.descriptors.BodyDescriptor;
 import model.textures.AOTexture;
 import model.textures.BundledAnimation;
@@ -44,7 +41,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
     private static final Aspect.Builder CHAR_ASPECT = Aspect.all(WorldPos.class, Body.class, Heading.class);
     private DescriptorsSystem descriptorsSystem;
     private AnimationsSystem animationsSystem;
-    private BatchRenderingSystem batchRenderingSystem;
+    private BatchSystem batchSystem;
     private static TextureRegion shadow;
 
     public CharacterRenderingSystem() {
@@ -74,7 +71,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
         WorldPos pos = forcedPos.orElse(player.getWorldPos());
         Pos2D currentPos = Pos2D.get(pos, player.getWorldPosOffsets());
         Pos2D screenPos = currentPos.toScreen();
-        createDrawer(batchRenderingSystem, player, screenPos, descriptorsSystem, animationsSystem).draw();
+        createDrawer(batchSystem, player, screenPos, descriptorsSystem, animationsSystem).draw();
     }
 
     @Override
@@ -89,7 +86,7 @@ public class CharacterRenderingSystem extends RenderingSystem {
         private final Pos2D screenPos;
         private final DescriptorsSystem descriptorsSystem;
         private final AnimationsSystem animationsSystem;
-        private BatchRenderingSystem batchRenderingSystem;
+        private BatchSystem batchSystem;
         private boolean shouldFlip;
         private float headOffsetY;
         // body
@@ -99,8 +96,8 @@ public class CharacterRenderingSystem extends RenderingSystem {
         private BundledAnimation bodyAnimation;
         private float idle;
 
-        private CharacterDrawer(BatchRenderingSystem batchRenderingSystem, E player, Pos2D screenPos, DescriptorsSystem descriptorsSystem, AnimationsSystem animationsSystem) {
-            this.batchRenderingSystem = batchRenderingSystem;
+        private CharacterDrawer(BatchSystem batchSystem, E player, Pos2D screenPos, DescriptorsSystem descriptorsSystem, AnimationsSystem animationsSystem) {
+            this.batchSystem = batchSystem;
             this.player = player;
             this.heading = player.getHeading();
             this.screenPos = screenPos;
@@ -111,11 +108,11 @@ public class CharacterRenderingSystem extends RenderingSystem {
             calculateOffsets();
         }
 
-        public static CharacterDrawer createDrawer(BatchRenderingSystem batchRenderingSystem, E player, Pos2D screenPos, DescriptorsSystem descriptorsSystem, AnimationsSystem animationsSystem) {
+        public static CharacterDrawer createDrawer(BatchSystem batchRenderingSystem, E player, Pos2D screenPos, DescriptorsSystem descriptorsSystem, AnimationsSystem animationsSystem) {
             return new CharacterDrawer(batchRenderingSystem, player, screenPos, descriptorsSystem, animationsSystem);
         }
 
-        public static CharacterDrawer createDrawer(BatchRenderingSystem batchRenderingSystem, E player, Pos2D screenPos, DescriptorsSystem descriptorsSystem, AnimationsSystem animationsSystem, boolean shouldFlip) {
+        public static CharacterDrawer createDrawer(BatchSystem batchRenderingSystem, E player, Pos2D screenPos, DescriptorsSystem descriptorsSystem, AnimationsSystem animationsSystem, boolean shouldFlip) {
             CharacterDrawer characterDrawer = new CharacterDrawer(batchRenderingSystem, player, screenPos, descriptorsSystem, animationsSystem);
             characterDrawer.shouldFlip = shouldFlip;
             return characterDrawer;
@@ -191,31 +188,31 @@ public class CharacterRenderingSystem extends RenderingSystem {
             float width = bodyRegion.getRegionWidth() - idle / 2;
             float height = bodyRegion.getRegionHeight() - idle * FACTOR;
 
-            batchRenderingSystem.addTask((batch) ->
-                    {
-                        if (animate()) {
-                            TextureRegion previousBodyRegion = bodyAnimation.getPreviousGraphic();
-                            if (previousBodyRegion != null) {
-                                if (previousBodyRegion.isFlipY() && shouldFlip) {
-                                    previousBodyRegion.flip(false, true);
-                                }
-                                Color color = batch.getColor();
-                                float previusTransparency = color.a;
-                                color.a = bodyAnimation.getPreviousFrameTransparency();
-                                batch.setColor(color);
-                                batch.draw(previousBodyRegion, x, y, width, height);
-                                color.a = previusTransparency;
-                                batch.setColor(color);
-                            }
-                        }
-                        if (bodyRegion != null) {
-                            if (bodyRegion.isFlipY() && shouldFlip) {
-                                bodyRegion.flip(false, true);
-                            }
-                            batch.draw(bodyRegion, x, y, width, height);
-                        }
+            final SpriteBatch batch = batchSystem.getBatch();
+
+            if (animate()) {
+                TextureRegion previousBodyRegion = bodyAnimation.getPreviousGraphic();
+                if (previousBodyRegion != null) {
+                    if (previousBodyRegion.isFlipY() && shouldFlip) {
+                        previousBodyRegion.flip(false, true);
                     }
-            );
+                    Color color = batch.getColor();
+                    float previusTransparency = color.a;
+                    color.a = bodyAnimation.getPreviousFrameTransparency();
+                    batch.setColor(color);
+                    batch.draw(previousBodyRegion, x, y, width, height);
+                    color.a = previusTransparency;
+                    batch.setColor(color);
+                }
+            }
+            if (bodyRegion != null) {
+                if (bodyRegion.isFlipY() && shouldFlip) {
+                    bodyRegion.flip(false, true);
+                }
+                batch.draw(bodyRegion, x, y, width, height);
+            }
+
+
         }
 
         /**
@@ -311,17 +308,16 @@ public class CharacterRenderingSystem extends RenderingSystem {
                 }
                 float x1 = x + offsetX;
                 float y1 = y + offsetY * (shouldFlip ? -1 : 1);
-                BatchTask drawTexture = (batch) ->
-                {
-                    Color color = batch.getColor();
-                    float previusTransparency = color.a;
-                    color.a = transparency;
-                    batch.setColor(color);
-                    batch.draw(region, x1, y1);
-                    color.a = previusTransparency;
-                    batch.setColor(color);
-                };
-                batchRenderingSystem.addTask(drawTexture);
+                final SpriteBatch batch = batchSystem.getBatch();
+
+                Color color = batch.getColor();
+                float previusTransparency = color.a;
+                color.a = transparency;
+                batch.setColor(color);
+                batch.draw(region, x1, y1);
+                color.a = previusTransparency;
+                batch.setColor(color);
+
             }
         }
     }

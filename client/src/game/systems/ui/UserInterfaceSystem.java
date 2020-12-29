@@ -150,8 +150,9 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
     // Should only process player component.entity
     @Override
     protected void process(int entityId) {
-//        stage.act(Gdx.graphics.getDeltaTime());
-//        stage.draw();
+        Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
 
     @Override
@@ -179,11 +180,4 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
         return stage;
     }
 
-    public boolean isWideScreen() {
-        float normalRatio = 800.f / 600.f;
-        float height = Gdx.graphics.getHeight();
-        float width = Gdx.graphics.getWidth();
-        float result = width / height;
-        return result != normalRatio;
-    }
 }

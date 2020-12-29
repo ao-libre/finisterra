@@ -18,7 +18,7 @@ import static com.artemis.E.E;
 @Wire
 public class CameraSystem extends BaseSystem {
 
-    public static final float CAMERA_MIN_ZOOM = 0.5f;
+    public static final float CAMERA_MIN_ZOOM = 1f;
     public static final float CAMERA_MAX_ZOOM = 1f;
     public static final float ZOOM_TIME = 0.5f;
     private final float minZoom;

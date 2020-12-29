@@ -15,7 +15,7 @@ import component.entity.character.parts.Body;
 import component.entity.world.Dialog;
 import component.entity.world.Dialog.Kind;
 import component.position.WorldPos;
-import game.systems.render.BatchRenderingSystem;
+import game.systems.render.BatchSystem;
 import game.systems.resources.DescriptorsSystem;
 import game.ui.WidgetFactory;
 import game.utils.Colors;
@@ -54,7 +54,7 @@ public class DialogRenderingSystem extends RenderingSystem {
                 }
             });
     private DescriptorsSystem descriptorsSystem;
-    private BatchRenderingSystem batchRenderingSystem;
+    private BatchSystem batchSystem;
 
     public DialogRenderingSystem() {
         super(Aspect.all(Dialog.class, Body.class, WorldPos.class));
@@ -95,7 +95,7 @@ public class DialogRenderingSystem extends RenderingSystem {
         if (dialog.time < ALPHA_TIME) {
             dialog.alpha = dialog.time / ALPHA_TIME;
         }
-        batchRenderingSystem.addTask(batch -> label.draw(batch, dialog.alpha));
+        label.draw(batchSystem.getBatch(), dialog.alpha);
         child.getStyle().fontColor = color;
     }
 }

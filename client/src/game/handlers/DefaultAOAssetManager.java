@@ -336,7 +336,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         TextureParameter param = new TextureParameter();
         param.minFilter = TextureFilter.Linear;
         param.magFilter = TextureFilter.Linear;
-        param.genMipMaps = true;
+        param.genMipMaps = false;
         param.wrapU = Texture.TextureWrap.Repeat;
         param.wrapV = Texture.TextureWrap.Repeat;
         load(fileName, Texture.class, param);

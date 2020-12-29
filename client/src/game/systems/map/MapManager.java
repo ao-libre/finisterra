@@ -2,7 +2,7 @@ package game.systems.map;
 
 import com.artemis.BaseSystem;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import game.systems.render.BatchRenderingSystem;
+import game.systems.render.BatchSystem;
 import game.systems.resources.AnimationsSystem;
 import model.textures.AOTexture;
 import model.textures.BundledAnimation;
@@ -19,7 +19,7 @@ public class MapManager extends BaseSystem {
     public static final List<Integer> LOWER_LAYERS = Arrays.asList(0, 1);
     public static final List<Integer> UPPER_LAYERS = Collections.singletonList(3);
     private AnimationsSystem animationsSystem;
-    private BatchRenderingSystem batchRenderingSystem;
+    private BatchSystem batchSystem;
 
     public void drawLayer(Map map, int layer) {
         drawLayer(map, 0, layer, false, false, false);
@@ -98,7 +98,7 @@ public class MapManager extends BaseSystem {
             final float tileOffsetX = mapPosX + (Tile.TILE_PIXEL_WIDTH - tileRegion.getRegionWidth()) / 2;
             final float tileOffsetY = mapPosY - tileRegion.getRegionHeight() + Tile.TILE_PIXEL_HEIGHT;
 
-            batchRenderingSystem.addTask(batch1 -> batch1.draw(tileRegion, tileOffsetX, tileOffsetY));
+            batchSystem.getBatch().draw(tileRegion, tileOffsetX, tileOffsetY);
         }
     }
 

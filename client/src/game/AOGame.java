@@ -53,6 +53,9 @@ public class AOGame extends Game {
                     case LOGIN -> {
                         this.musicSystem = world.getSystem(MusicSystem.class);
                         musicSystem.stopMusic();
+                        if (this.world != null) {
+                            this.world.dispose();
+                        }
                         this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
                         this.musicSystem = world.getSystem(MusicSystem.class);
                         musicSystem.playMusic(101, true);

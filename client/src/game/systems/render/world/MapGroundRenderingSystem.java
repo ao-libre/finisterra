@@ -15,7 +15,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import game.systems.map.MapManager;
-import game.systems.render.BatchRenderingSystem;
+import game.systems.render.BatchSystem;
 import game.systems.resources.AnimationsSystem;
 import org.jetbrains.annotations.NotNull;
 import shared.model.map.Map;
@@ -44,7 +44,7 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
                 }
             });
     private WorldRenderingSystem worldRenderingSystem;
-    private BatchRenderingSystem batchRenderingSystem;
+    private BatchSystem batchSystem;
 
     public MapGroundRenderingSystem() {
         super(LOWER_LAYERS);
@@ -63,7 +63,7 @@ public class MapGroundRenderingSystem extends MapLayerRenderingSystem {
             int height = (int) ((range.maxAreaY - range.minAreaY) * Tile.TILE_PIXEL_HEIGHT);
 
             TextureRegion userRegion = new TextureRegion(mapTexture, x, mapTexture.getHeight() - y - height, width, height);
-            batchRenderingSystem.addTask(batch -> batch.draw(userRegion, x, y));
+            batchSystem.getBatch().draw(userRegion, x, y);
         } catch (ExecutionException e) {
             Log.error("Failed to render map layer 0", e);
         }

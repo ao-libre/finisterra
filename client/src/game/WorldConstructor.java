@@ -23,7 +23,9 @@ import game.systems.physics.MovementProcessorSystem;
 import game.systems.physics.MovementSystem;
 import game.systems.physics.PlayerInputSystem;
 import game.systems.profiling.ProfilerSystem;
-import game.systems.render.BatchRenderingSystem;
+import game.systems.render.BatchBeginSystem;
+import game.systems.render.BatchEndSystem;
+import game.systems.render.BatchSystem;
 import game.systems.render.chars.PrerenderCharCache;
 import game.systems.render.world.*;
 import game.systems.resources.*;
@@ -43,6 +45,7 @@ import game.systems.world.NetworkedEntitySystem;
 import game.systems.world.WorldSystem;
 import game.utils.CursorSystem;
 import net.mostlyoriginal.api.system.render.ClearScreenSystem;
+import net.mostlyoriginal.plugin.ProfilerPlugin;
 import shared.systems.IntervalSystem;
 
 import java.util.Arrays;
@@ -121,6 +124,8 @@ public class WorldConstructor {
 
                 // Rendering
                 .with(PRE_ENTITY_RENDER_PRIORITY,
+                        new BatchSystem(),
+                        new BatchBeginSystem(),
                         new PrerenderCharCache(),
                         new ClearScreenSystem(),
                         new MapGroundRenderingSystem(),
@@ -141,7 +146,7 @@ public class WorldConstructor {
                 .with(DECORATION_PRIORITY,
                         new StateRenderingSystem(),
                         new CharacterStatesRenderingSystem(),
-                        new BatchRenderingSystem())
+                        new BatchEndSystem())
 
                 // UI
                 .with(UI,
@@ -153,15 +158,14 @@ public class WorldConstructor {
                         new ConsoleSystem(),
                         new DialogSystem(),
                         new StatsSystem(),
-                        new UserInterfaceSystem(),
-                        new UserSystem())
+                        new UserSystem(),
+                        new UserInterfaceSystem())
 
                 // Otros sistemas
                 .with(new MapManager(),
                         new TagManager(),
                         new UuidEntityManager(),
                         new ProfilerSystem())
-
                 .build()
                 .register(assetManager);
     }

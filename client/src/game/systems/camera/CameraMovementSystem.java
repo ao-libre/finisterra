@@ -6,7 +6,7 @@ import com.artemis.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import component.camera.AOCamera;
 import component.position.WorldPosOffsets;
-import game.systems.render.BatchRenderingSystem;
+import game.systems.render.BatchSystem;
 import shared.model.map.Tile;
 
 import static com.artemis.E.E;
@@ -15,7 +15,7 @@ import static com.artemis.E.E;
 public class CameraMovementSystem extends IteratingSystem {
 
     private CameraSystem cameraSystem;
-    private BatchRenderingSystem batchRenderingSystem;
+    private BatchSystem batchSystem;
 
     /**
      * Creates a new CameraMovementSystem.
@@ -35,7 +35,7 @@ public class CameraMovementSystem extends IteratingSystem {
         camera.position.y -= Tile.TILE_PIXEL_HEIGHT;
         camera.update();
 
-        batchRenderingSystem.getBatch().setProjectionMatrix(camera.combined);
+        batchSystem.getBatch().setProjectionMatrix(camera.combined);
     }
 
 }

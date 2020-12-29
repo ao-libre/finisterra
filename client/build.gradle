@@ -9,6 +9,7 @@ dependencies {
     implementation (group: "com.badlogicgames.gdx", name: "gdx-tools", version: "$gdxVersion") {
         exclude group: "com.badlogicgames.gdx", module: "gdx-backend-lwjgl"
     }
+    implementation group: 'net.mostlyoriginal.artemis-odb', name: 'contrib-plugin-profiler', version: '2.5.0'
     implementation group: "org.reflections", name: "reflections", version: "$reflectionsVersion"
 
 }

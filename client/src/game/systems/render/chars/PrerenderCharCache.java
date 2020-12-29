@@ -111,8 +111,6 @@ public class PrerenderCharCache extends PassiveSystem {
                 drawShield(frame, info.getShield(), heading, i);
             }
         }
-        frame = Pixmaps.outline(frame, Colors.DARK);
-        frame = Pixmaps.outline(frame, Colors.OUTLINE);
         return frame;
     }
 
