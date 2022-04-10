@@ -104,12 +104,12 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
         table.addListener(new InputListener() {
 
             @Override
-            public boolean scrolled(InputEvent event, float x, float y, int amount) {
-                return isInUI(dialogUI, x, y) ||
-                        isInUI(consoleUI, x, y) ||
-                        isInUI(userStatsUI, x, y) ||
-                        isInUI(actionBarUI, x, y) ||
-                        isInUI(userUI, x, y);
+            public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY) {
+              return isInUI(dialogUI, x, y) ||
+                      isInUI(consoleUI, x, y) ||
+                      isInUI(userStatsUI, x, y) ||
+                      isInUI(actionBarUI, x, y) ||
+                      isInUI(userUI, x, y);
             }
 
             private boolean isInUI(Actor actor, float x, float y) {

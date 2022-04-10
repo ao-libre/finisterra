@@ -58,7 +58,7 @@ public class CameraSystem extends BaseSystem {
         }
     }
 
-    public void zoom(int inout, float duration) {
+    public void zoom(float inout, float duration) {
         cameraZoomOrigin = camera.zoom;
         desiredZoom += inout * 0.025f;
         desiredZoom = MathUtils.clamp(desiredZoom, minZoom, maxZoom);
