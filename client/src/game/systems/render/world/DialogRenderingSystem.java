@@ -37,7 +37,7 @@ public class DialogRenderingSystem extends RenderingSystem {
     private final LoadingCache<Dialog, Table> labels = CacheBuilder
             .newBuilder()
             .expireAfterAccess(5, TimeUnit.MINUTES)
-            .build(new CacheLoader<>() {
+            .build(new CacheLoader<Dialog, Table>() {
                 @Override
                 public Table load(@NotNull Dialog dialog) {
                     Table table = new Table(Skins.COMODORE_SKIN);

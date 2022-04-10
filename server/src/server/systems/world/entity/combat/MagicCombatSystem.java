@@ -258,13 +258,26 @@ public class MagicCombatSystem extends PassiveSystem {
     private boolean isValid(int target, Spell spell) {
         E targetEntity = E(target);
         int spellTarget = spell.getTarget();
+
+        boolean valid = false;
+
         // @todo usar un enum para darle significado a estos números
-        return switch (spellTarget) {
-            case 1, 3 -> targetEntity.isCharacter() || (targetEntity.hasNPC() && targetEntity.isHostile());
-            case 2 -> (targetEntity.hasNPC() && targetEntity.isHostile());
-            case 4 -> targetEntity == null;
-            default -> false;
+        switch (spellTarget) {
+            case 1:
+                valid = targetEntity.isCharacter() || (targetEntity.hasNPC() && targetEntity.isHostile());
+                break;
+            case 2:
+                valid = (targetEntity.hasNPC() && targetEntity.isHostile());
+                break;
+            case 3:
+                valid = targetEntity.isCharacter() || (targetEntity.hasNPC() && targetEntity.isHostile());
+                break;
+            case 4:
+                valid = targetEntity == null;
+                break;
         };
+
+        return valid;
     }
 
     private void notifyInfo(int userId, Messages messageId, String... messageParams) {

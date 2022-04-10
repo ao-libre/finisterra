@@ -102,7 +102,7 @@ public class ImageDesigner implements IDesigner<AOImage, ImageParameters> {
             defaultAOAssetManager.finishLoadingAsset(dest.path());
         }
 
-        var image = new Pixmap(dest);
+        Pixmap image = new Pixmap(dest);
         AOImage aoImage = new AOImage();
         aoImage.setId(freeId);
         aoImage.setHeight(image.getHeight());

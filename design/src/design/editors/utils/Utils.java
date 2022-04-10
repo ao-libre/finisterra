@@ -28,6 +28,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -37,6 +38,7 @@ import com.esotericsoftware.minlog.Log;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.FileImageInputStream;
+import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -45,6 +47,7 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -281,7 +284,7 @@ public class Utils {
         Iterator<ImageReader> iter = ImageIO.getImageReadersBySuffix(suffix);
         if (iter.hasNext()) {
             ImageReader reader = iter.next();
-            try (var stream = new FileImageInputStream(fileHandle.file())) {
+            try (ImageInputStream stream = new FileImageInputStream(fileHandle.file())) {
                 reader.setInput(stream);
                 int imageWidth = reader.getWidth(reader.getMinIndex());
                 int imageHeight = reader.getHeight(reader.getMinIndex());
@@ -361,13 +364,13 @@ public class Utils {
     }
 
     public static Pixmap textureRegionToPixmap(TextureRegion textureRegion) {
-        var texture = textureRegion.getTexture();
+        Texture texture = textureRegion.getTexture();
         if (!texture.getTextureData().isPrepared()) {
             texture.getTextureData().prepare();
         }
 
-        var pixmap = texture.getTextureData().consumePixmap();
-        var returnValue = new Pixmap(textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), Pixmap.Format.RGBA8888);
+        Pixmap pixmap = texture.getTextureData().consumePixmap();
+        Pixmap returnValue = new Pixmap(textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), Pixmap.Format.RGBA8888);
         returnValue.setBlending(Pixmap.Blending.None);
 
         for (int x = 0; x < textureRegion.getRegionWidth(); x++) {
@@ -397,7 +400,7 @@ public class Utils {
             charSet.add(c);
         }
 
-        var sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         charSet.forEach((character) -> {
             sb.append(character);
         });
