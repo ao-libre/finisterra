@@ -11,7 +11,6 @@ buildscript {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url "https://plugins.gradle.org/m2/" }
-        jcenter()
     }
 
     dependencies {
@@ -32,7 +31,8 @@ allprojects {
         appName = 'Finisterra'
 
         // Control global de las versiones de las dependencias.
-        gdxVersion = '1.9.10'               //Graphic Engine Library.
+        gdxVersion = '1.10.0'               //Graphic Engine Library.
+        gdxControllerVersion = '2.2.1'      //Game Controller Extension for libGDX
         kryoVersion = '4.0.2'               //Object Serialization API, override dependency of KryoNet.
         artemisVersion = '2.3.0'            //Artemis EntityComponentSystem & Network manager (TCP/UDP)
         artemisContribVersion = '2.4.0'     //Kinda the same but developed by someone else.
@@ -51,7 +51,6 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url "https://plugins.gradle.org/m2/" }
-        jcenter()
     }
 }
 

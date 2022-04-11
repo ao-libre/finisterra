@@ -137,9 +137,9 @@ public abstract class Inventory extends Window {
         return new ClickListener() {
 
             @Override
-            public boolean scrolled(InputEvent event, float x, float y, int amount) {
-                Inventory.this.scrolled(amount);
-                return true;
+            public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY) {
+              Inventory.this.scrolled(amountY);
+              return true;
             }
 
             @Override
@@ -188,8 +188,8 @@ public abstract class Inventory extends Window {
         };
     }
 
-    private void scrolled(int amount) {
-        base += amount;
+    private void scrolled(float amount) {
+        base += Math.round(amount);
         base = MathUtils.clamp(base, 0, Bag.SIZE - Inventory.SIZE);
     }
 

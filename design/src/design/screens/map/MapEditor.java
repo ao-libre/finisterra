@@ -83,19 +83,19 @@ public class MapEditor extends DesignScreen {
             }
 
             @Override
-            public boolean scrolled(int amount) {
-                boolean result = super.scrolled(amount);
+            public boolean scrolled(float amountX, float amountY) {
+                boolean result = super.scrolled(amountX, amountY);
                 if (isOverGUI()) {
                     return result;
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
                     CameraSystem system = world.getSystem(CameraSystem.class);
-                    system.zoom(amount, CameraSystem.ZOOM_TIME);
+                    system.zoom(amountY, CameraSystem.ZOOM_TIME);
                 } else {
-                    int x = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT) ? amount : 0;
-                    int y = !(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ||
+                    float x = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT) ? amountY : 0;
+                    float y = !(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ||
                             Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) ?
-                            amount : 0;
+                            amountY : 0;
                     x *= 70;
                     y *= 70;
                     world.getSystem(CameraSystem.class).camera.translate(x, y);
