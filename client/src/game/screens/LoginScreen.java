@@ -70,8 +70,8 @@ public class LoginScreen extends AbstractScreen {
         rememberMe = WidgetFactory.createCheckBox("Remember me");
         if (preferences.getBoolean("rememberMe")) {
             rememberMe.setChecked(true);
-            if (emailField.getText().isBlank()) {
-                if (!preferences.getString("userEmail").isBlank()) {
+            if (emailField.getText().isEmpty()) {
+                if (!preferences.getString("userEmail").isEmpty()) {
                     emailField.setText(preferences.getString("userEmail"));
                 }
             }
