@@ -83,7 +83,7 @@ public class AccountSystem extends PassiveSystem {
 
         if (!characters.isEmpty()) {
             for (int i = 0; i < 6; i++) {
-                if (!characters.get(i).isBlank()) {
+                if (!characters.get(i).isEmpty()) {
                     String name = characters.get(i);
                     File file = new File(Charfile.DIR_CHARFILES + name + ".json");
                     Log.info("*** obteniendo hero id del pj " + name);

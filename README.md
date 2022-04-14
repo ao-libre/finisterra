@@ -4,7 +4,7 @@ MMORPG de código abierto basado en Argentum Online. Escrito en Java usando Arte
 
 *Open Source MMORPG based on Argentum Online. Written in Java, using Artemis, Kryonet and libGDX.*
 
-#### Redes [![Website](https://img.shields.io/website?down_color=lightgrey&down_message=offline&up_color=blue&up_message=online&url=https%3A%2F%2Ffinisterra.argentumonline.org%2F)](https://finisterra.argentumonline.org/) [![Discord](https://img.shields.io/discord/479056868707270657?color=blueviolet&label=discord)](https://discord.gg/qCJPGbY) 
+#### Redes [![Website](https://img.shields.io/website?down_color=lightgrey&down_message=offline&up_color=blue&up_message=online&url=https%3A%2F%2Ffinisterra.argentumonline.org%2F)](https://finisterra.argentumonline.org/) [![Discord](https://img.shields.io/discord/479056868707270657?color=blueviolet&label=discord)](https://discord.gg/4Wd4EMwnFm) 
 
 ## Colaboradores
 ![game preview image](https://cdn.discordapp.com/attachments/580487031197794313/636899837354442755/readme-repo.png)

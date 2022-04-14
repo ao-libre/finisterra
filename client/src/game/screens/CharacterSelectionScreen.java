@@ -93,13 +93,28 @@ public class CharacterSelectionScreen extends AbstractScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 heroImageTable.clear();
                 switch (heroSelectBox.getSelected()) {
-                    case GUERRERO -> heroSelectionImage = WidgetFactory.createImage(warriorImage);
-                    case MAGO -> heroSelectionImage = WidgetFactory.createImage(mageImage);
-                    case ASESINO -> heroSelectionImage = WidgetFactory.createImage(assassinImage);
-                    case PALADIN -> heroSelectionImage = WidgetFactory.createImage(paladinImage);
-                    case BARDO -> heroSelectionImage = WidgetFactory.createImage(bardImage);
-                    case ARQUERO -> heroSelectionImage = WidgetFactory.createImage(archerImage);
-                    case CLERIGO -> heroSelectionImage = WidgetFactory.createImage(clericImage);
+                    case GUERRERO:
+                        heroSelectionImage = WidgetFactory.createImage(warriorImage);
+                        break;
+                    case MAGO:
+                        heroSelectionImage = WidgetFactory.createImage(mageImage);
+                        break;
+                    case ASESINO:
+                        heroSelectionImage = WidgetFactory.createImage(assassinImage);
+                        break;
+                    case PALADIN:
+                        heroSelectionImage = WidgetFactory.createImage(paladinImage);
+                        break;
+                    case BARDO:
+                        heroSelectionImage = WidgetFactory.createImage(bardImage);
+                        break;
+                    case ARQUERO:
+                        heroSelectionImage = WidgetFactory.createImage(archerImage);
+                        break;
+                    case CLERIGO:
+                        heroSelectionImage = WidgetFactory.createImage(clericImage);
+                        break;
+                    // todo: caso default, assert, etc.
                 }
                 heroImageTable.add(heroSelectionImage);
             }
@@ -149,7 +164,8 @@ public class CharacterSelectionScreen extends AbstractScreen {
         if (!userCharacters.isEmpty()) {
             for (int i = 0; i < 6; i++) {
                 int index = i;
-                if (!userCharacters.get(i).isBlank()) {
+                // todo: Implementar String::isBlank() de Java 11 en algún módulo de utilidades
+                if (!userCharacters.get(i).chars().allMatch(Character::isWhitespace)) {
                     charName = userCharacters.get(i);
                     int userHeroID = userCharactersData.get(i);
 
@@ -260,7 +276,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
         registerButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (name.getText().isBlank()) {
+                if (name.getText().chars().allMatch(Character::isWhitespace)) {
                     Dialog dialog = new Dialog("Error", getSkin());
                     dialog.add("El nombre no puede estar en blanco");
                     dialog.button("OK");

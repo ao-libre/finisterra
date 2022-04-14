@@ -72,7 +72,7 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         WorldPos targetPos = target1.map(E::getWorldPos).orElse(e.getOriginPos().toWorldPos());
         if (targetPos.equals(e.getWorldPos())) {
             return;
-        } else if (target1.isEmpty() && WorldUtils.WorldUtils(world).distance(origin, e.getOriginPos().toWorldPos()) < 10) {
+        } else if (!target1.isPresent() && WorldUtils.WorldUtils(world).distance(origin, e.getOriginPos().toWorldPos()) < 10) {
             return;
         }
         makeYourMove(e, origin, targetPos, aStarMap);

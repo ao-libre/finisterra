@@ -92,8 +92,8 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
     }
 
     @Override
-    public boolean scrolled(int amount) {
-        cameraSystem.zoom(amount, CameraSystem.ZOOM_TIME);
+    public boolean scrolled(float amountX, float amountY) {
+        cameraSystem.zoom(amountY, CameraSystem.ZOOM_TIME);
         return true;
     }
 

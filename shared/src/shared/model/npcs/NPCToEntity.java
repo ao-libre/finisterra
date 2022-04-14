@@ -44,7 +44,7 @@ public class NPCToEntity {
         if (npc.isAttackable()) {
             npcEntity.attackable();
         }
-        if (!npc.getName().isBlank()) {
+        if (!npc.getName().isEmpty()) {
             npcEntity.nameText(npc.getName());
         }
 

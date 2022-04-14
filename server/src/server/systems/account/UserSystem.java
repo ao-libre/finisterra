@@ -128,7 +128,7 @@ public class UserSystem extends PassiveSystem {
             });
             // get the account
             Account account = accountSystem.getAccount(userAcc);
-            if (!account.getCharacters().get(index).isBlank()) {
+            if (!account.getCharacters().get(index).isEmpty()) {
                 try {
                     File oldUserFile = new File(Charfile.DIR_CHARFILES + account.getCharacters().get(index) + ".json");
                     oldUserFile.delete();
