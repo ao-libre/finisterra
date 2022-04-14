@@ -112,7 +112,7 @@ public class RangedCombatSystem extends AbstractCombatSystem {
                 return false;
             }
         }
-        if (getarrow(userEntity).isEmpty()) {
+        if (!getarrow(userEntity).isPresent()) {
             notifyCombat(entityId, Messages.DONT_HAVE_BOW_AND_ARROW);
             return false;
         }
