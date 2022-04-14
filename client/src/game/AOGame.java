@@ -47,11 +47,13 @@ public class AOGame extends Game {
             world.inject(musicSystem);
             screenManager.addListener((screenEnum -> {
                 switch (screenEnum) {
-                    case LOGIN -> {
+                    case LOGIN:
                         this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager, musicSystem);
                         musicSystem.playMusic(101, true);
-                    }
-                    case GAME -> musicSystem.playMusic(1, true);
+                        break;
+                    case GAME:
+                        musicSystem.playMusic(1, true);
+                        break;
                 }
             }));
             screenManager.to(ScreenEnum.LOGIN);
