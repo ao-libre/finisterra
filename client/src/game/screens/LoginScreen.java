@@ -18,6 +18,7 @@ import game.systems.resources.MusicSystem;
 import game.systems.resources.SoundsSystem;
 import game.ui.ExtendedDialog;
 import game.ui.WidgetFactory;
+import game.ui.WidgetFactory.Drawables;
 import shared.network.account.AccountLoginRequest;
 import shared.util.Messages;
 
@@ -208,7 +209,7 @@ public class LoginScreen extends AbstractScreen {
         /* Tabla botones */
         Window buttonsTable = WidgetFactory.createWindow();
         buttonsTable.setMovable(false);
-        buttonsTable.background(getSkin().getDrawable("menu-frame"));
+        buttonsTable.background(WidgetFactory.createDrawable(Drawables.SLOT.name));
         buttonsTable.getTitleLabel().setColor(Color.GOLD);
         buttonsTable.getTitleLabel().setAlignment(2);
         buttonsTable.setHeight(100);

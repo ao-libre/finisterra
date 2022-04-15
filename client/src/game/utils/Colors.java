@@ -18,6 +18,8 @@ public class Colors {
     public static final Color TRANSPARENT_RED = rgba(231, 76, 60, 0.1f);
     public static final Color RED = rgb(231, 76, 60);
     public static final Color YELLOW = rgb(244, 244, 143);
+    public static final Color DARK = rgba(30, 30, 30, 0.7f);
+    public static final Color OUTLINE = rgba(246, 234, 199, 0.2f);
 
     public static Color rgba(int r, int g, int b, float a) {
         return new Color((float) r / 255, (float) g / 255, (float) b / 255, a);

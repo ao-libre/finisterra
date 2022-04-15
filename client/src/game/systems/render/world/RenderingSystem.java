@@ -15,7 +15,7 @@ import static com.artemis.E.E;
 @Wire
 public abstract class RenderingSystem extends OrderedEntityProcessingSystem {
 
-    public static final float SCALE = 2;
+    public static final float SCALE = 1;
 
     private CameraSystem cameraSystem;
 

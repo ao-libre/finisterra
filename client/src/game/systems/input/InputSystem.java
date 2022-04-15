@@ -77,8 +77,11 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        mouseSystem.onClick();
-        return true;
+        if (button == Input.Buttons.LEFT) {
+            mouseSystem.onClick();
+            return true;
+        }
+        return false;
     }
 
     @Override

@@ -32,7 +32,6 @@ import game.ClientConfiguration;
 import game.handlers.DefaultAOAssetManager;
 import game.systems.camera.CameraSystem;
 import game.systems.map.MapManager;
-import game.systems.render.BatchRenderingSystem;
 import game.systems.resources.AnimationsSystem;
 import game.systems.resources.DescriptorsSystem;
 import game.systems.resources.ObjectSystem;

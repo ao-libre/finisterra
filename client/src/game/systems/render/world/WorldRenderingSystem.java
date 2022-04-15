@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
 @Wire
 public class WorldRenderingSystem extends BaseSystem {
 
-    private static final int EXTRA_TILES = 7;
+    private static final int EXTRA_TILES = 2;
     private MapManager mapManager;
     private CameraSystem cameraSystem;
     private TiledMapSystem tiledMapSystem;
-    private CharacterRenderingSystem characterRenderingSystem;
+    private CharacterRenderSystem characterRenderingSystem;
     private EffectRenderingSystem effectRenderingSystem;
     private NetworkedEntitySystem networkedEntitySystem;
 

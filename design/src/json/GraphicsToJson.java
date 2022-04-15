@@ -20,6 +20,7 @@ public class GraphicsToJson {
         HashMap<Integer, Spell> spells = new HashMap<>();
         final FileHandle file = Gdx.files.local(output + SharedResources.GRAPHICS_FOLDER + SharedResources.JSON_EXT);
         SpellJson.load(spells, file);
+
         // write
         Json json = new SpellJson();
         json.toJson(spells, HashMap.class, Spell.class, file);

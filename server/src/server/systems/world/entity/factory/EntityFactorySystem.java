@@ -91,9 +91,13 @@ public class EntityFactorySystem extends PassiveSystem {
         setInventory(player, hero);
         // set spells
         setSpells(player, hero);
-
+        setSkills(player, 100);
 
         return player;
+    }
+
+    private void setSkills(int player, int initialSkills) {
+        E(player).skillsInitial(initialSkills);
     }
 
     public int createPlayer(String name, Hero hero) {

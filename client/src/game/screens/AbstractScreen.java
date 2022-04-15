@@ -14,7 +14,7 @@ import game.utils.Skins;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 public abstract class AbstractScreen extends PassiveSystem implements Screen {
-    private static final Skin SKIN = Skins.COMODORE_SKIN;
+    private static final Skin SKIN = Skins.CURRENT.get();
     private static final Texture BACKGROUND_TEXTURE = new Texture(Gdx.files.internal(Resources.GAME_IMAGES_PATH + "background.jpg"));
     private static final SpriteDrawable BACKGROUND = new SpriteDrawable(new Sprite(BACKGROUND_TEXTURE));
 
@@ -72,7 +72,7 @@ public abstract class AbstractScreen extends PassiveSystem implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        getStage().getViewport().update(width, height);
+//        getStage().getViewport().update(width, height);
     }
 
     @Override

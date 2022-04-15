@@ -16,6 +16,8 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class DesktopLauncher {
 
@@ -35,18 +37,30 @@ public class DesktopLauncher {
         Init initConfig = config.getInitConfig();
         Video video = initConfig.getVideo();
 
-        Graphics.DisplayMode displayMode = Lwjgl3ApplicationConfiguration.getDisplayMode();
+        Graphics.DisplayMode[] displayModes = Lwjgl3ApplicationConfiguration.getDisplayModes();
+        Graphics.DisplayMode displayMode = Arrays.stream(displayModes)
+                        .filter(dm -> dm.height == 720)
+                        .max(Comparator.comparingInt(o -> o.refreshRate))
+                        .orElse(Arrays.stream(displayModes)
+                                .filter(dm -> dm.height == 768)
+                                .max(Comparator.comparingInt(o -> o.refreshRate))
+                                .orElse(Lwjgl3ApplicationConfiguration.getDisplayMode())
+                );
 
         // Build LWJGL configuration
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
-        cfg.setTitle("Finisterra - Argentum Online Java");
-        cfg.setWindowedMode(displayMode.width, displayMode.height);
-        //cfg.setFullscreenMode(displayMode);
-        cfg.useVsync(video.getVsync());
-        cfg.setIdleFPS(72);
-        cfg.setResizable(initConfig.isResizeable());
+        cfg.setTitle("Finisterra");
+//        if (displayMode.equals(Lwjgl3ApplicationConfiguration.getDisplayMode())) {
+//            cfg.setFullscreenMode(displayMode);
+//            cfg.setDecorated(false);
+//        } else {
+            cfg.setWindowedMode(displayMode.width, displayMode.height);
+            cfg.setDecorated(true);
+//        }
+        cfg.useVsync(true);
+        cfg.setIdleFPS(60);
+        cfg.setResizable(false);
         cfg.disableAudio(initConfig.isDisableAudio());
-        cfg.setMaximized(initConfig.isStartMaximized());
         cfg.setWindowSizeLimits(854, 480, -1, -1);
 
         if (video.getHiDPIMode().equalsIgnoreCase("Pixels")) {

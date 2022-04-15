@@ -1,0 +1,526 @@
+[INIT]
+NumArmas=76
+
+[Arma1]
+Dir1=4719
+Dir2=4721
+Dir3=4718
+Dir4=4720
+
+[Arma3]
+Dir1=4723
+Dir2=4725
+Dir3=4722
+Dir4=4724
+
+# Garrote
+[ARMA4]
+Dir1=10269
+Dir2=10271
+Dir3=10268
+Dir4=10270
+
+# Cimitarra
+[ARMA5]
+Dir1=10295
+Dir2=10297
+Dir3=10294
+Dir4=10296
+
+# Vara de mago
+[ARMA6]
+Dir1=10321
+Dir2=10323
+Dir3=10320
+Dir4=10322
+
+# Arco
+[ARMA7]
+Dir1=10467
+Dir2=10469
+Dir3=10466
+Dir4=10468
+
+# vara de fresno
+[Arma8]	
+Dir3=955
+Dir1=956
+Dir4=957
+Dir2=958
+
+# baston nudoso
+[Arma9]	
+Dir3=982
+Dir1=983
+Dir4=984
+Dir2=985
+
+# baculo engarzado
+[Arma10]	
+Dir3=1009
+Dir1=1010
+Dir4=1011
+Dir2=1012
+
+# hunter# s composite long bow
+[Arma11]	
+Dir3=1048
+Dir1=1049
+Dir4=1050
+Dir2=1051
+
+# daga chota
+[Arma12]	
+Dir3=1311
+Dir1=1312
+Dir4=1313
+Dir2=1314
+
+
+# SILVER SWORD
+[Arma13]
+Dir3=13331
+Dir1=13332
+Dir4=13333
+Dir2=13334
+
+# short sword
+[Arma14]
+Dir3=13357
+Dir1=13358
+Dir4=13359
+Dir2=13360
+
+# dragon slayer long sword
+[Arma15]
+Dir3=13383
+Dir1=13384
+Dir4=13385
+Dir2=13386
+
+# Alforja
+[Arma16]
+Dir3=3607
+Dir1=3608
+Dir4=3609
+Dir2=3610
+
+# Mochila
+[Arma17]
+Dir3=3633
+Dir1=3634
+Dir4=3635
+Dir2=3636
+
+# Katana
+[Arma18]
+Dir3=3659
+Dir1=3660
+Dir4=3661
+Dir2=3662
+
+# Hacha de Barbaro
+[Arma19]
+Dir3=19824
+Dir1=19825
+Dir4=19826
+Dir2=19827
+
+# Caña de Pescar
+[Arma20]
+Dir3=19746
+Dir1=19747
+Dir4=19748
+Dir2=19749
+
+# Espada Larga
+[Arma21]
+Dir3=19772
+Dir1=19773
+Dir4=19774
+Dir2=19775
+
+# Espada Vikinga
+[Arma22]
+Dir3=19798
+Dir1=19799
+Dir4=19800
+Dir2=19801
+
+# Hacha de Leñador
+[Arma23]
+Dir3=19850
+Dir1=19851
+Dir4=19852
+Dir2=19853
+
+# Hacha doble filo
+[Arma24]
+Dir3=19876
+Dir1=19877
+Dir4=19878
+Dir2=19879
+
+# Hacha
+[Arma25]
+Dir3=19902
+Dir1=19903
+Dir4=19904
+Dir2=19905
+
+# Horquilla
+[Arma26]
+Dir3=19928
+Dir1=19929
+Dir4=19930
+Dir2=19931
+
+# Katana
+[Arma27]
+Dir3=19954
+Dir1=19955
+Dir4=19956
+Dir2=19957
+
+# Martillo de Guerra
+[Arma28]
+Dir3=19980
+Dir1=19981
+Dir4=19982
+Dir2=19983
+
+# Martillo de Herrero
+[Arma29]
+Dir3=20006
+Dir1=20007
+Dir4=20008
+Dir2=20009
+
+# Piquete de Minero
+[Arma30]
+Dir3=20032
+Dir1=20033
+Dir4=20034
+Dir2=20035
+
+# Serrucho
+[Arma31]
+Dir3=20058
+Dir1=20059
+Dir4=20060
+Dir2=20061
+
+# Mazo del juicio
+[Arma32]
+Dir3=20229
+Dir1=20230
+Dir4=20231
+Dir2=20232
+
+# Antorcha Olímpica
+[Arma33]
+Dir3=20483
+Dir1=20484
+Dir4=20485
+Dir2=20486
+
+# Daga +1
+[Arma34]
+Dir3=17881
+Dir1=17882
+Dir4=17883
+Dir2=17884
+
+# Daga +2
+[Arma35]
+Dir3=17907
+Dir1=17908
+Dir4=17909
+Dir2=17910
+
+# Daga +3
+[Arma36]
+Dir3=20532
+Dir1=20533
+Dir4=20534
+Dir2=20535
+
+# Hacha de leña éfica
+[Arma37]
+Dir3=21945
+Dir1=21946
+Dir4=21947
+Dir2=21948
+
+# Cuchillas para altos
+[Arma38]
+Dir3=22003
+Dir1=22004
+Dir4=22005
+Dir2=22006
+
+# Cuchillas para bajos
+[Arma39]
+Dir3=22029
+Dir1=22030
+Dir4=22031
+Dir2=22032
+
+# Arco Simple enano
+[Arma40]
+Dir3=22288
+Dir1=22289
+Dir4=22290
+Dir2=22291
+
+# Arco Simple
+[Arma41]
+Dir3=22314
+Dir1=22315
+Dir4=22316
+Dir2=22317
+
+# Arco Simple reforzado enano
+[Arma42]
+Dir3=22340
+Dir1=22341
+Dir4=22342
+Dir2=22343
+
+# Arco simple reforzado
+[Arma43]
+Dir3=22366
+Dir1=22367
+Dir4=22368
+Dir2=22369
+
+# Arco compuesto reforzado enano
+[Arma44]
+Dir3=22392
+Dir1=22393
+Dir4=22394
+Dir2=22395
+
+# Arco compuesto reforzado
+[Arma45]
+Dir3=22418
+Dir1=22419
+Dir4=22420
+Dir2=22421
+
+# Arco cazador enano
+[Arma46]
+Dir3=22444
+Dir1=22445
+Dir4=22446
+Dir2=22447
+
+# Arco cazador
+[Arma47]
+Dir3=22470
+Dir1=22471
+Dir4=22472
+Dir2=22473
+
+# Daga común(Petizos)
+[Arma48]
+Dir3=22537
+Dir1=22538
+Dir4=22539
+Dir2=22540
+
+# Daga +1(Petizos)
+[Arma49]
+Dir3=22563
+Dir1=22564
+Dir4=22565
+Dir2=22566
+
+# Daga +2(Petizos)
+[Arma50]
+Dir3=22589
+Dir1=22590
+Dir4=22591
+Dir2=22592
+
+# Daga +3(Petizos)
+[Arma51]
+Dir3=22615
+Dir1=22616
+Dir4=22617
+Dir2=22618
+
+# Daga +4
+[Arma52]
+Dir3=22641
+Dir1=22642
+Dir4=22643
+Dir2=22644
+
+# Daga +4(Petizos)
+[Arma53]
+Dir3=22667
+Dir1=22668
+Dir4=22669
+Dir2=22670
+
+# Katana(Petizos)
+[Arma54]
+Dir3=22693
+Dir1=22694
+Dir4=22695
+Dir2=22696
+
+# Vikinga(Petizos)
+[Arma55]
+Dir3=22719
+Dir1=22720
+Dir4=22721
+Dir2=22722
+
+# Sable
+[Arma56]
+Dir3=22746
+Dir1=22747
+Dir4=22748
+Dir2=22749
+
+# Sable(Petizos)
+[Arma57]
+Dir3=22772
+Dir1=22773
+Dir4=22774
+Dir2=22775
+
+# Vara de mago(Petizos)
+[Arma58]
+Dir3=22798
+Dir1=22799
+Dir4=22800
+Dir2=22801
+
+# Arco compuesto (Petizos)
+[Arma59]
+Dir3=23200
+Dir1=23201
+Dir4=23202
+Dir2=23203
+
+# Vara frezno (E/G)
+[Arma60]
+Dir3=23231
+Dir1=23232
+Dir4=23233
+Dir2=23234
+
+# Bastón nudoso (E/G)
+[Arma61]
+Dir3=23257
+Dir1=23258
+Dir4=23259
+Dir2=23260
+
+# Báculo engarzado (E/G)
+[Arma62]
+Dir3=23283
+Dir1=23284
+Dir4=23285
+Dir2=23286
+
+# Espada de plata (E/G)
+[Arma63]
+Dir3=23309
+Dir1=23310
+Dir4=23311
+Dir2=23312
+
+# Espada corta (E/G)
+[Arma64]
+Dir3=23335
+Dir1=23336
+Dir4=23337
+Dir2=23338
+
+# Espada mata dragones (E/G)
+[Arma65]
+Dir3=23361
+Dir1=23362
+Dir4=23363
+Dir2=23364
+
+# Espada dos manos (E/G)
+[Arma66]
+Dir3=23387
+Dir1=23388
+Dir4=23389
+Dir2=23390
+
+# Hacha larga de guerra (E/G)
+[Arma67]
+Dir3=23413
+Dir1=23414
+Dir4=23415
+Dir2=23416
+
+# Mazo de guerra (E/G)
+[Arma68]
+Dir3=23439
+Dir1=23440
+Dir4=23441
+Dir2=23442
+
+# Antorchar olímpica (E/G)
+[Arma69]
+Dir3=23465
+Dir1=23466
+Dir4=23467
+Dir2=23468
+
+# Garrote (E/G)
+[Arma70]
+Dir3=23491
+Dir1=23492
+Dir4=23493
+Dir2=23494
+
+# Cimitarra (E/G)
+[Arma71]
+Dir3=23517
+Dir1=23518
+Dir4=23519
+Dir2=23520
+
+# Espada larga (E/G)
+[Arma72]
+Dir3=23543
+Dir1=23544
+Dir4=23545
+Dir2=23546
+
+# Serrucho (E/G)
+[Arma73]
+Dir3=23569
+Dir1=23570
+Dir4=23571
+Dir2=23572
+
+# Piquerte de minero (E/G)
+[Arma74]
+Dir3=23595
+Dir1=23596
+Dir4=23597
+Dir2=23598
+
+# Martillo de herrero (E/G)
+[Arma75]
+Dir3=23621
+Dir1=23622
+Dir4=23623
+Dir2=23624
+
+# Caña de pescar (E/G)
+[Arma76]
+Dir3=23647
+Dir1=23648
+Dir4=23649
+Dir2=23650

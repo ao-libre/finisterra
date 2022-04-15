@@ -77,7 +77,7 @@ public class UITest extends ApplicationAdapter {
         // Tabla botones
         Window buttonsTable = WidgetFactory.createWindow();
         buttonsTable.setMovable(false);
-        buttonsTable.background(Skins.COMODORE_SKIN.getDrawable("menu-frame"));
+        // buttonsTable.background(Skins.COMODORE_SKIN.getDrawable("menu-frame"));
         buttonsTable.getTitleLabel().setColor(Color.GOLD);
         buttonsTable.getTitleLabel().setAlignment(2);
         buttonsTable.setHeight(100);

@@ -30,7 +30,8 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
     public int shieldEvasionPower(int userId) {
         E userEntity = E(userId);
         float shieldModifier = modifierSystem.of(SHIELD, CharClass.of(userEntity));
-        return (int) (100 * shieldModifier / 2);
+        int shieldSkills = userEntity.skillsDefensa();
+        return (int) (shieldSkills * shieldModifier / 2);
     }
 
     @Override
@@ -38,12 +39,17 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
         E userEntity = E(userId);
         int power = 0;
         if (userEntity.hasCharHero()) {
-            float temp = 100 + 100 / 33 * userEntity.getAgility().getBaseValue() * modifierSystem.of(EVASION, CharClass.of(userEntity));
-            power = (int) (temp + 2.5f * Math.max(userEntity.getLevel().level - 12, 0));
+            int tacticSkills = userEntity.skillsTacticas();
+            float temp = tacticSkills + tacticSkills / 33f * userEntity.getAgility().getCurrentValue() * modifierSystem.of(EVASION, CharClass.of(userEntity));
+            power = (int) (temp + getLvlPower(userEntity.levelLevel()));
         } else if (userEntity.hasEvasionPower()) {
             power = userEntity.getEvasionPower().value;
         }
         return power;
+    }
+
+    private float getLvlPower(int level) {
+        return 2.5f * Math.max(level - 12, 0);
     }
 
     @Override
@@ -51,7 +57,9 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
         E userEntity = E(userId);
         int power = 0;
         if (userEntity.hasCharHero()) {
-            power = (int) (100 + 3 * userEntity.getAgility().getBaseValue() * modifierSystem.of(WEAPON, CharClass.of(userEntity)));
+            int weaponSkills = userEntity.skillsArmas();
+            float weaponModifier = modifierSystem.of(WEAPON, CharClass.of(userEntity));
+            power = getUserAttackPower(weaponModifier, weaponSkills, userEntity.getAgility().getCurrentValue(), userEntity.levelLevel());
         } else if (userEntity.hasAttackPower()) {
             power = userEntity.getAttackPower().value;
         }
@@ -63,16 +71,37 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
         E userEntity = E(userId);
         int power = 0;
         if (userEntity.hasCharHero()) {
-            power = (int) (100 + 3 * userEntity.getAgility().getBaseValue() * modifierSystem.of(PROJECTILE, CharClass.of(userEntity)));
+            int projectileSkills = userEntity.skillsProyectiles();
+            float modifier = modifierSystem.of(PROJECTILE, CharClass.of(userEntity));
+            power = getUserAttackPower(modifier, projectileSkills, userEntity.getAgility().getCurrentValue(), userEntity.levelLevel());
         } else if (userEntity.hasAttackPower()) {
             power = userEntity.getAttackPower().value;
         }
         return power;
     }
 
+    private int getUserAttackPower(float modifier, int skill, int agility, int level) {
+        int power;
+        int i;
+        if (skill < 31) {
+            return (int) (skill * modifier);
+        } else if (skill < 61) {
+            i = 1;
+        } else if (skill < 91) {
+            i = 2;
+        } else {
+            i = 3;
+        }
+        power = (int) (skill + i * agility * modifier);
+        power += getLvlPower(level);
+        return power;
+    }
+
     @Override
     public int wrestlingAttackPower(int userId) {
-        return 0;
+        E userEntity = E(userId);
+        float modifier = modifierSystem.of(WRESTLING, CharClass.of(userEntity));
+        return getUserAttackPower(modifier, userEntity.skillsWrestling(), userEntity.agilityCurrentValue(), userEntity.levelLevel());
     }
 
     @Override

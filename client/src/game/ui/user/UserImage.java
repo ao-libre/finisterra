@@ -21,12 +21,12 @@ public class UserImage extends ImageButton {
     private E e;
 
     UserImage(E e) {
-        super(Skins.COMODORE_SKIN, "big-disc");
+        super(Skins.CURRENT.get(), WidgetFactory.ImageButtons.BIG_DISC.name);
         this.e = e;
         lvlLabel = WidgetFactory.createTitleLabel("");
         lvlLabel.setAlignment(Align.center);
-        radialSprite = new RadialSprite(Skins.COMODORE_SKIN.getRegion("disc-glow"));
-        radialProgress = new RadialProgress(Skins.COMODORE_SKIN.getRegion("disc-glow"));
+        radialSprite = new RadialSprite(WidgetFactory.createRegionTexture(WidgetFactory.Drawables.CIRCLE_GLOW.name));
+        radialProgress = new RadialProgress(WidgetFactory.createRegionTexture(WidgetFactory.Drawables.CIRCLE_GLOW.name));
     }
 
     @Override

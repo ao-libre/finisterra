@@ -22,7 +22,11 @@ import game.systems.physics.AttackAnimationSystem;
 import game.systems.physics.MovementProcessorSystem;
 import game.systems.physics.MovementSystem;
 import game.systems.physics.PlayerInputSystem;
-import game.systems.render.BatchRenderingSystem;
+import game.systems.profiling.ProfilerSystem;
+import game.systems.render.BatchBeginSystem;
+import game.systems.render.BatchEndSystem;
+import game.systems.render.BatchSystem;
+import game.systems.render.chars.PrerenderCharCache;
 import game.systems.render.world.*;
 import game.systems.resources.*;
 import game.systems.screen.MouseSystem;
@@ -41,6 +45,7 @@ import game.systems.world.NetworkedEntitySystem;
 import game.systems.world.WorldSystem;
 import game.utils.CursorSystem;
 import net.mostlyoriginal.api.system.render.ClearScreenSystem;
+import net.mostlyoriginal.plugin.ProfilerPlugin;
 import shared.systems.IntervalSystem;
 
 import java.util.Arrays;
@@ -123,6 +128,9 @@ public class WorldConstructor {
 
                 // Rendering
                 .with(PRE_ENTITY_RENDER_PRIORITY,
+                        new BatchSystem(),
+                        new BatchBeginSystem(),
+                        new PrerenderCharCache(),
                         new ClearScreenSystem(),
                         new MapGroundRenderingSystem(),
                         new ObjectRenderingSystem(),
@@ -131,7 +139,7 @@ public class WorldConstructor {
 
                 .with(ENTITY_RENDER_PRIORITY,
                         new EffectRenderingSystem(),
-                        new CharacterRenderingSystem(),
+                        new CharacterRenderSystem(),
                         new WorldRenderingSystem())
 
                 .with(POST_ENTITY_RENDER_PRIORITY,
@@ -142,7 +150,7 @@ public class WorldConstructor {
                 .with(DECORATION_PRIORITY,
                         new StateRenderingSystem(),
                         new CharacterStatesRenderingSystem(),
-                        new BatchRenderingSystem())
+                        new BatchEndSystem())
 
                 // UI
                 .with(UI,
@@ -160,8 +168,8 @@ public class WorldConstructor {
                 // Otros sistemas
                 .with(new MapManager(),
                         new TagManager(),
-                        new UuidEntityManager())
-
+                        new UuidEntityManager(),
+                        new ProfilerSystem())
                 .build()
                 .register(assetManager)
                 .register(musicSystem);

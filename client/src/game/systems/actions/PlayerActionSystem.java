@@ -66,7 +66,6 @@ public class PlayerActionSystem extends PassiveSystem {
                 long rtt = timeSyncSystem.getRtt();
                 long timeOffset = timeSyncSystem.getTimeOffset();
                 clientSystem.send(new SpellCastRequest(spell, pos, rtt + timeOffset));
-                spellSystem.clearCast();
                 player.attackIntervalValue(Intervals.MAGIC_ATTACK_INTERVAL);
             } else {
                 consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.CANT_MAGIC_THAT_FAST));
@@ -86,7 +85,6 @@ public class PlayerActionSystem extends PassiveSystem {
                 long rtt = timeSyncSystem.getRtt();
                 long timeOffset = timeSyncSystem.getTimeOffset();
                 clientSystem.send(new AttackRequest(AttackType.RANGED, targetPos, rtt + timeOffset));
-                spellSystem.clearShot();
                 playerSystem.get().attackIntervalValue(Intervals.ATTACK_INTERVAL);
             } else {
                 consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.CANT_ATTACK_THAT_FAST));

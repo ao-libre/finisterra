@@ -101,7 +101,7 @@ public class InventorySystem extends UserInterfaceContributionSystem {
 
                 Table table = new Table();
                 table.pad(0, 10, 10, 0);
-                table.setSkin(Skins.COMODORE_SKIN);
+                table.setSkin(Skins.CURRENT.get());
                 table.background(getBackground());
                 Label title = WidgetFactory.createTitleLabel(" - " + name + " - ");
                 Label type = WidgetFactory.createDescLabel(objType.toString());
@@ -317,15 +317,7 @@ public class InventorySystem extends UserInterfaceContributionSystem {
 
     public void update(Bag bag) {
         inventory.update(bag);
-        actionBarSystem.updateGoldLabel(playerSystem.get().goldCount());
-    }
-
-    public void toggleExpanded() {
-        inventory.toggleExpanded(playerSystem.get().getBag());
-    }
-
-    public boolean isExpanded() {
-        return inventory.getExpanded();
+//        actionBarSystem.updateGoldLabel(playerSystem.get().goldCount());
     }
 
 }
