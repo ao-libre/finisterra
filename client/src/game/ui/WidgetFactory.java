@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import component.entity.world.CombatMessage;
+import game.ClientConfiguration;
 import game.utils.Colors;
 import game.utils.Skins;
 import org.jetbrains.annotations.NotNull;
@@ -160,6 +161,17 @@ public class WidgetFactory {
         Window window = new Window("", skin.get());
         window.setMovable(false);
         return window;
+    }
+
+    public static ScrollPane createServerScrollPane(List< ClientConfiguration.Network.Server> serverList){
+        ScrollPane scrollPane= new ScrollPane(serverList);
+        scrollPane.getStyle().vScrollKnob = skin.get().getDrawable( "Slider_Horizontal_Handle" );
+        scrollPane.setScrollBarPositions( false,true );
+        scrollPane.setScrollbarsOnTop( true );
+        scrollPane.setScrollbarsVisible( true );
+        scrollPane.setFadeScrollBars( false );
+        scrollPane.setFlickScroll( false );
+        return scrollPane;
     }
 
     public static Table createInventoryWindow() {
