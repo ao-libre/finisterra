@@ -128,7 +128,7 @@ public class LoginScreen extends AbstractScreen {
         serverList.getStyle().font = getSkin().getFont( "big" );
         // panel desplasable
         // las barra de desplasamiento aparece cuando la lista sobrepasa el tamaño
-        ScrollPane scrollPane = WidgetFactory.createServerScrollPane(serverList);
+        ScrollPane scrollPane = WidgetFactory.createScrollPane(serverList,false,true,false,true);
         // transparencia para igualar la ventana de login
         connectionTable.getColor().a = 0.8f;
         // Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
