@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import game.ClientConfiguration;
 import game.ClientConfiguration.Network.Server;
@@ -124,6 +125,7 @@ public class LoginScreen extends AbstractScreen {
         connectionTable.getTitleLabel().setText( "Server List" );
         connectionTable.getTitleLabel().setAlignment( Align.center );
         serverList = WidgetFactory.createList();
+        serverList.setAlignment( Align.center );
         serverList.setItems(clientConfiguration.getNetwork().getServers());
         serverList.getStyle().font = getSkin().getFont( "big" );
         // panel desplasable
@@ -140,13 +142,18 @@ public class LoginScreen extends AbstractScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 ExtendedDialog dialog = new ExtendedDialog("Añadir servidor", getSkin());
+                TextField serverNameField = WidgetFactory.createTextField("Server Name");
+                serverNameField.setMaxLength( 20 );
                 TextField ipField = WidgetFactory.createTextField("127.0.0.1");
                 TextField portField = WidgetFactory.createTextField("7666");
+                dialog.getContentTable().add(WidgetFactory.createLabel("SERVER NAME: "));
+                dialog.getContentTable().add(serverNameField).row();
                 dialog.getContentTable().add(WidgetFactory.createLabel("IP: "));
                 dialog.getContentTable().add(ipField).row();
                 dialog.getContentTable().add(WidgetFactory.createLabel("PORT: "));
                 dialog.getContentTable().add(portField).row();
                 dialog.button("Aceptar", () -> {
+                    String name = serverNameField.getText();
                     String ip = ipField.getText();
                     int port;
                     try {
@@ -154,9 +161,35 @@ public class LoginScreen extends AbstractScreen {
                     } catch (NumberFormatException ignored) {
                         return;
                     }
-                    clientConfiguration.getNetwork().getServers().add(new Server(ip, port));
-                    serverList.setItems(clientConfiguration.getNetwork().getServers());
+                    // chequeo servidor esta en la lista
+                    String newSever = name + "  " + ip + ":" + port;
+                    Array<Server> servers = clientConfiguration.getNetwork().getServers();
+                    boolean serverExist = false;
+
+                    for (int i = 0; i < servers.size; i++) {
+                        if (servers.get(i).toString().equals(newSever)){
+                            serverExist = true;
+                            break;
+                        }
+                    }
+                    /*
+                     * si esta en la lista lanza cuadro de error si no agrega el servidor
+                     * todo guardar la lista de servidores
+                     */
+                    if (serverExist){
+                        ExtendedDialog dialog1 = new ExtendedDialog("Error", getSkin());
+                        dialog1.getTitleLabel().setAlignment( Align.center );
+                        dialog1.text("El servidor ya esta en la lista\n" +
+                                "The sever is already in the list");
+                        dialog1.button("ok");
+                        dialog1.show(getStage());
+                    }
+                    else {
+                        clientConfiguration.getNetwork().getServers().add( new Server( name, ip, port ) );
+                        serverList.setItems(clientConfiguration.getNetwork().getServers());
+                    }
                 });
+                dialog.button( "Cancel" );
                 dialog.show(getStage());
             }
         });
