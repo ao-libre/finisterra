@@ -3,9 +3,11 @@ package game.ui;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import component.entity.world.CombatMessage;
+import game.ClientConfiguration;
 import game.utils.Colors;
 import game.utils.Skins;
 import org.jetbrains.annotations.NotNull;
@@ -161,6 +163,27 @@ public class WidgetFactory {
         window.setMovable(false);
         return window;
     }
+
+    /*
+    * actor = lo que necesita que tenga las barras de desplazamiento
+    * horizontalScroll = activa o desactiva el desplazamiento horizontal
+    * vertivalScroll = activa o desactiva el desplazamiento vertical
+    * fade = oculta las barras de desplazamiento si no se esta desplazando
+    * flickScroll = permite el arrastrado con el mouse
+    * */
+    public static ScrollPane createScrollPane(Actor actor,boolean horizontalScroll, boolean verticalScroll, boolean fade, boolean flickScroll){
+        ScrollPane scrollPane= new ScrollPane(actor);
+        scrollPane.getStyle().vScrollKnob = skin.get().getDrawable( "Slider_Horizontal_Handle" );
+        scrollPane.getStyle().hScrollKnob = skin.get().getDrawable( "Slider_Horizontal_Handle" );
+        scrollPane.setScrollBarPositions(horizontalScroll, verticalScroll);
+        scrollPane.setScrollbarsOnTop(true);
+        scrollPane.setScrollbarsVisible(true);
+        scrollPane.setFadeScrollBars(fade);
+        scrollPane.setFlickScroll(flickScroll);
+        scrollPane.setScrollingDisabled( !horizontalScroll, !verticalScroll );
+        return scrollPane;
+    }
+
 
     public static Table createInventoryWindow() {
         return new Table();

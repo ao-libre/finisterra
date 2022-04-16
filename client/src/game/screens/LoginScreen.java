@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
 import game.ClientConfiguration;
 import game.ClientConfiguration.Network.Server;
@@ -40,6 +41,7 @@ public class LoginScreen extends AbstractScreen {
     private CheckBox disableSound;
     private TextButton loginButton;
     private List<ClientConfiguration.Network.Server> serverList;
+    private boolean isDialogShowed = false;
 
     public LoginScreen() {
     }
@@ -47,11 +49,15 @@ public class LoginScreen extends AbstractScreen {
     @Override
     protected void keyPressed(int keyCode) {
         if (keyCode == Input.Keys.ESCAPE) {
-            ExtendedDialog dialog = new ExtendedDialog("Cerrar juego", getSkin());
-            dialog.text("¿Está seguro que desea cerrar el juego?");
-            dialog.button("Aceptar", Gdx.app::exit);
-            dialog.button("Cancelar");
-            dialog.show(getStage());
+            // arregla bug en el que se sigen generando dialog si se apreta multiple veces ESCAPE
+            if (!isDialogShowed) {
+                isDialogShowed = true;
+                ExtendedDialog dialog = new ExtendedDialog( "Cerrar juego", getSkin() );
+                dialog.text( "¿Está seguro que desea cerrar el juego?" );
+                dialog.button( "Aceptar", Gdx.app::exit );
+                dialog.button( "Cancelar", () -> {isDialogShowed = false;});
+                dialog.show( getStage() );
+            }
         }
     }
 
@@ -61,9 +67,14 @@ public class LoginScreen extends AbstractScreen {
 
         /* Tabla de login */
         Window loginWindow = WidgetFactory.createWindow();
+        loginWindow.getTitleLabel().setAlignment( Align.center );
+        loginWindow.getTitleLabel().setText( "Login Windows" );
         Label emailLabel = WidgetFactory.createLabel("Email: ");
+        //tamaño de las fuentes (nota soy chicaton :P )
+        emailLabel.getStyle().font = getSkin().getFont( "big" );
         emailField = WidgetFactory.createTextField(account.getEmail());
         Label passwordLabel = WidgetFactory.createLabel("Password");
+        passwordLabel.getStyle().font = getSkin().getFont( "big" );
         passwordField = WidgetFactory.createTextField(account.getPassword());
         passwordField.setPasswordCharacter('*');
         passwordField.setPasswordMode(true);
@@ -105,12 +116,23 @@ public class LoginScreen extends AbstractScreen {
         loginWindow.add(seePassword).padLeft(-10).padTop(30);
         loginWindow.add(newAccountButton).padTop(30).row();
 
-        /* Tabla de servidores */
-        Table connectionTable = new Table((getSkin()));
+        /* Tabla de servidores
+        * reemplazado por windows
+        * */
+        Window connectionTable = WidgetFactory.createWindow();
+        // agrege un titulo a la lista de servidores
+        connectionTable.getTitleLabel().setText( "Server List" );
+        connectionTable.getTitleLabel().setAlignment( Align.center );
         serverList = WidgetFactory.createList();
         serverList.setItems(clientConfiguration.getNetwork().getServers());
+        serverList.getStyle().font = getSkin().getFont( "big" );
+        // panel desplasable
+        // las barra de desplasamiento aparece cuando la lista sobrepasa el tamaño
+        ScrollPane scrollPane = WidgetFactory.createScrollPane(serverList,false,true,false,true);
+        // transparencia para igualar la ventana de login
+        connectionTable.getColor().a = 0.8f;
         // Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
-        connectionTable.add(serverList).colspan(2).width(400).height(250);
+        connectionTable.add(scrollPane).colspan(2).width(350).height(250);
         connectionTable.row();
 
         TextButton addServerButton = WidgetFactory.createTextButton("Añadir servidor");
@@ -208,22 +230,24 @@ public class LoginScreen extends AbstractScreen {
 
         /* Tabla botones */
         Window buttonsTable = WidgetFactory.createWindow();
+        // transparencia para igualar la ventana de loggin
+        buttonsTable.getColor().a = 0.8f;;
         buttonsTable.setMovable(false);
         buttonsTable.background(WidgetFactory.createDrawable(Drawables.SLOT.name));
         buttonsTable.getTitleLabel().setColor(Color.GOLD);
         buttonsTable.getTitleLabel().setAlignment(2);
-        buttonsTable.setHeight(100);
-        buttonsTable.add(disableMusic).width(500).pad(10);
-        buttonsTable.add(disableSound).width(400).pad(10);
+        buttonsTable.setHeight(110);
+        buttonsTable.add(disableMusic).width(500).pad(5);
+        buttonsTable.add(disableSound).width(400).pad(5);
         buttonsTable.row();
         buttonsTable.add(musicVolumeBar);
         buttonsTable.add(soundVolumeBar);
 
         /* Tabla para loguin y servers */
         Table login_server = new Table();
-        login_server.add(loginWindow).width(500).height(300).padLeft(10).padRight(10).padTop(10);
+        login_server.add(loginWindow).width(500).height(400).padLeft(10).padRight(10).padTop(10);
         //(*) Seteando acá el size, recursivamente tendría que resizear list.
-        login_server.add(connectionTable).width(400).height(300).padLeft(10).padRight(10).padTop(10);
+        login_server.add(connectionTable).width(400).height(400).padLeft(10).padRight(10).padTop(10);
 
         /* Tabla principal */
         getMainTable().add(login_server).row();
