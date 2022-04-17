@@ -205,6 +205,13 @@ text-cursor
   orig: 4, 22
   offset: 0, 0
   index: -1
+vscrollknob
+  rotate: false
+  xy: 209, 126
+  size: 4, 22
+  orig: 4, 22
+  offset: 0, 0
+  index: -1
 tooltip
   rotate: false
   xy: 1, 332

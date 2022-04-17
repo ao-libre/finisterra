@@ -2,6 +2,7 @@ package game.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import component.entity.world.CombatMessage;
 import game.utils.Colors;
@@ -133,6 +134,27 @@ public class WidgetFactory {
 
     public static Dialog createDialog(String title) {
         return new Dialog(title, skin.get());
+    }
+
+    /*
+     * actor = lo que necesita que tenga las barras de desplazamiento
+     * horizontalScroll = activa o desactiva el desplazamiento horizontal
+     * vertivalScroll = activa o desactiva el desplazamiento vertical
+     * fade = oculta las barras de desplazamiento si no se esta desplazando
+     * flickScroll = permite el arrastrado con el mouse
+     * */
+    public static ScrollPane createScrollPane(Actor actor, boolean horizontalScroll, boolean verticalScroll, boolean fade, boolean flickScroll){
+        ScrollPane scrollPane= new ScrollPane(actor);
+        scrollPane.getStyle().vScrollKnob = skin.get().getDrawable( "vscrollknob" );
+        scrollPane.getStyle().hScrollKnob = skin.get().getDrawable( "vscrollknob" );
+        scrollPane.getStyle().vScrollKnob.setMinWidth( 20 );
+        scrollPane.setScrollBarPositions(horizontalScroll, verticalScroll);
+        scrollPane.setScrollbarsOnTop(true);
+        scrollPane.setScrollbarsVisible(true);
+        scrollPane.setFadeScrollBars(fade);
+        scrollPane.setFlickScroll(flickScroll);
+        scrollPane.setScrollingDisabled( !horizontalScroll, !verticalScroll );
+        return scrollPane;
     }
 
     enum Fonts {

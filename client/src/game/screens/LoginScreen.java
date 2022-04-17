@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import game.ClientConfiguration;
 import game.ClientConfiguration.Network.Server;
@@ -39,6 +41,7 @@ public class LoginScreen extends AbstractScreen {
     private CheckBox disableSound;
     private TextButton loginButton;
     private List<ClientConfiguration.Network.Server> serverList;
+    private boolean isDialogShowed = false;
 
     public LoginScreen() {
     }
@@ -46,11 +49,15 @@ public class LoginScreen extends AbstractScreen {
     @Override
     protected void keyPressed(int keyCode) {
         if (keyCode == Input.Keys.ESCAPE) {
-            ExtendedDialog dialog = new ExtendedDialog("Cerrar juego", getSkin());
-            dialog.text("¿Está seguro que desea cerrar el juego?");
-            dialog.button("Aceptar", Gdx.app::exit);
-            dialog.button("Cancelar");
-            dialog.show(getStage());
+            // arregla bug en el que se sigen generando dialog si se apreta multiple veces ESCAPE
+            if (!isDialogShowed) {
+                isDialogShowed = true;
+                ExtendedDialog dialog = new ExtendedDialog( "Cerrar juego", getSkin() );
+                dialog.text( "¿Está seguro que desea cerrar el juego?" );
+                dialog.button( "Aceptar", Gdx.app::exit );
+                dialog.button( "Cancelar", () -> {isDialogShowed = false;});
+                dialog.show( getStage() );
+            }
         }
     }
 
@@ -106,10 +113,18 @@ public class LoginScreen extends AbstractScreen {
 
         /* Tabla de servidores */
         Table connectionTable = new Table((getSkin()));
+        connectionTable.background( getSkin().getDrawable( "menu-frame" ) );
         serverList = WidgetFactory.createList();
         serverList.setItems(clientConfiguration.getNetwork().getServers());
+        serverList.getStyle().background = null;
+        serverList.setAlignment( Align.center );
+        // panel desplasable
+        // las barra de desplasamiento aparece cuando la lista sobrepasa el tamaño
+        ScrollPane scrollPane = WidgetFactory.createScrollPane(serverList,false,true,false,true);
+        // transparencia para igualar la ventana de login
+        connectionTable.getColor().a = 0.8f;
         // Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
-        connectionTable.add(serverList).colspan(2).width(400).height(250);
+        connectionTable.add(scrollPane).colspan(2).width(380).height(230);
         connectionTable.row();
 
         TextButton addServerButton = WidgetFactory.createTextButton("Añadir servidor");
@@ -117,13 +132,19 @@ public class LoginScreen extends AbstractScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 ExtendedDialog dialog = new ExtendedDialog("Añadir servidor", getSkin());
+                TextField serverNameField = WidgetFactory.createTextField("");
+                serverNameField.setMessageText("Server Name");
+                serverNameField.setMaxLength( 20 );
                 TextField ipField = WidgetFactory.createTextField("127.0.0.1");
                 TextField portField = WidgetFactory.createTextField("7666");
+                dialog.getContentTable().add(WidgetFactory.createLabel("SERVER NAME: "));
+                dialog.getContentTable().add(serverNameField).row();
                 dialog.getContentTable().add(WidgetFactory.createLabel("IP: "));
                 dialog.getContentTable().add(ipField).row();
                 dialog.getContentTable().add(WidgetFactory.createLabel("PORT: "));
                 dialog.getContentTable().add(portField).row();
                 dialog.button("Aceptar", () -> {
+                    String name = serverNameField.getText();
                     String ip = ipField.getText();
                     int port;
                     try {
@@ -131,13 +152,39 @@ public class LoginScreen extends AbstractScreen {
                     } catch (NumberFormatException ignored) {
                         return;
                     }
-                    clientConfiguration.getNetwork().getServers().add(new Server(ip, port));
-                    serverList.setItems(clientConfiguration.getNetwork().getServers());
+                    // chequeo servidor esta en la lista
+                    String newSever = name + "  " + ip + ":" + port;
+                    Array<Server> servers = clientConfiguration.getNetwork().getServers();
+                    boolean serverExist = false;
+
+                    for (int i = 0; i < servers.size; i++) {
+                        if (servers.get(i).toString().equals(newSever)){
+                            serverExist = true;
+                            break;
+                        }
+                    }
+                    /*
+                     * si esta en la lista lanza cuadro de error si no agrega el servidor
+                     * todo guardar la lista de servidores
+                     */
+                    if (serverExist){
+                        ExtendedDialog dialog1 = new ExtendedDialog("Error", getSkin());
+                        dialog1.getTitleLabel().setAlignment( Align.center );
+                        dialog1.text("El servidor ya esta en la lista\n" +
+                                "The sever is already in the list");
+                        dialog1.button("ok");
+                        dialog1.show(getStage());
+                    }
+                    else {
+                        clientConfiguration.getNetwork().getServers().add( new Server( name, ip, port ) );
+                        serverList.setItems(clientConfiguration.getNetwork().getServers());
+                    }
                 });
+                dialog.button( "Cancel" );
                 dialog.show(getStage());
             }
         });
-        connectionTable.add(addServerButton);
+        connectionTable.add(addServerButton).bottom().maxWidth( 180 ).padLeft(10);
 
         TextButton deleteServerButton = WidgetFactory.createTextButton("Eliminar servidor");
         deleteServerButton.addListener(new ChangeListener() {
@@ -147,7 +194,7 @@ public class LoginScreen extends AbstractScreen {
                 serverList.setItems(clientConfiguration.getNetwork().getServers());
             }
         });
-        connectionTable.add(deleteServerButton);
+        connectionTable.add(deleteServerButton).bottom().maxWidth( 180 ).padRight( 10 );
 
         /* Botones para desactivar el sonido y la musica*/
 
@@ -168,6 +215,7 @@ public class LoginScreen extends AbstractScreen {
         });
 
         Slider musicVolumeBar = new Slider(0.0f, 1.0f, 0.1f, false, getSkin());
+        musicVolumeBar.getStyle().knob = getSkin().getDrawable( "vscrollknob" );
         musicVolumeBar.setValue(musicSystem.getVolume());
         musicVolumeBar.addListener(new ChangeListener() {
             @Override
@@ -192,6 +240,7 @@ public class LoginScreen extends AbstractScreen {
         });
 
         Slider soundVolumeBar = new Slider(0.0f, 1.0f, 0.1f, false, getSkin());
+        soundVolumeBar.getStyle().knob = getSkin().getDrawable( "vscrollknob" );
         soundVolumeBar.setValue(soundsSystem.getVolume());
         soundVolumeBar.addListener(new ChangeListener() {
             @Override
