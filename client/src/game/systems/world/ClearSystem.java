@@ -1,28 +1,29 @@
 package game.systems.world;
 
-import com.artemis.E;
+import com.artemis.ComponentMapper;
 import com.artemis.annotations.All;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.IteratingSystem;
 import com.esotericsoftware.minlog.Log;
 import component.entity.Clear;
 
-@All({Clear.class})
-@Wire
+@All(Clear.class)
 public class ClearSystem extends IteratingSystem {
 
     private NetworkedEntitySystem entitySystem;
 
+    ComponentMapper<Clear> mClear;
+
     @Override
     protected void process(int entityId) {
-        E e = E.E(entityId);
-        e.getClear().setTime(e.getClear().getTime() - world.getDelta());
-        if (e.clearTime() <= 0) {
+        Clear clear = mClear.get(entityId);
+        clear.setTime(clear.getTime() - world.getDelta());
+        if (clear.getTime() <= 0.0f) {
             Log.debug("Unregistering entity: " + entityId);
             if (entitySystem.existsLocal(entityId)) {
                 entitySystem.unregisterLocalEntity(entityId);
             } else {
-                e.deleteFromWorld();
+                world.getEntity(entityId).deleteFromWorld();
             }
         }
     }
