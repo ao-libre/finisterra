@@ -1,14 +1,15 @@
 package server.systems.account;
 
 import com.artemis.Component;
-import com.artemis.E;
-import com.artemis.annotations.Wire;
+import com.artemis.ComponentMapper;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.jsonbeans.Json;
 import com.esotericsoftware.jsonbeans.JsonReader;
 import com.esotericsoftware.jsonbeans.JsonValue;
 import com.esotericsoftware.jsonbeans.OutputType;
 import com.esotericsoftware.minlog.Log;
+import component.entity.character.Character;
+import component.entity.character.info.Name;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import org.jetbrains.annotations.NotNull;
 import server.database.Account;
@@ -32,7 +33,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.*;
 
-@Wire
 public class UserSystem extends PassiveSystem {
 
     private final ExecutorService executor = Executors.newFixedThreadPool(10);
@@ -42,6 +42,10 @@ public class UserSystem extends PassiveSystem {
     private EntityFactorySystem entityFactorySystem;
     private AccountSystem accountSystem;
     private ComponentSystem componentSystem;
+
+    ComponentMapper<Character> mCharacter;
+    ComponentMapper<Name> mName;
+
     private Json json;
 
     Set<String> onlineUsers = new HashSet<>();
@@ -157,12 +161,11 @@ public class UserSystem extends PassiveSystem {
      *                 Lo usamos, por ejemplo, cuando un usuario se desconecta para asegurarnos de no borrar la entidad mientras estamos guardando los datos.
      */
     public void save(int entityId, Runnable code) {
-        E user = E.E(entityId);
-        if (user.hasCharacter() && user.hasName()) {
-            String name = user.getName().text;
+        if (mCharacter.has(entityId) && mName.has(entityId)) {
+            String name = mName.get(entityId).text;
             executor.submit(() -> {
                 // Obtenemos la informacion de los componentes de la entidad.
-                Collection<Component> components = componentSystem.getComponents(user.id(), ComponentSystem.Visibility.SERVER);
+                Collection<Component> components = componentSystem.getComponents(entityId, ComponentSystem.Visibility.SERVER);
                 // Me fijo que no este vacía.
                 if (!components.isEmpty()) {
                     // La serializamos y la guardamos en el CharFile.
