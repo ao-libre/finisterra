@@ -98,7 +98,7 @@ public class PlayerActionSystem extends PassiveSystem {
 
     public void talk(int playerID, String message) {
         // Si es un comando...
-        if (CommandSystem.Command.isCommand(message)) {
+        if (CommandSystem.isCommand(message)) {
             if (commandSystem.commandExists(message)) {
                 commandSystem.handleCommand(message, playerID);
             } else {
