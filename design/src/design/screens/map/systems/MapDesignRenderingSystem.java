@@ -13,6 +13,7 @@ import game.utils.Colors;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.util.MapHelper;
+import game.systems.render.BatchSystem;
 
 @Wire(injectInherited = true)
 public class MapDesignRenderingSystem extends RenderingSystem {
@@ -25,7 +26,7 @@ public class MapDesignRenderingSystem extends RenderingSystem {
     private boolean showExit;
     private boolean showBlocks;
     private boolean showGrid;
-    private BatchRenderingSystem batchRenderingSystem;
+    private BatchSystem batchRenderingSystem;
 
     public MapDesignRenderingSystem() {
         super(Aspect.all(Focused.class, WorldPos.class));

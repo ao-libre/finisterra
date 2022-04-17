@@ -42,6 +42,7 @@ import shared.model.map.WorldPosition;
 import shared.util.AOJson;
 import shared.util.MapHelper;
 import shared.util.WorldPosConversion;
+import game.systems.render.BatchSystem;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -248,9 +249,8 @@ public class MapEditor extends DesignScreen {
                 .with(animationsSystem)
                 .with(descriptorsSystem)
                 .with(new MapDesignRenderingSystem())
-                .with(new BatchRenderingSystem())
+                .with(new BatchSystem())
                 .with(new MapManager());
-
         WorldConfiguration config = builder.build();
 
         config.register(DefaultAOAssetManager.getInstance());
