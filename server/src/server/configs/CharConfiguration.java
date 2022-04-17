@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class CharConfiguration extends BaseConfiguration {
 
     // Default values
-    public static final String PATH = "Chars.json";
+    public static final String PATH = "server/Chars.json";
     private static final ArrayList<Pair<CharClass, float[]>> DEF_MODIFIERS = new ArrayList<>();
 
     static {

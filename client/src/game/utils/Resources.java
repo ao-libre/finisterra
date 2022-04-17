@@ -29,7 +29,7 @@ public class Resources {
 
     // Files
     public static final String GAME_SHADERS_LIGHT = "light.png";
-    public static final String CLIENT_CONFIG = "Config.json";
+    public static final String CLIENT_CONFIG = "client/Config.json";
 
     // Extensions
     public static final String GAME_GRAPHICS_EXTENSION = ".png";
