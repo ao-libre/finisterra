@@ -1,4 +1,6 @@
 rootProject.name = 'finisterra'
-include 'desktop', 'design', 'client', 'components', 'shared', 'server'
+include 'desktop', 'client'
+include 'server'
+include 'components', 'shared'
+//include 'design'
 include 'compatibility'
-
