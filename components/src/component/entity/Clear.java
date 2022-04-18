@@ -1,6 +1,9 @@
 package component.entity;
 
 import com.artemis.Component;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Componente para la limpieza automática de entidades por timeout.
@@ -10,18 +13,12 @@ import com.artemis.Component;
  * @todo ¿son necesarios los getters/setters?
  * @todo Evaluar unificar los sistemas de limpieza en cliente y servidor.
  */
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class Clear extends Component {
 
-    float time;
+    private float time;
 
-    public Clear() {
-    }
-
-    public float getTime() {
-        return time;
-    }
-
-    public void setTime(float time) {
-        this.time = time;
-    }
 }

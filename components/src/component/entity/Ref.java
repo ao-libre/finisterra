@@ -1,22 +1,16 @@
 package component.entity;
 
 import com.artemis.Component;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Ref extends Component {
     private int id;
 
-    public Ref() {
-    }
-
-    public Ref(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }

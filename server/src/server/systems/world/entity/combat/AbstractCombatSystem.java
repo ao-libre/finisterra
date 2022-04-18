@@ -43,7 +43,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
             float temp = tacticSkills + tacticSkills / 33f * userEntity.getAgility().getCurrentValue() * modifierSystem.of(EVASION, CharClass.of(userEntity));
             power = (int) (temp + getLvlPower(userEntity.levelLevel()));
         } else if (userEntity.hasEvasionPower()) {
-            power = userEntity.getEvasionPower().value;
+            power = userEntity.getEvasionPower().getValue();
         }
         return power;
     }
@@ -61,7 +61,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
             float weaponModifier = modifierSystem.of(WEAPON, CharClass.of(userEntity));
             power = getUserAttackPower(weaponModifier, weaponSkills, userEntity.getAgility().getCurrentValue(), userEntity.levelLevel());
         } else if (userEntity.hasAttackPower()) {
-            power = userEntity.getAttackPower().value;
+            power = userEntity.getAttackPower().getValue();
         }
         return power;
     }
@@ -75,7 +75,7 @@ public abstract class AbstractCombatSystem extends BaseSystem implements CombatS
             float modifier = modifierSystem.of(PROJECTILE, CharClass.of(userEntity));
             power = getUserAttackPower(modifier, projectileSkills, userEntity.getAgility().getCurrentValue(), userEntity.levelLevel());
         } else if (userEntity.hasAttackPower()) {
-            power = userEntity.getAttackPower().value;
+            power = userEntity.getAttackPower().getValue();
         }
         return power;
     }

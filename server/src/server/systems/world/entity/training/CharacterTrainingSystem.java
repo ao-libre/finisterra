@@ -76,7 +76,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
         E npc = E(target);
         if (npc.hasNPC()) {
             Health health = npc.getHealth();
-            int id = npc.getNPC().id;
+            int id = npc.getNPC().getId();
             NPC npcInfo = npcSystem.getNpcs().get(id);
             exp = npcInfo.getGiveEXP() * effectiveDamage / health.max;
         }
@@ -88,7 +88,7 @@ public class CharacterTrainingSystem extends PassiveSystem {
         int gold = 0;
         E npc = E(entityId);
         if (npc.hasNPC()) {
-            int id = npc.getNPC().id;
+            int id = npc.getNPC().getId();
             NPC npcInfo = npcSystem.getNpcs().get(id);
             gold = npcInfo.getGiveGLD();
         }
