@@ -94,7 +94,7 @@ public class UserInterfaceSystem extends IteratingSystem implements Disposable {
         final Actor dialogUI = dialogSystem.getActor();
         stage.addActor(dialogUI);
         Table leftTable = new Table();
-        leftTable.add(consoleSystem.getConsole()).top().left().padLeft(20).padTop(10).minHeight(Gdx.graphics.getHeight() * 0.15f).maxHeight(Gdx.graphics.getHeight() * 0.15f).row();
+        leftTable.add(consoleSystem.getConsole()).top().left().padLeft(20).padTop(10).minHeight(Gdx.graphics.getHeight() * 0.15f).maxHeight(Gdx.graphics.getHeight() * 0.15f).fillX().row();
 
         Container<Actor> userStatsUI = new Container<>(statsSystem.getActor());
         leftTable.add(userStatsUI).left().grow();
