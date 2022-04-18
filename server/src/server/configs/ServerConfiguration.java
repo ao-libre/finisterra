@@ -3,7 +3,7 @@ package server.configs;
 public class ServerConfiguration extends BaseConfiguration {
 
     // Default values
-    public static final String PATH = "server/Server.json";
+    public static final String PATH = "Server.json";
 
     private static final int TCP_PORT = 9000;
     private static final int UDP_PORT = 9001;
