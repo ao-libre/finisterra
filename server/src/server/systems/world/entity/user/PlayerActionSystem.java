@@ -1,10 +1,13 @@
 package server.systems.world.entity.user;
 
+import com.artemis.ComponentMapper;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import component.console.ConsoleMessage;
 import component.entity.character.info.Bag;
 import component.entity.world.Dialog;
+import component.entity.world.Object;
+import component.physics.AttackInterval;
 import component.position.WorldPos;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.systems.config.ObjectSystem;
@@ -28,7 +31,8 @@ import shared.util.Messages;
 
 import java.util.Optional;
 
-@Wire
+// @todo: connectionId debería estar encapsulado dentro de la parte de Network.
+// Trabajar con playerId.
 public class PlayerActionSystem extends PassiveSystem {
 
     // Injected systems.
@@ -43,13 +47,17 @@ public class PlayerActionSystem extends PassiveSystem {
     private CommandSystem commandSystem;
     private EntityUpdateSystem entityUpdateSystem;
 
+    ComponentMapper<AttackInterval> mAttackInterval;
+    ComponentMapper<Bag> mBag;
+    ComponentMapper<Object> mObject;
+    ComponentMapper<WorldPos> mWorldPos;
+
     public void drop(int connectionId, int count, WorldPos position, int slot) {
         int playerId = serverSystem.getPlayerByConnection(connectionId);
-        E entity = E.E(playerId);
 
         // Remove item from inventory
         InventoryUpdate update = new InventoryUpdate();
-        Bag bag = entity.getBag();
+        Bag bag = mBag.get(playerId);
         Bag.Item item = bag.items[slot];
         if (item == null) return;
         if (item.equipped) {
@@ -63,30 +71,35 @@ public class PlayerActionSystem extends PassiveSystem {
             bag.remove(slot);
         }
         update.add(slot, bag.items[slot]); // should remove item if count <= 0
-        serverSystem.sendTo(serverSystem.getConnectionByPlayer(playerId), update);
+        serverSystem.sendTo(connectionId, update);
 
         // Add new obj component.entity to world
-        int object = world.create();
-        E.E(object).worldPos()
-                .worldPosMap(position.map)
-                .worldPosX(position.x)
-                .worldPosY(position.y);
-        E.E(object).objectIndex(item.objId);
-        E.E(object).objectCount(count);
-        worldEntitiesSystem.registerEntity(object);
+        int objectId = world.create();
+
+        WorldPos worldPos = mWorldPos.create(objectId);
+        worldPos.map = position.map;
+        worldPos.x = position.x;
+        worldPos.y = position.y;
+
+        Object object = mObject.create(objectId);
+        object.index = item.objId;
+        object.count = count;
+
+        worldEntitiesSystem.registerEntity(objectId);
     }
 
     public void attack(int connectionId, long timestamp, WorldPos worldPos, AttackType type) {
         int playerId = serverSystem.getPlayerByConnection(connectionId);
-        E entity = E.E(playerId);
-        if (!entity.hasAttackInterval()) {
+
+        if (!mAttackInterval.has(playerId)) {
             if (type.equals(AttackType.RANGED)) {
                 rangedCombatSystem.shoot(playerId, worldPos, timestamp);
             } else {
                 // todo use timestamp
                 physicalCombatSystem.entityAttack(playerId, Optional.empty());
             }
-            entity.attackIntervalValue(Intervals.ATTACK_INTERVAL);
+            AttackInterval attackInterval = mAttackInterval.create(playerId);
+            attackInterval.setValue(Intervals.ATTACK_INTERVAL);
         } else {
             messageSystem.add(playerId,
                     ConsoleMessage.error((type.equals(AttackType.RANGED) ?
@@ -97,6 +110,9 @@ public class PlayerActionSystem extends PassiveSystem {
     }
 
     public void talk(int playerID, String message) {
+        // Limpiamos mínimamente el mensaje.
+        message = message.strip();
+
         // Si es un comando...
         if (CommandSystem.isCommand(message)) {
             if (commandSystem.commandExists(message)) {
@@ -113,10 +129,11 @@ public class PlayerActionSystem extends PassiveSystem {
 
     public void spell(int connectionId, Spell spell, WorldPos worldPos, long timestamp) {
         int playerId = serverSystem.getPlayerByConnection(connectionId);
-        E entity = E.E(playerId);
-        if (!entity.hasAttackInterval()) {
+
+        if (!mAttackInterval.has(playerId)) {
             magicCombatSystem.spell(playerId, spell, worldPos, timestamp);
-            entity.attackIntervalValue(Intervals.MAGIC_ATTACK_INTERVAL);
+            AttackInterval attackInterval = mAttackInterval.create(playerId);
+            attackInterval.setValue(Intervals.MAGIC_ATTACK_INTERVAL);
         } else {
             messageSystem.add(playerId,
                     ConsoleMessage.error(Messages.CANT_MAGIC_THAT_FAST.name()));
