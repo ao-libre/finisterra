@@ -2,6 +2,7 @@ package server.systems.network;
 
 import com.artemis.ComponentMapper;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.StringBuilder;
 import com.esotericsoftware.minlog.Log;
 import component.console.ConsoleMessage;
 import component.entity.character.status.Health;
@@ -106,23 +107,37 @@ public class CommandSystem extends PassiveSystem {
                 messageSystem.add(userId, ConsoleMessage.info("YOU_ARE_ALIVE"));
             }
         });
+        // por alguna razon no me toma el params[0] asi que sume uno a todos los params
         commands.put("tp", (command) -> {
             int userId = command.userId;
-            int map = Integer.parseInt(command.params[0]);
-            int x = Integer.parseInt(command.params[1]);
-            int y = Integer.parseInt(command.params[2]);
+            if (command.params.length == 4) {
+                int map = Integer.parseInt( command.params[1] );
+                int x = Integer.parseInt( command.params[2] );
+                int y = Integer.parseInt( command.params[3] );
 
-            WorldPos worldPos = mWorldPos.get(userId);
+                WorldPos worldPos = mWorldPos.get( userId );
 
-            if (mapSystem.getHelper().isValid(new WorldPos(x, y, map))) {
-                worldPos.map = map;
-                worldPos.x = x;
-                worldPos.y = y;
-                EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(userId);
-                resetUpdate.withComponents(worldPos);
-                worldEntitiesSystem.notifyUpdate(userId, resetUpdate.build());
+                if(mapSystem.getHelper().isValid( new WorldPos( x, y, map ) )) {
+                    worldPos.map = map;
+                    worldPos.x = x;
+                    worldPos.y = y;
+                    EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of( userId );
+                    resetUpdate.withComponents( worldPos );
+                    worldEntitiesSystem.notifyUpdate( userId, resetUpdate.build() );
+                }
+            } else {
+                messageSystem.add(userId, ConsoleMessage.warning( "MULTIUSE","" , "", CommandsHelp.TP.description, "" ));
             }
         });
+        commands.put("help", (command) -> {
+            int userId= command.userId;
+            StringBuilder stringBuilder = new StringBuilder();
+            for (CommandsHelp ch : CommandsHelp.values()) {
+                stringBuilder.append(ch.description +"\n" );
+            }
+            messageSystem.add(userId, ConsoleMessage.warning( "MULTIUSE","" , "\n", stringBuilder.toString(), "" ));
+        });
+
     }
 
     /**
@@ -186,6 +201,24 @@ public class CommandSystem extends PassiveSystem {
             name = message.substring(1, sep);
             raw = message.substring(sep, endIndex);
             params = raw.split(" ");
+        }
+    }
+
+
+    enum CommandsHelp {
+        ONLINE ("/online: Muestra la cantidad de jugadores en linea" ),
+        SALIR("/salir: Sale del juego" ),
+        DIE ("/die: Te mueres"),
+        SETHOME("/sethome: Se usa en una ciudad para fijar el puento de resurrecion"),
+        SEEHOME("/seehome Muentra el actual punto de resurrcion"),
+        RESURRECT("/resurrect: Te resusita tras 20s"),
+        TP("/tp: se utiliza para moverte a otro punto, forma de uso /tp map x y  ej /tp 1 50 50"),
+        HELP("/help: Muestra los comando utilizables y su descripcion");
+
+        private final String description;
+
+        CommandsHelp(String description){
+            this.description = description;
         }
     }
 }

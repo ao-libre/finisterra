@@ -23,6 +23,8 @@ public class AOConsole extends ScrollPane {
         getStyle().background = Skins.CURRENT.get().getDrawable( "Slider_Horizontal_Background" );
         getStyle().vScrollKnob = Skins.CURRENT.get().getDrawable( "Slider_Horizontal_Handle" );
         setFadeScrollBars( false );
+        addMessage( "Bienvenidos al servidor", Color.GOLDENROD );
+        addMessage( "/help para obtener la lista de comandos", Color.GOLDENROD );
     }
 
     private static Actor createStack() {
