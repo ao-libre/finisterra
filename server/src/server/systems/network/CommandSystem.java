@@ -107,13 +107,13 @@ public class CommandSystem extends PassiveSystem {
                 messageSystem.add(userId, ConsoleMessage.info("YOU_ARE_ALIVE"));
             }
         });
-        // por alguna razon no me toma el params[0] asi que sume uno a todos los params
+
         commands.put("tp", (command) -> {
             int userId = command.userId;
-            if (command.params.length == 4) {
-                int map = Integer.parseInt( command.params[1] );
-                int x = Integer.parseInt( command.params[2] );
-                int y = Integer.parseInt( command.params[3] );
+            if (command.params.length == 3) {
+                int map = Integer.parseInt( command.params[0] );
+                int x = Integer.parseInt( command.params[1] );
+                int y = Integer.parseInt( command.params[2] );
 
                 WorldPos worldPos = mWorldPos.get( userId );
 
@@ -198,8 +198,8 @@ public class CommandSystem extends PassiveSystem {
             int sep = message.indexOf(" ");
             if (sep == -1) sep = endIndex;
 
-            name = message.substring(1, sep);
-            raw = message.substring(sep, endIndex);
+            name = message.substring(1, sep).strip();
+            raw = message.substring(sep, endIndex).strip();
             params = raw.split(" ");
         }
     }
