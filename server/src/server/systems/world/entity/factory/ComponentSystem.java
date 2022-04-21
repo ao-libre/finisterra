@@ -2,7 +2,6 @@ package server.systems.world.entity.factory;
 
 import com.artemis.Component;
 import com.artemis.Entity;
-import com.artemis.annotations.Wire;
 import com.artemis.utils.Bag;
 import com.google.common.collect.Sets;
 import component.entity.Clear;
@@ -27,7 +26,6 @@ import org.reflections.Reflections;
 
 import java.util.*;
 
-@Wire
 public class ComponentSystem extends PassiveSystem {
 
     private Map<Visibility, Set<Class<? extends Component>>> componentsByVisibility;
