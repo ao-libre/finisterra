@@ -1,8 +1,9 @@
 package server.systems.world.entity.movement;
 
-import com.artemis.E;
-import com.artemis.annotations.Wire;
+import com.artemis.ComponentMapper;
 import com.esotericsoftware.minlog.Log;
+import component.entity.character.states.Heading;
+import component.entity.character.states.Immobile;
 import component.movement.Destination;
 import component.physics.AOPhysics;
 import component.position.WorldPos;
@@ -23,7 +24,6 @@ import shared.util.EntityUpdateBuilder;
 import java.util.Optional;
 
 // TODO refactor: make active system processing entities with Moving component
-@Wire
 public class MovementSystem extends PassiveSystem {
 
     // Injected systems
@@ -32,16 +32,19 @@ public class MovementSystem extends PassiveSystem {
     private MapSystem mapSystem;
     private EntityUpdateSystem entityUpdateSystem;
 
+    ComponentMapper<Heading> mHeading;
+    ComponentMapper<Immobile> mImmobile;
+    ComponentMapper<WorldPos> mWorldPos;
+
     public void move(int playerId, int movementIndex, int requestNumber) {
-
-        // Obtiene la entidad a evaluar.
-        E player = E.E(playerId);
-
         // Se fija donde esta el player y hacia donde quiere ir
         WorldUtils worldUtils = WorldUtils.WorldUtils(world);
         AOPhysics.Movement movement = AOPhysics.Movement.values()[movementIndex];
-        player.headingCurrent(worldUtils.getHeading(movement));
-        WorldPos worldPos = player.getWorldPos();
+
+        Heading heading = mHeading.get(playerId);
+        heading.setCurrent(worldUtils.getHeading(movement));
+
+        WorldPos worldPos = mWorldPos.get(playerId);
         WorldPos oldPos = new WorldPos(worldPos);
         WorldPos nextPos = worldUtils.getNextPos(worldPos, movement);
         Map map = mapSystem.getMap(nextPos.map);
@@ -53,17 +56,16 @@ public class MovementSystem extends PassiveSystem {
         boolean occupied = mapSystem.getHelper().hasEntity(mapSystem.getNearEntities(playerId), nextPos);
 
         // Obtengo prox. pos disponible
-        if (!(player.hasImmobile() || blocked || occupied)) {
+        if (!(mImmobile.has(playerId) || blocked || occupied)) {
             Tile tile = mapSystem.getMap(nextPos.map).getTile(nextPos.x, nextPos.y);
             WorldPosition tileExit = tile.getTileExit();
             if (tileExit != null) {
                 Log.info("Moving to exit tile: " + tileExit);
                 nextPos = new WorldPos(tileExit.getX(), tileExit.getY(), tileExit.getMap());
             }
-            player
-                    .worldPosMap(nextPos.map)
-                    .worldPosX(nextPos.x)
-                    .worldPosY(nextPos.y);
+            worldPos.map = nextPos.map;
+            worldPos.x = nextPos.x;
+            worldPos.y = nextPos.y;
         } else {
             nextPos = oldPos;
         }
@@ -73,13 +75,13 @@ public class MovementSystem extends PassiveSystem {
         // notify near users
         if (!nextPos.equals(oldPos)) {
             if (nextPos.map != oldPos.map) {
-                entityUpdateSystem.add(EntityUpdateBuilder.of(playerId).withComponents(E.E(playerId).getWorldPos()).build(), UpdateTo.NEAR);
+                entityUpdateSystem.add(EntityUpdateBuilder.of(playerId).withComponents(worldPos).build(), UpdateTo.NEAR);
             } else {
                 // TODO convert notification into component.entity update
                 worldEntitiesSystem.notifyToNearEntities(playerId, new MovementNotification(playerId, new Destination(nextPos, movement.ordinal())));
             }
         } else {
-            entityUpdateSystem.add(EntityUpdateBuilder.of(playerId).withComponents(player.getHeading()).build(), UpdateTo.NEAR);
+            entityUpdateSystem.add(EntityUpdateBuilder.of(playerId).withComponents(heading).build(), UpdateTo.NEAR);
         }
 
         // notify user
