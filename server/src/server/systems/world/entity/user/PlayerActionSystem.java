@@ -1,8 +1,6 @@
 package server.systems.world.entity.user;
 
 import com.artemis.ComponentMapper;
-import com.artemis.E;
-import com.artemis.annotations.Wire;
 import component.console.ConsoleMessage;
 import component.entity.character.info.Bag;
 import component.entity.world.Dialog;
@@ -47,13 +45,13 @@ public class PlayerActionSystem extends PassiveSystem {
     private CommandSystem commandSystem;
     private EntityUpdateSystem entityUpdateSystem;
 
+
     ComponentMapper<AttackInterval> mAttackInterval;
     ComponentMapper<Bag> mBag;
     ComponentMapper<Object> mObject;
     ComponentMapper<WorldPos> mWorldPos;
 
-    public void drop(int connectionId, int count, WorldPos position, int slot) {
-        int playerId = serverSystem.getPlayerByConnection(connectionId);
+    public void drop(int playerId, int count, WorldPos position, int slot) {
 
         // Remove item from inventory
         InventoryUpdate update = new InventoryUpdate();
@@ -71,7 +69,8 @@ public class PlayerActionSystem extends PassiveSystem {
             bag.remove(slot);
         }
         update.add(slot, bag.items[slot]); // should remove item if count <= 0
-        serverSystem.sendTo(connectionId, update);
+
+        serverSystem.sendByPlayerId(playerId, update);
 
         // Add new obj component.entity to world
         int objectId = world.create();
@@ -88,8 +87,7 @@ public class PlayerActionSystem extends PassiveSystem {
         worldEntitiesSystem.registerEntity(objectId);
     }
 
-    public void attack(int connectionId, long timestamp, WorldPos worldPos, AttackType type) {
-        int playerId = serverSystem.getPlayerByConnection(connectionId);
+    public void attack(int playerId, long timestamp, WorldPos worldPos, AttackType type) {
 
         if (!mAttackInterval.has(playerId)) {
             if (type.equals(AttackType.RANGED)) {
@@ -127,8 +125,7 @@ public class PlayerActionSystem extends PassiveSystem {
         }
     }
 
-    public void spell(int connectionId, Spell spell, WorldPos worldPos, long timestamp) {
-        int playerId = serverSystem.getPlayerByConnection(connectionId);
+        public void spell(int playerId, Spell spell, WorldPos worldPos, long timestamp) {
 
         if (!mAttackInterval.has(playerId)) {
             magicCombatSystem.spell(playerId, spell, worldPos, timestamp);

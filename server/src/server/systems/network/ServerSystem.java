@@ -57,11 +57,11 @@ public class ServerSystem extends MarshalSystem {
     }
 
     private void processJob(NetworkJob job) {
-        int connectionID = job.connectionID;
+        int connectionId = job.connectionID;
         Object object = job.receivedObject;
         try {
             if (object instanceof IRequest) {
-                ((IRequest) object).accept(requestProcessor, connectionID);
+                ((IRequest) object).accept(requestProcessor, connectionId);
             } else if (object instanceof INotification) {
                 ((INotification) object).accept(notificationProcessor);
             } else if (object instanceof FrameworkMessage) {
@@ -108,9 +108,14 @@ public class ServerSystem extends MarshalSystem {
      * @param connectionID
      * @param packet Object to send
      */
-    public void sendTo(int connectionID, Object packet) {
+    public void sendByConnectionId(int connectionID, Object packet) {
         ServerStrategy marshal = (ServerStrategy) getMarshal();
         marshal.sendTo(connectionID, packet);
+    }
+
+    public void sendByPlayerId(int playerId, Object packet) {
+        ServerStrategy marshal = (ServerStrategy) getMarshal();
+        marshal.sendTo(getConnectionByPlayer(playerId), packet);
     }
 
     public void registerUserConnection(int connectionID, int playerID) {

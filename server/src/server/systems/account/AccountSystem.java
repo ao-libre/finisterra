@@ -46,7 +46,7 @@ public class AccountSystem extends PassiveSystem {
             }
         }
 
-        serverSystem.sendTo(connectionID, new AccountCreationResponse(successful));
+        serverSystem.sendByConnectionId(connectionID, new AccountCreationResponse(successful));
         serverSystem.closeConnection(connectionID);
     }
 
@@ -55,11 +55,11 @@ public class AccountSystem extends PassiveSystem {
         Account requestedAccount = Account.load(email);
 
         if (requestedAccount == null) {
-            serverSystem.sendTo(connectionID, new AccountLoginResponse(Messages.NON_EXISTENT_ACCOUNT));
+            serverSystem.sendByConnectionId(connectionID, new AccountLoginResponse(Messages.NON_EXISTENT_ACCOUNT));
             serverSystem.closeConnection(connectionID);
             return;
         } else if (!AccountSystemUtilities.checkPassword(password, requestedAccount.getPassword())) {
-            serverSystem.sendTo(connectionID, new AccountLoginResponse(Messages.ACCOUNT_LOGIN_FAILED));
+            serverSystem.sendByConnectionId(connectionID, new AccountLoginResponse(Messages.ACCOUNT_LOGIN_FAILED));
             serverSystem.closeConnection(connectionID);
             return;
         }
@@ -116,7 +116,7 @@ public class AccountSystem extends PassiveSystem {
             }
         }
 
-        serverSystem.sendTo(connectionID, new AccountLoginResponse(email, characters, charactersData));
+        serverSystem.sendByConnectionId(connectionID, new AccountLoginResponse(email, characters, charactersData));
     }
 
     public Account getAccount(String email) {

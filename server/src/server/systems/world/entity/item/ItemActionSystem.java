@@ -25,8 +25,7 @@ public class ItemActionSystem extends PassiveSystem {
     private MapSystem mapSystem;
     private WorldEntitiesSystem worldEntitiesSystem;
 
-    public void useItem(int connectionId, int action, int slot) {
-        int playerId = serverSystem.getPlayerByConnection(connectionId);
+    public void useItem(int playerId, int action, int slot) {
         E player = E.E(playerId);
         Bag.Item[] userItems = player.bagItems();
         if (slot < userItems.length) {
@@ -48,8 +47,7 @@ public class ItemActionSystem extends PassiveSystem {
         }
     }
 
-    public void grabItem(int connectionId) {
-        int playerId = serverSystem.getPlayerByConnection(connectionId);
+    public void grabItem(int playerId) {
         E player = E.E(playerId);
         WorldPos playerPos = player.getWorldPos();
         mapSystem.getNearEntities(playerId)
@@ -66,7 +64,7 @@ public class ItemActionSystem extends PassiveSystem {
                         Log.info("Adding item to index: " + index);
                         InventoryUpdate update = new InventoryUpdate();
                         update.add(index, player.bagItems()[index]);
-                        serverSystem.sendTo(connectionId, update);
+                        serverSystem.sendByPlayerId(playerId, update);
                         worldEntitiesSystem.unregisterEntity(objectEntityId);
                     } else {
                         Log.info("Could not put item in inventory (FULL?)");

@@ -32,8 +32,7 @@ public class MovementSystem extends PassiveSystem {
     private MapSystem mapSystem;
     private EntityUpdateSystem entityUpdateSystem;
 
-    public void move(int connectionId, int movementIndex, int requestNumber) {
-        int playerId = serverSystem.getPlayerByConnection(connectionId);
+    public void move(int playerId, int movementIndex, int requestNumber) {
 
         // Obtiene la entidad a evaluar.
         E player = E.E(playerId);
@@ -84,7 +83,7 @@ public class MovementSystem extends PassiveSystem {
         }
 
         // notify user
-        serverSystem.sendTo(connectionId, new MovementResponse(requestNumber, nextPos));
+        serverSystem.sendByPlayerId(playerId, new MovementResponse(requestNumber, nextPos));
     }
 
 }
