@@ -1,7 +1,6 @@
 package game;
 
 import com.artemis.*;
-import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import game.handlers.DefaultAOAssetManager;
 import game.screens.ScreenEnum;
@@ -167,7 +166,6 @@ public class WorldConstructor {
 
                 // Otros sistemas
                 .with(new MapManager(),
-                        new TagManager(),
                         new UuidEntityManager(),
                         new ProfilerSystem())
                 .build()

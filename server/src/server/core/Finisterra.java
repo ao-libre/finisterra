@@ -3,7 +3,6 @@ package server.core;
 import com.artemis.FluidEntityPlugin;
 import com.artemis.World;
 import com.artemis.WorldConfigurationBuilder;
-import com.artemis.managers.TagManager;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.minlog.Log;
@@ -121,7 +120,6 @@ public class Finisterra extends ApplicationAdapter {
                 .with(new CommandSystem())
                 .with(new EntityUpdateSystem())
                 .with(new MessageSystem())
-                .with(new TagManager())
                 .with(new MovementSystem())
                 .with(new PlayerActionSystem())
                 .with(new ItemActionSystem())
