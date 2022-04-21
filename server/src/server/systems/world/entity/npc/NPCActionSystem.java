@@ -19,9 +19,8 @@ public class NPCActionSystem extends PassiveSystem {
     private NPCSystem npcSystem;
 
     // TODO refactor, use npc types instead of names
-    public void interact(int connectionId, int targetEntity) {
+    public void interact(int playerId, int targetEntity) {
         NPC npc = npcSystem.getNpcs().get(targetEntity);
-        int playerId = serverSystem.getPlayerByConnection(connectionId);
         switch (npc.getName()) {
             case "Sacerdote":
                 if (E(playerId).healthMin() == 0) {

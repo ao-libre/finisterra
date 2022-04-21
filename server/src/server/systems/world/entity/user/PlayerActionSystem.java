@@ -43,8 +43,7 @@ public class PlayerActionSystem extends PassiveSystem {
     private CommandSystem commandSystem;
     private EntityUpdateSystem entityUpdateSystem;
 
-    public void drop(int connectionId, int count, WorldPos position, int slot) {
-        int playerId = serverSystem.getPlayerByConnection(connectionId);
+    public void drop(int playerId, int count, WorldPos position, int slot) {
         E entity = E.E(playerId);
 
         // Remove item from inventory
@@ -63,7 +62,7 @@ public class PlayerActionSystem extends PassiveSystem {
             bag.remove(slot);
         }
         update.add(slot, bag.items[slot]); // should remove item if count <= 0
-        serverSystem.sendTo(serverSystem.getConnectionByPlayer(playerId), update);
+        serverSystem.sendByConnectionId(serverSystem.getConnectionByPlayer(playerId), update);
 
         // Add new obj component.entity to world
         int object = world.create();
@@ -76,8 +75,7 @@ public class PlayerActionSystem extends PassiveSystem {
         worldEntitiesSystem.registerEntity(object);
     }
 
-    public void attack(int connectionId, long timestamp, WorldPos worldPos, AttackType type) {
-        int playerId = serverSystem.getPlayerByConnection(connectionId);
+    public void attack(int playerId, long timestamp, WorldPos worldPos, AttackType type) {
         E entity = E.E(playerId);
         if (!entity.hasAttackInterval()) {
             if (type.equals(AttackType.RANGED)) {
@@ -111,8 +109,7 @@ public class PlayerActionSystem extends PassiveSystem {
         }
     }
 
-    public void spell(int connectionId, Spell spell, WorldPos worldPos, long timestamp) {
-        int playerId = serverSystem.getPlayerByConnection(connectionId);
+    public void spell(int playerId, Spell spell, WorldPos worldPos, long timestamp) {
         E entity = E.E(playerId);
         if (!entity.hasAttackInterval()) {
             magicCombatSystem.spell(playerId, spell, worldPos, timestamp);
