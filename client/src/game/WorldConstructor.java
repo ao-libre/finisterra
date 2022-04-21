@@ -166,8 +166,9 @@ public class WorldConstructor {
 
                 // Otros sistemas
                 .with(new MapManager(),
-                        new UuidEntityManager(),
-                        new ProfilerSystem())
+                        new UuidEntityManager())
+// @todo Habilitar información de perfileo en UI
+//              .with(new ProfilerSystem())
                 .build()
                 .register(assetManager)
                 .register(musicSystem);
