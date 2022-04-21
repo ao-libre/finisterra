@@ -1,10 +1,11 @@
 package server.systems.world.entity.item;
 
-import com.artemis.E;
+import com.artemis.ComponentMapper;
 import com.esotericsoftware.minlog.Log;
 import component.console.ConsoleMessage;
 import component.entity.character.info.Bag;
 import component.entity.world.Object;
+import component.physics.UseInterval;
 import component.position.WorldPos;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.systems.network.MessageSystem;
@@ -25,9 +26,14 @@ public class ItemActionSystem extends PassiveSystem {
     private MapSystem mapSystem;
     private WorldEntitiesSystem worldEntitiesSystem;
 
+    ComponentMapper<Bag> mBag;
+    ComponentMapper<Object> mObject;
+    ComponentMapper<UseInterval> mUseInterval;
+    ComponentMapper<WorldPos> mWorldPos;
+
     public void useItem(int playerId, int action, int slot) {
-        E player = E.E(playerId);
-        Bag.Item[] userItems = player.bagItems();
+        Bag bag = mBag.get(playerId);
+        Bag.Item[] userItems = bag.getItems();
         if (slot < userItems.length) {
             // if item isequipable...
             Bag.Item item = userItems[slot];
@@ -36,9 +42,10 @@ public class ItemActionSystem extends PassiveSystem {
                 // modify user equipment
                 itemSystem.equip(playerId, slot, item);
             } else if (action == ItemActionRequest.ItemAction.USE.ordinal() && itemSystem.isUsable(item)) {
-                if (!player.hasUseInterval()) {
+                if (!mUseInterval.has(playerId)) {
                     itemSystem.use(playerId, item);
-                    player.useIntervalValue(Intervals.USE_INTERVAL);
+                    UseInterval useInterval = mUseInterval.create(playerId);
+                    useInterval.setValue(Intervals.USE_INTERVAL);
                 } else {
                     messageSystem.add(playerId,
                             ConsoleMessage.error(Messages.CANT_USE_THAT_FAST.name()));
@@ -48,22 +55,22 @@ public class ItemActionSystem extends PassiveSystem {
     }
 
     public void grabItem(int playerId) {
-        E player = E.E(playerId);
-        WorldPos playerPos = player.getWorldPos();
+        WorldPos playerPos = mWorldPos.get(playerId);
         mapSystem.getNearEntities(playerId)
                 .stream()
                 .filter(entityId -> {
-                    WorldPos entityPos = E.E(entityId).getWorldPos();
-                    return E.E(entityId).hasObject() && entityPos.x == playerPos.x && entityPos.y == playerPos.y;
+                    WorldPos entityPos = mWorldPos.get(entityId);
+                    return mObject.has(entityId) && entityPos.x == playerPos.x && entityPos.y == playerPos.y;
                 })
                 .findFirst()
                 .ifPresent(objectEntityId -> {
-                    Object object = E.E(objectEntityId).getObject();
-                    int index = player.getBag().add(object.index, object.count, false);
+                    Object object = mObject.get(objectEntityId);
+                    Bag bag = mBag.get(playerId);
+                    int index = bag.add(object.index, object.count, false);
                     if (index >= 0) {
                         Log.info("Adding item to index: " + index);
                         InventoryUpdate update = new InventoryUpdate();
-                        update.add(index, player.bagItems()[index]);
+                        update.add(index, bag.getItems()[index]);
                         serverSystem.sendByPlayerId(playerId, update);
                         worldEntitiesSystem.unregisterEntity(objectEntityId);
                     } else {
