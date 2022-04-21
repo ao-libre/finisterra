@@ -5,6 +5,7 @@ import com.artemis.annotations.PooledWeaver;
 
 import java.io.Serializable;
 
+// @todo Evaluar si conviene juntar todos los atributos en un único componente
 @PooledWeaver
 public abstract class Attribute extends Component implements Serializable {
 

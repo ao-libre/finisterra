@@ -168,8 +168,8 @@ public class WorldEntitiesSystem extends PassiveSystem {
 
         //reset body and head
         //todo obtener body y head de la base de datos del jugador las cabezas actualmente son randoms
-        entityFactorySystem.setNakedBody(entity, Race.of(entity));
-        entityFactorySystem.setHead(entity, Race.of(entity));
+        entityFactorySystem.setNakedBody(entityId, Race.of(entity));
+        entityFactorySystem.setHead(entityId, Race.of(entity));
         notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(entity.getBody(), entity.getHead()).build());
 
         if (!resurrected) {

@@ -44,7 +44,7 @@ public class ItemUsageSystem extends PassiveSystem {
                 remove(player, Weapon.class);
             } else if (obj instanceof ArmorObj) {
                 Hero hero = Hero.getHeroes().get(entity.getCharHero().heroId);
-                entityFactorySystem.setNakedBody(entity, Race.values()[hero.getRaceId()]);
+                entityFactorySystem.setNakedBody(player, Race.values()[hero.getRaceId()]);
                 update(player, entity.getBody());
             } else if (obj instanceof HelmetObj) {
                 entity.removeHelmet();
