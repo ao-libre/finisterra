@@ -188,10 +188,11 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         }
     }
 
-    // Todo: esta bien que este metodo reciba un playerId?
-    // Todo: Creo que es un bug y deberia recibir un connectionId como todos los demas.
     @Override
-    public void processRequest(@NotNull DropItem dropItem, int playerId) {
-        playerActionSystem.drop(playerId, dropItem.getCount(), dropItem.getPosition(), dropItem.getSlot());
+    public void processRequest(@NotNull DropItem dropItem, int connectionId) {
+        if (serverSystem.connectionHasPlayer(connectionId)) {
+            int playerId = serverSystem.getPlayerByConnection(connectionId);
+            playerActionSystem.drop(playerId, dropItem.getCount(), dropItem.getPosition(), dropItem.getSlot());
+        }
     }
 }

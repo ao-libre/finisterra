@@ -62,7 +62,7 @@ public class PlayerActionSystem extends PassiveSystem {
             bag.remove(slot);
         }
         update.add(slot, bag.items[slot]); // should remove item if count <= 0
-        serverSystem.sendByConnectionId(serverSystem.getConnectionByPlayer(playerId), update);
+        serverSystem.sendByPlayerId(playerId, update);
 
         // Add new obj component.entity to world
         int object = world.create();
