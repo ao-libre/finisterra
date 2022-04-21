@@ -29,8 +29,6 @@ import shared.util.Messages;
 
 import java.util.Optional;
 
-// @todo: connectionId debería estar encapsulado dentro de la parte de Network.
-// Trabajar con playerId.
 public class PlayerActionSystem extends PassiveSystem {
 
     // Injected systems.
@@ -107,20 +105,20 @@ public class PlayerActionSystem extends PassiveSystem {
         }
     }
 
-    public void talk(int playerID, String message) {
+    public void talk(int playerId, String message) {
         // Limpiamos mínimamente el mensaje.
         message = message.strip();
 
         // Si es un comando...
         if (CommandSystem.isCommand(message)) {
             if (commandSystem.commandExists(message)) {
-                commandSystem.handleCommand(message, playerID);
+                commandSystem.handleCommand(message, playerId);
             } else {
-                messageSystem.add(playerID, ConsoleMessage.error(Messages.INVALID_COMMAND.name()));
+                messageSystem.add(playerId, ConsoleMessage.error(Messages.INVALID_COMMAND.name()));
             }
         } else {
             // No es un comando, entonces es un dialogo.
-            EntityUpdate update = EntityUpdateBuilder.of(playerID).withComponents(new Dialog(message)).build();
+            EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(new Dialog(message)).build();
             entityUpdateSystem.add(update, UpdateTo.ALL);
         }
     }
