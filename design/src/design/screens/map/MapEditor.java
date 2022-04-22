@@ -5,12 +5,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.google.common.base.Objects;
+import component.camera.Focused;
 import component.position.WorldPos;
 import component.position.WorldPosOffsets;
 import design.screens.DesignScreen;
@@ -48,8 +50,11 @@ import static launcher.DesignCenter.SKIN;
 public class MapEditor extends DesignScreen {
 
     private final Stage stage;
+    private final int maxMapWidth = 100; //ancho maximo del mapa expresado en tiles
+    private final int maxMapHeight = 100; //alto maximo del mapa expresado en tiles
     private World world;
     private int viewer;
+    private int camera;
 
     // state
     private boolean dragging;
@@ -58,7 +63,7 @@ public class MapEditor extends DesignScreen {
     private MapProperties mapProperties;
     private MapPalette mapPalette;
     private Deque<Undo> undoableActions = new ArrayDeque<>(50);
-    private TextField mapNumber;
+    private final TextField mapNumber;
 
     public MapEditor() {
         stage = new Stage() {
@@ -69,6 +74,9 @@ public class MapEditor extends DesignScreen {
                     float x = Gdx.input.getDeltaX();
                     float y = Gdx.input.getDeltaY();
                     world.getSystem(CameraSystem.class).camera.translate(-x, -y);
+                    Vector3 position = world.getSystem(CameraSystem.class).camera.position;
+                    position.x = MathUtils.clamp(position.x, 0, Tile.TILE_PIXEL_WIDTH * maxMapWidth);
+                    position.y = MathUtils.clamp(position.y, 0, Tile.TILE_PIXEL_HEIGHT * maxMapHeight);
                 } else {
                     dragging = true;
                     setTile();
@@ -243,7 +251,7 @@ public class MapEditor extends DesignScreen {
                 .with(new ObjectSystem())
                 /* preguntenle al que creo el Camere System de donde salio el 260 (creo que deve ser por la nueva ui)
                 *  si no lo contrarresto se ve mal el mapeditor
-                *  quitar cuando o modifique en el Camera System
+                *  quitar cuando se modifique en el Camera System
                 *   */
                 .with(new CameraSystem(0.1f, 2f,Gdx.graphics.getWidth() + 260,Gdx.graphics.getHeight()))
                 .with(animationsSystem)
@@ -256,7 +264,7 @@ public class MapEditor extends DesignScreen {
         config.register(DefaultAOAssetManager.getInstance());
 
         world = new World(config);
-        int camera = world.create();
+        camera = world.create();
         E(camera).worldPosOffsets().aOCamera();
         viewer = world.create();
         E(viewer).focused();
