@@ -11,4 +11,10 @@ dependencies {
     }
     implementation group: 'net.mostlyoriginal.artemis-odb', name: 'contrib-plugin-profiler', version: '2.5.0'
     implementation group: "org.reflections", name: "reflections", version: "$reflectionsVersion"
+
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 }

@@ -2,26 +2,20 @@ package component.entity.npc;
 
 import com.artemis.Component;
 import com.artemis.annotations.PooledWeaver;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
 @PooledWeaver
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class NPC extends Component implements Serializable {
 
-    public int id;
+    private int id;
 
-    public NPC() {
-    }
-
-    public NPC(int id) {
-        this.id = id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }

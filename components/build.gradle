@@ -4,4 +4,10 @@ sourceSets.main.java.srcDirs = ["src/"]
 dependencies {
 	api group: "com.badlogicgames.gdx", name: "gdx", version: "$gdxVersion"
 	api group: "net.onedaybeard.artemis", name: "artemis-odb", version: "$artemisVersion"
+
+	compileOnly 'org.projectlombok:lombok:1.18.24'
+	annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+	testCompileOnly 'org.projectlombok:lombok:1.18.24'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
