@@ -6,12 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.*;
-import game.PixelPerfectViewport;
-import shared.model.map.Tile;
 
 import static com.artemis.E.E;
 
@@ -35,8 +31,8 @@ public class CameraSystem extends BaseSystem {
     public CameraSystem(float minZoom, float maxZoom) {
         this(minZoom, maxZoom, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
-
-    private CameraSystem(float minZoom, float maxZoom, float width, float height) {
+    // design hecho publico para poder dar el tamaño correcto
+    public CameraSystem(float minZoom, float maxZoom, float width, float height) {
         this.maxZoom = maxZoom;
         this.minZoom = minZoom;
         this.desiredZoom = maxZoom;
@@ -75,10 +71,11 @@ public class CameraSystem extends BaseSystem {
 
     public void zoom(float inout, float duration) {
         cameraZoomOrigin = camera.zoom;
-//        desiredZoom += inout * 0.025f;
-//        desiredZoom = MathUtils.clamp(desiredZoom, minZoom, maxZoom);
+        desiredZoom += inout * 0.025f;
+        desiredZoom = MathUtils.clamp(desiredZoom, minZoom, maxZoom);
 
-        desiredZoom = inout < 0 ? minZoom : maxZoom;
+        //design center es mejor gradual como esta arriba
+//        desiredZoom = inout < 0 ? minZoom : maxZoom;
         timeToCameraZoomTarget = cameraZoomDuration = duration;
     }
 

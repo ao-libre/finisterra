@@ -1,9 +1,6 @@
 package design.screens.map;
 
-import com.artemis.SuperMapper;
-import com.artemis.World;
-import com.artemis.WorldConfiguration;
-import com.artemis.WorldConfigurationBuilder;
+import com.artemis.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
@@ -11,10 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.google.common.base.Objects;
 import component.position.WorldPos;
@@ -28,7 +22,6 @@ import design.screens.map.gui.MapPalette.Selection;
 import design.screens.map.gui.MapProperties;
 import design.screens.map.systems.MapDesignRenderingSystem;
 import design.screens.views.TileSetView;
-import game.ClientConfiguration;
 import game.handlers.DefaultAOAssetManager;
 import game.systems.camera.CameraSystem;
 import game.systems.map.MapManager;
@@ -65,6 +58,7 @@ public class MapEditor extends DesignScreen {
     private MapProperties mapProperties;
     private MapPalette mapPalette;
     private Deque<Undo> undoableActions = new ArrayDeque<>(50);
+    private TextField mapNumber;
 
     public MapEditor() {
         stage = new Stage() {
@@ -134,6 +128,8 @@ public class MapEditor extends DesignScreen {
             }
         };
         Gdx.input.setInputProcessor(stage);
+        mapNumber = new TextField("1", SKIN);
+        mapNumber.setTextFieldFilter( new TextField.TextFieldFilter.DigitsOnlyFilter() );
         createUI();
         createWorld();
     }
@@ -245,7 +241,11 @@ public class MapEditor extends DesignScreen {
         builder
                 .with(new SuperMapper())
                 .with(new ObjectSystem())
-                .with(new CameraSystem(0.1f, 2f))
+                /* preguntenle al que creo el Camere System de donde salio el 260 (creo que deve ser por la nueva ui)
+                *  si no lo contrarresto se ve mal el mapeditor
+                *  quitar cuando o modifique en el Camera System
+                *   */
+                .with(new CameraSystem(0.1f, 2f,Gdx.graphics.getWidth() + 260,Gdx.graphics.getHeight()))
                 .with(animationsSystem)
                 .with(descriptorsSystem)
                 .with(new MapDesignRenderingSystem())
@@ -312,19 +312,31 @@ public class MapEditor extends DesignScreen {
         }, "All tiles will be set with current configuration (layer & selection)"))
                 .spaceLeft(5);
 
+        menus.add(new Label( " Map Nº: ", SKIN));
+        menus.add(mapNumber).width( 40 ).spaceLeft( 5 );
         menus.add(createButton("Load", "default",
                 () -> {
-                    int map = 1;
-                    initMap(map);
+                    int map = Integer.parseInt(mapNumber.getText());
+                    initMap( map );
                 }, "Load map"))
                 .spaceLeft(5);
 
         menus.add(createButton("Save", "default",
                 () -> {
                     Map current = mapProperties.getCurrent();
+                    int[] neighbours = mapProperties.getNeighbours();
+                    current.setNeighbours( neighbours[0], neighbours[1],neighbours[2],neighbours[3] );
+                    String mapName = current.getName();
+                    if (mapName == null){
+                        if (mapNumber.getText().isBlank()){
+                            mapName = "Map0";
+                        } else {
+                            mapName = "Map" + mapNumber.getText();
+                        }
+                        current.setName( mapName );
+                    }
                     FileHandle folder = Gdx.files.local("output/maps/");
-                    new AOJson().toJson(current, folder.child(current.getName() + ".json"));
-                    //TODO que guarde también los mapas limitrofes
+                                        new AOJson().toJson(current, folder.child(mapName + ".json"));
                 }, "Save map in output folder"))
                 .spaceLeft(5);
 
@@ -419,5 +431,4 @@ public class MapEditor extends DesignScreen {
             return Objects.hashCode(tile, pos);
         }
     }
-
 }
