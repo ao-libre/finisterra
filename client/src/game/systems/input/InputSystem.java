@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import game.screens.ScreenManager;
 import game.systems.actions.PlayerActionSystem;
 import game.systems.camera.CameraSystem;
+import game.systems.map.MapManager;
 import game.systems.network.ClientSystem;
 import game.systems.resources.MusicSystem;
 import game.systems.screen.MouseSystem;
@@ -133,6 +134,9 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
             case Input.Keys.F2:
                 screenSystem.takeScreenshot();
                 break;
+            case Input.Keys.F4:
+                MapManager.layer4Disable = !MapManager.layer4Disable;
+                break;
             case Input.Keys.F11:
                 screenSystem.toggleFullscreen();
                 break;
@@ -177,6 +181,9 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
                 break;
             case Input.Keys.F2:
                 screenSystem.takeScreenshot();
+                break;
+            case Input.Keys.F4:
+                MapManager.layer4Disable = !MapManager.layer4Disable;
                 break;
             case Input.Keys.F11:
                 screenSystem.toggleFullscreen();

@@ -17,7 +17,9 @@ import java.util.List;
 public class MapManager extends BaseSystem {
 
     public static final List<Integer> LOWER_LAYERS = Arrays.asList(0, 1);
+    public static final List<Integer> MIDDLE_LAYERS = Collections.singletonList(2);
     public static final List<Integer> UPPER_LAYERS = Collections.singletonList(3);
+    public static boolean layer4Disable = false;
     private AnimationsSystem animationsSystem;
     private BatchSystem batchSystem;
 
