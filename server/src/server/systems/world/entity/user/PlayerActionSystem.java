@@ -150,7 +150,7 @@ public class PlayerActionSystem extends PassiveSystem {
         WorldPos targetWorldPos = new WorldPos( targetX, targetY, targetMap );
 
         if(mapSystem.getHelper().isValid(targetWorldPos)) {
-            effectEntitySystem.addFX(playerId, 1, 1);
+            effectEntitySystem.addFX(playerId, FXs.FX_TELEPORT, 1);
             worldPos.setWorldPos(targetWorldPos);
             EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(playerId);
             resetUpdate.withComponents( worldPos );
