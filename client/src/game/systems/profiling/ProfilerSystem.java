@@ -21,13 +21,13 @@ public class ProfilerSystem extends BaseSystem {
     }
 
     private void printDetails() {
-        Log.info("Profiling info: ");
-        Log.info("  Calls: " + profiler.getCalls());
-        Log.info("  Draw Calls: " + profiler.getDrawCalls());
-        Log.info("  Texture Bindings: " + profiler.getTextureBindings());
-        Log.info("  Shader Switches: " + profiler.getShaderSwitches());
-        Log.info("  Vertex Count: " + profiler.getVertexCount().value);
-        Log.info("----------------");
+//        Log.info("Profiling info: ");
+//        Log.info("  Calls: " + profiler.getCalls());
+//        Log.info("  Draw Calls: " + profiler.getDrawCalls());
+//        Log.info("  Texture Bindings: " + profiler.getTextureBindings());
+//        Log.info("  Shader Switches: " + profiler.getShaderSwitches());
+//        Log.info("  Vertex Count: " + profiler.getVertexCount().value);
+//        Log.info("----------------");
     }
 
 }

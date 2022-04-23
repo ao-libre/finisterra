@@ -1,16 +1,20 @@
 package server.systems.network;
 
+import com.artemis.ComponentMapper;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
+import component.position.WorldPos;
 import org.jetbrains.annotations.NotNull;
 import server.systems.account.AccountSystem;
 import server.systems.account.UserSystem;
 import server.systems.world.WorldEntitiesSystem;
+import server.systems.world.entity.factory.EffectEntitySystem;
 import server.systems.world.entity.item.ItemActionSystem;
 import server.systems.world.entity.movement.MovementSystem;
 import server.systems.world.entity.npc.NPCActionSystem;
 import server.systems.world.entity.user.MeditateSystem;
 import server.systems.world.entity.user.PlayerActionSystem;
+import shared.interfaces.FXs;
 import shared.network.account.AccountCreationRequest;
 import shared.network.account.AccountLoginRequest;
 import shared.network.combat.AttackRequest;
@@ -24,6 +28,9 @@ import shared.network.time.TimeSyncResponse;
 import shared.network.user.UserCreateRequest;
 import shared.network.user.UserLoginRequest;
 import shared.network.user.UserLogoutRequest;
+import shared.util.EntityUpdateBuilder;
+
+import java.io.Console;
 
 /**
  * Every packet received from users will be processed here
@@ -41,6 +48,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     private PlayerActionSystem playerActionSystem;
     private ItemActionSystem itemActionSystem;
     private NPCActionSystem npcActionSystem;
+
+    ComponentMapper<WorldPos> mWorldPos;
 
     @Override
     public void processRequest(@NotNull AccountCreationRequest accountCreationRequest, int connectionId) {
@@ -193,6 +202,14 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         if (serverSystem.connectionHasPlayer(connectionId)) {
             int playerId = serverSystem.getPlayerByConnection(connectionId);
             playerActionSystem.drop(playerId, dropItem.getCount(), dropItem.getPosition(), dropItem.getSlot());
+        }
+    }
+
+    @Override
+    public void processRequest(TeleportRequest teleportRequest, int connectionId) {
+        if (serverSystem.connectionHasPlayer(connectionId)) {
+            int playerId = serverSystem.getPlayerByConnection(connectionId);
+            playerActionSystem.teleport(playerId, teleportRequest.getMap(), teleportRequest.getX(), teleportRequest.getY());
         }
     }
 }

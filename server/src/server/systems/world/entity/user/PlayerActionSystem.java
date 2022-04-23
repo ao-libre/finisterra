@@ -5,6 +5,7 @@ import component.console.ConsoleMessage;
 import component.entity.character.info.Bag;
 import component.entity.world.Dialog;
 import component.entity.world.Object;
+import component.graphic.FX;
 import component.physics.AttackInterval;
 import component.position.WorldPos;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
@@ -13,12 +14,15 @@ import server.systems.network.CommandSystem;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.network.MessageSystem;
 import server.systems.network.ServerSystem;
+import server.systems.world.MapSystem;
 import server.systems.world.WorldEntitiesSystem;
 import server.systems.world.entity.combat.MagicCombatSystem;
 import server.systems.world.entity.combat.PhysicalCombatSystem;
 import server.systems.world.entity.combat.RangedCombatSystem;
+import server.systems.world.entity.factory.EffectEntitySystem;
 import server.systems.world.entity.item.ItemUsageSystem;
 import server.utils.UpdateTo;
+import shared.interfaces.FXs;
 import shared.interfaces.Intervals;
 import shared.model.AttackType;
 import shared.model.Spell;
@@ -44,7 +48,8 @@ public class PlayerActionSystem extends PassiveSystem {
     private MessageSystem messageSystem;
     private CommandSystem commandSystem;
     private EntityUpdateSystem entityUpdateSystem;
-
+    private EffectEntitySystem effectEntitySystem;
+    private MapSystem mapSystem;
 
     ComponentMapper<AttackInterval> mAttackInterval;
     ComponentMapper<Bag> mBag;
@@ -125,7 +130,7 @@ public class PlayerActionSystem extends PassiveSystem {
         }
     }
 
-        public void spell(int playerId, Spell spell, WorldPos worldPos, long timestamp) {
+    public void spell(int playerId, Spell spell, WorldPos worldPos, long timestamp) {
 
         if (!mAttackInterval.has(playerId)) {
             magicCombatSystem.spell(playerId, spell, worldPos, timestamp);
@@ -136,4 +141,28 @@ public class PlayerActionSystem extends PassiveSystem {
                     ConsoleMessage.error(Messages.CANT_MAGIC_THAT_FAST.name()));
         }
     }
+
+
+
+    public void teleport(int playerId, int targetMap, int targetX, int targetY){
+
+        WorldPos worldPos = mWorldPos.get(playerId);
+        WorldPos targetWorldPos = new WorldPos( targetX, targetY, targetMap );
+
+        if(mapSystem.getHelper().isValid(targetWorldPos)) {
+            effectEntitySystem.addFX(playerId, 1, 1);
+            worldPos.setWorldPos(targetWorldPos);
+            EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(playerId);
+            resetUpdate.withComponents( worldPos );
+            worldEntitiesSystem.notifyUpdate( playerId, resetUpdate.build() );
+        }
+    }
+
+
+
+
+
+
+
+
 }

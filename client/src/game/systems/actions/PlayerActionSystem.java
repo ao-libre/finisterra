@@ -7,6 +7,7 @@ import game.systems.PlayerSystem;
 import game.systems.network.ClientSystem;
 import game.systems.network.TimeSync;
 import game.systems.resources.MessageSystem;
+import game.systems.ui.UserInterfaceSystem;
 import game.systems.ui.action_bar.systems.InventorySystem;
 import game.systems.ui.action_bar.systems.SpellSystem;
 import game.systems.ui.console.ConsoleSystem;
@@ -17,9 +18,11 @@ import shared.model.Spell;
 import shared.network.combat.AttackRequest;
 import shared.network.combat.SpellCastRequest;
 import shared.network.interaction.MeditateRequest;
+import shared.network.interaction.TeleportRequest;
 import shared.network.inventory.ItemActionRequest;
 import shared.network.inventory.ItemActionRequest.ItemAction;
 import shared.systems.IntervalSystem;
+import shared.util.EntityUpdateBuilder;
 import shared.util.Messages;
 
 @Wire
@@ -34,6 +37,8 @@ public class PlayerActionSystem extends PassiveSystem {
     private SpellSystem spellSystem;
     private MessageSystem messageSystem;
     private InventorySystem inventorySystem;
+
+    private UserInterfaceSystem userInterfaceSystem;
 
     public void meditate() {
         if (playerSystem.get().healthMin() > 0) {
@@ -92,5 +97,10 @@ public class PlayerActionSystem extends PassiveSystem {
         } else {
             consoleSystem.getConsole().addWarning(messageSystem.getMessage(Messages.DEAD_CANT));
         }
+    }
+
+    public void teleport(){
+        WorldPos mouseWorldPos = userInterfaceSystem.getMouseWorldPos();
+        clientSystem.send(new TeleportRequest(mouseWorldPos.getMap(), mouseWorldPos.getX(), mouseWorldPos.getY()));
     }
 }

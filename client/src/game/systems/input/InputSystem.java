@@ -37,10 +37,21 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
     private DialogSystem dialogSystem;
     private MouseSystem mouseSystem;
 
+    private boolean shiftLeftPressed = false;
+
 
     @Override
     public boolean keyDown(int keycode) {
+        doActionsOnKeyDown(keycode);
         return false;
+    }
+
+    private void doActionsOnKeyDown(int keycode) {
+        switch(keycode) {
+            case Input.Keys.SHIFT_LEFT:
+                shiftLeftPressed = true;
+                break;
+        }
     }
 
     @Override
@@ -48,7 +59,7 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
         if (alternativeKeys) {
             doAlternativeActions(keycode);
         } else {
-            doActions(keycode);
+            doActionsOnKeyUp(keycode);
         }
         switch (keycode) {
             case AlternativeKeys.TALK:
@@ -72,7 +83,14 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        doActionOnTouchDown(screenX, screenY, pointer, button);
         return false;
+    }
+
+    private void doActionOnTouchDown(int screenX, int screenY, int pointer, int button) {
+        if(shiftLeftPressed){
+            playerActionSystem.teleport();
+        }
     }
 
     @Override
@@ -100,7 +118,7 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
         return true;
     }
 
-    private void doActions(int keycode) {
+    private void doActionsOnKeyUp(int keycode) {
         switch (keycode) {
             case AOKeys.INVENTORY:
                 actionBarSystem.showInventory();
@@ -144,6 +162,9 @@ public class InputSystem extends PassiveSystem implements InputProcessor {
                 break;
             case Input.Keys.NUM_9:
                 musicSystem.volumeUp();
+                break;
+            case Input.Keys.SHIFT_LEFT:
+                shiftLeftPressed = false;
                 break;
         }
     }
