@@ -139,6 +139,7 @@ public class WorldConstructor {
                 .with(ENTITY_RENDER_PRIORITY,
                         new EffectRenderingSystem(),
                         new CharacterRenderSystem(),
+                        new MapMiddleLayerRenderingSystem(),
                         new WorldRenderingSystem())
 
                 .with(POST_ENTITY_RENDER_PRIORITY,

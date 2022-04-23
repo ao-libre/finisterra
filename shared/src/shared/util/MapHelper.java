@@ -87,7 +87,11 @@ public class MapHelper {
     }
 
     public Map getMap(int i) {
-        return maps.getUnchecked(i);
+        if ( i > MAX_MAPS) {
+            return new Map();
+        }else {
+            return maps.getUnchecked( i );
+        }
     }
 
     public ConcurrentMap<Integer, Map> getMaps() {
@@ -148,7 +152,7 @@ public class MapHelper {
      */
     public void loadAll() {
         Log.info("Server initialization", "Loading maps...");
-        for (int i = 1; i <= MAX_MAPS; i++) {
+        for (int i = 0; i <= MAX_MAPS; i++) {
             maps.getUnchecked(i);
         }
     }
