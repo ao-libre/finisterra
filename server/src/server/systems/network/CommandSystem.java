@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import server.systems.world.MapSystem;
 import server.systems.world.WorldEntitiesSystem;
+import server.systems.world.entity.user.PlayerActionSystem;
 import server.utils.CityMapsNumbers;
 import shared.network.interaction.TalkRequest;
 import shared.util.EntityUpdateBuilder;
@@ -31,6 +32,7 @@ public class CommandSystem extends PassiveSystem {
     private MapSystem mapSystem;
     private WorldEntitiesSystem worldEntitiesSystem;
     private MessageSystem messageSystem;
+    private PlayerActionSystem playerActionSystem;
 
     ComponentMapper<WorldPos> mWorldPos;
     ComponentMapper<OriginPos> mOriginPos;
@@ -109,26 +111,19 @@ public class CommandSystem extends PassiveSystem {
         });
 
         commands.put("tp", (command) -> {
-            int userId = command.userId;
+            int playerId = command.userId;
             if (command.params.length == 3) {
-                int map = Integer.parseInt( command.params[0] );
-                int x = Integer.parseInt( command.params[1] );
-                int y = Integer.parseInt( command.params[2] );
+                int targetMap = Integer.parseInt( command.params[0] );
+                int targetX = Integer.parseInt( command.params[1] );
+                int targetY = Integer.parseInt( command.params[2] );
 
-                WorldPos worldPos = mWorldPos.get( userId );
+                playerActionSystem.teleport(playerId, targetMap, targetX, targetY);
 
-                if(mapSystem.getHelper().isValid( new WorldPos( x, y, map ) )) {
-                    worldPos.map = map;
-                    worldPos.x = x;
-                    worldPos.y = y;
-                    EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of( userId );
-                    resetUpdate.withComponents( worldPos );
-                    worldEntitiesSystem.notifyUpdate( userId, resetUpdate.build() );
-                }
             } else {
-                messageSystem.add(userId, ConsoleMessage.warning( "MULTIUSE","" , "", CommandsHelp.TP.description, "" ));
+                messageSystem.add(playerId, ConsoleMessage.warning( "MULTIUSE","" , "", CommandsHelp.TP.description, "" ));
             }
         });
+
         commands.put("help", (command) -> {
             int userId= command.userId;
             StringBuilder stringBuilder = new StringBuilder();

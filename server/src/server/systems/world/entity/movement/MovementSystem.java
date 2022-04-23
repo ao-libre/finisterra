@@ -11,8 +11,10 @@ import server.systems.network.EntityUpdateSystem;
 import server.systems.network.ServerSystem;
 import server.systems.world.MapSystem;
 import server.systems.world.WorldEntitiesSystem;
+import server.systems.world.entity.factory.EffectEntitySystem;
 import server.utils.UpdateTo;
 import server.utils.WorldUtils;
+import shared.interfaces.FXs;
 import shared.model.map.Map;
 import shared.model.map.Tile;
 import shared.model.map.WorldPosition;
@@ -31,6 +33,7 @@ public class MovementSystem extends PassiveSystem {
     private WorldEntitiesSystem worldEntitiesSystem;
     private MapSystem mapSystem;
     private EntityUpdateSystem entityUpdateSystem;
+    private EffectEntitySystem effectEntitySystem;
 
     public void move(int playerId, int movementIndex, int requestNumber) {
 
@@ -86,4 +89,11 @@ public class MovementSystem extends PassiveSystem {
         serverSystem.sendByPlayerId(playerId, new MovementResponse(requestNumber, nextPos));
     }
 
+    public void teleport(int playerId, WorldPos worldPos, WorldPos targetWorldPos) {
+        effectEntitySystem.addFX(playerId, FXs.FX_TELEPORT, 1);
+        worldPos.setWorldPos(targetWorldPos);
+        EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(playerId);
+        resetUpdate.withComponents( worldPos );
+        worldEntitiesSystem.notifyUpdate( playerId, resetUpdate.build() );
+    }
 }

@@ -21,6 +21,7 @@ import server.systems.world.entity.combat.PhysicalCombatSystem;
 import server.systems.world.entity.combat.RangedCombatSystem;
 import server.systems.world.entity.factory.EffectEntitySystem;
 import server.systems.world.entity.item.ItemUsageSystem;
+import server.systems.world.entity.movement.MovementSystem;
 import server.utils.UpdateTo;
 import shared.interfaces.FXs;
 import shared.interfaces.Intervals;
@@ -50,6 +51,7 @@ public class PlayerActionSystem extends PassiveSystem {
     private EntityUpdateSystem entityUpdateSystem;
     private EffectEntitySystem effectEntitySystem;
     private MapSystem mapSystem;
+    private MovementSystem movementSystem;
 
     ComponentMapper<AttackInterval> mAttackInterval;
     ComponentMapper<Bag> mBag;
@@ -150,11 +152,10 @@ public class PlayerActionSystem extends PassiveSystem {
         WorldPos targetWorldPos = new WorldPos( targetX, targetY, targetMap );
 
         if(mapSystem.getHelper().isValid(targetWorldPos)) {
-            effectEntitySystem.addFX(playerId, FXs.FX_TELEPORT, 1);
-            worldPos.setWorldPos(targetWorldPos);
-            EntityUpdateBuilder resetUpdate = EntityUpdateBuilder.of(playerId);
-            resetUpdate.withComponents( worldPos );
-            worldEntitiesSystem.notifyUpdate( playerId, resetUpdate.build() );
+            movementSystem.teleport(playerId, worldPos, targetWorldPos);
+        }else{
+            String warningMessage = String.format("Position at map: {}, x: {}, y: {} is not valid", targetMap, targetY, targetY);
+            messageSystem.add(playerId, ConsoleMessage.warning(warningMessage));
         }
     }
 
