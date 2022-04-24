@@ -43,4 +43,6 @@ public interface IRequestProcessor {
     void processRequest(UserLoginRequest userLoginRequest, int connectionId);
 
     void processRequest(UserLogoutRequest userLogoutRequest, int connectionId);
+
+    void processRequest(TeleportRequest teleportRequest, int connectionId);
 }

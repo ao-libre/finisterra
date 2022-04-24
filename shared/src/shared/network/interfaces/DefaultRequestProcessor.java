@@ -89,4 +89,9 @@ public class DefaultRequestProcessor extends PassiveSystem implements IRequestPr
     public void processRequest(UserLogoutRequest userLogoutRequest, int connectionId) {
 
     }
+
+    @Override
+    public void processRequest(TeleportRequest teleportRequest, int connectionId) {
+
+    }
 }

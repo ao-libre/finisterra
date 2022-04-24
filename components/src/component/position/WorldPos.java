@@ -53,6 +53,12 @@ public class WorldPos extends Component {
         return new WorldPos();
     }
 
+    public void setWorldPos(WorldPos pos){
+        this.x = pos.getX();
+        this.y = pos.getY();
+        this.map = pos.getMap();
+    }
+
     public int getMap() {
         return map;
     }
