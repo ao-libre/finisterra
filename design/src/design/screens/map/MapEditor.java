@@ -101,6 +101,10 @@ public class MapEditor extends DesignScreen {
                     x *= 70;
                     y *= 70;
                     world.getSystem(CameraSystem.class).camera.translate(x, y);
+                    Vector3 position = world.getSystem(CameraSystem.class).camera.position;
+                    position.x = MathUtils.clamp(position.x, 0, Tile.TILE_PIXEL_WIDTH * maxMapWidth);
+                    position.y = MathUtils.clamp(position.y, 0, Tile.TILE_PIXEL_HEIGHT * maxMapHeight);
+
                 }
                 return result;
             }
