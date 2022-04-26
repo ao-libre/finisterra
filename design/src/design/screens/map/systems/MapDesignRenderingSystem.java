@@ -23,9 +23,7 @@ public class MapDesignRenderingSystem extends RenderingSystem {
     private int current;
     private Map map;
     private MapManager mapManager;
-    private boolean showExit;
-    private boolean showBlocks;
-    private boolean showGrid;
+    private boolean showExit, showBlocks, showGrid, showLayer1 = true, showLayer2= true, showLayer3=true, showLayer4= true;
     private BatchSystem batchRenderingSystem;
 
     public MapDesignRenderingSystem() {
@@ -61,6 +59,18 @@ public class MapDesignRenderingSystem extends RenderingSystem {
     protected void process(E e) {
         if (map != null) {
             for (int i = 0; i < 4; i++) {
+                if (!showLayer1 && i == 0){
+                    i++;
+                }
+                if (!showLayer2 && i == 1){
+                    i++;
+                }
+                if (!showLayer3 && i == 2){
+                    i++;
+                }
+                if (!showLayer4 && i == 3){
+                    break;
+                }
                 batchRenderingSystem.getBatch().begin();
                 mapManager.drawLayer(map, world.getDelta(), i, showExit, showBlocks);
                 batchRenderingSystem.getBatch().end();
@@ -95,5 +105,18 @@ public class MapDesignRenderingSystem extends RenderingSystem {
 
     public void toggleGrid() {
         showGrid = !showGrid;
+    }
+
+    public void toggleLayer1(){
+        showLayer1 = !showLayer1;
+    }
+    public void toggleLayer2(){
+        showLayer2 = !showLayer2;
+    }
+    public void toggleLayer3(){
+        showLayer3 = !showLayer3;
+    }
+    public void toggleLayer4(){
+        showLayer4 = !showLayer4;
     }
 }

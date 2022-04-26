@@ -66,6 +66,7 @@ public class MapEditor extends DesignScreen {
     private MapPalette mapPalette;
     private Deque<Undo> undoableActions = new ArrayDeque<>(50);
     private final TextField mapNumber;
+    private Label mousePosXLabel, mousePosYLabel;
 
     public MapEditor() {
         stage = new Stage() {
@@ -128,22 +129,54 @@ public class MapEditor extends DesignScreen {
 
             @Override
             public boolean keyUp(int keyCode) {
-                if(keyCode == Input.Keys.Z) {
-                    if(Gdx.input.isKeyPressed( Input.Keys.CONTROL_LEFT ) ||
-                            Gdx.input.isKeyPressed( Input.Keys.CONTROL_RIGHT )) {
-                        if(undoableActions.size() > 0) {
-                            Undo poll = undoableActions.pop();
-                            Map current = mapProperties.getCurrent();
-                            current.setTile( poll.pos.x, poll.pos.y, poll.tile );
+                switch( keyCode ) {
+                    case Input.Keys.Z:
+                        if(Gdx.input.isKeyPressed( Input.Keys.CONTROL_LEFT ) ||
+                                Gdx.input.isKeyPressed( Input.Keys.CONTROL_RIGHT )) {
+                            if(undoableActions.size() > 0) {
+                                Undo poll = undoableActions.pop();
+                                Map current = mapProperties.getCurrent();
+                                current.setTile( poll.pos.x, poll.pos.y, poll.tile );
+                            }
                         }
-                    }
+                        break;
+
+                    //toggle layers
+                    case Input.Keys.NUM_1:
+                        world.getSystem(MapDesignRenderingSystem.class).toggleLayer1();
+                        break;
+                    case Input.Keys.NUM_2:
+                        world.getSystem(MapDesignRenderingSystem.class).toggleLayer2();
+                        break;
+                    case Input.Keys.NUM_3:
+                        world.getSystem(MapDesignRenderingSystem.class).toggleLayer3();
+                        break;
+                    case Input.Keys.NUM_4:
+                        world.getSystem(MapDesignRenderingSystem.class).toggleLayer4();
+                        break;
+                    case Input.Keys.F1:
+                        Dialog dialog = new Dialog( "HELP", SKIN );
+                        dialog.text("\n" +
+                                "F1: Esta ventana \n" +
+                                "1, 2, 3, 4: Activa y desactiva los layer\n" +
+                                "Scroll: Desplazamiento vertical\n" +
+                                "Shift + Scroll: desplazamiento horizontal\n" +
+                                "Control + Scroll: Zoom\n" +
+                                "Shift + mantener click + mover el mouse: desplazamiento\n" +
+                                "Control + z: deshacer \n").pad( 30 );
+                        dialog.button( "ok" );
+                        dialog.show( getStage() );
+                        break;
                 }
+
                 return super.keyUp(keyCode);
             }
         };
         Gdx.input.setInputProcessor(stage);
         mapNumber = new TextField("1", SKIN);
         mapNumber.setTextFieldFilter( new TextField.TextFieldFilter.DigitsOnlyFilter() );
+        mousePosXLabel = new Label( "X: ", SKIN );
+        mousePosYLabel = new Label( "Y: ", SKIN );
         createUI();
         createWorld();
     }
@@ -175,6 +208,8 @@ public class MapEditor extends DesignScreen {
                     case 3:
                         if (assetChooser.getImage() > 0) {
                             tile.getGraphic()[layer] = assetChooser.getImage();
+                        } else if(assetChooser.getAnimation() > 0) {
+                            tile.getGraphic()[layer] = assetChooser.getAnimation();
                         } else {
                             saveUndo = false;
                         }
@@ -243,6 +278,18 @@ public class MapEditor extends DesignScreen {
         return Optional.empty();
     }
 
+    //actualiza las labels que muestran la posicion del mouse
+    private void updateLabels(){
+        WorldPos mouseWP;
+        if (mouseToWorldPos().isPresent()) {
+            mouseWP = mouseToWorldPos().get();
+        }else {
+            mouseWP = new WorldPos();
+        }
+        mousePosXLabel.setText( "X: " + mouseWP.x );
+        mousePosYLabel.setText( "Y: " + mouseWP.y );
+    }
+
     @Override
     public Stage getStage() {
         return stage;
@@ -294,10 +341,11 @@ public class MapEditor extends DesignScreen {
             }
         });
         menus.add(back).left().expandX();
-
+        menus.add(mousePosXLabel).spaceLeft(5);
+        menus.add(mousePosYLabel).spaceLeft(5);
         menus.add(createButton("Show Exits", "switch",
                 () -> world.getSystem(MapDesignRenderingSystem.class).toggleExits(), "Toggle exit tiles draw"))
-                .spaceLeft(5);
+                .spaceLeft(10);
 
         menus.add(createButton("Show Blocks", "switch",
                 () -> world.getSystem(MapDesignRenderingSystem.class).toggleBlocks(), "Toggle blocks draw"))
@@ -355,6 +403,18 @@ public class MapEditor extends DesignScreen {
                                         new AOJson().toJson(current, folder.child(mapName + ".json"));
                 }, "Save map in output folder"))
                 .spaceLeft(5);
+        menus.add(createButton( "HELP", "default",   () -> {
+            Dialog dialog = new Dialog( "HELP", SKIN );
+            dialog.text("\n" +
+                    "F1: Esta ventana \n" +
+                    "1, 2, 3, 4: Activa y desactiva los layer\n" +
+                    "Scroll: Desplazamiento vertical\n" +
+                    "Shift + Scroll: desplazamiento horizontal\n" +
+                    "Control + Scroll: Zoom\n" +
+                    "Shift + mantener click + mover el mouse: desplazamiento\n").pad( 30 );
+            dialog.button( "ok" );
+            dialog.show( getStage() );
+        }, "Help")).spaceLeft(5);
 
         return menus;
     }
@@ -415,6 +475,7 @@ public class MapEditor extends DesignScreen {
         if (running) {
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            updateLabels();
             if (getWorld() != null) {
                 getWorld().setDelta(delta);
                 getWorld().process();
