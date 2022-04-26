@@ -1,6 +1,9 @@
 package design.screens.map;
 
-import com.artemis.*;
+import com.artemis.SuperMapper;
+import com.artemis.World;
+import com.artemis.WorldConfiguration;
+import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
@@ -12,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.google.common.base.Objects;
-import component.camera.Focused;
 import component.position.WorldPos;
 import component.position.WorldPosOffsets;
 import design.screens.DesignScreen;
@@ -22,11 +24,13 @@ import design.screens.map.gui.MapAssetChooser;
 import design.screens.map.gui.MapPalette;
 import design.screens.map.gui.MapPalette.Selection;
 import design.screens.map.gui.MapProperties;
+import design.screens.map.systems.DesignCameraFocusSystem;
 import design.screens.map.systems.MapDesignRenderingSystem;
 import design.screens.views.TileSetView;
 import game.handlers.DefaultAOAssetManager;
-import game.systems.camera.CameraSystem;
+import game.systems.camera.*;
 import game.systems.map.MapManager;
+import game.systems.render.BatchSystem;
 import game.systems.resources.AnimationsSystem;
 import game.systems.resources.DescriptorsSystem;
 import game.systems.resources.ObjectSystem;
@@ -37,7 +41,6 @@ import shared.model.map.WorldPosition;
 import shared.util.AOJson;
 import shared.util.MapHelper;
 import shared.util.WorldPosConversion;
-import game.systems.render.BatchSystem;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -50,11 +53,10 @@ import static launcher.DesignCenter.SKIN;
 public class MapEditor extends DesignScreen {
 
     private final Stage stage;
-    private final int maxMapWidth = 100; //ancho maximo del mapa expresado en tiles
-    private final int maxMapHeight = 100; //alto maximo del mapa expresado en tiles
+    private final int maxMapWidth = 100; //ancho máximo del mapa expresado en tiles
+    private final int maxMapHeight = 100; //alto máximo del mapa expresado en tiles
     private World world;
     private int viewer;
-    private int camera;
 
     // state
     private boolean dragging;
@@ -73,10 +75,12 @@ public class MapEditor extends DesignScreen {
                 if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
                     float x = Gdx.input.getDeltaX();
                     float y = Gdx.input.getDeltaY();
-                    world.getSystem(CameraSystem.class).camera.translate(-x, -y);
-                    Vector3 position = world.getSystem(CameraSystem.class).camera.position;
-                    position.x = MathUtils.clamp(position.x, 0, Tile.TILE_PIXEL_WIDTH * maxMapWidth);
-                    position.y = MathUtils.clamp(position.y, 0, Tile.TILE_PIXEL_HEIGHT * maxMapHeight);
+                    WorldPos pos = E(viewer).getWorldPos();
+                    pos.x += x;
+                    pos.x = MathUtils.clamp(pos.x, 0, maxMapWidth);
+                    pos.y += y;
+                    pos.y = MathUtils.clamp(pos.y, 0, maxMapHeight);
+                    E(viewer).worldPosX(pos.x).worldPosY(pos.y);
                 } else {
                     dragging = true;
                     setTile();
@@ -98,13 +102,13 @@ public class MapEditor extends DesignScreen {
                     float y = !(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ||
                             Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) ?
                             amountY : 0;
-                    x *= 70;
-                    y *= 70;
-                    world.getSystem(CameraSystem.class).camera.translate(x, y);
-                    Vector3 position = world.getSystem(CameraSystem.class).camera.position;
-                    position.x = MathUtils.clamp(position.x, 0, Tile.TILE_PIXEL_WIDTH * maxMapWidth);
-                    position.y = MathUtils.clamp(position.y, 0, Tile.TILE_PIXEL_HEIGHT * maxMapHeight);
 
+                    WorldPos pos = E(viewer).getWorldPos();
+                    pos.x += x;
+                    pos.x = MathUtils.clamp(pos.x, 0, maxMapWidth);
+                    pos.y += y;
+                    pos.y = MathUtils.clamp(pos.y, 0, maxMapHeight);
+                    E(viewer).worldPosX(pos.x).worldPosY(pos.y);
                 }
                 return result;
             }
@@ -124,17 +128,15 @@ public class MapEditor extends DesignScreen {
 
             @Override
             public boolean keyUp(int keyCode) {
-                switch (keyCode) {
-                    case Input.Keys.Z:
-                        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
-                                Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
-                            if (undoableActions.size() > 0) {
-                                Undo poll = undoableActions.pop();
-                                Map current = mapProperties.getCurrent();
-                                current.setTile(poll.pos.x, poll.pos.y, poll.tile);
-                            }
+                if(keyCode == Input.Keys.Z) {
+                    if(Gdx.input.isKeyPressed( Input.Keys.CONTROL_LEFT ) ||
+                            Gdx.input.isKeyPressed( Input.Keys.CONTROL_RIGHT )) {
+                        if(undoableActions.size() > 0) {
+                            Undo poll = undoableActions.pop();
+                            Map current = mapProperties.getCurrent();
+                            current.setTile( poll.pos.x, poll.pos.y, poll.tile );
                         }
-                        break;
+                    }
                 }
                 return super.keyUp(keyCode);
             }
@@ -247,17 +249,21 @@ public class MapEditor extends DesignScreen {
     }
 
     private void createWorld() {
+        /*
+         *  preguntar al que creo el CameraSystem de donde salió el 260
+         *  si no lo contrarresto se ve mal el MapEditor
+         *  quitar cuando se modifique en el CameraSystem
+         */
+        final int magicNumberCorrection = 260;
         AnimationsSystem animationsSystem = ((DesignCenter) Gdx.app.getApplicationListener()).getAnimationsSystem();
         DescriptorsSystem descriptorsSystem = ((DesignCenter) Gdx.app.getApplicationListener()).getDescriptorsSystem();
         WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
         builder
                 .with(new SuperMapper())
                 .with(new ObjectSystem())
-                /* preguntenle al que creo el Camere System de donde salio el 260 (creo que deve ser por la nueva ui)
-                *  si no lo contrarresto se ve mal el mapeditor
-                *  quitar cuando se modifique en el Camera System
-                *   */
-                .with(new CameraSystem(0.1f, 2f,Gdx.graphics.getWidth() + 260,Gdx.graphics.getHeight()))
+                .with(new CameraSystem(0.1f, 2f,Gdx.graphics.getWidth() + magicNumberCorrection,Gdx.graphics.getHeight()))
+                .with(new DesignCameraFocusSystem())
+                .with(new CameraMovementSystem())
                 .with(animationsSystem)
                 .with(descriptorsSystem)
                 .with(new MapDesignRenderingSystem())
@@ -268,8 +274,6 @@ public class MapEditor extends DesignScreen {
         config.register(DefaultAOAssetManager.getInstance());
 
         world = new World(config);
-        camera = world.create();
-        E(camera).worldPosOffsets().aOCamera();
         viewer = world.create();
         E(viewer).focused();
         initMap(1);
