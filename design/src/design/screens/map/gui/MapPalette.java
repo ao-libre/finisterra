@@ -26,7 +26,7 @@ public class MapPalette extends Window {
         setMovable(true);
 
         ButtonGroup layers = new ButtonGroup();
-        Button fst = new TextButton("1", SKIN, "file");
+        Button fst = new TextButton("Ground graphic", SKIN, "file");
         fst.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -35,7 +35,7 @@ public class MapPalette extends Window {
             }
         });
         add(fst).growX().row();
-        Button snd = new TextButton("2", SKIN, "file");
+        Button snd = new TextButton("Gound animation", SKIN, "file");
         snd.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -44,7 +44,7 @@ public class MapPalette extends Window {
             }
         });
         add(snd).growX().row();
-        Button third = new TextButton("3", SKIN, "file");
+        Button third = new TextButton("Middle", SKIN, "file");
         third.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -53,7 +53,7 @@ public class MapPalette extends Window {
             }
         });
         add(third).growX().row();
-        Button forth = new TextButton("4", SKIN, "file");
+        Button forth = new TextButton("Upper/roof", SKIN, "file");
         forth.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

@@ -51,6 +51,9 @@ public class MapManager extends BaseSystem {
                     // draw exit
                     doTileDraw(delta, x, y, 3);
                 }
+                if (drawExit && tile.getTrigger() > 0 ){
+                    doTileDraw(delta, x, y, 23652);
+                }
             }
         }
     }

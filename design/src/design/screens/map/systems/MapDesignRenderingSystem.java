@@ -19,25 +19,23 @@ import game.systems.render.BatchSystem;
 public class MapDesignRenderingSystem extends RenderingSystem {
 
     private final MapHelper helper;
-    ShapeRenderer sr = new ShapeRenderer();
+    ShapeRenderer shapeRenderer = new ShapeRenderer();
     private int current;
     private Map map;
     private MapManager mapManager;
-    private boolean showExit;
-    private boolean showBlocks;
-    private boolean showGrid;
+    private boolean showExit, showBlocks, showGrid, showLayer1 = true, showLayer2= true, showLayer3=true, showLayer4= true;
     private BatchSystem batchRenderingSystem;
 
     public MapDesignRenderingSystem() {
         super(Aspect.all(Focused.class, WorldPos.class));
         helper = MapSystem.getHelper();
-        sr.setColor(Colors.TRANSPARENT_RED);
-        sr.setAutoShapeType(true);
+        shapeRenderer.setColor(Colors.TRANSPARENT_RED);
+        shapeRenderer.setAutoShapeType(true);
     }
 
-    public Map loadMap(int i) {
-        map = helper.getMap(i);
-        current = i;
+    public Map loadMap(int mapNumber) {
+        map = helper.getMap(mapNumber);
+        current = mapNumber;
         return map;
     }
 
@@ -45,7 +43,7 @@ public class MapDesignRenderingSystem extends RenderingSystem {
     protected void begin() {
         getCamera().update();
         batchRenderingSystem.getBatch().setProjectionMatrix(getCamera().combined);
-        sr.setProjectionMatrix(getCamera().combined);
+        shapeRenderer.setProjectionMatrix(getCamera().combined);
     }
 
     @Override
@@ -61,21 +59,33 @@ public class MapDesignRenderingSystem extends RenderingSystem {
     protected void process(E e) {
         if (map != null) {
             for (int i = 0; i < 4; i++) {
+                if (!showLayer1 && i == 0){
+                    i++;
+                }
+                if (!showLayer2 && i == 1){
+                    i++;
+                }
+                if (!showLayer3 && i == 2){
+                    i++;
+                }
+                if (!showLayer4 && i == 3){
+                    break;
+                }
                 batchRenderingSystem.getBatch().begin();
                 mapManager.drawLayer(map, world.getDelta(), i, showExit, showBlocks);
                 batchRenderingSystem.getBatch().end();
             }
             if (showGrid) {
-                sr.begin();
+                shapeRenderer.begin();
                 float start = Tile.TILE_PIXEL_HEIGHT;
                 for (int i = 0; i < map.getHeight(); i++) {
                     // draw col
                     float x = (i + 1) * Tile.TILE_PIXEL_WIDTH;
-                    sr.line(x, start, x, map.getHeight() * Tile.TILE_PIXEL_HEIGHT);
+                    shapeRenderer.line(x, start, x, map.getHeight() * Tile.TILE_PIXEL_HEIGHT);
                     // draw row
-                    sr.line(start, x, map.getWidth() * Tile.TILE_PIXEL_WIDTH, x);
+                    shapeRenderer.line(start, x, map.getWidth() * Tile.TILE_PIXEL_WIDTH, x);
                 }
-                sr.end();
+                shapeRenderer.end();
             }
         }
         // draw tiles lines
@@ -95,5 +105,18 @@ public class MapDesignRenderingSystem extends RenderingSystem {
 
     public void toggleGrid() {
         showGrid = !showGrid;
+    }
+
+    public void toggleLayer1(){
+        showLayer1 = !showLayer1;
+    }
+    public void toggleLayer2(){
+        showLayer2 = !showLayer2;
+    }
+    public void toggleLayer3(){
+        showLayer3 = !showLayer3;
+    }
+    public void toggleLayer4(){
+        showLayer4 = !showLayer4;
     }
 }
