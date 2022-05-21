@@ -1,11 +1,14 @@
 package server.systems.world.entity.training;
 
-import com.artemis.E;
-import com.artemis.annotations.Wire;
+import com.artemis.ComponentMapper;
 import com.badlogic.gdx.math.MathUtils;
 import component.console.ConsoleMessage;
-import component.entity.character.status.Health;
-import component.entity.character.status.Level;
+import component.entity.character.attributes.Constitution;
+import component.entity.character.attributes.Intelligence;
+import component.entity.character.info.CharHero;
+import component.entity.character.info.Gold;
+import component.entity.character.status.*;
+import component.entity.npc.NPC;
 import component.entity.world.CombatMessage;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.systems.config.NPCSystem;
@@ -18,7 +21,6 @@ import server.systems.world.entity.user.ModifierSystem;
 import server.utils.UpdateTo;
 import shared.interfaces.CharClass;
 import shared.interfaces.FXs;
-import shared.model.npcs.NPC;
 import shared.network.notifications.EntityUpdate;
 import shared.util.EntityUpdateBuilder;
 import shared.util.Messages;
@@ -26,10 +28,8 @@ import shared.util.Pair;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.artemis.E.E;
 import static server.database.model.modifiers.Modifiers.HEALTH;
 
-@Wire
 public class CharacterTrainingSystem extends PassiveSystem {
 
     private static final int HIT_BREAKING_LEVEL = 35;
@@ -44,41 +44,49 @@ public class CharacterTrainingSystem extends PassiveSystem {
     private MessageSystem messageSystem;
     private ModifierSystem modifierSystem;
 
+    ComponentMapper<Level> mLevel;
+    ComponentMapper<Mana> mMana;
+    ComponentMapper<Health> mHealth;
+    ComponentMapper<Hit> mHit;
+    ComponentMapper<Stamina> mStamina;
+    ComponentMapper<NPC> mNPC;
+    ComponentMapper<Gold> mGold;
+    ComponentMapper<CharHero> mCharHero;
+    ComponentMapper<Intelligence> mIntelligence;
+    ComponentMapper<Constitution> mConstitution;
+
     public void userTakeDamage(int entityId, int target, int effectiveDamage) {
         int exp = getExp(target, effectiveDamage);
 
-        E e = E(entityId);
-        if (e.hasLevel() && exp > 0) {
+        if (mLevel.has(entityId) && exp > 0) {
             messageSystem.add(entityId, ConsoleMessage.combat(Messages.EXP_GAIN.name(), Integer.toString(exp)));
-            Level level = e.getLevel();
+            Level level = mLevel.get(entityId);
             level.exp += exp;
             userCheckLevel(entityId);
         }
     }
 
-    public void takeGold(int userId, int entityId) {
-        int gold = getGold(entityId);
-        E e = E(userId);
-        if (e.hasGold()) {
-            e.getGold().setCount(e.getGold().getCount() + gold);
+    public void takeGold(int takerId, int giverId) {
+        int goldAmount = getGold(giverId);
+        if (mGold.has(takerId)) {
+            Gold gold = mGold.get(takerId);
+            gold.setCount(gold.getCount() + goldAmount);
             EntityUpdate update = EntityUpdateBuilder
-                    .of(userId)
-                    .withComponents(e.getGold(), CombatMessage.energy("+" + gold))
+                    .of(takerId)
+                    .withComponents(gold, CombatMessage.energy("+" + goldAmount))
                     .build();
             entityUpdateSystem.add(update, UpdateTo.NEAR);
-            messageSystem.add(userId, ConsoleMessage.warning(Messages.GOLD_GAIN.name(), gold + ""));
+            messageSystem.add(takerId, ConsoleMessage.warning(Messages.GOLD_GAIN.name(), goldAmount + ""));
         }
     }
 
 
-    private int getExp(int target, int effectiveDamage) {
+    private int getExp(int entityId, int effectiveDamage) {
         int exp = 0;
-        E npc = E(target);
-        if (npc.hasNPC()) {
-            Health health = npc.getHealth();
-            int id = npc.getNPC().id;
-            NPC npcInfo = npcSystem.getNpcs().get(id);
-            exp = npcInfo.getGiveEXP() * effectiveDamage / health.max;
+        if (mNPC.has(entityId)) {
+            Health health = mHealth.get(entityId);
+            int npcId = mNPC.get(entityId).getId();
+            exp = npcSystem.getNpcs().get(npcId).getGiveEXP() * effectiveDamage / health.max;
         }
 
         return exp;
@@ -86,60 +94,56 @@ public class CharacterTrainingSystem extends PassiveSystem {
 
     private int getGold(int entityId) {
         int gold = 0;
-        E npc = E(entityId);
-        if (npc.hasNPC()) {
-            int id = npc.getNPC().id;
-            NPC npcInfo = npcSystem.getNpcs().get(id);
-            gold = npcInfo.getGiveGLD();
+        if (mNPC.has(entityId)) { // @todo ¿por qué solo puede tomarse oro de los NPC?
+            int npcId = mNPC.get(entityId).getId();
+            gold = npcSystem.getNpcs().get(npcId).getGiveGLD();
         }
 
         return gold;
     }
 
-    private void userCheckLevel(int userId) {
-        assert (E(userId).hasLevel());
-        Level level = E(userId).getLevel();
+    private void userCheckLevel(int entityId) {
+        Level level = mLevel.get(entityId);
         if (level.exp > level.expToNextLevel) {
             int MAX_LEVEL = 45;
             if (level.level < MAX_LEVEL) {
-                levelUp(userId);
+                levelUp(entityId);
             } else {
                 level.exp = 0;
                 level.expToNextLevel = 0;
             }
         } else {
-            entityUpdateSystem.add(EntityUpdateBuilder.of(userId).withComponents(E(userId).getLevel()).build(), UpdateTo.ENTITY);
+            entityUpdateSystem.add(EntityUpdateBuilder.of(entityId).withComponents(level).build(), UpdateTo.ENTITY);
         }
     }
 
-    private void levelUp(int userId) {
-        soundEntitySystem.add(userId, 3);
+    private void levelUp(int entityId) {
+        soundEntitySystem.add(entityId, 3);
         // set new experience
-        Level level = E(userId).getLevel();
+        Level level = mLevel.get(entityId);
         level.exp -= level.expToNextLevel;
         level.level++;
         setNextRequiredExperience(level);
         // add attributes
-        int mana = addMana(userId);
-        float health = addHealth(userId);
-        Pair<Integer, Integer> hit = addHit(userId);
-        int stamina = addStamina(userId);
+        int mana = addMana(entityId);
+        float health = addHealth(entityId);
+        Pair<Integer, Integer> hit = addHit(entityId);
+        int stamina = addStamina(entityId);
         // notify user
-        notifyUpgrade(userId, mana, health, hit, stamina);
+        notifyUpgrade(entityId, mana, health, hit, stamina);
         // Log.info("hp: "+ health + "mAna" + mana + "hit: " + hit);
     }
 
-    private void notifyUpgrade(int userId, int mana, float health, Pair<Integer, Integer> hit, int stamina) {
+    private void notifyUpgrade(int entityId, int mana, float health, Pair<Integer, Integer> hit, int stamina) {
         // send message to user component.console
-        messageSystem.add(userId, ConsoleMessage.info(Messages.LEVEL_UP.name(), Float.toString(health), Integer.toString(mana), hit.getValue().toString(), Integer.toString(stamina)));
+        messageSystem.add(entityId, ConsoleMessage.info(Messages.LEVEL_UP.name(), Float.toString(health), Integer.toString(mana), hit.getValue().toString(), Integer.toString(stamina)));
 
         // send user stat info
-        E e = E(userId);
-        EntityUpdate update = EntityUpdateBuilder.of(userId)
-                .withComponents(e.getLevel(), e.getHealth(), e.getMana(), e.getHit(), e.getStamina())
+        EntityUpdate update = EntityUpdateBuilder.of(entityId)
+                .withComponents(mLevel.get(entityId), mHealth.get(entityId), mMana.get(entityId), mHit.get(entityId), mStamina.get(entityId))
                 .build();
         entityUpdateSystem.add(update, UpdateTo.ENTITY);
-        effectEntitySystem.addFX(userId, FXs.FX_LEVEL_UP, 1);
+        effectEntitySystem.addFX(entityId, FXs.FX_LEVEL_UP, 1);
     }
 
     private void setNextRequiredExperience(Level level) {
@@ -160,11 +164,10 @@ public class CharacterTrainingSystem extends PassiveSystem {
         level.expToNextLevel *= modifier;
     }
 
-    private int addMana(int userId) {
-        E e = E(userId);
-        CharClass heroClass = CharClass.of(e);
+    private int addMana(int entityId) {
+        CharClass charClass = CharClass.of(mCharHero.get(entityId).heroId);
         float manaPerLvlFactor;
-        switch (heroClass) {
+        switch (charClass) {
             case ROGUE:
                 manaPerLvlFactor = (float) (1 / 3) * 2;
                 break;
@@ -184,18 +187,17 @@ public class CharacterTrainingSystem extends PassiveSystem {
                 manaPerLvlFactor = 0;
                 break;
         }
-        int manaUp = (int) (e.intelligenceBaseValue() * manaPerLvlFactor);
-        e.getMana().max += manaUp;
+        int manaUp = (int) (mIntelligence.get(entityId).getBaseValue() * manaPerLvlFactor);
+        mMana.get(entityId).max += manaUp;
         return manaUp;
     }
 
-    private float addHealth(int userId) {
-        E e = E(userId);
-        int constitution = e.constitutionBaseValue();
-        float healthModifier = modifierSystem.of(HEALTH, CharClass.of(e));
+    private float addHealth(int entityId) {
+        int constitution = mConstitution.get(entityId).getBaseValue();
+        float healthModifier = modifierSystem.of(HEALTH, CharClass.of(mCharHero.get(entityId).getHeroId()));
         float average = healthModifier - (21 - constitution) * 0.5f;
         int hpUp = ThreadLocalRandom.current().nextInt(getMinHealth(average), getMaxHealth(average));
-        e.getHealth().max += hpUp;
+        mHealth.get(entityId).max += hpUp;
         return hpUp;
     }
 
@@ -207,9 +209,8 @@ public class CharacterTrainingSystem extends PassiveSystem {
         return (int) (average % 1 == 0 ? average - 2 : average - 1.5f);
     }
 
-    private Pair<Integer, Integer> addHit(int userId) {
-        E entity = E(userId);
-        CharClass charClass = CharClass.of(entity);
+    private Pair<Integer, Integer> addHit(int entityId) {
+        CharClass charClass = CharClass.of(mCharHero.get(entityId).getHeroId());
         int minLvl;
         int maxLvl;
         int hit;
@@ -245,19 +246,19 @@ public class CharacterTrainingSystem extends PassiveSystem {
                 maxLvl = 0;
                 break;
         }
-        hit = entity.getLevel().level < HIT_BREAKING_LEVEL ? minLvl : maxLvl;
+        hit = mLevel.get(entityId).level < HIT_BREAKING_LEVEL ? minLvl : maxLvl;
         int STAT_MAXHIT_UNDER36 = 99;
         int STAT_MAXHIT_OVER36 = 999;
-        int minHit = MathUtils.clamp(entity.hitMin() + hit, 0, entity.getLevel().level < 35 ? STAT_MAXHIT_UNDER36 : STAT_MAXHIT_OVER36);
-        int maxHit = MathUtils.clamp(entity.hitMax() + hit, 0, entity.getLevel().level < 35 ? STAT_MAXHIT_UNDER36 : STAT_MAXHIT_OVER36);
+        int minHit = MathUtils.clamp(mHit.get(entityId).getMin() + hit, 0, mLevel.get(entityId).level < 35 ? STAT_MAXHIT_UNDER36 : STAT_MAXHIT_OVER36);
+        int maxHit = MathUtils.clamp(mHit.get(entityId).getMax() + hit, 0, mLevel.get(entityId).level < 35 ? STAT_MAXHIT_UNDER36 : STAT_MAXHIT_OVER36);
 
-        entity.hitMax(maxHit).hitMin(minHit);
+        mHit.get(entityId).setMin(minHit);
+        mHit.get(entityId).setMax(maxHit);
         return new Pair<>(minHit, maxHit);
     }
 
-    private int addStamina(int userId) {
-        E entity = E(userId);
-        CharClass charClass = CharClass.of(entity);
+    private int addStamina(int entityId) {
+        CharClass charClass = CharClass.of(mCharHero.get(entityId).getHeroId());
         int stamina = DEFAULT_STAMINA;
         switch (charClass) {
             case ROGUE:
@@ -268,9 +269,8 @@ public class CharacterTrainingSystem extends PassiveSystem {
                 stamina -= 1;
                 break;
         }
-        entity.getStamina().min += stamina;
-        entity.getStamina().max += stamina;
+        mStamina.get(entityId).min += stamina;
+        mStamina.get(entityId).max += stamina;
         return stamina;
     }
-
 }
