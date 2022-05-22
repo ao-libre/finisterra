@@ -3,8 +3,8 @@
 	"network": {
 		"useLocalHost":true,
 		"ports": {
-			"tcpPort":7666,
-			"udpPort":7667
+			"tcpPort":8667,
+			"udpPort":8668
 		},
 		"api": {
 			"apiURL":"https://localhost",
