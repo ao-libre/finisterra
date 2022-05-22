@@ -84,7 +84,8 @@ public class ClientConfiguration extends PassiveSystem {
 
         // Default values of `Network.servers`
         Array<Network.Server> servers = configOutput.getNetwork().getServers();
-        servers.add(new Network.Server("localhost", "127.0.0.1", 7666));
+        servers.add(new Network.Server("localhost", "127.0.0.1", 8667));
+        servers.add(new Network.Server("Servidor @recox", "45.235.98.29", 8667));
 
         return configOutput;
     }

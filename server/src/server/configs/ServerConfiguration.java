@@ -5,8 +5,8 @@ public class ServerConfiguration extends BaseConfiguration {
     // Default values
     public static final String PATH = "Server.json";
 
-    private static final int TCP_PORT = 9000;
-    private static final int UDP_PORT = 9001;
+    private static final int TCP_PORT = 8667;
+    private static final int UDP_PORT = 8668;
     private static final String API_URL = "https://localhost";
     private static final int API_PORT = 1337;
     private static final int ROOM_LIMIT = 1;
