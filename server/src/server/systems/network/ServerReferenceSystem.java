@@ -1,7 +1,7 @@
 package server.systems.network;
 
+import com.artemis.ComponentMapper;
 import com.artemis.annotations.All;
-import com.artemis.annotations.Wire;
 import com.google.common.collect.Sets;
 import component.entity.Ref;
 import shared.systems.ReferenceSystem;
@@ -11,14 +11,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.artemis.E.E;
-
-@Wire
 @All({Ref.class})
 public class ServerReferenceSystem extends ReferenceSystem {
 
     private Map<Integer, Set<Integer>> references;
     private Map<Integer, Integer> referenceTo;
+
+    ComponentMapper<Ref> mRef;
 
     public ServerReferenceSystem() {
         references = new ConcurrentHashMap<>();
@@ -28,7 +27,7 @@ public class ServerReferenceSystem extends ReferenceSystem {
     @Override
     protected void inserted(int entityId) {
         // keep relation between entities
-        int refId = E(entityId).refId();
+        int refId = mRef.get(entityId).getId();
         referenceTo.put(entityId, refId);
         references.computeIfAbsent(refId, (id) -> Sets.newHashSet()).add(entityId);
     }
