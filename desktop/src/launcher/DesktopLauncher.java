@@ -6,9 +6,9 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.glutils.HdpiMode;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
-import game.ClientConfiguration;
-import game.ClientConfiguration.Init;
-import game.ClientConfiguration.Init.Video;
+import game.Config;
+import game.Config.Init;
+import game.Config.Init.Video;
 import game.utils.Resources;
 import shared.util.LogSystem;
 
@@ -28,14 +28,18 @@ public class DesktopLauncher {
         Log.setLogger(new LogSystem());
 
         // Load desktop config.json or create default.
-        ClientConfiguration config = ClientConfiguration.loadConfig(Resources.CLIENT_CONFIG);
-        if (config == null) {
-            Log.warn("DesktopLauncher", "Desktop config.json not found, creating default.");
-            config = ClientConfiguration.createConfig();
-            config.save(Resources.CLIENT_CONFIG);
+        Config config;
+        if (Config.fileExists(Resources.CLIENT_CONFIG)) {
+            config = Config.fileLoad(Resources.CLIENT_CONFIG);
         }
-        Init initConfig = config.getInitConfig();
-        Video video = initConfig.getVideo();
+        else {
+            Log.info("DesktopLauncher", "Config file " + Resources.CLIENT_CONFIG + " not found, creating default.");
+            config = Config.getDefault();
+            config.fileSave(Resources.CLIENT_CONFIG);
+        }
+
+        Init initConfig = config.initConfig;
+        Video video = initConfig.video;
 
         Graphics.DisplayMode[] displayModes = Lwjgl3ApplicationConfiguration.getDisplayModes();
         Graphics.DisplayMode displayMode = Arrays.stream(displayModes)
@@ -45,7 +49,7 @@ public class DesktopLauncher {
                                 .filter(dm -> dm.height == 768)
                                 .max(Comparator.comparingInt(o -> o.refreshRate))
                                 .orElse(Lwjgl3ApplicationConfiguration.getDisplayMode())
-                );
+                        );
 
         // Build LWJGL configuration
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();

@@ -5,7 +5,9 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.glutils.HdpiMode;
 import com.esotericsoftware.minlog.Log;
-import game.ClientConfiguration;
+import game.Config;
+import game.Config.Init;
+import game.Config.Init.Video;
 import game.utils.Resources;
 import shared.util.LogSystem;
 
@@ -28,14 +30,18 @@ public class TestLauncher {
         Log.setLogger(new LogSystem());
 
         // Load desktop config.json or create default.
-        ClientConfiguration config = ClientConfiguration.loadConfig(Resources.CLIENT_CONFIG);
-        if (config == null) {
-            Log.warn("DesktopLauncher", "Desktop config.json not found, creating default.");
-            config = ClientConfiguration.createConfig();
-            config.save(Resources.CLIENT_CONFIG);
+        Config config;
+        if (Config.fileExists(Resources.CLIENT_CONFIG)) {
+            config = Config.fileLoad(Resources.CLIENT_CONFIG);
         }
-        ClientConfiguration.Init initConfig = config.getInitConfig();
-        ClientConfiguration.Init.Video video = initConfig.getVideo();
+        else {
+            Log.info("DesktopLauncher", "Config file " + Resources.CLIENT_CONFIG + " not found, creating default.");
+            config = Config.getDefault();
+            config.fileSave(Resources.CLIENT_CONFIG);
+        }
+
+        Init initConfig = config.initConfig;
+        Video video = initConfig.video;
 
         Graphics.DisplayMode displayMode = Lwjgl3ApplicationConfiguration.getDisplayMode();
 

@@ -99,7 +99,7 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
 
         copy {
             from(assetsPath)
-            from("${projectDir}/Config.json")
+            from("${projectDir}/config.json")
 
             switch (OS) {
                 case OperatingSystem.MAC_OS:

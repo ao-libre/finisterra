@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import component.entity.world.CombatMessage;
-import game.ClientConfiguration;
 import game.utils.Colors;
 import game.utils.Skins;
 import org.jetbrains.annotations.NotNull;

@@ -12,8 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
-import game.ClientConfiguration;
-import game.ClientConfiguration.Network.Server;
+import game.Config;
+import game.Config.Network.Server;
 import game.handlers.DefaultAOAssetManager;
 import game.systems.network.ClientSystem;
 import game.systems.resources.MusicSystem;
@@ -21,6 +21,7 @@ import game.systems.resources.SoundsSystem;
 import game.ui.ExtendedDialog;
 import game.ui.WidgetFactory;
 import game.ui.WidgetFactory.Drawables;
+import game.utils.Resources;
 import shared.network.account.AccountLoginRequest;
 import shared.util.Messages;
 
@@ -30,7 +31,7 @@ public class LoginScreen extends AbstractScreen {
     private final Preferences preferences = Gdx.app.getPreferences("Finisterra");
     @Wire private DefaultAOAssetManager assetManager;
     @Wire private MusicSystem musicSystem;
-    private ClientConfiguration clientConfiguration;
+    @Wire private Config config;
     private ClientSystem clientSystem;
     private ScreenManager screenManager;
     private SoundsSystem soundsSystem;
@@ -41,7 +42,7 @@ public class LoginScreen extends AbstractScreen {
     private CheckBox disableMusic;
     private CheckBox disableSound;
     private TextButton loginButton;
-    private List<ClientConfiguration.Network.Server> serverList;
+    private List<Config.Network.Server> serverList;
     private boolean isDialogShowed = false;
 
     public LoginScreen() {
@@ -64,7 +65,7 @@ public class LoginScreen extends AbstractScreen {
 
     @Override
     protected void createUI() {
-        ClientConfiguration.Account account = clientConfiguration.getAccount();
+        Config.Account account = config.account;
 
         /* Tabla de login */
         Window loginWindow = WidgetFactory.createWindow();
@@ -73,10 +74,10 @@ public class LoginScreen extends AbstractScreen {
         Label emailLabel = WidgetFactory.createLabel("Email: ");
         //tamaño de las fuentes (nota soy chicaton :P )
         emailLabel.getStyle().font = getSkin().getFont( "big" );
-        emailField = WidgetFactory.createTextField(account.getEmail());
+        emailField = WidgetFactory.createTextField(account.email);
         Label passwordLabel = WidgetFactory.createLabel("Password");
         passwordLabel.getStyle().font = getSkin().getFont( "big" );
-        passwordField = WidgetFactory.createTextField(account.getPassword());
+        passwordField = WidgetFactory.createTextField(account.password);
         passwordField.setPasswordCharacter('*');
         passwordField.setPasswordMode(true);
         rememberMe = WidgetFactory.createCheckBox("Remember me");
@@ -126,7 +127,10 @@ public class LoginScreen extends AbstractScreen {
         connectionTable.getTitleLabel().setAlignment( Align.center );
         serverList = WidgetFactory.createList();
         serverList.setAlignment( Align.center );
-        serverList.setItems(clientConfiguration.getNetwork().getServers());
+        serverList.setItems(config.network.servers);
+        if (config.network.selected >= 0 && config.network.selected < config.network.servers.size) {
+            serverList.setSelectedIndex(config.network.selected);
+        }
         serverList.getStyle().font = getSkin().getFont( "big" );
         // panel desplasable
         // las barra de desplasamiento aparece cuando la lista sobrepasa el tamaño
@@ -163,7 +167,7 @@ public class LoginScreen extends AbstractScreen {
                     }
                     // chequeo servidor esta en la lista
                     String newSever = name + "  " + ip + ":" + port;
-                    Array<Server> servers = clientConfiguration.getNetwork().getServers();
+                    Array<Server> servers = config.network.servers;
                     boolean serverExist = false;
 
                     for (int i = 0; i < servers.size; i++) {
@@ -185,8 +189,8 @@ public class LoginScreen extends AbstractScreen {
                         dialog1.show(getStage());
                     }
                     else {
-                        clientConfiguration.getNetwork().getServers().add( new Server( name, ip, port ) );
-                        serverList.setItems(clientConfiguration.getNetwork().getServers());
+                        config.network.servers.add( new Server( name, ip, port ) );
+                        serverList.setItems(config.network.servers);
                     }
                 });
                 dialog.button( "Cancel" );
@@ -199,8 +203,8 @@ public class LoginScreen extends AbstractScreen {
         deleteServerButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                clientConfiguration.getNetwork().getServers().removeValue(serverList.getSelected(), true);
-                serverList.setItems(clientConfiguration.getNetwork().getServers());
+                config.network.servers.removeValue(serverList.getSelected(), true);
+                serverList.setItems(config.network.servers);
             }
         });
         connectionTable.add(deleteServerButton);
@@ -311,14 +315,17 @@ public class LoginScreen extends AbstractScreen {
             String email = emailField.getText();
             String password = passwordField.getText();
 
-            clientConfiguration.getAccount().setEmail(email);
-            clientConfiguration.getAccount().setPassword(password);
-            // clientConfiguration.save(); TODO this is breaking all
+            config.account.email = email;
+            config.account.password = password;
+            config.fileSave(Resources.CLIENT_CONFIG);
 
-            ClientConfiguration.Network.Server server = serverList.getSelected();
+            Config.Network.Server server = serverList.getSelected();
             if (server == null) return;
-            String ip = server.getHostname();
-            int port = server.getPort();
+
+            config.network.selected = config.network.servers.indexOf(server, false);
+
+            String ip = server.hostname;
+            int port = server.port;
 
             // Si podemos conectarnos, mandamos la peticion para loguearnos a la cuenta.
             if (clientSystem.connect(ip, port)) {

@@ -23,7 +23,6 @@ import design.screens.ScreenEnum;
 import design.screens.ScreenManager;
 import design.screens.views.View;
 import game.AssetManagerHolder;
-import game.ClientConfiguration;
 import game.handlers.AOAssetManager;
 import game.handlers.DefaultAOAssetManager;
 import game.screens.WorldScreen;

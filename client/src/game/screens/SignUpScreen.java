@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
-import game.ClientConfiguration;
+import game.Config;
 import game.handlers.DefaultAOAssetManager;
 import game.systems.network.ClientSystem;
 import game.ui.WidgetFactory;
@@ -15,9 +15,8 @@ import shared.util.Messages;
 @Wire
 public class SignUpScreen extends AbstractScreen {
 
-    @Wire
-    private DefaultAOAssetManager assetManager;
-    private ClientConfiguration clientConfiguration;
+    @Wire private DefaultAOAssetManager assetManager;
+    @Wire private Config config;
     private ClientSystem clientSystem;
     private ScreenManager screenManager;
 
@@ -25,7 +24,7 @@ public class SignUpScreen extends AbstractScreen {
     private TextField passwordField1, passwordField2;
     private TextField emailField;
     private TextButton registerButton;
-    private List<ClientConfiguration.Network.Server> serverList;
+    private List<Config.Network.Server> serverList;
 
     @Override
     protected void createUI() {
@@ -70,7 +69,10 @@ public class SignUpScreen extends AbstractScreen {
         /* Tabla de servidores */
         Table serverTable = new Table((getSkin()));
         serverList = WidgetFactory.createList();
-        serverList.setItems(clientConfiguration.getNetwork().getServers());
+        serverList.setItems(config.network.servers);
+        if (config.network.selected >= 0 && config.network.selected < config.network.servers.size) {
+            serverList.setSelectedIndex(config.network.selected);
+        }
         serverTable.add(serverList).width(400).height(300); //@todo Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
 
         /* Tabla principal */
@@ -115,10 +117,13 @@ public class SignUpScreen extends AbstractScreen {
             }
 
             // Conectar el ClientSystem
-            ClientConfiguration.Network.Server server = serverList.getSelected();
+            Config.Network.Server server = serverList.getSelected();
             if (server == null) return;
-            String ip = server.getHostname();
-            int port = server.getPort();
+
+            config.network.selected = config.network.servers.indexOf(server, false);
+
+            String ip = server.hostname;
+            int port = server.port;
 
             // Si podemos conectarnos, mandamos la peticion para crear a la cuenta.
             if (clientSystem.connect(ip, port)) {

@@ -3,16 +3,13 @@ package game;
 import com.artemis.World;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.utils.PerformanceCounter;
 import com.esotericsoftware.minlog.Log;
 import game.handlers.DefaultAOAssetManager;
 import game.screens.LoadingScreen;
-import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
 import game.systems.resources.MusicSystem;
 import shared.util.LogSystem;
 
-import static game.screens.ScreenEnum.GAME;
 import static game.screens.ScreenEnum.LOGIN;
 
 /**
@@ -23,7 +20,7 @@ import static game.screens.ScreenEnum.LOGIN;
 public class AOGame extends Game {
 
     private DefaultAOAssetManager assetManager;
-    private ClientConfiguration clientConfiguration;
+    private Config config;
     private World world;
     private MusicSystem musicSystem;
 
@@ -31,9 +28,9 @@ public class AOGame extends Game {
      * Constructor de la clase.
      * Acá no hay contexto de libGDX, ver {@link AOGame#create()}
      */
-    public AOGame(ClientConfiguration clientConfiguration) {
+    public AOGame(Config config) {
         Log.setLogger(new LogSystem());
-        this.clientConfiguration = clientConfiguration;
+        this.config = config;
         musicSystem = new MusicSystem();
     }
 
@@ -48,12 +45,12 @@ public class AOGame extends Game {
 
         screen.onFinished((assetManager) -> {
             ScreenManager screenManager = new ScreenManager(this);
-            this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager, musicSystem);
+            this.world = WorldConstructor.create(config, screenManager, assetManager, musicSystem);
             world.inject(musicSystem);
             screenManager.addListener((screenEnum -> {
                 switch (screenEnum) {
                     case LOGIN:
-                        this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager, musicSystem);
+                        this.world = WorldConstructor.create(config, screenManager, assetManager, musicSystem);
                         musicSystem.playMusic(101, true);
                         break;
                     case GAME:

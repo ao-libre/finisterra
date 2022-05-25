@@ -21,7 +21,6 @@ import game.systems.physics.AttackAnimationSystem;
 import game.systems.physics.MovementProcessorSystem;
 import game.systems.physics.MovementSystem;
 import game.systems.physics.PlayerInputSystem;
-import game.systems.profiling.ProfilerSystem;
 import game.systems.render.BatchBeginSystem;
 import game.systems.render.BatchEndSystem;
 import game.systems.render.BatchSystem;
@@ -44,7 +43,6 @@ import game.systems.world.NetworkedEntitySystem;
 import game.systems.world.WorldSystem;
 import game.utils.CursorSystem;
 import net.mostlyoriginal.api.system.render.ClearScreenSystem;
-import net.mostlyoriginal.plugin.ProfilerPlugin;
 import shared.systems.IntervalSystem;
 
 import java.util.Arrays;
@@ -61,15 +59,14 @@ public class WorldConstructor {
     private static final int UI = 0;
 
     private static WorldConfiguration getWorldConfiguration(
-            ClientConfiguration clientConfiguration,
+            Config config,
             ScreenManager screenManager,
             DefaultAOAssetManager assetManager,
             MusicSystem musicSystem
     ) {
         return new WorldConfigurationBuilder()
                 // Sistemas de uso global (no necesitan prioridad porque son pasivos)
-                .with(clientConfiguration,
-                        screenManager)
+                .with(screenManager)
 
                 // register all screens
                 .with(Arrays.stream(ScreenEnum.values())
@@ -171,6 +168,7 @@ public class WorldConstructor {
 // @todo Habilitar información de perfileo en UI
 //              .with(new ProfilerSystem())
                 .build()
+                .register(config)
                 .register(assetManager)
                 .register(musicSystem);
     }
@@ -180,11 +178,11 @@ public class WorldConstructor {
      * Este método es bloqueante.
      */
     public static World create(
-            ClientConfiguration clientConfiguration,
+            Config config,
             ScreenManager screenManager,
             DefaultAOAssetManager assetManager,
             MusicSystem musicSystem
     ) {
-        return new World(getWorldConfiguration(clientConfiguration, screenManager, assetManager, musicSystem));
+        return new World(getWorldConfiguration(config, screenManager, assetManager, musicSystem));
     }
 }

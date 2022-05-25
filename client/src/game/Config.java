@@ -4,12 +4,9 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.esotericsoftware.minlog.Log;
-import game.utils.Resources;
-import net.mostlyoriginal.api.system.core.PassiveSystem;
 import shared.util.AOJson;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
@@ -17,49 +14,60 @@ import java.io.IOException;
  *
  * @see AOGame
  */
-public class ClientConfiguration extends PassiveSystem {
+public class Config {
 
-    private Init initConfig;
-    private Account account;
-    private Network network;
+    public Init initConfig;
+    public Account account;
+    public Network network;
 
     /**
-     * Obtiene el archivo Config.json y lee el JSON.
-     *
-     * @param path La ruta donde se encuentra el Config.json a cargar.
-     * @throws FileNotFoundException Si no se encuentra el archivo.
-     * @throws IOException           Si por alguna misteriosa razon no se puede leer el archivo.
+     * Verifica que exista el archivo de configuración
+     * @param path Ruta del archivo
+     * @return true si existe
      */
-    public static ClientConfiguration loadConfig(String path) {
-
-        Json configObject = new AOJson();
-        try (FileInputStream is = new FileInputStream(path)) {
-            // Before GDX initialization
-            // DO NOT USE 'Gdx.Files', because 'Gdx.Files' in the launcher is always NULL!
-            return configObject.fromJson(ClientConfiguration.class, is);
-
-        } catch (FileNotFoundException ex) {
-            Log.error("Client configuration", "File not found!", ex);
-
-        } catch (IOException ex) {
-            Log.error("Client configuration", "It appears we've encountered an unexpected I/O error!", ex);
+    public static boolean fileExists(String path) {
+        try (FileInputStream is = new FileInputStream(path)) {}
+        catch (IOException e) {
+            return false;
         }
+        return true;
+    }
 
-        return null;
+    /**
+     * Carga el archivo JSON y lo parsea, genera el POJO Config.
+     * @param path La ruta donde se encuentra el config.json a cargar.
+     * @throws IOException Si por alguna misteriosa razon no se puede leer el archivo.
+     */
+    public static Config fileLoad(String path) throws RuntimeException {
+        Json jsonParser = new AOJson();
+        try (FileInputStream is = new FileInputStream(path)) {
+            return jsonParser.fromJson(Config.class, is);
+        } catch (IOException ex) {
+            Log.error("Unexpected error reading config file: " + path);
+            throw new RuntimeException();
+        }
+    }
+
+    /**
+     * Este metodo guarda el archivo json.
+     * @param path La ruta donde queres que se guarde el json generado.
+     */
+    public void fileSave(String path) {
+        Json jsonParser = new AOJson();
+        jsonParser.toJson(this, new FileHandle(path));
     }
 
     /**
      * Crea un objeto con los valores de configuracion por defecto por si el archivo no existe.
-     *
-     * @return configOutput El objeto con los valores por defecto.
+     * @return Una instancia de la clase Config, con los valores por defecto.
      */
-    public static ClientConfiguration createConfig() {
+    public static Config getDefault() {
         // Default values will not be written down
-        ClientConfiguration configOutput = new ClientConfiguration();
+        Config config = new Config();
 
         // Default values of `Init`
-        configOutput.setInitConfig(new Init());
-        Init initConfig = configOutput.getInitConfig();
+        config.setInitConfig(new Init());
+        Init initConfig = config.getInitConfig();
         initConfig.setLanguage("es_AR");
         initConfig.setResizeable(true);
         initConfig.setDisableAudio(false);
@@ -71,38 +79,23 @@ public class ClientConfiguration extends PassiveSystem {
         video.setHeight(720);
         video.setVsync(true);
         video.setHiDPIMode("Logical");
-        configOutput.getInitConfig().setVideo(video);
+        config.getInitConfig().setVideo(video);
 
         // Default values of `Account`
         Account account = new Account();
-        account.setEmail("");
-        account.setPassword("");
-        configOutput.setAccount(account);
+        account.email = "";
+        account.password = "";
+        config.account = account;
 
         // Default values of `Network`
-        configOutput.setNetwork(new Network());
+        config.network = new Network();
 
         // Default values of `Network.servers`
-        Array<Network.Server> servers = configOutput.getNetwork().getServers();
+        Array<Network.Server> servers = config.network.servers;
         servers.add(new Network.Server("localhost", "127.0.0.1", 8667));
         servers.add(new Network.Server("Servidor @recox", "45.235.98.29", 8667));
 
-        return configOutput;
-    }
-
-    public void save() {
-        save(Resources.CLIENT_CONFIG);
-    }
-
-    /**
-     * Este metodo guarda el archivo Config.json.
-     *
-     * @param path La ruta donde queres que se guarde el Config.json generado.
-     * @see this#createConfig()
-     */
-    public void save(String path) {
-        Json json = new AOJson();
-        json.toJson(this, new FileHandle(path));
+        return config;
     }
 
     public Init getInitConfig() {
@@ -113,31 +106,15 @@ public class ClientConfiguration extends PassiveSystem {
         this.initConfig = initConfig;
     }
 
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
-    public Network getNetwork() {
-        return network;
-    }
-
-    public void setNetwork(Network network) {
-        this.network = network;
-    }
-
     /**
      * De aca en adelante esta el POJO usado para leer/escribir el archivo Config.json
      */
     public static class Init {
-        private String language;
-        private Video video;
-        private boolean resizeable;
-        private boolean disableAudio;
-        private boolean startMaximized;
+        public String language;
+        public Video video;
+        public boolean resizeable;
+        public boolean disableAudio;
+        public boolean startMaximized;
 
         public String getLanguage() {
             return language;
@@ -180,10 +157,10 @@ public class ClientConfiguration extends PassiveSystem {
         }
 
         public static class Video {
-            private int width;
-            private int height;
-            private boolean vSync;
-            private String HiDPI_Mode;
+            public int width;
+            public int height;
+            public boolean vSync;
+            public String HiDPI_Mode;
 
             public int getWidth() {
                 return width;
@@ -222,39 +199,20 @@ public class ClientConfiguration extends PassiveSystem {
     public static class Account {
         public String email;
         public String password;
-
-        public String getEmail() {
-            return email;
-        }
-
-        public void setEmail(String email) {
-            this.email = email;
-        }
-
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
     }
 
     public static class Network {
-        Array<Server> servers;
+        public Array<Server> servers;
+        public int selected = -1;
 
         public Network() {
             servers = new Array<>();
         }
 
-        public Array<Server> getServers() {
-            return servers;
-        }
-
         public static class Server {
-            private String name;
-            private String hostname;
-            private int port;
+            public String desc;
+            public String hostname;
+            public int port;
 
             // empty constructor needed for de-serialization
             public Server() {
@@ -265,8 +223,8 @@ public class ClientConfiguration extends PassiveSystem {
                 this(null, hostname, port);
             }
 
-            public Server(String name, String hostname, int port) {
-                this.name = name;
+            public Server(String desc, String hostname, int port) {
+                this.desc = desc;
                 this.hostname = hostname;
                 this.port = port;
             }
@@ -274,34 +232,10 @@ public class ClientConfiguration extends PassiveSystem {
             @Override
             public String toString() {
                 String prefix = "";
-                if (this.name != null)
-                    prefix = this.name + "  ";
+                if (this.desc != null)
+                    prefix = this.desc + "  ";
 
                 return prefix + this.hostname + ":" + this.port;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            void setName(String name) {
-                this.name = name;
-            }
-
-            public String getHostname() {
-                return hostname;
-            }
-
-            void setHostname(String hostname) {
-                this.hostname = hostname;
-            }
-
-            public int getPort() {
-                return port;
-            }
-
-            void setPort(int port) {
-                this.port = port;
             }
         }
     }
