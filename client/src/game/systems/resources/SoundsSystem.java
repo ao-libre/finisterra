@@ -14,56 +14,56 @@ public class SoundsSystem extends PassiveSystem {
     @Wire
     private DefaultAOAssetManager assetManager;
 
-    private boolean disableSounds;
+    float volume = 1.0f;
+    boolean disabled;
 
     public long playSound(Integer soundID, boolean loop) {
+        if (disabled) return -1;
+
         Sound sound = assetManager.getSound(soundID);
         if (sound == null) {
-            Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
+            Log.warn(SoundsSystem.class.getSimpleName(), "Tried to play sound ID: " + soundID + ", but it was not loaded.");
             return -1;
         }
-        //TODO: it should be played with a global configurable volume
+
         if (!loop) {
-            return sound.play(SoundSytem.volume);
+            return sound.play(volume);
         } else {
-            return sound.loop(SoundSytem.volume);
+            return sound.loop(volume);
         }
     }
 
-    public void playSound(Integer soundID) {
-        if (!disableSounds) {
-            playSound(soundID, false);
-        }
+    public long playSound(Integer soundID) {
+        return playSound(soundID, false);
     }
 
     public void updateVolume(Integer soundId, long soundIndex, float volume) {
         Sound sound = assetManager.getSound(soundId);
         if (sound != null) {
-            sound.setVolume(soundIndex, volume * SoundSytem.volume);
+            sound.setVolume(soundIndex, volume * this.volume);
         }
     }
 
     public void updatePan(Integer soundId, long soundIndex, float pan, float volume) {
         Sound sound = assetManager.getSound(soundId);
         if (sound != null) {
-            sound.setPan(soundIndex, pan, volume * SoundSytem.volume);
+            sound.setPan(soundIndex, pan, volume * this.volume);
         }
     }
 
     public void stopSound(Integer soundID) {
         Sound sound = assetManager.getSound(soundID);
         if (sound == null) {
-            Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
+            Log.warn(SoundsSystem.class.getSimpleName(), "Tried to stop sound ID: " + soundID + ", but it was not loaded.");
             return;
         }
-
         sound.stop();
     }
 
     public void stopSound(Integer soundID, long soundIndex) {
         Sound sound = assetManager.getSound(soundID);
         if (sound == null) {
-            Log.warn(SoundsSystem.class.getSimpleName(), "Error: tried to play sound index: " + soundID + ", but it was not loaded.");
+            Log.warn(SoundsSystem.class.getSimpleName(), "Tried to stop sound ID: " + soundID + ", but it was not loaded.");
             return;
         }
         sound.stop(soundIndex);
@@ -75,11 +75,20 @@ public class SoundsSystem extends PassiveSystem {
         return sound instanceof OpenALSound ? ((OpenALSound) sound).duration() : 0;
     }
 
-    public boolean isDisableSounds() {
-        return disableSounds;
+    public float getVolume() {
+        return volume;
     }
 
-    public void setDisableSounds(boolean disableSounds) {
-        this.disableSounds = disableSounds;
+    public void setVolume(float volume) {
+        this.volume = volume;
+        // todo: actualizar el volumen de todos los sonidos actuales
+    }
+
+    public boolean isDisabled() {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
     }
 }

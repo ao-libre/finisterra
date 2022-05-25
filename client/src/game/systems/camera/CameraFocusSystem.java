@@ -8,12 +8,16 @@ import com.artemis.systems.IteratingSystem;
 import component.camera.AOCamera;
 import component.camera.Focused;
 import component.position.WorldPos;
+import game.systems.ui.UserInterfaceSystem;
 import game.utils.Pos2D;
+import shared.model.map.Tile;
 
 import static com.artemis.E.E;
 
 @Wire
 public class CameraFocusSystem extends IteratingSystem {
+
+    private UserInterfaceSystem userInterfaceSystem;
 
     public CameraFocusSystem() {
         super(Aspect.all(Focused.class, WorldPos.class));

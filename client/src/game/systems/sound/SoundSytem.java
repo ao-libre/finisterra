@@ -31,7 +31,6 @@ class SoundIndexPair {
 @Wire
 public class SoundSytem extends IteratingSystem {
 
-    public static float volume = 1.0f;
     private final Map<Integer, SoundIndexPair> sounds;
     private SoundsSystem soundsSystem;
 
@@ -43,17 +42,13 @@ public class SoundSytem extends IteratingSystem {
         this.sounds = new HashMap<>();
     }
 
-    public void setVolume(float volume) {
-        SoundSytem.volume = volume;
-    }
-
     @Override
     protected void inserted(int entityId) {
         super.inserted(entityId);
 
         E entity = E(entityId);
         AOSound sound = entity.getAOSound();
-        if (!soundsSystem.isDisableSounds()) {
+        if (!soundsSystem.isDisabled()) {
             long soundIndex = soundsSystem.playSound(sound.id, sound.shouldLoop);
             sounds.put(entityId, new SoundIndexPair(sound.id, soundIndex));
         }

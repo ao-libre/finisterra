@@ -1,13 +1,20 @@
 package server.systems.world.entity.factory;
 
-import com.artemis.Component;
-import com.artemis.E;
-import com.artemis.Entity;
-import com.artemis.EntityEdit;
-import com.artemis.annotations.Wire;
-import com.esotericsoftware.minlog.Log;
+import com.artemis.*;
+import component.entity.character.Character;
+import component.entity.character.attributes.*;
+import component.entity.character.equipment.Armor;
+import component.entity.character.equipment.Helmet;
+import component.entity.character.equipment.Shield;
+import component.entity.character.equipment.Weapon;
+import component.entity.character.info.*;
+import component.entity.character.parts.Body;
+import component.entity.character.parts.Head;
 import component.entity.character.states.Heading;
+import component.entity.character.status.*;
+import component.entity.world.Object;
 import component.position.WorldPos;
+import component.position.WorldPosOffsets;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.database.model.attributes.Attributes;
 import server.systems.config.NPCSystem;
@@ -28,11 +35,12 @@ import shared.util.MapHelper;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.artemis.E.E;
 import static server.systems.world.entity.training.CharacterTrainingSystem.DEFAULT_STAMINA;
 import static server.systems.world.entity.training.CharacterTrainingSystem.INITIAL_LEVEL;
 
-@Wire
+// @todo: El sistema es muy grande y quizá podría modularizarse
+// @todo: Evaluar si conviene usar EntityTransmuter para crear nuevas entidades con tantos componentes.
+// @todo: La clase se llama EntityFactory pero parece crear solo PJs.
 public class EntityFactorySystem extends PassiveSystem {
 
     private static final int INITIAL_EXP_TO_NEXT_LEVEL = 300;
@@ -45,6 +53,38 @@ public class EntityFactorySystem extends PassiveSystem {
     private PathFindingSystem pathFindingSystem;
     private NPCSystem npcSystem;
 
+    // Atributos
+    ComponentMapper<Agility> mAgility;
+    ComponentMapper<Charisma> mCharisma;
+    ComponentMapper<Constitution> mConstitution;
+    ComponentMapper<Intelligence> mIntelligence;
+    ComponentMapper<Strength> mStrength;
+
+    // Equipment
+    ComponentMapper<Armor> mArmor;
+    ComponentMapper<Helmet> mHelmet;
+    ComponentMapper<Shield> mShield;
+    ComponentMapper<Weapon> mWeapon;
+
+    ComponentMapper<Bag> mBag;
+    ComponentMapper<Body> mBody;
+    ComponentMapper<Character> mCharacter;
+    ComponentMapper<CharHero> mCharHero;
+    ComponentMapper<Gold> mGold;
+    ComponentMapper<Head> mHead;
+    ComponentMapper<Heading> mHeading;
+    ComponentMapper<Health> mHealth;
+    ComponentMapper<Hit> mHit;
+    ComponentMapper<Level> mLevel;
+    ComponentMapper<Mana> mMana;
+    ComponentMapper<Name> mName;
+    ComponentMapper<Skills> mSkills;
+    ComponentMapper<SpellBook> mSpellBook;
+    ComponentMapper<Stamina> mStamina;
+    ComponentMapper<Object> mObject;
+    ComponentMapper<WorldPos> mWorldPos;
+    ComponentMapper<WorldPosOffsets> mWorldPosOffsets;
+
     // Create entity with current components
     public int create(Collection<? extends Component> components) {
         Entity entity = world.createEntity();
@@ -54,13 +94,12 @@ public class EntityFactorySystem extends PassiveSystem {
     }
 
     public void createObject(int objIndex, int objCount, WorldPos pos) {
-        int objId = world.create();
-        E object = E(objId);
-        object
-                .objectIndex(objIndex)
-                .objectCount(objCount);
-        setWorldPosition(object, pos, true);
-        worldEntitiesSystem.registerEntity(objId);
+        int objectId = world.create();
+        Object object = mObject.create(objectId);
+        object.setIndex(objIndex);
+        object.setCount(objCount);
+        setWorldPosition(objectId, pos, true);
+        worldEntitiesSystem.registerEntity(objectId);
     }
 
     public void createNPC(int npcIndex, WorldPos pos) {
@@ -69,103 +108,102 @@ public class EntityFactorySystem extends PassiveSystem {
         worldEntitiesSystem.registerEntity(npcId);
     }
 
-    public int create(String name, int heroId) {
+    public int create(String username, int heroId) {
         Hero hero = Hero.values()[heroId];
         Race race = Race.values()[hero.getRaceId()];
 
-        int player = getWorld().create();
+        int playerId = getWorld().create();
 
-        E entity = E(player);
-        entity
-                .character()
-                .tag(name)
-                .nameText(name)
-                .headingCurrent(Heading.HEADING_SOUTH)
-                .charHeroHeroId(heroId);
+        Character character = mCharacter.create(playerId);
+        Name name = mName.create(playerId);
+        name.setText(username);
 
-        setEntityPosition(entity);
-        setAttributesAndStats(entity, race);
-        setHead(entity, race);
-        setNakedBody(entity, race);
+        Heading heading = mHeading.create(playerId);
+        heading.setCurrent(Heading.HEADING_SOUTH);
+
+        CharHero charHero = mCharHero.create(playerId);
+        charHero.setHeroId(heroId);
+
+        setEntityPosition(playerId);
+        setAttributesAndStats(playerId, race);
+        setHead(playerId, race);
+        setNakedBody(playerId, race);
         // set inventory
-        setInventory(player, hero);
+        setInventory(playerId, hero);
         // set spells
-        setSpells(player, hero);
+        setSpells(playerId, hero);
+        setSkills(playerId, 100);
 
-
-        return player;
+        return playerId;
     }
 
-    public int createPlayer(String name, Hero hero) {
-        int player = getWorld().create();
-
-        E entity = E(player);
-        entity.character();
-//        switch (team) {
-//            case NO_TEAM:
-//                entity.gM();
-//                break;
-//            case CAOS_ARMY:
-//                entity.criminal();
-//                break;
-//        }
-        entity.charHeroHeroId(hero.ordinal());
-
-        // set class
-        setClassAndAttributes(hero, entity);
-        // set inventory
-        setInventory(player, hero);
-        // set spells
-        setSpells(player, hero);
-
-        return player;
+    private void setSkills(int entityId, int initial) {
+        mSkills.create(entityId).initial(initial);
     }
 
+    private void setAttributesAndStats(int entityId, Race race) {
+        // Valores base de los atributos
+        int agilityValue = ATTR_BASE_VALUE + Attributes.AGILITY.of(race);
+        int charismaValue = ATTR_BASE_VALUE + Attributes.CHARISMA.of(race);
+        int constitutionValue = ATTR_BASE_VALUE + Attributes.CONSTITUTION.of(race);
+        int intelligenceValue = ATTR_BASE_VALUE + Attributes.INTELLIGENCE.of(race);
+        int strengthValue = ATTR_BASE_VALUE + Attributes.STRENGTH.of(race);
 
-    private void setClassAndAttributes(Hero hero, E entity) {
-        // set body and head
-        Race race = Race.of(entity);
-        setNakedBody(entity, race);
-        setHead(entity, race);
-        entity.charHeroHeroId(hero.ordinal());
-        setAttributesAndStats(entity, race);
-    }
-
-    private void setAttributesAndStats(E entity, Race race) {
         // set attributes
-        entity.agilityBaseValue(ATTR_BASE_VALUE + Attributes.AGILITY.of(race));
-        entity.agilityCurrentValue(ATTR_BASE_VALUE + Attributes.AGILITY.of(race));
-        entity.charismaBaseValue(ATTR_BASE_VALUE + Attributes.CHARISMA.of(race));
-        entity.constitutionBaseValue(ATTR_BASE_VALUE + Attributes.CONSTITUTION.of(race));
-        entity.intelligenceBaseValue(ATTR_BASE_VALUE + Attributes.INTELLIGENCE.of(race));
-        entity.strengthBaseValue(ATTR_BASE_VALUE + Attributes.STRENGTH.of(race));
-        entity.strengthCurrentValue(ATTR_BASE_VALUE + Attributes.STRENGTH.of(race));
+        Agility agility = mAgility.create(entityId);
+        agility.setBaseValue(agilityValue);
+        agility.setCurrentValue(agilityValue);
+
+        Charisma charisma = mCharisma.create(entityId);
+        charisma.setBaseValue(charismaValue);
+        charisma.setCurrentValue(charismaValue);
+
+        Constitution constitution = mConstitution.create(entityId);
+        constitution.setBaseValue(constitutionValue);
+        constitution.setCurrentValue(constitutionValue);
+
+        Intelligence intelligence = mIntelligence.create(entityId);
+        intelligence.setBaseValue(intelligenceValue);
+        intelligence.setCurrentValue(intelligenceValue);
+
+        Strength strength = mStrength.create(entityId);
+        strength.setBaseValue(strengthValue);
+        strength.setCurrentValue(strengthValue);
 
         // set stats
-        setLevel(entity);
-        setStamina(entity);
-        setHP(entity);
-        setMana(entity);
-        setHit(entity);
-        entity.goldCount(0);
+        setLevel(entityId);
+        setStamina(entityId);
+        setHP(entityId);
+        setMana(entityId);
+        setHit(entityId);
+
+        Gold gold = mGold.create(entityId);
+        gold.setCount(1000);
     }
 
-    private void setLevel(E entity) {
-        entity.levelLevel(INITIAL_LEVEL).levelExp(0).levelExpToNextLevel(INITIAL_EXP_TO_NEXT_LEVEL);
+    private void setLevel(int entityId) {
+        Level level = mLevel.create(entityId);
+        level.setLevel(INITIAL_LEVEL);
+        level.setExp(0);
+        level.setExpToNextLevel(INITIAL_EXP_TO_NEXT_LEVEL);
     }
 
-    private void setStamina(E entity) {
+    private void setStamina(int entityId) {
         // set stamina
-        int stamina = 20 * entity.agilityCurrentValue() / 6;
-        entity.staminaMax(stamina).staminaMin(stamina);
+        int maxStamina = 20 * mAgility.get(entityId).getCurrentValue() / 6;
+        Stamina stamina = mStamina.create(entityId);
+        stamina.setMax(maxStamina);
+        stamina.setMin(maxStamina);
     }
 
-    private void setHit(E entity) {
-        entity.hitMax(2).hitMin(1);
+    private void setHit(int entityId) {
+        Hit hit = mHit.create(entityId);
+        hit.setMin(1);
+        hit.setMax(2);
     }
+
     //TODO cambiado a public para poder resetear las heads antes era private, volver a modificar cuando se guarden en DB las cabezas de los pj
-
-    public void setHead(E entity, Race race) {
+    public void setHead(int entityId, Race race) {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         //TODO onlyWoman desde init.json
         int headIndex = 0;
@@ -186,10 +224,10 @@ public class EntityFactorySystem extends PassiveSystem {
             case DWARF:
                 headIndex = random.nextInt(301, 319 + 1);
         }
-        entity.headIndex(headIndex);
+        mHead.create(entityId).setIndex(headIndex);
     }
 
-    public void setNakedBody(E entity, Race race) {
+    public void setNakedBody(int entityId, Race race) {
         int bodyIndex = 1;
         switch (race) {
             case GNOME:
@@ -207,82 +245,82 @@ public class EntityFactorySystem extends PassiveSystem {
             case HUMAN:
                 bodyIndex = 21;
         }
-        entity.bodyIndex(bodyIndex);
+        mBody.create(entityId).setIndex(bodyIndex);
     }
 
-    private void setMana(E entity) {
-        CharClass charClass = CharClass.of(entity);
-        int mana = 300; //Bonus 300 mana para tirar inmovilizar
+    private void setMana(int entityId) {
+        // @todo Revisar esto y los enums CharClass, Hero y Race
+        // CharClass charClass = CharClass.of(entityId);
+        int heroId = mCharHero.get(entityId).getHeroId();
+        Hero hero = Hero.values()[heroId];
+        CharClass charClass = CharClass.values()[hero.getClassId()];
+
+        int manaValue = 300; //Bonus 300 mana para tirar inmovilizar
         switch (charClass) {
             case MAGICIAN:
-                mana = entity.intelligenceBaseValue() * 3 + mana;
+                manaValue += mIntelligence.get(entityId).getBaseValue() * 3;
                 break;
             case CLERIC:
             case DRUID:
             case BARDIC:
-                mana = entity.intelligenceBaseValue() * 2 + mana;
+                manaValue += mIntelligence.get(entityId).getBaseValue() * 2;
                 break;
             case ASSASSIN:
             case PALADIN:
-                mana = entity.intelligenceBaseValue() + mana;
+                manaValue += mIntelligence.get(entityId).getBaseValue();
                 break;
         }
-        entity.manaMax(mana);
-        entity.manaMin(mana);
+        Mana mana = mMana.create(entityId);
+        mana.setMin(manaValue);
+        mana.setMax(manaValue);
     }
 
-    private void setHP(E entity) {
-        int random = ThreadLocalRandom.current().nextInt(1, entity.constitutionBaseValue() / 3);
-        entity.healthMax(DEFAULT_STAMINA + random);
-        entity.healthMin(DEFAULT_STAMINA + random);
+    private void setHP(int entityId) {
+        int random = ThreadLocalRandom.current().nextInt(1, mConstitution.get(entityId).getBaseValue() / 3);
+        Health health = mHealth.create(entityId);
+        health.setMin(DEFAULT_STAMINA + random);
+        health.setMax(DEFAULT_STAMINA + random);
     }
 
-    private void setInventory(int player, Hero hero) {
-        E(player).bag();
-        addPotion(player, PotionKind.HP);
-        E(player).getBag().add(480, true);// flechas)
+    private void setInventory(int entityId, Hero hero) {
+        Bag bag = mBag.create(entityId);
+        addPotion(entityId, PotionKind.HP);
+        bag.add(480, true); // flechas
 
-        if (E(player).manaMax() > 0) {
-            addPotion(player, PotionKind.MANA);
+        if (mMana.get(entityId).max > 0) {
+            addPotion(entityId, PotionKind.MANA);
         } else {
-            addPotion(player, PotionKind.STRENGTH);
+            addPotion(entityId, PotionKind.STRENGTH);
         }
 
         getHelmet(hero).ifPresent(helmet -> {
-            E(player).helmetIndex(helmet.getId());
-            E(player).getBag().add(helmet.getId(), true);
+            mHelmet.create(entityId).setIndex(helmet.getId());
+            bag.add(helmet.getId(), true);
         });
         getArmor(hero).ifPresent(armor -> {
-            E(player).armorIndex(armor.getId());
-            E(player).bodyIndex(((ArmorObj) armor).getBodyNumber());
-            E(player).getBag().add(armor.getId(), true);
+            mArmor.create(entityId).setIndex(armor.getId());
+            mBody.get(entityId).setIndex(((ArmorObj) armor).getBodyNumber());
+            bag.add(armor.getId(), true);
         });
         final Set<Obj> weapons = getWeapon(hero);
         if (!weapons.isEmpty()) {
             final Obj next = weapons.iterator().next();
-            E(player).getBag().add(next.getId(), true);
-            E(player).weaponIndex(next.getId());
+            bag.add(next.getId(), true);
+            mWeapon.create(entityId).setIndex(next.getId());
             weapons.forEach(weapon -> {
                 if (weapon != next) {
-                    E(player).getBag().add(weapon.getId(), false);
+                    bag.add(weapon.getId(), false);
                 }
             });
         }
 
         getShield(hero).ifPresent(shield -> {
-            E(player).shieldIndex(shield.getId());
-            E(player).getBag().add(shield.getId(), true);
+            mShield.create(entityId).setIndex(shield.getId());
+            bag.add(shield.getId(), true);
         });
     }
 
-    private void setHeadAndBody(String name, E entity) {
-        entity
-                .headingCurrent(Heading.HEADING_SOUTH)
-                .nameText(name);
-    }
-
-
-    private void addPotion(int player, PotionKind kind) {
+    private void addPotion(int entityId, PotionKind kind) {
         Set<Obj> objs = objectSystem.getTypeObjects(Type.POTION);
         objs.stream() //
                 .map(PotionObj.class::cast) //
@@ -291,7 +329,7 @@ public class EntityFactorySystem extends PassiveSystem {
                     return potionKind != null && potionKind.equals(kind);
                 }) //
                 .findFirst() //
-                .ifPresent(obj -> E(player).getBag().add(obj.getId(), false));
+                .ifPresent(obj -> mBag.get(entityId).add(obj.getId(), false));
     }
 
     private Optional<Obj> getArmor(Hero hero) {
@@ -439,50 +477,13 @@ public class EntityFactorySystem extends PassiveSystem {
         return result;
     }
 
-
-    @Deprecated
-    private Optional<Obj> addItem(int player, Type type) {
-        Set<Obj> objs = objectSystem.getTypeObjects(type);
-        Optional<Obj> result = objs.stream()
-                .filter(obj -> {
-                    if (obj instanceof ObjWithClasses) {
-                        int heroId = E(player).getCharHero().heroId;
-                        CharClass clazz = CharClass.of(E(player));
-                        Set<CharClass> forbiddenClasses = ((ObjWithClasses) obj).getForbiddenClasses();
-                        boolean supported = forbiddenClasses.size() == 0 || !forbiddenClasses.contains(clazz);
-                        if (supported && obj instanceof ArmorObj) {
-                            Race race = Race.of(E(player));
-                            if (race.equals(Race.GNOME) || race.equals(Race.DWARF)) {
-                                supported = ((ArmorObj) obj).isDwarf();
-                            } else if (((ArmorObj) obj).isWomen()) {
-                                supported = false; // TODO
-                            }
-                        }
-                        return supported;
-                    } else if (obj.getType().equals(Type.POTION)) {
-                        PotionObj potion = (PotionObj) obj;
-                        return potion.getKind().equals(PotionKind.HP) || potion.getKind().equals(PotionKind.MANA);
-                    }
-                    return false;
-                })
-                .max(this::getComparator);
-        result.ifPresent(obj -> {
-            CharClass clazz = CharClass.of(E(player));
-            Set<CharClass> forbiddenClasses = ((ObjWithClasses) obj).getForbiddenClasses();
-            Log.info("Item found for class: " + clazz.name() + " and forbidden classes are: " + Arrays
-                    .toString(forbiddenClasses.toArray()));
-            E(player).getBag().add(obj.getId(), true);
-        });
-        return result;
-    }
-
-    private void setSpells(int player, Hero hero) {
+    private void setSpells(int entityId, Hero hero) {
         Set<Spell> spells = getSpells(hero);
         final Integer[] spellIds = spells
                 .stream()
                 .map(spell -> spellSystem.getId(spell))
                 .toArray(Integer[]::new);
-        E(player).spellBookSpells(spellIds);
+        mSpellBook.create(entityId).setSpells(spellIds);
     }
 
     private Set<Spell> getSpells(Hero hero) {
@@ -513,55 +514,37 @@ public class EntityFactorySystem extends PassiveSystem {
         return result;
     }
 
-    private int getComparator(Obj obj1, Obj obj2) {
-        if (obj1 instanceof ArmorObj) {
-            ArmorObj armor1 = (ArmorObj) obj1;
-            ArmorObj armor2 = (ArmorObj) obj2;
-            return armor1.getMaxDef() - armor2.getMaxDef();
-        } else if (obj1 instanceof WeaponObj) {
-            WeaponObj weapon1 = (WeaponObj) obj1;
-            WeaponObj weapon2 = (WeaponObj) obj2;
-            return weapon1.getMaxHit() - weapon2.getMaxHit();
-        } else if (obj1 instanceof ShieldObj) {
-            ShieldObj shield1 = (ShieldObj) obj1;
-            ShieldObj shield2 = (ShieldObj) obj2;
-            return shield1.getMaxDef() - shield2.getMaxDef();
-        } else if (obj1 instanceof HelmetObj) {
-            HelmetObj helmet1 = (HelmetObj) obj1;
-            HelmetObj helmet2 = (HelmetObj) obj2;
-            return helmet1.getMaxDef() - helmet2.getMaxDef();
-        }
-        return obj1.getName().compareTo(obj2.getName());
-    }
-
-    private void setEntityPosition(E entity) {
+    private void setEntityPosition(int entityId) {
         WorldPos spot = new WorldPos(50, 50, 1);
-        setWorldPosition(entity, spot);
+        setWorldPosition(entityId, spot);
     }
 
-    private void setWorldPosition(E entity, WorldPos spot) {
-        setWorldPosition(entity, spot, false);
+    private void setWorldPosition(int entityId, WorldPos spot) {
+        setWorldPosition(entityId, spot, false);
     }
 
-    private void setWorldPosition(E entity, WorldPos spot, boolean item) {
+    // @todo: Refactor la lógica de spawn (que pueda fallar)
+    private void setWorldPosition(int entityId, WorldPos spot, boolean item) {
         shared.model.map.Map map = mapSystem.getHelper().getMap(spot.getMap());
         for (int i = 0; i < 12; i++) {
             Optional<WorldPos> candidate = rhombLegalPos(spot, i, map, item);
             if (candidate.isPresent()) {
-                setPosition(entity, candidate.get());
+                setPosition(entityId, candidate.get());
                 break;
             }
         }
 
     }
 
-    private void setPosition(E entity, WorldPos worldPos) {
-        entity
-                .worldPosMap(worldPos.map)
-                .worldPosX(worldPos.x)
-                .worldPosY(worldPos.y)
-                .worldPosOffsetsX(0)
-                .worldPosOffsetsY(0);
+    private void setPosition(int entityId, WorldPos targetPos) {
+        WorldPos worldPos = mWorldPos.create(entityId);
+        worldPos.map = targetPos.map;
+        worldPos.x = targetPos.x;
+        worldPos.y = targetPos.y;
+
+        WorldPosOffsets worldPosOffsets = mWorldPosOffsets.create(entityId);
+        worldPosOffsets.x = 0;
+        worldPosOffsets.y = 0;
     }
 
     private Optional<WorldPos> rhombLegalPos(WorldPos spot, int i, shared.model.map.Map map, boolean item) {

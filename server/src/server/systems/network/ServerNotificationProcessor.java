@@ -1,7 +1,6 @@
 package server.systems.network;
 
-import com.artemis.E;
-import com.artemis.annotations.Wire;
+import com.artemis.ComponentMapper;
 import component.entity.character.info.Bag;
 import server.systems.config.ObjectSystem;
 import server.systems.world.WorldEntitiesSystem;
@@ -11,9 +10,6 @@ import shared.network.interfaces.DefaultNotificationProcessor;
 import shared.network.inventory.InventoryUpdate;
 import shared.network.notifications.EntityUpdate;
 
-import static com.artemis.E.E;
-
-@Wire
 public class ServerNotificationProcessor extends DefaultNotificationProcessor {
 
     private WorldEntitiesSystem worldEntitiesSystem;
@@ -22,6 +18,8 @@ public class ServerNotificationProcessor extends DefaultNotificationProcessor {
     private ServerSystem networkManager;
     private EntityUpdateSystem entityUpdateSystem;
 
+    ComponentMapper<Bag> mBag;
+
     @Override
     public void processNotification(EntityUpdate entityUpdate) {
         entityUpdateSystem.add(entityUpdate, UpdateTo.NEAR);
@@ -29,8 +27,8 @@ public class ServerNotificationProcessor extends DefaultNotificationProcessor {
 
     @Override
     public void processNotification(InventoryUpdate inventoryUpdate) {
-        E player = E(inventoryUpdate.getId());
-        Bag bag = player.getBag();
+        int entityId = inventoryUpdate.getId();
+        Bag bag = mBag.create(entityId);
         inventoryUpdate.getUpdates().forEach(bag::set);
     }
 

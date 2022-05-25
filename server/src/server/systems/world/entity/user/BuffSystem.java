@@ -1,9 +1,9 @@
 package server.systems.world.entity.user;
 
 import com.artemis.Aspect;
-import com.artemis.E;
-import com.artemis.FluidIteratingSystem;
+import com.artemis.ComponentMapper;
 import com.artemis.annotations.Wire;
+import com.artemis.systems.IteratingSystem;
 import component.entity.character.states.Buff;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.world.WorldEntitiesSystem;
@@ -11,19 +11,21 @@ import server.utils.UpdateTo;
 import shared.util.EntityUpdateBuilder;
 
 @Wire
-public class BuffSystem extends FluidIteratingSystem {
+public class BuffSystem extends IteratingSystem {
 
     private WorldEntitiesSystem worldEntitiesSystem;
     private EntityUpdateSystem entityUpdateSystem;
+
+    ComponentMapper<Buff> mBuff;
 
     public BuffSystem() {
         super(Aspect.all(Buff.class));
     }
 
     @Override
-    protected void process(E e) {
+    protected void process(int entityId) {
 
-        Buff buff = e.getBuff();
+        Buff buff = mBuff.get(entityId);
 
         float delta = getWorld().getDelta();
 
@@ -33,10 +35,10 @@ public class BuffSystem extends FluidIteratingSystem {
 
             if (time <= 0) {
                 attribute.resetCurrentValue();
-                EntityUpdateBuilder update = EntityUpdateBuilder.of(e.id()).withComponents(attribute);
+                EntityUpdateBuilder update = EntityUpdateBuilder.of(entityId).withComponents(attribute);
                 buff.getBuffedAtributes().remove(attribute);
                 if (buff.getBuffedAtributes().isEmpty()) {
-                    e.removeBuff();
+                    mBuff.remove(entityId);
                     update.remove(Buff.class);
                 } else {
                     update.withComponents(buff);

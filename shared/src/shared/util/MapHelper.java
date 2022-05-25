@@ -87,7 +87,12 @@ public class MapHelper {
     }
 
     public Map getMap(int i) {
-        return maps.getUnchecked(i);
+
+        if (i > MAX_MAPS) {
+            return new Map();
+        }else {
+            return maps.getUnchecked( i );
+        }
     }
 
     public ConcurrentMap<Integer, Map> getMaps() {
@@ -148,24 +153,26 @@ public class MapHelper {
      */
     public void loadAll() {
         Log.info("Server initialization", "Loading maps...");
-        for (int i = 1; i <= MAX_MAPS; i++) {
+        for (int i = 0; i <= MAX_MAPS; i++) {
             maps.getUnchecked(i);
         }
     }
 
-//    @Deprecated
-//    private Map getMap_old(int i) {
-//        FileHandle mapPath = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Alkon/Mapa" + i + ".map");
-//        FileHandle infPath = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Alkon/Mapa" + i + ".inf");
-//        MapLoader loader = new MapLoader();
-//        try (DataInputStream map = new DataInputStream(mapPath.read());
-//             DataInputStream inf = new DataInputStream(infPath.read())) {
-//            return loader.load(map, inf);
-//        } catch (IOException | GdxRuntimeException e) {
-//            Log.error("Map I/O", "Failed to read map " + i, e);
-//            return new Map();
-//        }
-//    }
+/*
+    @Deprecated
+    private Map getMap_old(int i) {
+        FileHandle mapPath = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Alkon/Mapa" + i + ".map");
+        FileHandle infPath = Gdx.files.internal(SharedResources.MAPS_FOLDER + "Alkon/Mapa" + i + ".inf");
+        MapLoader loader = new MapLoader();
+        try (DataInputStream map = new DataInputStream(mapPath.read());
+             DataInputStream inf = new DataInputStream(infPath.read())) {
+            return loader.load(map, inf);
+        } catch (IOException | GdxRuntimeException e) {
+            Log.error("Map I/O", "Failed to read map " + i, e);
+            return new Map();
+        }
+    }
+*/
 
     public boolean hasTileExit(Map map, WorldPos expectedPos) {
         Tile tile = map.getTile(expectedPos.x, expectedPos.y);

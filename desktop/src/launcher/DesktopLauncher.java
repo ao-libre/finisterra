@@ -6,9 +6,9 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.glutils.HdpiMode;
 import com.esotericsoftware.minlog.Log;
 import game.AOGame;
-import game.ClientConfiguration;
-import game.ClientConfiguration.Init;
-import game.ClientConfiguration.Init.Video;
+import game.Config;
+import game.Config.Init;
+import game.Config.Init.Video;
 import game.utils.Resources;
 import shared.util.LogSystem;
 
@@ -16,6 +16,8 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class DesktopLauncher {
 
@@ -26,27 +28,43 @@ public class DesktopLauncher {
         Log.setLogger(new LogSystem());
 
         // Load desktop config.json or create default.
-        ClientConfiguration config = ClientConfiguration.loadConfig(Resources.CLIENT_CONFIG);
-        if (config == null) {
-            Log.warn("DesktopLauncher", "Desktop config.json not found, creating default.");
-            config = ClientConfiguration.createConfig();
-            config.save(Resources.CLIENT_CONFIG);
+        Config config;
+        if (Config.fileExists(Resources.CLIENT_CONFIG)) {
+            config = Config.fileLoad(Resources.CLIENT_CONFIG);
         }
-        Init initConfig = config.getInitConfig();
-        Video video = initConfig.getVideo();
+        else {
+            Log.info("DesktopLauncher", "Config file " + Resources.CLIENT_CONFIG + " not found, creating default.");
+            config = Config.getDefault();
+            config.fileSave(Resources.CLIENT_CONFIG);
+        }
 
-        Graphics.DisplayMode displayMode = Lwjgl3ApplicationConfiguration.getDisplayMode();
+        Init initConfig = config.initConfig;
+        Video video = initConfig.video;
+
+        Graphics.DisplayMode[] displayModes = Lwjgl3ApplicationConfiguration.getDisplayModes();
+        Graphics.DisplayMode displayMode = Arrays.stream(displayModes)
+                        .filter(dm -> dm.height == 720)
+                        .max(Comparator.comparingInt(o -> o.refreshRate))
+                        .orElse(Arrays.stream(displayModes)
+                                .filter(dm -> dm.height == 768)
+                                .max(Comparator.comparingInt(o -> o.refreshRate))
+                                .orElse(Lwjgl3ApplicationConfiguration.getDisplayMode())
+                        );
 
         // Build LWJGL configuration
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
-        cfg.setTitle("Finisterra - Argentum Online Java");
-        cfg.setWindowedMode(displayMode.width, displayMode.height);
-        //cfg.setFullscreenMode(displayMode);
-        cfg.useVsync(video.getVsync());
-        cfg.setIdleFPS(72);
-        cfg.setResizable(initConfig.isResizeable());
+        cfg.setTitle("Finisterra");
+//        if (displayMode.equals(Lwjgl3ApplicationConfiguration.getDisplayMode())) {
+//            cfg.setFullscreenMode(displayMode);
+//            cfg.setDecorated(false);
+//        } else {
+            cfg.setWindowedMode(displayMode.width, displayMode.height);
+            cfg.setDecorated(true);
+//        }
+        cfg.useVsync(true);
+        cfg.setIdleFPS(60);
+        cfg.setResizable(false);
         cfg.disableAudio(initConfig.isDisableAudio());
-        cfg.setMaximized(initConfig.isStartMaximized());
         cfg.setWindowSizeLimits(854, 480, -1, -1);
 
         if (video.getHiDPIMode().equalsIgnoreCase("Pixels")) {

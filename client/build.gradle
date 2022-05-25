@@ -5,12 +5,10 @@ dependencies {
     implementation group: "org.jetbrains", name: "annotations", version: "19.0.0"
     implementation group: "com.badlogicgames.gdx", name: "gdx-freetype", version: "$gdxVersion"
     implementation group: "com.badlogicgames.gdx", name: "gdx-freetype", version: "$gdxVersion"
+    implementation group: "com.badlogicgames.gdx", name: "gdx-backend-lwjgl3", version: "$gdxVersion"
     implementation (group: "com.badlogicgames.gdx", name: "gdx-tools", version: "$gdxVersion") {
         exclude group: "com.badlogicgames.gdx", module: "gdx-backend-lwjgl"
     }
-    // @todo: Revisar estas dependencias
-    api group: "com.badlogicgames.gdx", name: "gdx-backend-lwjgl3", version: "$gdxVersion"
-    implementation group: "com.badlogicgames.gdx-controllers", name: "gdx-controllers-core", version: "$gdxControllerVersion"
-    //implementation group: "com.badlogicgames.gdx-controllers", name: "gdx-controllers-desktop", version: "$gdxControllerVersion"
+    implementation group: 'net.mostlyoriginal.artemis-odb', name: 'contrib-plugin-profiler', version: '2.5.0'
     implementation group: "org.reflections", name: "reflections", version: "$reflectionsVersion"
 }

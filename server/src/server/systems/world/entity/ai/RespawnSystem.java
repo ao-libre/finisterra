@@ -1,28 +1,28 @@
 package server.systems.world.entity.ai;
 
 import com.artemis.Aspect;
-import com.artemis.E;
-import com.artemis.FluidIteratingSystem;
-import com.artemis.annotations.Wire;
+import com.artemis.ComponentMapper;
+import com.artemis.systems.IteratingSystem;
 import component.entity.npc.Respawn;
 import server.systems.world.entity.factory.EntityFactorySystem;
 
-@Wire
-public class RespawnSystem extends FluidIteratingSystem {
+public class RespawnSystem extends IteratingSystem {
 
     private EntityFactorySystem entityFactorySystem;
+
+    ComponentMapper<Respawn> mRespawn;
 
     public RespawnSystem() {
         super(Aspect.all(Respawn.class));
     }
 
     @Override
-    protected void process(E e) {
-        Respawn respawn = e.getRespawn();
+    protected void process(int entityId) {
+        Respawn respawn = mRespawn.get(entityId);
         respawn.setTime(respawn.getTime() - world.getDelta());
         if (respawn.getTime() <= 0) {
             entityFactorySystem.createNPC(respawn.getNpcId(), respawn.getPos().toWorldPos());
-            e.deleteFromWorld();
+            world.delete(entityId);
         }
     }
 }

@@ -2,27 +2,29 @@ package game.systems.resources;
 
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.esotericsoftware.minlog.Log;
 import game.handlers.DefaultAOAssetManager;
-import net.mostlyoriginal.api.system.core.PassiveSystem;
 
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
 
-@Wire
-public class MusicSystem extends PassiveSystem { // @todo revisar
+/**
+ * @todo Si la música está deshabilitada, en playMusic() debería igualmente actualizarse la música actual
+ * @todo toggle() no le hace caso a isDisabled()
+ * @todo los timers de fadeIn y fadeOut deberían cancelarse en caso de que se cambie la música o se deshabilite el sistema
+ */
+public class MusicSystem {
 
-    static private final float MUSIC_FADE_STEP = 0.01f;
+    private static final float MUSIC_FADE_STEP = 0.1f;
 
-    @Wire
-    private DefaultAOAssetManager assetManager;
+    @Wire private DefaultAOAssetManager assetManager;
 
     private float volume = 1.0f;
-    private boolean disableMusic = false;
-    // Current music
+    private boolean disabled;
     private Music currentMusic;
     private int currentMusicID = -1;
 
@@ -35,36 +37,38 @@ public class MusicSystem extends PassiveSystem { // @todo revisar
     }
 
     public void playMusic(int musicID, boolean fadeIn, boolean loop) {
-        if (!isDisableMusic()) {
-            if (musicID != currentMusicID) {
-                // paramos la música
-                if (currentMusic != null) currentMusic.stop();
-
-                // cargamos la nueva música
-                currentMusic = assetManager.getMusic(musicID);
-                if (currentMusic == null) { // Error al cargar
-                    Log.warn("MusicSystem", "Could not get music index: " + musicID);
-                    currentMusicID = -1;
-                    return;
-                }
-                currentMusicID = musicID;
-            }
+        if (isDisabled()) return;
+        if (musicID != currentMusicID) {
+            // paramos la música actual
             if (currentMusic != null) {
-                // reproducimos
-                if (!(currentMusic.isPlaying())) {
-                    currentMusic.setLooping(loop);
-                    if (fadeIn) {
-                        fadeInMusic(MUSIC_FADE_STEP);
-                    } else {
-                        currentMusic.play();
-                    }
+                // todo: if (fadeIn) fadeout
+                currentMusic.stop();
+            }
+            // cargamos la nueva música
+            currentMusic = assetManager.getMusic(musicID);
+            if (currentMusic == null) {
+                Log.warn("MusicSystem", "Couldn't get music ID: " + musicID);
+                currentMusicID = -1;
+                return;
+            }
+            currentMusicID = musicID;
+        }
+        if (currentMusic != null) {
+            // seteamos el looping
+            currentMusic.setLooping(loop);
+            // reproducimos
+            if (!(currentMusic.isPlaying())) {
+                if (fadeIn) {
+                    fadeInMusic(MUSIC_FADE_STEP);
+                } else {
+                    currentMusic.play();
                 }
             }
         }
     }
 
     public void playMusic() {
-        if (currentMusic != null && isEnabled()) currentMusic.play();
+        if (currentMusic != null && !isDisabled()) currentMusic.play();
     }
 
     public void pauseMusic() {
@@ -88,14 +92,14 @@ public class MusicSystem extends PassiveSystem { // @todo revisar
     }
 
     public void fadeInMusic(float step) {
-        if (currentMusic != null && !isDisableMusic()) {
+        if (currentMusic != null && !isDisabled()) {
             currentMusic.setVolume(0.0f);
             currentMusic.play();
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
                     if (currentMusic == null) {
-                        Log.warn("MusicSystem", "Tried to fade music index " + currentMusic + ", but it was not playing or loaded.");
+                        Log.warn("MusicSystem", "Tried to fade null music reference.");
                         this.cancel();
                         return;
                     }
@@ -114,7 +118,7 @@ public class MusicSystem extends PassiveSystem { // @todo revisar
             @Override
             public void run() {
                 if (currentMusic == null) {
-                    Log.warn("MusicSystem", "Tried to fade music index " + currentMusicID + ", but it was not playing or loaded.");
+                    Log.warn("MusicSystem", "Tried to fade null music reference.");
                     this.cancel();
                     return;
                 }
@@ -128,19 +132,26 @@ public class MusicSystem extends PassiveSystem { // @todo revisar
         }, 0.0f, 0.5f);
     }
 
-    public boolean isDisableMusic() {
-        return disableMusic;
+    public boolean isDisabled() {
+        return disabled;
     }
 
-    public void setDisableMusic(boolean musicEnable) {
-        this.disableMusic = musicEnable;
+    public void setDisabled(boolean disabled) {
+        this.disabled = disabled;
+        if (disabled) {
+            pauseMusic();
+        } else {
+            playMusic();
+        }
+    }
+
+    public float getVolume() {
+        return volume;
     }
 
     // Control de volumen
     public void setVolume(float volume) {
-        if (volume < 0.0f) volume = 0.0f;
-        if (volume > 1.0f) volume = 1.0f;
-        this.volume = volume;
+        this.volume = MathUtils.clamp(volume, 0.0f, 1.0f);
         if (currentMusic != null) currentMusic.setVolume(volume);
     }
 

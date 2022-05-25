@@ -37,7 +37,7 @@ import static com.artemis.E.E;
 public class WorldEntitiesSystem extends PassiveSystem {
 
     private MapSystem mapSystem;
-    private ServerSystem networkManager;
+    private ServerSystem serverSystem;
     private SpellSystem spellSystem;
     private ObjectSystem objectSystem;
     private EntityFactorySystem entityFactorySystem;
@@ -50,22 +50,22 @@ public class WorldEntitiesSystem extends PassiveSystem {
     }
 
     public void registerEntity(int connectionID, int playerID) {
-        networkManager.registerUserConnection(connectionID, playerID);
+        serverSystem.registerUserConnection(connectionID, playerID);
         registerEntity(playerID);
     }
 
     public void unregisterEntity(int entityId) {
         userSystem.save(entityId, () -> {
-            networkManager.unregisterUserConnection(entityId);
+            serverSystem.unregisterUserConnection(entityId);
             mapSystem.removeEntity(entityId);
             getWorld().delete(entityId);
         });
     }
 
     public void sendEntityUpdate(int user, Object update) {
-        if (networkManager.playerHasConnection(user)) {
+        if (serverSystem.playerHasConnection(user)) {
             Log.debug("Sending update: " + update.toString() + " to " + user);
-            networkManager.sendTo(networkManager.getConnectionByPlayer(user), update);
+            serverSystem.sendByConnectionId(serverSystem.getConnectionByPlayer(user), update);
         }
     }
 
@@ -168,8 +168,8 @@ public class WorldEntitiesSystem extends PassiveSystem {
 
         //reset body and head
         //todo obtener body y head de la base de datos del jugador las cabezas actualmente son randoms
-        entityFactorySystem.setNakedBody(entity, Race.of(entity));
-        entityFactorySystem.setHead(entity, Race.of(entity));
+        entityFactorySystem.setNakedBody(entityId, Race.of(entity));
+        entityFactorySystem.setHead(entityId, Race.of(entity));
         notifyUpdate(entityId, EntityUpdateBuilder.of(entityId).withComponents(entity.getBody(), entity.getHead()).build());
 
         if (!resurrected) {

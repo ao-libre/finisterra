@@ -1,7 +1,6 @@
 package game;
 
 import com.artemis.*;
-import com.artemis.managers.TagManager;
 import com.artemis.managers.UuidEntityManager;
 import game.handlers.DefaultAOAssetManager;
 import game.screens.ScreenEnum;
@@ -22,7 +21,10 @@ import game.systems.physics.AttackAnimationSystem;
 import game.systems.physics.MovementProcessorSystem;
 import game.systems.physics.MovementSystem;
 import game.systems.physics.PlayerInputSystem;
-import game.systems.render.BatchRenderingSystem;
+import game.systems.render.BatchBeginSystem;
+import game.systems.render.BatchEndSystem;
+import game.systems.render.BatchSystem;
+import game.systems.render.chars.PrerenderCharCache;
 import game.systems.render.world.*;
 import game.systems.resources.*;
 import game.systems.screen.MouseSystem;
@@ -56,11 +58,15 @@ public class WorldConstructor {
     private static final int DECORATION_PRIORITY = 3;
     private static final int UI = 0;
 
-    private static WorldConfiguration getWorldConfiguration(ClientConfiguration clientConfiguration, ScreenManager screenManager, DefaultAOAssetManager assetManager) {
+    private static WorldConfiguration getWorldConfiguration(
+            Config config,
+            ScreenManager screenManager,
+            DefaultAOAssetManager assetManager,
+            MusicSystem musicSystem
+    ) {
         return new WorldConfigurationBuilder()
                 // Sistemas de uso global (no necesitan prioridad porque son pasivos)
-                .with(clientConfiguration,
-                        screenManager)
+                .with(screenManager)
 
                 // register all screens
                 .with(Arrays.stream(ScreenEnum.values())
@@ -106,7 +112,6 @@ public class WorldConstructor {
                         new DescriptorsSystem(),
                         new MessageSystem(),
                         new MapSystem(),
-                        new MusicSystem(),
                         new ObjectSystem(),
                         new ParticlesSystem(),
                         new SoundsSystem(),
@@ -119,6 +124,9 @@ public class WorldConstructor {
 
                 // Rendering
                 .with(PRE_ENTITY_RENDER_PRIORITY,
+                        new BatchSystem(),
+                        new BatchBeginSystem(),
+                        new PrerenderCharCache(),
                         new ClearScreenSystem(),
                         new MapGroundRenderingSystem(),
                         new ObjectRenderingSystem(),
@@ -127,7 +135,8 @@ public class WorldConstructor {
 
                 .with(ENTITY_RENDER_PRIORITY,
                         new EffectRenderingSystem(),
-                        new CharacterRenderingSystem(),
+                        new CharacterRenderSystem(),
+                        new MapMiddleLayerRenderingSystem(),
                         new WorldRenderingSystem())
 
                 .with(POST_ENTITY_RENDER_PRIORITY,
@@ -138,7 +147,7 @@ public class WorldConstructor {
                 .with(DECORATION_PRIORITY,
                         new StateRenderingSystem(),
                         new CharacterStatesRenderingSystem(),
-                        new BatchRenderingSystem())
+                        new BatchEndSystem())
 
                 // UI
                 .with(UI,
@@ -155,19 +164,25 @@ public class WorldConstructor {
 
                 // Otros sistemas
                 .with(new MapManager(),
-                        new TagManager(),
                         new UuidEntityManager())
-
+// @todo Habilitar información de perfileo en UI
+//              .with(new ProfilerSystem())
                 .build()
-                .register(assetManager);
+                .register(config)
+                .register(assetManager)
+                .register(musicSystem);
     }
 
     /**
      * Construye el Artemis World, inicializa e inyecta sistemas.
      * Este método es bloqueante.
      */
-    public static World create(ClientConfiguration clientConfiguration,
-                               ScreenManager screenManager, DefaultAOAssetManager assetManager) {
-        return new World(getWorldConfiguration(clientConfiguration, screenManager, assetManager));
+    public static World create(
+            Config config,
+            ScreenManager screenManager,
+            DefaultAOAssetManager assetManager,
+            MusicSystem musicSystem
+    ) {
+        return new World(getWorldConfiguration(config, screenManager, assetManager, musicSystem));
     }
 }

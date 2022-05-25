@@ -1,14 +1,15 @@
 package server.systems.world.entity.ai;
 
 import com.artemis.Aspect;
-import com.artemis.E;
-import com.artemis.annotations.Wire;
+import com.artemis.ComponentMapper;
+import com.artemis.systems.IntervalIteratingSystem;
 import component.entity.character.states.Heading;
+import component.entity.character.states.Immobile;
+import component.entity.character.status.Health;
 import component.entity.character.status.Hit;
 import component.entity.npc.NPC;
 import component.position.WorldPos;
 import server.systems.network.EntityUpdateSystem;
-import server.systems.world.IntervalFluidIteratingSystem;
 import server.systems.world.MapSystem;
 import server.systems.world.entity.combat.PhysicalCombatSystem;
 import server.utils.UpdateTo;
@@ -18,15 +19,19 @@ import shared.util.EntityUpdateBuilder;
 
 import java.util.Optional;
 
-import static com.artemis.E.E;
 import static server.utils.WorldUtils.WorldUtils;
 
-@Wire
-public class NPCAttackSystem extends IntervalFluidIteratingSystem {
+public class NPCAttackSystem extends IntervalIteratingSystem {
 
     private MapSystem mapSystem;
     private PhysicalCombatSystem combatSystem;
     private EntityUpdateSystem entityUpdateSystem;
+
+    ComponentMapper<NPC> mNPC;
+    ComponentMapper<WorldPos> mWorldPos;
+    ComponentMapper<Health> mHealth;
+    ComponentMapper<Heading> mHeading;
+    ComponentMapper<Immobile> mImmobile;
 
     // should interval be per npc?
     public NPCAttackSystem(float interval) {
@@ -34,32 +39,31 @@ public class NPCAttackSystem extends IntervalFluidIteratingSystem {
     }
 
     @Override
-    protected void process(E e) {
+    protected void process(int npcId) {
         mapSystem
-                .getNearEntities(e.id())
+                .getNearEntities(npcId)
                 .stream()
-                .filter(e2 -> E(e2) != null)
-                .filter(e2 -> !E(e2).hasNPC())
-                .filter(e2 -> E(e2).hasWorldPos())
-                .filter(e2 -> E(e2).healthMin() != 0)
-                .filter(e2 -> inRange(e.id(), e2))
+                // @todo este chequeo no funciona, getNearEntities debería garantizar que las entidades sean válidas (i.e. esten vivas)
+                //.filter(playerId -> world.getEntity(e) != null)
+                .filter(playerId -> !mNPC.has(playerId))
+                .filter(playerId -> mWorldPos.has(playerId))
+                .filter(playerId -> mHealth.get(playerId).getMin() > 0)
+                .filter(playerId -> inRange(npcId, playerId))
                 .findFirst()
-                .ifPresent(target -> combatSystem.entityAttack(e.id(), Optional.of(target)));
+                .ifPresent(targetId -> combatSystem.entityAttack(npcId, Optional.of(targetId)));
 
     }
 
-    private boolean inRange(int e, int e2) {
-        E npc = E(e);
-        E target = E(e2);
+    private boolean inRange(int npcId, int targetId) {
         WorldUtils worldUtils = WorldUtils(world);
-        WorldPos targetPos = target.getWorldPos();
-        WorldPos npcPos = npc.getWorldPos();
-        WorldPos facingPos = worldUtils.getFacingPos(npcPos, npc.getHeading());
+        WorldPos npcPos = mWorldPos.get(npcId);
+        WorldPos targetPos = mWorldPos.get(targetId);
+        WorldPos facingPos = worldUtils.getFacingPos(npcPos, mHeading.get(npcId));
         if (worldUtils.distance(npcPos, targetPos) == 1) {
-            if (!npc.isImmobile() && !facingPos.equals(targetPos)) {
+            if (!mImmobile.has(npcId) && !facingPos.equals(targetPos)) {
                 // move heading
-                npc.headingCurrent(worldUtils.getHeading(npcPos, targetPos));
-                EntityUpdate update = EntityUpdateBuilder.of(e).withComponents(npc.getHeading()).build();
+                mHeading.get(npcId).setCurrent(worldUtils.getHeading(npcPos, targetPos));
+                EntityUpdate update = EntityUpdateBuilder.of(npcId).withComponents(mHeading.get(npcId)).build();
                 entityUpdateSystem.add(update, UpdateTo.ALL);
                 facingPos = targetPos;
             }

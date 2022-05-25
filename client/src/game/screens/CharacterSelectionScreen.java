@@ -227,7 +227,7 @@ public class CharacterSelectionScreen extends AbstractScreen {
 
         for (int i = 0; i < 6; i++) {
             Table newSlot = new Table();
-            newSlot.setBackground(getSkin().getDrawable("menu-frame"));
+            newSlot.setBackground(WidgetFactory.createDrawable(WidgetFactory.Drawables.SLOT.name));
             Table imageTable = new Table();
             Image pjImage = WidgetFactory.createImage(noHero);
             imageTable.add(pjImage);

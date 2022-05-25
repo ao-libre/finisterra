@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.esotericsoftware.minlog.Log;
-import game.ClientConfiguration;
+import game.Config;
 import game.loaders.*;
 import game.loaders.ObjectsLoader.ObjectParameter;
 import game.utils.Resources;
@@ -76,10 +76,11 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     private Map<Integer, HelmetDescriptor> helmets;
     private Map<Integer, WeaponDescriptor> weapons;
     private Map<Integer, BodyDescriptor> bodies;
+    private TextureAtlas textureAtlas;
 
-    private DefaultAOAssetManager(ClientConfiguration clientConfiguration) {
+    private DefaultAOAssetManager(Config config) {
         this.languagesFile = SharedResources.LANGUAGES_FOLDER + "messages";
-        this.languagesLocale = clientConfiguration.getInitConfig().getLanguage().split("_");
+        this.languagesLocale = config.getInitConfig().getLanguage().split("_");
         setLoader(Sequencer.class, new MidiLoader());
         setLoader(ANIMATION_CLASS, ANIMATIONS + JSON_EXTENSION, new AnimationLoader());
         setLoader(IMAGE_CLASS, IMAGES + JSON_EXTENSION, new ImageLoader());
@@ -96,7 +97,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
     public static DefaultAOAssetManager getInstance() {
         if (instance == null) {
             synchronized (lock) {
-                if (instance == null) instance = new DefaultAOAssetManager(ClientConfiguration.createConfig());
+                if (instance == null) instance = new DefaultAOAssetManager(Config.getDefault());
             }
         }
         return instance;
@@ -113,6 +114,11 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         loadSkins();
         loadFonts();
         loadMessages();
+        loadAtlas();
+    }
+
+    private void loadAtlas() {
+        load(Resources.GAME_ATLAS_PATH + "images.atlas", TextureAtlas.class);
     }
 
     @Override
@@ -342,7 +348,7 @@ public class DefaultAOAssetManager extends AssetManager implements AOAssetManage
         TextureParameter param = new TextureParameter();
         param.minFilter = TextureFilter.Linear;
         param.magFilter = TextureFilter.Linear;
-        param.genMipMaps = true;
+        param.genMipMaps = false;
         param.wrapU = Texture.TextureWrap.Repeat;
         param.wrapV = Texture.TextureWrap.Repeat;
         load(fileName, Texture.class, param);

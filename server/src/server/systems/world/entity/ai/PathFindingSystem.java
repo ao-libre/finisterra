@@ -1,20 +1,22 @@
 package server.systems.world.entity.ai;
 
 import com.artemis.Aspect;
-import com.artemis.E;
-import com.artemis.EBag;
-import com.artemis.annotations.Wire;
+import com.artemis.ComponentMapper;
+import com.artemis.systems.IntervalIteratingSystem;
+import com.artemis.utils.IntBag;
 import com.esotericsoftware.minlog.Log;
 import component.entity.character.Character;
+import component.entity.character.states.Heading;
 import component.entity.character.states.Immobile;
+import component.entity.character.status.Health;
 import component.entity.npc.AIMovement;
 import component.entity.npc.NPC;
+import component.entity.npc.OriginPos;
 import component.entity.world.Footprint;
 import component.movement.Destination;
 import component.physics.AOPhysics;
 import component.position.WorldPos;
 import server.systems.network.EntityUpdateSystem;
-import server.systems.world.IntervalFluidIteratingSystem;
 import server.systems.world.MapSystem;
 import server.systems.world.WorldEntitiesSystem;
 import server.utils.UpdateTo;
@@ -25,14 +27,14 @@ import shared.network.movement.MovementNotification;
 import shared.network.notifications.EntityUpdate;
 import shared.util.EntityUpdateBuilder;
 import shared.util.MapHelper;
+import shared.util.Pair;
 
 import java.util.*;
 
 import static component.physics.AOPhysics.Movement.*;
 import static server.utils.WorldUtils.WorldUtils;
 
-@Wire
-public class PathFindingSystem extends IntervalFluidIteratingSystem {
+public class PathFindingSystem extends IntervalIteratingSystem {
 
     private static final int MAX_DISTANCE_TARGET = 10;
     private MapSystem mapSystem;
@@ -41,13 +43,21 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
 
     private HashMap<Integer, AStarMap> maps = new HashMap<>();
 
+    ComponentMapper<NPC> mNPC;
+    ComponentMapper<Character> mCharacter;
+    ComponentMapper<OriginPos> mOriginPos;
+    ComponentMapper<WorldPos> mWorldPos;
+    ComponentMapper<Health> mHealth;
+    ComponentMapper<Heading> mHeading;
+    ComponentMapper<Immobile> mImmobile;
+
     public PathFindingSystem(float interval) {
         super(Aspect.all(NPC.class, WorldPos.class, AIMovement.class).exclude(Character.class, Footprint.class, Immobile.class), interval);
     }
 
     private AStarMap updateMap(Integer map) {
         Set<Integer> entitiesInMap = mapSystem.getEntitiesInMap(map);
-        if (entitiesInMap.stream().noneMatch(e -> E.E(e).isCharacter())) {
+        if (entitiesInMap.stream().noneMatch(e -> mCharacter.has(e))) {
             return maps.get(map);
         }
         // TODO can we update on each move instead of create all again?
@@ -62,23 +72,23 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
     }
 
     @Override
-    protected void process(E e) {
-        WorldPos origin = e.getWorldPos();
+    protected void process(int entityId) {
+        WorldPos origin = mWorldPos.get(entityId);
         if (!maps.containsKey(origin.map)) {
             return;
         }
         AStarMap aStarMap = maps.get(origin.map);
-        Optional<E> target1 = findTarget(origin);
-        WorldPos targetPos = target1.map(E::getWorldPos).orElse(e.getOriginPos().toWorldPos());
-        if (targetPos.equals(e.getWorldPos())) {
+        Optional<Integer> target1 = findTarget(origin);
+        WorldPos targetPos = target1.map(mWorldPos::get).orElse(mOriginPos.get(entityId).toWorldPos());
+        if (targetPos.equals(mWorldPos.get(entityId))) {
             return;
-        } else if (!target1.isPresent() && WorldUtils.WorldUtils(world).distance(origin, e.getOriginPos().toWorldPos()) < 10) {
+        } else if (target1.isEmpty() && WorldUtils.WorldUtils(world).distance(origin, mOriginPos.get(entityId).toWorldPos()) < 10) {
             return;
         }
-        makeYourMove(e, origin, targetPos, aStarMap);
+        makeYourMove(entityId, origin, targetPos, aStarMap);
     }
 
-    private void makeYourMove(E e, WorldPos origin, WorldPos targetPos, AStarMap map) {
+    private void makeYourMove(int entityId, WorldPos origin, WorldPos targetPos, AStarMap map) {
         boolean originWasWall = map.getNodeAt(origin.x, origin.y).isWall;
         boolean targetWasWall = map.getNodeAt(targetPos.x, targetPos.y).isWall;
         map.getNodeAt(origin.x, origin.y).isWall = false;
@@ -86,17 +96,16 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         AStartPathFinding aStartPathFinding = new AStartPathFinding(map);
         Node from = aStartPathFinding.map.getNodeAt(origin.x, origin.y);
         Node nextNode = aStartPathFinding.findNextNode(origin, targetPos);
-        move(e, from, nextNode);
+        move(entityId, from, nextNode);
         map.getNodeAt(origin.x, origin.y).isWall = originWasWall;
         map.getNodeAt(targetPos.x, targetPos.y).isWall = targetWasWall;
     }
 
-    private void move(E e, Node from, Node nextNode) {
+    private void move(int entityId, Node from, Node nextNode) {
         if (nextNode == null) {
             Log.info("Cant find next node");
             return;
         }
-        int entityId = e.id();
         if (nextNode.x - from.x > 0) {
             // move right
             moveEntity(entityId, RIGHT);
@@ -113,18 +122,16 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
     }
 
     private void moveEntity(int entityId, AOPhysics.Movement mov) {
-        E player = E.E(entityId);
-
         WorldUtils worldUtils = WorldUtils(world);
         int headingMov = worldUtils.getHeading(mov);
-        boolean headingChanged = headingMov != player.headingCurrent();
+        boolean headingChanged = headingMov != mHeading.get(entityId).getCurrent();
         if (headingChanged) {
-            player.headingCurrent(headingMov);
-            EntityUpdate update = EntityUpdateBuilder.of(entityId).withComponents(player.getHeading()).build();
+            mHeading.get(entityId).setCurrent(headingMov);
+            EntityUpdate update = EntityUpdateBuilder.of(entityId).withComponents(mHeading.get(entityId)).build();
             entityUpdateSystem.add(update, UpdateTo.ALL);
         }
 
-        WorldPos worldPos = player.getWorldPos();
+        WorldPos worldPos = mWorldPos.get(entityId);
         WorldPos oldPos = new WorldPos(worldPos);
         WorldPos nextPos = worldUtils.getNextPos(worldPos, mov);
 
@@ -132,13 +139,11 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         boolean blocked = mapSystem.getHelper().isBlocked(map, nextPos);
         boolean occupied = mapSystem.getHelper().hasEntity(mapSystem.getNearEntities(entityId), nextPos);
         Tile tile = MapHelper.getTile(map, nextPos);
-        if (player.hasImmobile() || blocked || occupied || (tile != null && tile.getTileExit() != null)) {
+        if (mImmobile.has(entityId) || blocked || occupied || (tile != null && tile.getTileExit() != null)) {
             nextPos = oldPos;
         }
 
-        player.worldPosMap(nextPos.map);
-        player.worldPosX(nextPos.x);
-        player.worldPosY(nextPos.y);
+        mWorldPos.get(entityId).setWorldPos(nextPos);
 
         mapSystem.movePlayer(entityId, Optional.of(oldPos));
 
@@ -148,18 +153,24 @@ public class PathFindingSystem extends IntervalFluidIteratingSystem {
         }
     }
 
-    private Optional<E> findTarget(WorldPos worldPos) {
-        Set<E> all = new HashSet<>();
-        EBag es = E.withAspect(Aspect.all(Character.class));
-        es.forEach(all::add);
-        return all.stream()
-                .filter(E::hasWorldPos)
-                .filter(e -> e.healthMin() != 0)
-                .filter(e -> {
-                    int distance = WorldUtils(world).distance(e.getWorldPos(), worldPos);
-                    return distance < MAX_DISTANCE_TARGET && distance >= 0;
-                })
-                .min(Comparator.comparingInt(e -> WorldUtils(world).distance(e.getWorldPos(), worldPos)));
+    private Optional<Integer> findTarget(WorldPos worldPos) {
+        // @todo AspectSubscriptionManager podría retornar un BitSet
+        // O habría que encapsular esto de alguna manera para que pueda ser reutilizado
+        IntBag entityBag = world.getAspectSubscriptionManager().get(Aspect.all(Character.class)).getEntities();
+
+        // Pasamos a BitSet para poder usar stream API
+        BitSet entitySet = new BitSet();
+        for (int i = 0; i < entityBag.size(); i++) {
+            entitySet.set(entityBag.get(i));
+        }
+
+        return entitySet.stream()
+                .filter(mWorldPos::has)
+                .filter(entityId -> mHealth.get(entityId).getMin() != 0)
+                .mapToObj(entityId -> new Pair<>(entityId, WorldUtils(world).distance(mWorldPos.get(entityId), worldPos)))
+                .filter(pair -> pair.getValue() < MAX_DISTANCE_TARGET && pair.getValue() >= 0)
+                .min(Comparator.comparingInt(Pair::getValue))
+                .map(Pair::getKey);
     }
 
     private AStarMap createStarMap(int map) {

@@ -6,10 +6,11 @@ import com.badlogic.gdx.Game;
 import com.esotericsoftware.minlog.Log;
 import game.handlers.DefaultAOAssetManager;
 import game.screens.LoadingScreen;
-import game.screens.ScreenEnum;
 import game.screens.ScreenManager;
 import game.systems.resources.MusicSystem;
 import shared.util.LogSystem;
+
+import static game.screens.ScreenEnum.LOGIN;
 
 /**
  * Esta es la <b>clase principal</b> de la aplicación.
@@ -19,7 +20,7 @@ import shared.util.LogSystem;
 public class AOGame extends Game {
 
     private DefaultAOAssetManager assetManager;
-    private ClientConfiguration clientConfiguration;
+    private Config config;
     private World world;
     private MusicSystem musicSystem;
 
@@ -27,9 +28,10 @@ public class AOGame extends Game {
      * Constructor de la clase.
      * Acá no hay contexto de libGDX, ver {@link AOGame#create()}
      */
-    public AOGame(ClientConfiguration clientConfiguration) {
+    public AOGame(Config config) {
         Log.setLogger(new LogSystem());
-        this.clientConfiguration = clientConfiguration;
+        this.config = config;
+        musicSystem = new MusicSystem();
     }
 
     // Crea la ventana del juego.
@@ -40,26 +42,23 @@ public class AOGame extends Game {
         assetManager = DefaultAOAssetManager.getInstance();
         LoadingScreen screen = new LoadingScreen(assetManager);
         setScreen(screen);
+
         screen.onFinished((assetManager) -> {
             ScreenManager screenManager = new ScreenManager(this);
-            this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
-            screenManager.to(ScreenEnum.LOGIN);
-            this.musicSystem = world.getSystem(MusicSystem.class);
-            musicSystem.playMusic(101, true);
+            this.world = WorldConstructor.create(config, screenManager, assetManager, musicSystem);
+            world.inject(musicSystem);
             screenManager.addListener((screenEnum -> {
                 switch (screenEnum) {
                     case LOGIN:
-                        this.musicSystem = world.getSystem(MusicSystem.class);
-                        musicSystem.stopMusic();
-                        this.world = WorldConstructor.create(clientConfiguration, screenManager, assetManager);
-                        this.musicSystem = world.getSystem(MusicSystem.class);
+                        this.world = WorldConstructor.create(config, screenManager, assetManager, musicSystem);
                         musicSystem.playMusic(101, true);
                         break;
                     case GAME:
-                        this.musicSystem = world.getSystem(MusicSystem.class);
                         musicSystem.playMusic(1, true);
+                        break;
                 }
             }));
+            screenManager.to(LOGIN);
         });
     }
 

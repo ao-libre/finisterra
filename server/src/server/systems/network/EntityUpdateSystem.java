@@ -2,8 +2,9 @@ package server.systems.network;
 
 import com.artemis.BaseSystem;
 import com.artemis.Component;
-import com.artemis.annotations.Wire;
+import com.artemis.ComponentMapper;
 import com.esotericsoftware.minlog.Log;
+import component.entity.Ref;
 import server.systems.world.WorldEntitiesSystem;
 import server.systems.world.entity.factory.ComponentSystem;
 import server.utils.UpdateTo;
@@ -19,16 +20,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
-import static com.artemis.E.E;
 import static shared.network.notifications.EntityUpdate.NO_ENTITY;
 
-@Wire
 public class EntityUpdateSystem extends BaseSystem {
 
     private final Map<Integer, Deque<EntityUpdate>> entityUpdates;
     private final Map<Integer, Deque<EntityUpdate>> publicUpdates;
     private WorldEntitiesSystem worldEntitiesSystem;
     private ComponentSystem componentSystem;
+
+    ComponentMapper<Ref> mRef;
 
     public EntityUpdateSystem() {
         entityUpdates = new ConcurrentHashMap<>();
@@ -107,7 +108,7 @@ public class EntityUpdateSystem extends BaseSystem {
 
     // Attach entity to another entity and send update to all near entities including component.entity
     public void attach(int entity, int entityToAttach) {
-        E(entityToAttach).refId(entity);
+        mRef.create(entityToAttach).setId(entity);
         List<Component> components = componentSystem.getComponents(entityToAttach, ComponentSystem.Visibility.CLIENT_PUBLIC);
         EntityUpdate update = EntityUpdateBuilder.of(entityToAttach).withComponents(components).build();
         add(entity, update, UpdateTo.ALL);

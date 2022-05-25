@@ -68,7 +68,7 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
             '--type', 'app-image',
             '--name', project.appName,
             '--vendor', "Argentum Online Libre",
-            '--app-version', "${project.version}",
+            '--app-version', "1.15.0",
             '--dest', releasePath,
             '--runtime-image', prebuiltJRE,
             '--input', "${buildDir}/libs",
@@ -99,7 +99,7 @@ task bundle(type: Exec, dependsOn: [dist, jlink]) {
 
         copy {
             from(assetsPath)
-            from("${projectDir}/Config.json")
+            from("${projectDir}/config.json")
 
             switch (OS) {
                 case OperatingSystem.MAC_OS:

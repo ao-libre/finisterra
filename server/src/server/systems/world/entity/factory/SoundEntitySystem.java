@@ -1,6 +1,6 @@
 package server.systems.world.entity.factory;
 
-import com.artemis.annotations.Wire;
+import com.artemis.ComponentMapper;
 import component.entity.Ref;
 import component.position.WorldPos;
 import component.sound.AOSound;
@@ -13,55 +13,51 @@ import shared.util.EntityUpdateBuilder;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.artemis.E.E;
-
-@Wire
 public class SoundEntitySystem extends PassiveSystem {
 
     private EntityUpdateSystem entityUpdateSystem;
 
     private Map<Integer, Map<Integer, Integer>> entitySounds;
 
+    ComponentMapper<WorldPos> mWorldPos;
+    ComponentMapper<AOSound> mAOSound;
+
     public SoundEntitySystem() {
         entitySounds = new ConcurrentHashMap<>();
     }
 
-    public void add(int entity, int soundNumber) {
+    public void add(int entityId, int soundNumber) {
         // add temporal sound
         EntityUpdateBuilder builder = EntityUpdateBuilder.none()
                 .withComponents(new AOSound(soundNumber, false))
-                .withComponents(new Ref(entity));
-        if (E(entity).hasWorldPos()) {
-            builder.withComponents(E(entity).getWorldPos());
+                .withComponents(new Ref(entityId));
+        if (mWorldPos.has(entityId)) {
+            builder.withComponents(mWorldPos.get(entityId));
         }
         EntityUpdate soundUpdate = builder.build();
-        entityUpdateSystem.add(entity, soundUpdate, UpdateTo.ALL);
+        entityUpdateSystem.add(entityId, soundUpdate, UpdateTo.ALL);
     }
 
-    public void add(int entity, int soundNumber, boolean loop) {
-        int soundEntity = world.create();
-        E(soundEntity)
-                .aOSoundId(soundNumber)
-                .aOSoundShouldLoop(loop);
+    public void add(int entityId, int soundNumber, boolean loop) {
+        int soundEntityId = world.create();
+        mAOSound.create(soundEntityId).setId(soundNumber);
+        mAOSound.get(soundEntityId).setShouldLoop(loop);
 
-        if (E(entity).hasWorldPos()) {
-            WorldPos worldPos = E(entity).getWorldPos();
-            E(soundEntity)
-                    .worldPosMap(worldPos.map)
-                    .worldPosX(worldPos.x)
-                    .worldPosY(worldPos.y);
+        if (mWorldPos.has(entityId)) {
+            WorldPos worldPos = mWorldPos.get(entityId);
+            mWorldPos.create(soundEntityId).setWorldPos(worldPos);
         }
         entitySounds
-                .computeIfAbsent(entity, integer -> new ConcurrentHashMap<>())
-                .put(soundNumber, soundEntity);
+                .computeIfAbsent(entityId, integer -> new ConcurrentHashMap<>())
+                .put(soundNumber, soundEntityId);
 
-        entityUpdateSystem.attach(entity, soundEntity);
+        entityUpdateSystem.attach(entityId, soundEntityId);
     }
 
-    public void remove(int entity, int soundNumber) {
-        entitySounds.computeIfPresent(entity, (id, map) -> {
+    public void remove(int entityId, int soundNumber) {
+        entitySounds.computeIfPresent(entityId, (id, map) -> {
             map.computeIfPresent(soundNumber, (sID, sEntity) -> {
-                entityUpdateSystem.detach(entity, sEntity);
+                entityUpdateSystem.detach(entityId, sEntity);
                 return sEntity;
             });
             map.remove(soundNumber);

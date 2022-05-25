@@ -4,55 +4,56 @@ import com.artemis.Aspect;
 import com.artemis.E;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Align;
-import com.esotericsoftware.minlog.Log;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import component.entity.character.info.Name;
+import component.entity.character.status.Health;
+import component.entity.character.status.Mana;
 import component.position.WorldPos;
-import game.systems.render.BatchRenderingSystem;
+import game.systems.render.BatchSystem;
 import game.ui.WidgetFactory;
 import game.utils.Colors;
 import game.utils.Pos2D;
-import game.utils.Skins;
 import org.jetbrains.annotations.NotNull;
 import shared.interfaces.Hero;
 import shared.model.map.Tile;
-
-import java.util.concurrent.TimeUnit;
 
 import static com.artemis.E.E;
 
 @Wire(injectInherited = true)
 public class NameRenderingSystem extends RenderingSystem {
 
-    private final LoadingCache<Integer, Table> names = CacheBuilder
-            .newBuilder()
-            .expireAfterAccess(5, TimeUnit.MINUTES)
-            .build(new CacheLoader<Integer, Table>() {
-                @Override
-                public Table load(@NotNull Integer integer) {
-                    Table table = new Table(Skins.COMODORE_SKIN);
-                    table.setRound(false);
-                    E e = E(integer);
-                    String text = e.getName().text;
-                    Label label = WidgetFactory.createFlippedLabel(text);
-                    label.getStyle().font.setUseIntegerPositions(false);
-                    label.setFontScale(1.1f);
-                    float prefWidth = label.getPrefWidth();
-                    label.setWrap(true);
-                    label.setAlignment(Align.center);
-                    Log.debug("Width: " + prefWidth);
-                    table.add(label).width(Math.min(prefWidth + 20, 200));
-                    return table;
-                }
+    @NotNull
+    private Label createLabel(String name) {
+        Label label = WidgetFactory.createFlippedLabel(name);
+        label.getStyle().font.setUseIntegerPositions(false);
+        return label;
+    }
 
+    private ProgressBar createHP(Health health) {
+        ProgressBar bar = WidgetFactory.createProgressBar(WidgetFactory.ProgressBars.INGAME_HP);
+        bar.setRange(0, health.max);
+        bar.setValue(health.min);
+        bar.setAnimateInterpolation(Interpolation.fastSlow);
+        bar.setAnimateDuration(0.3f);
+        bar.setRound(false);
+        return bar;
+    }
 
-            });
-    private BatchRenderingSystem batchRenderingSystem;
+    private ProgressBar createMana(Mana mana) {
+        ProgressBar bar = WidgetFactory.createProgressBar(WidgetFactory.ProgressBars.INGAME_MANA);
+        bar.setRange(0, mana.max);
+        bar.setValue(mana.min);
+        bar.setAnimateInterpolation(Interpolation.fastSlow);
+        bar.setAnimateDuration(0.3f);
+        bar.setRound(false);
+        return bar;
+    }
+
+    private BatchSystem batchSystem;
 
     public NameRenderingSystem() {
         super(Aspect.all(WorldPos.class, Name.class));
@@ -62,24 +63,40 @@ public class NameRenderingSystem extends RenderingSystem {
     protected void process(E player) {
         Pos2D playerPos = Pos2D.get(player).toScreen();
 
-        float nameY = drawName(player, playerPos);
-        drawClanName(player, playerPos, nameY);
+        if (player.hasDisplay()) { // update
+            if (player.hasMana()) {
+                player.displayMana(player.manaMin(), player.manaMax());
+            }
+            if (player.hasHealth()) {
+                player.displayHp(player.healthMin(), player.healthMax());
+            }
+        } else { // create
+            player.display();
+            if (player.hasMana()) {
+                player.displayAddMana(createMana(player.getMana()));
+            }
+            if (player.hasHealth()) {
+                player.displayAddHp(createHP(player.getHealth()));
+            }
+            Label nameLabel = createLabel(player.nameText());
+            float prefWidth = nameLabel.getPrefWidth();
+            player.displayAddLabel(nameLabel, prefWidth);
+        }
+        Table table = player.displayDisplay();
+        float nameY = drawName(player, playerPos, table);
     }
 
-    private float drawName(E player, Pos2D screenPos) {
-        Table nameLabel = names.getUnchecked(player.id());
+    private float drawName(E player, Pos2D screenPos, Table table) {
+        final float fontX = screenPos.x + ((Tile.TILE_PIXEL_WIDTH - table.getWidth()) / 2);
+        final float fontY = screenPos.y + 15;
+        table.act(getWorld().getDelta());
+        final SpriteBatch batch = batchSystem.getBatch();
 
-        final float fontX = screenPos.x + ((Tile.TILE_PIXEL_WIDTH - nameLabel.getWidth()) / 2);
-        final float fontY = screenPos.y + 10;
-        Label label = (Label) nameLabel.getChild(0);
-        label.getStyle().font.setUseIntegerPositions(false);
-        batchRenderingSystem.addTask(batch -> {
-                    Color color = setColor(player, label);
-                    nameLabel.setPosition(fontX, fontY);
-                    nameLabel.draw(batch, 1);
-                    label.getStyle().fontColor = color;
-                }
-        );
+        Color color = setColor(player, player.displayLabel());
+        table.setPosition(fontX, fontY);
+        table.draw(batch, 1);
+        player.displayLabel().getStyle().fontColor = color;
+
         return fontY;
     }
 

@@ -16,9 +16,9 @@ public class Bar extends Actor {
     //private static final int ORIGINAL_WIDTH = 212;
     private static final int ORIGINAL_HEIGHT = 32;
     private static final int ORIGINAL_BORDER = 9;
-    private static final Drawable background = Skins.COMODORE_SKIN.getDrawable("bar-frame");
+    private static final Drawable background = WidgetFactory.createDrawable(WidgetFactory.Drawables.BAR_FRAME.name);
     private final Label points;
-    private final Drawable bar = Skins.COMODORE_SKIN.getDrawable("bar");
+    private final Drawable bar = WidgetFactory.createDrawable(WidgetFactory.Drawables.BAR_FRAME.name);
     private final Kind kind;
     private E e;
 

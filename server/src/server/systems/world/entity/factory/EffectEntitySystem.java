@@ -1,6 +1,7 @@
 package server.systems.world.entity.factory;
 
-import com.artemis.annotations.Wire;
+import com.artemis.ComponentMapper;
+import component.entity.Clear;
 import component.graphic.Effect;
 import component.graphic.EffectBuilder;
 import component.position.WorldPos;
@@ -12,10 +13,8 @@ import shared.util.EntityUpdateBuilder;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.artemis.E.E;
 import static shared.network.notifications.EntityUpdate.NO_ENTITY;
 
-@Wire
 public class EffectEntitySystem extends PassiveSystem {
 
     private EntityUpdateSystem entityUpdateSystem;
@@ -23,11 +22,15 @@ public class EffectEntitySystem extends PassiveSystem {
     private Map<Integer, Map<Integer, Integer>> entityEffects;
     private Map<Integer, Map<Integer, Integer>> entityFXs;
 
+    ComponentMapper<Clear> mClear;
+    ComponentMapper<Effect> mEffect;
+    ComponentMapper<WorldPos> mWorldPos;
+
     public EffectEntitySystem() {
         entityEffects = new ConcurrentHashMap<>();
     }
 
-    public void addFX(int entity, int fxNumber, int loops) {
+    public void addFX(int entityId, int fxNumber, int loops) {
         Effect effect = EffectBuilder
                 .create()
                 .withFX(fxNumber)
@@ -38,45 +41,42 @@ public class EffectEntitySystem extends PassiveSystem {
             // create entity and save
             effectEntityId = world.create();
             entityFXs
-                    .computeIfAbsent(entity, integer -> new ConcurrentHashMap<>())
+                    .computeIfAbsent(entityId, integer -> new ConcurrentHashMap<>())
                     .put(fxNumber, effectEntityId);
         }
 
         EntityUpdateBuilder of = EntityUpdateBuilder.of(effectEntityId);
         of.withComponents(effect);
-        if (E(entity).hasWorldPos()) {
-            of.withComponents(E(entity).getWorldPos());
+        if (mWorldPos.has(entityId)) {
+            of.withComponents(mWorldPos.get(entityId));
         }
-        entityUpdateSystem.add(entity, of.build(), UpdateTo.ALL);
+        entityUpdateSystem.add(entityId, of.build(), UpdateTo.ALL);
     }
 
     public void addEffect(int entity, int particleNumber, int loops) {
         int effectEntityId = world.create();
-        E(effectEntityId)
-                .effectLoops(loops)
-                .effectEffectId(particleNumber)
-                .effectType(Effect.Type.PARTICLE);
+        Effect effect = mEffect.create(effectEntityId);
+        effect.setLoops(loops);
+        effect.setEffectId(particleNumber);
+        effect.setType(Effect.Type.PARTICLE);
 
         doAdd(entity, particleNumber, loops, effectEntityId, entityEffects);
     }
 
-    private void doAdd(int entity, int fxNumber, int loops, int effectEntityId, Map<Integer, Map<Integer, Integer>> entityFXs) {
-        if (E(entity).hasWorldPos()) {
+    private void doAdd(int entityId, int fxNumber, int loops, int effectEntityId, Map<Integer, Map<Integer, Integer>> entityFXs) {
+        if (mWorldPos.has(entityId)) {
             // copy worldPos to effect
-            WorldPos worldPos = E(entity).getWorldPos();
-            E(effectEntityId)
-                    .worldPosMap(worldPos.map)
-                    .worldPosX(worldPos.x)
-                    .worldPosY(worldPos.y);
+            WorldPos worldPos = mWorldPos.get(entityId);
+            mWorldPos.create(effectEntityId).setWorldPos(worldPos);
         }
         if (Effect.LOOP_INFINITE == loops) {
             entityFXs
-                    .computeIfAbsent(entity, integer -> new ConcurrentHashMap<>())
-                    .put(fxNumber, effectEntityId);
+                .computeIfAbsent(entityId, integer -> new ConcurrentHashMap<>())
+                .put(fxNumber, effectEntityId);
         } else {
-            E(effectEntityId).clear();
+            mClear.create(effectEntityId);
         }
-        entityUpdateSystem.attach(entity, effectEntityId);
+        entityUpdateSystem.attach(entityId, effectEntityId);
     }
 
     public void removeEffect(int entity, int particleNumber) {

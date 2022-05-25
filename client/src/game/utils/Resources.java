@@ -9,11 +9,13 @@ public class Resources {
     // Paths
     private static final String GAME_DATA_PATH = "data/";
     public static final String GAME_UI_PATH = GAME_DATA_PATH + "ui/";
+    public static final String GAME_SKINS_PATH = GAME_DATA_PATH + "skins/";
     public static final String SKIN_FILE_PATH = "ao-skin-2/";
     public static final String GAME_IMAGES_PATH = GAME_UI_PATH + "images/";
     public static final String GAME_SPELL_ICONS_PATH = GAME_UI_PATH + "spells/";
     public static final String GAME_SKIN_FILE = GAME_UI_PATH + SKIN_FILE_PATH + "ao-skin.json";
-    public static final String GAME_GRAPHICS_PATH = GAME_DATA_PATH + "graficos2x/";
+    public static final String GAME_GRAPHICS_PATH = GAME_DATA_PATH + "graphics/";
+    public static final String GAME_ATLAS_PATH = GAME_DATA_PATH + "images/";
     public static final String GAME_FXS_PATH = GAME_DATA_PATH + "fxs/";
     public static final String GAME_PARTICLES_PATH = GAME_DATA_PATH + "particles/";
     public static final String GAME_FONTS_PATH = GAME_DATA_PATH + "fonts/";
@@ -27,7 +29,7 @@ public class Resources {
 
     // Files
     public static final String GAME_SHADERS_LIGHT = "light.png";
-    public static final String CLIENT_CONFIG = "client/Config.json";
+    public static final String CLIENT_CONFIG = "config.json";
 
     // Extensions
     public static final String GAME_GRAPHICS_EXTENSION = ".png";

@@ -1,33 +1,56 @@
 package game.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import game.utils.Resources;
 import game.utils.Skins;
 import shared.model.Spell;
 
-public abstract class SpellSlotUI extends ImageButton {
+public abstract class SpellSlotUI extends Table {
 
-    static final int SIZE = 64;
     private static final float ICON_ALPHA = 0.5f;
-    private static final Drawable selection = Skins.COMODORE_SKIN.getDrawable("slot-selected2");
+    private static final Drawable selection = WidgetFactory.createDrawable(WidgetFactory.Drawables.INVENTORY_SLOT_SELECTION.name);
     private Spell spell;
     private Texture graphic;
     private boolean selected;
+    private Image image;
+    private Label label;
 
     SpellSlotUI() {
-        super(Skins.COMODORE_SKIN, "icon-container");
+        super(Skins.CURRENT.get());
+        image = new Image();
+        label = WidgetFactory.createSpellLabel("(None)");
+        label.setAlignment(Align.left);
+        add(image).right().width(16).height(16);
+        add(label).padLeft(5).grow();
         addListener(new ClickListener() {
+
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                super.touchUp(event, x, y, pointer, button);
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                super.enter(event, x, y, pointer, fromActor);
+                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                    onSpellClick(SpellSlotUI.this);
+                }
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                boolean result = super.touchDown(event, x, y, pointer, button);
                 onSpellClick(SpellSlotUI.this);
+                return result;
             }
         });
     }
@@ -42,25 +65,12 @@ public abstract class SpellSlotUI extends ImageButton {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-        if (spell == null) {
-            return;
-        }
-        drawSpell(batch);
         if (selected) drawSelection(batch);
+        super.draw(batch, parentAlpha);
     }
 
     private void drawSelection(Batch batch) {
-        selection.draw(batch, getX(), getY(), SIZE, SIZE);
-    }
-
-    private void drawSpell(Batch batch) {
-        if (graphic != null) {
-            Color current = new Color(batch.getColor());
-            batch.setColor(current.r, current.g, current.b, ICON_ALPHA);
-            batch.draw(graphic, getX() + 1, getY() + 1);
-            batch.setColor(current);
-        }
+        selection.draw(batch, getX(), getY(), getWidth(), getHeight());
     }
 
     public Spell getSpell() {
@@ -68,12 +78,18 @@ public abstract class SpellSlotUI extends ImageButton {
     }
 
     public void setSpell(Spell spell) {
-        if (spell.equals(this.spell)) return;
+        if (spell != null && spell.equals(this.spell)) return;
         this.spell = spell;
         if (graphic != null) {
             graphic.dispose();
         }
-        this.graphic = spell != null ? new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getId() + ".png")) : null;
+        if (this.spell != null) {
+            this.graphic = new Texture(Gdx.files.local(Resources.GAME_SPELL_ICONS_PATH + spell.getId() + ".png"));
+            image.setDrawable(new TextureRegionDrawable(graphic));
+        } else {
+            image.setDrawable(null);
+        }
+        label.setText(this.spell == null ? "(None)" : this.spell.getName());
     }
 
     abstract public void onSpellClick(SpellSlotUI spellSlotUI);

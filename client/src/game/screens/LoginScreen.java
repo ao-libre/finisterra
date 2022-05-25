@@ -9,13 +9,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
-import game.ClientConfiguration;
+import game.Config;
+import game.Config.Network.Server;
 import game.handlers.DefaultAOAssetManager;
 import game.systems.network.ClientSystem;
 import game.systems.resources.MusicSystem;
 import game.systems.resources.SoundsSystem;
+import game.ui.ExtendedDialog;
 import game.ui.WidgetFactory;
+import game.ui.WidgetFactory.Drawables;
+import game.utils.Resources;
 import shared.network.account.AccountLoginRequest;
 import shared.util.Messages;
 
@@ -23,22 +29,21 @@ import shared.util.Messages;
 public class LoginScreen extends AbstractScreen {
 
     private final Preferences preferences = Gdx.app.getPreferences("Finisterra");
-    @Wire
-    private DefaultAOAssetManager assetManager;
-    private ClientConfiguration clientConfiguration;
+    @Wire private DefaultAOAssetManager assetManager;
+    @Wire private MusicSystem musicSystem;
+    @Wire private Config config;
     private ClientSystem clientSystem;
     private ScreenManager screenManager;
-    private MusicSystem musicSystem;
     private SoundsSystem soundsSystem;
     private TextField emailField;
     private TextField passwordField;
-    private CheckBox rememberMe; //@todo implementar remember me
+    private CheckBox rememberMe;
     private CheckBox seePassword;
     private CheckBox disableMusic;
     private CheckBox disableSound;
     private TextButton loginButton;
-    private List<ClientConfiguration.Network.Server> serverList;
-    ;
+    private List<Config.Network.Server> serverList;
+    private boolean isDialogShowed = false;
 
     public LoginScreen() {
     }
@@ -46,25 +51,33 @@ public class LoginScreen extends AbstractScreen {
     @Override
     protected void keyPressed(int keyCode) {
         if (keyCode == Input.Keys.ESCAPE) {
-            Gdx.app.exit();
+            // arregla bug en el que se sigen generando dialog si se apreta multiple veces ESCAPE
+            if (!isDialogShowed) {
+                isDialogShowed = true;
+                ExtendedDialog dialog = new ExtendedDialog( "Cerrar juego", getSkin() );
+                dialog.text( "¿Está seguro que desea cerrar el juego?" );
+                dialog.button( "Aceptar", Gdx.app::exit );
+                dialog.button( "Cancelar", () -> {isDialogShowed = false;});
+                dialog.show( getStage() );
+            }
         }
-//       if (keyCode == Input.Keys.ENTER && this.canConnect) {
-//           this.canConnect = false;
-//           connectThenLogin();
-//           Gdx.app.exit();
-//       }
     }
 
     @Override
     protected void createUI() {
-        ClientConfiguration.Account account = clientConfiguration.getAccount();
+        Config.Account account = config.account;
 
         /* Tabla de login */
-        Window loginWindow = WidgetFactory.createWindow(); //@todo window es una ventana arrastrable
+        Window loginWindow = WidgetFactory.createWindow();
+        loginWindow.getTitleLabel().setAlignment( Align.center );
+        loginWindow.getTitleLabel().setText( "Login Windows" );
         Label emailLabel = WidgetFactory.createLabel("Email: ");
-        emailField = WidgetFactory.createTextField(account.getEmail());
+        //tamaño de las fuentes (nota soy chicaton :P )
+        emailLabel.getStyle().font = getSkin().getFont( "big" );
+        emailField = WidgetFactory.createTextField(account.email);
         Label passwordLabel = WidgetFactory.createLabel("Password");
-        passwordField = WidgetFactory.createTextField(account.getPassword());
+        passwordLabel.getStyle().font = getSkin().getFont( "big" );
+        passwordField = WidgetFactory.createTextField(account.password);
         passwordField.setPasswordCharacter('*');
         passwordField.setPasswordMode(true);
         rememberMe = WidgetFactory.createCheckBox("Remember me");
@@ -105,11 +118,96 @@ public class LoginScreen extends AbstractScreen {
         loginWindow.add(seePassword).padLeft(-10).padTop(30);
         loginWindow.add(newAccountButton).padTop(30).row();
 
-        /* Tabla de servidores */
-        Table connectionTable = new Table((getSkin()));
+        /* Tabla de servidores
+        * reemplazado por windows
+        * */
+        Window connectionTable = WidgetFactory.createWindow();
+        // agrege un titulo a la lista de servidores
+        connectionTable.getTitleLabel().setText( "Server List" );
+        connectionTable.getTitleLabel().setAlignment( Align.center );
         serverList = WidgetFactory.createList();
-        serverList.setItems(clientConfiguration.getNetwork().getServers());
-        connectionTable.add(serverList).width(400).height(300); //@todo Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
+        serverList.setAlignment( Align.center );
+        serverList.setItems(config.network.servers);
+        if (config.network.selected >= 0 && config.network.selected < config.network.servers.size) {
+            serverList.setSelectedIndex(config.network.selected);
+        }
+        serverList.getStyle().font = getSkin().getFont( "big" );
+        // panel desplasable
+        // las barra de desplasamiento aparece cuando la lista sobrepasa el tamaño
+        ScrollPane scrollPane = WidgetFactory.createScrollPane(serverList,false,true,false,true);
+        // transparencia para igualar la ventana de login
+        connectionTable.getColor().a = 0.8f;
+        // Nota: setear el size acá es redundante, pero si no se hace no se ve bien la lista. Ver (*) más abajo.
+        connectionTable.add(scrollPane).colspan(2).width(350).height(250);
+        connectionTable.row();
+
+        TextButton addServerButton = WidgetFactory.createTextButton("Añadir servidor");
+        addServerButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                ExtendedDialog dialog = new ExtendedDialog("Añadir servidor", getSkin());
+                TextField serverNameField = WidgetFactory.createTextField("Server Name");
+                serverNameField.setMaxLength( 20 );
+                TextField ipField = WidgetFactory.createTextField("127.0.0.1");
+                TextField portField = WidgetFactory.createTextField("7666");
+                dialog.getContentTable().add(WidgetFactory.createLabel("SERVER NAME: "));
+                dialog.getContentTable().add(serverNameField).row();
+                dialog.getContentTable().add(WidgetFactory.createLabel("IP: "));
+                dialog.getContentTable().add(ipField).row();
+                dialog.getContentTable().add(WidgetFactory.createLabel("PORT: "));
+                dialog.getContentTable().add(portField).row();
+                dialog.button("Aceptar", () -> {
+                    String name = serverNameField.getText();
+                    String ip = ipField.getText();
+                    int port;
+                    try {
+                        port = Integer.parseInt(portField.getText());
+                    } catch (NumberFormatException ignored) {
+                        return;
+                    }
+                    // chequeo servidor esta en la lista
+                    String newSever = name + "  " + ip + ":" + port;
+                    Array<Server> servers = config.network.servers;
+                    boolean serverExist = false;
+
+                    for (int i = 0; i < servers.size; i++) {
+                        if (servers.get(i).toString().equals(newSever)){
+                            serverExist = true;
+                            break;
+                        }
+                    }
+                    /*
+                     * si esta en la lista lanza cuadro de error si no agrega el servidor
+                     * todo guardar la lista de servidores
+                     */
+                    if (serverExist){
+                        ExtendedDialog dialog1 = new ExtendedDialog("Error", getSkin());
+                        dialog1.getTitleLabel().setAlignment( Align.center );
+                        dialog1.text("El servidor ya esta en la lista\n" +
+                                "The sever is already in the list");
+                        dialog1.button("ok");
+                        dialog1.show(getStage());
+                    }
+                    else {
+                        config.network.servers.add( new Server( name, ip, port ) );
+                        serverList.setItems(config.network.servers);
+                    }
+                });
+                dialog.button( "Cancel" );
+                dialog.show(getStage());
+            }
+        });
+        connectionTable.add(addServerButton);
+
+        TextButton deleteServerButton = WidgetFactory.createTextButton("Eliminar servidor");
+        deleteServerButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                config.network.servers.removeValue(serverList.getSelected(), true);
+                serverList.setItems(config.network.servers);
+            }
+        });
+        connectionTable.add(deleteServerButton);
 
         /* Botones para desactivar el sonido y la musica*/
 
@@ -117,22 +215,24 @@ public class LoginScreen extends AbstractScreen {
         disableMusic = new CheckBox("Desabilitar Musica", getSkin());
         if (preferences.getBoolean("MusicOff")) {
             disableMusic.setChecked(true);
-            musicSystem.stopMusic();
-            musicSystem.setDisableMusic(true);
+            musicSystem.setDisabled(true);
         }
 
         disableMusic.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                musicSystem.setDisableMusic(!musicSystem.isDisableMusic());
+                musicSystem.setDisabled(!musicSystem.isDisabled());
                 preferences.putBoolean("MusicOff", disableMusic.isChecked());
                 preferences.flush();
+            }
+        });
 
-                if (!musicSystem.isDisableMusic()) {
-                    musicSystem.playMusic(101, true);
-                } else {
-                    musicSystem.stopMusic();
-                }
+        Slider musicVolumeBar = new Slider(0.0f, 1.0f, 0.1f, false, getSkin());
+        musicVolumeBar.setValue(musicSystem.getVolume());
+        musicVolumeBar.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                musicSystem.setVolume(musicVolumeBar.getValue());
             }
         });
 
@@ -140,39 +240,55 @@ public class LoginScreen extends AbstractScreen {
         disableSound = new CheckBox("Desabilitar sonido", getSkin());
         if (preferences.getBoolean("SoundOff")) {
             disableSound.setChecked(true);
-            soundsSystem.setDisableSounds(true);
+            soundsSystem.setDisabled(true);
         }
         disableSound.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 preferences.putBoolean("SoundOff", disableSound.isChecked());
                 preferences.flush();
-                soundsSystem.setDisableSounds(!soundsSystem.isDisableSounds());
+                soundsSystem.setDisabled(!soundsSystem.isDisabled());
+            }
+        });
+
+        Slider soundVolumeBar = new Slider(0.0f, 1.0f, 0.1f, false, getSkin());
+        soundVolumeBar.setValue(soundsSystem.getVolume());
+        soundVolumeBar.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                soundsSystem.setVolume(musicVolumeBar.getValue());
             }
         });
 
         /* Agrega la imagen del logo */
-        Cell<Image> logoCell = getMainTable().add(WidgetFactory.createImage(new Texture(Gdx.files.local("data/ui/images/logo-big.png")))).center();
+        Cell<Image> logoCell = getMainTable().add(WidgetFactory.createImage(new Texture(Gdx.files.local("data/ui/images/logo-big.png"))))
+                .pad(20).center();
         logoCell.row();
 
         /* Tabla botones */
         Window buttonsTable = WidgetFactory.createWindow();
+        // transparencia para igualar la ventana de loggin
+        buttonsTable.getColor().a = 0.8f;;
         buttonsTable.setMovable(false);
-        buttonsTable.background(getSkin().getDrawable("menu-frame"));
+        buttonsTable.background(WidgetFactory.createDrawable(Drawables.SLOT.name));
         buttonsTable.getTitleLabel().setColor(Color.GOLD);
         buttonsTable.getTitleLabel().setAlignment(2);
-        buttonsTable.setHeight(100);
-        buttonsTable.add(disableMusic).width(500).pad(10);
-        buttonsTable.add(disableSound).width(400).pad(10);
+        buttonsTable.setHeight(110);
+        buttonsTable.add(disableMusic).width(500).pad(5);
+        buttonsTable.add(disableSound).width(400).pad(5);
+        buttonsTable.row();
+        buttonsTable.add(musicVolumeBar);
+        buttonsTable.add(soundVolumeBar);
 
         /* Tabla para loguin y servers */
         Table login_server = new Table();
-        login_server.add(loginWindow).width(500).height(300).padLeft(10).padRight(10).padTop(10);
-        login_server.add(connectionTable).width(400).height(300).padLeft(10).padRight(10).padTop(10); //(*) Seteando acá el size, recursivamente tendría que resizear list.
+        login_server.add(loginWindow).width(500).height(400).padLeft(10).padRight(10).padTop(10);
+        //(*) Seteando acá el size, recursivamente tendría que resizear list.
+        login_server.add(connectionTable).width(400).height(400).padLeft(10).padRight(10).padTop(10);
 
         /* Tabla principal */
         getMainTable().add(login_server).row();
-        getMainTable().add(buttonsTable).height(100).width(920).pad(3);
+        getMainTable().add(buttonsTable).height(150).width(920).pad(3);
         getStage().setKeyboardFocus(emailField);
     }
 
@@ -199,14 +315,17 @@ public class LoginScreen extends AbstractScreen {
             String email = emailField.getText();
             String password = passwordField.getText();
 
-            clientConfiguration.getAccount().setEmail(email);
-            clientConfiguration.getAccount().setPassword(password);
-            // clientConfiguration.save(); TODO this is breaking all
+            config.account.email = email;
+            config.account.password = password;
+            config.fileSave(Resources.CLIENT_CONFIG);
 
-            ClientConfiguration.Network.Server server = serverList.getSelected();
+            Config.Network.Server server = serverList.getSelected();
             if (server == null) return;
-            String ip = server.getHostname();
-            int port = server.getPort();
+
+            config.network.selected = config.network.servers.indexOf(server, false);
+
+            String ip = server.hostname;
+            int port = server.port;
 
             // Si podemos conectarnos, mandamos la peticion para loguearnos a la cuenta.
             if (clientSystem.connect(ip, port)) {

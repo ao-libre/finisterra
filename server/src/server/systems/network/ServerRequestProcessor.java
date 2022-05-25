@@ -1,16 +1,20 @@
 package server.systems.network;
 
+import com.artemis.ComponentMapper;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.utils.TimeUtils;
+import component.position.WorldPos;
 import org.jetbrains.annotations.NotNull;
 import server.systems.account.AccountSystem;
 import server.systems.account.UserSystem;
 import server.systems.world.WorldEntitiesSystem;
+import server.systems.world.entity.factory.EffectEntitySystem;
 import server.systems.world.entity.item.ItemActionSystem;
 import server.systems.world.entity.movement.MovementSystem;
 import server.systems.world.entity.npc.NPCActionSystem;
 import server.systems.world.entity.user.MeditateSystem;
 import server.systems.world.entity.user.PlayerActionSystem;
+import shared.interfaces.FXs;
 import shared.network.account.AccountCreationRequest;
 import shared.network.account.AccountLoginRequest;
 import shared.network.combat.AttackRequest;
@@ -24,6 +28,9 @@ import shared.network.time.TimeSyncResponse;
 import shared.network.user.UserCreateRequest;
 import shared.network.user.UserLoginRequest;
 import shared.network.user.UserLogoutRequest;
+import shared.util.EntityUpdateBuilder;
+
+import java.io.Console;
 
 /**
  * Every packet received from users will be processed here
@@ -41,6 +48,8 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     private PlayerActionSystem playerActionSystem;
     private ItemActionSystem itemActionSystem;
     private NPCActionSystem npcActionSystem;
+
+    ComponentMapper<WorldPos> mWorldPos;
 
     @Override
     public void processRequest(@NotNull AccountCreationRequest accountCreationRequest, int connectionId) {
@@ -85,7 +94,7 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
     @Override
     public void processRequest(MovementRequest request, int connectionID) {
         if (serverSystem.connectionHasPlayer(connectionID)) {
-            movementSystem.move(connectionID, request.movement, request.requestNumber);
+            movementSystem.move(serverSystem.getPlayerByConnection(connectionID), request.movement, request.requestNumber);
         }
     }
 
@@ -97,7 +106,9 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      */
     @Override
     public void processRequest(@NotNull AttackRequest attackRequest, int connectionId) {
-        playerActionSystem.attack(connectionId, attackRequest.getTimestamp(), attackRequest.getWorldPos(), attackRequest.type());
+        if (serverSystem.connectionHasPlayer(connectionId)) {
+            playerActionSystem.attack(serverSystem.getPlayerByConnection(connectionId), attackRequest.getTimestamp(), attackRequest.getWorldPos(), attackRequest.type());
+        }
     }
 
     /**
@@ -108,7 +119,10 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      */
     @Override
     public void processRequest(@NotNull ItemActionRequest itemAction, int connectionId) {
-        itemActionSystem.useItem(connectionId, itemAction.getAction(), itemAction.getSlot());
+        if (serverSystem.connectionHasPlayer(connectionId)) {
+            itemActionSystem.useItem(serverSystem.getPlayerByConnection(connectionId), itemAction.getAction(), itemAction.getSlot());
+        }
+
     }
 
     /**
@@ -119,8 +133,11 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      */
     @Override
     public void processRequest(MeditateRequest meditateRequest, int connectionId) {
-        int playerId = serverSystem.getPlayerByConnection(connectionId);
-        meditateSystem.toggle(playerId);
+        if (serverSystem.connectionHasPlayer(connectionId)) {
+            int playerId = serverSystem.getPlayerByConnection(connectionId);
+            meditateSystem.toggle(playerId);
+        }
+
     }
 
     /**
@@ -128,12 +145,15 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      * If not, notify near users that user talked
      *
      * @param talkRequest  talk request with message
-     * @param connectionID user connection id
+     * @param connectionId user connection id
      */
     @Override
-    public void processRequest(@NotNull TalkRequest talkRequest, int connectionID) {
-        int playerID = serverSystem.getPlayerByConnection(connectionID);
-        if (talkRequest.isValid()) playerActionSystem.talk(playerID, talkRequest.getMessage());
+    public void processRequest(@NotNull TalkRequest talkRequest, int connectionId) {
+        if (serverSystem.connectionHasPlayer(connectionId)) {
+            int playerID = serverSystem.getPlayerByConnection(connectionId);
+            if (talkRequest.isValid()) playerActionSystem.talk(playerID, talkRequest.getMessage());
+        }
+
     }
 
     /**
@@ -144,12 +164,19 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
      */
     @Override
     public void processRequest(TakeItemRequest takeItemRequest, int connectionId) {
-        itemActionSystem.grabItem(connectionId);
+        if (serverSystem.connectionHasPlayer(connectionId)) {
+            int playerID = serverSystem.getPlayerByConnection(connectionId);
+            itemActionSystem.grabItem(playerID);
+        }
+
     }
 
     @Override
     public void processRequest(SpellCastRequest spellCastRequest, int connectionId) {
-        playerActionSystem.spell(connectionId, spellCastRequest.getSpell(), spellCastRequest.getWorldPos(), spellCastRequest.getTimestamp());
+        if (serverSystem.connectionHasPlayer(connectionId)) {
+            int playerID = serverSystem.getPlayerByConnection(connectionId);
+            playerActionSystem.spell(playerID, spellCastRequest.getSpell(), spellCastRequest.getWorldPos(), spellCastRequest.getTimestamp());
+        }
     }
 
     @Override
@@ -159,16 +186,30 @@ public class ServerRequestProcessor extends DefaultRequestProcessor {
         response.receiveTime = receiveTime;
         response.requestId = request.requestId;
         response.sendTime = TimeUtils.millis();
-        serverSystem.sendTo(connectionId, response);
+        serverSystem.sendByConnectionId(connectionId, response);
     }
 
     @Override
     public void processRequest(NpcInteractionRequest npcInteractionRequest, int connectionId) {
-        npcActionSystem.interact(connectionId, npcInteractionRequest.getTargetEntity());
+        if (serverSystem.connectionHasPlayer(connectionId)) {
+            int playerID = serverSystem.getPlayerByConnection(connectionId);
+            npcActionSystem.interact(playerID, npcInteractionRequest.getTargetEntity());
+        }
     }
 
     @Override
     public void processRequest(@NotNull DropItem dropItem, int connectionId) {
-        playerActionSystem.drop(connectionId, dropItem.getCount(), dropItem.getPosition(), dropItem.getSlot());
+        if (serverSystem.connectionHasPlayer(connectionId)) {
+            int playerId = serverSystem.getPlayerByConnection(connectionId);
+            playerActionSystem.drop(playerId, dropItem.getCount(), dropItem.getPosition(), dropItem.getSlot());
+        }
+    }
+
+    @Override
+    public void processRequest(TeleportRequest teleportRequest, int connectionId) {
+        if (serverSystem.connectionHasPlayer(connectionId)) {
+            int playerId = serverSystem.getPlayerByConnection(connectionId);
+            playerActionSystem.teleport(playerId, teleportRequest.getMap(), teleportRequest.getX(), teleportRequest.getY());
+        }
     }
 }

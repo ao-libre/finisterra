@@ -1,14 +1,15 @@
 package server.systems.account;
 
 import com.artemis.Component;
-import com.artemis.E;
-import com.artemis.annotations.Wire;
+import com.artemis.ComponentMapper;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.jsonbeans.Json;
 import com.esotericsoftware.jsonbeans.JsonReader;
 import com.esotericsoftware.jsonbeans.JsonValue;
 import com.esotericsoftware.jsonbeans.OutputType;
 import com.esotericsoftware.minlog.Log;
+import component.entity.character.Character;
+import component.entity.character.info.Name;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import org.jetbrains.annotations.NotNull;
 import server.database.Account;
@@ -32,7 +33,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.*;
 
-@Wire
 public class UserSystem extends PassiveSystem {
 
     private final ExecutorService executor = Executors.newFixedThreadPool(10);
@@ -42,6 +42,10 @@ public class UserSystem extends PassiveSystem {
     private EntityFactorySystem entityFactorySystem;
     private AccountSystem accountSystem;
     private ComponentSystem componentSystem;
+
+    ComponentMapper<Character> mCharacter;
+    ComponentMapper<Name> mName;
+
     private Json json;
 
     Set<String> onlineUsers = new HashSet<>();
@@ -67,24 +71,24 @@ public class UserSystem extends PassiveSystem {
                 try {
                     Integer entityId = loadUser( userName ).get( 250, TimeUnit.MILLISECONDS );
                     if(entityId != -1) {
-                        serverSystem.sendTo( connectionId, UserLoginResponse.ok() );
+                        serverSystem.sendByConnectionId( connectionId, UserLoginResponse.ok() );
                         worldEntitiesSystem.login( connectionId, entityId );
                         onlineUsers.add(userName);
                     } else {
-                        serverSystem.sendTo( connectionId,
+                        serverSystem.sendByConnectionId( connectionId,
                                 UserLoginResponse.failed( "No se pudo leer el personaje " + userName + ". Por favor contactate con soporte." ) );
                     }
                 } catch (InterruptedException | ExecutionException | TimeoutException e) {
                     Log.info( "Failed to retrieve user from JSON file" );
                     e.printStackTrace();
-                    serverSystem.sendTo( connectionId,
+                    serverSystem.sendByConnectionId( connectionId,
                             UserLoginResponse.failed( "Hubo un problema al leer el personaje " + userName ) );
                 }
 
             } else {
                 // don't exist (should never happen)
                 // TODO remove from Account ?
-                serverSystem.sendTo( connectionId,
+                serverSystem.sendByConnectionId( connectionId,
                         UserLoginResponse.failed( "Este personaje " + userName + " no existe!" ) );
             }
         } else {
@@ -94,31 +98,31 @@ public class UserSystem extends PassiveSystem {
 
     //todo ver si el pj no esta en pelea para evitar desconeccion en ese caso
     public void userLogout(int connectionId){
-        serverSystem.sendTo( connectionId,new UserLogoutResponse());
+        serverSystem.sendByConnectionId( connectionId,new UserLogoutResponse());
     }
 
     public void create(int connectionId, String name, int heroId, String userAcc, int index) {
         UserSystemUtilities userSystemUtilities = new UserSystemUtilities();
 
         if (userSystemUtilities.userNameIsNumeric(name)) {
-            serverSystem.sendTo(connectionId,
+            serverSystem.sendByConnectionId(connectionId,
                     UserCreateResponse.failed(Messages.USERNAME_NOT_NUEMRIC));
 
         } else if (!userSystemUtilities.userNameIsNormalChar(name)) {
-            serverSystem.sendTo(connectionId,
+            serverSystem.sendByConnectionId(connectionId,
                     UserCreateResponse.failed(Messages.USERNAME_INVALID_CHAR));
 
         } else if (userSystemUtilities.userNameIsStartNumeric(name)) {
-            serverSystem.sendTo(connectionId,
+            serverSystem.sendByConnectionId(connectionId,
                     UserCreateResponse.failed(Messages.USERNAME_NOT_INIT_NUMBER));
 
         } else if (userSystemUtilities.userNameIsOfensive(name)) {
-            serverSystem.sendTo(connectionId,
+            serverSystem.sendByConnectionId(connectionId,
                     UserCreateResponse.failed(Messages.USERNAME_FORBIDDEN));
 
         } else if (userExists(name)) {
             // send user exists
-            serverSystem.sendTo(connectionId,
+            serverSystem.sendByConnectionId(connectionId,
                     UserCreateResponse.failed(Messages.USERNAME_ALREADY_EXIST));
         } else {
             // create and add to account
@@ -139,7 +143,7 @@ public class UserSystem extends PassiveSystem {
             }
             account.addCharacter(name, index);
             // send ok and login
-            serverSystem.sendTo(connectionId, UserCreateResponse.ok());
+            serverSystem.sendByConnectionId(connectionId, UserCreateResponse.ok());
             worldEntitiesSystem.login(connectionId, entityId);
         }
     }
@@ -157,12 +161,11 @@ public class UserSystem extends PassiveSystem {
      *                 Lo usamos, por ejemplo, cuando un usuario se desconecta para asegurarnos de no borrar la entidad mientras estamos guardando los datos.
      */
     public void save(int entityId, Runnable code) {
-        E user = E.E(entityId);
-        if (user.hasCharacter() && user.hasName()) {
-            String name = user.getName().text;
+        if (mCharacter.has(entityId) && mName.has(entityId)) {
+            String name = mName.get(entityId).text;
             executor.submit(() -> {
                 // Obtenemos la informacion de los componentes de la entidad.
-                Collection<Component> components = componentSystem.getComponents(user.id(), ComponentSystem.Visibility.SERVER);
+                Collection<Component> components = componentSystem.getComponents(entityId, ComponentSystem.Visibility.SERVER);
                 // Me fijo que no este vacía.
                 if (!components.isEmpty()) {
                     // La serializamos y la guardamos en el CharFile.

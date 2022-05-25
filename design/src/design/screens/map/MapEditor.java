@@ -8,13 +8,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.google.common.base.Objects;
 import component.position.WorldPos;
@@ -26,13 +24,13 @@ import design.screens.map.gui.MapAssetChooser;
 import design.screens.map.gui.MapPalette;
 import design.screens.map.gui.MapPalette.Selection;
 import design.screens.map.gui.MapProperties;
+import design.screens.map.systems.DesignCameraFocusSystem;
 import design.screens.map.systems.MapDesignRenderingSystem;
 import design.screens.views.TileSetView;
-import game.ClientConfiguration;
 import game.handlers.DefaultAOAssetManager;
-import game.systems.camera.CameraSystem;
+import game.systems.camera.*;
 import game.systems.map.MapManager;
-import game.systems.render.BatchRenderingSystem;
+import game.systems.render.BatchSystem;
 import game.systems.resources.AnimationsSystem;
 import game.systems.resources.DescriptorsSystem;
 import game.systems.resources.ObjectSystem;
@@ -55,6 +53,8 @@ import static launcher.DesignCenter.SKIN;
 public class MapEditor extends DesignScreen {
 
     private final Stage stage;
+    private final int maxMapWidth = 100; //ancho máximo del mapa expresado en tiles
+    private final int maxMapHeight = 100; //alto máximo del mapa expresado en tiles
     private World world;
     private int viewer;
 
@@ -65,6 +65,8 @@ public class MapEditor extends DesignScreen {
     private MapProperties mapProperties;
     private MapPalette mapPalette;
     private Deque<Undo> undoableActions = new ArrayDeque<>(50);
+    private final TextField mapNumber;
+    private Label mousePosXLabel, mousePosYLabel;
 
     public MapEditor() {
         stage = new Stage() {
@@ -74,7 +76,12 @@ public class MapEditor extends DesignScreen {
                 if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
                     float x = Gdx.input.getDeltaX();
                     float y = Gdx.input.getDeltaY();
-                    world.getSystem(CameraSystem.class).camera.translate(-x, -y);
+                    WorldPos pos = E(viewer).getWorldPos();
+                    pos.x += x;
+                    pos.x = MathUtils.clamp(pos.x, 0, maxMapWidth);
+                    pos.y += y;
+                    pos.y = MathUtils.clamp(pos.y, 0, maxMapHeight);
+                    E(viewer).worldPosX(pos.x).worldPosY(pos.y);
                 } else {
                     dragging = true;
                     setTile();
@@ -96,9 +103,13 @@ public class MapEditor extends DesignScreen {
                     float y = !(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ||
                             Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) ?
                             amountY : 0;
-                    x *= 70;
-                    y *= 70;
-                    world.getSystem(CameraSystem.class).camera.translate(x, y);
+
+                    WorldPos pos = E(viewer).getWorldPos();
+                    pos.x += x;
+                    pos.x = MathUtils.clamp(pos.x, 0, maxMapWidth);
+                    pos.y += y;
+                    pos.y = MathUtils.clamp(pos.y, 0, maxMapHeight);
+                    E(viewer).worldPosX(pos.x).worldPosY(pos.y);
                 }
                 return result;
             }
@@ -118,22 +129,54 @@ public class MapEditor extends DesignScreen {
 
             @Override
             public boolean keyUp(int keyCode) {
-                switch (keyCode) {
+                switch( keyCode ) {
                     case Input.Keys.Z:
-                        if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
-                                Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
-                            if (undoableActions.size() > 0) {
+                        if(Gdx.input.isKeyPressed( Input.Keys.CONTROL_LEFT ) ||
+                                Gdx.input.isKeyPressed( Input.Keys.CONTROL_RIGHT )) {
+                            if(undoableActions.size() > 0) {
                                 Undo poll = undoableActions.pop();
                                 Map current = mapProperties.getCurrent();
-                                current.setTile(poll.pos.x, poll.pos.y, poll.tile);
+                                current.setTile( poll.pos.x, poll.pos.y, poll.tile );
                             }
                         }
                         break;
+
+                    //toggle layers
+                    case Input.Keys.NUM_1:
+                        world.getSystem(MapDesignRenderingSystem.class).toggleLayer1();
+                        break;
+                    case Input.Keys.NUM_2:
+                        world.getSystem(MapDesignRenderingSystem.class).toggleLayer2();
+                        break;
+                    case Input.Keys.NUM_3:
+                        world.getSystem(MapDesignRenderingSystem.class).toggleLayer3();
+                        break;
+                    case Input.Keys.NUM_4:
+                        world.getSystem(MapDesignRenderingSystem.class).toggleLayer4();
+                        break;
+                    case Input.Keys.F1:
+                        Dialog dialog = new Dialog( "HELP", SKIN );
+                        dialog.text("\n" +
+                                "F1: Esta ventana \n" +
+                                "1, 2, 3, 4: Activa y desactiva los layer\n" +
+                                "Scroll: Desplazamiento vertical\n" +
+                                "Shift + Scroll: desplazamiento horizontal\n" +
+                                "Control + Scroll: Zoom\n" +
+                                "Shift + mantener click + mover el mouse: desplazamiento\n" +
+                                "Control + z: deshacer \n").pad( 30 );
+                        dialog.button( "ok" );
+                        dialog.show( getStage() );
+                        break;
                 }
+
                 return super.keyUp(keyCode);
             }
         };
         Gdx.input.setInputProcessor(stage);
+        mapNumber = new TextField("1", SKIN);
+        mapNumber.setTextFieldFilter( new TextField.TextFieldFilter.DigitsOnlyFilter() );
+        mousePosXLabel = new Label( "X: ", SKIN );
+        mousePosYLabel = new Label( "Y: ", SKIN );
         createUI();
         createWorld();
     }
@@ -165,6 +208,8 @@ public class MapEditor extends DesignScreen {
                     case 3:
                         if (assetChooser.getImage() > 0) {
                             tile.getGraphic()[layer] = assetChooser.getImage();
+                        } else if(assetChooser.getAnimation() > 0) {
+                            tile.getGraphic()[layer] = assetChooser.getAnimation();
                         } else {
                             saveUndo = false;
                         }
@@ -233,32 +278,49 @@ public class MapEditor extends DesignScreen {
         return Optional.empty();
     }
 
+    //actualiza las labels que muestran la posicion del mouse
+    private void updateLabels(){
+        WorldPos mouseWP;
+        if (mouseToWorldPos().isPresent()) {
+            mouseWP = mouseToWorldPos().get();
+        }else {
+            mouseWP = new WorldPos();
+        }
+        mousePosXLabel.setText( "X: " + mouseWP.x );
+        mousePosYLabel.setText( "Y: " + mouseWP.y );
+    }
+
     @Override
     public Stage getStage() {
         return stage;
     }
 
     private void createWorld() {
+        /*
+         *  preguntar al que creo el CameraSystem de donde salió el 260
+         *  si no lo contrarresto se ve mal el MapEditor
+         *  quitar cuando se modifique en el CameraSystem
+         */
+        final int magicNumberCorrection = 260;
         AnimationsSystem animationsSystem = ((DesignCenter) Gdx.app.getApplicationListener()).getAnimationsSystem();
         DescriptorsSystem descriptorsSystem = ((DesignCenter) Gdx.app.getApplicationListener()).getDescriptorsSystem();
         WorldConfigurationBuilder builder = new WorldConfigurationBuilder();
         builder
                 .with(new SuperMapper())
                 .with(new ObjectSystem())
-                .with(new CameraSystem(0.1f, 2f))
+                .with(new CameraSystem(0.1f, 2f,Gdx.graphics.getWidth() + magicNumberCorrection,Gdx.graphics.getHeight()))
+                .with(new DesignCameraFocusSystem())
+                .with(new CameraMovementSystem())
                 .with(animationsSystem)
                 .with(descriptorsSystem)
                 .with(new MapDesignRenderingSystem())
-                .with(new BatchRenderingSystem())
+                .with(new BatchSystem())
                 .with(new MapManager());
-
         WorldConfiguration config = builder.build();
 
         config.register(DefaultAOAssetManager.getInstance());
 
         world = new World(config);
-        int camera = world.create();
-        E(camera).worldPosOffsets().aOCamera();
         viewer = world.create();
         E(viewer).focused();
         initMap(1);
@@ -279,10 +341,11 @@ public class MapEditor extends DesignScreen {
             }
         });
         menus.add(back).left().expandX();
-
+        menus.add(mousePosXLabel).spaceLeft(5);
+        menus.add(mousePosYLabel).spaceLeft(5);
         menus.add(createButton("Show Exits", "switch",
                 () -> world.getSystem(MapDesignRenderingSystem.class).toggleExits(), "Toggle exit tiles draw"))
-                .spaceLeft(5);
+                .spaceLeft(10);
 
         menus.add(createButton("Show Blocks", "switch",
                 () -> world.getSystem(MapDesignRenderingSystem.class).toggleBlocks(), "Toggle blocks draw"))
@@ -313,21 +376,45 @@ public class MapEditor extends DesignScreen {
         }, "All tiles will be set with current configuration (layer & selection)"))
                 .spaceLeft(5);
 
+        menus.add(new Label( " Map Nº: ", SKIN));
+        menus.add(mapNumber).width( 40 ).spaceLeft( 5 );
         menus.add(createButton("Load", "default",
                 () -> {
-                    int map = 1;
-                    initMap(map);
+                    int map = Integer.parseInt(mapNumber.getText());
+                    initMap( map );
                 }, "Load map"))
                 .spaceLeft(5);
 
         menus.add(createButton("Save", "default",
                 () -> {
                     Map current = mapProperties.getCurrent();
+                    int[] neighbours = mapProperties.getNeighbours();
+                    current.setNeighbours( neighbours[0], neighbours[1],neighbours[2],neighbours[3] );
+                    String mapName = current.getName();
+                    if (mapName == null){
+                        if (mapNumber.getText().isBlank()){
+                            mapName = "Map0";
+                        } else {
+                            mapName = "Map" + mapNumber.getText();
+                        }
+                        current.setName( mapName );
+                    }
                     FileHandle folder = Gdx.files.local("output/maps/");
-                    new AOJson().toJson(current, folder.child(current.getName() + ".json"));
-                    //TODO que guarde también los mapas limitrofes
+                                        new AOJson().toJson(current, folder.child(mapName + ".json"));
                 }, "Save map in output folder"))
                 .spaceLeft(5);
+        menus.add(createButton( "HELP", "default",   () -> {
+            Dialog dialog = new Dialog( "HELP", SKIN );
+            dialog.text("\n" +
+                    "F1: Esta ventana \n" +
+                    "1, 2, 3, 4: Activa y desactiva los layer\n" +
+                    "Scroll: Desplazamiento vertical\n" +
+                    "Shift + Scroll: desplazamiento horizontal\n" +
+                    "Control + Scroll: Zoom\n" +
+                    "Shift + mantener click + mover el mouse: desplazamiento\n").pad( 30 );
+            dialog.button( "ok" );
+            dialog.show( getStage() );
+        }, "Help")).spaceLeft(5);
 
         return menus;
     }
@@ -388,6 +475,7 @@ public class MapEditor extends DesignScreen {
         if (running) {
             Gdx.gl.glClearColor(0, 0, 0, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+            updateLabels();
             if (getWorld() != null) {
                 getWorld().setDelta(delta);
                 getWorld().process();
@@ -420,5 +508,4 @@ public class MapEditor extends DesignScreen {
             return Objects.hashCode(tile, pos);
         }
     }
-
 }

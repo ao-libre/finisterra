@@ -1,11 +1,13 @@
 package server.systems.world.entity.item;
 
 import com.artemis.Component;
-import com.artemis.E;
-import com.artemis.annotations.Wire;
+import com.artemis.ComponentMapper;
+import component.entity.character.equipment.Armor;
 import component.entity.character.equipment.Helmet;
 import component.entity.character.equipment.Shield;
 import component.entity.character.equipment.Weapon;
+import component.entity.character.info.CharHero;
+import component.entity.character.parts.Body;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.systems.network.EntityUpdateSystem;
 import server.systems.world.WorldEntitiesSystem;
@@ -19,12 +21,9 @@ import shared.util.EntityUpdateBuilder;
 
 import java.util.function.BiConsumer;
 
-import static com.artemis.E.E;
-
 /**
  * Every item can be used or wear, so here we have how to consume that action
  */
-@Wire
 public class ItemUsageSystem extends PassiveSystem {
 
     private WorldEntitiesSystem worldEntitiesSystem;
@@ -33,56 +32,63 @@ public class ItemUsageSystem extends PassiveSystem {
     private EntityFactorySystem entityFactorySystem;
     public final BiConsumer<Integer, Obj> TAKE_OFF = takeOff();
 
+    ComponentMapper<Weapon> mWeapon;
+    ComponentMapper<CharHero> mCharHero;
+    ComponentMapper<Body> mBody;
+    ComponentMapper<Armor> mArmor;
+    ComponentMapper<Helmet> mHelmet;
+    ComponentMapper<Shield> mShield;
+
     public ItemUsageSystem() {
     }
 
     private BiConsumer<Integer, Obj> takeOff() {
-        return (player, obj) -> {
-            E entity = E(player);
+        return (playerId, obj) -> {
             if (obj instanceof WeaponObj) {
-                entity.removeWeapon();
-                remove(player, Weapon.class);
+                mWeapon.remove(playerId);
+                remove(playerId, Weapon.class);
             } else if (obj instanceof ArmorObj) {
-                Hero hero = Hero.getHeroes().get(entity.getCharHero().heroId);
-                entityFactorySystem.setNakedBody(entity, Race.values()[hero.getRaceId()]);
-                update(player, entity.getBody());
+                Hero hero = Hero.getHeroes().get(mCharHero.get(playerId).heroId);
+                entityFactorySystem.setNakedBody(playerId, Race.values()[hero.getRaceId()]);
+                update(playerId, mBody.get(playerId));
+                // @todo ¿no hay que desequipar la armadura y hacer el update?
             } else if (obj instanceof HelmetObj) {
-                entity.removeHelmet();
-                remove(player, Helmet.class);
+                mHelmet.remove(playerId);
+                remove(playerId, Helmet.class);
             } else if (obj instanceof ShieldObj) {
-                entity.removeShield();
-                remove(player, Shield.class);
+                mShield.remove(playerId);
+                remove(playerId, Shield.class);
             }
         };
     }
 
     private BiConsumer<Integer, Obj> wear() {
-        return (player, obj) -> {
-            E entity = E(player);
+        return (playerId, obj) -> {
             if (obj instanceof WeaponObj) {
-                entity.weaponIndex(obj.getId());
-                update(player, entity.getWeapon());
+                mWeapon.create(playerId).setIndex(obj.getId());
+                update(playerId, mWeapon.get(playerId));
             } else if (obj instanceof ArmorObj) {
-                entity.bodyIndex(((ArmorObj) obj).getBodyNumber());
-                entity.armorIndex(obj.getId());
-                update(player, entity.getBody());
+                mBody.get(playerId).setIndex(((ArmorObj) obj).getBodyNumber());
+                mArmor.create(playerId).setIndex(obj.getId());
+                update(playerId, mBody.get(playerId));
+                // @todo ¿no hay que enviar el update de armadura?
             } else if (obj instanceof HelmetObj) {
-                entity.helmetIndex(obj.getId());
-                update(player, entity.getHelmet());
+                mHelmet.create(playerId).setIndex(obj.getId());
+                update(playerId, mHelmet.get(playerId));
             } else if (obj instanceof ShieldObj) {
-                entity.shieldIndex(obj.getId());
-                update(player, entity.getShield());
+                mShield.create(playerId).setIndex(obj.getId());
+                update(playerId, mShield.get(playerId));
             }
         };
     }
 
-    private void update(int user, Component component) {
-        EntityUpdate update = EntityUpdateBuilder.of(user).withComponents(component).build();
+    private void update(int playerId, Component component) {
+        EntityUpdate update = EntityUpdateBuilder.of(playerId).withComponents(component).build();
         entityUpdateSystem.add(update, UpdateTo.ALL);
     }
 
-    private void remove(int user, Class clasz) {
-        EntityUpdate update = EntityUpdateBuilder.of(user).remove(clasz).build();
+    private void remove(int playerId, Class<? extends Component> componentClass) {
+        EntityUpdate update = EntityUpdateBuilder.of(playerId).remove(componentClass).build();
         entityUpdateSystem.add(update, UpdateTo.ALL);
     }
 }

@@ -31,50 +31,17 @@ public class MovementAnimationSystem extends IteratingSystem {
     @Override
     protected void removed(int entityId) {
         super.removed(entityId);
-        // reset animation time
         E entity = E(entityId);
-        final Heading heading = entity.getHeading();
-        if (!entity.movementHasMovements()) {
-            updateAnimationTime(entity, heading, true);
-        }
+        entity.removeCharAnimation();
     }
 
     @Override
     protected void process(int entityId) {
         E entity = E(entityId);
-        final Heading heading = entity.getHeading();
-        updateAnimationTime(entity, heading, false);
-    }
-
-    private void updateAnimationTime(E entity, Heading heading, boolean reset) {
-        Optional<Float> velocity = Optional.empty();
         if (entity.hasAOPhysics() && entity.hasCharacter()) {
-            velocity = Optional.of(entity.getAOPhysics().velocity);
+            entity.charAnimationDuration(0.5f);
         }
-        if (entity.hasBody()) {
-            final Body body = entity.getBody();
-            BundledAnimation animation = animationsSystem.getBodyAnimation(body, heading.current);
-            if (animation != null) {
-                velocity.ifPresent(v -> animation.setFrameDuration(v / Tile.TILE_PIXEL_WIDTH));
-                animation.setAnimationTime(!reset ? animation.getAnimationTime() + world.getDelta() : 0);
-            }
-        }
-        if (entity.hasWeapon()) {
-            final Weapon weapon = entity.getWeapon();
-            BundledAnimation animation = animationsSystem.getWeaponAnimation(weapon, heading.current);
-            if (animation != null) {
-                velocity.ifPresent(v -> animation.setFrameDuration(v / Tile.TILE_PIXEL_WIDTH));
-                animation.setAnimationTime(!reset ? animation.getAnimationTime() + world.getDelta() : 0);
-            }
-        }
-        if (entity.hasShield()) {
-            final Shield weapon = entity.getShield();
-            BundledAnimation animation = animationsSystem.getShieldAnimation(weapon, heading.current);
-            if (animation != null) {
-                velocity.ifPresent(v -> animation.setFrameDuration(v / Tile.TILE_PIXEL_WIDTH));
-                animation.setAnimationTime(!reset ? animation.getAnimationTime() + world.getDelta() : 0);
-            }
-        }
+        entity.charAnimationAdd(world.getDelta());
     }
 
 }

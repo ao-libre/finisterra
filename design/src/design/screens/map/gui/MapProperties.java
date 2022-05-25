@@ -16,6 +16,7 @@ public class MapProperties extends Window {
     private Map current;
     private ClickListener mouseListener;
     private Table content;
+    private int[] neighbours;
 
     public MapProperties() {
         super("Map Properties", SKIN, "main");
@@ -32,7 +33,7 @@ public class MapProperties extends Window {
         current = map;
         content.add(StringEditor.simple("Map Name", map::setName, map::getName, () -> {
         })).row();
-        int[] neighbours = map.getNeighbours();
+        neighbours = map.getNeighbours();
         for (int i = 0; i < 4; i++) {
             int finalI = i;
             content.add(IntegerEditor.create(getNeighbourDisplay(i), id -> map.setNeighbour(finalI, id), () -> neighbours[finalI], () -> {
@@ -66,5 +67,8 @@ public class MapProperties extends Window {
 
     public boolean isOver() {
         return mouseListener.isOver();
+    }
+    public int[] getNeighbours(){
+        return neighbours;
     }
 }

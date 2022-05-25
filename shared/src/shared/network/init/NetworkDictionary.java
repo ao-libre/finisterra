@@ -1,7 +1,6 @@
 package shared.network.init;
 
 import com.artemis.Component;
-import com.artemis.FluidIteratingSystem;
 import component.camera.Focused;
 import component.console.ConsoleMessage;
 import component.entity.Description;
@@ -99,6 +98,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 SpellCastRequest.class,
                 TimeSyncRequest.class,
                 NpcInteractionRequest.class,
+                TeleportRequest.class,
 
                 // Game Responses
                 MovementResponse.class,
@@ -155,7 +155,6 @@ public class NetworkDictionary extends MarshalDictionary {
                 Hero.class,
                 Loader.class,
                 Reader.class,
-                FluidIteratingSystem.class,
                 ArrayList.class,
 
                 ObjectLoader.class,
@@ -202,6 +201,7 @@ public class NetworkDictionary extends MarshalDictionary {
                 WoodObj.class,
 
                 // Components
+                Skills.class,
                 AOSound.class,
                 Ref.class,
                 OriginPos.class,

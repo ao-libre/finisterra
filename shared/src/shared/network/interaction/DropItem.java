@@ -37,7 +37,7 @@ public class DropItem implements IRequest {
     }
 
     @Override
-    public void accept(IRequestProcessor processor, int connectionId) {
-        processor.processRequest(this, connectionId);
+    public void accept(IRequestProcessor processor, int playerId) {
+        processor.processRequest(this, playerId);
     }
 }

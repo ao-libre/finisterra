@@ -87,9 +87,9 @@ public class AOImage implements ID {
     }
 
     public void adjust() {
-        setX(getX());
-        setY(getY());
-        setWidth(getWidth());
-        setHeight(getHeight());
+        setX(getX() / 2);
+        setY(getY() / 2);
+        setWidth(getWidth() / 2);
+        setHeight(getHeight() / 2);
     }
 }

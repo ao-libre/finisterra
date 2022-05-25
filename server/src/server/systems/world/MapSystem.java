@@ -1,8 +1,8 @@
 package server.systems.world;
 
-import com.artemis.E;
-import com.artemis.annotations.Wire;
+import com.artemis.ComponentMapper;
 import com.badlogic.gdx.utils.TimeUtils;
+import component.entity.world.Footprint;
 import component.position.WorldPos;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import server.systems.network.EntityUpdateSystem;
@@ -19,13 +19,11 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import static com.artemis.E.E;
 import static shared.util.MapHelper.CacheStrategy.NEVER_EXPIRE;
 
 /**
  * Logic regarding maps, contains information about entities in each map, and how are they related.
  */
-@Wire
 public class MapSystem extends PassiveSystem {
 
     private WorldEntitiesSystem worldEntitiesSystem;
@@ -33,6 +31,9 @@ public class MapSystem extends PassiveSystem {
     private EntityFactorySystem entityFactorySystem;
     private ComponentSystem componentSystem;
     private ServerSystem serverSystem;
+
+    ComponentMapper<WorldPos> mWorldPos;
+    ComponentMapper<Footprint> mFootprint;
 
     private MapHelper helper;
     private Map<Integer, Set<Integer>> nearEntities = new ConcurrentHashMap<>();
@@ -97,10 +98,8 @@ public class MapSystem extends PassiveSystem {
     public Set<Integer> getEntities(WorldPos pos) {
         return entitiesByMap.get(pos.map)
                 .stream()
-                .map(E::E)
-                .filter(E::hasWorldPos)
-                .filter(e -> e.getWorldPos().equals(pos))
-                .map(E::id)
+                .filter(mWorldPos::has)
+                .filter(e -> mWorldPos.get(e).equals(pos))
                 .collect(Collectors.toSet());
     }
 
@@ -117,21 +116,20 @@ public class MapSystem extends PassiveSystem {
      * Move entity to current position, leaving old relations if goes out of range
      *
      * @param player     player id
-     * @param previusPos previus position in case its moving, empty if is a new position
+     * @param previousPos previous position in case its moving, empty if is a new position
      */
-    public void movePlayer(int player, Optional<WorldPos> previusPos) {
-        WorldPos actualPos = E(player).getWorldPos();
-        previusPos.ifPresent(it -> {
+    public void movePlayer(int player, Optional<WorldPos> previousPos) {
+        WorldPos actualPos = mWorldPos.get(player);
+        previousPos.ifPresent(it -> {
             if (it.equals(actualPos)) {
                 return;
             }
             //create footprint
             final int footprintId = world.create();
-            E(footprintId).footprintEntityId(player);
-            E(footprintId).worldPosMap(it.map);
-            E(footprintId).worldPosX(it.x);
-            E(footprintId).worldPosY(it.y);
-            E(footprintId).footprintTimestamp(TimeUtils.millis());
+            Footprint footprint = mFootprint.create(footprintId);
+            footprint.setEntityId(player);
+            mWorldPos.create(footprintId).setWorldPos(it);
+            footprint.setTimestamp(TimeUtils.millis());
             entitiesFootprints.computeIfAbsent(player, (playerId) -> new HashSet<>()).add(footprintId);
 
             if (it.map != actualPos.map) {
@@ -151,11 +149,10 @@ public class MapSystem extends PassiveSystem {
      * @param entity id
      */
     void removeEntity(int entity) {
-        final E e = E(entity);
-        if (e == null || !e.hasWorldPos()) {
+        if (mWorldPos.has(entity)) {
             return;
         }
-        final WorldPos worldPos = e.getWorldPos();
+        final WorldPos worldPos = mWorldPos.get(entity);
         int map = worldPos.map;
         // remove from near entities
         nearEntities.computeIfPresent(entity, (player, removeFrom) -> {
@@ -171,7 +168,7 @@ public class MapSystem extends PassiveSystem {
      * @param player id
      */
     void updateEntity(int player) {
-        WorldPos pos = E(player).getWorldPos();
+        WorldPos pos = mWorldPos.get(player);
         int map = pos.map;
         Set<Integer> entities = entitiesByMap.computeIfAbsent(map, (it) -> new HashSet<>());
         Set<Integer> candidates = new HashSet<>(entities);
@@ -229,8 +226,8 @@ public class MapSystem extends PassiveSystem {
      * @param entity2 id
      */
     private void addNearEntities(int entity1, int entity2) {
-        WorldPos worldPos1 = E(entity2).getWorldPos();
-        WorldPos worldPos2 = E(entity1).getWorldPos();
+        WorldPos worldPos1 = mWorldPos.get(entity1);
+        WorldPos worldPos2 = mWorldPos.get(entity2);
         if (helper.isNear(worldPos1, worldPos2)) {
             linkEntities(entity1, entity2);
             linkEntities(entity2, entity1);
@@ -244,7 +241,7 @@ public class MapSystem extends PassiveSystem {
      * @param player2 id
      */
     private void removeNearEntity(int player1, int player2) {
-        if (!helper.isNear(E(player2).getWorldPos(), E(player1).getWorldPos())) {
+        if (!helper.isNear(mWorldPos.get(player1), mWorldPos.get(player2))) {
             unlinkEntities(player1, player2);
             unlinkEntities(player2, player1);
         }

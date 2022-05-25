@@ -8,7 +8,7 @@ import java.io.Serializable;
 @PooledWeaver
 public class SpellBook extends Component implements Serializable {
 
-    public final static int SIZE = 25;
+    public final static int SIZE = 15;
     public Integer[] spells = new Integer[SIZE];
     private String msj = "";
 

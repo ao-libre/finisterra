@@ -111,14 +111,14 @@ public class CharacterScreen extends ScreenAdapter {
         private ObjectSystem objectSystem;
 
         Chooser() {
-            super("Choose", Skins.COMODORE_SKIN, "black");
+            super("Choose", Skins.CURRENT.get(), "black");
             stage = new Stage();
             createUI();
             Gdx.input.setInputProcessor(stage);
         }
 
         private void createUI() {
-            Table table = new Table(Skins.COMODORE_SKIN);
+            Table table = new Table(Skins.CURRENT.get());
             table.setFillParent(true);
             table.right();
             for (Part part : Part.values()) {

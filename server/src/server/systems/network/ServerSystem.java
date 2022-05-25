@@ -1,7 +1,6 @@
 package server.systems.network;
 
-import com.artemis.E;
-import com.artemis.annotations.Wire;
+import com.artemis.ComponentMapper;
 import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.FrameworkMessage;
 import com.esotericsoftware.minlog.Log;
@@ -24,7 +23,6 @@ import shared.network.interfaces.IRequest;
 import java.util.Deque;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-@Wire
 public class ServerSystem extends MarshalSystem {
     // Injected Systems
     private MapSystem mapSystem;
@@ -33,6 +31,8 @@ public class ServerSystem extends MarshalSystem {
     private WorldEntitiesSystem worldEntitiesSystem;
     private ConfigurationSystem configurationSystem;
     private UserSystem userSystem;
+
+    ComponentMapper<Name> mName;
 
     private final Deque<NetworkJob> netQueue = new ConcurrentLinkedDeque<>();
     private final BiMap<Integer, Integer> connectionTable = Maps.synchronizedBiMap(HashBiMap.create());
@@ -57,11 +57,11 @@ public class ServerSystem extends MarshalSystem {
     }
 
     private void processJob(NetworkJob job) {
-        int connectionID = job.connectionID;
+        int connectionId = job.connectionID;
         Object object = job.receivedObject;
         try {
             if (object instanceof IRequest) {
-                ((IRequest) object).accept(requestProcessor, connectionID);
+                ((IRequest) object).accept(requestProcessor, connectionId);
             } else if (object instanceof INotification) {
                 ((INotification) object).accept(notificationProcessor);
             } else if (object instanceof FrameworkMessage) {
@@ -89,9 +89,9 @@ public class ServerSystem extends MarshalSystem {
         super.disconnected(connectionID);
         if (connectionHasPlayer(connectionID)) {
             Gdx.app.postRunnable(() -> {
-                int playerID = getPlayerByConnection(connectionID);
-                Name username = E.E(playerID).getName();
-                worldEntitiesSystem.unregisterEntity(playerID);
+                int entityId = getPlayerByConnection(connectionID);
+                worldEntitiesSystem.unregisterEntity(entityId);
+                Name username = mName.get(entityId);
                 userSystem.logout(username.text);
             });
         }
@@ -108,9 +108,14 @@ public class ServerSystem extends MarshalSystem {
      * @param connectionID
      * @param packet Object to send
      */
-    public void sendTo(int connectionID, Object packet) {
+    public void sendByConnectionId(int connectionID, Object packet) {
         ServerStrategy marshal = (ServerStrategy) getMarshal();
         marshal.sendTo(connectionID, packet);
+    }
+
+    public void sendByPlayerId(int playerId, Object packet) {
+        ServerStrategy marshal = (ServerStrategy) getMarshal();
+        marshal.sendTo(getConnectionByPlayer(playerId), packet);
     }
 
     public void registerUserConnection(int connectionID, int playerID) {

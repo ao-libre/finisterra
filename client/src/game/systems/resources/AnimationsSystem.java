@@ -189,7 +189,7 @@ public class AnimationsSystem extends BaseSystem {
             Log.debug("Fail to create AO Image: " + id);
             return null;
         }
-        return new AOTexture(image, assetManager.getTexture(image.getFileNum()));
+        return new AOTexture(image, assetManager.getTexture(image.getFileNum()), true);
     }
 
     public boolean hasTexture(int id) {

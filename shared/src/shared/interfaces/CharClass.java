@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// @todo Refactorizar esta clase, CharHero y CharRace
+// La lógica de Artemis no va acá
+// No soporta i18n
 public enum CharClass {
     ARCHER,
     ASSASSIN,
@@ -49,10 +52,16 @@ public enum CharClass {
         return null;
     }
 
+    @Deprecated
     public static CharClass of(E entity) {
         int heroId = entity.getCharHero().heroId;
         Hero hero = Hero.values()[heroId];
         return VALUES.get(hero.getClassId());
     }
 
+    // @todo Esto es un arreglo de fortuna para desacoplar la lógica de ECS de la clase
+    public static CharClass of(int heroId) {
+        Hero hero = Hero.values()[heroId];
+        return VALUES.get(hero.getClassId());
+    }
 }

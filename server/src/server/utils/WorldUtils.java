@@ -9,6 +9,7 @@ import shared.interfaces.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
+// @todo Esto podría ser una clase estática
 public class WorldUtils {
 
     private World world;

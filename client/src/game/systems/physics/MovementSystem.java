@@ -60,7 +60,7 @@ public class MovementSystem extends IteratingSystem {
     private boolean movePlayer(@NotNull E player) {
         Destination destination = player.movementCurrent();
         float velocity = player.getAOPhysics().getVelocity();
-        float delta = world.getDelta() * velocity / Tile.TILE_PIXEL_HEIGHT;
+        float delta = world.getDelta() * velocity / Tile.TILE_PIXEL_WIDTH;
         AOPhysics.Movement movementDir = AOPhysics.Movement.values()[destination.dir];
         WorldPosOffsets offsets = player.getWorldPosOffsets();
         switch (movementDir) {

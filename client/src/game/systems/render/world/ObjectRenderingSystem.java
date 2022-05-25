@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Interpolation;
 import component.entity.world.Object;
 import component.position.WorldPos;
 import component.position.WorldPosOffsets;
-import game.systems.render.BatchRenderingSystem;
+import game.systems.render.BatchSystem;
 import game.systems.resources.ObjectSystem;
 import shared.model.map.Tile;
 import shared.objects.types.Obj;
@@ -20,7 +20,7 @@ import java.util.Optional;
 public class ObjectRenderingSystem extends RenderingSystem {
 
     private ObjectSystem objectSystem;
-    private BatchRenderingSystem batchRenderingSystem;
+    private BatchSystem batchSystem;
 
     public ObjectRenderingSystem() {
         super(Aspect.all(Object.class, WorldPos.class));
@@ -45,7 +45,7 @@ public class ObjectRenderingSystem extends RenderingSystem {
             float height = scale * texture.getRegionHeight();
             float x = screenPos.x + (Tile.TILE_PIXEL_WIDTH - width) / 2;
             float y = screenPos.y + (Tile.TILE_PIXEL_HEIGHT - height) / 2;
-            batchRenderingSystem.addTask(batch -> batch.draw(texture, x, y, width, height));
+            batchSystem.getBatch().draw(texture, x, y, width, height);
         });
     }
 }
